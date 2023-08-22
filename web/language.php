@@ -92,6 +92,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -127,6 +131,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;

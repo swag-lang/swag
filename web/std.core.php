@@ -92,6 +92,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -127,6 +131,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -1712,233 +1719,233 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Core_ASSERT">ASSERT</td>
-<td>bool</td>
+<td id="Core_ASSERT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ASSERT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_BIG_ENDIAN">BIG_ENDIAN</td>
-<td>bool</td>
+<td id="Core_BIG_ENDIAN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BIG_ENDIAN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Env_EndLine">EndLine</td>
-<td>string</td>
+<td id="Core_Env_EndLine" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EndLine</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Latin1_CharProperties">CharProperties</td>
-<td>const [256] Core.Latin1.CharAttribute</td>
+<td id="Core_Latin1_CharProperties" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CharProperties</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">256</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Latin1_CharAttribute">CharAttribute</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</td>
-<td>u8</td>
+<td id="Core_Path_AltDirectorySeparatorChar" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AltDirectorySeparatorChar</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</td>
-<td>u8</td>
+<td id="Core_Path_DirectorySeparatorChar" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DirectorySeparatorChar</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
-<td>u8</td>
+<td id="Core_Path_VolumeSeparatorChar" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VolumeSeparatorChar</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Random_NN">NN</td>
-<td>s32</td>
+<td id="Core_Random_NN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorIncomplete">ParseErrorIncomplete</td>
-<td>string</td>
+<td id="Core_StrConv_ParseErrorIncomplete" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ParseErrorIncomplete</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorInvalid">ParseErrorInvalid</td>
-<td>string</td>
+<td id="Core_StrConv_ParseErrorInvalid" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ParseErrorInvalid</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorOverflow">ParseErrorOverflow</td>
-<td>string</td>
+<td id="Core_StrConv_ParseErrorOverflow" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ParseErrorOverflow</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StringSmallSize">StringSmallSize</td>
-<td>u64</td>
+<td id="Core_StringSmallSize" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StringSmallSize</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DayOfWeekNames">DayOfWeekNames</td>
-<td>const [7] string</td>
+<td id="Core_Time_DayOfWeekNames" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DayOfWeekNames</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">7</span><span class="SyntaxCode">] </span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer100Years">DaysPer100Years</td>
-<td>s32</td>
+<td id="Core_Time_DaysPer100Years" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysPer100Years</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer400Years">DaysPer400Years</td>
-<td>s32</td>
+<td id="Core_Time_DaysPer400Years" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysPer400Years</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer4Years">DaysPer4Years</td>
-<td>s32</td>
+<td id="Core_Time_DaysPer4Years" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysPer4Years</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPerYear">DaysPerYear</td>
-<td>s32</td>
+<td id="Core_Time_DaysPerYear" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysPerYear</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo10000">DaysTo10000</td>
-<td>u64</td>
+<td id="Core_Time_DaysTo10000" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysTo10000</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of days from 1/1/0001 to 12/31/9999. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1601">DaysTo1601</td>
-<td>u64</td>
+<td id="Core_Time_DaysTo1601" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysTo1601</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of days from 1/1/0001 to 12/31/1600. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1899">DaysTo1899</td>
-<td>u64</td>
+<td id="Core_Time_DaysTo1899" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysTo1899</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of days from 1/1/0001 to 12/30/1899. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1970">DaysTo1970</td>
-<td>u64</td>
+<td id="Core_Time_DaysTo1970" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysTo1970</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of days from 1/1/0001 to 12/31/1969. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth365">DaysToMonth365</td>
-<td>const [13] u16</td>
+<td id="Core_Time_DaysToMonth365" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysToMonth365</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">13</span><span class="SyntaxCode">] </span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth366">DaysToMonth366</td>
-<td>const [13] u16</td>
+<td id="Core_Time_DaysToMonth366" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DaysToMonth366</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">13</span><span class="SyntaxCode">] </span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMilliSeconds">MaxMilliSeconds</td>
-<td>u64</td>
+<td id="Core_Time_MaxMilliSeconds" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxMilliSeconds</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMillis">MaxMillis</td>
-<td>u64</td>
+<td id="Core_Time_MaxMillis" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxMillis</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxTicks">MaxTicks</td>
-<td>u64</td>
+<td id="Core_Time_MaxTicks" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxTicks</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerDay">MillisPerDay</td>
-<td>u64</td>
+<td id="Core_Time_MillisPerDay" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MillisPerDay</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerHour">MillisPerHour</td>
-<td>u64</td>
+<td id="Core_Time_MillisPerHour" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MillisPerHour</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerMinute">MillisPerMinute</td>
-<td>u64</td>
+<td id="Core_Time_MillisPerMinute" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MillisPerMinute</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerSecond">MillisPerSecond</td>
-<td>u64</td>
+<td id="Core_Time_MillisPerSecond" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MillisPerSecond</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MonthNames">MonthNames</td>
-<td>const [12] string</td>
+<td id="Core_Time_MonthNames" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MonthNames</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [</span><span class="SyntaxNumber">12</span><span class="SyntaxCode">] </span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerDay">TicksPerDay</td>
-<td>u64</td>
+<td id="Core_Time_TicksPerDay" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TicksPerDay</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerHour">TicksPerHour</td>
-<td>u64</td>
+<td id="Core_Time_TicksPerHour" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TicksPerHour</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMilliSecond">TicksPerMilliSecond</td>
-<td>u64</td>
+<td id="Core_Time_TicksPerMilliSecond" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TicksPerMilliSecond</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMinute">TicksPerMinute</td>
-<td>u64</td>
+<td id="Core_Time_TicksPerMinute" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TicksPerMinute</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerSecond">TicksPerSecond</td>
-<td>u64</td>
+<td id="Core_Time_TicksPerSecond" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TicksPerSecond</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_RuneError">RuneError</td>
-<td>rune</td>
+<td id="Core_Utf16_RuneError" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RuneError</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr1">Surr1</td>
-<td>u32</td>
+<td id="Core_Utf16_Surr1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Surr1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr2">Surr2</td>
-<td>u32</td>
+<td id="Core_Utf16_Surr2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Surr2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr3">Surr3</td>
-<td>u32</td>
+<td id="Core_Utf16_Surr3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Surr3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_SurrSelf">SurrSelf</td>
-<td>u32</td>
+<td id="Core_Utf16_SurrSelf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SurrSelf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_MaxRunes">MaxRunes</td>
-<td>rune</td>
+<td id="Core_Utf8_MaxRunes" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxRunes</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_RuneError">RuneError</td>
-<td>rune</td>
+<td id="Core_Utf8_RuneError" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RuneError</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMax">SurrogateMax</td>
-<td>rune</td>
+<td id="Core_Utf8_SurrogateMax" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SurrogateMax</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMin">SurrogateMin</td>
-<td>rune</td>
+<td id="Core_Utf8_SurrogateMin" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SurrogateMin</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_WINDOWS">WINDOWS</td>
-<td>bool</td>
+<td id="Core_WINDOWS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WINDOWS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1955,43 +1962,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Core_Env_ProcessHandle">ProcessHandle</td>
-<td>const *void</td>
+<td id="Core_Env_ProcessHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ProcessHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_File_FileHandle">FileHandle</td>
-<td>const *void</td>
+<td id="Core_File_FileHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FileHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Input_VirtualKey">VirtualKey</td>
-<td>u32</td>
+<td id="Core_Input_VirtualKey" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VirtualKey</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF32">ConstF32</td>
-<td>Core.Math.Const'(f32)</td>
+<td id="Core_Math_ConstF32" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Const">Const</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF64">ConstF64</td>
-<td>Core.Math.Const'(f64)</td>
+<td id="Core_Math_ConstF64" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Const">Const</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Threading_ThreadHandle">ThreadHandle</td>
-<td>const *void</td>
+<td id="Core_Threading_ThreadHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ThreadHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_Ticks">Ticks</td>
-<td>u64</td>
+<td id="Core_Time_Ticks" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TimerHandle">TimerHandle</td>
-<td>const *void</td>
+<td id="Core_Time_TimerHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TimerHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2011,23 +2018,23 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td>Associated allocator. </td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>^T</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td>Memory block of all datas. </td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of valid datas. </td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of elements that can be stored in the buffer. </td>
 </tr>
 </table>
@@ -2855,8 +2862,8 @@
 </div>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td>Core.Array'(*T)</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -3109,23 +3116,23 @@
 <p>Manages a compact array of bit values, which are represented as booleans, where <code class="incode">true</code> indicates that  the bit is on (1) and <code class="incode">false</code> indicates the bit is off (0). </p>
 <table class="enumeration">
 <tr>
-<td>buffer</td>
-<td>^u32</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3428,23 +3435,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>readBuffer</td>
-<td>const [..] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">readBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>writeBuffer</td>
-<td>*Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>seek</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">seek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>eof</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">eof</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3752,11 +3759,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Latin1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Unicode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unicode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3772,15 +3779,15 @@
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_CommandLine_IsSet">IsSet</a></td>
+<td><a href="#Core_CommandLine_IsSet"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IsSet</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></td>
+<td><a href="#Core_CommandLine_ParseOptions"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ParseOptions</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_Result">Result</a></td>
+<td><a href="#Core_CommandLine_Result"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Result</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -3806,7 +3813,7 @@
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_CommandLine_ArgParams">ArgParams</a></td>
+<td><a href="#Core_CommandLine_ArgParams"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ArgParams</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 </table>
@@ -3864,8 +3871,8 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>isSet</td>
-<td>Core.CommandLine.IsSet'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">isSet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine">CommandLine</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_CommandLine_IsSet">IsSet</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -3950,28 +3957,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>stream</td>
-<td>const [..] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">stream</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curByte</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">curByte</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>codeBuffer</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">codeBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>numBits</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">numBits</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>eof</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">eof</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4268,15 +4275,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ComputeAdler32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ComputeAdler32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4293,23 +4300,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>NoCompression</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoCompression</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BestSpeed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BestSpeed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BestCompression</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BestCompression</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UberCompression</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UberCompression</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4326,23 +4333,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Filtered</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Filtered</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HuffmanOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HuffmanOnly</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Rle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Rle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Fixed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Fixed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4470,43 +4477,43 @@
 <p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
 <table class="enumeration">
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstBucket</td>
-<td>*Core.ConcatBufferBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">firstBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curBucket</td>
-<td>*Core.ConcatBufferBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">curBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastBucket</td>
-<td>*Core.ConcatBufferBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">lastBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>currentSP</td>
-<td>^u8</td>
+<td class="codetype"></span><span class="SyntaxCode">currentSP</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>granularity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">granularity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isAtEnd</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isAtEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>viewFirstBucket</td>
-<td><a href="#Core_ConcatBufferBucket">Core.ConcatBufferBucket</a></td>
+<td class="codetype"></span><span class="SyntaxCode">viewFirstBucket</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4925,28 +4932,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>datas</td>
-<td>^u8</td>
+<td class="codetype"></span><span class="SyntaxCode">datas</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>next</td>
-<td>*Core.ConcatBufferBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">next</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>countBefore</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">countBefore</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4963,13 +4970,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>bucket</td>
-<td>*Core.ConcatBufferBucket</td>
+<td class="codetype"></span><span class="SyntaxCode">bucket</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sp</td>
-<td>^u8</td>
+<td class="codetype"></span><span class="SyntaxCode">sp</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4986,63 +4993,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Black</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Black</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>White</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">White</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Red</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Red</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Blue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Green</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Green</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cyan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cyan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Yellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Yellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Magenta</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Magenta</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkCyan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkCyan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkYellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkYellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkMagenta</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkMagenta</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5321,38 +5328,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>matchExtension</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">matchExtension</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>skipAttributes</td>
-<td><a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
+<td class="codetype"></span><span class="SyntaxCode">skipAttributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileAttributes">FileAttributes</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>recurse</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">recurse</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wantFiles</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">wantFiles</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wantDirectories</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">wantDirectories</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wantSpecialDirectories</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">wantSpecialDirectories</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>filterLambda</td>
-<td>func(Core.File.FileInfo)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">filterLambda</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileInfo">FileInfo</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5480,13 +5487,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>rect</td>
-<td><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">rect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>work</td>
-<td><a href="#Core_Math_Rectangle">Core.Math.Rectangle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">work</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Rectangle">Rectangle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5503,8 +5510,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5542,47 +5549,47 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Font</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Font</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UserAppData</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UserAppData</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UserDocuments</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UserDocuments</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CommonAppData</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CommonAppData</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Desktop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Desktop</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UserPictures</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UserPictures</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UserVideos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UserVideos</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UserMusic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UserMusic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CommonPictures</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CommonPictures</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CommonVideos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CommonVideos</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CommonMusic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CommonMusic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5599,13 +5606,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>fileName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">fileName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>arguments</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">arguments</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5737,15 +5744,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Read</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Read</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Write</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Write</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReadWrite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReadWrite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5762,63 +5769,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReadOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReadOnly</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hidden</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hidden</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>System</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">System</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Directory</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Directory</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Archive</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Archive</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Device</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Device</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Temporary</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Temporary</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SparseFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SparseFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReparsePoint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReparsePoint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Compressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Compressed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Offline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Offline</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NotContentIndexed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NotContentIndexed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Encrypted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Encrypted</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5835,33 +5842,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>fullname</td>
-<td><a href="#Core_String">Core.String</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fullname</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>attributes</td>
-<td><a href="#Core_File_FileAttributes">Core.File.FileAttributes</a></td>
+<td class="codetype"></span><span class="SyntaxCode">attributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileAttributes">FileAttributes</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>creationTime</td>
-<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td class="codetype"></span><span class="SyntaxCode">creationTime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastAccessTime</td>
-<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lastAccessTime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastWriteTime</td>
-<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lastWriteTime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5898,27 +5905,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Append</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Append</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Create</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Create</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CreateNew</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CreateNew</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Open</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Open</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OpenOrCreate</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OpenOrCreate</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Truncate</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Truncate</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5935,27 +5942,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Delete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Delete</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Inheritable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inheritable</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Read</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Read</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Write</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Write</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReadWrite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReadWrite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5972,28 +5979,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td><a href="#Core_String">Core.String</a></td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>handle</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canRead</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canRead</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canSeek</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canWrite</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canWrite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6175,13 +6182,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>data</td>
-<td>^void</td>
+<td class="codetype"></span><span class="SyntaxCode">data</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6198,15 +6205,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Begin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Begin</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Current</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Current</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>End</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">End</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6223,11 +6230,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Ascii</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ascii</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Utf8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Utf8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6244,33 +6251,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>stream</td>
-<td><a href="#Core_File_FileStream">Core.File.FileStream</a></td>
+<td class="codetype"></span><span class="SyntaxCode">stream</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_FileStream">FileStream</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>encodingType</td>
-<td><a href="#Core_File_TextEncoding">Core.File.TextEncoding</a></td>
+<td class="codetype"></span><span class="SyntaxCode">encodingType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_TextEncoding">TextEncoding</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>byteSeek</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">byteSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bufferSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">bufferSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checkPreamble</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">checkPreamble</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6363,8 +6370,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>folders</td>
-<td>Core.Array'(Core.File.Folder)</td>
+<td class="codetype"></span><span class="SyntaxCode">folders</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_File_Folder">Folder</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -6776,8 +6783,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>numberFormat</td>
-<td><a href="#Core_Globalization_NumberFormatInfo">Core.Globalization.NumberFormatInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode">numberFormat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Globalization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6795,18 +6802,18 @@
 <p>Provides culture-specific information for formatting and parsing numeric values. </p>
 <table class="enumeration">
 <tr>
-<td>negativeSign</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">negativeSign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>positiveSign</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">positiveSign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>decimalSeparator</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">decimalSeparator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6865,8 +6872,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>adler</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">adler</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6940,8 +6947,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>crc</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">crc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7015,8 +7022,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>compute</td>
-<td>func(const *Core.Hash.IHash32)->u32</td>
+<td class="codetype"></span><span class="SyntaxCode">compute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Hash</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Hash_IHash32">IHash32</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7033,23 +7040,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>padding</td>
-<td>[64] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">padding</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">64</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>state</td>
-<td>[4] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">state</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>[2] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>[64] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">64</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7141,23 +7148,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>data</td>
-<td>[64] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">data</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">64</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>state</td>
-<td>[8] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">state</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">8</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>datalen</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">datalen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bitlen</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">bitlen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7265,48 +7272,48 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>HASH_FREE</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_FREE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_DELETED</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_DELETED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_FIRST</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_FIRST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_MASK</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_MASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>table</td>
-<td>^Core.HashSetEntry'(K)</td>
+<td class="codetype"></span><span class="SyntaxCode">table</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashSetEntry">HashSetEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td>deleted</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">deleted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of deleted entries. </td>
 </tr>
 </table>
@@ -7566,13 +7573,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>hash</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hash</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>key</td>
-<td>K</td>
+<td class="codetype"></span><span class="SyntaxCode">key</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">K</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7591,48 +7598,48 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>HASH_FREE</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_FREE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_DELETED</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_DELETED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_FIRST</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_FIRST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HASH_MASK</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HASH_MASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>table</td>
-<td>^Core.HashTableEntry'(K, V)</td>
+<td class="codetype"></span><span class="SyntaxCode">table</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTableEntry">HashTableEntry</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">K</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">V</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td>deleted</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">deleted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of deleted entries. </td>
 </tr>
 </table>
@@ -7913,18 +7920,18 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>hash</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hash</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>key</td>
-<td>K</td>
+<td class="codetype"></span><span class="SyntaxCode">key</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">K</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>value</td>
-<td>V</td>
+<td class="codetype"></span><span class="SyntaxCode">value</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">V</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7941,8 +7948,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>print</td>
-<td>func(*Core.ILogWriter, string)</td>
+<td class="codetype"></span><span class="SyntaxCode">print</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ILogWriter">ILogWriter</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -7960,23 +7967,23 @@
 <p>Represents a gamepad. </p>
 <table class="enumeration">
 <tr>
-<td>previousState</td>
-<td><a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">previousState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadState">GamePadState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>currentState</td>
-<td><a href="#Core_Input_GamePadState">Core.Input.GamePadState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">currentState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_GamePadState">GamePadState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>padIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">padIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>connected</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">connected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8166,103 +8173,103 @@
 <p>Enumerates gamepad buttons. </p>
 <table class="enumeration">
 <tr>
-<td>A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Back</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Back</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BigButton</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BigButton</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DPadDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DPadDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DPadLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DPadLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DPadRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DPadRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DPadUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DPadUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftShoulder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftShoulder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftStick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftStick</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftThumbstickDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftThumbstickDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftThumbstickLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftThumbstickLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftThumbstickRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftThumbstickRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftThumbstickUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftThumbstickUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftTrigger</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftTrigger</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightShoulder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightShoulder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightStick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightStick</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightThumbstickDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightThumbstickDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightThumbstickLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightThumbstickLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightThumbstickRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightThumbstickRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightThumbstickUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightThumbstickUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightTrigger</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightTrigger</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Start</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Start</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>X</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Y</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8279,7 +8286,7 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>DeviceNotConnected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeviceNotConnected</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8297,13 +8304,13 @@
 <p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
 <table class="enumeration">
 <tr>
-<td>pressed</td>
-<td>[25] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">pressed</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">25</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>position</td>
-<td>[25] Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">25</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8360,755 +8367,755 @@
 <p>Defines the keys on a keyboard. </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Add</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Add</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Apps</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Apps</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Attn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Attn</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Back</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Back</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserBack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserBack</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserFavorites</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserFavorites</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserForward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserForward</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserHome</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserHome</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserRefresh</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserRefresh</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserSearch</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserSearch</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BrowserStop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BrowserStop</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>C</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">C</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cancel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cancel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Capital</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Capital</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CapsLock</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CapsLock</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Clear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Control</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Control</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Crsel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Crsel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D0</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D3</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D5</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D5</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D6</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D6</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D7</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D7</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>D9</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">D9</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Decimal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Decimal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Delete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Delete</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Divide</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Divide</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Down</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Down</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>E</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">E</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>End</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">End</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Enter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EraseEof</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EraseEof</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Escape</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Escape</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Execute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Execute</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Exsel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Exsel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F10</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F10</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F11</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F11</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F12</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F12</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F13</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F13</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F14</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F14</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F15</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F15</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F17</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F17</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F18</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F18</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F19</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F19</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F20</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F20</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F21</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F21</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F22</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F22</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F23</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F23</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F24</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F24</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F3</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F5</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F5</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F6</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F6</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F7</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F7</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F9</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F9</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FinalMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FinalMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>G</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">G</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>H</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">H</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HanguelMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HanguelMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HangulMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HangulMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HanjaMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HanjaMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Help</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Help</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Home</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Home</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>I</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">I</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IMEAccept</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IMEAccept</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IMEAceept</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IMEAceept</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IMEConvert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IMEConvert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IMEModeChange</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IMEModeChange</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IMENonConvert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IMENonConvert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Insert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Insert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>J</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">J</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>JunjaMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">JunjaMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>K</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">K</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>KanaMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">KanaMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>KanjiMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">KanjiMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>L</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">L</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LButton</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LButton</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LControl</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LControl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LMenu</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LMenu</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LShift</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LShift</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LWin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LWin</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LaunchApplication1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LaunchApplication1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LaunchApplication2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LaunchApplication2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LaunchMail</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LaunchMail</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LineFeed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LineFeed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>M</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">M</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MButton</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MButton</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediaNextTrack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediaNextTrack</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediaPlayPause</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediaPlayPause</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediaPreviousTrack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediaPreviousTrack</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediaStop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediaStop</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MenuCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MenuCtrl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Multiply</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Multiply</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>N</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">N</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Next</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Next</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NoName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoName</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumLock</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumLock</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad0</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad3</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad5</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad5</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad6</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad6</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad7</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad7</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NumPad9</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NumPad9</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>O</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem102</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem102</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem3</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem5</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem5</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem6</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem6</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem7</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem7</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Oem8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oem8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemBackslash</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemBackslash</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemClear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemClear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemCloseBrackets</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemCloseBrackets</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemComma</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemComma</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemMinus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemMinus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemOpenBrackets</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemOpenBrackets</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemPeriod</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemPeriod</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemPipe</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemPipe</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemPlus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemPlus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemQuestion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemQuestion</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemQuotes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemQuotes</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemSemicolon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemSemicolon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OemTilde</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OemTilde</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>P</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">P</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pa1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pa1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Packet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Packet</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PageDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PageDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PageUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PageUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pause</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pause</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Play</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Play</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Print</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Print</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PrintScreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrintScreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Prior</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Prior</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Process</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Process</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Q</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Q</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>R</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">R</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RButton</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RButton</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RControl</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RControl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RMenu</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RMenu</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RShift</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RShift</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RWin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RWin</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Return</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Return</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Scroll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Scroll</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Select</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Select</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectMedia</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectMedia</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Separator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Shift</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Shift</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sleep</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sleep</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Space</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Space</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Subtract</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Subtract</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Tab</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tab</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Up</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Up</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>V</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">V</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VolumeDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VolumeDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VolumeMute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VolumeMute</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VolumeUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VolumeUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>W</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">W</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>X</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>XButton1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XButton1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>XButton2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XButton2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Y</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Z</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Z</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Zoom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zoom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9125,23 +9132,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Shift</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Shift</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Control</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Control</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Alt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alt</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CtrlShift</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CtrlShift</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9159,38 +9166,38 @@
 <p>Allows getting keystrokes from keyboard. </p>
 <table class="enumeration">
 <tr>
-<td>previousState</td>
-<td><a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">previousState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_KeyboardState">KeyboardState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>currentState</td>
-<td><a href="#Core_Input_KeyboardState">Core.Input.KeyboardState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">currentState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_KeyboardState">KeyboardState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedRepeat</td>
-<td>[188] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedRepeat</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">188</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedTime</td>
-<td>[188] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedTime</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">188</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedRepeatStartTimeMs</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedRepeatStartTimeMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedRepeatTimeMs</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedRepeatTimeMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canRepeat</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canRepeat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9396,13 +9403,13 @@
 <p>Represents one keyboard state. </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> native</td>
-<td><a href="#Core_Input_KeyboardStateNative">Core.Input.KeyboardStateNative</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_KeyboardStateNative">KeyboardStateNative</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressed</td>
-<td>[188] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">pressed</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">188</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9458,8 +9465,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>nativeState</td>
-<td>[256] Win32.BYTE</td>
+<td class="codetype"></span><span class="SyntaxCode">nativeState</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">256</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BYTE</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9477,23 +9484,23 @@
 <p>Allows reading position and button click information from mouse. </p>
 <table class="enumeration">
 <tr>
-<td>previousState</td>
-<td><a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">previousState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseState">MouseState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>currentState</td>
-<td><a href="#Core_Input_MouseState">Core.Input.MouseState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">currentState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_MouseState">MouseState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dblClk</td>
-<td>[5] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dblClk</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dblClkTimeMs</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">dblClkTimeMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9699,23 +9706,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Middle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Middle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>XButton1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XButton1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>XButton2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XButton2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9733,23 +9740,23 @@
 <p>Represents one mouse state. </p>
 <table class="enumeration">
 <tr>
-<td>pressed</td>
-<td>[5] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">pressed</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedTime</td>
-<td>[5] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedTime</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pressedPos</td>
-<td>[5] Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">pressedPos</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">5</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>position</td>
-<td><a href="#Core_Math_Point">Core.Math.Point</a></td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9861,23 +9868,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Jobs</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Jobs_Job">Job</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>startIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">startIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">endIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9894,23 +9901,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>lambda</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">lambda</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>data</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">data</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>state</td>
-<td><a href="#Core_Jobs_JobState">Core.Jobs.JobState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">state</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Jobs</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Jobs_JobState">JobState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pendingIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pendingIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9927,15 +9934,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>InPending</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InPending</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Done</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Done</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9954,23 +9961,23 @@
 </div>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Core_Jobs_Job">Core.Jobs.Job</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Jobs</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Jobs_Job">Job</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>[..] T</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">[..] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>offset</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">offset</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10101,63 +10108,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Control</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Control</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Punctuation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Punctuation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BinDigit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BinDigit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HexDigit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HexDigit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Digit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Digit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Symbol</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Symbol</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Spacing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Spacing</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Upper</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Upper</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Lower</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lower</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Printable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Printable</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LowerUtf8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LowerUtf8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UpperUtf8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UpperUtf8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Graphical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Graphical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Letter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Letter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10428,18 +10435,18 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>head</td>
-<td>*Core.ListNode'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">head</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>tail</td>
-<td>*Core.ListNode'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">tail</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10635,18 +10642,18 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>prev</td>
-<td>*Core.ListNode'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">prev</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>next</td>
-<td>*Core.ListNode'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">next</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ListNode">ListNode</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>value</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode">value</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10663,33 +10670,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>lock</td>
-<td><a href="#Core_Sync_Mutex">Core.Sync.Mutex</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lock</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Sync</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Sync_Mutex">Mutex</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buf</td>
-<td><a href="#Core_StrConv_StringBuilder">Core.StrConv.StringBuilder</a></td>
+<td class="codetype"></span><span class="SyntaxCode">buf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_StringBuilder">StringBuilder</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dt</td>
-<td><a href="#Core_Time_DateTime">Core.Time.DateTime</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_DateTime">DateTime</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>writers</td>
-<td>Core.Array'(Core.ILogWriter)</td>
+<td class="codetype"></span><span class="SyntaxCode">writers</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Array">Array</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ILogWriter">ILogWriter</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>prefix</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">prefix</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Core_LogFlags">Core.LogFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_LogFlags">LogFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10853,39 +10860,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Prefix</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Prefix</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Date</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Date</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Time</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Time</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ShortFileName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ShortFileName</span><span class="SyntaxCode"></td>
 <td>Exclusive with LongFileName. </td>
 </tr>
 <tr>
-<td>LongFileName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LongFileName</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Line</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Line</span><span class="SyntaxCode"></td>
 <td>Exclusive with FullLoc. </td>
 </tr>
 <tr>
-<td>FullLoc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FullLoc</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10902,8 +10909,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>rad</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">rad</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10979,93 +10986,93 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>Pi</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pi</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>E</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">E</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TwoPi</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TwoPi</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PiBy2</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PiBy2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PiBy3</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PiBy3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PiBy4</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PiBy4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PiBy6</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PiBy6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PiBy8</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PiBy8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ThreePiBy4</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ThreePiBy4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OneByPi</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OneByPi</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TwoByPi</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TwoByPi</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sqrt2</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sqrt2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OneBySqrt2</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OneBySqrt2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Ln2</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ln2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Ln10</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ln10</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Log2E</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Log2E</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Log10E</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Log10E</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Epsilon</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11082,13 +11089,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>lo</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">lo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hi</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">hi</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11179,8 +11186,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>m</td>
-<td>[3,3] f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">,</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11217,8 +11224,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>m</td>
-<td>[4,4] f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">,</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11257,8 +11264,8 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>buf</td>
-<td>[?] T</td>
+<td class="codetype"></span><span class="SyntaxCode">buf</td>
+<td class="codetype"></span><span class="SyntaxCode">[?] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11437,13 +11444,13 @@
 <p>A simple Point with 2 coordinates X and Y. </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>y</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -11713,23 +11720,23 @@
 <p>A simple rectangle with 4 coordinates. </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Left position. </td>
 </tr>
 <tr>
-<td>y</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Top position. </td>
 </tr>
 <tr>
-<td>width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Rectangle width. </td>
 </tr>
 <tr>
-<td>height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Rectangle height. </td>
 </tr>
 </table>
@@ -12377,48 +12384,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>m11</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m11</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m12</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m12</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m21</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m21</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m22</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m22</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m31</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m31</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m32</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>m</td>
-<td>[2,2] f32</td>
+<td class="codetype"></span><span class="SyntaxCode">m</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">,</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tx</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">tx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ty</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">ty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12530,18 +12537,18 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>[?] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">[?] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AllFlags</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AllFlags</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12737,13 +12744,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>y</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13505,18 +13512,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>y</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>z</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">z</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13994,23 +14001,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>y</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>z</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">z</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>w</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">w</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15521,18 +15528,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>q</td>
-<td>[4096] u32</td>
+<td class="codetype"></span><span class="SyntaxCode">q</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4096</span><span class="SyntaxCode">] </span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>c</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">c</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>i</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">i</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>special invalid value (&gt; 4095) to force the seed on first get. </td>
 </tr>
 </table>
@@ -15586,13 +15593,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>w</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">w</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>z</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">z</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15651,13 +15658,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>mt</td>
-<td>[312] u64</td>
+<td class="codetype"></span><span class="SyntaxCode">mt</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">312</span><span class="SyntaxCode">] </span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mti</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">mti</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15718,13 +15725,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>rng</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode">rng</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>seedDone</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">seedDone</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -16649,13 +16656,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>serializer</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode">serializer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Core_Serialization_DecoderFlags">Core.Serialization.DecoderFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_DecoderFlags">DecoderFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17023,11 +17030,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IgnoreStructFieldError</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IgnoreStructFieldError</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17046,13 +17053,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>serializer</td>
-<td>T</td>
+<td class="codetype"></span><span class="SyntaxCode">serializer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>errorIfUnknown</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">errorIfUnknown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>If true, raise an error if a type cannot be saved, and just ignore if false. </td>
 </tr>
 </table>
@@ -17425,103 +17432,103 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>start</td>
-<td>func(*Core.Serialization.IDecoder, const [..] u8) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">start</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>end</td>
-<td>func(*Core.Serialization.IDecoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">end</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>beginField</td>
-<td>func(*Core.Serialization.IDecoder, Swag.TypeValue)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">beginField</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endField</td>
-<td>func(*Core.Serialization.IDecoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">endField</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>beginSection</td>
-<td>func(*Core.Serialization.IDecoder, Core.Serialization.SectionKind) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">beginSection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_SectionKind">SectionKind</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endSection</td>
-<td>func(*Core.Serialization.IDecoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">endSection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>getVersion</td>
-<td>func(*Core.Serialization.IDecoder)->u32</td>
+<td class="codetype"></span><span class="SyntaxCode">getVersion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>read</td>
-<td>func(*Core.Serialization.IDecoder, *void, const *Swag.TypeInfo) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">read</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readBufferU8</td>
-<td>func(*Core.Serialization.IDecoder, u64)->*u8 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readBufferU8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readBool</td>
-<td>func(*Core.Serialization.IDecoder)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readBool</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readS8</td>
-<td>func(*Core.Serialization.IDecoder)->s8 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readS8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readS16</td>
-<td>func(*Core.Serialization.IDecoder)->s16 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readS16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readS32</td>
-<td>func(*Core.Serialization.IDecoder)->s32 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readS32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readS64</td>
-<td>func(*Core.Serialization.IDecoder)->s64 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readS64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readU8</td>
-<td>func(*Core.Serialization.IDecoder)->u8 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readU8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readU16</td>
-<td>func(*Core.Serialization.IDecoder)->u16 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readU16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readU32</td>
-<td>func(*Core.Serialization.IDecoder)->u32 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readU32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readU64</td>
-<td>func(*Core.Serialization.IDecoder)->u64 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readU64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readF32</td>
-<td>func(*Core.Serialization.IDecoder)->f32 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readF32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readF64</td>
-<td>func(*Core.Serialization.IDecoder)->f64 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readF64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17798,98 +17805,98 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>start</td>
-<td>func(*Core.Serialization.IEncoder, *Core.ConcatBuffer) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">start</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>end</td>
-<td>func(*Core.Serialization.IEncoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">end</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>beginField</td>
-<td>func(*Core.Serialization.IEncoder, Swag.TypeValue) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">beginField</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endField</td>
-<td>func(*Core.Serialization.IEncoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">endField</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>beginSection</td>
-<td>func(*Core.Serialization.IEncoder, Core.Serialization.SectionKind) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">beginSection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_SectionKind">SectionKind</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endSection</td>
-<td>func(*Core.Serialization.IEncoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">endSection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>write</td>
-<td>func(*Core.Serialization.IEncoder, const ^void, const *Swag.TypeInfo) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">write</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>writeBufferU8</td>
-<td>func(*Core.Serialization.IEncoder, const ^u8, u64) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">writeBufferU8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>writeBool</td>
-<td>func(*Core.Serialization.IEncoder, bool)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeBool</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeS8</td>
-<td>func(*Core.Serialization.IEncoder, s8)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeS8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeS16</td>
-<td>func(*Core.Serialization.IEncoder, s16)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeS16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeS32</td>
-<td>func(*Core.Serialization.IEncoder, s32)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeS32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeS64</td>
-<td>func(*Core.Serialization.IEncoder, s64)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeS64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeU8</td>
-<td>func(*Core.Serialization.IEncoder, u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeU8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeU16</td>
-<td>func(*Core.Serialization.IEncoder, u16)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeU16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeU32</td>
-<td>func(*Core.Serialization.IEncoder, u32)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeU32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeU64</td>
-<td>func(*Core.Serialization.IEncoder, u64)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeU64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeF32</td>
-<td>func(*Core.Serialization.IEncoder, f32)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeF32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>writeF64</td>
-<td>func(*Core.Serialization.IEncoder, f64)</td>
+<td class="codetype"></span><span class="SyntaxCode">writeF64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -18153,28 +18160,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>read</td>
-<td>func(*Core.Serialization.ISerialize, Core.Serialization.IDecoder)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">read</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_ISerialize">ISerialize</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>write</td>
-<td>func(*Core.Serialization.ISerialize, Core.Serialization.IEncoder)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">write</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_ISerialize">ISerialize</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>readElement</td>
-<td>func(*Core.Serialization.ISerialize, Swag.TypeValue, *void, Core.Serialization.IDecoder)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">readElement</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_ISerialize">ISerialize</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>writeElement</td>
-<td>func(*Core.Serialization.ISerialize, Swag.TypeValue, const *void, Core.Serialization.IEncoder)->bool throw</td>
+<td class="codetype"></span><span class="SyntaxCode">writeElement</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_ISerialize">ISerialize</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>postSerialize</td>
-<td>func(*Core.Serialization.ISerialize, *void, Core.Serialization.IDecoder) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">postSerialize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_ISerialize">ISerialize</a></span><span class="SyntaxCode">, *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18288,23 +18295,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>stream</td>
-<td><a href="#Core_ByteStream">Core.ByteStream</a></td>
+<td class="codetype"></span><span class="SyntaxCode">stream</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ByteStream">ByteStream</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>line</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">line</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>col</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">col</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>propName</td>
-<td><a href="#Core_String">Core.String</a></td>
+<td class="codetype"></span><span class="SyntaxCode">propName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_String">String</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18614,38 +18621,38 @@
 <p>Binary serializer with forward/backward compatibility. </p>
 <table class="enumeration">
 <tr>
-<td>stream</td>
-<td><a href="#Core_ByteStream">Core.ByteStream</a></td>
+<td class="codetype"></span><span class="SyntaxCode">stream</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ByteStream">ByteStream</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>options</td>
-<td><a href="#Core_Serialization_Read_TagBinOptions">Core.Serialization.Read.TagBinOptions</a></td>
+<td class="codetype"></span><span class="SyntaxCode">options</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Read</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>freeSections</td>
-<td>Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
+<td class="codetype"></span><span class="SyntaxCode">freeSections</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Read</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>sections</td>
-<td>Core.ArrayPtr'(Core.Serialization.Read.TagBinSection)</td>
+<td class="codetype"></span><span class="SyntaxCode">sections</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Read</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>convertNextNative</td>
-<td>const *Swag.TypeInfoNative</td>
+<td class="codetype"></span><span class="SyntaxCode">convertNextNative</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoNative</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>convertValToArray</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">convertValToArray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>convertArrayToVal</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">convertArrayToVal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18958,8 +18965,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>tryForward</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">tryForward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Accept to try to read a newest version, otherwise error. </td>
 </tr>
 </table>
@@ -18976,28 +18983,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>mapSeek</td>
-<td>Core.HashTable'(u32, u64)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTable">HashTable</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>afterFatSeek</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">afterFatSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>version</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">version</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>kind</td>
-<td><a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_SectionKind">SectionKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>skipFat</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">skipFat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19014,15 +19021,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Raw</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Unordered</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unordered</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Ordered</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ordered</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19039,18 +19046,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>encode</td>
-<td><a href="#Core_Serialization_IEncoder">Core.Serialization.IEncoder</a></td>
+<td class="codetype"></span><span class="SyntaxCode">encode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IEncoder">IEncoder</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>decode</td>
-<td><a href="#Core_Serialization_IDecoder">Core.Serialization.IDecoder</a></td>
+<td class="codetype"></span><span class="SyntaxCode">decode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_IDecoder">IDecoder</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isWrite</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isWrite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19236,33 +19243,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>options</td>
-<td><a href="#Core_Serialization_Write_JSonOptions">Core.Serialization.Write.JSonOptions</a></td>
+<td class="codetype"></span><span class="SyntaxCode">options</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Write</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>output</td>
-<td>*Core.ConcatBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode">output</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>indent</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">indent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fmtInt</td>
-<td><a href="#Core_StrConv_ConvertFormatInt">Core.StrConv.ConvertFormatInt</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fmtInt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fmtFloat</td>
-<td><a href="#Core_StrConv_ConvertFormatFloat">Core.StrConv.ConvertFormatFloat</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fmtFloat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastSeekValue</td>
-<td><a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lastSeekValue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19537,13 +19544,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>indentLevel</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">indentLevel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>saveBlanks</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">saveBlanks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19560,18 +19567,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>output</td>
-<td>*Core.ConcatBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode">output</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>freeSections</td>
-<td>Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
+<td class="codetype"></span><span class="SyntaxCode">freeSections</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Write</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>sections</td>
-<td>Core.ArrayPtr'(Core.Serialization.Write.TagBinSection)</td>
+<td class="codetype"></span><span class="SyntaxCode">sections</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ArrayPtr">ArrayPtr</a></span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Write</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -19829,18 +19836,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>startSeek</td>
-<td><a href="#Core_ConcatBufferSeek">Core.ConcatBufferSeek</a></td>
+<td class="codetype"></span><span class="SyntaxCode">startSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mapSeek</td>
-<td>Core.HashTable'(u32, Core.ConcatBufferSeek)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_HashTable">HashTable</a></span><span class="SyntaxCode">'(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>kind</td>
-<td><a href="#Core_Serialization_SectionKind">Core.Serialization.SectionKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Serialization_SectionKind">SectionKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -19857,19 +19864,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Root</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Root</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Fat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Fat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sequence</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sequence</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Version</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Version</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20110,13 +20117,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>buffer</td>
-<td>[?] T</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">[?] </span><span class="SyntaxConstant">T</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20831,8 +20838,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>value</td>
-<td>any</td>
+<td class="codetype"></span><span class="SyntaxCode">value</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">any</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20850,23 +20857,23 @@
 <p>Format structure to convert a float to a string. </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> val</td>
-<td><a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> val</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>precision</td>
-<td>s8</td>
+<td class="codetype"></span><span class="SyntaxCode">precision</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td>-1 is for 'most possible precision'. </td>
 </tr>
 <tr>
-<td>fmt</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">fmt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceSign</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceSign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20918,28 +20925,28 @@
 <p>Format structure to convert an integer to a string. </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> val</td>
-<td><a href="#Core_StrConv_ConvertFormat">Core.StrConv.ConvertFormat</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> val</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>base</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>padding</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceSign</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceSign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -21003,8 +21010,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>convert</td>
-<td>func(*Core.StrConv.IConvert, *Core.ConcatBuffer, const *Core.StrConv.ConvertFormat, string)</td>
+<td class="codetype"></span><span class="SyntaxCode">convert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_IConvert">IConvert</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -21021,8 +21028,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>poke</td>
-<td>func(*Core.StrConv.IPokeValue, string)->string throw</td>
+<td class="codetype"></span><span class="SyntaxCode">poke</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StrConv</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_StrConv_IPokeValue">IPokeValue</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">string</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -21039,8 +21046,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>buffer</td>
-<td><a href="#Core_ConcatBuffer">Core.ConcatBuffer</a></td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -21763,28 +21770,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>buffer</td>
-<td>^u8</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>length</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">length</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocator</td>
-<td><a href="swag.runtime.html#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IAllocator</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>padding</td>
-<td>[16] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">padding</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">16</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -22580,8 +22587,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>const ^void</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -22727,8 +22734,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>v</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">v</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -22802,8 +22809,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>v</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">v</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23008,38 +23015,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>userLambda</td>
-<td>closure(Core.Threading.Thread)</td>
+<td class="codetype"></span><span class="SyntaxCode">userLambda</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Threading</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Threading_Thread">Thread</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>context</td>
-<td><a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
+<td class="codetype"></span><span class="SyntaxCode">context</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userParam</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userParam</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>priority</td>
-<td><a href="#Core_Threading_ThreadPriority">Core.Threading.ThreadPriority</a></td>
+<td class="codetype"></span><span class="SyntaxCode">priority</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Threading</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>handle</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>requestEnd</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">requestEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23221,23 +23228,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Lowest</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lowest</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BelowNormal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BelowNormal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AboveNormal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AboveNormal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Highest</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Highest</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23269,38 +23276,38 @@
 <p>Represents an instant in time, typically expressed as a date and time of day. </p>
 <table class="enumeration">
 <tr>
-<td>year</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">year</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>month</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">month</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>day</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">day</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hour</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">hour</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minute</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">minute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>second</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">second</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>millisecond</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">millisecond</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23514,19 +23521,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>DateTime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DateTime</span><span class="SyntaxCode"></td>
 <td>DDDD MMMM D YYYY HH:MM:SS. </td>
 </tr>
 <tr>
-<td>DateTimeMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DateTimeMs</span><span class="SyntaxCode"></td>
 <td>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </td>
 </tr>
 <tr>
-<td>Iso</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Iso</span><span class="SyntaxCode"></td>
 <td>YYYY-MM-DD HH:MM:SS. </td>
 </tr>
 <tr>
-<td>IsoMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IsoMs</span><span class="SyntaxCode"></td>
 <td>YYYY-MM-DD HH:MM:SS.ZZZ. </td>
 </tr>
 </table>
@@ -23543,31 +23550,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Sunday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sunday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Monday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Monday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Tuesday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tuesday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Wednesday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Wednesday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Thursday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Thursday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Friday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Friday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Saturday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Saturday</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23585,8 +23592,8 @@
 <p>Represents a delay, expressed in seconds. </p>
 <table class="enumeration">
 <tr>
-<td>timeInSeconds</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">timeInSeconds</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>The duration in seconds. </td>
 </tr>
 </table>
@@ -23679,33 +23686,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>dtMin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">dtMin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dtMax</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">dtMax</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dt</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">dt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Current delta time, in seconds. </td>
 </tr>
 <tr>
-<td>frameCount</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Frame counter. </td>
 </tr>
 <tr>
-<td>prevTick</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">prevTick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paused</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">paused</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23780,18 +23787,18 @@
 <p>Provides a set of methods and properties that you can use to accurately measure elapsed time. </p>
 <table class="enumeration">
 <tr>
-<td>isStarted</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isStarted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>startTimeStamp</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">startTimeStamp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>elapsedTicks</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">elapsedTicks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -23975,8 +23982,8 @@
 <p>Represents an interval of time, stored as a 64 bits integer. </p>
 <table class="enumeration">
 <tr>
-<td>ticks</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">ticks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -24299,18 +24306,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>userLambda</td>
-<td>func(Core.Time.Timer)</td>
+<td class="codetype"></span><span class="SyntaxCode">userLambda</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Timer">Timer</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>handle</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>context</td>
-<td><a href="swag.runtime.html#Swag_Context">Swag.Context</a></td>
+<td class="codetype"></span><span class="SyntaxCode">context</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Context</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -24639,8 +24646,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> uuid</td>
-<td>{val8: [16] u8, val64: [2] u64}</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> uuid</td>
+<td class="codetype"></span><span class="SyntaxCode">{val8: [</span><span class="SyntaxNumber">16</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, val64: [</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxType">u64</span><span class="SyntaxCode">}</td>
 <td></td>
 </tr>
 </table>
@@ -25110,19 +25117,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Latin1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Latin1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Latin1NoCase</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Latin1NoCase</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Unicode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unicode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UnicodeNoCase</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UnicodeNoCase</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>

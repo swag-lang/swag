@@ -91,6 +91,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -1042,28 +1049,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Gui_Clipboard_Format">Format</td>
-<td>u64</td>
+<td id="Gui_Clipboard_Format" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Format</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_FrameCallback">FrameCallback</td>
-<td>closure(*Gui.Application)</td>
+<td id="Gui_FrameCallback" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FrameCallback</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_HookEvent">HookEvent</td>
-<td>closure(*Gui.Wnd, *Gui.Event)->bool</td>
+<td id="Gui_HookEvent" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HookEvent</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_RichEditStyleRef">RichEditStyleRef</td>
-<td>u8</td>
+<td id="Gui_RichEditStyleRef" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RichEditStyleRef</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_WndId">WndId</td>
-<td>string</td>
+<td id="Gui_WndId" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WndId</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1080,13 +1087,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>wnd</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1103,23 +1110,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>X</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Y</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Width</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Height</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1136,183 +1143,183 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> native</td>
-<td><a href="#Gui_ApplicationNative">Gui.ApplicationNative</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ApplicationNative">ApplicationNative</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigFrame</td>
-<td>Gui.SigArray'(closure(*Gui.Application))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>appIcon</td>
-<td>Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">appIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>renderer</td>
-<td>Pixel.RenderOgl</td>
+<td class="codetype"></span><span class="SyntaxCode">renderer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderOgl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>theme</td>
-<td>*Gui.Theme</td>
+<td class="codetype"></span><span class="SyntaxCode">theme</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Theme">Theme</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>style</td>
-<td><a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">style</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>keyb</td>
-<td>Core.Input.Keyboard</td>
+<td class="codetype"></span><span class="SyntaxCode">keyb</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Keyboard</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mouse</td>
-<td>Core.Input.Mouse</td>
+<td class="codetype"></span><span class="SyntaxCode">mouse</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Mouse</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mainSurface</td>
-<td>*Gui.Surface</td>
+<td class="codetype"></span><span class="SyntaxCode">mainSurface</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>postedEvents</td>
-<td>Core.Array'(*Gui.Event)</td>
+<td class="codetype"></span><span class="SyntaxCode">postedEvents</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>surfaces</td>
-<td>Core.Array'(*Gui.Surface)</td>
+<td class="codetype"></span><span class="SyntaxCode">surfaces</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>postDestroy</td>
-<td>Core.Array'(*Gui.Wnd)</td>
+<td class="codetype"></span><span class="SyntaxCode">postDestroy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>hookEvents</td>
-<td>Core.Array'(*Gui.Wnd)</td>
+<td class="codetype"></span><span class="SyntaxCode">hookEvents</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>cursorStack</td>
-<td>Core.Array'(Gui.Cursor)</td>
+<td class="codetype"></span><span class="SyntaxCode">cursorStack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Cursor">Cursor</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>endModalExit</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">endModalExit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>inModalLoop</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">inModalLoop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>quitCode</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">quitCode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>timing</td>
-<td>Core.Time.FrameTiming</td>
+<td class="codetype"></span><span class="SyntaxCode">timing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FrameTiming</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mustQuit</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">mustQuit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endModal</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">endModal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isActivated</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isActivated</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fadeDisabledSurface</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fadeDisabledSurface</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mutexPostedEvents</td>
-<td>Core.Sync.Mutex</td>
+<td class="codetype"></span><span class="SyntaxCode">mutexPostedEvents</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Sync</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Mutex</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>duringTimerEvents</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">duringTimerEvents</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>timers</td>
-<td>Core.Array'(*Gui.Timer)</td>
+<td class="codetype"></span><span class="SyntaxCode">timers</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>timersToAdd</td>
-<td>Core.Array'(*Gui.Timer)</td>
+<td class="codetype"></span><span class="SyntaxCode">timersToAdd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>timersToDelete</td>
-<td>Core.Array'(*Gui.Timer)</td>
+<td class="codetype"></span><span class="SyntaxCode">timersToDelete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>frameEvents</td>
-<td>Core.Array'(*Gui.Wnd)</td>
+<td class="codetype"></span><span class="SyntaxCode">frameEvents</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>modalSurfaces</td>
-<td>Core.Array'(*Gui.Surface)</td>
+<td class="codetype"></span><span class="SyntaxCode">modalSurfaces</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>toDelete</td>
-<td>Core.Array'({ptr: *void, type: const *Swag.TypeInfo})</td>
+<td class="codetype"></span><span class="SyntaxCode">toDelete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 <tr>
-<td>mouseEnterWnd</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">mouseEnterWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mouseCaptureWnd</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">mouseCaptureWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>keybFocusWnd</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">keybFocusWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxRunFrame</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxRunFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>configPath</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">configPath</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotKeys</td>
-<td>Core.Array'(Gui.KeyShortcut)</td>
+<td class="codetype"></span><span class="SyntaxCode">hotKeys</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyShortcut">KeyShortcut</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -1953,33 +1960,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>fileSmallIconsImage</td>
-<td>Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">fileSmallIconsImage</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fileSmallIconsImageList</td>
-<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fileSmallIconsImageList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mapFileSmallIcons</td>
-<td>Core.HashTable'(string, s32)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapFileSmallIcons</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HashTable</span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>fileBigIconsImage</td>
-<td>Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">fileBigIconsImage</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fileBigIconsImageList</td>
-<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fileBigIconsImageList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mapFileBigIcons</td>
-<td>Core.HashTable'(string, s32)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapFileBigIcons</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HashTable</span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -1996,23 +2003,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Window</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Window</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Dialog</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Dialog</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DialogBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DialogBar</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>View</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">View</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2029,33 +2036,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>curVec4</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">curVec4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>startVec4</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">startVec4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>destVec4</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">destVec4</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>factor</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">factor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>start</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">start</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>speed</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">speed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2110,43 +2117,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigPressed</td>
-<td>Gui.SigArray'(closure(*Gui.Button))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigRightPressed</td>
-<td>Gui.SigArray'(closure(*Gui.Button))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigRightPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>isPressed</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPressing</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHot</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isIn</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isIn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2163,15 +2170,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>UnChecked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UnChecked</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Checked</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Undefined</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Undefined</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2188,23 +2195,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> button</td>
-<td><a href="#Gui_Button">Gui.Button</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checked</td>
-<td><a href="#Gui_ButtonCheckState">Gui.ButtonCheckState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ButtonCheckState">ButtonCheckState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checkButtonFlags</td>
-<td><a href="#Gui_CheckButtonFlags">Gui.CheckButtonFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">checkButtonFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CheckButtonFlags">CheckButtonFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.CheckButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CheckButton">CheckButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 </table>
@@ -2267,15 +2274,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ThreeState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ThreeState</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightAlign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightAlign</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2432,83 +2439,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hue</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">hue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sat</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">sat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lum</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">lum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>a</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">a</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>r</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">r</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>g</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">g</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>b</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">b</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mode</td>
-<td><a href="#Gui_ColorPickerMode">Gui.ColorPickerMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">mode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ColorPicker))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPicker">ColorPicker</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>dirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isMoving</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>img</td>
-<td>Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">img</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>texture</td>
-<td>Pixel.Texture</td>
+<td class="codetype"></span><span class="SyntaxCode">texture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>xCur</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">xCur</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>yCur</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">yCur</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2669,108 +2676,108 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ColorPickerCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>oldColor</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">oldColor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>color</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">color</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>oldColorDone</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">oldColorDone</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mode</td>
-<td><a href="#Gui_ColorPickerViewMode">Gui.ColorPickerViewMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">mode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>staticRes</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">staticRes</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pickBox</td>
-<td>*Gui.ColorPicker</td>
+<td class="codetype"></span><span class="SyntaxCode">pickBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPicker">ColorPicker</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pickBar</td>
-<td>*Gui.ColorPicker</td>
+<td class="codetype"></span><span class="SyntaxCode">pickBar</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPicker">ColorPicker</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pickAlpha</td>
-<td>*Gui.ColorPicker</td>
+<td class="codetype"></span><span class="SyntaxCode">pickAlpha</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ColorPicker">ColorPicker</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editR</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editR</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editG</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editG</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editB</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editB</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editA</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editA</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editH</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editH</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioH</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioH</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioL</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioL</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioS</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioS</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioR</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioR</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioG</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioG</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioB</td>
-<td>*Gui.RadioButton</td>
+<td class="codetype"></span><span class="SyntaxCode">radioB</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2874,83 +2881,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>SaturationLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationLightness</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueSaturation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueSaturation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueLightness</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GreenBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightnessVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightnessVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightnessHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightnessHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaturationVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaturationHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AlphaHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AlphaHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AlphaVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AlphaVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GreenHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GreenVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BlueHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BlueHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BlueVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BlueVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2967,27 +2974,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>SaturationLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationLightness</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueSaturation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueSaturation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueLightness</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GreenBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3004,68 +3011,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>kind</td>
-<td><a href="#Gui_ComboBoxKind">Gui.ComboBoxKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minWidthPopup</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">minWidthPopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxHeightPopup</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxHeightPopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ComboBox, u32))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBox">ComboBox</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>editBox</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHot</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popup</td>
-<td>*Gui.PopupListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">popup</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectedIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">selectedIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxIconSize</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxIconSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBorder</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3231,13 +3238,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Item">Gui.Item</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Item">Item</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isSeparator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isSeparator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3254,15 +3261,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Select</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Select</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Edit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Edit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CheckBox</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CheckBox</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3279,28 +3286,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">labelSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>combo</td>
-<td>*Gui.ComboBox</td>
+<td class="codetype"></span><span class="SyntaxCode">combo</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBox">ComboBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3350,18 +3357,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>source</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">source</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3378,63 +3385,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>source</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">source</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>name</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>longName</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">longName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shortcut</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">shortcut</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>setFlags</td>
-<td>Gui.CommandStateEvent.SetFlags</td>
+<td class="codetype"></span><span class="SyntaxCode">setFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SetFlags</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>disabled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checked</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hidden</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hidden</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3451,8 +3458,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3469,8 +3476,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> native</td>
-<td><a href="#Gui_NativeCursor">Gui.NativeCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NativeCursor">NativeCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3559,51 +3566,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Arrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Arrow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SizeWE</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SizeWE</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SizeNS</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SizeNS</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SizeNWSE</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SizeNWSE</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SizeNESW</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SizeNESW</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SizeAll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SizeAll</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cross</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cross</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Help</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Help</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hand</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hand</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IBeam</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IBeam</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>No</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">No</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Wait</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Wait</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3620,8 +3627,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3638,23 +3645,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wndBottom</td>
-<td>*Gui.StackLayoutCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">wndBottom</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buttons</td>
-<td>Core.Array'(*Gui.PushButton)</td>
+<td class="codetype"></span><span class="SyntaxCode">buttons</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PushButton">PushButton</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>sigPressedButton</td>
-<td>closure(*Gui.Dialog, Gui.WndId)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">sigPressedButton</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3789,27 +3796,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Center</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Center</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3839,138 +3846,138 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>text</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>form</td>
-<td><a href="#Gui_EditBoxForm">Gui.EditBoxForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">form</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxForm">EditBoxForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBoxFlags</td>
-<td><a href="#Gui_EditBoxFlags">Gui.EditBoxFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">editBoxFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>inputMode</td>
-<td><a href="#Gui_EditBoxInputMode">Gui.EditBoxInputMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">inputMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxInputMode">EditBoxInputMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxLength</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxLength</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rightMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">rightMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigLoseFocus</td>
-<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigLoseFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigEnterPressed</td>
-<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigEnterPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigEscapePressed</td>
-<td>Gui.SigArray'(closure(*Gui.EditBox))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigEscapePressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigCheckContent</td>
-<td>closure(*Gui.EditBox)->Gui.EditBoxCheckResult</td>
+<td class="codetype"></span><span class="SyntaxCode">sigCheckContent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBoxCheckResult">EditBoxCheckResult</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td><b>using</b> minMax</td>
-<td>{minMaxS64: {min: s64, max: s64}, minMaxU64: {min: u64, max: u64}, minMaxF64: {min: f64, max: f64}}</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> minMax</td>
+<td class="codetype"></span><span class="SyntaxCode">{minMaxS64: {min: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">}, minMaxU64: {min: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">}, minMaxF64: {min: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, max: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">}}</td>
 <td></td>
 </tr>
 <tr>
-<td>aniBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBorder</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isInvalid</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isInvalid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHot</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isDragging</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isDragging</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selBeg</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">selBeg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selEnd</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">selEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>timerCaret</td>
-<td>*Gui.Timer</td>
+<td class="codetype"></span><span class="SyntaxCode">timerCaret</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>visibleCaret</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">visibleCaret</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>posSelBeg</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">posSelBeg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>posSelEnd</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">posSelEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollPosX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollPosX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>countRunes</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">countRunes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4270,19 +4277,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Incomplete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Incomplete</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Valid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Valid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>InvalidDismiss</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidDismiss</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>InvalidShow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidShow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4299,19 +4306,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AutoLoseFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AutoLoseFocus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReadOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReadOnly</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightAlign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightAlign</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4328,19 +4335,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4357,19 +4364,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>String</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4386,28 +4393,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">labelSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">editSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">edit</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4458,23 +4465,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> dialog</td>
-<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> dialog</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">edit</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit</td>
-<td>*Gui.RichEditCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4584,13 +4591,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4628,11 +4635,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Critical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Critical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Information</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Information</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4649,23 +4656,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>kind</td>
-<td><a href="#Gui_EventKind">Gui.EventKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EventKind">EventKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>target</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">target</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>accepted</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">accepted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4707,143 +4714,143 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Create</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Create</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Destroy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Destroy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Resize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Resize</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Move</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Move</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PrePaint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrePaint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Paint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Paint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PostPaint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PostPaint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>KeyPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">KeyPressed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>KeyReleased</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">KeyReleased</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Rune</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseAccept</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseAccept</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MousePressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MousePressed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseReleased</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseReleased</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseDoubleClick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseDoubleClick</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseMove</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseMove</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseEnter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseEnter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseLeave</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseLeave</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MouseWheel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MouseWheel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Quit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Quit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SysCommand</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SysCommand</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetTheme</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetTheme</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Timer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Timer</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetFocus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>KillFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">KillFocus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Command</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Command</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ComputeCommandState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ComputeCommandState</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ApplyCommandState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ApplyCommandState</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Frame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Frame</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SerializeState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SerializeState</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Show</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Show</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hide</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hide</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Invalidate</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Invalidate</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SysUser</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SysUser</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Notify</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Notify</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4860,58 +4867,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> dialog</td>
-<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> dialog</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>treeCtrl</td>
-<td>*Gui.ListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">treeCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>treePathStr</td>
-<td>Core.Array'(Core.String)</td>
+<td class="codetype"></span><span class="SyntaxCode">treePathStr</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>listCtrl</td>
-<td>*Gui.ListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">listCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboPath</td>
-<td>*Gui.ComboBox</td>
+<td class="codetype"></span><span class="SyntaxCode">comboPath</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBox">ComboBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboPathStr</td>
-<td>Core.Array'(Core.String)</td>
+<td class="codetype"></span><span class="SyntaxCode">comboPathStr</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>editFile</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editFile</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboType</td>
-<td>*Gui.ComboBox</td>
+<td class="codetype"></span><span class="SyntaxCode">comboType</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBox">ComboBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dlgOptions</td>
-<td><a href="#Gui_FileDlgOptions">Gui.FileDlgOptions</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dlgOptions</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curFolder</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">curFolder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curList</td>
-<td>Core.Array'(Core.File.FileInfo)</td>
+<td class="codetype"></span><span class="SyntaxCode">curList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">File</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FileInfo</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -4998,19 +5005,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>CreateFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CreateFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectOneFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectOneFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectMultiFiles</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectMultiFiles</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectFolder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectFolder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5027,48 +5034,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>title</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">title</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnOkName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">btnOkName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>openFolder</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">openFolder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">editName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>drivePane</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">drivePane</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mode</td>
-<td><a href="#Gui_FileDlgMode">Gui.FileDlgMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">mode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FileDlgMode">FileDlgMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>filters</td>
-<td>Core.Array'({name: string, extensions: string})</td>
+<td class="codetype"></span><span class="SyntaxCode">filters</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, extensions: </span><span class="SyntaxType">string</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 <tr>
-<td>shortcuts</td>
-<td>Core.Array'({type: Core.Env.SpecialDirectory, name: string})</td>
+<td class="codetype"></span><span class="SyntaxCode">shortcuts</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({type: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Env</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SpecialDirectory</span><span class="SyntaxCode">, name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 <tr>
-<td>state</td>
-<td>*Gui.FileDlgState</td>
+<td class="codetype"></span><span class="SyntaxCode">state</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FileDlgState">FileDlgState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5085,13 +5092,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>position</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curFolder</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">curFolder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5108,13 +5115,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>other</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">other</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5131,11 +5138,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MousePressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MousePressed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5152,13 +5159,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstFrame</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">firstFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5175,38 +5182,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>view</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">view</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameForm</td>
-<td><a href="#Gui_FrameWndForm">Gui.FrameWndForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameForm</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndForm">FrameWndForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameFlags</td>
-<td><a href="#Gui_FrameWndFlags">Gui.FrameWndFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>anchor</td>
-<td><a href="#Gui_FrameWndAnchor">Gui.FrameWndAnchor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">anchor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWndAnchor">FrameWndAnchor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>anchorPos</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">anchorPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>usedColorBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">usedColorBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5348,23 +5355,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5381,19 +5388,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Borders</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Borders</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FocusBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FocusBorder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SmallShadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SmallShadow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5410,15 +5417,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5435,48 +5442,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>gridLayoutFlags</td>
-<td><a href="#Gui_GridLayoutCtrlFlags">Gui.GridLayoutCtrlFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">gridLayoutFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_GridLayoutCtrlFlags">GridLayoutCtrlFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>numColumns</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">numColumns</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>numRows</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">numRows</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>spacingHorz</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">spacingHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>spacingVert</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">spacingVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>layout</td>
-<td>Core.Array'(*Gui.Wnd)</td>
+<td class="codetype"></span><span class="SyntaxCode">layout</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>colSizes</td>
-<td>Core.Array'(f32)</td>
+<td class="codetype"></span><span class="SyntaxCode">colSizes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>rowSizes</td>
-<td>Core.Array'(f32)</td>
+<td class="codetype"></span><span class="SyntaxCode">rowSizes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -5600,19 +5607,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AdaptSizeToContent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AdaptSizeToContent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AdaptColWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AdaptColWidth</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AdaptRowHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AdaptRowHeight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5629,68 +5636,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>form</td>
-<td><a href="#Gui_HeaderForm">Gui.HeaderForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">form</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderForm">HeaderForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerFlags</td>
-<td><a href="#Gui_HeaderFlags">Gui.HeaderFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">headerFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_HeaderFlags">HeaderFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>marginItems</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">marginItems</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigLayoutChanged</td>
-<td>closure(*Gui.Header)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigLayoutChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Header">Header</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>sigClicked</td>
-<td>closure(*Gui.Header, u32)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigClicked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Header">Header</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotSeparator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hotSeparator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>moving</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">moving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>clicked</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">clicked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>correctMoving</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">correctMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sortColumn</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">sortColumn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sortMark</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">sortMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5946,11 +5953,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Clickable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clickable</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5967,15 +5974,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5992,48 +5999,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>Pixel.RichString</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichString</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minWidth</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">minWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxWidth</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizeable</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>clickable</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">clickable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconMargin</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">iconMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>column</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">column</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6050,18 +6057,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>accept</td>
-<td>func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">accept</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IActionUI">IActionUI</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ActionContext">ActionContext</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>update</td>
-<td>func(*Gui.IActionUI, Gui.ActionContext, *Gui.CommandStateEvent)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">update</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IActionUI">IActionUI</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ActionContext">ActionContext</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>execute</td>
-<td>func(*Gui.IActionUI, Gui.ActionContext)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">execute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IActionUI">IActionUI</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ActionContext">ActionContext</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6078,18 +6085,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>setup</td>
-<td>func(*Gui.IRichEditLexer, *Gui.RichEditCtrl)</td>
+<td class="codetype"></span><span class="SyntaxCode">setup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>insertRune</td>
-<td>func(*Gui.IRichEditLexer, *Gui.RichEditCtrl, rune)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">insertRune</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">rune</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>compute</td>
-<td>func(*Gui.IRichEditLexer, *Gui.RichEditLine, *Gui.RichEditLine, *Gui.RichEditLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">compute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -6106,113 +6113,113 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>onEvent</td>
-<td>func(*Gui.IWnd, *Gui.Event)</td>
+<td class="codetype"></span><span class="SyntaxCode">onEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onHookEvent</td>
-<td>func(*Gui.IWnd, *Gui.Event)</td>
+<td class="codetype"></span><span class="SyntaxCode">onHookEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onCreateEvent</td>
-<td>func(*Gui.IWnd, *Gui.CreateEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onCreateEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CreateEvent">CreateEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onDestroyEvent</td>
-<td>func(*Gui.IWnd, *Gui.DestroyEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onDestroyEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DestroyEvent">DestroyEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onStateEvent</td>
-<td>func(*Gui.IWnd, *Gui.StateEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onStateEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StateEvent">StateEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onResizeEvent</td>
-<td>func(*Gui.IWnd, *Gui.ResizeEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onResizeEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ResizeEvent">ResizeEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onPrePaintEvent</td>
-<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onPrePaintEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onPaintEvent</td>
-<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onPaintEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onPostPaintEvent</td>
-<td>func(*Gui.IWnd, *Gui.PaintEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onPostPaintEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintEvent">PaintEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onKeyEvent</td>
-<td>func(*Gui.IWnd, *Gui.KeyEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onKeyEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onMouseEvent</td>
-<td>func(*Gui.IWnd, *Gui.MouseEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onMouseEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MouseEvent">MouseEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onSysCommandEvent</td>
-<td>func(*Gui.IWnd, *Gui.SysCommandEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onSysCommandEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onSysUserEvent</td>
-<td>func(*Gui.IWnd, *Gui.SysUserEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onSysUserEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysUserEvent">SysUserEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onSetThemeEvent</td>
-<td>func(*Gui.IWnd, *Gui.SetThemeEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onSetThemeEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onTimerEvent</td>
-<td>func(*Gui.IWnd, *Gui.TimerEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onTimerEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TimerEvent">TimerEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onFocusEvent</td>
-<td>func(*Gui.IWnd, *Gui.FocusEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onFocusEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusEvent">FocusEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onCommandEvent</td>
-<td>func(*Gui.IWnd, *Gui.CommandEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onCommandEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandEvent">CommandEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onComputeStateEvent</td>
-<td>func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onComputeStateEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onApplyStateEvent</td>
-<td>func(*Gui.IWnd, *Gui.CommandStateEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onApplyStateEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onFrameEvent</td>
-<td>func(*Gui.IWnd, *Gui.FrameEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onFrameEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameEvent">FrameEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onSerializeStateEvent</td>
-<td>func(*Gui.IWnd, *Gui.SerializeStateEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onSerializeStateEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onNotifyEvent</td>
-<td>func(*Gui.IWnd, *Gui.NotifyEvent)</td>
+<td class="codetype"></span><span class="SyntaxCode">onNotifyEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -6229,23 +6236,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>imageList</td>
-<td>*Gui.ImageList</td>
+<td class="codetype"></span><span class="SyntaxCode">imageList</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>index</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">index</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizeX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizeY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6374,33 +6381,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconBarFlags</td>
-<td><a href="#Gui_IconBarFlags">Gui.IconBarFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">iconBarFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconBarFlags">IconBarFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">iconSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">iconPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigUpdateState</td>
-<td>Gui.SigArray'(closure(*Gui.CommandStateEvent))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigUpdateState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigCheckChanged</td>
-<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigCheckChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 </table>
@@ -6522,11 +6529,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Vertical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Vertical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6543,68 +6550,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> button</td>
-<td><a href="#Gui_Button">Gui.Button</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>form</td>
-<td><a href="#Gui_IconButtonForm">Gui.IconButtonForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">form</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonForm">IconButtonForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconBtnFlags</td>
-<td><a href="#Gui_IconButtonFlags">Gui.IconButtonFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">iconBtnFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checkedForm</td>
-<td><a href="#Gui_IconButtonCheckedForm">Gui.IconButtonCheckedForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">checkedForm</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonCheckedForm">IconButtonCheckedForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>arrowPos</td>
-<td><a href="#Gui_IconButtonArrowPos">Gui.IconButtonArrowPos</a></td>
+<td class="codetype"></span><span class="SyntaxCode">arrowPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonArrowPos">IconButtonArrowPos</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>textPos</td>
-<td><a href="#Gui_IconButtonTextPos">Gui.IconButtonTextPos</a></td>
+<td class="codetype"></span><span class="SyntaxCode">textPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButtonTextPos">IconButtonTextPos</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigHidePopup</td>
-<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigHidePopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigShowPopup</td>
-<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigShowPopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigCheckChanged</td>
-<td>Gui.SigArray'(closure(*Gui.IconButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigCheckChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigPaintIcon</td>
-<td>closure(*Gui.IconButton, *Gui.PaintContext, Core.Math.Rectangle)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigPaintIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>aniBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isChecked</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isChecked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popup</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">popup</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6755,31 +6762,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6796,27 +6803,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Full</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Full</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6833,23 +6840,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Checkable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Checkable</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CheckableToggle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CheckableToggle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Popup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Popup</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Center</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Center</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6866,15 +6873,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RoundSquare</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RoundSquare</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6891,19 +6898,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -6920,23 +6927,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>texture</td>
-<td>Pixel.Texture</td>
+<td class="codetype"></span><span class="SyntaxCode">texture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>totalFrames</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">totalFrames</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameSizeX</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameSizeX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameSizeY</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameSizeY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7008,18 +7015,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>movie</td>
-<td><a href="#Gui_Movie">Gui.Movie</a></td>
+<td class="codetype"></span><span class="SyntaxCode">movie</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Movie">Movie</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>textureFrame</td>
-<td>Pixel.Texture</td>
+<td class="codetype"></span><span class="SyntaxCode">textureFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7154,28 +7161,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>Pixel.RichString</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichString</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData0</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData0</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData1</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData1</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7192,23 +7199,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modifiers</td>
-<td>Core.Input.KeyModifiers</td>
+<td class="codetype"></span><span class="SyntaxCode">modifiers</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>key</td>
-<td>Core.Input.Key</td>
+<td class="codetype"></span><span class="SyntaxCode">key</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>char</td>
-<td>rune</td>
+<td class="codetype"></span><span class="SyntaxCode">char</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7225,23 +7232,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>mdf</td>
-<td>Core.Input.KeyModifiers</td>
+<td class="codetype"></span><span class="SyntaxCode">mdf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>key</td>
-<td>Core.Input.Key</td>
+<td class="codetype"></span><span class="SyntaxCode">key</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>target</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">target</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7258,53 +7265,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconColor</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">iconColor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelFlags</td>
-<td><a href="#Gui_LabelFlags">Gui.LabelFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">labelFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_LabelFlags">LabelFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>horzAlignmentIcon</td>
-<td>Pixel.StringHorzAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode">horzAlignmentIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StringHorzAlignment</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>vertAlignmentIcon</td>
-<td>Pixel.StringVertAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode">vertAlignmentIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StringVertAlignment</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>horzAlignmentText</td>
-<td>Pixel.StringHorzAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode">horzAlignmentText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StringHorzAlignment</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>vertAlignmentText</td>
-<td>Pixel.StringVertAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode">vertAlignmentText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StringVertAlignment</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paddingText</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">paddingText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paddingIcon</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">paddingIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7390,19 +7397,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WordWrap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WordWrap</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightText</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AutoHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AutoHeight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7419,153 +7426,153 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>horizontalExtent</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">horizontalExtent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lineHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">lineHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>indentWidth</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">indentWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">iconSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconMarginFirstCol</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">iconMarginFirstCol</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listFlags</td>
-<td><a href="#Gui_ListFlags">Gui.ListFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">listFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListFlags">ListFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectionMode</td>
-<td><a href="#Gui_ListSelectionMode">Gui.ListSelectionMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selectionMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListSelectionMode">ListSelectionMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>leftTextMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">leftTextMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigSelChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigSelChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigCheckChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigCheckChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigRightClick</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigRightClick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigLeftDoubleClick</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl, Core.Math.Point))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigLeftDoubleClick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigExpand</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigExpand</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigCollapse</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.ListLine))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigCollapse</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigKeyPressed</td>
-<td>Gui.SigArray'(closure(*Gui.ListCtrl, *Gui.KeyEvent))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigKeyPressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyEvent">KeyEvent</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigVirtualFill</td>
-<td>func(*Gui.ListCtrl, *Gui.ListLine, u32)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigVirtualFill</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>sigSort</td>
-<td>func(*Gui.ListLine, *Gui.ListLine, u32, bool)->s32</td>
+<td class="codetype"></span><span class="SyntaxCode">sigSort</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toFreeLines</td>
-<td>Core.ArrayPtr'(Gui.ListLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">toFreeLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>lines</td>
-<td>Core.Array'(*Gui.ListLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">lines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>idxLineToIdxList</td>
-<td>Core.HashTable'(u32, u32)</td>
+<td class="codetype"></span><span class="SyntaxCode">idxLineToIdxList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HashTable</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>selModel</td>
-<td><a href="#Gui_SelModel">Gui.SelModel</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selModel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SelModel">SelModel</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checkModel</td>
-<td><a href="#Gui_SelModel">Gui.SelModel</a></td>
+<td class="codetype"></span><span class="SyntaxCode">checkModel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SelModel">SelModel</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>focusIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">focusIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollWnd</td>
-<td>*Gui.ScrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listView</td>
-<td>*Gui.ListView</td>
+<td class="codetype"></span><span class="SyntaxCode">listView</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListView">ListView</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header</td>
-<td>*Gui.Header</td>
+<td class="codetype"></span><span class="SyntaxCode">header</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Header">Header</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>virtualCount</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">virtualCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isVirtual</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isVirtual</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8119,35 +8126,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HideSelection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HideSelection</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AlternateLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AlternateLines</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorzLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorzLines</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VertLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VertLines</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ForceMarginExpandMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ForceMarginExpandMark</span><span class="SyntaxCode"></td>
 <td>Force one margin even if no expand mark. </td>
 </tr>
 <tr>
-<td>NoMouseEmptySel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoMouseEmptySel</span><span class="SyntaxCode"></td>
 <td>Click does not clear selection if not on an item. </td>
 </tr>
 <tr>
-<td>HotTrack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HotTrack</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8164,28 +8171,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>sortKey</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">sortKey</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorFg</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorFg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>column</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">column</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>horzAlign</td>
-<td>Pixel.StringHorzAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode">horzAlign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">StringHorzAlignment</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8202,83 +8209,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>colorBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorFg</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorFg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData0</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData0</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData1</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData1</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData2</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData2</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData3</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData3</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>leftTextMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">leftTextMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceExpandMark</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceExpandMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canCheck</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canCheck</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>separator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconMargin</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">iconMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lines</td>
-<td>Core.ArrayPtr'(Gui.ListLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">lines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>parent</td>
-<td>*Gui.ListLine</td>
+<td class="codetype"></span><span class="SyntaxCode">parent</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListLine">ListLine</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>index</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">index</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>level</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">level</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>expanded</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">expanded</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8368,15 +8375,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Single</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Single</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Multi</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Multi</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8393,18 +8400,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>list</td>
-<td>*Gui.ListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">list</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>discardMouseRelease</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">discardMouseRelease</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8473,78 +8480,78 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>onValidateResult</td>
-<td>func(*Gui.MenuCtrl, Gui.WndId)</td>
+<td class="codetype"></span><span class="SyntaxCode">onValidateResult</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndId">WndId</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>onComputeItem</td>
-<td>func(*Gui.MenuCtrl, *Gui.PopupMenuItem)</td>
+<td class="codetype"></span><span class="SyntaxCode">onComputeItem</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupMenuItem">PopupMenuItem</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>menuCtrlFlags</td>
-<td><a href="#Gui_MenuCtrlFlags">Gui.MenuCtrlFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuCtrlFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrlFlags">MenuCtrlFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paddingSel</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">paddingSel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectedIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">selectedIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bar</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">bar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endModal</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">endModal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endModalResult</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">endModalResult</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ownerMenu</td>
-<td>*Gui.MenuCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">ownerMenu</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>subVisible</td>
-<td>*Gui.MenuCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">subVisible</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>timer</td>
-<td>*Gui.Timer</td>
+<td class="codetype"></span><span class="SyntaxCode">timer</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirtyLayout</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirtyLayout</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paintByFrame</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">paintByFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8757,11 +8764,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NoKeyShortcuts</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoKeyShortcuts</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8778,18 +8785,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> dialog</td>
-<td><a href="#Gui_Dialog">Gui.Dialog</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> dialog</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Dialog">Dialog</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelIcon</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">labelIcon</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8989,28 +8996,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>button</td>
-<td>Core.Input.MouseButton</td>
+<td class="codetype"></span><span class="SyntaxCode">button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">MouseButton</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>surfacePos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">surfacePos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>move</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">move</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modifiers</td>
-<td>Core.Input.KeyModifiers</td>
+<td class="codetype"></span><span class="SyntaxCode">modifiers</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9027,13 +9034,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>oldPos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">oldPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9050,78 +9057,78 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>enableCache</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">enableCache</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mustLoop</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">mustLoop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>inPause</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">inPause</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>playFreq</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">playFreq</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigFrameChanged</td>
-<td>Gui.SigArray'(closure(*Gui.Movie))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigFrameChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Movie">Movie</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>numFrames</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">numFrames</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameIndex</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frame</td>
-<td>Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">frame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>source</td>
-<td><a href="#Gui_MovieSource">Gui.MovieSource</a></td>
+<td class="codetype"></span><span class="SyntaxCode">source</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MovieSource">MovieSource</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>imgList</td>
-<td><a href="#Gui_ImageList">Gui.ImageList</a></td>
+<td class="codetype"></span><span class="SyntaxCode">imgList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>gif</td>
-<td>Pixel.Gif.Decoder</td>
+<td class="codetype"></span><span class="SyntaxCode">gif</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Gif</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Decoder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bytes</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">bytes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>cacheFrames</td>
-<td>Core.Array'(Pixel.Image)</td>
+<td class="codetype"></span><span class="SyntaxCode">cacheFrames</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Image</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>currentTime</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">currentTime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirtyFrame</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirtyFrame</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9255,15 +9262,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SpriteSheet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SpriteSheet</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gif</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gif</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9280,8 +9287,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>cursor</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">cursor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9298,13 +9305,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>hWnd</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">hWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastDeadChar</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">lastDeadChar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9321,18 +9328,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ntfyKind</td>
-<td>Gui.NotifyEvent.Kind</td>
+<td class="codetype"></span><span class="SyntaxCode">ntfyKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NotifyEvent">NotifyEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>from</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">from</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9349,18 +9356,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>painter</td>
-<td>*Pixel.Painter</td>
+<td class="codetype"></span><span class="SyntaxCode">painter</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>renderer</td>
-<td>*Pixel.RenderOgl</td>
+<td class="codetype"></span><span class="SyntaxCode">renderer</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderOgl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isDisabled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9377,13 +9384,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bc</td>
-<td>*Gui.PaintContext</td>
+<td class="codetype"></span><span class="SyntaxCode">bc</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PaintContext">PaintContext</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9457,43 +9464,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectedColor</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">selectedColor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pal</td>
-<td>Core.Array'(Pixel.Color)</td>
+<td class="codetype"></span><span class="SyntaxCode">pal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>palPos</td>
-<td>Core.Array'(Core.Math.Rectangle)</td>
+<td class="codetype"></span><span class="SyntaxCode">palPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>boxSize</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">boxSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>boxMargin</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">boxMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.PalettePicker))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PalettePicker">PalettePicker</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9628,58 +9635,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>heightItem</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">heightItem</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>heightSeparator</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">heightSeparator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minWidthPopup</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">minWidthPopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxHeightPopup</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxHeightPopup</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>simFitX</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">simFitX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>simFitY</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">simFitY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigSelected</td>
-<td>closure(*Gui.PopupListCtrl, u32)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>selectedIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">selectedIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollWnd</td>
-<td>*Gui.ScrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxIconSize</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxIconSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9771,28 +9778,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Item">Gui.Item</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Item">Item</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isSeparator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isSeparator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniSel</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniSel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniCheck</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniCheck</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9809,18 +9816,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>list</td>
-<td>*Gui.PopupListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">list</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9876,58 +9883,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>rightName</td>
-<td>Pixel.RichString</td>
+<td class="codetype"></span><span class="SyntaxCode">rightName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichString</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popup</td>
-<td>*Gui.MenuCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">popup</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_MenuCtrl">MenuCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pos</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">pos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>separator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>disabled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checked</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hidden</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hidden</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniSel</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniSel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniRightText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniRightText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9944,15 +9951,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>TopLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TopLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AnchorTopCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AnchorTopCenter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AnchorBottomCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AnchorBottomCenter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9969,18 +9976,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>prgBarFlags</td>
-<td><a href="#Gui_ProgressBarFlags">Gui.ProgressBarFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">prgBarFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ProgressBarFlags">ProgressBarFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progression</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">progression</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10048,11 +10055,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Infinite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Infinite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10069,78 +10076,78 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>nameMarginBefore</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">nameMarginBefore</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>nameHeight</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">nameHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>nameMarginAfter</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">nameMarginAfter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>descMarginAfter</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">descMarginAfter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>enumFlagsMarginBefore</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">enumFlagsMarginBefore</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxSizeCombo</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxSizeCombo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxSizeEditValue</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxSizeEditValue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.PropertyList))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyList">PropertyList</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>font0</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">font0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>font1</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">font1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>font2</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">font2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollWnd</td>
-<td>*Gui.ScrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edView</td>
-<td>*Gui.PropertyListView</td>
+<td class="codetype"></span><span class="SyntaxCode">edView</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyListView">PropertyListView</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>categs</td>
-<td>Core.Array'({item: *Gui.PropertyListItem, lvl: s32})</td>
+<td class="codetype"></span><span class="SyntaxCode">categs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({item: *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyListItem">PropertyListItem</a></span><span class="SyntaxCode">, lvl: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 </table>
@@ -10307,23 +10314,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitter</td>
-<td>*Gui.SplitterCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">splitter</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>list</td>
-<td>*Gui.ListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">list</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ListCtrl">ListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>prop</td>
-<td>*Gui.PropertyList</td>
+<td class="codetype"></span><span class="SyntaxCode">prop</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyList">PropertyList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10379,83 +10386,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>filter</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">filter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>line</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">line</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ptrData</td>
-<td>*u8</td>
+<td class="codetype"></span><span class="SyntaxCode">ptrData</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>typeValue</td>
-<td><a href="swag.runtime.html#Swag_TypeValue">Swag.TypeValue</a></td>
+<td class="codetype"></span><span class="SyntaxCode">typeValue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceShow</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">forceShow</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelDesc</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">labelDesc</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checkBox</td>
-<td>*Gui.CheckButton</td>
+<td class="codetype"></span><span class="SyntaxCode">checkBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_CheckButton">CheckButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox</td>
-<td>*Gui.ComboBox</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ComboBox">ComboBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sliderBox</td>
-<td>*Gui.SliderCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">sliderBox</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SliderCtrl">SliderCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>onResize</td>
-<td>Gui.SigArray'(closure(*Gui.PropertyListItem))</td>
+<td class="codetype"></span><span class="SyntaxCode">onResize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PropertyListItem">PropertyListItem</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>aniFocusBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniFocusBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniFocusBorder</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniFocusBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>extendFocus</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">extendFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10483,28 +10490,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> button</td>
-<td><a href="#Gui_Button">Gui.Button</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>form</td>
-<td><a href="#Gui_PushButtonForm">Gui.PushButtonForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">form</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PushButtonForm">PushButtonForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBorder</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10567,19 +10574,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Strong</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strong</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10596,13 +10603,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>quitCode</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">quitCode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10619,23 +10626,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> button</td>
-<td><a href="#Gui_Button">Gui.Button</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>checked</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radioButtonFlags</td>
-<td><a href="#Gui_RadioButtonFlags">Gui.RadioButtonFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">radioButtonFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButtonFlags">RadioButtonFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.RadioButton))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RadioButton">RadioButton</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 </table>
@@ -10716,11 +10723,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightAlign</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightAlign</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10737,13 +10744,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>oldSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">oldSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10760,183 +10767,183 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorStartLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorStartLine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorEndLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorEndLine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorStartFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorStartFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorEndFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorEndFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorWordLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorWordLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorWordRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorWordRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorPageUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorPageUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CursorPageDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CursorPageDown</span><span class="SyntaxCode"></td>
 <td>CMD_CURSOR_MATCH_PAIR. </td>
 </tr>
 <tr>
-<td>ScrollLineUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ScrollLineUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ScrollLineDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ScrollLineDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeleteLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeleteLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeleteRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeleteRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeleteLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeleteLine</span><span class="SyntaxCode"></td>
 <td>CMD_EDIT_DELETE_LINE. </td>
 </tr>
 <tr>
-<td>EditTabulation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EditTabulation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EditBackTabulation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EditBackTabulation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeleteWordLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeleteWordLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeleteWordRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeleteWordRight</span><span class="SyntaxCode"></td>
 <td>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </td>
 </tr>
 <tr>
-<td>ToggleOverwrite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ToggleOverwrite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ClipboardCopy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ClipboardCopy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ClipboardPaste</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ClipboardPaste</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ClipboardCut</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ClipboardCut</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Undo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Undo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Redo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Redo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRuneLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRuneLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRuneRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRuneRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRuneUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRuneUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRuneDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRuneDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRectLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRectLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRectRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRectRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRectUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRectUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectRectDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectRectDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectStartLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectStartLine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectEndLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectEndLine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectStartFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectStartFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectEndFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectEndFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectAllFile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectAllFile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectWordLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectWordLeft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectWordRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectWordRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectPageUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectPageUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SelectPageDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SelectPageDown</span><span class="SyntaxCode"></td>
 <td>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </td>
 </tr>
 </table>
@@ -10953,208 +10960,208 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdFlags</td>
-<td><a href="#Gui_RichEditFlags">Gui.RichEditFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">richEdFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditFlags">RichEditFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lineSpacing</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">lineSpacing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>overwriteMode</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">overwriteMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabSize</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tabSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>marginLeft</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">marginLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>marginRight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">marginRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lexer</td>
-<td><a href="#Gui_IRichEditLexer">Gui.IRichEditLexer</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lexer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>form</td>
-<td><a href="#Gui_RichEditForm">Gui.RichEditForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">form</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditForm">RichEditForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigIsReadOnly</td>
-<td>Gui.SigArray'(closure(*bool))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigIsReadOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxType">bool</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigModified</td>
-<td>Gui.SigArray'(closure(*Gui.RichEditCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigModified</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>bkColorModel</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">bkColorModel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>styles</td>
-<td>[256] Gui.RichEditRuneStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">styles</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">256</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stylesSelect</td>
-<td>[2] Gui.RichEditRuneStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">stylesSelect</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>cursorPos</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">cursorPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selBeg</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selBeg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lines</td>
-<td>Core.ArrayPtr'(Gui.RichEditLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">lines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>freeLines</td>
-<td>Core.ArrayPtr'(Gui.RichEditLine)</td>
+<td class="codetype"></span><span class="SyntaxCode">freeLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditLine">RichEditLine</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>scrollWnd</td>
-<td>*Gui.ScrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edView</td>
-<td>*Gui.RichEditView</td>
+<td class="codetype"></span><span class="SyntaxCode">edView</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditView">RichEditView</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selRectangle</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">selRectangle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasSelRect</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasSelRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modified</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">modified</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>recomputeScroll</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">recomputeScroll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirtyFirstLineView</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirtyFirstLineView</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceCaretVisible</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceCaretVisible</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceCaretVisibleCenter</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceCaretVisibleCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>undoMgr</td>
-<td>Core.ArrayPtr'(Gui.RichEditUndo)</td>
+<td class="codetype"></span><span class="SyntaxCode">undoMgr</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditUndo">RichEditUndo</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>toUndo</td>
-<td>Core.ArrayPtr'(Gui.RichEditUndo)</td>
+<td class="codetype"></span><span class="SyntaxCode">toUndo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditUndo">RichEditUndo</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>mapping</td>
-<td>Core.Array'(Gui.RichEditMapping)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapping</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditMapping">RichEditMapping</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>currentUndo</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">currentUndo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>undoCounter</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">undoCounter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modifiedUndoMarker</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">modifiedUndoMarker</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>serialUndo</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">serialUndo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>countVisibleLines</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">countVisibleLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstVisibleLineView</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">firstVisibleLineView</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastVisibleLineView</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">lastVisibleLineView</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>clipFormat</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">clipFormat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>cursorPosUndo</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">cursorPosUndo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selBegUndo</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selBegUndo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12442,13 +12449,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>lineIndex</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">lineIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>charPosInLine</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">charPosInLine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12465,35 +12472,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReadOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReadOnly</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ShowFocusSel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ShowFocusSel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CurLineBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CurLineBorder</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DrawBlanks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DrawBlanks</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TabToSpaces</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TabToSpaces</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WordWrap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WordWrap</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AutoLoseFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AutoLoseFocus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12510,11 +12517,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>RichEditCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RichEditCtrl</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Edit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Edit</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12531,13 +12538,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>mapStyles</td>
-<td>[256] Gui.RichEditStyleRef</td>
+<td class="codetype"></span><span class="SyntaxCode">mapStyles</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">256</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mapWords</td>
-<td>Core.HashTable'(string, s32)</td>
+<td class="codetype"></span><span class="SyntaxCode">mapWords</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HashTable</span><span class="SyntaxCode">'(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -12604,18 +12611,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>key</td>
-<td>Core.Input.Key</td>
+<td class="codetype"></span><span class="SyntaxCode">key</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Key</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modifiers</td>
-<td>Core.Input.KeyModifiers</td>
+<td class="codetype"></span><span class="SyntaxCode">modifiers</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">KeyModifiers</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>command</td>
-<td><a href="#Gui_RichEditCommand">Gui.RichEditCommand</a></td>
+<td class="codetype"></span><span class="SyntaxCode">command</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCommand">RichEditCommand</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12632,23 +12639,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>colBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colFg</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colFg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fontMode</td>
-<td>Pixel.FontFamilyStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">fontMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamilyStyle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>underline</td>
-<td>Pixel.UnderlineStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">underline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UnderlineStyle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12685,63 +12692,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>type</td>
-<td><a href="#Gui_RichEditUndoType">Gui.RichEditUndoType</a></td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditUndoType">RichEditUndoType</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>concatChars</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">concatChars</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selBeg</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selBeg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>cursorPos</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">cursorPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>runes</td>
-<td>Core.Array'(rune)</td>
+<td class="codetype"></span><span class="SyntaxCode">runes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>styles</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">styles</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>serial</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">serial</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasSelRect</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasSelRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>begSelectionBefore</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">begSelectionBefore</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endSelectionBefore</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">endSelectionBefore</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>begSelectionAfter</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">begSelectionAfter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endSelectionAfter</td>
-<td><a href="#Gui_RichEditCursor">Gui.RichEditCursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">endSelectionAfter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_RichEditCursor">RichEditCursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12758,23 +12765,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Delete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Delete</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Insert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Insert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Selection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Selection</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Show</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Show</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hide</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hide</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -12802,188 +12809,188 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollIncrementV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollIncrementV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollIncrementH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollIncrementH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollWndFlags</td>
-<td><a href="#Gui_ScrollWndFlags">Gui.ScrollWndFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollWndFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWndFlags">ScrollWndFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigScrollPosChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigScrollPosChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigScrollSizeChanged</td>
-<td>Gui.SigArray'(closure(*Gui.ScrollWnd, Core.Math.Point, Core.Math.Point))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigScrollSizeChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ScrollWnd">ScrollWnd</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>oldMouseCapture</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">oldMouseCapture</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollSmoothPos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollSmoothPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollRequestPos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollRequestPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>smoothScroll</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">smoothScroll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>showBarV</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">showBarV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>needV</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">needV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>posBoxV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">posBoxV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizeBoxV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeBoxV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHotV</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHotV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHotBarV</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHotBarV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPressedV</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressedV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>showBarH</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">showBarH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>needH</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">needH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>posBoxH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">posBoxH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizeBoxH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeBoxH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHotH</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHotH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHotBarH</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHotBarH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPressedH</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressedH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isMoving</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isGrabbing</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isGrabbing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>correcMoving</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">correcMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>offsetClientV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">offsetClientV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>offsetClientH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">offsetClientH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paddingZ</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">paddingZ</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paddingW</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">paddingW</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBkBarV</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBkBarV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBkBarH</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBkBarH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBoxV</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBoxV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBoxH</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBoxH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>grabbingPos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">grabbingPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13119,23 +13126,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SmallBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SmallBar</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ForceHorizontal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ForceHorizontal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ForceVertical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ForceVertical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TransparentBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TransparentBar</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13152,8 +13159,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>selection</td>
-<td>Core.Array'({start: u32, end: u32})</td>
+<td class="codetype"></span><span class="SyntaxCode">selection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({start: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, end: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 </table>
@@ -13281,13 +13288,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ser</td>
-<td>*Core.Serialization.Serializer</td>
+<td class="codetype"></span><span class="SyntaxCode">ser</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serialization</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Serializer</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13304,18 +13311,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>style</td>
-<td>*Gui.ThemeStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">style</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>parent</td>
-<td>*Gui.ThemeStyle</td>
+<td class="codetype"></span><span class="SyntaxCode">parent</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13334,13 +13341,13 @@
 </div>
 <table class="enumeration">
 <tr>
-<td>arr</td>
-<td>Core.Array'(T)</td>
+<td class="codetype"></span><span class="SyntaxCode">arr</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">T</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>disabled</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13431,23 +13438,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13464,113 +13471,113 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>value1</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">value1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>value2</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">value2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>min</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">min</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>max</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">max</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>steps</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">steps</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sliderFlags</td>
-<td><a href="#Gui_SliderFlags">Gui.SliderFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sliderFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SliderFlags">SliderFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigStartChange</td>
-<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigStartChange</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Slider">Slider</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Slider">Slider</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>sigEndChange</td>
-<td>Gui.SigArray'(closure(*Gui.Slider))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigEndChange</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Slider">Slider</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>isMoving</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPressed1</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressed1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPressed2</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPressed2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHot1</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHot1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHot2</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHot2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasValue1</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasValue1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasValue2</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasValue2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>correcMoving</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">correcMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniMark1</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniMark1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniMark2</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniMark2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniStep1</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniStep1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniStep2</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniStep2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13773,38 +13780,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>labelSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">labelSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">editSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>Gui.SigArray'(closure(*Gui.SliderCtrl))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SliderCtrl">SliderCtrl</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider</td>
-<td>*Gui.Slider</td>
+<td class="codetype"></span><span class="SyntaxCode">slider</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Slider">Slider</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit</td>
-<td>*Gui.EditBox</td>
+<td class="codetype"></span><span class="SyntaxCode">edit</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_EditBox">EditBox</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13927,23 +13934,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Range</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Range</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HilightBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HilightBar</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Vertical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Vertical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Integer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Integer</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -13960,33 +13967,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> frameWnd</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> frameWnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitterFlags</td>
-<td><a href="#Gui_SplitterFlags">Gui.SplitterFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">splitterFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SplitterFlags">SplitterFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>titleSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">titleSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>correctMoving</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">correctMoving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>moving</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">moving</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14116,15 +14123,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Vertical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Vertical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HideBars</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HideBars</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14141,38 +14148,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>view</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">view</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">minSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">maxSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label</td>
-<td>*Gui.Label</td>
+<td class="codetype"></span><span class="SyntaxCode">label</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Label">Label</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tryPreserveSize</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">tryPreserveSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBar</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14189,18 +14196,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>layoutKind</td>
-<td><a href="#Gui_StackLayoutKind">Gui.StackLayoutKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">layoutKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>spacing</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">spacing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14269,39 +14276,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TopAutoSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TopAutoSize</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LeftAutoSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LeftAutoSize</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorzCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorzCenter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorzCenterVertCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorzCenterVertCenter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VertCenter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VertCenter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14318,8 +14325,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14336,88 +14343,88 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> native</td>
-<td><a href="#Gui_NativeSurface">Gui.NativeSurface</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_NativeSurface">NativeSurface</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>app</td>
-<td>*Gui.Application</td>
+<td class="codetype"></span><span class="SyntaxCode">app</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Application">Application</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd</td>
-<td>*Gui.SurfaceWnd</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>painter</td>
-<td>Pixel.Painter</td>
+<td class="codetype"></span><span class="SyntaxCode">painter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Painter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rt</td>
-<td>Pixel.RenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode">rt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderTarget</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rc</td>
-<td>Pixel.RenderingContext</td>
+<td class="codetype"></span><span class="SyntaxCode">rc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RenderingContext</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">minSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">maxSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Gui_SurfaceFlags">Gui.SurfaceFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirtyRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">dirtyRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorDisabled</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isDirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isDirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isHidden</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isHidden</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isDisabled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isMinimized</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isMinimized</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td><b>using</b> state</td>
-<td><a href="#Gui_SurfaceState">Gui.SurfaceState</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> state</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SurfaceState">SurfaceState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14850,47 +14857,47 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BigCaption</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BigCaption</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SmallCaption</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SmallCaption</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MinimizeBtn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MinimizeBtn</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MaximizeBtn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaximizeBtn</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CloseBtn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CloseBtn</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Border</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sizeable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sizeable</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Secondary</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Secondary</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TopMost</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TopMost</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OverlappedWindow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OverlappedWindow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14907,18 +14914,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>position</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>positionNotMaximized</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">positionNotMaximized</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isMaximized</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isMaximized</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14935,43 +14942,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_FrameWnd">Gui.FrameWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FrameWnd">FrameWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icon</td>
-<td><a href="#Gui_Icon">Gui.Icon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Icon">Icon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minimizeBtn</td>
-<td>*Gui.IconButton</td>
+<td class="codetype"></span><span class="SyntaxCode">minimizeBtn</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maximizeBtn</td>
-<td>*Gui.IconButton</td>
+<td class="codetype"></span><span class="SyntaxCode">maximizeBtn</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>closeBtn</td>
-<td>*Gui.IconButton</td>
+<td class="codetype"></span><span class="SyntaxCode">closeBtn</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>movingSurface</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">movingSurface</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sizingBorder</td>
-<td><a href="#Gui_SizingBorder">Gui.SizingBorder</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sizingBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SizingBorder">SizingBorder</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>cursorSet</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">cursorSet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -14988,13 +14995,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sysKind</td>
-<td>Gui.SysCommandEvent.Kind</td>
+<td class="codetype"></span><span class="SyntaxCode">sysKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Kind</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15011,23 +15018,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userMsg</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">userMsg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>param0</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">param0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>param1</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">param1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15044,68 +15051,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>barForm</td>
-<td><a href="#Gui_TabBarForm">Gui.TabBarForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">barForm</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabBarForm">TabBarForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>viewForm</td>
-<td><a href="#Gui_TabViewForm">Gui.TabViewForm</a></td>
+<td class="codetype"></span><span class="SyntaxCode">viewForm</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabViewForm">TabViewForm</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>barLayout</td>
-<td><a href="#Gui_TabBarLayout">Gui.TabBarLayout</a></td>
+<td class="codetype"></span><span class="SyntaxCode">barLayout</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabBarLayout">TabBarLayout</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigSelChanged</td>
-<td>Gui.SigArray'(closure(*Gui.Tab))</td>
+<td class="codetype"></span><span class="SyntaxCode">sigSelChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_SigArray">SigArray</a></span><span class="SyntaxCode">'(</span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Tab">Tab</a></span><span class="SyntaxCode">))</td>
 <td></td>
 </tr>
 <tr>
-<td>buttonPopup</td>
-<td>*Gui.IconButton</td>
+<td class="codetype"></span><span class="SyntaxCode">buttonPopup</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IconButton">IconButton</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>views</td>
-<td>Core.ArrayPtr'(Gui.TabItem)</td>
+<td class="codetype"></span><span class="SyntaxCode">views</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ArrayPtr</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_TabItem">TabItem</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>popup</td>
-<td>*Gui.PopupListCtrl</td>
+<td class="codetype"></span><span class="SyntaxCode">popup</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectedIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">selectedIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstVisibleIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">firstVisibleIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hotIdx</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hotIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>barHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">barHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mostRightPos</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">mostRightPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15248,19 +15255,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FlatRound</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FlatRound</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15277,15 +15284,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Divide</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Divide</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Fixed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Fixed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Auto</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Auto</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15302,15 +15309,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Button</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15327,28 +15334,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>pos</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">pos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>view</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">view</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniImg</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniImg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniText</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15365,19 +15372,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Button</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15394,15 +15401,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Flat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Flat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15419,28 +15426,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>intialized</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">intialized</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>res</td>
-<td><a href="#Gui_ThemeResources">Gui.ThemeResources</a></td>
+<td class="codetype"></span><span class="SyntaxCode">res</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeResources">ThemeResources</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rects</td>
-<td><a href="#Gui_ThemeImageRects">Gui.ThemeImageRects</a></td>
+<td class="codetype"></span><span class="SyntaxCode">rects</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>metrics</td>
-<td><a href="#Gui_ThemeMetrics">Gui.ThemeMetrics</a></td>
+<td class="codetype"></span><span class="SyntaxCode">metrics</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colors</td>
-<td><a href="#Gui_ThemeColors">Gui.ThemeColors</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colors</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeColors">ThemeColors</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -15586,1473 +15593,1473 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Transparent</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transparent</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Blue</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightBlue</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightBlue</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Disabled</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Disabled</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LighterSmall</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LighterSmall</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LighterMedium</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LighterMedium</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LighterBig</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LighterBig</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LighterVeryBig</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LighterVeryBig</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>White</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">White</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray1</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray2</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray3</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray4</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray5</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray6</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray7</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray7</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray8</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richColor1</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richColor1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richColor2</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richColor2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richColor3</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richColor3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>surfaceDisabled</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">surfaceDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hilight</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">hilight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hilightLight</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">hilightLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hilightDark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">hilightDark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>disabled</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>transparent</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">transparent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lighterSmall</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">lighterSmall</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lighterMedium</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">lighterMedium</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lighterBig</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">lighterBig</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lighterVeryBig</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">lighterVeryBig</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_Caption</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_Caption</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_CaptionNotActived</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_CaptionNotActived</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_CaptionText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_CaptionText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_CaptionNotActivatedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_CaptionNotActivatedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_BtnCloseBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_BtnCloseBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_BtnCloseHotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_BtnCloseHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_Shadow</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_Shadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>view_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">view_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dlg_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">dlg_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dlg_BtnBarBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">dlg_BtnBarBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_StrongText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_StrongText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_StrongBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_StrongBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_StrongBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_StrongBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_PressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_PressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_PressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_PressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_PressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_PressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_PressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_PressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_PressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_PressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_PressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_PressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushFlat_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushFlat_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_PressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_PressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_PressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_PressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_PressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_PressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPushDefault_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPushDefault_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_Icon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_Icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_DisabledIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_DisabledIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_PressedIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_PressedIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_PressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_PressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_PressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_PressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_HotIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_HotIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedDisabledIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedDisabledIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedDisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedDisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedPressedIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedPressedIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedPressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedPressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedHotIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedHotIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedHotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedHotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedDisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedDisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedPressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedPressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedHotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedPressedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedPressedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedHotMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedHotMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedDisabledMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedDisabledMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_TextLight</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_TextLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Text1</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Text1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Text2</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Text2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Text3</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Text3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Icon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Icon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_DisabledIcon</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">label_DisabledIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Mark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_PressedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_PressedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_PressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_PressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_PressedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_PressedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_PressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_PressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_HotMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_HotMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_DisabledMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_DisabledMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_FocusBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_FocusBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_ErrorBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_ErrorBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_FocusBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_FocusBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_Note</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_Note</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_SelectedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_SelectedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_SelectedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_SelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_ErrorBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">edit_ErrorBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_TextSpecial</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_TextSpecial</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_SelText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_SelText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_SelTextNoFocus</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_SelTextNoFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_SelBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_SelBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_SelBkNoFocus</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_SelBkNoFocus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_Caret</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_Caret</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_CurLineBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_CurLineBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_DisabledMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_DisabledMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffHotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffHotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffHotMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffHotMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffHotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffPressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffPressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffPressedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffPressedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OffPressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OffPressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnHotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnHotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnHotMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnHotMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnHotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnPressedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnPressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnPressedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnPressedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_OnPressedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_OnPressedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkLeft</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkMiddle</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkMiddle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkRight</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_HilightBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_HilightBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_Mark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_HotMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_HotMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_PressedMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_PressedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_DisabledMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_DisabledMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_StepBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_StepBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_HilightStepBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_HilightStepBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_HotStepBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_HotStepBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_SelectedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_SelectedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_UnSelectedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_UnSelectedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_FlatSelected</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_FlatSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_FlatHot</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_FlatHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_RoundSelected</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_RoundSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_RoundHot</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_RoundHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_ButtonSelected</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_ButtonSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_ButtonHot</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_ButtonHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_FlatBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_RoundBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabView_FlatBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabView_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabView_RoundBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">tabView_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Shadow</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Shadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Separator</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_SelectedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_SelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_RightText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_RightText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_HotRightText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_HotRightText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupItem_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupItem_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_Box</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_Box</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_HotBox</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_HotBox</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_PressedBox</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_PressedBox</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_SelectedBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_SelectedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_SelectedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_SelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_SelectedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_SelectedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBoxItem_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBoxItem_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBoxItem_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBoxItem_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBoxItem_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBoxItem_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBoxItem_CheckMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBoxItem_CheckMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBoxItem_HotCheckMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBoxItem_HotCheckMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_Separator</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_CheckMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_CheckMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_HotCheckMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_HotCheckMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SmallShadow</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SmallShadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_PopupBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_PopupBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_FocusBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_FocusBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_FocusBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_FocusBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_FocusSelectedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_FocusSelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_SelectedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_SelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_SelectedText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_SelectedText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_Separator</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_AlternateBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_AlternateBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>listItem_Line</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">listItem_Line</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_DisabledText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_DisabledText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_HotText</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_HotText</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_HotBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_ClickedBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_ClickedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_Text</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_Text</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>headerItem_Separator</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">headerItem_Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">header_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_TitleBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_TitleBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_Bar</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_Bar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_BarHot</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_BarHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_DisabledBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_DisabledBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_DisabledBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_DisabledMark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_DisabledMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Bk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Mark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>palPicker_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">palPicker_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>palPicker_HotBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">palPicker_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_Border</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_BackAlpha</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_BackAlpha</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_Mark</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>imageRect_Fg</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">imageRect_Fg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>embInfo_CriticalBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">embInfo_CriticalBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>embInfo_InformationBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">embInfo_InformationBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_focusBk</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">propList_focusBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>propList_focusBorder</td>
-<td>Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">propList_focusBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17069,99 +17076,99 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>WndMinimize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WndMinimize</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WndMaximize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WndMaximize</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WndClose</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WndClose</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Search</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Search</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RightPopupArrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RightPopupArrow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BottomPopupArrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BottomPopupArrow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SortArrowDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SortArrowDown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SortArrowUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SortArrowUp</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SortArrowRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SortArrowRight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Picker</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Picker</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Play</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Play</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pause</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pause</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Stop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Stop</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SendToBack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SendToBack</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SendBackward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SendBackward</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BringForward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BringForward</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BringToFront</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BringToFront</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Plus</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Plus</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>More</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">More</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Undo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Undo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Redo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Redo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Copy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Paste</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Paste</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cut</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cut</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17178,23 +17185,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Question</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Question</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Warning</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Warning</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Critical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Critical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Information</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Information</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HourGlass</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HourGlass</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17211,18 +17218,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>rect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">rect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>corner</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">corner</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>keepBordersRatio</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">keepBordersRatio</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17239,528 +17246,528 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>surfaceWnd_Shadow</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">surfaceWnd_Shadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_Caption</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_Caption</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_CaptionSmall</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_CaptionSmall</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dlg_BtnBar</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dlg_BtnBar</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Normal</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_NormalBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_NormalBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Hot</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Hot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_HotBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_HotBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Pressed</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Pressed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_PressedBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_PressedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Disabled</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_DisabledBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_DisabledBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SquareBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SquareBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_RoundSquareBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_RoundSquareBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedBottom</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedBottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedTop</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedTop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedLeft</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedRight</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_CheckedFull</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_CheckedFull</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_ArrowDown</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_ArrowDown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_ArrowLeft</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_ArrowLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_ArrowUp</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_ArrowUp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_ArrowRight</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_ArrowRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Normal</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_NormalBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_NormalBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Undefined</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Undefined</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_UndefinedBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_UndefinedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_UndefinedMark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_UndefinedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Checked</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_CheckedMark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_CheckedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnRadio_NormalBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnRadio_NormalBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnRadio_Normal</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnRadio_Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnRadio_CheckedBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnRadio_CheckedBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnRadio_Checked</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnRadio_Checked</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnRadio_CheckedMark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnRadio_CheckedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_SquareBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_SquareBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_SquareBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_SquareBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_RoundBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_RoundBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_FlatBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edit_FlatBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">edit_FlatBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_Mark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkLeft</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkMiddle</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkMiddle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkRight</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkLeftVert</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkLeftVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkMiddleVert</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkMiddleVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BkRightVert</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BkRightVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_Mark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_Step</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">slider_Step</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_FlatSelected</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_FlatSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_RoundSelected</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_RoundSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_RoundHot</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_RoundHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_ButtonSelected</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_ButtonSelected</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabItem_ButtonHot</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabItem_ButtonHot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_FlatBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_FlatRoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_FlatRoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabView_FlatBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabView_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabView_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tabView_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Shadow</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Shadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_HotBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_HotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_SelectedBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_SelectedBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuItem_CheckedMark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">menuItem_CheckedMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BkV</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BkV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BkH</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BkH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BoxV</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BoxV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BoxH</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BoxH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_Corner</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_Corner</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SmallShadow</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SmallShadow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SquareBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SquareBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SquareBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SquareBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_RoundBorder</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_RoundBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorTop</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorTop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorTopBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorTopBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorBottom</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorBottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorBottomBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorBottomBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorRight</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorRight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorRightBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorRightBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorLeft</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorLeft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorLeftBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorLeftBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_FlatBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">header_FlatBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_RoundBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">header_RoundBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>selectionBox_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">selectionBox_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_HorzBarBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_HorzBarBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_HorzBarHotBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_HorzBarHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_VertBarBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_VertBarBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_VertBarHotBk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_VertBarHotBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Mark</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Mark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_RoundPick</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_RoundPick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_SquarePick</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_SquarePick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_Bk</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_Bk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_Border</td>
-<td><a href="#Gui_ThemeImageRect">Gui.ThemeImageRect</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_Border</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -17777,408 +17784,408 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>defaultFontSize</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFontSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultFixedFontSize</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFixedFontSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>surfaceWnd_ShadowSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">surfaceWnd_ShadowSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_BorderSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_BorderSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_BigCaptionCY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_BigCaptionCY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_SmallCaptionCY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_SmallCaptionCY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wnd_CaptionMarginTitle</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wnd_CaptionMarginTitle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_FlatHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_FlatHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_RoundHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_RoundHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tabBar_ButtonHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">tabBar_ButtonHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnPush_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnPush_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconText_Margin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">iconText_Margin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Size</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnCheck_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnCheck_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dialog_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">dialog_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dialog_BtnPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">dialog_BtnPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox_SquarePadding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox_SquarePadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox_RoundPadding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox_RoundPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox_FlatPadding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox_FlatPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox_Width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox_Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>editBox_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">editBox_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_Width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnToggle_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnToggle_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_Width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_BoxSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_BoxSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>slider_StepSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">slider_StepSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_SpaceLines</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_SpaceLines</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_ShadowSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_ShadowSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_IconTextMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_IconTextMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuPopup_SeparatorHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuPopup_SeparatorHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>menuBar_SpaceBetween</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">menuBar_SpaceBetween</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>iconBar_ButtonsPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">iconBar_ButtonsPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_NormalSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_NormalSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_SmallSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_SmallSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BoxPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BoxPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollBar_BoxMinSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollBar_BoxMinSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_RightMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_RightMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>comboBox_IconTextMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">comboBox_IconTextMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_IconTextMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_IconTextMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>popupList_SeparatorPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">popupList_SeparatorPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_WidthArrow</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_WidthArrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_HeightArrow</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_HeightArrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_MarginArrow</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_MarginArrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SpacingIcon</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SpacingIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SpacingArrowH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SpacingArrowH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SpacingArrowV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SpacingArrowV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SpacingTextH</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SpacingTextH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>btnIcon_SpacingTextV</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">btnIcon_SpacingTextV</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SquarePadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SquarePadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_RoundPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_RoundPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_FlatPadding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_FlatPadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_SmallShadowSize</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_SmallShadowSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorWidth</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorOverlap</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorOverlap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorRoundBorderMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorRoundBorderMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>frameWnd_AnchorSquareBorderMargin</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">frameWnd_AnchorSquareBorderMargin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>list_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">list_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>list_ExpandSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">list_ExpandSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">header_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_Padding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">header_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>header_Separator</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">header_Separator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>splitView_BarSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">splitView_BarSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_ClipOffset</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_ClipOffset</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>progressBar_SpeedInf</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">progressBar_SpeedInf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_RoundPick</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_RoundPick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorPicker_SquarePick</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">colorPicker_SquarePick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>label_Height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">label_Height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>richEdit_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">richEdit_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip_Padding</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip_Padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18195,73 +18202,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>imgWidgets</td>
-<td>Pixel.Texture</td>
+<td class="codetype"></span><span class="SyntaxCode">imgWidgets</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icons24</td>
-<td>*Gui.ImageList</td>
+<td class="codetype"></span><span class="SyntaxCode">icons24</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>icons64</td>
-<td>*Gui.ImageList</td>
+<td class="codetype"></span><span class="SyntaxCode">icons64</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>spin</td>
-<td>*Gui.ImageList</td>
+<td class="codetype"></span><span class="SyntaxCode">spin</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ImageList">ImageList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultTypeFaceR</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultTypeFaceR</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultTypeFaceB</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultTypeFaceB</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultTypeFaceI</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultTypeFaceI</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultTypeFaceBI</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultTypeFaceBI</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultFsTypeFaceR</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFsTypeFaceR</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultFsTypeFaceB</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFsTypeFaceB</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultFsTypeFaceI</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFsTypeFaceI</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>defaultFsTypeFaceBI</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">defaultFsTypeFaceBI</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeFace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fontDefault</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">fontDefault</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fontDefaultFs</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">fontDefaultFs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18278,28 +18285,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>refr</td>
-<td>*Gui.ThemeStyleRef</td>
+<td class="codetype"></span><span class="SyntaxCode">refr</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>styleSheetMetrics</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">styleSheetMetrics</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>styleSheetColors</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">styleSheetColors</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>font</td>
-<td>Pixel.FontFamily</td>
+<td class="codetype"></span><span class="SyntaxCode">font</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FontFamily</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18478,13 +18485,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>theme</td>
-<td>*Gui.Theme</td>
+<td class="codetype"></span><span class="SyntaxCode">theme</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Theme">Theme</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>count</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18501,23 +18508,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>timeMs</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">timeMs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>target</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">target</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stopwatch</td>
-<td>Core.Time.Stopwatch</td>
+<td class="codetype"></span><span class="SyntaxCode">stopwatch</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Stopwatch</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toDelete</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">toDelete</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18554,13 +18561,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Gui_Event">Gui.Event</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>timer</td>
-<td>*Gui.Timer</td>
+<td class="codetype"></span><span class="SyntaxCode">timer</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Timer">Timer</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18577,33 +18584,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> button</td>
-<td><a href="#Gui_Button">Gui.Button</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> button</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Button">Button</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isToggled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isToggled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sigChanged</td>
-<td>func(*Gui.ToggleButton)</td>
+<td class="codetype"></span><span class="SyntaxCode">sigChanged</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ToggleButton">ToggleButton</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>aniBk</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniBorder</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniBorder</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aniMark</td>
-<td><a href="#Gui_BlendColor">Gui.BlendColor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">aniMark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BlendColor">BlendColor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -18694,153 +18701,153 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>itf</td>
-<td><a href="#Gui_IWnd">Gui.IWnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode">itf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IWnd">IWnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>surface</td>
-<td>*Gui.Surface</td>
+<td class="codetype"></span><span class="SyntaxCode">surface</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Surface">Surface</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>style</td>
-<td><a href="#Gui_ThemeStyle">Gui.ThemeStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">style</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_ThemeStyle">ThemeStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wndFlags</td>
-<td><a href="#Gui_WndFlags">Gui.WndFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">wndFlags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_WndFlags">WndFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userData</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">userData</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>position</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>minSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">minSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxSize</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">maxSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>scrollPos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">scrollPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Point</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>invalidatePadding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">invalidatePadding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>parent</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">parent</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>owner</td>
-<td>*Gui.Wnd</td>
+<td class="codetype"></span><span class="SyntaxCode">owner</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>childs</td>
-<td>Core.Array'(*Gui.Wnd)</td>
+<td class="codetype"></span><span class="SyntaxCode">childs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>name</td>
-<td>Pixel.RichString</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">RichString</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>id</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>cursor</td>
-<td><a href="#Gui_Cursor">Gui.Cursor</a></td>
+<td class="codetype"></span><span class="SyntaxCode">cursor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Cursor">Cursor</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>toolTip</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">toolTip</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>keyShortcuts</td>
-<td>Core.Array'(Gui.KeyShortcut)</td>
+<td class="codetype"></span><span class="SyntaxCode">keyShortcuts</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_KeyShortcut">KeyShortcut</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>actions</td>
-<td>Core.Array'(Gui.IActionUI)</td>
+<td class="codetype"></span><span class="SyntaxCode">actions</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_IActionUI">IActionUI</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>margin</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">margin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>padding</td>
-<td>Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">padding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dockStyle</td>
-<td><a href="#Gui_DockStyle">Gui.DockStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dockStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_DockStyle">DockStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>anchorStyle</td>
-<td><a href="#Gui_AnchorStyle">Gui.AnchorStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">anchorStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_AnchorStyle">AnchorStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>focusStrategy</td>
-<td><a href="#Gui_FocusStategy">Gui.FocusStategy</a></td>
+<td class="codetype"></span><span class="SyntaxCode">focusStrategy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_FocusStategy">FocusStategy</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>backgroundStyle</td>
-<td><a href="#Gui_BackgroundStyle">Gui.BackgroundStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backgroundStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_BackgroundStyle">BackgroundStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isAllocated</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isAllocated</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPendingDestroy</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPendingDestroy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>createEventDone</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">createEventDone</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hookOnEvent</td>
-<td>closure(*Gui.Wnd, *Gui.Event)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hookOnEvent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">closure</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Event">Event</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20474,35 +20481,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NoScroll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoScroll</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ClipChildren</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ClipChildren</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Disabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Disabled</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hidden</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hidden</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PreChildsPaint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PreChildsPaint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PostChildsPaint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PostChildsPaint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>TopMost</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TopMost</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -20519,28 +20526,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> wnd</td>
-<td><a href="#Gui_Wnd">Gui.Wnd</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> wnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gui</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gui_Wnd">Wnd</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>spacing</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">spacing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wrapWidth</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wrapWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>wrapHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">wrapHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>resultHeight</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">resultHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>

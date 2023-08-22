@@ -105,6 +105,10 @@ void GenDoc::outputStyles()
             text-decoration: revert;\n\
             color:           inherit;\n\
         }\n\
+        .codetype a {\n\
+            text-decoration: revert;\n\
+            color:           inherit;\n\
+        }\n\
         .container a:hover {\n\
             text-decoration: underline;\n\
         }\n\
@@ -140,6 +144,9 @@ void GenDoc::outputStyles()
         .enumeration td:first-child {\n\
             background-color:   #f8f8f8;\n\
             white-space:        nowrap;\n\
+        }\n\
+        .codetype {\n\
+            background-color:   #f8f8f8;\n\
         }\n\
         .container td:last-child {\n\
             width:              100%;\n\
@@ -221,7 +228,7 @@ Utf8 GenDoc::toRef(Utf8 str)
     return str;
 }
 
-void GenDoc::outputCode(const Utf8& code, bool makeRefs)
+void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
 {
     if (code.empty())
         return;
@@ -242,8 +249,11 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
     if (repl.empty())
         return;
 
-    helpContent += "<div class=\"precode\">";
-    helpContent += "<code>";
+    if (block)
+    {
+        helpContent += "<div class=\"precode\">";
+        helpContent += "<code>";
+    }
 
     // Kind of a hack for now... Try to keep references, but try to keep <> also...
     if (code.find("<a href") == -1)
@@ -279,8 +289,12 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs)
     }
 
     helpContent += repl;
-    helpContent += "</code>\n";
-    helpContent += "</div>\n";
+
+    if (block)
+    {
+        helpContent += "</code>\n";
+        helpContent += "</div>\n";
+    }
 }
 
 Utf8 GenDoc::findReference(const Utf8& name)
@@ -296,7 +310,7 @@ Utf8 GenDoc::findReference(const Utf8& name)
 
     if (tkns[0] == "Swag")
     {
-        return Fmt("<a href=\"swag.runtime.html#%s\">%s</a>", toRef(name).c_str(), name.c_str());
+        return Fmt("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
     }
 
     return "";
@@ -521,7 +535,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             block += "\n";
         }
 
-        outputCode(block, false);
+        outputCode(block, false, true);
         return;
     }
 

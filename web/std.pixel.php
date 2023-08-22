@@ -91,6 +91,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -717,58 +724,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Bmp_BI_BITFIELDS">BI_BITFIELDS</td>
-<td>s32</td>
+<td id="Pixel_Bmp_BI_BITFIELDS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BI_BITFIELDS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RGB">BI_RGB</td>
-<td>s32</td>
+<td id="Pixel_Bmp_BI_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BI_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE4">BI_RLE4</td>
-<td>s32</td>
+<td id="Pixel_Bmp_BI_RLE4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BI_RLE4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE8">BI_RLE8</td>
-<td>s32</td>
+<td id="Pixel_Bmp_BI_RLE8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BI_RLE8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ClipperScaleCoords">ClipperScaleCoords</td>
-<td>f64</td>
+<td id="Pixel_ClipperScaleCoords" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ClipperScaleCoords</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</td>
-<td>u64</td>
+<td id="Pixel_InvalidRenderTargetHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidRenderTargetHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</td>
-<td>u64</td>
+<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidRenderTargetSurfaceHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderHandle">InvalidShaderHandle</td>
-<td>u64</td>
+<td id="Pixel_InvalidShaderHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidShaderHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</td>
-<td>s64</td>
+<td id="Pixel_InvalidShaderParamHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidShaderParamHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidTextureHandle">InvalidTextureHandle</td>
-<td>u64</td>
+<td id="Pixel_InvalidTextureHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">InvalidTextureHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_MaxAAEdge">MaxAAEdge</td>
-<td>s32</td>
+<td id="Pixel_MaxAAEdge" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxAAEdge</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -785,33 +792,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Clipper_CInt">CInt</td>
-<td>s64</td>
+<td id="Pixel_Clipper_CInt" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CInt</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetHandle">RenderTargetHandle</td>
-<td>u64</td>
+<td id="Pixel_RenderTargetHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RenderTargetHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</td>
-<td>u64</td>
+<td id="Pixel_RenderTargetSurfaceHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RenderTargetSurfaceHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderHandle">ShaderHandle</td>
-<td>u64</td>
+<td id="Pixel_ShaderHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ShaderHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderParamHandle">ShaderParamHandle</td>
-<td>s64</td>
+<td id="Pixel_ShaderParamHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_TextureHandle">TextureHandle</td>
-<td>u64</td>
+<td id="Pixel_TextureHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TextureHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -828,567 +835,567 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>AliceBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AliceBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AntiqueWhite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AntiqueWhite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Aqua</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Aqua</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Aquamarine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Aquamarine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Azure</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Azure</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Beige</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Beige</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bisque</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bisque</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Black</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Black</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BlanchedAlmond</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BlanchedAlmond</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Blue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BlueViolet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BlueViolet</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Brown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Brown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BurlyWood</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BurlyWood</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CadetBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CadetBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Chartreuse</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Chartreuse</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Chocolate</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Chocolate</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Coral</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Coral</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CornflowerBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CornflowerBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cornsilk</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cornsilk</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Crimson</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Crimson</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cyan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cyan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkCyan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkCyan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkGoldenrod</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkGoldenrod</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkKhaki</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkKhaki</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkMagenta</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkMagenta</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkOliveGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkOliveGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkOrange</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkOrange</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkOrchid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkOrchid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkSalmon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkSalmon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkSeaGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkSeaGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkSlateBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkSlateBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkSlateGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkSlateGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkTurquoise</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkTurquoise</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DarkViolet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DarkViolet</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeepPink</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeepPink</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DeepSkyBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DeepSkyBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DimGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DimGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DodgerBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DodgerBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Firebrick</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Firebrick</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FloralWhite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FloralWhite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ForestGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ForestGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Fuchsia</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Fuchsia</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gainsboro</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gainsboro</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GhostWhite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GhostWhite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gold</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gold</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Goldenrod</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Goldenrod</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Green</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Green</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GreenYellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenYellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Honeydew</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Honeydew</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HotPink</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HotPink</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>IndianRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">IndianRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Indigo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Indigo</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Ivory</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Ivory</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Khaki</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Khaki</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Lavender</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lavender</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LavenderBlush</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LavenderBlush</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LawnGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LawnGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LemonChiffon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LemonChiffon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightCoral</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightCoral</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightCyan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightCyan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightGoldenrodYellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightGoldenrodYellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightPink</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightPink</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightSalmon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightSalmon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightSeaGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightSeaGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightSkyBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightSkyBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightSlateGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightSlateGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightSteelBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightSteelBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightYellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightYellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Lime</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lime</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LimeGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LimeGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Linen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Linen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Magenta</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Magenta</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Maroon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Maroon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumAquamarine</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumAquamarine</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumOrchid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumOrchid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumPurple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumPurple</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumSeaGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumSeaGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumSlateBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumSlateBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumSpringGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumSpringGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumTurquoise</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumTurquoise</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MediumVioletRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MediumVioletRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MidnightBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MidnightBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MintCream</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MintCream</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MistyRose</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MistyRose</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Moccasin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Moccasin</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NavajoWhite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NavajoWhite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Navy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Navy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OldLace</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OldLace</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Olive</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Olive</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OliveDrab</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OliveDrab</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Orange</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Orange</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OrangeRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OrangeRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Orchid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Orchid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PaleGoldenrod</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PaleGoldenrod</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PaleGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PaleGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PaleTurquoise</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PaleTurquoise</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PaleVioletRed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PaleVioletRed</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PapayaWhip</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PapayaWhip</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PeachPuff</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PeachPuff</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Peru</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Peru</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pink</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pink</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Plum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Plum</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PowderBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PowderBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Purple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Purple</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Red</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Red</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RosyBrown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RosyBrown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RoyalBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RoyalBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaddleBrown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaddleBrown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Salmon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Salmon</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SandyBrown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SandyBrown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SeaGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SeaGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SeaShell</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SeaShell</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sienna</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sienna</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Silver</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Silver</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SkyBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SkyBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SlateBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SlateBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SlateGray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SlateGray</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Snow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Snow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SpringGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SpringGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SteelBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SteelBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Tan</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tan</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Teal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Teal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Thistle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Thistle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Tomato</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tomato</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Turquoise</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Turquoise</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Violet</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Violet</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Wheat</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Wheat</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>White</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">White</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WhiteSmoke</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WhiteSmoke</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Yellow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Yellow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>YellowGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">YellowGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1419,31 +1426,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Copy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Alpha</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alpha</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Add</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Add</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sub</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sub</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SubDst</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SubDst</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Min</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Max</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1534,58 +1541,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>biSize</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biWidth</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">biWidth</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biHeight</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">biHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biPlanes</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">biPlanes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biBitCount</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">biBitCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biCompression</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biCompression</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biSizeImage</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biSizeImage</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biXPelsPerMeter</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biXPelsPerMeter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biYPelsPerMeter</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biYPelsPerMeter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biClrUsed</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biClrUsed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>biClrImportant</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">biClrImportant</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1602,11 +1609,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Inside</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inside</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1623,33 +1630,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>color</td>
-<td><a href="#Pixel_Color">Pixel.Color</a></td>
+<td class="codetype"></span><span class="SyntaxCode">color</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>type</td>
-<td><a href="#Pixel_BrushType">Pixel.BrushType</a></td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hatch</td>
-<td><a href="#Pixel_HatchStyle">Pixel.HatchStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">hatch</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>texture</td>
-<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td class="codetype"></span><span class="SyntaxCode">texture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>uvMode</td>
-<td><a href="#Pixel_UVMode">Pixel.UVMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">uvMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_UVMode">UVMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>uvRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">uvRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1741,15 +1748,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>SolidColor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SolidColor</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Texture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Texture</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hatch</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hatch</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1766,19 +1773,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Intersection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Intersection</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Union</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Union</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Difference</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Difference</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Xor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Xor</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1795,15 +1802,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>ReverseSolution</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReverseSolution</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>StrictlySimple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StrictlySimple</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PreserveCollinear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PreserveCollinear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1820,13 +1827,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>x</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">x</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>y</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">y</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1863,15 +1870,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Miter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Miter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1888,19 +1895,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>EvenOdd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EvenOdd</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>NonZero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NonZero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Positive</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Positive</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Negative</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Negative</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1917,11 +1924,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Subject</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Subject</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Clip</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clip</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1949,11 +1956,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Set</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Set</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Clear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1970,28 +1977,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>a</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">a</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>r</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">r</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>g</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">g</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>b</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">b</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>argb</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">argb</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2507,23 +2514,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>r</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">r</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>g</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">g</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>b</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">b</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>a</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">a</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2540,13 +2547,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>id</td>
-<td><a href="#Pixel_CommandId">Pixel.CommandId</a></td>
+<td class="codetype"></span><span class="SyntaxCode">id</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_CommandId">CommandId</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td><b>using</b> params</td>
-<td>{clear: {color: Pixel.Color}, drawTriangles: {start: u32, count: u32}, transform: {tr: Core.Math.Transform2}, clippingRect: {rect: Core.Math.Rectangle}, clippingRegion: {mode: Pixel.ClippingMode}, font: {fontRef: *Pixel.Font}, blendingMode: {mode: Pixel.BlendingMode}, textureFont: {font: *Pixel.Font, atlasIndex: s32}, colorMask: Pixel.ColorMask, renderTgt: {tgt: *Pixel.RenderTarget, paintAlpha: bool}, shader: {shader: *Pixel.ShaderBase}, shaderParam: {param: Pixel.ShaderParamHandle, type: const *Swag.TypeInfo, _f32: f32, _s32: s32}, texture0: {boundRect: Core.Math.Vector4, textureRect: Core.Math.Vector4, type: Pixel.BrushType, hatch: Pixel.HatchStyle, uvMode: Pixel.UVMode, interpolationMode: Pixel.InterpolationMode, texture: Pixel.Texture}}</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> params</td>
+<td class="codetype"></span><span class="SyntaxCode">{clear: {color: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode">}, drawTriangles: {start: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, count: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">}, transform: {tr: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode">}, clippingRect: {rect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">}, clippingRegion: {mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span><span class="SyntaxCode">}, font: {fontRef: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">}, blendingMode: {mode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span><span class="SyntaxCode">}, textureFont: {font: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode">, atlasIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}, colorMask: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span><span class="SyntaxCode">, renderTgt: {tgt: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">, paintAlpha: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">}, shader: {shader: *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode">}, shaderParam: {param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, type: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode">, _f32: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, _s32: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">}, texture0: {boundRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">, textureRect: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode">, type: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span><span class="SyntaxCode">, hatch: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span><span class="SyntaxCode">, uvMode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_UVMode">UVMode</a></span><span class="SyntaxCode">, interpolationMode: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span><span class="SyntaxCode">, texture: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode">}}</td>
 <td></td>
 </tr>
 </table>
@@ -2563,95 +2570,95 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Clear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ColorMask</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ColorMask</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Transform</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Transform</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DrawTriangles</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DrawTriangles</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BindTexture0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BindTexture0</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ResetTexture0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ResetTexture0</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BindTextureFont</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BindTextureFont</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ResetTextureFont</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ResetTextureFont</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetClippingRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetClippingRect</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ResetClippingRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ResetClippingRect</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>StartClippingRegion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StartClippingRegion</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EndClippingRegion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EndClippingRegion</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ResetClippingRegion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ResetClippingRegion</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetClippingRegionMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetClippingRegionMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UpdateFont</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UpdateFont</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>StartNoOverlap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StartNoOverlap</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>StopNoOverlap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StopNoOverlap</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetBlendingMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetBlendingMode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BindRenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BindRenderTarget</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>UnbindRenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UnbindRenderTarget</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ReleaseRenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ReleaseRenderTarget</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetShader</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetShader</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SetShaderParam</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SetShaderParam</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2668,19 +2675,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Triangle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Triangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2697,23 +2704,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pattern</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pattern</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Dot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Dot</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Dash</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Dash</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DashDot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DashDot</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2730,8 +2737,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>decodePixels</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">decodePixels</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2748,11 +2755,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Blur</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Blur</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2769,11 +2776,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Separate</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Separate</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Merge</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Merge</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2790,23 +2797,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>type</td>
-<td><a href="#Pixel_ElementType">Pixel.ElementType</a></td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ElementType">ElementType</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>position</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">position</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>p1</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">p1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>p2</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">p2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2823,23 +2830,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Line</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Line</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Arc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Arc</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bezier1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bezier1</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bezier2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bezier2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Curve</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Curve</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2856,73 +2863,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>ascent</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">ascent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>descent</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">descent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>underlinePos</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">underlinePos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>underlineSize</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">underlineSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceBold</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceBold</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceItalic</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceItalic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fullname</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">fullname</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>typeFace</td>
-<td>*Pixel.TypeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">typeFace</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>atlases</td>
-<td>Core.Array'(Pixel.GlyphAtlas)</td>
+<td class="codetype"></span><span class="SyntaxCode">atlases</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>asciiRef</td>
-<td>[128] Pixel.GlyphDesc</td>
+<td class="codetype"></span><span class="SyntaxCode">asciiRef</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">128</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>unicodeRef</td>
-<td>Core.HashTable'(rune, *Pixel.GlyphDesc)</td>
+<td class="codetype"></span><span class="SyntaxCode">unicodeRef</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HashTable</span><span class="SyntaxCode">'(</span><span class="SyntaxType">rune</span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>dirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3003,23 +3010,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>regular</td>
-<td>*Pixel.Font</td>
+<td class="codetype"></span><span class="SyntaxCode">regular</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bold</td>
-<td>*Pixel.Font</td>
+<td class="codetype"></span><span class="SyntaxCode">bold</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>italic</td>
-<td>*Pixel.Font</td>
+<td class="codetype"></span><span class="SyntaxCode">italic</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>boldItalic</td>
-<td>*Pixel.Font</td>
+<td class="codetype"></span><span class="SyntaxCode">boldItalic</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3130,13 +3137,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>faces</td>
-<td>[4] Pixel.FontFamilyStyleEnumerate</td>
+<td class="codetype"></span><span class="SyntaxCode">faces</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3153,19 +3160,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Regular</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Regular</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bold</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bold</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Italic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Italic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BoldItalic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BoldItalic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3182,13 +3189,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>face</td>
-<td>Gdi32.LOGFONTW</td>
+<td class="codetype"></span><span class="SyntaxCode">face</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LOGFONTW</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3335,48 +3342,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>texture</td>
-<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td class="codetype"></span><span class="SyntaxCode">texture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bpp</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">bpp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>datas</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">datas</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>dirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curX</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">curX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curY</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">curY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>nextY</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">nextY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3393,43 +3400,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>uv</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">uv</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>atlasIndex</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">atlasIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>advanceX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">advanceX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>advanceY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">advanceY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shiftX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">shiftX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shiftY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">shiftY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3446,147 +3453,147 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Dot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Dot</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Horizontal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Horizontal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorizontalLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorizontalLight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorizontalNarrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorizontalNarrow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Vertical</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Vertical</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VerticalLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VerticalLight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VerticalNarrow</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VerticalNarrow</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SolidDiamond</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SolidDiamond</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>OutlinedDiamond</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">OutlinedDiamond</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HorizontalDark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HorizontalDark</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>VerticalDark</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VerticalDark</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Grid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Grid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GridLarge</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GridLarge</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GridDotted</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GridDotted</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Cross</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Cross</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CrossLarge</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CrossLarge</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent5</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent5</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent10</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent10</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent20</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent20</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent25</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent25</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent30</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent30</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent40</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent40</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent50</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent50</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent60</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent60</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent70</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent70</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent75</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent75</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent80</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent80</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Percent90</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Percent90</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CheckBoard</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CheckBoard</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CheckBoardLarge</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CheckBoardLarge</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Weave</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Weave</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DiagonalForward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DiagonalForward</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DiagonalForwardLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DiagonalForwardLight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DiagonalBackward</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DiagonalBackward</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DiagonalBackwardLight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DiagonalBackwardLight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DiagonalCross</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DiagonalCross</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3604,13 +3611,13 @@
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td>canDecode</td>
-<td>func(*Pixel.IImageDecoder, string)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canDecode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>decode</td>
-<td>func(*Pixel.IImageDecoder, const [..] u8, Pixel.DecodeOptions)->Pixel.Image throw</td>
+<td class="codetype"></span><span class="SyntaxCode">decode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3628,13 +3635,13 @@
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td>canEncode</td>
-<td>func(*Pixel.IImageEncoder, string)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canEncode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>encode</td>
-<td>func(*Pixel.IImageEncoder, *Core.ConcatBuffer, Pixel.Image, any) throw</td>
+<td class="codetype"></span><span class="SyntaxCode">encode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ConcatBuffer</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">any</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3652,48 +3659,48 @@
 <p>An image buffer, in various pixel formats. </p>
 <table class="enumeration">
 <tr>
-<td>pixels</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">pixels</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td>All the pixels. </td>
 </tr>
 <tr>
-<td>size</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td>width</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>The width of the image. </td>
 </tr>
 <tr>
-<td>height</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>The height of the image. </td>
 </tr>
 <tr>
-<td>width8</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">width8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>The width, in bytes. </td>
 </tr>
 <tr>
-<td>pf</td>
-<td><a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
+<td class="codetype"></span><span class="SyntaxCode">pf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode"></td>
 <td>Format of one pixel. </td>
 </tr>
 <tr>
-<td>bpp</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">bpp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Bits per pixel. </td>
 </tr>
 <tr>
-<td>bpp8</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">bpp8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Bytes per pixel. </td>
 </tr>
 <tr>
-<td>workingBuffer</td>
-<td>*Pixel.Image</td>
+<td class="codetype"></span><span class="SyntaxCode">workingBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span><span class="SyntaxCode"></td>
 <td>Temporary buffer for filters and transformations. </td>
 </tr>
 </table>
@@ -3948,27 +3955,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Red</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Red</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Green</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Green</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Blue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Blue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Alpha</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alpha</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RGB</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RGB</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RGBA</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RGBA</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3985,23 +3992,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Color</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Color</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MinRGB</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MinRGB</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MaxRGB</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxRGB</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MeanRGB</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MeanRGB</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Alpha</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alpha</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4018,51 +4025,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>HueVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaturationVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaturationHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightnessVert</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightnessVert</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>LightnessHorz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LightnessHorz</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueSaturation</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueSaturation</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>HueLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HueLightness</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SaturationLightness</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SaturationLightness</span><span class="SyntaxCode"></td>
 <td>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </td>
 </tr>
 <tr>
-<td>GreenBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GreenBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedBlue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedBlue</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RedGreen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RedGreen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4080,99 +4087,99 @@
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
 <table class="enumeration">
 <tr>
-<td>GaussianBlur3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GaussianBlur3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GaussianBlur3x3B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GaussianBlur3x3B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>GaussianBlur5x5A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GaussianBlur5x5A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BoxBlur3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BoxBlur3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BoxBlur5x5A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BoxBlur5x5A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sharpen3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sharpen3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Sharpen3x3B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Sharpen3x3B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Soften3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Soften3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossLeft3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossLeft3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossLeft3x3B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossLeft3x3B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossLeft3x3C</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossLeft3x3C</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossRight3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossRight3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossRight3x3B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossRight3x3B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EmbossRight3x3C</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EmbossRight3x3C</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3B</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3B</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3C</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3C</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3D</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3D</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3E</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3E</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>EdgeDetect3x3F</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EdgeDetect3x3F</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SobelHorizontal3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SobelHorizontal3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SobelVertical3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SobelVertical3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PrevitHorizontal3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrevitHorizontal3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PrevitVertical3x3A</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrevitVertical3x3A</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4189,11 +4196,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Copy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Copy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AlphaBlend</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AlphaBlend</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4210,35 +4217,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Raw</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Raw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bilinear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bilinear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bicubic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bicubic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Gaussian</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gaussian</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Quadratic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Quadratic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hermite</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hermite</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Hamming</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Hamming</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Catrom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Catrom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4255,15 +4262,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>T90</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T90</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>T180</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T180</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>T270</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">T270</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5051,11 +5058,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Pixel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Linear</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Linear</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5072,23 +5079,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bevel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bevel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Miter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Miter</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MiterBevel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MiterBevel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5142,8 +5149,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>quality</td>
-<td>u8</td>
+<td class="codetype"></span><span class="SyntaxCode">quality</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Encoding quality between 1 and 100. </td>
 </tr>
 </table>
@@ -5197,31 +5204,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Triangle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Triangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Round</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Round</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Square</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Square</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ArrowAnchor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ArrowAnchor</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SquareAnchor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SquareAnchor</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RoundAnchor</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RoundAnchor</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5238,83 +5245,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>elements</td>
-<td>Core.Array'(Pixel.Element)</td>
+<td class="codetype"></span><span class="SyntaxCode">elements</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Element">Element</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>startPoint</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">startPoint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endPoint</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">endPoint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isClosed</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isClosed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isDirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isDirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>serial</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">serial</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>flattenQuality</td>
-<td><a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flattenQuality</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isPolyOnly</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isPolyOnly</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isFlatten</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isFlatten</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bvMin</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bvMax</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMax</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endPosBuffer</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">endPosBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>polygon</td>
-<td><a href="#Pixel_Polygon">Pixel.Polygon</a></td>
+<td class="codetype"></span><span class="SyntaxCode">polygon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Polygon">Polygon</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>points</td>
-<td>Core.Array'(*Pixel.Poly2Tri.Point)</td>
+<td class="codetype"></span><span class="SyntaxCode">points</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>triangles</td>
-<td>Core.Array'(*Pixel.Poly2Tri.Triangle)</td>
+<td class="codetype"></span><span class="SyntaxCode">triangles</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>edgeList</td>
-<td>Core.Array'(*Pixel.Poly2Tri.Edge)</td>
+<td class="codetype"></span><span class="SyntaxCode">edgeList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -5575,18 +5582,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>paths</td>
-<td>Core.Array'(*Pixel.LinePath)</td>
+<td class="codetype"></span><span class="SyntaxCode">paths</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>bvMin</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bvMax</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMax</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5807,15 +5814,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Antialiased</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Antialiased</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5832,11 +5839,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Draft</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Draft</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Normal</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Normal</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5853,48 +5860,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>paintParams</td>
-<td><a href="#Pixel_PaintParams">Pixel.PaintParams</a></td>
+<td class="codetype"></span><span class="SyntaxCode">paintParams</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paintQuality</td>
-<td><a href="#Pixel_PaintQuality">Pixel.PaintQuality</a></td>
+<td class="codetype"></span><span class="SyntaxCode">paintQuality</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>transform</td>
-<td>Core.Math.Transform2</td>
+<td class="codetype"></span><span class="SyntaxCode">transform</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>blendingMode</td>
-<td><a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">blendingMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>interpolationMode</td>
-<td><a href="#Pixel_InterpolationMode">Pixel.InterpolationMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">interpolationMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>clippingRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">clippingRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stackClipRect</td>
-<td>Core.Array'(Core.Math.Rectangle)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackClipRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>clippingRectOn</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">clippingRectOn</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorMask</td>
-<td><a href="#Pixel_ColorMask">Pixel.ColorMask</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorMask</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5911,103 +5918,103 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>commandBuffer</td>
-<td>Core.Array'(Pixel.Command)</td>
+<td class="codetype"></span><span class="SyntaxCode">commandBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Command">Command</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>vertexBuffer</td>
-<td>Core.Array'(Pixel.VertexLayout)</td>
+<td class="codetype"></span><span class="SyntaxCode">vertexBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_VertexLayout">VertexLayout</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>triangulateIdx</td>
-<td>Core.Array'(s32)</td>
+<td class="codetype"></span><span class="SyntaxCode">triangulateIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>fake</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fake</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sharedSolidPen</td>
-<td><a href="#Pixel_Pen">Pixel.Pen</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sharedSolidPen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sharedSolidBrush</td>
-<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sharedSolidBrush</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sharedLinePath</td>
-<td><a href="#Pixel_LinePath">Pixel.LinePath</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sharedLinePath</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sharedLinePathList</td>
-<td><a href="#Pixel_LinePathList">Pixel.LinePathList</a></td>
+<td class="codetype"></span><span class="SyntaxCode">sharedLinePathList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>sharedRoundTmp</td>
-<td>Core.Array'({factor: f32, pos: Core.Math.Vector2})</td>
+<td class="codetype"></span><span class="SyntaxCode">sharedRoundTmp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'({factor: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">})</td>
 <td></td>
 </tr>
 <tr>
-<td>curState</td>
-<td><a href="#Pixel_PaintState">Pixel.PaintState</a></td>
+<td class="codetype"></span><span class="SyntaxCode">curState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stackState</td>
-<td>Core.Array'(Pixel.PaintState)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackState</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>stackTransform</td>
-<td>Core.Array'(Core.Math.Transform2)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackTransform</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>lastTexture0Type</td>
-<td><a href="#Pixel_BrushType">Pixel.BrushType</a></td>
+<td class="codetype"></span><span class="SyntaxCode">lastTexture0Type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stackRT</td>
-<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackRT</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>curRT</td>
-<td>*Pixel.RenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode">curRT</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lastTexture0Handle</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">lastTexture0Handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasTextureFont</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasTextureFont</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>drawingBegin</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">drawingBegin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>overlapMode</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">overlapMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canSetTexture0</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canSetTexture0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7463,83 +7470,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>size</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>brush</td>
-<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td class="codetype"></span><span class="SyntaxCode">brush</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pattern</td>
-<td>Core.Array'(f32)</td>
+<td class="codetype"></span><span class="SyntaxCode">pattern</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>dashBeginCapStyle</td>
-<td><a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dashBeginCapStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dashEndCapStyle</td>
-<td><a href="#Pixel_DashCapStyle">Pixel.DashCapStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dashEndCapStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>borderPos</td>
-<td><a href="#Pixel_BorderPos">Pixel.BorderPos</a></td>
+<td class="codetype"></span><span class="SyntaxCode">borderPos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BorderPos">BorderPos</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capStartScaleX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">capStartScaleX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capStartScaleY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">capStartScaleY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capEndScaleX</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">capEndScaleX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capEndScaleY</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">capEndScaleY</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>joinMiterLimit</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">joinMiterLimit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>plotOffset</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">plotOffset</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dashStyle</td>
-<td><a href="#Pixel_DashStyle">Pixel.DashStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dashStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_DashStyle">DashStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>beginCapStyle</td>
-<td><a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">beginCapStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>endCapStyle</td>
-<td><a href="#Pixel_LineCapStyle">Pixel.LineCapStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">endCapStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>joinStyle</td>
-<td><a href="#Pixel_JoinStyle">Pixel.JoinStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">joinStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7614,19 +7621,19 @@
 <p>Desribe the layout format of one image pixel. </p>
 <table class="enumeration">
 <tr>
-<td>BGR8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BGR8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BGRA8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BGRA8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RGB8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RGB8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>RGBA8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RGBA8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7736,13 +7743,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>compressionLevel</td>
-<td>Core.Compress.Deflate.CompressionLevel</td>
+<td class="codetype"></span><span class="SyntaxCode">compressionLevel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Compress</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Deflate</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CompressionLevel</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>filtering</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">filtering</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7796,13 +7803,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>p</td>
-<td>*Pixel.Poly2Tri.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">p</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>q</td>
-<td>*Pixel.Poly2Tri.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">q</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7819,18 +7826,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> v</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> v</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>edgeList</td>
-<td>Core.Array'(*Pixel.Poly2Tri.Edge)</td>
+<td class="codetype"></span><span class="SyntaxCode">edgeList</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>border</td>
-<td>[2] *Pixel.Poly2Tri.Edge</td>
+<td class="codetype"></span><span class="SyntaxCode">border</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2</span><span class="SyntaxCode">] *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -7969,28 +7976,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>constrainedEdge</td>
-<td>[3] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">constrainedEdge</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>delaunayEdge</td>
-<td>[3] bool</td>
+<td class="codetype"></span><span class="SyntaxCode">delaunayEdge</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>points</td>
-<td>[3] *Pixel.Poly2Tri.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">points</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>neighbors</td>
-<td>[3] *Pixel.Poly2Tri.Triangle</td>
+<td class="codetype"></span><span class="SyntaxCode">neighbors</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] *</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Poly2Tri</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>interior</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">interior</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8007,38 +8014,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>points</td>
-<td>Core.Array'(Core.Math.Vector2)</td>
+<td class="codetype"></span><span class="SyntaxCode">points</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>isClockwise</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isClockwise</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isConvex</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isConvex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>area</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">area</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>totalLen</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">totalLen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bvMin</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMin</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>bvMax</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">bvMax</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8234,88 +8241,88 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> native</td>
-<td><a href="#Pixel_NativeRenderOgl">Pixel.NativeRenderOgl</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>vertexbuffer</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">vertexbuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shaderSimple</td>
-<td><a href="#Pixel_ShaderSimple">Pixel.ShaderSimple</a></td>
+<td class="codetype"></span><span class="SyntaxCode">shaderSimple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shaderAA</td>
-<td><a href="#Pixel_ShaderAA">Pixel.ShaderAA</a></td>
+<td class="codetype"></span><span class="SyntaxCode">shaderAA</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderAA">ShaderAA</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>shaderBlur</td>
-<td><a href="#Pixel_ShaderBlur">Pixel.ShaderBlur</a></td>
+<td class="codetype"></span><span class="SyntaxCode">shaderBlur</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>worldTransform</td>
-<td>Core.Math.Transform2</td>
+<td class="codetype"></span><span class="SyntaxCode">worldTransform</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Transform2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>orthoMatrix</td>
-<td>Core.Math.Matrix4x4</td>
+<td class="codetype"></span><span class="SyntaxCode">orthoMatrix</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Matrix4x4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>modelMatrix</td>
-<td>Core.Math.Matrix4x4</td>
+<td class="codetype"></span><span class="SyntaxCode">modelMatrix</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Matrix4x4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>whiteTexture</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">whiteTexture</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hatchTextures</td>
-<td>[36] Ogl.GLuint</td>
+<td class="codetype"></span><span class="SyntaxCode">hatchTextures</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">36</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Ogl</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">GLuint</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>blendingMode</td>
-<td><a href="#Pixel_BlendingMode">Pixel.BlendingMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">blendingMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curRC</td>
-<td><a href="#Pixel_RenderingContext">Pixel.RenderingContext</a></td>
+<td class="codetype"></span><span class="SyntaxCode">curRC</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stackReleasedRT</td>
-<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackReleasedRT</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>stackRT</td>
-<td>Core.Array'(*Pixel.RenderTarget)</td>
+<td class="codetype"></span><span class="SyntaxCode">stackRT</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>curRT</td>
-<td>*Pixel.RenderTarget</td>
+<td class="codetype"></span><span class="SyntaxCode">curRT</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>curShader</td>
-<td>*Pixel.ShaderBase</td>
+<td class="codetype"></span><span class="SyntaxCode">curShader</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>overlapMode</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">overlapMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8851,28 +8858,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorBuffer</td>
-<td><a href="#Pixel_Texture">Pixel.Texture</a></td>
+<td class="codetype"></span><span class="SyntaxCode">colorBuffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>depthStencil</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">depthStencil</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paintAlpha</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">paintAlpha</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>paintAlphaIdx</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">paintAlphaIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8889,23 +8896,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>hDC</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">hDC</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hRC</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">hRC</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8922,53 +8929,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>slice</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">slice</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fontStyle</td>
-<td><a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fontStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hasFontStyle</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">hasFontStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isSpace</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isSpace</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>isEol</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">isEol</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>colorIdx</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">colorIdx</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>boundRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">boundRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pos</td>
-<td>Core.Math.Point</td>
+<td class="codetype"></span><span class="SyntaxCode">pos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>font</td>
-<td>*Pixel.Font</td>
+<td class="codetype"></span><span class="SyntaxCode">font</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>under</td>
-<td><a href="#Pixel_UnderlineStyle">Pixel.UnderlineStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">under</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8986,28 +8993,28 @@
 <p>Represents a string with embedded formats. </p>
 <table class="enumeration">
 <tr>
-<td>raw</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">raw</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td>The string as passed by the user. </td>
 </tr>
 <tr>
-<td>chunks</td>
-<td>Core.Array'(Pixel.RichChunk)</td>
+<td class="codetype"></span><span class="SyntaxCode">chunks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichChunk">RichChunk</a></span><span class="SyntaxCode">)</td>
 <td>The corresponding list of chunks. </td>
 </tr>
 <tr>
-<td>layoutRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">layoutRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>boundRect</td>
-<td>Core.Math.Rectangle</td>
+<td class="codetype"></span><span class="SyntaxCode">boundRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Rectangle</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>dirty</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">dirty</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>If dirty, <code class="incode">Compute</code>. </td>
 </tr>
 </table>
@@ -9190,43 +9197,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>font</td>
-<td><a href="#Pixel_FontFamily">Pixel.FontFamily</a></td>
+<td class="codetype"></span><span class="SyntaxCode">font</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamily">FontFamily</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fontStyle</td>
-<td><a href="#Pixel_FontFamilyStyle">Pixel.FontFamilyStyle</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fontStyle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>palette</td>
-<td>[4] Pixel.Color</td>
+<td class="codetype"></span><span class="SyntaxCode">palette</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>brush</td>
-<td><a href="#Pixel_Brush">Pixel.Brush</a></td>
+<td class="codetype"></span><span class="SyntaxCode">brush</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>horzAlignment</td>
-<td><a href="#Pixel_StringHorzAlignment">Pixel.StringHorzAlignment</a></td>
+<td class="codetype"></span><span class="SyntaxCode">horzAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>vertAlignment</td>
-<td><a href="#Pixel_StringVertAlignment">Pixel.StringVertAlignment</a></td>
+<td class="codetype"></span><span class="SyntaxCode">vertAlignment</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>lineGap</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">lineGap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Pixel_StringFormatFlags">Pixel.StringFormatFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9243,8 +9250,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9261,48 +9268,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mvp</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">mvp</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mdl</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">mdl</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>boundRect</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">boundRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>textureRect</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">textureRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>uvMode</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">uvMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>copyMode</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">copyMode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>textureW</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">textureW</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>textureH</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">textureH</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9319,18 +9326,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>radius</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">radius</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>axis</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">axis</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9347,8 +9354,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Pixel_ShaderBase">Pixel.ShaderBase</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9365,19 +9372,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>WordWrap</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WordWrap</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Clip</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Clip</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>DontAdaptSingleLineHeight</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DontAdaptSingleLineHeight</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9394,19 +9401,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Center</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Center</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Left</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Left</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Right</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Right</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Justify</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Justify</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9423,23 +9430,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>ascent</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">ascent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Maximum size above baseline. </td>
 </tr>
 <tr>
-<td>descent</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">descent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Maximum size below baseline. </td>
 </tr>
 <tr>
-<td>width</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>ascent + descent. </td>
 </tr>
 </table>
@@ -9456,13 +9463,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>str</td>
-<td><a href="#Pixel_RichString">Pixel.RichString</a></td>
+<td class="codetype"></span><span class="SyntaxCode">str</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fmt</td>
-<td><a href="#Pixel_RichStringFormat">Pixel.RichStringFormat</a></td>
+<td class="codetype"></span><span class="SyntaxCode">fmt</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9590,15 +9597,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Center</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Center</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Top</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Top</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bottom</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bottom</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9615,28 +9622,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pf</td>
-<td><a href="#Pixel_PixelFormat">Pixel.PixelFormat</a></td>
+<td class="codetype"></span><span class="SyntaxCode">pf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>width</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">width</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>height</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">height</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>valid</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">valid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9764,33 +9771,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>fullname</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">fullname</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>buffer</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">buffer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 <tr>
-<td>face</td>
-<td>*FreeType.FT_FaceRec</td>
+<td class="codetype"></span><span class="SyntaxCode">face</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">FreeType</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FT_FaceRec</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceBoldDiv</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">forceBoldDiv</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceItalic</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceItalic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>forceBold</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">forceBold</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -9990,15 +9997,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Fill</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Fill</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FillSubRect</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FillSubRect</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Tile</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tile</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10015,15 +10022,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Underline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Underline</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Strikeout</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strikeout</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -10040,28 +10047,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>pos</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">pos</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>uv</td>
-<td>Core.Math.Vector2</td>
+<td class="codetype"></span><span class="SyntaxCode">uv</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector2</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>color</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">color</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aa</td>
-<td>[12] Core.Math.Vector4</td>
+<td class="codetype"></span><span class="SyntaxCode">aa</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">12</span><span class="SyntaxCode">] </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Vector4</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>aanum</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">aanum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>

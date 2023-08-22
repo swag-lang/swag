@@ -91,6 +91,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -2208,6483 +2215,6483 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Ogl_GL_2D">GL_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_2_BYTES">GL_2_BYTES</td>
-<td>u32</td>
+<td id="Ogl_GL_2_BYTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_2_BYTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_3D">GL_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_3D_COLOR">GL_3D_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_3D_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_3D_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_3D_COLOR_TEXTURE">GL_3D_COLOR_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_3D_COLOR_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_3D_COLOR_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_3_BYTES">GL_3_BYTES</td>
-<td>u32</td>
+<td id="Ogl_GL_3_BYTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_3_BYTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_4D_COLOR_TEXTURE">GL_4D_COLOR_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_4D_COLOR_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_4D_COLOR_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>FeedBackToken. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_4_BYTES">GL_4_BYTES</td>
-<td>u32</td>
+<td id="Ogl_GL_4_BYTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_4_BYTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM">GL_ACCUM</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_ALPHA_BITS">GL_ACCUM_ALPHA_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_ALPHA_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_ALPHA_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_BLUE_BITS">GL_ACCUM_BLUE_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_BLUE_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_BLUE_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_BUFFER_BIT">GL_ACCUM_BUFFER_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_BUFFER_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_BUFFER_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_CLEAR_VALUE">GL_ACCUM_CLEAR_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_CLEAR_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_CLEAR_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_GREEN_BITS">GL_ACCUM_GREEN_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_GREEN_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_GREEN_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACCUM_RED_BITS">GL_ACCUM_RED_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ACCUM_RED_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACCUM_RED_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_ATTRIBUTES">GL_ACTIVE_ATTRIBUTES</td>
-<td>u32</td>
+<td id="Ogl_GL_ACTIVE_ATTRIBUTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACTIVE_ATTRIBUTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_ATTRIBUTE_MAX_LENGTH">GL_ACTIVE_ATTRIBUTE_MAX_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_ACTIVE_ATTRIBUTE_MAX_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACTIVE_ATTRIBUTE_MAX_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_TEXTURE">GL_ACTIVE_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_ACTIVE_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACTIVE_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_UNIFORMS">GL_ACTIVE_UNIFORMS</td>
-<td>u32</td>
+<td id="Ogl_GL_ACTIVE_UNIFORMS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACTIVE_UNIFORMS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ACTIVE_UNIFORM_MAX_LENGTH">GL_ACTIVE_UNIFORM_MAX_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_ACTIVE_UNIFORM_MAX_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ACTIVE_UNIFORM_MAX_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ADD">GL_ADD</td>
-<td>u32</td>
+<td id="Ogl_GL_ADD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ADD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>AlphaFunction. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_ADD_SIGNED">GL_ADD_SIGNED</td>
-<td>u32</td>
+<td id="Ogl_GL_ADD_SIGNED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ADD_SIGNED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALIASED_LINE_WIDTH_RANGE">GL_ALIASED_LINE_WIDTH_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_ALIASED_LINE_WIDTH_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALIASED_LINE_WIDTH_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALIASED_POINT_SIZE_RANGE">GL_ALIASED_POINT_SIZE_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_ALIASED_POINT_SIZE_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALIASED_POINT_SIZE_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALL_ATTRIB_BITS">GL_ALL_ATTRIB_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ALL_ATTRIB_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALL_ATTRIB_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>BeginMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA">GL_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA12">GL_ALPHA12</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA16">GL_ALPHA16</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA4">GL_ALPHA4</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA8">GL_ALPHA8</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_BIAS">GL_ALPHA_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_BITS">GL_ALPHA_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_INTEGER">GL_ALPHA_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_SCALE">GL_ALPHA_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_TEST">GL_ALPHA_TEST</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_TEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_TEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_TEST_FUNC">GL_ALPHA_TEST_FUNC</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_TEST_FUNC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_TEST_FUNC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALPHA_TEST_REF">GL_ALPHA_TEST_REF</td>
-<td>u32</td>
+<td id="Ogl_GL_ALPHA_TEST_REF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALPHA_TEST_REF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ALWAYS">GL_ALWAYS</td>
-<td>u32</td>
+<td id="Ogl_GL_ALWAYS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ALWAYS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>AttribMask. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_AMBIENT">GL_AMBIENT</td>
-<td>u32</td>
+<td id="Ogl_GL_AMBIENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AMBIENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AMBIENT_AND_DIFFUSE">GL_AMBIENT_AND_DIFFUSE</td>
-<td>u32</td>
+<td id="Ogl_GL_AMBIENT_AND_DIFFUSE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AMBIENT_AND_DIFFUSE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AND">GL_AND</td>
-<td>u32</td>
+<td id="Ogl_GL_AND" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AND</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AND_INVERTED">GL_AND_INVERTED</td>
-<td>u32</td>
+<td id="Ogl_GL_AND_INVERTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AND_INVERTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AND_REVERSE">GL_AND_REVERSE</td>
-<td>u32</td>
+<td id="Ogl_GL_AND_REVERSE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AND_REVERSE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ARRAY_BUFFER">GL_ARRAY_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_ARRAY_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ARRAY_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ARRAY_BUFFER_BINDING">GL_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ATTACHED_SHADERS">GL_ATTACHED_SHADERS</td>
-<td>u32</td>
+<td id="Ogl_GL_ATTACHED_SHADERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ATTACHED_SHADERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ATTRIB_STACK_DEPTH">GL_ATTRIB_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_ATTRIB_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ATTRIB_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUTO_NORMAL">GL_AUTO_NORMAL</td>
-<td>u32</td>
+<td id="Ogl_GL_AUTO_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUTO_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUX0">GL_AUX0</td>
-<td>u32</td>
+<td id="Ogl_GL_AUX0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUX0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUX1">GL_AUX1</td>
-<td>u32</td>
+<td id="Ogl_GL_AUX1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUX1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUX2">GL_AUX2</td>
-<td>u32</td>
+<td id="Ogl_GL_AUX2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUX2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUX3">GL_AUX3</td>
-<td>u32</td>
+<td id="Ogl_GL_AUX3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUX3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>ErrorCode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_AUX_BUFFERS">GL_AUX_BUFFERS</td>
-<td>u32</td>
+<td id="Ogl_GL_AUX_BUFFERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_AUX_BUFFERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BACK">GL_BACK</td>
-<td>u32</td>
+<td id="Ogl_GL_BACK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BACK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BACK_LEFT">GL_BACK_LEFT</td>
-<td>u32</td>
+<td id="Ogl_GL_BACK_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BACK_LEFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BACK_RIGHT">GL_BACK_RIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_BACK_RIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BACK_RIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGR">GL_BGR</td>
-<td>u32</td>
+<td id="Ogl_GL_BGR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGRA">GL_BGRA</td>
-<td>u32</td>
+<td id="Ogl_GL_BGRA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGRA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGRA_EXT">GL_BGRA_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_BGRA_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGRA_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>EXT_paletted_texture  These must match the GL_COLOR_TABLE_..._SGI enumerants. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGRA_INTEGER">GL_BGRA_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_BGRA_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGRA_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGR_EXT">GL_BGR_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_BGR_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGR_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BGR_INTEGER">GL_BGR_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_BGR_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BGR_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BITMAP">GL_BITMAP</td>
-<td>u32</td>
+<td id="Ogl_GL_BITMAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BITMAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>PolygonMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_BITMAP_TOKEN">GL_BITMAP_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_BITMAP_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BITMAP_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND">GL_BLEND</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_COLOR">GL_BLEND_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_DST">GL_BLEND_DST</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_DST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_DST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_DST_ALPHA">GL_BLEND_DST_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_DST_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_DST_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_DST_RGB">GL_BLEND_DST_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_DST_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_DST_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_EQUATION">GL_BLEND_EQUATION</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_EQUATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_EQUATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_EQUATION_ALPHA">GL_BLEND_EQUATION_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_EQUATION_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_EQUATION_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_EQUATION_RGB">GL_BLEND_EQUATION_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_EQUATION_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_EQUATION_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_SRC">GL_BLEND_SRC</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_SRC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_SRC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_SRC_ALPHA">GL_BLEND_SRC_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_SRC_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_SRC_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLEND_SRC_RGB">GL_BLEND_SRC_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_BLEND_SRC_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLEND_SRC_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLUE">GL_BLUE</td>
-<td>u32</td>
+<td id="Ogl_GL_BLUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLUE_BIAS">GL_BLUE_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_BLUE_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLUE_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLUE_BITS">GL_BLUE_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_BLUE_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLUE_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLUE_INTEGER">GL_BLUE_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_BLUE_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLUE_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BLUE_SCALE">GL_BLUE_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_BLUE_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BLUE_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BOOL">GL_BOOL</td>
-<td>u32</td>
+<td id="Ogl_GL_BOOL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BOOL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BOOL_VEC2">GL_BOOL_VEC2</td>
-<td>u32</td>
+<td id="Ogl_GL_BOOL_VEC2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BOOL_VEC2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BOOL_VEC3">GL_BOOL_VEC3</td>
-<td>u32</td>
+<td id="Ogl_GL_BOOL_VEC3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BOOL_VEC3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BOOL_VEC4">GL_BOOL_VEC4</td>
-<td>u32</td>
+<td id="Ogl_GL_BOOL_VEC4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BOOL_VEC4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_ACCESS">GL_BUFFER_ACCESS</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_ACCESS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_ACCESS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_ACCESS_FLAGS">GL_BUFFER_ACCESS_FLAGS</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_ACCESS_FLAGS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_ACCESS_FLAGS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_MAPPED">GL_BUFFER_MAPPED</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_MAPPED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_MAPPED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_MAP_LENGTH">GL_BUFFER_MAP_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_MAP_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_MAP_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_MAP_OFFSET">GL_BUFFER_MAP_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_MAP_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_MAP_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_MAP_POINTER">GL_BUFFER_MAP_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_MAP_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_MAP_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_SIZE">GL_BUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BUFFER_USAGE">GL_BUFFER_USAGE</td>
-<td>u32</td>
+<td id="Ogl_GL_BUFFER_USAGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BUFFER_USAGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_BYTE">GL_BYTE</td>
-<td>u32</td>
+<td id="Ogl_GL_BYTE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_BYTE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_C3F_V3F">GL_C3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_C3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_C3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_C4F_N3F_V3F">GL_C4F_N3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_C4F_N3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_C4F_N3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_C4UB_V2F">GL_C4UB_V2F</td>
-<td>u32</td>
+<td id="Ogl_GL_C4UB_V2F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_C4UB_V2F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_C4UB_V3F">GL_C4UB_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_C4UB_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_C4UB_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CCW">GL_CCW</td>
-<td>u32</td>
+<td id="Ogl_GL_CCW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CCW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>GetMapTarget. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP">GL_CLAMP</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP_FRAGMENT_COLOR">GL_CLAMP_FRAGMENT_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP_FRAGMENT_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP_FRAGMENT_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP_READ_COLOR">GL_CLAMP_READ_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP_READ_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP_READ_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP_TO_BORDER">GL_CLAMP_TO_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP_TO_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP_TO_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP_TO_EDGE">GL_CLAMP_TO_EDGE</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP_TO_EDGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP_TO_EDGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLAMP_VERTEX_COLOR">GL_CLAMP_VERTEX_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CLAMP_VERTEX_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLAMP_VERTEX_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLEAR">GL_CLEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_CLEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIENT_ACTIVE_TEXTURE">GL_CLIENT_ACTIVE_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIENT_ACTIVE_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIENT_ACTIVE_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIENT_ALL_ATTRIB_BITS">GL_CLIENT_ALL_ATTRIB_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIENT_ALL_ATTRIB_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIENT_ALL_ATTRIB_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>polygon_offset. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIENT_ATTRIB_STACK_DEPTH">GL_CLIENT_ATTRIB_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIENT_ATTRIB_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIENT_ATTRIB_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIENT_PIXEL_STORE_BIT">GL_CLIENT_PIXEL_STORE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIENT_PIXEL_STORE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIENT_PIXEL_STORE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIENT_VERTEX_ARRAY_BIT">GL_CLIENT_VERTEX_ARRAY_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIENT_VERTEX_ARRAY_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIENT_VERTEX_ARRAY_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIPPING_INPUT_PRIMITIVES">GL_CLIPPING_INPUT_PRIMITIVES</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIPPING_INPUT_PRIMITIVES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIPPING_INPUT_PRIMITIVES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIPPING_OUTPUT_PRIMITIVES">GL_CLIPPING_OUTPUT_PRIMITIVES</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIPPING_OUTPUT_PRIMITIVES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIPPING_OUTPUT_PRIMITIVES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE0">GL_CLIP_DISTANCE0</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE1">GL_CLIP_DISTANCE1</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE2">GL_CLIP_DISTANCE2</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE3">GL_CLIP_DISTANCE3</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE4">GL_CLIP_DISTANCE4</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_DISTANCE5">GL_CLIP_DISTANCE5</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_DISTANCE5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_DISTANCE5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE0">GL_CLIP_PLANE0</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE1">GL_CLIP_PLANE1</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE2">GL_CLIP_PLANE2</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE3">GL_CLIP_PLANE3</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE4">GL_CLIP_PLANE4</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CLIP_PLANE5">GL_CLIP_PLANE5</td>
-<td>u32</td>
+<td id="Ogl_GL_CLIP_PLANE5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CLIP_PLANE5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>DataType. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_COEFF">GL_COEFF</td>
-<td>u32</td>
+<td id="Ogl_GL_COEFF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COEFF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR">GL_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY">GL_COLOR_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_BUFFER_BINDING">GL_COLOR_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_COUNT_EXT">GL_COLOR_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_EXT">GL_COLOR_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_POINTER">GL_COLOR_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_POINTER_EXT">GL_COLOR_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_SIZE">GL_COLOR_ARRAY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_SIZE_EXT">GL_COLOR_ARRAY_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_STRIDE">GL_COLOR_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_STRIDE_EXT">GL_COLOR_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_TYPE">GL_COLOR_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ARRAY_TYPE_EXT">GL_COLOR_ARRAY_TYPE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ARRAY_TYPE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ARRAY_TYPE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT0">GL_COLOR_ATTACHMENT0</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT1">GL_COLOR_ATTACHMENT1</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT10">GL_COLOR_ATTACHMENT10</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT10" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT10</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT11">GL_COLOR_ATTACHMENT11</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT11" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT11</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT12">GL_COLOR_ATTACHMENT12</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT13">GL_COLOR_ATTACHMENT13</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT13" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT13</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT14">GL_COLOR_ATTACHMENT14</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT14" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT14</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT15">GL_COLOR_ATTACHMENT15</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT15" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT15</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT2">GL_COLOR_ATTACHMENT2</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT3">GL_COLOR_ATTACHMENT3</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT4">GL_COLOR_ATTACHMENT4</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT5">GL_COLOR_ATTACHMENT5</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT6">GL_COLOR_ATTACHMENT6</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT6" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT7">GL_COLOR_ATTACHMENT7</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT7" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT7</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT8">GL_COLOR_ATTACHMENT8</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_ATTACHMENT9">GL_COLOR_ATTACHMENT9</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_ATTACHMENT9" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_ATTACHMENT9</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_BUFFER_BIT">GL_COLOR_BUFFER_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_BUFFER_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_BUFFER_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_CLEAR_VALUE">GL_COLOR_CLEAR_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_CLEAR_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_CLEAR_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX">GL_COLOR_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX12_EXT">GL_COLOR_INDEX12_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX12_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX12_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX16_EXT">GL_COLOR_INDEX16_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX16_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX16_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>WIN_draw_range_elements. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX1_EXT">GL_COLOR_INDEX1_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX1_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX1_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX2_EXT">GL_COLOR_INDEX2_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX2_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX2_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX4_EXT">GL_COLOR_INDEX4_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX4_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX4_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEX8_EXT">GL_COLOR_INDEX8_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEX8_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEX8_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_INDEXES">GL_COLOR_INDEXES</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_INDEXES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_INDEXES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>MatrixMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_LOGIC_OP">GL_COLOR_LOGIC_OP</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_LOGIC_OP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_LOGIC_OP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_MATERIAL">GL_COLOR_MATERIAL</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_MATERIAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_MATERIAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_MATERIAL_FACE">GL_COLOR_MATERIAL_FACE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_MATERIAL_FACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_MATERIAL_FACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_MATERIAL_PARAMETER">GL_COLOR_MATERIAL_PARAMETER</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_MATERIAL_PARAMETER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_MATERIAL_PARAMETER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_MATRIX">GL_COLOR_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_MATRIX_STACK_DEPTH">GL_COLOR_MATRIX_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_MATRIX_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_MATRIX_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_SUM">GL_COLOR_SUM</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_SUM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_SUM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE">GL_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE">GL_COLOR_TABLE_ALPHA_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_ALPHA_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE_EXT">GL_COLOR_TABLE_ALPHA_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_ALPHA_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_ALPHA_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_BIAS">GL_COLOR_TABLE_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE">GL_COLOR_TABLE_BLUE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_BLUE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE_EXT">GL_COLOR_TABLE_BLUE_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_BLUE_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_BLUE_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_FORMAT">GL_COLOR_TABLE_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_FORMAT_EXT">GL_COLOR_TABLE_FORMAT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_FORMAT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_FORMAT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE">GL_COLOR_TABLE_GREEN_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_GREEN_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE_EXT">GL_COLOR_TABLE_GREEN_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_GREEN_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_GREEN_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE">GL_COLOR_TABLE_INTENSITY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_INTENSITY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE_EXT">GL_COLOR_TABLE_INTENSITY_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_INTENSITY_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_INTENSITY_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE">GL_COLOR_TABLE_LUMINANCE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_LUMINANCE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE_EXT">GL_COLOR_TABLE_LUMINANCE_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_LUMINANCE_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_LUMINANCE_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_RED_SIZE">GL_COLOR_TABLE_RED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_RED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_RED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_RED_SIZE_EXT">GL_COLOR_TABLE_RED_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_RED_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_RED_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_SCALE">GL_COLOR_TABLE_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_WIDTH">GL_COLOR_TABLE_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_TABLE_WIDTH_EXT">GL_COLOR_TABLE_WIDTH_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_TABLE_WIDTH_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_TABLE_WIDTH_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COLOR_WRITEMASK">GL_COLOR_WRITEMASK</td>
-<td>u32</td>
+<td id="Ogl_GL_COLOR_WRITEMASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COLOR_WRITEMASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMBINE">GL_COMBINE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMBINE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMBINE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMBINE_ALPHA">GL_COMBINE_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMBINE_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMBINE_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMBINE_RGB">GL_COMBINE_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_COMBINE_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMBINE_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPARE_REF_TO_TEXTURE">GL_COMPARE_REF_TO_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPARE_REF_TO_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPARE_REF_TO_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPARE_R_TO_TEXTURE">GL_COMPARE_R_TO_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPARE_R_TO_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPARE_R_TO_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPARE_R_TO_TEXTURE_ARB">GL_COMPARE_R_TO_TEXTURE_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPARE_R_TO_TEXTURE_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPARE_R_TO_TEXTURE_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>----------------------------- GL_ARB_imaging ----------------------------. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPILE">GL_COMPILE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPILE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPILE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPILE_AND_EXECUTE">GL_COMPILE_AND_EXECUTE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPILE_AND_EXECUTE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPILE_AND_EXECUTE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>LogicOp. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPILE_STATUS">GL_COMPILE_STATUS</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPILE_STATUS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPILE_STATUS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_ALPHA">GL_COMPRESSED_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_INTENSITY">GL_COMPRESSED_INTENSITY</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_INTENSITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_INTENSITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_LUMINANCE">GL_COMPRESSED_LUMINANCE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_LUMINANCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_LUMINANCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_LUMINANCE_ALPHA">GL_COMPRESSED_LUMINANCE_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_LUMINANCE_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_LUMINANCE_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_RGB">GL_COMPRESSED_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_RGBA">GL_COMPRESSED_RGBA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_RGBA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_RGBA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_RGBA_BPTC_UNORM">GL_COMPRESSED_RGBA_BPTC_UNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_RGBA_BPTC_UNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_RGBA_BPTC_UNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT">GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT">GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_SLUMINANCE">GL_COMPRESSED_SLUMINANCE</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_SLUMINANCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_SLUMINANCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_SLUMINANCE_ALPHA">GL_COMPRESSED_SLUMINANCE_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_SLUMINANCE_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_SLUMINANCE_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_SRGB">GL_COMPRESSED_SRGB</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_SRGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_SRGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA">GL_COMPRESSED_SRGB_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_SRGB_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM">GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPRESSED_TEXTURE_FORMATS">GL_COMPRESSED_TEXTURE_FORMATS</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPRESSED_TEXTURE_FORMATS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPRESSED_TEXTURE_FORMATS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COMPUTE_SHADER_INVOCATIONS">GL_COMPUTE_SHADER_INVOCATIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_COMPUTE_SHADER_INVOCATIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COMPUTE_SHADER_INVOCATIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONSTANT">GL_CONSTANT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONSTANT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONSTANT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONSTANT_ALPHA">GL_CONSTANT_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_CONSTANT_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONSTANT_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONSTANT_ATTENUATION">GL_CONSTANT_ATTENUATION</td>
-<td>u32</td>
+<td id="Ogl_GL_CONSTANT_ATTENUATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONSTANT_ATTENUATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONSTANT_BORDER">GL_CONSTANT_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_CONSTANT_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONSTANT_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONSTANT_COLOR">GL_CONSTANT_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CONSTANT_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONSTANT_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT">GL_CONTEXT_COMPATIBILITY_PROFILE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_COMPATIBILITY_PROFILE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_CORE_PROFILE_BIT">GL_CONTEXT_CORE_PROFILE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_CORE_PROFILE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_CORE_PROFILE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_FLAGS">GL_CONTEXT_FLAGS</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_FLAGS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_FLAGS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT">GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_FLAG_NO_ERROR_BIT">GL_CONTEXT_FLAG_NO_ERROR_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_FLAG_NO_ERROR_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_FLAG_NO_ERROR_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT">GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONTEXT_PROFILE_MASK">GL_CONTEXT_PROFILE_MASK</td>
-<td>u32</td>
+<td id="Ogl_GL_CONTEXT_PROFILE_MASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONTEXT_PROFILE_MASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_1D">GL_CONVOLUTION_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_2D">GL_CONVOLUTION_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_BORDER_COLOR">GL_CONVOLUTION_BORDER_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_BORDER_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_BORDER_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>------------------- GL_ARB_framebuffer_no_attachments -------------------. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_BORDER_MODE">GL_CONVOLUTION_BORDER_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_BORDER_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_BORDER_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_FILTER_BIAS">GL_CONVOLUTION_FILTER_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_FILTER_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_FILTER_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_FILTER_SCALE">GL_CONVOLUTION_FILTER_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_FILTER_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_FILTER_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_FORMAT">GL_CONVOLUTION_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_HEIGHT">GL_CONVOLUTION_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CONVOLUTION_WIDTH">GL_CONVOLUTION_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_CONVOLUTION_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CONVOLUTION_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COORD_REPLACE">GL_COORD_REPLACE</td>
-<td>u32</td>
+<td id="Ogl_GL_COORD_REPLACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COORD_REPLACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COPY">GL_COPY</td>
-<td>u32</td>
+<td id="Ogl_GL_COPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COPY_INVERTED">GL_COPY_INVERTED</td>
-<td>u32</td>
+<td id="Ogl_GL_COPY_INVERTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COPY_INVERTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COPY_PIXEL_TOKEN">GL_COPY_PIXEL_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_COPY_PIXEL_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COPY_PIXEL_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COPY_READ_BUFFER_BINDING">GL_COPY_READ_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_COPY_READ_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COPY_READ_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_COPY_WRITE_BUFFER_BINDING">GL_COPY_WRITE_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_COPY_WRITE_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_COPY_WRITE_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CULL_FACE">GL_CULL_FACE</td>
-<td>u32</td>
+<td id="Ogl_GL_CULL_FACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CULL_FACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CULL_FACE_MODE">GL_CULL_FACE_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_CULL_FACE_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CULL_FACE_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_BIT">GL_CURRENT_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_COLOR">GL_CURRENT_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_FOG_COORD">GL_CURRENT_FOG_COORD</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_FOG_COORD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_FOG_COORD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_FOG_COORDINATE">GL_CURRENT_FOG_COORDINATE</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_FOG_COORDINATE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_FOG_COORDINATE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_INDEX">GL_CURRENT_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_NORMAL">GL_CURRENT_NORMAL</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_PROGRAM">GL_CURRENT_PROGRAM</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_PROGRAM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_PROGRAM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_QUERY">GL_CURRENT_QUERY</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_QUERY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_QUERY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_COLOR">GL_CURRENT_RASTER_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_DISTANCE">GL_CURRENT_RASTER_DISTANCE</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_DISTANCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_DISTANCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_INDEX">GL_CURRENT_RASTER_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_POSITION">GL_CURRENT_RASTER_POSITION</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_POSITION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_POSITION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_POSITION_VALID">GL_CURRENT_RASTER_POSITION_VALID</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_POSITION_VALID" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_POSITION_VALID</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_SECONDARY_COLOR">GL_CURRENT_RASTER_SECONDARY_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_SECONDARY_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_SECONDARY_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_RASTER_TEXTURE_COORDS">GL_CURRENT_RASTER_TEXTURE_COORDS</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_RASTER_TEXTURE_COORDS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_RASTER_TEXTURE_COORDS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_SECONDARY_COLOR">GL_CURRENT_SECONDARY_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_SECONDARY_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_SECONDARY_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_TEXTURE_COORDS">GL_CURRENT_TEXTURE_COORDS</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_TEXTURE_COORDS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_TEXTURE_COORDS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CURRENT_VERTEX_ATTRIB">GL_CURRENT_VERTEX_ATTRIB</td>
-<td>u32</td>
+<td id="Ogl_GL_CURRENT_VERTEX_ATTRIB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CURRENT_VERTEX_ATTRIB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_CW">GL_CW</td>
-<td>u32</td>
+<td id="Ogl_GL_CW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_CW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DECAL">GL_DECAL</td>
-<td>u32</td>
+<td id="Ogl_GL_DECAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DECAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureEnvParameter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_DECR">GL_DECR</td>
-<td>u32</td>
+<td id="Ogl_GL_DECR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DECR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>StringName. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_DECR_WRAP">GL_DECR_WRAP</td>
-<td>u32</td>
+<td id="Ogl_GL_DECR_WRAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DECR_WRAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DELETE_STATUS">GL_DELETE_STATUS</td>
-<td>u32</td>
+<td id="Ogl_GL_DELETE_STATUS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DELETE_STATUS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH">GL_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH24_STENCIL8">GL_DEPTH24_STENCIL8</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH24_STENCIL8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH24_STENCIL8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_ATTACHMENT">GL_DEPTH_ATTACHMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_ATTACHMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_ATTACHMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_BIAS">GL_DEPTH_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_BITS">GL_DEPTH_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_BUFFER">GL_DEPTH_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_BUFFER_BIT">GL_DEPTH_BUFFER_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_BUFFER_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_BUFFER_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_CLEAR_VALUE">GL_DEPTH_CLEAR_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_CLEAR_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_CLEAR_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_COMPONENT">GL_DEPTH_COMPONENT</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_COMPONENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_COMPONENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_COMPONENT16">GL_DEPTH_COMPONENT16</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_COMPONENT16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_COMPONENT16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_COMPONENT24">GL_DEPTH_COMPONENT24</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_COMPONENT24" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_COMPONENT24</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_COMPONENT32">GL_DEPTH_COMPONENT32</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_COMPONENT32" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_COMPONENT32</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_FUNC">GL_DEPTH_FUNC</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_FUNC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_FUNC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_RANGE">GL_DEPTH_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_SCALE">GL_DEPTH_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_STENCIL">GL_DEPTH_STENCIL</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_STENCIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_STENCIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_STENCIL_ATTACHMENT">GL_DEPTH_STENCIL_ATTACHMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_STENCIL_ATTACHMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_STENCIL_ATTACHMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_TEST">GL_DEPTH_TEST</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_TEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_TEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_TEXTURE_MODE">GL_DEPTH_TEXTURE_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_TEXTURE_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_TEXTURE_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DEPTH_WRITEMASK">GL_DEPTH_WRITEMASK</td>
-<td>u32</td>
+<td id="Ogl_GL_DEPTH_WRITEMASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DEPTH_WRITEMASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DIFFUSE">GL_DIFFUSE</td>
-<td>u32</td>
+<td id="Ogl_GL_DIFFUSE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DIFFUSE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DITHER">GL_DITHER</td>
-<td>u32</td>
+<td id="Ogl_GL_DITHER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DITHER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOMAIN">GL_DOMAIN</td>
-<td>u32</td>
+<td id="Ogl_GL_DOMAIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOMAIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>GetTarget. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_DONT_CARE">GL_DONT_CARE</td>
-<td>u32</td>
+<td id="Ogl_GL_DONT_CARE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DONT_CARE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOT3_RGB">GL_DOT3_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_DOT3_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOT3_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOT3_RGBA">GL_DOT3_RGBA</td>
-<td>u32</td>
+<td id="Ogl_GL_DOT3_RGBA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOT3_RGBA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOUBLE">GL_DOUBLE</td>
-<td>u32</td>
+<td id="Ogl_GL_DOUBLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOUBLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>DrawBufferMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOUBLEBUFFER">GL_DOUBLEBUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_DOUBLEBUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOUBLEBUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DOUBLE_EXT">GL_DOUBLE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_DOUBLE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DOUBLE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>EXT_bgra. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER">GL_DRAW_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER0">GL_DRAW_BUFFER0</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER1">GL_DRAW_BUFFER1</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER10">GL_DRAW_BUFFER10</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER10" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER10</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER11">GL_DRAW_BUFFER11</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER11" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER11</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER12">GL_DRAW_BUFFER12</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER13">GL_DRAW_BUFFER13</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER13" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER13</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER14">GL_DRAW_BUFFER14</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER14" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER14</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER15">GL_DRAW_BUFFER15</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER15" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER15</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER2">GL_DRAW_BUFFER2</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER3">GL_DRAW_BUFFER3</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER4">GL_DRAW_BUFFER4</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER5">GL_DRAW_BUFFER5</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER6">GL_DRAW_BUFFER6</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER6" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER7">GL_DRAW_BUFFER7</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER7" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER7</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER8">GL_DRAW_BUFFER8</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_BUFFER9">GL_DRAW_BUFFER9</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_BUFFER9" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_BUFFER9</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_FRAMEBUFFER">GL_DRAW_FRAMEBUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_FRAMEBUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_FRAMEBUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_FRAMEBUFFER_BINDING">GL_DRAW_FRAMEBUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_FRAMEBUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_FRAMEBUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DRAW_PIXEL_TOKEN">GL_DRAW_PIXEL_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_DRAW_PIXEL_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DRAW_PIXEL_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DST_ALPHA">GL_DST_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_DST_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DST_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DST_COLOR">GL_DST_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_DST_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DST_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DYNAMIC_COPY">GL_DYNAMIC_COPY</td>
-<td>u32</td>
+<td id="Ogl_GL_DYNAMIC_COPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DYNAMIC_COPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DYNAMIC_DRAW">GL_DYNAMIC_DRAW</td>
-<td>u32</td>
+<td id="Ogl_GL_DYNAMIC_DRAW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DYNAMIC_DRAW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_DYNAMIC_READ">GL_DYNAMIC_READ</td>
-<td>u32</td>
+<td id="Ogl_GL_DYNAMIC_READ" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_DYNAMIC_READ</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG">GL_EDGE_FLAG</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY">GL_EDGE_FLAG_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_BUFFER_BINDING">GL_EDGE_FLAG_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_COUNT_EXT">GL_EDGE_FLAG_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_EXT">GL_EDGE_FLAG_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER">GL_EDGE_FLAG_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER_EXT">GL_EDGE_FLAG_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE">GL_EDGE_FLAG_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE_EXT">GL_EDGE_FLAG_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_EDGE_FLAG_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EDGE_FLAG_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER">GL_ELEMENT_ARRAY_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ELEMENT_ARRAY_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER_BINDING">GL_ELEMENT_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_ELEMENT_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ELEMENT_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EMISSION">GL_EMISSION</td>
-<td>u32</td>
+<td id="Ogl_GL_EMISSION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EMISSION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ENABLE_BIT">GL_ENABLE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_ENABLE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ENABLE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EQUAL">GL_EQUAL</td>
-<td>u32</td>
+<td id="Ogl_GL_EQUAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EQUAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EQUIV">GL_EQUIV</td>
-<td>u32</td>
+<td id="Ogl_GL_EQUIV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EQUIV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EVAL_BIT">GL_EVAL_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_EVAL_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EVAL_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXP">GL_EXP</td>
-<td>u32</td>
+<td id="Ogl_GL_EXP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXP2">GL_EXP2</td>
-<td>u32</td>
+<td id="Ogl_GL_EXP2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXP2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>FrontFaceDirection. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXTENSIONS">GL_EXTENSIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_EXTENSIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXTENSIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureCoordName. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXT_bgra">GL_EXT_bgra</td>
-<td>s32</td>
+<td id="Ogl_GL_EXT_bgra" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXT_bgra</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXT_paletted_texture">GL_EXT_paletted_texture</td>
-<td>s32</td>
+<td id="Ogl_GL_EXT_paletted_texture" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXT_paletted_texture</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EXT_vertex_array">GL_EXT_vertex_array</td>
-<td>s32</td>
+<td id="Ogl_GL_EXT_vertex_array" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EXT_vertex_array</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EYE_LINEAR">GL_EYE_LINEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_EYE_LINEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EYE_LINEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_EYE_PLANE">GL_EYE_PLANE</td>
-<td>u32</td>
+<td id="Ogl_GL_EYE_PLANE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_EYE_PLANE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureMagFilter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_FALSE">GL_FALSE</td>
-<td>u8</td>
+<td id="Ogl_GL_FALSE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FALSE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>ClipPlaneName. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_FASTEST">GL_FASTEST</td>
-<td>u32</td>
+<td id="Ogl_GL_FASTEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FASTEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FEEDBACK">GL_FEEDBACK</td>
-<td>u32</td>
+<td id="Ogl_GL_FEEDBACK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FEEDBACK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_POINTER">GL_FEEDBACK_BUFFER_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_FEEDBACK_BUFFER_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FEEDBACK_BUFFER_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_SIZE">GL_FEEDBACK_BUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FEEDBACK_BUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FEEDBACK_BUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FEEDBACK_BUFFER_TYPE">GL_FEEDBACK_BUFFER_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_FEEDBACK_BUFFER_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FEEDBACK_BUFFER_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FILL">GL_FILL</td>
-<td>u32</td>
+<td id="Ogl_GL_FILL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FILL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>RenderingMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_FIXED_ONLY">GL_FIXED_ONLY</td>
-<td>u32</td>
+<td id="Ogl_GL_FIXED_ONLY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FIXED_ONLY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLAT">GL_FLAT</td>
-<td>u32</td>
+<td id="Ogl_GL_FLAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT">GL_FLOAT</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT2">GL_FLOAT_MAT2</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT2x3">GL_FLOAT_MAT2x3</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT2x3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT2x3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT2x4">GL_FLOAT_MAT2x4</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT2x4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT2x4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT3">GL_FLOAT_MAT3</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT3x2">GL_FLOAT_MAT3x2</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT3x2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT3x2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT3x4">GL_FLOAT_MAT3x4</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT3x4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT3x4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT4">GL_FLOAT_MAT4</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT4x2">GL_FLOAT_MAT4x2</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT4x2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT4x2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_MAT4x3">GL_FLOAT_MAT4x3</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_MAT4x3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_MAT4x3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_VEC2">GL_FLOAT_VEC2</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_VEC2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_VEC2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_VEC3">GL_FLOAT_VEC3</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_VEC3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_VEC3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FLOAT_VEC4">GL_FLOAT_VEC4</td>
-<td>u32</td>
+<td id="Ogl_GL_FLOAT_VEC4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FLOAT_VEC4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG">GL_FOG</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_BIT">GL_FOG_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COLOR">GL_FOG_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD">GL_FOG_COORD</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE">GL_FOG_COORDINATE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY">GL_FOG_COORDINATE_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING">GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_POINTER">GL_FOG_COORDINATE_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_STRIDE">GL_FOG_COORDINATE_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_ARRAY_TYPE">GL_FOG_COORDINATE_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORDINATE_SOURCE">GL_FOG_COORDINATE_SOURCE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORDINATE_SOURCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORDINATE_SOURCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY">GL_FOG_COORD_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_BUFFER_BINDING">GL_FOG_COORD_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_POINTER">GL_FOG_COORD_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_STRIDE">GL_FOG_COORD_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_ARRAY_TYPE">GL_FOG_COORD_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_COORD_SRC">GL_FOG_COORD_SRC</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_COORD_SRC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_COORD_SRC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_DENSITY">GL_FOG_DENSITY</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_DENSITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_DENSITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_END">GL_FOG_END</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_END" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_END</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_HINT">GL_FOG_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_INDEX">GL_FOG_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_MODE">GL_FOG_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_SPECULAR_TEXTURE_WIN">GL_FOG_SPECULAR_TEXTURE_WIN</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_SPECULAR_TEXTURE_WIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_SPECULAR_TEXTURE_WIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>For compatibility with OpenGL v1.0. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_FOG_START">GL_FOG_START</td>
-<td>u32</td>
+<td id="Ogl_GL_FOG_START" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FOG_START</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAGMENT_DEPTH">GL_FRAGMENT_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAGMENT_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAGMENT_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAGMENT_SHADER">GL_FRAGMENT_SHADER</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAGMENT_SHADER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAGMENT_SHADER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAGMENT_SHADER_DERIVATIVE_HINT">GL_FRAGMENT_SHADER_DERIVATIVE_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAGMENT_SHADER_DERIVATIVE_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAGMENT_SHADER_DERIVATIVE_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAGMENT_SHADER_INVOCATIONS">GL_FRAGMENT_SHADER_INVOCATIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAGMENT_SHADER_INVOCATIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAGMENT_SHADER_INVOCATIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER">GL_FRAMEBUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE">GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE">GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING">GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE">GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE">GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE">GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_LAYERED">GL_FRAMEBUFFER_ATTACHMENT_LAYERED</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_LAYERED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_LAYERED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE">GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE">GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_BINDING">GL_FRAMEBUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_COMPLETE">GL_FRAMEBUFFER_COMPLETE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_COMPLETE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_COMPLETE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT">GL_FRAMEBUFFER_DEFAULT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS">GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_HEIGHT">GL_FRAMEBUFFER_DEFAULT_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_LAYERS">GL_FRAMEBUFFER_DEFAULT_LAYERS</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_LAYERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT_LAYERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_SAMPLES">GL_FRAMEBUFFER_DEFAULT_SAMPLES</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_SAMPLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT_SAMPLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_WIDTH">GL_FRAMEBUFFER_DEFAULT_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_DEFAULT_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_DEFAULT_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT">GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER">GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS">GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT">GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE">GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER">GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_SRGB">GL_FRAMEBUFFER_SRGB</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_SRGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_SRGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_UNDEFINED">GL_FRAMEBUFFER_UNDEFINED</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_UNDEFINED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_UNDEFINED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRAMEBUFFER_UNSUPPORTED">GL_FRAMEBUFFER_UNSUPPORTED</td>
-<td>u32</td>
+<td id="Ogl_GL_FRAMEBUFFER_UNSUPPORTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRAMEBUFFER_UNSUPPORTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRONT">GL_FRONT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRONT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRONT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRONT_AND_BACK">GL_FRONT_AND_BACK</td>
-<td>u32</td>
+<td id="Ogl_GL_FRONT_AND_BACK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRONT_AND_BACK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRONT_FACE">GL_FRONT_FACE</td>
-<td>u32</td>
+<td id="Ogl_GL_FRONT_FACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRONT_FACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRONT_LEFT">GL_FRONT_LEFT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRONT_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRONT_LEFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FRONT_RIGHT">GL_FRONT_RIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_FRONT_RIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FRONT_RIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FUNC_ADD">GL_FUNC_ADD</td>
-<td>u32</td>
+<td id="Ogl_GL_FUNC_ADD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FUNC_ADD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FUNC_REVERSE_SUBTRACT">GL_FUNC_REVERSE_SUBTRACT</td>
-<td>u32</td>
+<td id="Ogl_GL_FUNC_REVERSE_SUBTRACT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FUNC_REVERSE_SUBTRACT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_FUNC_SUBTRACT">GL_FUNC_SUBTRACT</td>
-<td>u32</td>
+<td id="Ogl_GL_FUNC_SUBTRACT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_FUNC_SUBTRACT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GENERATE_MIPMAP">GL_GENERATE_MIPMAP</td>
-<td>u32</td>
+<td id="Ogl_GL_GENERATE_MIPMAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GENERATE_MIPMAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GENERATE_MIPMAP_HINT">GL_GENERATE_MIPMAP_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_GENERATE_MIPMAP_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GENERATE_MIPMAP_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEOMETRY_INPUT_TYPE">GL_GEOMETRY_INPUT_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_GEOMETRY_INPUT_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEOMETRY_INPUT_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEOMETRY_OUTPUT_TYPE">GL_GEOMETRY_OUTPUT_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_GEOMETRY_OUTPUT_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEOMETRY_OUTPUT_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEOMETRY_SHADER">GL_GEOMETRY_SHADER</td>
-<td>u32</td>
+<td id="Ogl_GL_GEOMETRY_SHADER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEOMETRY_SHADER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED">GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED</td>
-<td>u32</td>
+<td id="Ogl_GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEOMETRY_VERTICES_OUT">GL_GEOMETRY_VERTICES_OUT</td>
-<td>u32</td>
+<td id="Ogl_GL_GEOMETRY_VERTICES_OUT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEOMETRY_VERTICES_OUT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GEQUAL">GL_GEQUAL</td>
-<td>u32</td>
+<td id="Ogl_GL_GEQUAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GEQUAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREATER">GL_GREATER</td>
-<td>u32</td>
+<td id="Ogl_GL_GREATER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREATER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREEN">GL_GREEN</td>
-<td>u32</td>
+<td id="Ogl_GL_GREEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREEN_BIAS">GL_GREEN_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_GREEN_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREEN_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREEN_BITS">GL_GREEN_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_GREEN_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREEN_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREEN_INTEGER">GL_GREEN_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_GREEN_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREEN_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_GREEN_SCALE">GL_GREEN_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_GREEN_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_GREEN_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HINT_BIT">GL_HINT_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_HINT_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HINT_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM">GL_HISTOGRAM</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_ALPHA_SIZE">GL_HISTOGRAM_ALPHA_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_ALPHA_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_ALPHA_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_BLUE_SIZE">GL_HISTOGRAM_BLUE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_BLUE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_BLUE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_FORMAT">GL_HISTOGRAM_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_GREEN_SIZE">GL_HISTOGRAM_GREEN_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_GREEN_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_GREEN_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_LUMINANCE_SIZE">GL_HISTOGRAM_LUMINANCE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_LUMINANCE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_LUMINANCE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_RED_SIZE">GL_HISTOGRAM_RED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_RED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_RED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_SINK">GL_HISTOGRAM_SINK</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_SINK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_SINK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_HISTOGRAM_WIDTH">GL_HISTOGRAM_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_HISTOGRAM_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_HISTOGRAM_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_IGNORE_BORDER">GL_IGNORE_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_IGNORE_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_IGNORE_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INCR">GL_INCR</td>
-<td>u32</td>
+<td id="Ogl_GL_INCR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INCR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INCR_WRAP">GL_INCR_WRAP</td>
-<td>u32</td>
+<td id="Ogl_GL_INCR_WRAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INCR_WRAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX">GL_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY">GL_INDEX_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_BUFFER_BINDING">GL_INDEX_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_COUNT_EXT">GL_INDEX_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_EXT">GL_INDEX_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_POINTER">GL_INDEX_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_POINTER_EXT">GL_INDEX_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_STRIDE">GL_INDEX_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_STRIDE_EXT">GL_INDEX_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_TYPE">GL_INDEX_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_ARRAY_TYPE_EXT">GL_INDEX_ARRAY_TYPE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_ARRAY_TYPE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_ARRAY_TYPE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_BITS">GL_INDEX_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_CLEAR_VALUE">GL_INDEX_CLEAR_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_CLEAR_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_CLEAR_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_LOGIC_OP">GL_INDEX_LOGIC_OP</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_LOGIC_OP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_LOGIC_OP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_MODE">GL_INDEX_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_OFFSET">GL_INDEX_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_SHIFT">GL_INDEX_SHIFT</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_SHIFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_SHIFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INDEX_WRITEMASK">GL_INDEX_WRITEMASK</td>
-<td>u32</td>
+<td id="Ogl_GL_INDEX_WRITEMASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INDEX_WRITEMASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INFO_LOG_LENGTH">GL_INFO_LOG_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_INFO_LOG_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INFO_LOG_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT">GL_INT</td>
-<td>u32</td>
+<td id="Ogl_GL_INT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTENSITY">GL_INTENSITY</td>
-<td>u32</td>
+<td id="Ogl_GL_INTENSITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTENSITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTENSITY12">GL_INTENSITY12</td>
-<td>u32</td>
+<td id="Ogl_GL_INTENSITY12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTENSITY12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTENSITY16">GL_INTENSITY16</td>
-<td>u32</td>
+<td id="Ogl_GL_INTENSITY16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTENSITY16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTENSITY4">GL_INTENSITY4</td>
-<td>u32</td>
+<td id="Ogl_GL_INTENSITY4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTENSITY4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTENSITY8">GL_INTENSITY8</td>
-<td>u32</td>
+<td id="Ogl_GL_INTENSITY8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTENSITY8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTERLEAVED_ATTRIBS">GL_INTERLEAVED_ATTRIBS</td>
-<td>u32</td>
+<td id="Ogl_GL_INTERLEAVED_ATTRIBS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTERLEAVED_ATTRIBS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INTERPOLATE">GL_INTERPOLATE</td>
-<td>u32</td>
+<td id="Ogl_GL_INTERPOLATE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INTERPOLATE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_1D">GL_INT_SAMPLER_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_1D_ARRAY">GL_INT_SAMPLER_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_2D">GL_INT_SAMPLER_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_2D_ARRAY">GL_INT_SAMPLER_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_2D_RECT">GL_INT_SAMPLER_2D_RECT</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_2D_RECT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_2D_RECT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_3D">GL_INT_SAMPLER_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_BUFFER">GL_INT_SAMPLER_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_CUBE">GL_INT_SAMPLER_CUBE</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_CUBE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_CUBE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_SAMPLER_CUBE_MAP_ARRAY">GL_INT_SAMPLER_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_SAMPLER_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_SAMPLER_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_VEC2">GL_INT_VEC2</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_VEC2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_VEC2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_VEC3">GL_INT_VEC3</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_VEC3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_VEC3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INT_VEC4">GL_INT_VEC4</td>
-<td>u32</td>
+<td id="Ogl_GL_INT_VEC4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INT_VEC4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INVALID_ENUM">GL_INVALID_ENUM</td>
-<td>u32</td>
+<td id="Ogl_GL_INVALID_ENUM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INVALID_ENUM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INVALID_FRAMEBUFFER_OPERATION">GL_INVALID_FRAMEBUFFER_OPERATION</td>
-<td>u32</td>
+<td id="Ogl_GL_INVALID_FRAMEBUFFER_OPERATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INVALID_FRAMEBUFFER_OPERATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INVALID_OPERATION">GL_INVALID_OPERATION</td>
-<td>u32</td>
+<td id="Ogl_GL_INVALID_OPERATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INVALID_OPERATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INVALID_VALUE">GL_INVALID_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_INVALID_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INVALID_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_INVERT">GL_INVERT</td>
-<td>u32</td>
+<td id="Ogl_GL_INVERT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_INVERT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_KEEP">GL_KEEP</td>
-<td>u32</td>
+<td id="Ogl_GL_KEEP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_KEEP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LEFT">GL_LEFT</td>
-<td>u32</td>
+<td id="Ogl_GL_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LEFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LEQUAL">GL_LEQUAL</td>
-<td>u32</td>
+<td id="Ogl_GL_LEQUAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LEQUAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LESS">GL_LESS</td>
-<td>u32</td>
+<td id="Ogl_GL_LESS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LESS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT0">GL_LIGHT0</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT1">GL_LIGHT1</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT2">GL_LIGHT2</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT3">GL_LIGHT3</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT4">GL_LIGHT4</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT5">GL_LIGHT5</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT6">GL_LIGHT6</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT6" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT7">GL_LIGHT7</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT7" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT7</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>LightParameter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHTING">GL_LIGHTING</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHTING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHTING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHTING_BIT">GL_LIGHTING_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHTING_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHTING_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT_MODEL_AMBIENT">GL_LIGHT_MODEL_AMBIENT</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT_MODEL_AMBIENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT_MODEL_AMBIENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT_MODEL_COLOR_CONTROL">GL_LIGHT_MODEL_COLOR_CONTROL</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT_MODEL_COLOR_CONTROL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT_MODEL_COLOR_CONTROL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT_MODEL_LOCAL_VIEWER">GL_LIGHT_MODEL_LOCAL_VIEWER</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT_MODEL_LOCAL_VIEWER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT_MODEL_LOCAL_VIEWER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIGHT_MODEL_TWO_SIDE">GL_LIGHT_MODEL_TWO_SIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_LIGHT_MODEL_TWO_SIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIGHT_MODEL_TWO_SIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE">GL_LINE</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINEAR">GL_LINEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_LINEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureMinFilter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINEAR_ATTENUATION">GL_LINEAR_ATTENUATION</td>
-<td>u32</td>
+<td id="Ogl_GL_LINEAR_ATTENUATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINEAR_ATTENUATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINEAR_MIPMAP_LINEAR">GL_LINEAR_MIPMAP_LINEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_LINEAR_MIPMAP_LINEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINEAR_MIPMAP_LINEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureParameterName. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINEAR_MIPMAP_NEAREST">GL_LINEAR_MIPMAP_NEAREST</td>
-<td>u32</td>
+<td id="Ogl_GL_LINEAR_MIPMAP_NEAREST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINEAR_MIPMAP_NEAREST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINES">GL_LINES</td>
-<td>u32</td>
+<td id="Ogl_GL_LINES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINES_ADJACENCY">GL_LINES_ADJACENCY</td>
-<td>u32</td>
+<td id="Ogl_GL_LINES_ADJACENCY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINES_ADJACENCY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_BIT">GL_LINE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_LOOP">GL_LINE_LOOP</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_LOOP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_LOOP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_RESET_TOKEN">GL_LINE_RESET_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_RESET_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_RESET_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>FogMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_SMOOTH">GL_LINE_SMOOTH</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_SMOOTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_SMOOTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_SMOOTH_HINT">GL_LINE_SMOOTH_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_SMOOTH_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_SMOOTH_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_STIPPLE">GL_LINE_STIPPLE</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_STIPPLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_STIPPLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_STIPPLE_PATTERN">GL_LINE_STIPPLE_PATTERN</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_STIPPLE_PATTERN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_STIPPLE_PATTERN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_STIPPLE_REPEAT">GL_LINE_STIPPLE_REPEAT</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_STIPPLE_REPEAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_STIPPLE_REPEAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_STRIP">GL_LINE_STRIP</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_STRIP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_STRIP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_STRIP_ADJACENCY">GL_LINE_STRIP_ADJACENCY</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_STRIP_ADJACENCY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_STRIP_ADJACENCY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_TOKEN">GL_LINE_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_WIDTH">GL_LINE_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_WIDTH_GRANULARITY">GL_LINE_WIDTH_GRANULARITY</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_WIDTH_GRANULARITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_WIDTH_GRANULARITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINE_WIDTH_RANGE">GL_LINE_WIDTH_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_LINE_WIDTH_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINE_WIDTH_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LINK_STATUS">GL_LINK_STATUS</td>
-<td>u32</td>
+<td id="Ogl_GL_LINK_STATUS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LINK_STATUS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIST_BASE">GL_LIST_BASE</td>
-<td>u32</td>
+<td id="Ogl_GL_LIST_BASE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIST_BASE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIST_BIT">GL_LIST_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_LIST_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIST_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIST_INDEX">GL_LIST_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_LIST_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIST_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LIST_MODE">GL_LIST_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_LIST_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LIST_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LOAD">GL_LOAD</td>
-<td>u32</td>
+<td id="Ogl_GL_LOAD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LOAD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LOGIC_OP">GL_LOGIC_OP</td>
-<td>u32</td>
+<td id="Ogl_GL_LOGIC_OP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LOGIC_OP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LOGIC_OP_MODE">GL_LOGIC_OP_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_LOGIC_OP_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LOGIC_OP_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LOWER_LEFT">GL_LOWER_LEFT</td>
-<td>u32</td>
+<td id="Ogl_GL_LOWER_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LOWER_LEFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE">GL_LUMINANCE</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE12">GL_LUMINANCE12</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE12_ALPHA12">GL_LUMINANCE12_ALPHA12</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE12_ALPHA12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE12_ALPHA12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE12_ALPHA4">GL_LUMINANCE12_ALPHA4</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE12_ALPHA4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE12_ALPHA4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE16">GL_LUMINANCE16</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE16_ALPHA16">GL_LUMINANCE16_ALPHA16</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE16_ALPHA16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE16_ALPHA16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE4">GL_LUMINANCE4</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE4_ALPHA4">GL_LUMINANCE4_ALPHA4</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE4_ALPHA4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE4_ALPHA4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE6_ALPHA2">GL_LUMINANCE6_ALPHA2</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE6_ALPHA2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE6_ALPHA2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE8">GL_LUMINANCE8</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE8_ALPHA8">GL_LUMINANCE8_ALPHA8</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE8_ALPHA8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE8_ALPHA8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_LUMINANCE_ALPHA">GL_LUMINANCE_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_LUMINANCE_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_LUMINANCE_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>PixelType. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAJOR_VERSION">GL_MAJOR_VERSION</td>
-<td>u32</td>
+<td id="Ogl_GL_MAJOR_VERSION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAJOR_VERSION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_COLOR_4">GL_MAP1_COLOR_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_COLOR_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_COLOR_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_GRID_DOMAIN">GL_MAP1_GRID_DOMAIN</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_GRID_DOMAIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_GRID_DOMAIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_GRID_SEGMENTS">GL_MAP1_GRID_SEGMENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_GRID_SEGMENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_GRID_SEGMENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_INDEX">GL_MAP1_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_NORMAL">GL_MAP1_NORMAL</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_1">GL_MAP1_TEXTURE_COORD_1</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_TEXTURE_COORD_1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_2">GL_MAP1_TEXTURE_COORD_2</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_TEXTURE_COORD_2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_3">GL_MAP1_TEXTURE_COORD_3</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_TEXTURE_COORD_3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_TEXTURE_COORD_4">GL_MAP1_TEXTURE_COORD_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_TEXTURE_COORD_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_TEXTURE_COORD_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_VERTEX_3">GL_MAP1_VERTEX_3</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_VERTEX_3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_VERTEX_3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP1_VERTEX_4">GL_MAP1_VERTEX_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP1_VERTEX_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP1_VERTEX_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_COLOR_4">GL_MAP2_COLOR_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_COLOR_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_COLOR_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_GRID_DOMAIN">GL_MAP2_GRID_DOMAIN</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_GRID_DOMAIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_GRID_DOMAIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_GRID_SEGMENTS">GL_MAP2_GRID_SEGMENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_GRID_SEGMENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_GRID_SEGMENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_INDEX">GL_MAP2_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_NORMAL">GL_MAP2_NORMAL</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_1">GL_MAP2_TEXTURE_COORD_1</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_TEXTURE_COORD_1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_2">GL_MAP2_TEXTURE_COORD_2</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_TEXTURE_COORD_2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_3">GL_MAP2_TEXTURE_COORD_3</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_TEXTURE_COORD_3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_TEXTURE_COORD_4">GL_MAP2_TEXTURE_COORD_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_TEXTURE_COORD_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_TEXTURE_COORD_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_VERTEX_3">GL_MAP2_VERTEX_3</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_VERTEX_3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_VERTEX_3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP2_VERTEX_4">GL_MAP2_VERTEX_4</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP2_VERTEX_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP2_VERTEX_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP_COLOR">GL_MAP_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAP_STENCIL">GL_MAP_STENCIL</td>
-<td>u32</td>
+<td id="Ogl_GL_MAP_STENCIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAP_STENCIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MATRIX_MODE">GL_MATRIX_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_MATRIX_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MATRIX_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX">GL_MAX</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_3D_TEXTURE_SIZE">GL_MAX_3D_TEXTURE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_3D_TEXTURE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_3D_TEXTURE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ARRAY_TEXTURE_LAYERS">GL_MAX_ARRAY_TEXTURE_LAYERS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ARRAY_TEXTURE_LAYERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ARRAY_TEXTURE_LAYERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ATTRIB_STACK_DEPTH">GL_MAX_ATTRIB_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ATTRIB_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ATTRIB_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CLIENT_ATTRIB_STACK_DEPTH">GL_MAX_CLIENT_ATTRIB_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CLIENT_ATTRIB_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CLIENT_ATTRIB_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CLIP_DISTANCES">GL_MAX_CLIP_DISTANCES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CLIP_DISTANCES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CLIP_DISTANCES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CLIP_PLANES">GL_MAX_CLIP_PLANES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CLIP_PLANES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CLIP_PLANES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_COLOR_ATTACHMENTS">GL_MAX_COLOR_ATTACHMENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_COLOR_ATTACHMENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_COLOR_ATTACHMENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_COLOR_MATRIX_STACK_DEPTH">GL_MAX_COLOR_MATRIX_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_COLOR_MATRIX_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_COLOR_MATRIX_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS">GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CONVOLUTION_HEIGHT">GL_MAX_CONVOLUTION_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CONVOLUTION_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CONVOLUTION_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CONVOLUTION_WIDTH">GL_MAX_CONVOLUTION_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CONVOLUTION_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CONVOLUTION_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_CUBE_MAP_TEXTURE_SIZE">GL_MAX_CUBE_MAP_TEXTURE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_CUBE_MAP_TEXTURE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_CUBE_MAP_TEXTURE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_DRAW_BUFFERS">GL_MAX_DRAW_BUFFERS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_DRAW_BUFFERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_DRAW_BUFFERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ELEMENTS_INDICES">GL_MAX_ELEMENTS_INDICES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ELEMENTS_INDICES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ELEMENTS_INDICES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ELEMENTS_INDICES_WIN">GL_MAX_ELEMENTS_INDICES_WIN</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ELEMENTS_INDICES_WIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ELEMENTS_INDICES_WIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>WIN_phong_shading. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ELEMENTS_VERTICES">GL_MAX_ELEMENTS_VERTICES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ELEMENTS_VERTICES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ELEMENTS_VERTICES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_ELEMENTS_VERTICES_WIN">GL_MAX_ELEMENTS_VERTICES_WIN</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_ELEMENTS_VERTICES_WIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_ELEMENTS_VERTICES_WIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_EVAL_ORDER">GL_MAX_EVAL_ORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_EVAL_ORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_EVAL_ORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAGMENT_INPUT_COMPONENTS">GL_MAX_FRAGMENT_INPUT_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAGMENT_INPUT_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAGMENT_INPUT_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAGMENT_UNIFORM_COMPONENTS">GL_MAX_FRAGMENT_UNIFORM_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAGMENT_UNIFORM_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAGMENT_UNIFORM_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_HEIGHT">GL_MAX_FRAMEBUFFER_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAMEBUFFER_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_LAYERS">GL_MAX_FRAMEBUFFER_LAYERS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_LAYERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAMEBUFFER_LAYERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_SAMPLES">GL_MAX_FRAMEBUFFER_SAMPLES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_SAMPLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAMEBUFFER_SAMPLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_FRAMEBUFFER_WIDTH">GL_MAX_FRAMEBUFFER_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_FRAMEBUFFER_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_FRAMEBUFFER_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_INPUT_COMPONENTS">GL_MAX_GEOMETRY_INPUT_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_INPUT_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_INPUT_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_COMPONENTS">GL_MAX_GEOMETRY_OUTPUT_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_OUTPUT_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_VERTICES">GL_MAX_GEOMETRY_OUTPUT_VERTICES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_OUTPUT_VERTICES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_OUTPUT_VERTICES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS">GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS">GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS">GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_GEOMETRY_UNIFORM_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_LIGHTS">GL_MAX_LIGHTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_LIGHTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_LIGHTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_LIST_NESTING">GL_MAX_LIST_NESTING</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_LIST_NESTING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_LIST_NESTING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_MODELVIEW_STACK_DEPTH">GL_MAX_MODELVIEW_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_MODELVIEW_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_MODELVIEW_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_NAME_STACK_DEPTH">GL_MAX_NAME_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_NAME_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_NAME_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_PIXEL_MAP_TABLE">GL_MAX_PIXEL_MAP_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_PIXEL_MAP_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_PIXEL_MAP_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXEL_OFFSET">GL_MAX_PROGRAM_TEXEL_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_PROGRAM_TEXEL_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_PROGRAM_TEXEL_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS">GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET">GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_PROJECTION_STACK_DEPTH">GL_MAX_PROJECTION_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_PROJECTION_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_PROJECTION_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_RECTANGLE_TEXTURE_SIZE">GL_MAX_RECTANGLE_TEXTURE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_RECTANGLE_TEXTURE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_RECTANGLE_TEXTURE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_RENDERBUFFER_SIZE">GL_MAX_RENDERBUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_RENDERBUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_RENDERBUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_SAMPLES">GL_MAX_SAMPLES</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_SAMPLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_SAMPLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_BUFFER_SIZE">GL_MAX_TEXTURE_BUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_BUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_BUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_COORDS">GL_MAX_TEXTURE_COORDS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_COORDS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_COORDS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_IMAGE_UNITS">GL_MAX_TEXTURE_IMAGE_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_IMAGE_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_IMAGE_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_LOD_BIAS">GL_MAX_TEXTURE_LOD_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_LOD_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_LOD_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_MAX_ANISOTROPY">GL_MAX_TEXTURE_MAX_ANISOTROPY</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_MAX_ANISOTROPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_MAX_ANISOTROPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_SIZE">GL_MAX_TEXTURE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_STACK_DEPTH">GL_MAX_TEXTURE_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TEXTURE_UNITS">GL_MAX_TEXTURE_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TEXTURE_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TEXTURE_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS">GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VARYING_COMPONENTS">GL_MAX_VARYING_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VARYING_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VARYING_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VARYING_FLOATS">GL_MAX_VARYING_FLOATS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VARYING_FLOATS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VARYING_FLOATS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VERTEX_ATTRIBS">GL_MAX_VERTEX_ATTRIBS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VERTEX_ATTRIBS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VERTEX_ATTRIBS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VERTEX_ATTRIB_STRIDE">GL_MAX_VERTEX_ATTRIB_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VERTEX_ATTRIB_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VERTEX_ATTRIB_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VERTEX_OUTPUT_COMPONENTS">GL_MAX_VERTEX_OUTPUT_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VERTEX_OUTPUT_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VERTEX_OUTPUT_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS">GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VERTEX_UNIFORM_COMPONENTS">GL_MAX_VERTEX_UNIFORM_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VERTEX_UNIFORM_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VERTEX_UNIFORM_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MAX_VIEWPORT_DIMS">GL_MAX_VIEWPORT_DIMS</td>
-<td>u32</td>
+<td id="Ogl_GL_MAX_VIEWPORT_DIMS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MAX_VIEWPORT_DIMS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MIN">GL_MIN</td>
-<td>u32</td>
+<td id="Ogl_GL_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MINMAX">GL_MINMAX</td>
-<td>u32</td>
+<td id="Ogl_GL_MINMAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MINMAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MINMAX_FORMAT">GL_MINMAX_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_MINMAX_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MINMAX_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MINMAX_SINK">GL_MINMAX_SINK</td>
-<td>u32</td>
+<td id="Ogl_GL_MINMAX_SINK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MINMAX_SINK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MINOR_VERSION">GL_MINOR_VERSION</td>
-<td>u32</td>
+<td id="Ogl_GL_MINOR_VERSION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MINOR_VERSION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MIN_PROGRAM_TEXEL_OFFSET">GL_MIN_PROGRAM_TEXEL_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_MIN_PROGRAM_TEXEL_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MIN_PROGRAM_TEXEL_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET">GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET</td>
-<td>u32</td>
+<td id="Ogl_GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MIN_SAMPLE_SHADING_VALUE">GL_MIN_SAMPLE_SHADING_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_MIN_SAMPLE_SHADING_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MIN_SAMPLE_SHADING_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MIRRORED_REPEAT">GL_MIRRORED_REPEAT</td>
-<td>u32</td>
+<td id="Ogl_GL_MIRRORED_REPEAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MIRRORED_REPEAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MODELVIEW">GL_MODELVIEW</td>
-<td>u32</td>
+<td id="Ogl_GL_MODELVIEW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MODELVIEW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MODELVIEW_MATRIX">GL_MODELVIEW_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_MODELVIEW_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MODELVIEW_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MODELVIEW_STACK_DEPTH">GL_MODELVIEW_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_MODELVIEW_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MODELVIEW_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MODULATE">GL_MODULATE</td>
-<td>u32</td>
+<td id="Ogl_GL_MODULATE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MODULATE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MULT">GL_MULT</td>
-<td>u32</td>
+<td id="Ogl_GL_MULT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MULT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MULTISAMPLE">GL_MULTISAMPLE</td>
-<td>u32</td>
+<td id="Ogl_GL_MULTISAMPLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MULTISAMPLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_MULTISAMPLE_BIT">GL_MULTISAMPLE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_MULTISAMPLE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_MULTISAMPLE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_N3F_V3F">GL_N3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_N3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_N3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NAMED_STRING_LENGTH_ARB">GL_NAMED_STRING_LENGTH_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_NAMED_STRING_LENGTH_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NAMED_STRING_LENGTH_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NAMED_STRING_TYPE_ARB">GL_NAMED_STRING_TYPE_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_NAMED_STRING_TYPE_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NAMED_STRING_TYPE_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NAME_STACK_DEPTH">GL_NAME_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_NAME_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NAME_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NAND">GL_NAND</td>
-<td>u32</td>
+<td id="Ogl_GL_NAND" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NAND</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NEAREST">GL_NEAREST</td>
-<td>u32</td>
+<td id="Ogl_GL_NEAREST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NEAREST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NEAREST_MIPMAP_LINEAR">GL_NEAREST_MIPMAP_LINEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_NEAREST_MIPMAP_LINEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NEAREST_MIPMAP_LINEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NEAREST_MIPMAP_NEAREST">GL_NEAREST_MIPMAP_NEAREST</td>
-<td>u32</td>
+<td id="Ogl_GL_NEAREST_MIPMAP_NEAREST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NEAREST_MIPMAP_NEAREST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NEVER">GL_NEVER</td>
-<td>u32</td>
+<td id="Ogl_GL_NEVER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NEVER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NICEST">GL_NICEST</td>
-<td>u32</td>
+<td id="Ogl_GL_NICEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NICEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>LightName. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_NONE">GL_NONE</td>
-<td>s32</td>
+<td id="Ogl_GL_NONE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NONE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NOOP">GL_NOOP</td>
-<td>u32</td>
+<td id="Ogl_GL_NOOP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NOOP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NOR">GL_NOR</td>
-<td>u32</td>
+<td id="Ogl_GL_NOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMALIZE">GL_NORMALIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMALIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMALIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY">GL_NORMAL_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_BUFFER_BINDING">GL_NORMAL_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_COUNT_EXT">GL_NORMAL_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_EXT">GL_NORMAL_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_POINTER">GL_NORMAL_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_POINTER_EXT">GL_NORMAL_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_STRIDE">GL_NORMAL_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_STRIDE_EXT">GL_NORMAL_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_TYPE">GL_NORMAL_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_ARRAY_TYPE_EXT">GL_NORMAL_ARRAY_TYPE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_ARRAY_TYPE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_ARRAY_TYPE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NORMAL_MAP">GL_NORMAL_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_NORMAL_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NORMAL_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NOTEQUAL">GL_NOTEQUAL</td>
-<td>u32</td>
+<td id="Ogl_GL_NOTEQUAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NOTEQUAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NO_ERROR">GL_NO_ERROR</td>
-<td>s32</td>
+<td id="Ogl_GL_NO_ERROR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NO_ERROR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NUM_COMPRESSED_TEXTURE_FORMATS">GL_NUM_COMPRESSED_TEXTURE_FORMATS</td>
-<td>u32</td>
+<td id="Ogl_GL_NUM_COMPRESSED_TEXTURE_FORMATS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NUM_COMPRESSED_TEXTURE_FORMATS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NUM_EXTENSIONS">GL_NUM_EXTENSIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_NUM_EXTENSIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NUM_EXTENSIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NUM_SHADING_LANGUAGE_VERSIONS">GL_NUM_SHADING_LANGUAGE_VERSIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_NUM_SHADING_LANGUAGE_VERSIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NUM_SHADING_LANGUAGE_VERSIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_NUM_SPIR_V_EXTENSIONS">GL_NUM_SPIR_V_EXTENSIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_NUM_SPIR_V_EXTENSIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_NUM_SPIR_V_EXTENSIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OBJECT_LINEAR">GL_OBJECT_LINEAR</td>
-<td>u32</td>
+<td id="Ogl_GL_OBJECT_LINEAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OBJECT_LINEAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OBJECT_PLANE">GL_OBJECT_PLANE</td>
-<td>u32</td>
+<td id="Ogl_GL_OBJECT_PLANE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OBJECT_PLANE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE">GL_ONE</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_CONSTANT_ALPHA">GL_ONE_MINUS_CONSTANT_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_CONSTANT_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_CONSTANT_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_CONSTANT_COLOR">GL_ONE_MINUS_CONSTANT_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_CONSTANT_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_CONSTANT_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_DST_ALPHA">GL_ONE_MINUS_DST_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_DST_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_DST_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>BlendingFactorSrc. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_DST_COLOR">GL_ONE_MINUS_DST_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_DST_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_DST_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_SRC_ALPHA">GL_ONE_MINUS_SRC_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_SRC_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_SRC_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ONE_MINUS_SRC_COLOR">GL_ONE_MINUS_SRC_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_ONE_MINUS_SRC_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ONE_MINUS_SRC_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND0_ALPHA">GL_OPERAND0_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND0_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND0_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND0_RGB">GL_OPERAND0_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND0_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND0_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND1_ALPHA">GL_OPERAND1_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND1_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND1_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND1_RGB">GL_OPERAND1_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND1_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND1_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND2_ALPHA">GL_OPERAND2_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND2_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND2_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OPERAND2_RGB">GL_OPERAND2_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_OPERAND2_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OPERAND2_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OR">GL_OR</td>
-<td>u32</td>
+<td id="Ogl_GL_OR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ORDER">GL_ORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_ORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OR_INVERTED">GL_OR_INVERTED</td>
-<td>u32</td>
+<td id="Ogl_GL_OR_INVERTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OR_INVERTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OR_REVERSE">GL_OR_REVERSE</td>
-<td>u32</td>
+<td id="Ogl_GL_OR_REVERSE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OR_REVERSE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_OUT_OF_MEMORY">GL_OUT_OF_MEMORY</td>
-<td>u32</td>
+<td id="Ogl_GL_OUT_OF_MEMORY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_OUT_OF_MEMORY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>FeedBackMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_ALIGNMENT">GL_PACK_ALIGNMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_ALIGNMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_ALIGNMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_IMAGE_HEIGHT">GL_PACK_IMAGE_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_IMAGE_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_IMAGE_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_LSB_FIRST">GL_PACK_LSB_FIRST</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_LSB_FIRST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_LSB_FIRST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_ROW_LENGTH">GL_PACK_ROW_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_ROW_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_ROW_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_SKIP_IMAGES">GL_PACK_SKIP_IMAGES</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_SKIP_IMAGES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_SKIP_IMAGES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_SKIP_PIXELS">GL_PACK_SKIP_PIXELS</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_SKIP_PIXELS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_SKIP_PIXELS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_SKIP_ROWS">GL_PACK_SKIP_ROWS</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_SKIP_ROWS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_SKIP_ROWS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PACK_SWAP_BYTES">GL_PACK_SWAP_BYTES</td>
-<td>u32</td>
+<td id="Ogl_GL_PACK_SWAP_BYTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PACK_SWAP_BYTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PARAMETER_BUFFER">GL_PARAMETER_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_PARAMETER_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PARAMETER_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PARAMETER_BUFFER_BINDING">GL_PARAMETER_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_PARAMETER_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PARAMETER_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PASS_THROUGH_TOKEN">GL_PASS_THROUGH_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_PASS_THROUGH_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PASS_THROUGH_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PERSPECTIVE_CORRECTION_HINT">GL_PERSPECTIVE_CORRECTION_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_PERSPECTIVE_CORRECTION_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PERSPECTIVE_CORRECTION_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PHONG_HINT_WIN">GL_PHONG_HINT_WIN</td>
-<td>u32</td>
+<td id="Ogl_GL_PHONG_HINT_WIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PHONG_HINT_WIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>WIN_specular_fog. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_PHONG_WIN">GL_PHONG_WIN</td>
-<td>u32</td>
+<td id="Ogl_GL_PHONG_WIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PHONG_WIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_A_TO_A">GL_PIXEL_MAP_A_TO_A</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_A_TO_A" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_A_TO_A</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_A_TO_A_SIZE">GL_PIXEL_MAP_A_TO_A_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_A_TO_A_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_A_TO_A_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_B_TO_B">GL_PIXEL_MAP_B_TO_B</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_B_TO_B" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_B_TO_B</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_B_TO_B_SIZE">GL_PIXEL_MAP_B_TO_B_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_B_TO_B_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_B_TO_B_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_G_TO_G">GL_PIXEL_MAP_G_TO_G</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_G_TO_G" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_G_TO_G</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_G_TO_G_SIZE">GL_PIXEL_MAP_G_TO_G_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_G_TO_G_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_G_TO_G_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_A">GL_PIXEL_MAP_I_TO_A</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_A" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_A</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_A_SIZE">GL_PIXEL_MAP_I_TO_A_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_A_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_A_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_B">GL_PIXEL_MAP_I_TO_B</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_B" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_B</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_B_SIZE">GL_PIXEL_MAP_I_TO_B_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_B_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_B_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_G">GL_PIXEL_MAP_I_TO_G</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_G" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_G</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_G_SIZE">GL_PIXEL_MAP_I_TO_G_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_G_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_G_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_I">GL_PIXEL_MAP_I_TO_I</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_I_SIZE">GL_PIXEL_MAP_I_TO_I_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_I_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_I_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_R">GL_PIXEL_MAP_I_TO_R</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_R" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_R</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_I_TO_R_SIZE">GL_PIXEL_MAP_I_TO_R_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_I_TO_R_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_I_TO_R_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_R_TO_R">GL_PIXEL_MAP_R_TO_R</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_R_TO_R" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_R_TO_R</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_R_TO_R_SIZE">GL_PIXEL_MAP_R_TO_R_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_R_TO_R_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_R_TO_R_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_S_TO_S">GL_PIXEL_MAP_S_TO_S</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_S_TO_S" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_S_TO_S</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MAP_S_TO_S_SIZE">GL_PIXEL_MAP_S_TO_S_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MAP_S_TO_S_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MAP_S_TO_S_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_MODE_BIT">GL_PIXEL_MODE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_MODE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_MODE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_PACK_BUFFER">GL_PIXEL_PACK_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_PACK_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_PACK_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_PACK_BUFFER_BINDING">GL_PIXEL_PACK_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_PACK_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_PACK_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_UNPACK_BUFFER">GL_PIXEL_UNPACK_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_UNPACK_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_UNPACK_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PIXEL_UNPACK_BUFFER_BINDING">GL_PIXEL_UNPACK_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_PIXEL_UNPACK_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PIXEL_UNPACK_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT">GL_POINT</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINTS">GL_POINTS</td>
-<td>u32</td>
+<td id="Ogl_GL_POINTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_BIT">GL_POINT_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_DISTANCE_ATTENUATION">GL_POINT_DISTANCE_ATTENUATION</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_DISTANCE_ATTENUATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_DISTANCE_ATTENUATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_FADE_THRESHOLD_SIZE">GL_POINT_FADE_THRESHOLD_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_FADE_THRESHOLD_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_FADE_THRESHOLD_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SIZE">GL_POINT_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SIZE_GRANULARITY">GL_POINT_SIZE_GRANULARITY</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SIZE_GRANULARITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SIZE_GRANULARITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SIZE_MAX">GL_POINT_SIZE_MAX</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SIZE_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SIZE_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SIZE_MIN">GL_POINT_SIZE_MIN</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SIZE_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SIZE_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SIZE_RANGE">GL_POINT_SIZE_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SIZE_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SIZE_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SMOOTH">GL_POINT_SMOOTH</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SMOOTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SMOOTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SMOOTH_HINT">GL_POINT_SMOOTH_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SMOOTH_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SMOOTH_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SPRITE">GL_POINT_SPRITE</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SPRITE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SPRITE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_SPRITE_COORD_ORIGIN">GL_POINT_SPRITE_COORD_ORIGIN</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_SPRITE_COORD_ORIGIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_SPRITE_COORD_ORIGIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POINT_TOKEN">GL_POINT_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_POINT_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POINT_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON">GL_POLYGON</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>BlendingFactorDest. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_BIT">GL_POLYGON_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_MODE">GL_POLYGON_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_CLAMP">GL_POLYGON_OFFSET_CLAMP</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_CLAMP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_CLAMP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_FACTOR">GL_POLYGON_OFFSET_FACTOR</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_FACTOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_FACTOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_FILL">GL_POLYGON_OFFSET_FILL</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_FILL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_FILL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>texture. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_LINE">GL_POLYGON_OFFSET_LINE</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_LINE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_LINE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_POINT">GL_POLYGON_OFFSET_POINT</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_POINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_POINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_OFFSET_UNITS">GL_POLYGON_OFFSET_UNITS</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_OFFSET_UNITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_OFFSET_UNITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_SMOOTH">GL_POLYGON_SMOOTH</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_SMOOTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_SMOOTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_SMOOTH_HINT">GL_POLYGON_SMOOTH_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_SMOOTH_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_SMOOTH_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_STIPPLE">GL_POLYGON_STIPPLE</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_STIPPLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_STIPPLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_STIPPLE_BIT">GL_POLYGON_STIPPLE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_STIPPLE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_STIPPLE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POLYGON_TOKEN">GL_POLYGON_TOKEN</td>
-<td>u32</td>
+<td id="Ogl_GL_POLYGON_TOKEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POLYGON_TOKEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POSITION">GL_POSITION</td>
-<td>u32</td>
+<td id="Ogl_GL_POSITION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POSITION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_BIAS">GL_POST_COLOR_MATRIX_ALPHA_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_ALPHA_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_SCALE">GL_POST_COLOR_MATRIX_ALPHA_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_ALPHA_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_ALPHA_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_BIAS">GL_POST_COLOR_MATRIX_BLUE_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_BLUE_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_SCALE">GL_POST_COLOR_MATRIX_BLUE_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_BLUE_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_BLUE_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_COLOR_TABLE">GL_POST_COLOR_MATRIX_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_BIAS">GL_POST_COLOR_MATRIX_GREEN_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_GREEN_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_SCALE">GL_POST_COLOR_MATRIX_GREEN_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_GREEN_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_GREEN_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_RED_BIAS">GL_POST_COLOR_MATRIX_RED_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_RED_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_RED_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_COLOR_MATRIX_RED_SCALE">GL_POST_COLOR_MATRIX_RED_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_COLOR_MATRIX_RED_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_COLOR_MATRIX_RED_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_BIAS">GL_POST_CONVOLUTION_ALPHA_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_ALPHA_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_SCALE">GL_POST_CONVOLUTION_ALPHA_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_ALPHA_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_ALPHA_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_BLUE_BIAS">GL_POST_CONVOLUTION_BLUE_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_BLUE_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_BLUE_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_BLUE_SCALE">GL_POST_CONVOLUTION_BLUE_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_BLUE_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_BLUE_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_COLOR_TABLE">GL_POST_CONVOLUTION_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_GREEN_BIAS">GL_POST_CONVOLUTION_GREEN_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_GREEN_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_GREEN_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_GREEN_SCALE">GL_POST_CONVOLUTION_GREEN_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_GREEN_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_GREEN_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_RED_BIAS">GL_POST_CONVOLUTION_RED_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_RED_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_RED_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_POST_CONVOLUTION_RED_SCALE">GL_POST_CONVOLUTION_RED_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_POST_CONVOLUTION_RED_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_POST_CONVOLUTION_RED_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PREVIOUS">GL_PREVIOUS</td>
-<td>u32</td>
+<td id="Ogl_GL_PREVIOUS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PREVIOUS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMARY_COLOR">GL_PRIMARY_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMARY_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMARY_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMITIVES_GENERATED">GL_PRIMITIVES_GENERATED</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMITIVES_GENERATED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMITIVES_GENERATED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMITIVES_SUBMITTED">GL_PRIMITIVES_SUBMITTED</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMITIVES_SUBMITTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMITIVES_SUBMITTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART">GL_PRIMITIVE_RESTART</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMITIVE_RESTART" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMITIVE_RESTART</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED">GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PRIMITIVE_RESTART_INDEX">GL_PRIMITIVE_RESTART_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_PRIMITIVE_RESTART_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PRIMITIVE_RESTART_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROGRAM_POINT_SIZE">GL_PROGRAM_POINT_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_PROGRAM_POINT_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROGRAM_POINT_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROJECTION">GL_PROJECTION</td>
-<td>u32</td>
+<td id="Ogl_GL_PROJECTION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROJECTION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROJECTION_MATRIX">GL_PROJECTION_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_PROJECTION_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROJECTION_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROJECTION_STACK_DEPTH">GL_PROJECTION_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_PROJECTION_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROJECTION_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_COLOR_TABLE">GL_PROXY_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_HISTOGRAM">GL_PROXY_HISTOGRAM</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_HISTOGRAM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_HISTOGRAM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE">GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_POST_CONVOLUTION_COLOR_TABLE">GL_PROXY_POST_CONVOLUTION_COLOR_TABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_POST_CONVOLUTION_COLOR_TABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_POST_CONVOLUTION_COLOR_TABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_1D">GL_PROXY_TEXTURE_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_1D_ARRAY">GL_PROXY_TEXTURE_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_2D">GL_PROXY_TEXTURE_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>texture_object. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_2D_ARRAY">GL_PROXY_TEXTURE_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_3D">GL_PROXY_TEXTURE_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP">GL_PROXY_TEXTURE_CUBE_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_CUBE_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP_ARRAY">GL_PROXY_TEXTURE_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_PROXY_TEXTURE_RECTANGLE">GL_PROXY_TEXTURE_RECTANGLE</td>
-<td>u32</td>
+<td id="Ogl_GL_PROXY_TEXTURE_RECTANGLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_PROXY_TEXTURE_RECTANGLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_Q">GL_Q</td>
-<td>u32</td>
+<td id="Ogl_GL_Q" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_Q</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureEnvMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUADRATIC_ATTENUATION">GL_QUADRATIC_ATTENUATION</td>
-<td>u32</td>
+<td id="Ogl_GL_QUADRATIC_ATTENUATION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUADRATIC_ATTENUATION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>ListMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUADS">GL_QUADS</td>
-<td>u32</td>
+<td id="Ogl_GL_QUADS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUADS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUAD_STRIP">GL_QUAD_STRIP</td>
-<td>u32</td>
+<td id="Ogl_GL_QUAD_STRIP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUAD_STRIP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_BY_REGION_NO_WAIT">GL_QUERY_BY_REGION_NO_WAIT</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_BY_REGION_NO_WAIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_BY_REGION_NO_WAIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_BY_REGION_WAIT">GL_QUERY_BY_REGION_WAIT</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_BY_REGION_WAIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_BY_REGION_WAIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_COUNTER_BITS">GL_QUERY_COUNTER_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_COUNTER_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_COUNTER_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_NO_WAIT">GL_QUERY_NO_WAIT</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_NO_WAIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_NO_WAIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_RESULT">GL_QUERY_RESULT</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_RESULT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_RESULT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_RESULT_AVAILABLE">GL_QUERY_RESULT_AVAILABLE</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_RESULT_AVAILABLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_RESULT_AVAILABLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_QUERY_WAIT">GL_QUERY_WAIT</td>
-<td>u32</td>
+<td id="Ogl_GL_QUERY_WAIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_QUERY_WAIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_R">GL_R</td>
-<td>u32</td>
+<td id="Ogl_GL_R" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_R</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_R11F_G11F_B10F">GL_R11F_G11F_B10F</td>
-<td>u32</td>
+<td id="Ogl_GL_R11F_G11F_B10F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_R11F_G11F_B10F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_R16_SNORM">GL_R16_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_R16_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_R16_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_R3_G3_B2">GL_R3_G3_B2</td>
-<td>u32</td>
+<td id="Ogl_GL_R3_G3_B2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_R3_G3_B2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_R8_SNORM">GL_R8_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_R8_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_R8_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RASTERIZER_DISCARD">GL_RASTERIZER_DISCARD</td>
-<td>u32</td>
+<td id="Ogl_GL_RASTERIZER_DISCARD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RASTERIZER_DISCARD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_READ_BUFFER">GL_READ_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_READ_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_READ_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_READ_FRAMEBUFFER">GL_READ_FRAMEBUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_READ_FRAMEBUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_READ_FRAMEBUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_READ_FRAMEBUFFER_BINDING">GL_READ_FRAMEBUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_READ_FRAMEBUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_READ_FRAMEBUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_READ_ONLY">GL_READ_ONLY</td>
-<td>u32</td>
+<td id="Ogl_GL_READ_ONLY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_READ_ONLY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_READ_WRITE">GL_READ_WRITE</td>
-<td>u32</td>
+<td id="Ogl_GL_READ_WRITE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_READ_WRITE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED">GL_RED</td>
-<td>u32</td>
+<td id="Ogl_GL_RED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_REDUCE">GL_REDUCE</td>
-<td>u32</td>
+<td id="Ogl_GL_REDUCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_REDUCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED_BIAS">GL_RED_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_RED_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED_BITS">GL_RED_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_RED_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED_INTEGER">GL_RED_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_RED_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED_SCALE">GL_RED_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_RED_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RED_SNORM">GL_RED_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RED_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RED_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_REFLECTION_MAP">GL_REFLECTION_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_REFLECTION_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_REFLECTION_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDER">GL_RENDER</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER">GL_RENDERBUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_ALPHA_SIZE">GL_RENDERBUFFER_ALPHA_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_ALPHA_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_ALPHA_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_BINDING">GL_RENDERBUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_BLUE_SIZE">GL_RENDERBUFFER_BLUE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_BLUE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_BLUE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_DEPTH_SIZE">GL_RENDERBUFFER_DEPTH_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_DEPTH_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_DEPTH_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_GREEN_SIZE">GL_RENDERBUFFER_GREEN_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_GREEN_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_GREEN_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_HEIGHT">GL_RENDERBUFFER_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_INTERNAL_FORMAT">GL_RENDERBUFFER_INTERNAL_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_INTERNAL_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_INTERNAL_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_RED_SIZE">GL_RENDERBUFFER_RED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_RED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_RED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_SAMPLES">GL_RENDERBUFFER_SAMPLES</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_SAMPLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_SAMPLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_STENCIL_SIZE">GL_RENDERBUFFER_STENCIL_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_STENCIL_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_STENCIL_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERBUFFER_WIDTH">GL_RENDERBUFFER_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERBUFFER_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERBUFFER_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDERER">GL_RENDERER</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDERER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDERER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RENDER_MODE">GL_RENDER_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_RENDER_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RENDER_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_REPEAT">GL_REPEAT</td>
-<td>u32</td>
+<td id="Ogl_GL_REPEAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_REPEAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>ClientAttribMask. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_REPLACE">GL_REPLACE</td>
-<td>u32</td>
+<td id="Ogl_GL_REPLACE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_REPLACE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_REPLICATE_BORDER">GL_REPLICATE_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_REPLICATE_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_REPLICATE_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RESCALE_NORMAL">GL_RESCALE_NORMAL</td>
-<td>u32</td>
+<td id="Ogl_GL_RESCALE_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RESCALE_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RETURN">GL_RETURN</td>
-<td>u32</td>
+<td id="Ogl_GL_RETURN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RETURN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RG16_SNORM">GL_RG16_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RG16_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RG16_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RG8_SNORM">GL_RG8_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RG8_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RG8_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB">GL_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB10">GL_RGB10</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB10" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB10</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB10_A2">GL_RGB10_A2</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB10_A2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB10_A2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB10_A2UI">GL_RGB10_A2UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB10_A2UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB10_A2UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB12">GL_RGB12</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB16">GL_RGB16</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB16F">GL_RGB16F</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB16F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB16F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB16I">GL_RGB16I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB16I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB16I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB16UI">GL_RGB16UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB16UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB16UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB16_SNORM">GL_RGB16_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB16_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB16_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB32F">GL_RGB32F</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB32F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB32F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB32I">GL_RGB32I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB32I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB32I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB32UI">GL_RGB32UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB32UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB32UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB4">GL_RGB4</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB5">GL_RGB5</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB5_A1">GL_RGB5_A1</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB5_A1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB5_A1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB8">GL_RGB8</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB8I">GL_RGB8I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB8I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB8I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB8UI">GL_RGB8UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB8UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB8UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB8_SNORM">GL_RGB8_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB8_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB8_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB9_E5">GL_RGB9_E5</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB9_E5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB9_E5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA">GL_RGBA</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA12">GL_RGBA12</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA16">GL_RGBA16</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA16F">GL_RGBA16F</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA16F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA16F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA16I">GL_RGBA16I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA16I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA16I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA16UI">GL_RGBA16UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA16UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA16UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA16_SNORM">GL_RGBA16_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA16_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA16_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA2">GL_RGBA2</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA32F">GL_RGBA32F</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA32F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA32F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA32I">GL_RGBA32I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA32I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA32I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA32UI">GL_RGBA32UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA32UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA32UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA4">GL_RGBA4</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA8">GL_RGBA8</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA8I">GL_RGBA8I</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA8I" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA8I</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA8UI">GL_RGBA8UI</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA8UI" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA8UI</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA8_SNORM">GL_RGBA8_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA8_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA8_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA_INTEGER">GL_RGBA_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA_MODE">GL_RGBA_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGBA_SNORM">GL_RGBA_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGBA_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGBA_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB_INTEGER">GL_RGB_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB_SCALE">GL_RGB_SCALE</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB_SCALE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB_SCALE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RGB_SNORM">GL_RGB_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RGB_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RGB_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RG_SNORM">GL_RG_SNORM</td>
-<td>u32</td>
+<td id="Ogl_GL_RG_SNORM" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RG_SNORM</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_RIGHT">GL_RIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_RIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_RIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_S">GL_S</td>
-<td>u32</td>
+<td id="Ogl_GL_S" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_S</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_1D">GL_SAMPLER_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_1D_ARRAY">GL_SAMPLER_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_1D_ARRAY_SHADOW">GL_SAMPLER_1D_ARRAY_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_1D_ARRAY_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_1D_ARRAY_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_1D_SHADOW">GL_SAMPLER_1D_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_1D_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_1D_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D">GL_SAMPLER_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D_ARRAY">GL_SAMPLER_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D_ARRAY_SHADOW">GL_SAMPLER_2D_ARRAY_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D_ARRAY_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D_ARRAY_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D_RECT">GL_SAMPLER_2D_RECT</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D_RECT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D_RECT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D_RECT_SHADOW">GL_SAMPLER_2D_RECT_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D_RECT_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D_RECT_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_2D_SHADOW">GL_SAMPLER_2D_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_2D_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_2D_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_3D">GL_SAMPLER_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_BUFFER">GL_SAMPLER_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_CUBE">GL_SAMPLER_CUBE</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_CUBE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_CUBE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY">GL_SAMPLER_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW">GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLER_CUBE_SHADOW">GL_SAMPLER_CUBE_SHADOW</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLER_CUBE_SHADOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLER_CUBE_SHADOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLES">GL_SAMPLES</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLES_PASSED">GL_SAMPLES_PASSED</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLES_PASSED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLES_PASSED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_ALPHA_TO_COVERAGE">GL_SAMPLE_ALPHA_TO_COVERAGE</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_ALPHA_TO_COVERAGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_ALPHA_TO_COVERAGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_ALPHA_TO_ONE">GL_SAMPLE_ALPHA_TO_ONE</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_ALPHA_TO_ONE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_ALPHA_TO_ONE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_BUFFERS">GL_SAMPLE_BUFFERS</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_BUFFERS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_BUFFERS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE">GL_SAMPLE_COVERAGE</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_COVERAGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_COVERAGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE_INVERT">GL_SAMPLE_COVERAGE_INVERT</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_COVERAGE_INVERT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_COVERAGE_INVERT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_COVERAGE_VALUE">GL_SAMPLE_COVERAGE_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_COVERAGE_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_COVERAGE_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SAMPLE_SHADING">GL_SAMPLE_SHADING</td>
-<td>u32</td>
+<td id="Ogl_GL_SAMPLE_SHADING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SAMPLE_SHADING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SCISSOR_BIT">GL_SCISSOR_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_SCISSOR_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SCISSOR_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SCISSOR_BOX">GL_SCISSOR_BOX</td>
-<td>u32</td>
+<td id="Ogl_GL_SCISSOR_BOX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SCISSOR_BOX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SCISSOR_TEST">GL_SCISSOR_TEST</td>
-<td>u32</td>
+<td id="Ogl_GL_SCISSOR_TEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SCISSOR_TEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY">GL_SECONDARY_COLOR_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING">GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_POINTER">GL_SECONDARY_COLOR_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_SIZE">GL_SECONDARY_COLOR_ARRAY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_STRIDE">GL_SECONDARY_COLOR_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_TYPE">GL_SECONDARY_COLOR_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_SECONDARY_COLOR_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SECONDARY_COLOR_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SELECT">GL_SELECT</td>
-<td>u32</td>
+<td id="Ogl_GL_SELECT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SELECT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>ShadingModel. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_SELECTION_BUFFER_POINTER">GL_SELECTION_BUFFER_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_SELECTION_BUFFER_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SELECTION_BUFFER_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SELECTION_BUFFER_SIZE">GL_SELECTION_BUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_SELECTION_BUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SELECTION_BUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SEPARABLE_2D">GL_SEPARABLE_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_SEPARABLE_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SEPARABLE_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SEPARATE_ATTRIBS">GL_SEPARATE_ATTRIBS</td>
-<td>u32</td>
+<td id="Ogl_GL_SEPARATE_ATTRIBS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SEPARATE_ATTRIBS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SEPARATE_SPECULAR_COLOR">GL_SEPARATE_SPECULAR_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_SEPARATE_SPECULAR_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SEPARATE_SPECULAR_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SET">GL_SET</td>
-<td>u32</td>
+<td id="Ogl_GL_SET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>MaterialParameter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V">GL_SHADER_BINARY_FORMAT_SPIR_V</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADER_BINARY_FORMAT_SPIR_V" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADER_BINARY_FORMAT_SPIR_V</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADER_INCLUDE_ARB">GL_SHADER_INCLUDE_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADER_INCLUDE_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADER_INCLUDE_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADER_SOURCE_LENGTH">GL_SHADER_SOURCE_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADER_SOURCE_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADER_SOURCE_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADER_TYPE">GL_SHADER_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADER_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADER_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADE_MODEL">GL_SHADE_MODEL</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADE_MODEL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADE_MODEL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHADING_LANGUAGE_VERSION">GL_SHADING_LANGUAGE_VERSION</td>
-<td>u32</td>
+<td id="Ogl_GL_SHADING_LANGUAGE_VERSION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHADING_LANGUAGE_VERSION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHININESS">GL_SHININESS</td>
-<td>u32</td>
+<td id="Ogl_GL_SHININESS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHININESS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SHORT">GL_SHORT</td>
-<td>u32</td>
+<td id="Ogl_GL_SHORT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SHORT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SIGNED_NORMALIZED">GL_SIGNED_NORMALIZED</td>
-<td>u32</td>
+<td id="Ogl_GL_SIGNED_NORMALIZED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SIGNED_NORMALIZED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SINGLE_COLOR">GL_SINGLE_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_SINGLE_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SINGLE_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SLUMINANCE">GL_SLUMINANCE</td>
-<td>u32</td>
+<td id="Ogl_GL_SLUMINANCE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SLUMINANCE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SLUMINANCE8">GL_SLUMINANCE8</td>
-<td>u32</td>
+<td id="Ogl_GL_SLUMINANCE8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SLUMINANCE8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SLUMINANCE8_ALPHA8">GL_SLUMINANCE8_ALPHA8</td>
-<td>u32</td>
+<td id="Ogl_GL_SLUMINANCE8_ALPHA8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SLUMINANCE8_ALPHA8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SLUMINANCE_ALPHA">GL_SLUMINANCE_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SLUMINANCE_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SLUMINANCE_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SMOOTH">GL_SMOOTH</td>
-<td>u32</td>
+<td id="Ogl_GL_SMOOTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SMOOTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>StencilOp. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_SMOOTH_LINE_WIDTH_GRANULARITY">GL_SMOOTH_LINE_WIDTH_GRANULARITY</td>
-<td>u32</td>
+<td id="Ogl_GL_SMOOTH_LINE_WIDTH_GRANULARITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SMOOTH_LINE_WIDTH_GRANULARITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SMOOTH_LINE_WIDTH_RANGE">GL_SMOOTH_LINE_WIDTH_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_SMOOTH_LINE_WIDTH_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SMOOTH_LINE_WIDTH_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SMOOTH_POINT_SIZE_GRANULARITY">GL_SMOOTH_POINT_SIZE_GRANULARITY</td>
-<td>u32</td>
+<td id="Ogl_GL_SMOOTH_POINT_SIZE_GRANULARITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SMOOTH_POINT_SIZE_GRANULARITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SMOOTH_POINT_SIZE_RANGE">GL_SMOOTH_POINT_SIZE_RANGE</td>
-<td>u32</td>
+<td id="Ogl_GL_SMOOTH_POINT_SIZE_RANGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SMOOTH_POINT_SIZE_RANGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE0_ALPHA">GL_SOURCE0_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE0_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE0_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE0_RGB">GL_SOURCE0_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE0_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE0_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE1_ALPHA">GL_SOURCE1_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE1_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE1_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE1_RGB">GL_SOURCE1_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE1_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE1_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE2_ALPHA">GL_SOURCE2_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE2_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE2_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SOURCE2_RGB">GL_SOURCE2_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SOURCE2_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SOURCE2_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPECULAR">GL_SPECULAR</td>
-<td>u32</td>
+<td id="Ogl_GL_SPECULAR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPECULAR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPHERE_MAP">GL_SPHERE_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_SPHERE_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPHERE_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureGenParameter. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPIR_V_BINARY">GL_SPIR_V_BINARY</td>
-<td>u32</td>
+<td id="Ogl_GL_SPIR_V_BINARY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPIR_V_BINARY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPIR_V_EXTENSIONS">GL_SPIR_V_EXTENSIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_SPIR_V_EXTENSIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPIR_V_EXTENSIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPOT_CUTOFF">GL_SPOT_CUTOFF</td>
-<td>u32</td>
+<td id="Ogl_GL_SPOT_CUTOFF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPOT_CUTOFF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPOT_DIRECTION">GL_SPOT_DIRECTION</td>
-<td>u32</td>
+<td id="Ogl_GL_SPOT_DIRECTION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPOT_DIRECTION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SPOT_EXPONENT">GL_SPOT_EXPONENT</td>
-<td>u32</td>
+<td id="Ogl_GL_SPOT_EXPONENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SPOT_EXPONENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC0_ALPHA">GL_SRC0_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC0_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC0_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC0_RGB">GL_SRC0_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC0_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC0_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC1_ALPHA">GL_SRC1_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC1_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC1_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC1_RGB">GL_SRC1_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC1_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC1_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC2_ALPHA">GL_SRC2_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC2_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC2_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC2_RGB">GL_SRC2_RGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC2_RGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC2_RGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC_ALPHA">GL_SRC_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC_ALPHA_SATURATE">GL_SRC_ALPHA_SATURATE</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC_ALPHA_SATURATE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC_ALPHA_SATURATE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Boolean. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRC_COLOR">GL_SRC_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_SRC_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRC_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRGB">GL_SRGB</td>
-<td>u32</td>
+<td id="Ogl_GL_SRGB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRGB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRGB8">GL_SRGB8</td>
-<td>u32</td>
+<td id="Ogl_GL_SRGB8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRGB8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRGB8_ALPHA8">GL_SRGB8_ALPHA8</td>
-<td>u32</td>
+<td id="Ogl_GL_SRGB8_ALPHA8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRGB8_ALPHA8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SRGB_ALPHA">GL_SRGB_ALPHA</td>
-<td>u32</td>
+<td id="Ogl_GL_SRGB_ALPHA" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SRGB_ALPHA</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STACK_OVERFLOW">GL_STACK_OVERFLOW</td>
-<td>u32</td>
+<td id="Ogl_GL_STACK_OVERFLOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STACK_OVERFLOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STACK_UNDERFLOW">GL_STACK_UNDERFLOW</td>
-<td>u32</td>
+<td id="Ogl_GL_STACK_UNDERFLOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STACK_UNDERFLOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STATIC_COPY">GL_STATIC_COPY</td>
-<td>u32</td>
+<td id="Ogl_GL_STATIC_COPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STATIC_COPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STATIC_DRAW">GL_STATIC_DRAW</td>
-<td>u32</td>
+<td id="Ogl_GL_STATIC_DRAW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STATIC_DRAW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STATIC_READ">GL_STATIC_READ</td>
-<td>u32</td>
+<td id="Ogl_GL_STATIC_READ" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STATIC_READ</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL">GL_STENCIL</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>PixelFormat. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_ATTACHMENT">GL_STENCIL_ATTACHMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_ATTACHMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_ATTACHMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_FAIL">GL_STENCIL_BACK_FAIL</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_FAIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_FAIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_FUNC">GL_STENCIL_BACK_FUNC</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_FUNC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_FUNC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_FAIL">GL_STENCIL_BACK_PASS_DEPTH_FAIL</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_FAIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_PASS_DEPTH_FAIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_PASS">GL_STENCIL_BACK_PASS_DEPTH_PASS</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_PASS_DEPTH_PASS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_PASS_DEPTH_PASS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_REF">GL_STENCIL_BACK_REF</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_REF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_REF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_VALUE_MASK">GL_STENCIL_BACK_VALUE_MASK</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_VALUE_MASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_VALUE_MASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BACK_WRITEMASK">GL_STENCIL_BACK_WRITEMASK</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BACK_WRITEMASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BACK_WRITEMASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BITS">GL_STENCIL_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BUFFER">GL_STENCIL_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_BUFFER_BIT">GL_STENCIL_BUFFER_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_BUFFER_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_BUFFER_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_CLEAR_VALUE">GL_STENCIL_CLEAR_VALUE</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_CLEAR_VALUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_CLEAR_VALUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_FAIL">GL_STENCIL_FAIL</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_FAIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_FAIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_FUNC">GL_STENCIL_FUNC</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_FUNC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_FUNC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_INDEX">GL_STENCIL_INDEX</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_INDEX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_INDEX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_INDEX1">GL_STENCIL_INDEX1</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_INDEX1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_INDEX1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_INDEX16">GL_STENCIL_INDEX16</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_INDEX16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_INDEX16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_INDEX4">GL_STENCIL_INDEX4</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_INDEX4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_INDEX4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_INDEX8">GL_STENCIL_INDEX8</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_INDEX8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_INDEX8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_PASS_DEPTH_FAIL">GL_STENCIL_PASS_DEPTH_FAIL</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_PASS_DEPTH_FAIL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_PASS_DEPTH_FAIL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_PASS_DEPTH_PASS">GL_STENCIL_PASS_DEPTH_PASS</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_PASS_DEPTH_PASS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_PASS_DEPTH_PASS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_REF">GL_STENCIL_REF</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_REF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_REF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_TEST">GL_STENCIL_TEST</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_TEST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_TEST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_VALUE_MASK">GL_STENCIL_VALUE_MASK</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_VALUE_MASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_VALUE_MASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STENCIL_WRITEMASK">GL_STENCIL_WRITEMASK</td>
-<td>u32</td>
+<td id="Ogl_GL_STENCIL_WRITEMASK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STENCIL_WRITEMASK</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STEREO">GL_STEREO</td>
-<td>u32</td>
+<td id="Ogl_GL_STEREO" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STEREO</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STREAM_COPY">GL_STREAM_COPY</td>
-<td>u32</td>
+<td id="Ogl_GL_STREAM_COPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STREAM_COPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STREAM_DRAW">GL_STREAM_DRAW</td>
-<td>u32</td>
+<td id="Ogl_GL_STREAM_DRAW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STREAM_DRAW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_STREAM_READ">GL_STREAM_READ</td>
-<td>u32</td>
+<td id="Ogl_GL_STREAM_READ" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_STREAM_READ</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SUBPIXEL_BITS">GL_SUBPIXEL_BITS</td>
-<td>u32</td>
+<td id="Ogl_GL_SUBPIXEL_BITS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SUBPIXEL_BITS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_SUBTRACT">GL_SUBTRACT</td>
-<td>u32</td>
+<td id="Ogl_GL_SUBTRACT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_SUBTRACT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T">GL_T</td>
-<td>u32</td>
+<td id="Ogl_GL_T" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T2F_C3F_V3F">GL_T2F_C3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_T2F_C3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T2F_C3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T2F_C4F_N3F_V3F">GL_T2F_C4F_N3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_T2F_C4F_N3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T2F_C4F_N3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T2F_C4UB_V3F">GL_T2F_C4UB_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_T2F_C4UB_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T2F_C4UB_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T2F_N3F_V3F">GL_T2F_N3F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_T2F_N3F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T2F_N3F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T2F_V3F">GL_T2F_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_T2F_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T2F_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_T4F_C4F_N3F_V4F">GL_T4F_C4F_N3F_V4F</td>
-<td>u32</td>
+<td id="Ogl_GL_T4F_C4F_N3F_V4F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T4F_C4F_N3F_V4F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Extensions. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_T4F_V4F">GL_T4F_V4F</td>
-<td>u32</td>
+<td id="Ogl_GL_T4F_V4F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_T4F_V4F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TABLE_TOO_LARGE">GL_TABLE_TOO_LARGE</td>
-<td>u32</td>
+<td id="Ogl_GL_TABLE_TOO_LARGE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TABLE_TOO_LARGE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TESS_CONTROL_SHADER_PATCHES">GL_TESS_CONTROL_SHADER_PATCHES</td>
-<td>u32</td>
+<td id="Ogl_GL_TESS_CONTROL_SHADER_PATCHES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TESS_CONTROL_SHADER_PATCHES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TESS_EVALUATION_SHADER_INVOCATIONS">GL_TESS_EVALUATION_SHADER_INVOCATIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_TESS_EVALUATION_SHADER_INVOCATIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TESS_EVALUATION_SHADER_INVOCATIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE">GL_TEXTURE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>PixelCopyType. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE0">GL_TEXTURE0</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE1">GL_TEXTURE1</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE10">GL_TEXTURE10</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE10" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE10</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE11">GL_TEXTURE11</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE11" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE11</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE12">GL_TEXTURE12</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE12" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE12</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE13">GL_TEXTURE13</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE13" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE13</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE14">GL_TEXTURE14</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE14" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE14</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE15">GL_TEXTURE15</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE15" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE15</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE16">GL_TEXTURE16</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE16" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE16</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE17">GL_TEXTURE17</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE17" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE17</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE18">GL_TEXTURE18</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE18" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE18</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE19">GL_TEXTURE19</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE19" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE19</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE2">GL_TEXTURE2</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE20">GL_TEXTURE20</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE20" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE20</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE21">GL_TEXTURE21</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE21" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE21</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE22">GL_TEXTURE22</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE22" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE22</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE23">GL_TEXTURE23</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE23" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE23</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE24">GL_TEXTURE24</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE24" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE24</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE25">GL_TEXTURE25</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE25" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE25</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE26">GL_TEXTURE26</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE26" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE26</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE27">GL_TEXTURE27</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE27" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE27</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE28">GL_TEXTURE28</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE28" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE28</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE29">GL_TEXTURE29</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE29" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE29</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE3">GL_TEXTURE3</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE30">GL_TEXTURE30</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE30" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE30</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE31">GL_TEXTURE31</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE31" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE31</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE4">GL_TEXTURE4</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE5">GL_TEXTURE5</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE6">GL_TEXTURE6</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE6" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE6</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE7">GL_TEXTURE7</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE7" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE7</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE8">GL_TEXTURE8</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE9">GL_TEXTURE9</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE9" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE9</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_1D">GL_TEXTURE_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_1D_ARRAY">GL_TEXTURE_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_2D">GL_TEXTURE_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_2D_ARRAY">GL_TEXTURE_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_3D">GL_TEXTURE_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_ALPHA_SIZE">GL_TEXTURE_ALPHA_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_ALPHA_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_ALPHA_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_ALPHA_TYPE">GL_TEXTURE_ALPHA_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_ALPHA_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_ALPHA_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BASE_LEVEL">GL_TEXTURE_BASE_LEVEL</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BASE_LEVEL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BASE_LEVEL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_1D">GL_TEXTURE_BINDING_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_1D_ARRAY">GL_TEXTURE_BINDING_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_2D">GL_TEXTURE_BINDING_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>vertex_array. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_2D_ARRAY">GL_TEXTURE_BINDING_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_3D">GL_TEXTURE_BINDING_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_BUFFER">GL_TEXTURE_BINDING_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP">GL_TEXTURE_BINDING_CUBE_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_CUBE_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP_ARRAY">GL_TEXTURE_BINDING_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BINDING_RECTANGLE">GL_TEXTURE_BINDING_RECTANGLE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BINDING_RECTANGLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BINDING_RECTANGLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BIT">GL_TEXTURE_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BLUE_SIZE">GL_TEXTURE_BLUE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BLUE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BLUE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BLUE_TYPE">GL_TEXTURE_BLUE_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BLUE_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BLUE_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BORDER">GL_TEXTURE_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>HintMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BORDER_COLOR">GL_TEXTURE_BORDER_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BORDER_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BORDER_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BUFFER">GL_TEXTURE_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_BINDING">GL_TEXTURE_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_DATA_STORE_BINDING">GL_TEXTURE_BUFFER_DATA_STORE_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BUFFER_DATA_STORE_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BUFFER_DATA_STORE_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_BUFFER_FORMAT">GL_TEXTURE_BUFFER_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_BUFFER_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_BUFFER_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_FUNC">GL_TEXTURE_COMPARE_FUNC</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPARE_FUNC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPARE_FUNC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_FUNC_ARB">GL_TEXTURE_COMPARE_FUNC_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPARE_FUNC_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPARE_FUNC_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_MODE">GL_TEXTURE_COMPARE_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPARE_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPARE_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPARE_MODE_ARB">GL_TEXTURE_COMPARE_MODE_ARB</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPARE_MODE_ARB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPARE_MODE_ARB</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPONENTS">GL_TEXTURE_COMPONENTS</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPONENTS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPONENTS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSED">GL_TEXTURE_COMPRESSED</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPRESSED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPRESSED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSED_IMAGE_SIZE">GL_TEXTURE_COMPRESSED_IMAGE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPRESSED_IMAGE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPRESSED_IMAGE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COMPRESSION_HINT">GL_TEXTURE_COMPRESSION_HINT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COMPRESSION_HINT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COMPRESSION_HINT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY">GL_TEXTURE_COORD_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING">GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_COUNT_EXT">GL_TEXTURE_COORD_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_EXT">GL_TEXTURE_COORD_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER">GL_TEXTURE_COORD_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER_EXT">GL_TEXTURE_COORD_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE">GL_TEXTURE_COORD_ARRAY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE_EXT">GL_TEXTURE_COORD_ARRAY_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE">GL_TEXTURE_COORD_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE_EXT">GL_TEXTURE_COORD_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE">GL_TEXTURE_COORD_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE_EXT">GL_TEXTURE_COORD_ARRAY_TYPE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_COORD_ARRAY_TYPE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_COORD_ARRAY_TYPE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP">GL_TEXTURE_CUBE_MAP</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_ARRAY">GL_TEXTURE_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_X">GL_TEXTURE_CUBE_MAP_NEGATIVE_X</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_X" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_NEGATIVE_X</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y">GL_TEXTURE_CUBE_MAP_NEGATIVE_Y</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_NEGATIVE_Y</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z">GL_TEXTURE_CUBE_MAP_NEGATIVE_Z</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_NEGATIVE_Z</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_X">GL_TEXTURE_CUBE_MAP_POSITIVE_X</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_X" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_POSITIVE_X</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Y">GL_TEXTURE_CUBE_MAP_POSITIVE_Y</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Y" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_POSITIVE_Y</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Z">GL_TEXTURE_CUBE_MAP_POSITIVE_Z</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_CUBE_MAP_POSITIVE_Z" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_CUBE_MAP_POSITIVE_Z</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_DEPTH">GL_TEXTURE_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_DEPTH_SIZE">GL_TEXTURE_DEPTH_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_DEPTH_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_DEPTH_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_DEPTH_TYPE">GL_TEXTURE_DEPTH_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_DEPTH_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_DEPTH_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_ENV">GL_TEXTURE_ENV</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_ENV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_ENV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureGenMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_ENV_COLOR">GL_TEXTURE_ENV_COLOR</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_ENV_COLOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_ENV_COLOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureEnvTarget. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_ENV_MODE">GL_TEXTURE_ENV_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_ENV_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_ENV_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_FILTER_CONTROL">GL_TEXTURE_FILTER_CONTROL</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_FILTER_CONTROL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_FILTER_CONTROL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GEN_MODE">GL_TEXTURE_GEN_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GEN_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GEN_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GEN_Q">GL_TEXTURE_GEN_Q</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GEN_Q" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GEN_Q</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GEN_R">GL_TEXTURE_GEN_R</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GEN_R" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GEN_R</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GEN_S">GL_TEXTURE_GEN_S</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GEN_S" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GEN_S</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GEN_T">GL_TEXTURE_GEN_T</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GEN_T" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GEN_T</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GREEN_SIZE">GL_TEXTURE_GREEN_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GREEN_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GREEN_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_GREEN_TYPE">GL_TEXTURE_GREEN_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_GREEN_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_GREEN_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_HEIGHT">GL_TEXTURE_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_INTENSITY_SIZE">GL_TEXTURE_INTENSITY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_INTENSITY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_INTENSITY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_INTENSITY_TYPE">GL_TEXTURE_INTENSITY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_INTENSITY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_INTENSITY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_INTERNAL_FORMAT">GL_TEXTURE_INTERNAL_FORMAT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_INTERNAL_FORMAT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_INTERNAL_FORMAT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_LOD_BIAS">GL_TEXTURE_LOD_BIAS</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_LOD_BIAS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_LOD_BIAS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_LUMINANCE_SIZE">GL_TEXTURE_LUMINANCE_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_LUMINANCE_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_LUMINANCE_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_LUMINANCE_TYPE">GL_TEXTURE_LUMINANCE_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_LUMINANCE_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_LUMINANCE_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MAG_FILTER">GL_TEXTURE_MAG_FILTER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MAG_FILTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MAG_FILTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MATRIX">GL_TEXTURE_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MAX_ANISOTROPY">GL_TEXTURE_MAX_ANISOTROPY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MAX_ANISOTROPY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MAX_ANISOTROPY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MAX_LEVEL">GL_TEXTURE_MAX_LEVEL</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MAX_LEVEL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MAX_LEVEL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MAX_LOD">GL_TEXTURE_MAX_LOD</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MAX_LOD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MAX_LOD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MIN_FILTER">GL_TEXTURE_MIN_FILTER</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MIN_FILTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MIN_FILTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_MIN_LOD">GL_TEXTURE_MIN_LOD</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_MIN_LOD" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_MIN_LOD</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_PRIORITY">GL_TEXTURE_PRIORITY</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_PRIORITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_PRIORITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_RECTANGLE">GL_TEXTURE_RECTANGLE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_RECTANGLE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_RECTANGLE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_RED_SIZE">GL_TEXTURE_RED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_RED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_RED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_RED_TYPE">GL_TEXTURE_RED_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_RED_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_RED_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_RESIDENT">GL_TEXTURE_RESIDENT</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_RESIDENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_RESIDENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_SHARED_SIZE">GL_TEXTURE_SHARED_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_SHARED_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_SHARED_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_STACK_DEPTH">GL_TEXTURE_STACK_DEPTH</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_STACK_DEPTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_STACK_DEPTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_STENCIL_SIZE">GL_TEXTURE_STENCIL_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_STENCIL_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_STENCIL_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_WIDTH">GL_TEXTURE_WIDTH</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_WIDTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_WIDTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_WRAP_R">GL_TEXTURE_WRAP_R</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_WRAP_R" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_WRAP_R</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_WRAP_S">GL_TEXTURE_WRAP_S</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_WRAP_S" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_WRAP_S</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TEXTURE_WRAP_T">GL_TEXTURE_WRAP_T</td>
-<td>u32</td>
+<td id="Ogl_GL_TEXTURE_WRAP_T" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TEXTURE_WRAP_T</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>TextureWrapMode. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_BIT">GL_TRANSFORM_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_ACTIVE">GL_TRANSFORM_FEEDBACK_ACTIVE</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_ACTIVE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_ACTIVE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER">GL_TRANSFORM_FEEDBACK_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_BINDING">GL_TRANSFORM_FEEDBACK_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_MODE">GL_TRANSFORM_FEEDBACK_BUFFER_MODE</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_MODE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_BUFFER_MODE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_SIZE">GL_TRANSFORM_FEEDBACK_BUFFER_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_BUFFER_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_START">GL_TRANSFORM_FEEDBACK_BUFFER_START</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_BUFFER_START" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_BUFFER_START</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_OVERFLOW">GL_TRANSFORM_FEEDBACK_OVERFLOW</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_OVERFLOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_OVERFLOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_PAUSED">GL_TRANSFORM_FEEDBACK_PAUSED</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_PAUSED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_PAUSED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN">GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW">GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYINGS">GL_TRANSFORM_FEEDBACK_VARYINGS</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYINGS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_VARYINGS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH">GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSPOSE_COLOR_MATRIX">GL_TRANSPOSE_COLOR_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSPOSE_COLOR_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSPOSE_COLOR_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSPOSE_MODELVIEW_MATRIX">GL_TRANSPOSE_MODELVIEW_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSPOSE_MODELVIEW_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSPOSE_MODELVIEW_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSPOSE_PROJECTION_MATRIX">GL_TRANSPOSE_PROJECTION_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSPOSE_PROJECTION_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSPOSE_PROJECTION_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRANSPOSE_TEXTURE_MATRIX">GL_TRANSPOSE_TEXTURE_MATRIX</td>
-<td>u32</td>
+<td id="Ogl_GL_TRANSPOSE_TEXTURE_MATRIX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRANSPOSE_TEXTURE_MATRIX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRIANGLES">GL_TRIANGLES</td>
-<td>u32</td>
+<td id="Ogl_GL_TRIANGLES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRIANGLES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRIANGLES_ADJACENCY">GL_TRIANGLES_ADJACENCY</td>
-<td>u32</td>
+<td id="Ogl_GL_TRIANGLES_ADJACENCY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRIANGLES_ADJACENCY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRIANGLE_FAN">GL_TRIANGLE_FAN</td>
-<td>u32</td>
+<td id="Ogl_GL_TRIANGLE_FAN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRIANGLE_FAN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRIANGLE_STRIP">GL_TRIANGLE_STRIP</td>
-<td>u32</td>
+<td id="Ogl_GL_TRIANGLE_STRIP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRIANGLE_STRIP</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRIANGLE_STRIP_ADJACENCY">GL_TRIANGLE_STRIP_ADJACENCY</td>
-<td>u32</td>
+<td id="Ogl_GL_TRIANGLE_STRIP_ADJACENCY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRIANGLE_STRIP_ADJACENCY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_TRUE">GL_TRUE</td>
-<td>u8</td>
+<td id="Ogl_GL_TRUE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_TRUE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_ALIGNMENT">GL_UNPACK_ALIGNMENT</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_ALIGNMENT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_ALIGNMENT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_IMAGE_HEIGHT">GL_UNPACK_IMAGE_HEIGHT</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_IMAGE_HEIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_IMAGE_HEIGHT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_LSB_FIRST">GL_UNPACK_LSB_FIRST</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_LSB_FIRST" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_LSB_FIRST</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_ROW_LENGTH">GL_UNPACK_ROW_LENGTH</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_ROW_LENGTH" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_ROW_LENGTH</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_SKIP_IMAGES">GL_UNPACK_SKIP_IMAGES</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_SKIP_IMAGES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_SKIP_IMAGES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_SKIP_PIXELS">GL_UNPACK_SKIP_PIXELS</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_SKIP_PIXELS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_SKIP_PIXELS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_SKIP_ROWS">GL_UNPACK_SKIP_ROWS</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_SKIP_ROWS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_SKIP_ROWS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNPACK_SWAP_BYTES">GL_UNPACK_SWAP_BYTES</td>
-<td>u32</td>
+<td id="Ogl_GL_UNPACK_SWAP_BYTES" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNPACK_SWAP_BYTES</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_BYTE">GL_UNSIGNED_BYTE</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_BYTE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_BYTE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_BYTE_2_3_3_REV">GL_UNSIGNED_BYTE_2_3_3_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_BYTE_2_3_3_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_BYTE_2_3_3_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_BYTE_3_3_2">GL_UNSIGNED_BYTE_3_3_2</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_BYTE_3_3_2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_BYTE_3_3_2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT">GL_UNSIGNED_INT</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_10F_11F_11F_REV">GL_UNSIGNED_INT_10F_11F_11F_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_10F_11F_11F_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_10F_11F_11F_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_10_10_10_2">GL_UNSIGNED_INT_10_10_10_2</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_10_10_10_2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_10_10_10_2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_24_8">GL_UNSIGNED_INT_24_8</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_24_8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_24_8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_5_9_9_9_REV">GL_UNSIGNED_INT_5_9_9_9_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_5_9_9_9_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_5_9_9_9_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8">GL_UNSIGNED_INT_8_8_8_8</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_8_8_8_8</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8_REV">GL_UNSIGNED_INT_8_8_8_8_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_8_8_8_8_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_8_8_8_8_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D">GL_UNSIGNED_INT_SAMPLER_1D</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_1D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D_ARRAY">GL_UNSIGNED_INT_SAMPLER_1D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_1D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_1D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D">GL_UNSIGNED_INT_SAMPLER_2D</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_2D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_ARRAY">GL_UNSIGNED_INT_SAMPLER_2D_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_2D_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_RECT">GL_UNSIGNED_INT_SAMPLER_2D_RECT</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_2D_RECT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_2D_RECT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_3D">GL_UNSIGNED_INT_SAMPLER_3D</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_3D" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_3D</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_BUFFER">GL_UNSIGNED_INT_SAMPLER_BUFFER</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_BUFFER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_BUFFER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE">GL_UNSIGNED_INT_SAMPLER_CUBE</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_CUBE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY">GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC2">GL_UNSIGNED_INT_VEC2</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_VEC2" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_VEC2</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC3">GL_UNSIGNED_INT_VEC3</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_VEC3" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_VEC3</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_INT_VEC4">GL_UNSIGNED_INT_VEC4</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_INT_VEC4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_INT_VEC4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_NORMALIZED">GL_UNSIGNED_NORMALIZED</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_NORMALIZED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_NORMALIZED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT">GL_UNSIGNED_SHORT</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_1_5_5_5_REV">GL_UNSIGNED_SHORT_1_5_5_5_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_1_5_5_5_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_1_5_5_5_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4">GL_UNSIGNED_SHORT_4_4_4_4</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_4_4_4_4</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4_REV">GL_UNSIGNED_SHORT_4_4_4_4_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_4_4_4_4_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_4_4_4_4_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_5_5_1">GL_UNSIGNED_SHORT_5_5_5_1</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_5_5_1" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_5_5_5_1</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5">GL_UNSIGNED_SHORT_5_6_5</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_5_6_5</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5_REV">GL_UNSIGNED_SHORT_5_6_5_REV</td>
-<td>u32</td>
+<td id="Ogl_GL_UNSIGNED_SHORT_5_6_5_REV" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UNSIGNED_SHORT_5_6_5_REV</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_UPPER_LEFT">GL_UPPER_LEFT</td>
-<td>u32</td>
+<td id="Ogl_GL_UPPER_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_UPPER_LEFT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_V2F">GL_V2F</td>
-<td>u32</td>
+<td id="Ogl_GL_V2F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_V2F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_V3F">GL_V3F</td>
-<td>u32</td>
+<td id="Ogl_GL_V3F" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_V3F</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VALIDATE_STATUS">GL_VALIDATE_STATUS</td>
-<td>u32</td>
+<td id="Ogl_GL_VALIDATE_STATUS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VALIDATE_STATUS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VENDOR">GL_VENDOR</td>
-<td>u32</td>
+<td id="Ogl_GL_VENDOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VENDOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERSION">GL_VERSION</td>
-<td>u32</td>
+<td id="Ogl_GL_VERSION" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERSION</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY">GL_VERTEX_ARRAY</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_BUFFER_BINDING">GL_VERTEX_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_COUNT_EXT">GL_VERTEX_ARRAY_COUNT_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_COUNT_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_COUNT_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_EXT">GL_VERTEX_ARRAY_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_POINTER">GL_VERTEX_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_POINTER_EXT">GL_VERTEX_ARRAY_POINTER_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_POINTER_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_POINTER_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_SIZE">GL_VERTEX_ARRAY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_SIZE_EXT">GL_VERTEX_ARRAY_SIZE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_SIZE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_SIZE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_STRIDE">GL_VERTEX_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_STRIDE_EXT">GL_VERTEX_ARRAY_STRIDE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_STRIDE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_STRIDE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_TYPE">GL_VERTEX_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ARRAY_TYPE_EXT">GL_VERTEX_ARRAY_TYPE_EXT</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ARRAY_TYPE_EXT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ARRAY_TYPE_EXT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING">GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_DIVISOR">GL_VERTEX_ATTRIB_ARRAY_DIVISOR</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_DIVISOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_DIVISOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_ENABLED">GL_VERTEX_ATTRIB_ARRAY_ENABLED</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_ENABLED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_ENABLED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_INTEGER">GL_VERTEX_ATTRIB_ARRAY_INTEGER</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_INTEGER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_INTEGER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_LONG">GL_VERTEX_ATTRIB_ARRAY_LONG</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_LONG" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_LONG</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_NORMALIZED">GL_VERTEX_ATTRIB_ARRAY_NORMALIZED</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_NORMALIZED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_NORMALIZED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_POINTER">GL_VERTEX_ATTRIB_ARRAY_POINTER</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_POINTER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_POINTER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_SIZE">GL_VERTEX_ATTRIB_ARRAY_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_STRIDE">GL_VERTEX_ATTRIB_ARRAY_STRIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_STRIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_STRIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_TYPE">GL_VERTEX_ATTRIB_ARRAY_TYPE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_ATTRIB_ARRAY_TYPE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_ATTRIB_ARRAY_TYPE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_PROGRAM_POINT_SIZE">GL_VERTEX_PROGRAM_POINT_SIZE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_PROGRAM_POINT_SIZE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_PROGRAM_POINT_SIZE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_PROGRAM_TWO_SIDE">GL_VERTEX_PROGRAM_TWO_SIDE</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_PROGRAM_TWO_SIDE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_PROGRAM_TWO_SIDE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_SHADER">GL_VERTEX_SHADER</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_SHADER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_SHADER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTEX_SHADER_INVOCATIONS">GL_VERTEX_SHADER_INVOCATIONS</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTEX_SHADER_INVOCATIONS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTEX_SHADER_INVOCATIONS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VERTICES_SUBMITTED">GL_VERTICES_SUBMITTED</td>
-<td>u32</td>
+<td id="Ogl_GL_VERTICES_SUBMITTED" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VERTICES_SUBMITTED</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VIEWPORT">GL_VIEWPORT</td>
-<td>u32</td>
+<td id="Ogl_GL_VIEWPORT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VIEWPORT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_VIEWPORT_BIT">GL_VIEWPORT_BIT</td>
-<td>u32</td>
+<td id="Ogl_GL_VIEWPORT_BIT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_VIEWPORT_BIT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_WEIGHT_ARRAY_BUFFER_BINDING">GL_WEIGHT_ARRAY_BUFFER_BINDING</td>
-<td>u32</td>
+<td id="Ogl_GL_WEIGHT_ARRAY_BUFFER_BINDING" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_WEIGHT_ARRAY_BUFFER_BINDING</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_WIN_draw_range_elements">GL_WIN_draw_range_elements</td>
-<td>s32</td>
+<td id="Ogl_GL_WIN_draw_range_elements" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_WIN_draw_range_elements</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>EXT_vertex_array. </td>
 </tr>
 <tr>
-<td id="Ogl_GL_WIN_swap_hint">GL_WIN_swap_hint</td>
-<td>s32</td>
+<td id="Ogl_GL_WIN_swap_hint" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_WIN_swap_hint</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_WRAP_BORDER">GL_WRAP_BORDER</td>
-<td>u32</td>
+<td id="Ogl_GL_WRAP_BORDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_WRAP_BORDER</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_WRITE_ONLY">GL_WRITE_ONLY</td>
-<td>u32</td>
+<td id="Ogl_GL_WRITE_ONLY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_WRITE_ONLY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_XOR">GL_XOR</td>
-<td>u32</td>
+<td id="Ogl_GL_XOR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_XOR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ZERO">GL_ZERO</td>
-<td>u32</td>
+<td id="Ogl_GL_ZERO" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ZERO</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ZOOM_X">GL_ZOOM_X</td>
-<td>u32</td>
+<td id="Ogl_GL_ZOOM_X" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ZOOM_X</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GL_ZOOM_Y">GL_ZOOM_Y</td>
-<td>u32</td>
+<td id="Ogl_GL_ZOOM_Y" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GL_ZOOM_Y</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -8701,108 +8708,108 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Ogl_GLbitfield">GLbitfield</td>
-<td>u32</td>
+<td id="Ogl_GLbitfield" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLbitfield</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLboolean">GLboolean</td>
-<td>u8</td>
+<td id="Ogl_GLboolean" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLboolean</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLbyte">GLbyte</td>
-<td>s8</td>
+<td id="Ogl_GLbyte" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLbyte</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLchar">GLchar</td>
-<td>u8</td>
+<td id="Ogl_GLchar" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLchar</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLclampd">GLclampd</td>
-<td>f64</td>
+<td id="Ogl_GLclampd" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLclampd</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLclampf">GLclampf</td>
-<td>f32</td>
+<td id="Ogl_GLclampf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLclampf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLdouble">GLdouble</td>
-<td>f64</td>
+<td id="Ogl_GLdouble" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLdouble</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLenum">GLenum</td>
-<td>u32</td>
+<td id="Ogl_GLenum" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLenum</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLfloat">GLfloat</td>
-<td>f32</td>
+<td id="Ogl_GLfloat" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLfloat</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLint">GLint</td>
-<td>s32</td>
+<td id="Ogl_GLint" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLint</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLint64">GLint64</td>
-<td>s64</td>
+<td id="Ogl_GLint64" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLint64</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLintptr">GLintptr</td>
-<td>s64</td>
+<td id="Ogl_GLintptr" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLintptr</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLshort">GLshort</td>
-<td>s16</td>
+<td id="Ogl_GLshort" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLshort</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLsizei">GLsizei</td>
-<td>s32</td>
+<td id="Ogl_GLsizei" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLsizei</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLsizeiptr">GLsizeiptr</td>
-<td>u64</td>
+<td id="Ogl_GLsizeiptr" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLsizeiptr</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLubyte">GLubyte</td>
-<td>u8</td>
+<td id="Ogl_GLubyte" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLubyte</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLuint">GLuint</td>
-<td>u32</td>
+<td id="Ogl_GLuint" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLuint</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLuint64">GLuint64</td>
-<td>u64</td>
+<td id="Ogl_GLuint64" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLuint64</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLushort">GLushort</td>
-<td>u16</td>
+<td id="Ogl_GLushort" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLushort</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_GLvoid">GLvoid</td>
-<td>void</td>
+<td id="Ogl_GLvoid" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GLvoid</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Ogl_HGLRC">HGLRC</td>
-<td>const *void</td>
+<td id="Ogl_HGLRC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HGLRC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>

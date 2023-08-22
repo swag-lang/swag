@@ -91,6 +91,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -320,13 +327,13 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </p>
 <table class="enumeration">
 <tr>
-<td id="Audio_BusHandle">BusHandle</td>
-<td>*XAudio2.IXAudio2SubmixVoice</td>
+<td id="Audio_BusHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BusHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IXAudio2SubmixVoice</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Audio_VoiceHandle">VoiceHandle</td>
-<td>*XAudio2.IXAudio2SourceVoice</td>
+<td id="Audio_VoiceHandle" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">VoiceHandle</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IXAudio2SourceVoice</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -344,8 +351,8 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Represents a bus. </p>
 <table class="enumeration">
 <tr>
-<td>handle</td>
-<td>*XAudio2.IXAudio2SubmixVoice</td>
+<td class="codetype"></span><span class="SyntaxCode">handle</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">IXAudio2SubmixVoice</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -476,18 +483,18 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Base struct for all codec instances. </p>
 <table class="enumeration">
 <tr>
-<td>srcEncoding</td>
-<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="codetype"></span><span class="SyntaxCode">srcEncoding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span><span class="SyntaxCode"></td>
 <td>The original encoding. </td>
 </tr>
 <tr>
-<td>dstEncoding</td>
-<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="codetype"></span><span class="SyntaxCode">dstEncoding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span><span class="SyntaxCode"></td>
 <td>The requested encoding. </td>
 </tr>
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfoStruct</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode"></td>
 <td>The real type of the codec. </td>
 </tr>
 </table>
@@ -505,23 +512,23 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Interface to describe a codec. </p>
 <table class="enumeration">
 <tr>
-<td>canEncode</td>
-<td>func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canEncode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>canDecode</td>
-<td>func(*Audio.ICodec, Audio.SoundFileEncoding)->bool</td>
+<td class="codetype"></span><span class="SyntaxCode">canDecode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>init</td>
-<td>func(*Audio.ICodec, ^void, u64)->u64 throw</td>
+<td class="codetype"></span><span class="SyntaxCode">init</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span><span class="SyntaxCode">, ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>decode</td>
-<td>func(*Audio.ICodec, ^void, u64, ^void, u64)->{write: u64, read: u64} throw</td>
+<td class="codetype"></span><span class="SyntaxCode">decode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span><span class="SyntaxCode">, ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;{write: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, read: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">} </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -539,68 +546,68 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Represents a sound file. </p>
 <table class="enumeration">
 <tr>
-<td>fullname</td>
-<td>Core.String</td>
+<td class="codetype"></span><span class="SyntaxCode">fullname</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>datas</td>
-<td>Core.Array'(u8)</td>
+<td class="codetype"></span><span class="SyntaxCode">datas</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Array</span><span class="SyntaxCode">'(</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</td>
 <td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>
-<td>sampleCount</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">sampleCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Total number of samples. </td>
 </tr>
 <tr>
-<td>dataSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">dataSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Total size, in bytes, of datas. </td>
 </tr>
 <tr>
-<td>dataSeek</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">dataSeek</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>The position in the file where the datas are stored. </td>
 </tr>
 <tr>
-<td>encoding</td>
-<td><a href="#Audio_SoundFileEncoding">Audio.SoundFileEncoding</a></td>
+<td class="codetype"></span><span class="SyntaxCode">encoding</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span><span class="SyntaxCode"></td>
 <td>Encoding type of the datas. </td>
 </tr>
 <tr>
-<td>validity</td>
-<td><a href="#Audio_SoundFileValidityMask">Audio.SoundFileValidityMask</a></td>
+<td class="codetype"></span><span class="SyntaxCode">validity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Audio</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span><span class="SyntaxCode"></td>
 <td>What informations in this struct are valid. </td>
 </tr>
 <tr>
-<td>frequency</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">frequency</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Sound frequency. </td>
 </tr>
 <tr>
-<td>channelCount</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">channelCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Number of channels (2 for stereo...). </td>
 </tr>
 <tr>
-<td>channelMask</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">channelMask</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Identifier of the channels. </td>
 </tr>
 <tr>
-<td>bitsPerSample</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">bitsPerSample</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Number of bits per sample in the datas. </td>
 </tr>
 <tr>
-<td>duration</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">duration</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Duration, in seconds, of the sound. </td>
 </tr>
 <tr>
-<td>validBitsPerSample</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">validBitsPerSample</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
@@ -641,27 +648,27 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>SoundFile internal format. </p>
 <table class="enumeration">
 <tr>
-<td>Unknown</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unknown</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Pcm8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pcm8</span><span class="SyntaxCode"></td>
 <td>Pcm, uncompressed, 8 bits per sample. </td>
 </tr>
 <tr>
-<td>Pcm16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pcm16</span><span class="SyntaxCode"></td>
 <td>Pcm, uncompressed, 16 bits per sample. </td>
 </tr>
 <tr>
-<td>Pcm24</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pcm24</span><span class="SyntaxCode"></td>
 <td>Pcm, uncompressed, 24 bits per sample. </td>
 </tr>
 <tr>
-<td>Pcm32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pcm32</span><span class="SyntaxCode"></td>
 <td>Pcm, uncompressed, 32 bits per sample. </td>
 </tr>
 <tr>
-<td>Float32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Float32</span><span class="SyntaxCode"></td>
 <td>Pcm, uncompressed, float 32 bits per sample. </td>
 </tr>
 </table>
@@ -679,47 +686,47 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Format</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Format</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Frequency</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Frequency</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ChannelCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ChannelCount</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ChannelMask</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ChannelMask</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>BitsPerSample</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BitsPerSample</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Duration</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Duration</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SampleCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SampleCount</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ValidBitsPerSample</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ValidBitsPerSample</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Data</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Data</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>MetaData</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MetaData</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -979,19 +986,19 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AcceptPitch</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AcceptPitch</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AcceptFilters</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AcceptFilters</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1008,19 +1015,19 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Loop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Loop</span><span class="SyntaxCode"></td>
 <td>Play in loops. </td>
 </tr>
 <tr>
-<td>DestroyOnStop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DestroyOnStop</span><span class="SyntaxCode"></td>
 <td>Destroy the voice once the sound has been played. </td>
 </tr>
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1037,19 +1044,19 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PlayedOnce</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PlayedOnce</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Playing</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Playing</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PendingDestroy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PendingDestroy</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>

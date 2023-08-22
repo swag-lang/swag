@@ -41,7 +41,7 @@ struct GenDoc
     Utf8 getReference(const Utf8& name);
     void computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     Utf8 getFormattedText(const Utf8& user);
-    void outputCode(const Utf8& code, bool makeRefs);
+    void outputCode(const Utf8& code, bool makeRefs, bool block);
     void outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
     void outputUserComment(const UserComment& user, int titleLevel = 1);
 

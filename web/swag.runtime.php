@@ -92,6 +92,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -127,6 +131,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -492,233 +499,233 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Swag_F32_Bias">Bias</td>
-<td>s32</td>
+<td id="Swag_F32_Bias" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bias</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_ExpBits">ExpBits</td>
-<td>s32</td>
+<td id="Swag_F32_ExpBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExpBits</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Inf">Inf</td>
-<td>f32</td>
+<td id="Swag_F32_Inf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_MantBits">MantBits</td>
-<td>s32</td>
+<td id="Swag_F32_MantBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MantBits</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Max">Max</td>
-<td>f32</td>
+<td id="Swag_F32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Min">Min</td>
-<td>f32</td>
+<td id="Swag_F32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Nan">Nan</td>
-<td>f32</td>
+<td id="Swag_F32_Nan" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Nan</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_NegInf">NegInf</td>
-<td>f32</td>
+<td id="Swag_F32_NegInf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NegInf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Bias">Bias</td>
-<td>s32</td>
+<td id="Swag_F64_Bias" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bias</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_ExpBits">ExpBits</td>
-<td>s32</td>
+<td id="Swag_F64_ExpBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExpBits</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Inf">Inf</td>
-<td>f64</td>
+<td id="Swag_F64_Inf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_MantBits">MantBits</td>
-<td>s32</td>
+<td id="Swag_F64_MantBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MantBits</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Max">Max</td>
-<td>f64</td>
+<td id="Swag_F64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Min">Min</td>
-<td>f64</td>
+<td id="Swag_F64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Nan">Nan</td>
-<td>f64</td>
+<td id="Swag_F64_Nan" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Nan</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_NegInf">NegInf</td>
-<td>f64</td>
+<td id="Swag_F64_NegInf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NegInf</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_MaxErrors">MaxErrors</td>
-<td>s32</td>
+<td id="Swag_MaxErrors" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxErrors</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>Maximum nested errors. </td>
 </tr>
 <tr>
-<td id="Swag_MaxLenErrorMsg">MaxLenErrorMsg</td>
-<td>s32</td>
+<td id="Swag_MaxLenErrorMsg" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxLenErrorMsg</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>Maximum length of an error message. </td>
 </tr>
 <tr>
-<td id="Swag_MaxTraces">MaxTraces</td>
-<td>s32</td>
+<td id="Swag_MaxTraces" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxTraces</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>Maximum error traces. </td>
 </tr>
 <tr>
-<td id="Swag_S16_Max">Max</td>
-<td>s16</td>
+<td id="Swag_S16_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S16_Min">Min</td>
-<td>s16</td>
+<td id="Swag_S16_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Max">Max</td>
-<td>s32</td>
+<td id="Swag_S32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Min">Min</td>
-<td>s32</td>
+<td id="Swag_S32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Max">Max</td>
-<td>s64</td>
+<td id="Swag_S64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Min">Min</td>
-<td>s64</td>
+<td id="Swag_S64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Max">Max</td>
-<td>s8</td>
+<td id="Swag_S8_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Min">Min</td>
-<td>s8</td>
+<td id="Swag_S8_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAll">SafetyAll</td>
-<td>u32</td>
+<td id="Swag_SafetyAll" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyAll</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAny">SafetyAny</td>
-<td>u32</td>
+<td id="Swag_SafetyAny" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyAny</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBool">SafetyBool</td>
-<td>u32</td>
+<td id="Swag_SafetyBool" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyBool</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBoundCheck">SafetyBoundCheck</td>
-<td>u32</td>
+<td id="Swag_SafetyBoundCheck" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyBoundCheck</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyMath">SafetyMath</td>
-<td>u32</td>
+<td id="Swag_SafetyMath" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyMath</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNaN">SafetyNaN</td>
-<td>u32</td>
+<td id="Swag_SafetyNaN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyNaN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNullCheck">SafetyNullCheck</td>
-<td>u32</td>
+<td id="Swag_SafetyNullCheck" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyNullCheck</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyOverflow">SafetyOverflow</td>
-<td>u32</td>
+<td id="Swag_SafetyOverflow" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyOverflow</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySanity">SafetySanity</td>
-<td>u32</td>
+<td id="Swag_SafetySanity" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetySanity</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySwitch">SafetySwitch</td>
-<td>u32</td>
+<td id="Swag_SafetySwitch" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetySwitch</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyUnreachable">SafetyUnreachable</td>
-<td>u32</td>
+<td id="Swag_SafetyUnreachable" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyUnreachable</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Max">Max</td>
-<td>u16</td>
+<td id="Swag_U16_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Min">Min</td>
-<td>u16</td>
+<td id="Swag_U16_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Max">Max</td>
-<td>u32</td>
+<td id="Swag_U32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Min">Min</td>
-<td>u32</td>
+<td id="Swag_U32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Max">Max</td>
-<td>u64</td>
+<td id="Swag_U64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Min">Min</td>
-<td>u64</td>
+<td id="Swag_U64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U8_Max">Max</td>
-<td>u8</td>
+<td id="Swag_U8_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Max <code class="incode">u8</code> value. </td>
 </tr>
 <tr>
-<td id="Swag_U8_Min">Min</td>
-<td>u8</td>
+<td id="Swag_U8_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Min <code class="incode">u8</code> value. </td>
 </tr>
 </table>
@@ -1721,361 +1728,361 @@
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_AllocatorRequest">AllocatorRequest</a></td>
+<td><a href="#Swag_AllocatorRequest"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode"></a></td>
 <td>Represents the request for a given allocator. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Attribute">Attribute</a></td>
+<td><a href="#Swag_Attribute"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttributeParam">AttributeParam</a></td>
+<td><a href="#Swag_AttributeParam"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeParam</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfg">BuildCfg</a></td>
+<td><a href="#Swag_BuildCfg"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfg</span><span class="SyntaxCode"></a></td>
 <td>The current module build configuration. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></td>
+<td><a href="#Swag_BuildCfgBackendLLVM"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendLLVM</span><span class="SyntaxCode"></a></td>
 <td><code class="incode">LLVM</code> backend specific options. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></td>
+<td><a href="#Swag_BuildCfgBackendX64"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendX64</span><span class="SyntaxCode"></a></td>
 <td><code class="incode">x86_64</code> backend specific options. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CVaList">CVaList</a></td>
+<td><a href="#Swag_CVaList"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMessage">CompilerMessage</a></td>
+<td><a href="#Swag_CompilerMessage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMessage</span><span class="SyntaxCode"></a></td>
 <td>A message received in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Context">Context</a></td>
+<td><a href="#Swag_Context"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Context</span><span class="SyntaxCode"></a></td>
 <td>Thread context as returned by [@context]. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator">DebugAllocator</a></td>
+<td><a href="#Swag_DebugAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocator</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocatorFooter">DebugAllocatorFooter</a></td>
+<td><a href="#Swag_DebugAllocatorFooter"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocatorFooter</span><span class="SyntaxCode"></a></td>
 <td>Will be put just after the returned address. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></td>
+<td><a href="#Swag_DebugAllocatorHeader"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode"></a></td>
 <td>Will be put just before the returned address. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Error">Error</a></td>
+<td><a href="#Swag_Error"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></a></td>
 <td>Store a <code class="incode">throw</code> error informations. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Gvtd">Gvtd</a></td>
+<td><a href="#Swag_Gvtd"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gvtd</span><span class="SyntaxCode"></a></td>
 <td>Defined a global variable. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Interface">Interface</a></td>
+<td><a href="#Swag_Interface"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Interface</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Module">Module</a></td>
+<td><a href="#Swag_Module"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Module</span><span class="SyntaxCode"></a></td>
 <td>Defined some informations about a loaded module. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ProcessInfos">ProcessInfos</a></td>
+<td><a href="#Swag_ProcessInfos"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ProcessInfos</span><span class="SyntaxCode"></a></td>
 <td>Defined some informations about the current process. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator">ScratchAllocator</a></td>
+<td><a href="#Swag_ScratchAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ScratchAllocator</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></td>
+<td><a href="#Swag_SourceCodeLocation"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"></a></td>
 <td>Represent a part of a source code file. </td>
 </tr>
 <tr>
-<td><a href="#Swag_SystemAllocator">SystemAllocator</a></td>
+<td><a href="#Swag_SystemAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SystemAllocator</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfo">TypeInfo</a></td>
+<td><a href="#Swag_TypeInfo"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></a></td>
 <td>Will be available for all types. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoAlias">TypeInfoAlias</a></td>
+<td><a href="#Swag_TypeInfoAlias"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoAlias</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoArray">TypeInfoArray</a></td>
+<td><a href="#Swag_TypeInfoArray"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoArray</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoEnum">TypeInfoEnum</a></td>
+<td><a href="#Swag_TypeInfoEnum"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoEnum</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoFunc">TypeInfoFunc</a></td>
+<td><a href="#Swag_TypeInfoFunc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoFunc</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a></td>
+<td><a href="#Swag_TypeInfoGeneric"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoGeneric</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a></td>
+<td><a href="#Swag_TypeInfoNamespace"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNamespace</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNative">TypeInfoNative</a></td>
+<td><a href="#Swag_TypeInfoNative"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNative</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoPointer">TypeInfoPointer</a></td>
+<td><a href="#Swag_TypeInfoPointer"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoPointer</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoSlice">TypeInfoSlice</a></td>
+<td><a href="#Swag_TypeInfoSlice"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoSlice</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></td>
+<td><a href="#Swag_TypeInfoStruct"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a></td>
+<td><a href="#Swag_TypeInfoVariadic"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoVariadic</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeValue">TypeValue</a></td>
+<td><a href="#Swag_TypeValue"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></a></td>
 <td>Represents a value, like a function parameter or an enum value. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_AllocatorMode">AllocatorMode</a></td>
+<td><a href="#Swag_AllocatorMode"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AllocatorMode</span><span class="SyntaxCode"></a></td>
 <td>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_AttributeUsage">AttributeUsage</a></td>
+<td><a href="#Swag_AttributeUsage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeUsage</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Backend">Backend</a></td>
+<td><a href="#Swag_Backend"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Backend</span><span class="SyntaxCode"></a></td>
 <td>The type of backend to use. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></td>
+<td><a href="#Swag_BuildCfgBackendKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendKind</span><span class="SyntaxCode"></a></td>
 <td>The kind of native backend to generate. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></td>
+<td><a href="#Swag_BuildCfgBackendOptim"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendOptim</span><span class="SyntaxCode"></a></td>
 <td>These are the optimization levels for the backend. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></td>
+<td><a href="#Swag_BuildCfgBackendSubKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendSubKind</span><span class="SyntaxCode"></a></td>
 <td>The native backend sub category. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></td>
+<td><a href="#Swag_CompilerMsgKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMsgKind</span><span class="SyntaxCode"></a></td>
 <td>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMsgMask">CompilerMsgMask</a></td>
+<td><a href="#Swag_CompilerMsgMask"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode"></a></td>
 <td>The type of message you want to retreive in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ContextFlags">ContextFlags</a></td>
+<td><a href="#Swag_ContextFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ContextFlags</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DocKind">DocKind</a></td>
+<td><a href="#Swag_DocKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DocKind</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ExceptionKind">ExceptionKind</a></td>
+<td><a href="#Swag_ExceptionKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExceptionKind</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_RuntimeFlags">RuntimeFlags</a></td>
+<td><a href="#Swag_RuntimeFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RuntimeFlags</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TargetArch">TargetArch</a></td>
+<td><a href="#Swag_TargetArch"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TargetArch</span><span class="SyntaxCode"></a></td>
 <td>Target processor. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TargetOs">TargetOs</a></td>
+<td><a href="#Swag_TargetOs"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TargetOs</span><span class="SyntaxCode"></a></td>
 <td>The <code class="incode">OS</code> to target when generating native code. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></td>
+<td><a href="#Swag_TypeCmpFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeCmpFlags</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></td>
+<td><a href="#Swag_TypeInfoFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoFlags</span><span class="SyntaxCode"></a></td>
 <td>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoKind">TypeInfoKind</a></td>
+<td><a href="#Swag_TypeInfoKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoKind</span><span class="SyntaxCode"></a></td>
 <td>The kind of the typeinfo. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></td>
+<td><a href="#Swag_TypeInfoNativeKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNativeKind</span><span class="SyntaxCode"></a></td>
 <td>The native type if the type is... native. </td>
 </tr>
 <tr>
-<td><a href="#Swag_WarnLevel">WarnLevel</a></td>
+<td><a href="#Swag_WarnLevel"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode"></a></td>
 <td>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </td>
 </tr>
 </table>
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_Align">Align</a></td>
+<td><a href="#Swag_Align"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Align</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttrMulti">AttrMulti</a></td>
+<td><a href="#Swag_AttrMulti"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttrMulti</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttrUsage">AttrUsage</a></td>
+<td><a href="#Swag_AttrUsage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttrUsage</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_CalleeReturn">CalleeReturn</a></td>
+<td><a href="#Swag_CalleeReturn"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CalleeReturn</span><span class="SyntaxCode"></a></td>
 <td>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Compiler">Compiler</a></td>
+<td><a href="#Swag_Compiler"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Compiler</span><span class="SyntaxCode"></a></td>
 <td>The following function or variable is only defined at compile time. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Complete">Complete</a></td>
+<td><a href="#Swag_Complete"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Complete</span><span class="SyntaxCode"></a></td>
 <td>The following switch must be complete. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ConstExpr">ConstExpr</a></td>
+<td><a href="#Swag_ConstExpr"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ConstExpr</span><span class="SyntaxCode"></a></td>
 <td>Can be executed at compile time. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Deprecated">Deprecated</a></td>
+<td><a href="#Swag_Deprecated"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Deprecated</span><span class="SyntaxCode"></a></td>
 <td>The following definition is deprecated and should not be used. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Discardable">Discardable</a></td>
+<td><a href="#Swag_Discardable"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Discardable</span><span class="SyntaxCode"></a></td>
 <td>The following function accepts that the called does not use its return value. </td>
 </tr>
 <tr>
-<td><a href="#Swag_EnumFlags">EnumFlags</a></td>
+<td><a href="#Swag_EnumFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumFlags</span><span class="SyntaxCode"></a></td>
 <td>The following enum is a set of flags. </td>
 </tr>
 <tr>
-<td><a href="#Swag_EnumIndex">EnumIndex</a></td>
+<td><a href="#Swag_EnumIndex"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumIndex</span><span class="SyntaxCode"></a></td>
 <td>The following enum can be used to index arrays without casting. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ExportType">ExportType</a></td>
+<td><a href="#Swag_ExportType"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExportType</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Foreign">Foreign</a></td>
+<td><a href="#Swag_Foreign"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Foreign</span><span class="SyntaxCode"></a></td>
 <td>The following function is foreign (imported). </td>
 </tr>
 <tr>
-<td><a href="#Swag_Global">Global</a></td>
+<td><a href="#Swag_Global"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Global</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Implicit">Implicit</a></td>
+<td><a href="#Swag_Implicit"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Implicit</span><span class="SyntaxCode"></a></td>
 <td>Can force an <code class="incode">opCast</code> special function to work as implicit. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Incomplete">Incomplete</a></td>
+<td><a href="#Swag_Incomplete"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Incomplete</span><span class="SyntaxCode"></a></td>
 <td>The following switch is incomplete. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Inline">Inline</a></td>
+<td><a href="#Swag_Inline"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inline</span><span class="SyntaxCode"></a></td>
 <td>Force a function to be inlined. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Macro">Macro</a></td>
+<td><a href="#Swag_Macro"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode"></a></td>
 <td>The following function is a <code class="incode">macro</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Match">Match</a></td>
+<td><a href="#Swag_Match"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Match</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Mixin">Mixin</a></td>
+<td><a href="#Swag_Mixin"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Mixin</span><span class="SyntaxCode"></a></td>
 <td>The following function is a <code class="incode">mixin</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoCopy">NoCopy</a></td>
+<td><a href="#Swag_NoCopy"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoCopy</span><span class="SyntaxCode"></a></td>
 <td>The following struct should never be copied. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoDoc">NoDoc</a></td>
+<td><a href="#Swag_NoDoc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoDoc</span><span class="SyntaxCode"></a></td>
 <td>Do not generate documentation. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoInline">NoInline</a></td>
+<td><a href="#Swag_NoInline"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoInline</span><span class="SyntaxCode"></a></td>
 <td>Never inline the following function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NotGeneric">NotGeneric</a></td>
+<td><a href="#Swag_NotGeneric"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NotGeneric</span><span class="SyntaxCode"></a></td>
 <td>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Offset">Offset</a></td>
+<td><a href="#Swag_Offset"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Offset</span><span class="SyntaxCode"></a></td>
 <td>Struct field member relocation. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Opaque">Opaque</a></td>
+<td><a href="#Swag_Opaque"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Opaque</span><span class="SyntaxCode"></a></td>
 <td>When exporting the following struct, do not export its content. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Optim">Optim</a></td>
+<td><a href="#Swag_Optim"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Optim</span><span class="SyntaxCode"></a></td>
 <td>Enable/Disable a given function optimization. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Overflow">Overflow</a></td>
+<td><a href="#Swag_Overflow"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Overflow</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Pack">Pack</a></td>
+<td><a href="#Swag_Pack"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pack</span><span class="SyntaxCode"></a></td>
 <td><code class="incode">struct</code> packing information. </td>
 </tr>
 <tr>
-<td><a href="#Swag_PrintBc">PrintBc</a></td>
+<td><a href="#Swag_PrintBc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrintBc</span><span class="SyntaxCode"></a></td>
 <td>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </td>
 </tr>
 <tr>
-<td><a href="#Swag_PrintGenBc">PrintGenBc</a></td>
+<td><a href="#Swag_PrintGenBc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrintGenBc</span><span class="SyntaxCode"></a></td>
 <td>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </td>
 </tr>
 <tr>
-<td><a href="#Swag_Safety">Safety</a></td>
+<td><a href="#Swag_Safety"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode"></a></td>
 <td>Enable/Disable one or more safety checks. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Strict">Strict</a></td>
+<td><a href="#Swag_Strict"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Tls">Tls</a></td>
+<td><a href="#Swag_Tls"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tls</span><span class="SyntaxCode"></a></td>
 <td>Put the following global variable in the <code class="incode">tls</code> segment. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Using">Using</a></td>
+<td><a href="#Swag_Using"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Using</span><span class="SyntaxCode"></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Warn">Warn</a></td>
+<td><a href="#Swag_Warn"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode"></a></td>
 <td>Change the behavior of a given warning or list of warnings. </td>
 </tr>
 </table>
@@ -2108,23 +2115,23 @@
 <p>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
 <table class="enumeration">
 <tr>
-<td>Alloc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alloc</span><span class="SyntaxCode"></td>
 <td>Allocate a block of memory. </td>
 </tr>
 <tr>
-<td>Free</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Free</span><span class="SyntaxCode"></td>
 <td>Free a block of memory. </td>
 </tr>
 <tr>
-<td>Realloc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Realloc</span><span class="SyntaxCode"></td>
 <td>Reallocate a block of memory. </td>
 </tr>
 <tr>
-<td>FreeAll</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FreeAll</span><span class="SyntaxCode"></td>
 <td>Free all memory allocated with the underlying allocator (ff possible). </td>
 </tr>
 <tr>
-<td>AssertIsAllocated</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AssertIsAllocated</span><span class="SyntaxCode"></td>
 <td>The allocator must assert if the address is not currently allocated (if possible). </td>
 </tr>
 </table>
@@ -2142,38 +2149,38 @@
 <p>Represents the request for a given allocator. </p>
 <table class="enumeration">
 <tr>
-<td>callerLoc</td>
-<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td class="codetype"></span><span class="SyntaxCode">callerLoc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
 <td>The caller code, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td>hint</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">hint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>A hint message, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td>address</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">address</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>The returned address or the address to deal with. </td>
 </tr>
 <tr>
-<td>size</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>The requested size or the size to deal with. </td>
 </tr>
 <tr>
-<td>oldSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">oldSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>When reallocating. </td>
 </tr>
 <tr>
-<td>mode</td>
-<td><a href="#Swag_AllocatorMode">Swag.AllocatorMode</a></td>
+<td class="codetype"></span><span class="SyntaxCode">mode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorMode">AllocatorMode</a></span><span class="SyntaxCode"></td>
 <td>Alloc, free, reallocate... </td>
 </tr>
 <tr>
-<td>alignement</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">alignement</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Alignement constraint. </td>
 </tr>
 </table>
@@ -2240,13 +2247,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>params</td>
-<td>const [..] Swag.AttributeParam</td>
+<td class="codetype"></span><span class="SyntaxCode">params</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AttributeParam">AttributeParam</a></span><span class="SyntaxCode"></td>
 <td>Attribute parameters. </td>
 </tr>
 </table>
@@ -2263,13 +2270,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Name of the attribute parameter. </td>
 </tr>
 <tr>
-<td>value</td>
-<td>any</td>
+<td class="codetype"></span><span class="SyntaxCode">value</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">any</span><span class="SyntaxCode"></td>
 <td>Optional default value. </td>
 </tr>
 </table>
@@ -2286,55 +2293,55 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Enum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enum</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on an enum. </td>
 </tr>
 <tr>
-<td>EnumValue</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumValue</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on an enum value. </td>
 </tr>
 <tr>
-<td>StructVariable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StructVariable</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on an struct member. </td>
 </tr>
 <tr>
-<td>GlobalVariable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GlobalVariable</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on a global variable. </td>
 </tr>
 <tr>
-<td>Variable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Variable</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on any variable. </td>
 </tr>
 <tr>
-<td>Struct</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on a struct. </td>
 </tr>
 <tr>
-<td>Function</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Function</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on a function. </td>
 </tr>
 <tr>
-<td>FunctionParameter</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FunctionParameter</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on a struct parameter. </td>
 </tr>
 <tr>
-<td>File</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">File</span><span class="SyntaxCode"></td>
 <td>Attribute can be used with <code class="incode">#global</code>. </td>
 </tr>
 <tr>
-<td>Constant</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Constant</span><span class="SyntaxCode"></td>
 <td>Attribute can be used on a constant. </td>
 </tr>
 <tr>
-<td>Multi</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Multi</span><span class="SyntaxCode"></td>
 <td>Attribute can be used more than once. </td>
 </tr>
 <tr>
-<td>Gen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>All</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">All</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2352,15 +2359,15 @@
 <p>The type of backend to use. </p>
 <table class="enumeration">
 <tr>
-<td>ByteCode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ByteCode</span><span class="SyntaxCode"></td>
 <td>Bytecode. </td>
 </tr>
 <tr>
-<td>X64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X64</span><span class="SyntaxCode"></td>
 <td>X86_64 backend. </td>
 </tr>
 <tr>
-<td>LLVM</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LLVM</span><span class="SyntaxCode"></td>
 <td>LLVM backend. </td>
 </tr>
 </table>
@@ -2378,218 +2385,218 @@
 <p>The current module build configuration. </p>
 <table class="enumeration">
 <tr>
-<td>moduleVersion</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">moduleVersion</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>The module version. </td>
 </tr>
 <tr>
-<td>moduleRevision</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">moduleRevision</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>The module revision. </td>
 </tr>
 <tr>
-<td>moduleBuildNum</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">moduleBuildNum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>The module build value. </td>
 </tr>
 <tr>
-<td>moduleNamespace</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">moduleNamespace</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The namespace name of the module. </td>
 </tr>
 <tr>
-<td>embbedImports</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">embbedImports</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Module should embbed all its dependencies. </td>
 </tr>
 <tr>
-<td>scratchAllocatorCapacity</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">scratchAllocatorCapacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>Default capacity of the <code class="incode">temp</code> allocator (in bytes). </td>
 </tr>
 <tr>
-<td>safetyGuards</td>
-<td>u16</td>
+<td class="codetype"></span><span class="SyntaxCode">safetyGuards</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td>Activate specific safety checks. </td>
 </tr>
 <tr>
-<td>debugAllocator</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">debugAllocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Use Swag.DebugAllocator by default. </td>
 </tr>
 <tr>
-<td>debugAllocatorCaptureStack</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">debugAllocatorCaptureStack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Capture the call stack for each allocation. </td>
 </tr>
 <tr>
-<td>debugAllocatorLeaks</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">debugAllocatorLeaks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Detect memory leaks. </td>
 </tr>
 <tr>
-<td>errorStackTrace</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">errorStackTrace</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Add stack trace in case a <code class="incode">throw</code> is raised. </td>
 </tr>
 <tr>
-<td>warnAsErrors</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">warnAsErrors</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX...". </td>
 </tr>
 <tr>
-<td>warnAsWarning</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">warnAsWarning</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings. </td>
 </tr>
 <tr>
-<td>warnAsDisabled</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">warnAsDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Disable some specific warnings. </td>
 </tr>
 <tr>
-<td>warnDefaultDisabled</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">warnDefaultDisabled</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>All warnings are disabled, except those specified above. </td>
 </tr>
 <tr>
-<td>warnDefaultErrors</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">warnDefaultErrors</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>All warnings are treated as errors, except those specified above. </td>
 </tr>
 <tr>
-<td>byteCodeOptimizeLevel</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">byteCodeOptimizeLevel</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td>Optimization level of bytecode [0, 1 or 2]. </td>
 </tr>
 <tr>
-<td>byteCodeDebugInline</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">byteCodeDebugInline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Trace into inlined code when generating debug infos. </td>
 </tr>
 <tr>
-<td>byteCodeEmitAssume</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">byteCodeEmitAssume</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td><code class="incode">assume</code> will panic if an error is raised. </td>
 </tr>
 <tr>
-<td>byteCodeInline</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">byteCodeInline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </td>
 </tr>
 <tr>
-<td>byteCodeAutoInline</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">byteCodeAutoInline</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Automatic inlining of some other functions. </td>
 </tr>
 <tr>
-<td>backendKind</td>
-<td><a href="#Swag_BuildCfgBackendKind">Swag.BuildCfgBackendKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backendKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></span><span class="SyntaxCode"></td>
 <td>Backend type (executable, dynamic lib...). </td>
 </tr>
 <tr>
-<td>backendSubKind</td>
-<td><a href="#Swag_BuildCfgBackendSubKind">Swag.BuildCfgBackendSubKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backendSubKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></span><span class="SyntaxCode"></td>
 <td>Backend sub kind. </td>
 </tr>
 <tr>
-<td>backendDebugInformations</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">backendDebugInformations</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Output debug informations if <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td>backendOptimize</td>
-<td><a href="#Swag_BuildCfgBackendOptim">Swag.BuildCfgBackendOptim</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backendOptimize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></span><span class="SyntaxCode"></td>
 <td>Backend optimization level. </td>
 </tr>
 <tr>
-<td>backendNumCU</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">backendNumCU</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>linkerArgs</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">linkerArgs</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Additional linker arguments. </td>
 </tr>
 <tr>
-<td>backendLLVM</td>
-<td><a href="#Swag_BuildCfgBackendLLVM">Swag.BuildCfgBackendLLVM</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backendLLVM</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></span><span class="SyntaxCode"></td>
 <td>Specific LLVM options. </td>
 </tr>
 <tr>
-<td>backendX64</td>
-<td><a href="#Swag_BuildCfgBackendX64">Swag.BuildCfgBackendX64</a></td>
+<td class="codetype"></span><span class="SyntaxCode">backendX64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span><span class="SyntaxCode"></td>
 <td>Specific X86_64 options. </td>
 </tr>
 <tr>
-<td>repoPath</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">repoPath</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Repository access path to the module. </td>
 </tr>
 <tr>
-<td>docKind</td>
-<td><a href="#Swag_DocKind">Swag.DocKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">docKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DocKind">DocKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>docOutputName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docOutputName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The name of the output file (without extension). </td>
 </tr>
 <tr>
-<td>docOutputExtension</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docOutputExtension</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The output extension. </td>
 </tr>
 <tr>
-<td>docTitleToc</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docTitleToc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Title for the table of content. </td>
 </tr>
 <tr>
-<td>docTitleContent</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docTitleContent</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Title for the main document content. </td>
 </tr>
 <tr>
-<td>docCss</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docCss</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The <code class="incode">css</code> file to include in generated documentations. </td>
 </tr>
 <tr>
-<td>docIcon</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docIcon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The icon path of the page. </td>
 </tr>
 <tr>
-<td>docStartHead</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docStartHead</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>To insert at the start of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td>docEndHead</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docEndHead</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>To insert at the end of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td>docStartBody</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docStartBody</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>To insert add at the start of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td>docEndBody</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">docEndBody</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>To insert add at the end of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td>docStyleSection</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">docStyleSection</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Generate a default &lt;style&gt; section. </td>
 </tr>
 <tr>
-<td>docSyntaxColorLum</td>
-<td>f32</td>
+<td class="codetype"></span><span class="SyntaxCode">docSyntaxColorLum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td>Code syntax color luminosity between 0 and 1. </td>
 </tr>
 </table>
@@ -2608,19 +2615,19 @@
 <p>The kind of native backend to generate. </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td>Nothing. </td>
 </tr>
 <tr>
-<td>Export</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Export</span><span class="SyntaxCode"></td>
 <td>The module is an <code class="incode">export</code> module which does not have its own code. </td>
 </tr>
 <tr>
-<td>Executable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Executable</span><span class="SyntaxCode"></td>
 <td>The module needs to be compiled to an executable application. </td>
 </tr>
 <tr>
-<td>DynamicLib</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DynamicLib</span><span class="SyntaxCode"></td>
 <td>The module needs to be compiled to an dynamic library. </td>
 </tr>
 </table>
@@ -2638,38 +2645,38 @@
 <p><code class="incode">LLVM</code> backend specific options. </p>
 <table class="enumeration">
 <tr>
-<td>outputIR</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">outputIR</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Output IR in a file. </td>
 </tr>
 <tr>
-<td>fpMathFma</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathFma</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td>fpMathNoNaN</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathNoNaN</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td>fpMathNoInf</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathNoInf</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td>fpMathNoSignedZero</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathNoSignedZero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td>fpMathUnsafe</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathUnsafe</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>fpMathApproxFunc</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">fpMathApproxFunc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2687,27 +2694,27 @@
 <p>These are the optimization levels for the backend. </p>
 <table class="enumeration">
 <tr>
-<td>O0</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O0</span><span class="SyntaxCode"></td>
 <td>No optimization. </td>
 </tr>
 <tr>
-<td>O1</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O1</span><span class="SyntaxCode"></td>
 <td>Optimizations level 1. </td>
 </tr>
 <tr>
-<td>O2</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O2</span><span class="SyntaxCode"></td>
 <td>Optimizations level 2. </td>
 </tr>
 <tr>
-<td>O3</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O3</span><span class="SyntaxCode"></td>
 <td>Optimizations level 3. </td>
 </tr>
 <tr>
-<td>Os</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Os</span><span class="SyntaxCode"></td>
 <td>Optim for size level 1. </td>
 </tr>
 <tr>
-<td>Oz</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oz</span><span class="SyntaxCode"></td>
 <td>Optim for size level 2. </td>
 </tr>
 </table>
@@ -2726,11 +2733,11 @@
 <p>The native backend sub category. </p>
 <table class="enumeration">
 <tr>
-<td>Default</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Console</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Console</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2760,8 +2767,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>buf</td>
-<td>[2048] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">buf</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2048</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2811,23 +2818,23 @@
 <p>A message received in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td>moduleName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">moduleName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Name of the module for which the message is sent. </td>
 </tr>
 <tr>
-<td>name</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td>type</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">type</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td>kind</td>
-<td><a href="#Swag_CompilerMsgKind">Swag.CompilerMsgKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></span><span class="SyntaxCode"></td>
 <td>Kind of the message. </td>
 </tr>
 </table>
@@ -2846,35 +2853,35 @@
 <p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
 <table class="enumeration">
 <tr>
-<td>PassAfterSemantic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode"></td>
 <td>Called once the program semantic has been done. </td>
 </tr>
 <tr>
-<td>PassBeforeRunByteCode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeRunByteCode</span><span class="SyntaxCode"></td>
 <td>Called just before running bytecode. </td>
 </tr>
 <tr>
-<td>PassBeforeOutput</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeOutput</span><span class="SyntaxCode"></td>
 <td>Called just before generating the native code. </td>
 </tr>
 <tr>
-<td>PassAllDone</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAllDone</span><span class="SyntaxCode"></td>
 <td>Called when everything has be done. </td>
 </tr>
 <tr>
-<td>SemFunctions</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode"></td>
 <td>Called for each function in the module. </td>
 </tr>
 <tr>
-<td>SemTypes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode"></td>
 <td>Called for each type in the module. </td>
 </tr>
 <tr>
-<td>SemGlobals</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode"></td>
 <td>Called for each global variable in the module. </td>
 </tr>
 <tr>
-<td>AttributeGen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeGen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2892,39 +2899,39 @@
 <p>The type of message you want to retreive in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td>PassAfterSemantic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PassBeforeRun</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeRun</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PassBeforeOutput</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeOutput</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PassAllDone</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAllDone</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SemFunctions</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SemTypes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>SemGlobals</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>AttributeGen</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeGen</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>All</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">All</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2975,58 +2982,58 @@
 <p>Thread context as returned by [@context]. </p>
 <table class="enumeration">
 <tr>
-<td>allocator</td>
-<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
 <td>The current allocator interface. </td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Swag_ContextFlags">Swag.ContextFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ContextFlags">ContextFlags</a></span><span class="SyntaxCode"></td>
 <td>Context flags. </td>
 </tr>
 <tr>
-<td>tempAllocator</td>
-<td><a href="#Swag_ScratchAllocator">Swag.ScratchAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">tempAllocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode"></td>
 <td>Other fields, can be in any order A temporary allocator. </td>
 </tr>
 <tr>
-<td>traces</td>
-<td>[32] const *Swag.SourceCodeLocation</td>
+<td class="codetype"></span><span class="SyntaxCode">traces</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">32</span><span class="SyntaxCode">] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
 <td>Stack trace, in case of errors. </td>
 </tr>
 <tr>
-<td>errors</td>
-<td>[32] Swag.Error</td>
+<td class="codetype"></span><span class="SyntaxCode">errors</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">32</span><span class="SyntaxCode">] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode"></td>
 <td>All errors. </td>
 </tr>
 <tr>
-<td>exceptionLoc</td>
-<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td class="codetype"></span><span class="SyntaxCode">exceptionLoc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
 <td>When an exception is raised, this is the code location. </td>
 </tr>
 <tr>
-<td>exceptionParams</td>
-<td>[4] const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">exceptionParams</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>When an exception is raised, this are the parameters. </td>
 </tr>
 <tr>
-<td>panic</td>
-<td>func(string, Swag.SourceCodeLocation)</td>
+<td class="codetype"></span><span class="SyntaxCode">panic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)</td>
 <td>A function to call if there's a panic. </td>
 </tr>
 <tr>
-<td>errorIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">errorIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Number of errors in the array. </td>
 </tr>
 <tr>
-<td>traceIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">traceIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>The current trace index. </td>
 </tr>
 <tr>
-<td>hasError</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">hasError</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>!= 0 if an error is raised. </td>
 </tr>
 </table>
@@ -3043,15 +3050,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Test</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Test</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>ByteCode</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ByteCode</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3068,73 +3075,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>allocator</td>
-<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>mutex</td>
-<td>MutexRW</td>
+<td class="codetype"></span><span class="SyntaxCode">mutex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MutexRW</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstAlloc</td>
-<td>*Swag.DebugAllocatorHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">firstAlloc</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
 <td>First allocated block. </td>
 </tr>
 <tr>
-<td>firstFree</td>
-<td>*Swag.DebugAllocatorHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">firstFree</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
 <td>First freed block. </td>
 </tr>
 <tr>
-<td>lastFree</td>
-<td>*Swag.DebugAllocatorHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">lastFree</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
 <td>Last freed block. </td>
 </tr>
 <tr>
-<td>sizeAlloc</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeAlloc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Total allocated memory, in bytes. </td>
 </tr>
 <tr>
-<td>sizeFree</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeFree</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Total of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td>countAlloc</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">countAlloc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Number of allocated blocks. </td>
 </tr>
 <tr>
-<td>nextId</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">nextId</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>The next allocated id to assign. </td>
 </tr>
 <tr>
-<td>maxFreeSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">maxFreeSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td>breakOnAllocId</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">breakOnAllocId</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
-<td>showMaxLeaks</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">showMaxLeaks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Maximum number of memory leaks to show. </td>
 </tr>
 <tr>
-<td>captureAllocStack</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">captureAllocStack</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>For each allocation, capture stack. </td>
 </tr>
 <tr>
-<td>detectLeaks</td>
-<td>bool</td>
+<td class="codetype"></span><span class="SyntaxCode">detectLeaks</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
 <td>Detect memory leaks if true. </td>
 </tr>
 </table>
@@ -3367,8 +3374,8 @@
 <p>Will be put just after the returned address. </p>
 <table class="enumeration">
 <tr>
-<td>magic</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">magic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3386,58 +3393,58 @@
 <p>Will be put just before the returned address. </p>
 <table class="enumeration">
 <tr>
-<td>loc</td>
-<td><a href="#Swag_SourceCodeLocation">Swag.SourceCodeLocation</a></td>
+<td class="codetype"></span><span class="SyntaxCode">loc</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocAddr</td>
-<td>^void</td>
+<td class="codetype"></span><span class="SyntaxCode">allocAddr</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">allocSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>userSize</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">userSize</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>hint</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">hint</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>prev</td>
-<td>*Swag.DebugAllocatorHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">prev</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>next</td>
-<td>*Swag.DebugAllocatorHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">next</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stack</td>
-<td>[16] *void</td>
+<td class="codetype"></span><span class="SyntaxCode">stack</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">16</span><span class="SyntaxCode">] *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>stackCount</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">stackCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>magic</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">magic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>allocId</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">allocId</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3486,19 +3493,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>None</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
 <td>Do not generate documentation for that module. </td>
 </tr>
 <tr>
-<td>Api</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Api</span><span class="SyntaxCode"></td>
 <td>Generate 'api like' documentation. </td>
 </tr>
 <tr>
-<td>Examples</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Examples</span><span class="SyntaxCode"></td>
 <td>Generate 'examples like' documentation. </td>
 </tr>
 <tr>
-<td>Pages</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pages</span><span class="SyntaxCode"></td>
 <td>Generate one page per file. </td>
 </tr>
 </table>
@@ -3548,23 +3555,23 @@
 <p>Store a <code class="incode">throw</code> error informations. </p>
 <table class="enumeration">
 <tr>
-<td>msgBuf</td>
-<td>[128] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">msgBuf</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">128</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td>Buffer to store the error message. </td>
 </tr>
 <tr>
-<td>msg</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">msg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Error message. </td>
 </tr>
 <tr>
-<td>pushHasError</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pushHasError</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pushTraceIndex</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">pushTraceIndex</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3581,15 +3588,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Panic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Panic</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Error</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Warning</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Warning</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -3671,13 +3678,13 @@
 <p>Defined a global variable. </p>
 <table class="enumeration">
 <tr>
-<td>ptr</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">ptr</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>Pointer to the global variable memory. </td>
 </tr>
 <tr>
-<td>opDrop</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">opDrop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td>The <code class="incode">opDrop</code> function to call when the process must exit. </td>
 </tr>
 </table>
@@ -3694,8 +3701,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>req</td>
-<td>func(*Swag.IAllocator, *Swag.AllocatorRequest)</td>
+<td class="codetype"></span><span class="SyntaxCode">req</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</td>
 <td></td>
 </tr>
 </table>
@@ -3726,18 +3733,18 @@
 <p>This is the interface to communicate with the compiler. </p>
 <table class="enumeration">
 <tr>
-<td>getMessage</td>
-<td>func(*Swag.ICompiler)->const *Swag.CompilerMessage</td>
+<td class="codetype"></span><span class="SyntaxCode">getMessage</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode"></td>
 <td>Returns the compiler message in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td>getBuildCfg</td>
-<td>func(*Swag.ICompiler)->*Swag.BuildCfg</td>
+<td class="codetype"></span><span class="SyntaxCode">getBuildCfg</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode"></td>
 <td>Returns the build configuration of the current module. </td>
 </tr>
 <tr>
-<td>compileString</td>
-<td>func(*Swag.ICompiler, string)</td>
+<td class="codetype"></span><span class="SyntaxCode">compileString</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</td>
 <td>Compile a global string. </td>
 </tr>
 </table>
@@ -3842,13 +3849,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>obj</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">obj</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>Pointer to the associated struct instance. </td>
 </tr>
 <tr>
-<td>itable</td>
-<td>const ^^void</td>
+<td class="codetype"></span><span class="SyntaxCode">itable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>Pointer to the virtual table. </td>
 </tr>
 </table>
@@ -3913,13 +3920,13 @@
 <p>Defined some informations about a loaded module. </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Name of the module. </td>
 </tr>
 <tr>
-<td>types</td>
-<td>const [..] const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">types</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>All exported types. </td>
 </tr>
 </table>
@@ -4120,13 +4127,13 @@
 <p>Defined some informations about the current process. </p>
 <table class="enumeration">
 <tr>
-<td>modules</td>
-<td>const [..] Swag.Module</td>
+<td class="codetype"></span><span class="SyntaxCode">modules</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span><span class="SyntaxCode"></td>
 <td>The list of all modules. </td>
 </tr>
 <tr>
-<td>args</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">args</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The application arguments, as returned by <a href="#@args">@args</a>. </td>
 </tr>
 </table>
@@ -4143,11 +4150,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>FromCompiler</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FromCompiler</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4234,43 +4241,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>allocator</td>
-<td><a href="#Swag_IAllocator">Swag.IAllocator</a></td>
+<td class="codetype"></span><span class="SyntaxCode">allocator</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>block</td>
-<td>^u8</td>
+<td class="codetype"></span><span class="SyntaxCode">block</td>
+<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>capacity</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">capacity</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>used</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">used</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxUsed</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">maxUsed</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>firstLeak</td>
-<td>*void</td>
+<td class="codetype"></span><span class="SyntaxCode">firstLeak</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>totalLeak</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">totalLeak</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>maxLeak</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">maxLeak</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4353,18 +4360,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>prev</td>
-<td>*Swag.ScratchAllocator.LeakHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">prev</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>next</td>
-<td>*Swag.ScratchAllocator.LeakHeader</td>
+<td class="codetype"></span><span class="SyntaxCode">next</td>
+<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>size</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">size</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4463,28 +4470,28 @@
 <p>Represent a part of a source code file. </p>
 <table class="enumeration">
 <tr>
-<td>fileName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">fileName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Full path name of the source file. </td>
 </tr>
 <tr>
-<td>lineStart</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">lineStart</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Start line (starts at 0). </td>
 </tr>
 <tr>
-<td>colStart</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">colStart</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Start column. </td>
 </tr>
 <tr>
-<td>lineEnd</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">lineEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>End line. </td>
 </tr>
 <tr>
-<td>colEnd</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">colEnd</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>End column. </td>
 </tr>
 </table>
@@ -4555,7 +4562,7 @@
 <p>Target processor. </p>
 <table class="enumeration">
 <tr>
-<td>X86_64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X86_64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4573,15 +4580,15 @@
 <p>The <code class="incode">OS</code> to target when generating native code. </p>
 <table class="enumeration">
 <tr>
-<td>Windows</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Windows</span><span class="SyntaxCode"></td>
 <td>Windows 10/11. </td>
 </tr>
 <tr>
-<td>Linux</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Linux</span><span class="SyntaxCode"></td>
 <td>Linux (<b>unsupported</b>). </td>
 </tr>
 <tr>
-<td>MaxOSX</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxOSX</span><span class="SyntaxCode"></td>
 <td>MacOS (<b>unsupported</b>). </td>
 </tr>
 </table>
@@ -4615,11 +4622,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>Strict</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CastAny</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CastAny</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4637,38 +4644,38 @@
 <p>Will be available for all types. </p>
 <table class="enumeration">
 <tr>
-<td>fullname</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">fullname</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The full scoped name of the type. </td>
 </tr>
 <tr>
-<td>name</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>The unscoped name. </td>
 </tr>
 <tr>
-<td>sizeof</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">sizeof</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td>crc32</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">crc32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>A unique CRC to identify the type. </td>
 </tr>
 <tr>
-<td>flags</td>
-<td><a href="#Swag_TypeInfoFlags">Swag.TypeInfoFlags</a></td>
+<td class="codetype"></span><span class="SyntaxCode">flags</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></span><span class="SyntaxCode"></td>
 <td>Some additional flags. </td>
 </tr>
 <tr>
-<td>kind</td>
-<td><a href="#Swag_TypeInfoKind">Swag.TypeInfoKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">kind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoKind">TypeInfoKind</a></span><span class="SyntaxCode"></td>
 <td>The kind of the type. </td>
 </tr>
 <tr>
-<td>padding</td>
-<td>[3] u8</td>
+<td class="codetype"></span><span class="SyntaxCode">padding</td>
+<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4685,13 +4692,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rawType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">rawType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -4708,28 +4715,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pointedType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The underlying type. </td>
 </tr>
 <tr>
-<td>finalType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">finalType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>If this is an array with multiple dimensions, this will be the final type. </td>
 </tr>
 <tr>
-<td>count</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">count</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>Number of elements in the array. </td>
 </tr>
 <tr>
-<td>totalCount</td>
-<td>u64</td>
+<td class="codetype"></span><span class="SyntaxCode">totalCount</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td>The total number of elements in case this has multiple dimensions. </td>
 </tr>
 </table>
@@ -4746,23 +4753,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>values</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">values</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>All the values. </td>
 </tr>
 <tr>
-<td>rawType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">rawType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The underlying enum type. </td>
 </tr>
 <tr>
-<td>attributes</td>
-<td>const [..] Swag.Attribute</td>
+<td class="codetype"></span><span class="SyntaxCode">attributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4780,71 +4787,71 @@
 <p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
 <table class="enumeration">
 <tr>
-<td>Zero</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>PointerTypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerTypeInfo</span><span class="SyntaxCode"></td>
 <td>This is a pointer to a <a href="#Swag_TypeInfo">TypeInfo</a> struct. </td>
 </tr>
 <tr>
-<td>Integer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Integer</span><span class="SyntaxCode"></td>
 <td>This is a native integer. </td>
 </tr>
 <tr>
-<td>Float</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Float</span><span class="SyntaxCode"></td>
 <td>This is a native float. </td>
 </tr>
 <tr>
-<td>Unsigned</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unsigned</span><span class="SyntaxCode"></td>
 <td>This is a native unsigned integer. </td>
 </tr>
 <tr>
-<td>HasPostCopy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasPostCopy</span><span class="SyntaxCode"></td>
 <td>This is a struct with a <code class="incode">opPostCopy</code>. </td>
 </tr>
 <tr>
-<td>HasPostMove</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasPostMove</span><span class="SyntaxCode"></td>
 <td>This is a struct with a <code class="incode">opPostMove</code>. </td>
 </tr>
 <tr>
-<td>HasDrop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasDrop</span><span class="SyntaxCode"></td>
 <td>This is a struct with a <code class="incode">opDrop</code>. </td>
 </tr>
 <tr>
-<td>Strict</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></td>
 <td>This is a typealias with the Swag.Strict attribute]. </td>
 </tr>
 <tr>
-<td>CanCopy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CanCopy</span><span class="SyntaxCode"></td>
 <td>This is a struct that can be copied. </td>
 </tr>
 <tr>
-<td>Tuple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tuple</span><span class="SyntaxCode"></td>
 <td>This is a tuple. </td>
 </tr>
 <tr>
-<td>CString</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CString</span><span class="SyntaxCode"></td>
 <td>This is a <code class="incode">cstring</code>. </td>
 </tr>
 <tr>
-<td>Generic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Generic</span><span class="SyntaxCode"></td>
 <td>This is a generic type. </td>
 </tr>
 <tr>
-<td>PointerRef</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerRef</span><span class="SyntaxCode"></td>
 <td>This is a reference. </td>
 </tr>
 <tr>
-<td>PointerMoveRef</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerMoveRef</span><span class="SyntaxCode"></td>
 <td>This is a move reference. </td>
 </tr>
 <tr>
-<td>PointerArithmetic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerArithmetic</span><span class="SyntaxCode"></td>
 <td>This is a pointer to multiple values. </td>
 </tr>
 <tr>
-<td>Character</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Character</span><span class="SyntaxCode"></td>
 <td>This is a 32 bits character. </td>
 </tr>
 </table>
@@ -4861,28 +4868,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>generics</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">generics</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td>parameters</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">parameters</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>Parameters. </td>
 </tr>
 <tr>
-<td>returnType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">returnType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The return type, or <code class="incode">null</code>. </td>
 </tr>
 <tr>
-<td>attributes</td>
-<td>const [..] Swag.Attribute</td>
+<td class="codetype"></span><span class="SyntaxCode">attributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4899,13 +4906,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rawType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">rawType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4923,83 +4930,83 @@
 <p>The kind of the typeinfo. </p>
 <table class="enumeration">
 <tr>
-<td>Invalid</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Invalid</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Native</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Native</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNative">TypeInfoNative</a>. See <a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type. </td>
 </tr>
 <tr>
-<td>Namespace</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Namespace</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a>. </td>
 </tr>
 <tr>
-<td>Enum</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enum</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoEnum">TypeInfoEnum</a>. </td>
 </tr>
 <tr>
-<td>Func</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Func</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>. </td>
 </tr>
 <tr>
-<td>Lambda</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lambda</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </td>
 </tr>
 <tr>
-<td>Pointer</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pointer</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoPointer">TypeInfoPointer</a>. </td>
 </tr>
 <tr>
-<td>Array</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Array</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td>Slice</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Slice</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoSlice">TypeInfoSlice</a>. </td>
 </tr>
 <tr>
-<td>TypeListTuple</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeListTuple</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td>TypeListArray</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeListArray</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td>Variadic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Variadic</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td>TypedVariadic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypedVariadic</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td>CVariadic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CVariadic</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td>Struct</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td>Generic</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Generic</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a>. </td>
 </tr>
 <tr>
-<td>Alias</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alias</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </td>
 </tr>
 <tr>
-<td>Code</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Code</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td>Interface</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Interface</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>, but this is an interface. </td>
 </tr>
 <tr>
-<td>Attribute</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute. </td>
 </tr>
 </table>
@@ -5016,8 +5023,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5034,13 +5041,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>nativeKind</td>
-<td><a href="#Swag_TypeInfoNativeKind">Swag.TypeInfoNativeKind</a></td>
+<td class="codetype"></span><span class="SyntaxCode">nativeKind</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5058,71 +5065,71 @@
 <p>The native type if the type is... native. </p>
 <table class="enumeration">
 <tr>
-<td>Void</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Void</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>S64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U8</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U16</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>U64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>F64</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Bool</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bool</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Rune</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Rune</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>String</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Any</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Any</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>CString</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CString</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>Undefined</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Undefined</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -5140,13 +5147,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pointedType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The pointed type. </td>
 </tr>
 </table>
@@ -5163,13 +5170,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>pointedType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5186,63 +5193,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>opInit</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">opInit</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td>Pointer to the function to initialize an instance of that struct. </td>
 </tr>
 <tr>
-<td>opDrop</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">opDrop</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td>Pointer to the function to drop an instance of that struct. </td>
 </tr>
 <tr>
-<td>opPostCopy</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">opPostCopy</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td>Pointer to the function to call after a copy. </td>
 </tr>
 <tr>
-<td>opPostMove</td>
-<td>func(*void)</td>
+<td class="codetype"></span><span class="SyntaxCode">opPostMove</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
 <td>Pointer to the function to call after a move. </td>
 </tr>
 <tr>
-<td>structName</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">structName</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>User name of the struct. </td>
 </tr>
 <tr>
-<td>fromGeneric</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">fromGeneric</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>If it comes from a generic instantiation, this is the original generic struct. </td>
 </tr>
 <tr>
-<td>generics</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">generics</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td>fields</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">fields</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>All the fields. </td>
 </tr>
 <tr>
-<td>methods</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">methods</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>All the methods, if exported. </td>
 </tr>
 <tr>
-<td>interfaces</td>
-<td>const [..] Swag.TypeValue</td>
+<td class="codetype"></span><span class="SyntaxCode">interfaces</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
 <td>All the interfaces. </td>
 </tr>
 <tr>
-<td>attributes</td>
-<td>const [..] Swag.Attribute</td>
+<td class="codetype"></span><span class="SyntaxCode">attributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -5259,13 +5266,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td><b>using</b> base</td>
-<td><a href="#Swag_TypeInfo">Swag.TypeInfo</a></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rawType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">rawType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5283,33 +5290,33 @@
 <p>Represents a value, like a function parameter or an enum value. </p>
 <table class="enumeration">
 <tr>
-<td>name</td>
-<td>string</td>
+<td class="codetype"></span><span class="SyntaxCode">name</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td>Name of the value. </td>
 </tr>
 <tr>
-<td>pointedType</td>
-<td>const *Swag.TypeInfo</td>
+<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
 <td>Type of the value. </td>
 </tr>
 <tr>
-<td>value</td>
-<td>const *void</td>
+<td class="codetype"></span><span class="SyntaxCode">value</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
 <td>Pointer to the constant value. </td>
 </tr>
 <tr>
-<td>attributes</td>
-<td>const [..] Swag.Attribute</td>
+<td class="codetype"></span><span class="SyntaxCode">attributes</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
 <td>Associated attributes. </td>
 </tr>
 <tr>
-<td>offset</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">offset</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Offset, in bytes. </td>
 </tr>
 <tr>
-<td>crc32</td>
-<td>u32</td>
+<td class="codetype"></span><span class="SyntaxCode">crc32</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td>Unique crc32. </td>
 </tr>
 </table>
@@ -5400,15 +5407,15 @@
 <p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
 <table class="enumeration">
 <tr>
-<td>Enable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode"></td>
 <td>Enable the given warning. </td>
 </tr>
 <tr>
-<td>Disable</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode"></td>
 <td>Disable the given warning. </td>
 </tr>
 <tr>
-<td>Error</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></td>
 <td>Force the given warning to be raised as an error. </td>
 </tr>
 </table>

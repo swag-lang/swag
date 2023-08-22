@@ -91,6 +91,10 @@
             text-decoration: revert;
             color:           inherit;
         }
+        .codetype a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }
@@ -126,6 +130,9 @@
         .enumeration td:first-child {
             background-color:   #f8f8f8;
             white-space:        nowrap;
+        }
+        .codetype {
+            background-color:   #f8f8f8;
         }
         .container td:last-child {
             width:              100%;
@@ -583,228 +590,228 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Libc_BUFSIZ">BUFSIZ</td>
-<td>s32</td>
+<td id="Libc_BUFSIZ" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BUFSIZ</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_CLOCKS_PER_SEC">CLOCKS_PER_SEC</td>
-<td>s32</td>
+<td id="Libc_CLOCKS_PER_SEC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CLOCKS_PER_SEC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EOF">EOF</td>
-<td>s32</td>
+<td id="Libc_EOF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EOF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_FAILURE">EXIT_FAILURE</td>
-<td>s32</td>
+<td id="Libc_EXIT_FAILURE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EXIT_FAILURE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_SUCCESS">EXIT_SUCCESS</td>
-<td>s32</td>
+<td id="Libc_EXIT_SUCCESS" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EXIT_SUCCESS</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FILENAME_MAX">FILENAME_MAX</td>
-<td>s32</td>
+<td id="Libc_FILENAME_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FILENAME_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FOPEN_MAX">FOPEN_MAX</td>
-<td>s32</td>
+<td id="Libc_FOPEN_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FOPEN_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGB0">FP_ILOGB0</td>
-<td>s32</td>
+<td id="Libc_FP_ILOGB0" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_ILOGB0</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGBNAN">FP_ILOGBNAN</td>
-<td>s32</td>
+<td id="Libc_FP_ILOGBNAN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_ILOGBNAN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_INFINITE">FP_INFINITE</td>
-<td>s32</td>
+<td id="Libc_FP_INFINITE" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_INFINITE</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NAN">FP_NAN</td>
-<td>s32</td>
+<td id="Libc_FP_NAN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_NAN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NORMAL">FP_NORMAL</td>
-<td>s32</td>
+<td id="Libc_FP_NORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_NORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_SUBNORMAL">FP_SUBNORMAL</td>
-<td>s32</td>
+<td id="Libc_FP_SUBNORMAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_SUBNORMAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ZERO">FP_ZERO</td>
-<td>s32</td>
+<td id="Libc_FP_ZERO" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FP_ZERO</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ForeignLib">ForeignLib</td>
-<td>string</td>
+<td id="Libc_ForeignLib" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ForeignLib</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VAL">HUGE_VAL</td>
-<td>f64</td>
+<td id="Libc_HUGE_VAL" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HUGE_VAL</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VALF">HUGE_VALF</td>
-<td>f32</td>
+<td id="Libc_HUGE_VALF" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HUGE_VALF</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INFINITY">INFINITY</td>
-<td>f32</td>
+<td id="Libc_INFINITY" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INFINITY</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MAX">INT16_MAX</td>
-<td>s16</td>
+<td id="Libc_INT16_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT16_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MIN">INT16_MIN</td>
-<td>s16</td>
+<td id="Libc_INT16_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT16_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MAX">INT32_MAX</td>
-<td>s32</td>
+<td id="Libc_INT32_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT32_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MIN">INT32_MIN</td>
-<td>s32</td>
+<td id="Libc_INT32_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT32_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MAX">INT64_MAX</td>
-<td>s64</td>
+<td id="Libc_INT64_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT64_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MIN">INT64_MIN</td>
-<td>s64</td>
+<td id="Libc_INT64_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT64_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MAX">INT8_MAX</td>
-<td>s8</td>
+<td id="Libc_INT8_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT8_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MIN">INT8_MIN</td>
-<td>s8</td>
+<td id="Libc_INT8_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">INT8_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_L_tmpnam">L_tmpnam</td>
-<td>s32</td>
+<td id="Libc_L_tmpnam" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">L_tmpnam</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERREXCEPT">MATH_ERREXCEPT</td>
-<td>s32</td>
+<td id="Libc_MATH_ERREXCEPT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MATH_ERREXCEPT</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERRNO">MATH_ERRNO</td>
-<td>s32</td>
+<td id="Libc_MATH_ERRNO" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MATH_ERRNO</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_NAN">NAN</td>
-<td>f64</td>
+<td id="Libc_NAN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NAN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MAX">PTRDIFF_MAX</td>
-<td>s64</td>
+<td id="Libc_PTRDIFF_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PTRDIFF_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MIN">PTRDIFF_MIN</td>
-<td>s64</td>
+<td id="Libc_PTRDIFF_MIN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PTRDIFF_MIN</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_CUR">SEEK_CUR</td>
-<td>s32</td>
+<td id="Libc_SEEK_CUR" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SEEK_CUR</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_END">SEEK_END</td>
-<td>s32</td>
+<td id="Libc_SEEK_END" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SEEK_END</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_SET">SEEK_SET</td>
-<td>s32</td>
+<td id="Libc_SEEK_SET" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SEEK_SET</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SIZE_MAX">SIZE_MAX</td>
-<td>u64</td>
+<td id="Libc_SIZE_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SIZE_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TIME_UTC">TIME_UTC</td>
-<td>s32</td>
+<td id="Libc_TIME_UTC" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TIME_UTC</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TMP_MAX">TMP_MAX</td>
-<td>s32</td>
+<td id="Libc_TMP_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TMP_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT16_MAX">UINT16_MAX</td>
-<td>u16</td>
+<td id="Libc_UINT16_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UINT16_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT32_MAX">UINT32_MAX</td>
-<td>u32</td>
+<td id="Libc_UINT32_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UINT32_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT64_MAX">UINT64_MAX</td>
-<td>u64</td>
+<td id="Libc_UINT64_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UINT64_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT8_MAX">UINT8_MAX</td>
-<td>u8</td>
+<td id="Libc_UINT8_MAX" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">UINT8_MAX</span><span class="SyntaxCode"></td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOFBF">_IOFBF</td>
-<td>u32</td>
+<td id="Libc__IOFBF" class="codetype"></span><span class="SyntaxCode">_IOFBF</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOLBF">_IOLBF</td>
-<td>u32</td>
+<td id="Libc__IOLBF" class="codetype"></span><span class="SyntaxCode">_IOLBF</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IONBF">_IONBF</td>
-<td>u32</td>
+<td id="Libc__IONBF" class="codetype"></span><span class="SyntaxCode">_IONBF</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -821,188 +828,188 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Libc_clock_t">clock_t</td>
-<td>s64</td>
+<td id="Libc_clock_t" class="codetype"></span><span class="SyntaxCode">clock_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_double_t">double_t</td>
-<td>f64</td>
+<td id="Libc_double_t" class="codetype"></span><span class="SyntaxCode">double_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_float_t">float_t</td>
-<td>f32</td>
+<td id="Libc_float_t" class="codetype"></span><span class="SyntaxCode">float_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_fpos_t">fpos_t</td>
-<td>s64</td>
+<td id="Libc_fpos_t" class="codetype"></span><span class="SyntaxCode">fpos_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int16_t">int16_t</td>
-<td>s16</td>
+<td id="Libc_int16_t" class="codetype"></span><span class="SyntaxCode">int16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int32_t">int32_t</td>
-<td>s32</td>
+<td id="Libc_int32_t" class="codetype"></span><span class="SyntaxCode">int32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int64_t">int64_t</td>
-<td>s64</td>
+<td id="Libc_int64_t" class="codetype"></span><span class="SyntaxCode">int64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int8_t">int8_t</td>
-<td>s8</td>
+<td id="Libc_int8_t" class="codetype"></span><span class="SyntaxCode">int8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast16_t">int_fast16_t</td>
-<td>s32</td>
+<td id="Libc_int_fast16_t" class="codetype"></span><span class="SyntaxCode">int_fast16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast32_t">int_fast32_t</td>
-<td>s32</td>
+<td id="Libc_int_fast32_t" class="codetype"></span><span class="SyntaxCode">int_fast32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast64_t">int_fast64_t</td>
-<td>s64</td>
+<td id="Libc_int_fast64_t" class="codetype"></span><span class="SyntaxCode">int_fast64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast8_t">int_fast8_t</td>
-<td>s8</td>
+<td id="Libc_int_fast8_t" class="codetype"></span><span class="SyntaxCode">int_fast8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least16_t">int_least16_t</td>
-<td>s16</td>
+<td id="Libc_int_least16_t" class="codetype"></span><span class="SyntaxCode">int_least16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least32_t">int_least32_t</td>
-<td>s32</td>
+<td id="Libc_int_least32_t" class="codetype"></span><span class="SyntaxCode">int_least32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least64_t">int_least64_t</td>
-<td>s64</td>
+<td id="Libc_int_least64_t" class="codetype"></span><span class="SyntaxCode">int_least64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least8_t">int_least8_t</td>
-<td>s8</td>
+<td id="Libc_int_least8_t" class="codetype"></span><span class="SyntaxCode">int_least8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intmax_t">intmax_t</td>
-<td>s64</td>
+<td id="Libc_intmax_t" class="codetype"></span><span class="SyntaxCode">intmax_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intptr_t">intptr_t</td>
-<td>s64</td>
+<td id="Libc_intptr_t" class="codetype"></span><span class="SyntaxCode">intptr_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ptrdiff_t">ptrdiff_t</td>
-<td>s64</td>
+<td id="Libc_ptrdiff_t" class="codetype"></span><span class="SyntaxCode">ptrdiff_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_size_t">size_t</td>
-<td>u64</td>
+<td id="Libc_size_t" class="codetype"></span><span class="SyntaxCode">size_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_time_t">time_t</td>
-<td>s64</td>
+<td id="Libc_time_t" class="codetype"></span><span class="SyntaxCode">time_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint16_t">uint16_t</td>
-<td>u16</td>
+<td id="Libc_uint16_t" class="codetype"></span><span class="SyntaxCode">uint16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint32_t">uint32_t</td>
-<td>u32</td>
+<td id="Libc_uint32_t" class="codetype"></span><span class="SyntaxCode">uint32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint64_t">uint64_t</td>
-<td>u64</td>
+<td id="Libc_uint64_t" class="codetype"></span><span class="SyntaxCode">uint64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint8_t">uint8_t</td>
-<td>u8</td>
+<td id="Libc_uint8_t" class="codetype"></span><span class="SyntaxCode">uint8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast16_t">uint_fast16_t</td>
-<td>u32</td>
+<td id="Libc_uint_fast16_t" class="codetype"></span><span class="SyntaxCode">uint_fast16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast32_t">uint_fast32_t</td>
-<td>u32</td>
+<td id="Libc_uint_fast32_t" class="codetype"></span><span class="SyntaxCode">uint_fast32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast64_t">uint_fast64_t</td>
-<td>u64</td>
+<td id="Libc_uint_fast64_t" class="codetype"></span><span class="SyntaxCode">uint_fast64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast8_t">uint_fast8_t</td>
-<td>u8</td>
+<td id="Libc_uint_fast8_t" class="codetype"></span><span class="SyntaxCode">uint_fast8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least16_t">uint_least16_t</td>
-<td>u16</td>
+<td id="Libc_uint_least16_t" class="codetype"></span><span class="SyntaxCode">uint_least16_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least32_t">uint_least32_t</td>
-<td>u32</td>
+<td id="Libc_uint_least32_t" class="codetype"></span><span class="SyntaxCode">uint_least32_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least64_t">uint_least64_t</td>
-<td>u64</td>
+<td id="Libc_uint_least64_t" class="codetype"></span><span class="SyntaxCode">uint_least64_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least8_t">uint_least8_t</td>
-<td>u8</td>
+<td id="Libc_uint_least8_t" class="codetype"></span><span class="SyntaxCode">uint_least8_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintmax_t">uintmax_t</td>
-<td>u64</td>
+<td id="Libc_uintmax_t" class="codetype"></span><span class="SyntaxCode">uintmax_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintptr_t">uintptr_t</td>
-<td>u64</td>
+<td id="Libc_uintptr_t" class="codetype"></span><span class="SyntaxCode">uintptr_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_va_list">va_list</td>
-<td><a href="swag.runtime.html#Swag_CVaList">Swag.CVaList</a></td>
+<td id="Libc_va_list" class="codetype"></span><span class="SyntaxCode">va_list</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_wchar_t">wchar_t</td>
-<td>u16</td>
+<td id="Libc_wchar_t" class="codetype"></span><span class="SyntaxCode">wchar_t</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -1563,13 +1570,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>quot</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">quot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rem</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">rem</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2649,13 +2656,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>quot</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">quot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rem</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">rem</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -2724,13 +2731,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>quot</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">quot</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>rem</td>
-<td>s64</td>
+<td class="codetype"></span><span class="SyntaxCode">rem</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
@@ -4217,48 +4224,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td>tm_sec</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_sec</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_min</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_min</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_hour</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_hour</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_mday</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_mday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_mon</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_mon</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_year</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_year</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_wday</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_wday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_yday</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_yday</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 <tr>
-<td>tm_isdst</td>
-<td>s32</td>
+<td class="codetype"></span><span class="SyntaxCode">tm_isdst</td>
+<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
 <td></td>
 </tr>
 </table>
