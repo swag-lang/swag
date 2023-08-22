@@ -370,6 +370,19 @@
 <li><a href="#Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</a></li>
 <li><a href="#Pixel_InvalidTextureHandle">InvalidTextureHandle</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4>poly</h4>
+<ul>
+<li><a href="#Pixel_Clipper_CInt">CInt</a></li>
+</ul>
+<h4>render/ogl</h4>
+<ul>
+<li><a href="#Pixel_RenderTargetHandle">RenderTargetHandle</a></li>
+<li><a href="#Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</a></li>
+<li><a href="#Pixel_ShaderHandle">ShaderHandle</a></li>
+<li><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></li>
+<li><a href="#Pixel_TextureHandle">TextureHandle</a></li>
+</ul>
 <h3>Functions</h3>
 <h4>image</h4>
 <ul>
@@ -730,32 +743,75 @@
 </tr>
 <tr>
 <td id="Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</td>
-<td>Pixel.RenderTargetHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</td>
-<td>Pixel.RenderTargetSurfaceHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidShaderHandle">InvalidShaderHandle</td>
-<td>Pixel.ShaderHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_InvalidTextureHandle">InvalidTextureHandle</td>
-<td>Pixel.TextureHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td id="Pixel_MaxAAEdge">MaxAAEdge</td>
 <td>s32</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
+<span class="content" id="Pixel_Clipper_CInt"><span class="titletype">type alias</span> <span class="titlelight">Clipper.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L17" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Pixel_Clipper_CInt">CInt</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Pixel_RenderTargetHandle">RenderTargetHandle</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Pixel_ShaderHandle">ShaderHandle</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Pixel_ShaderParamHandle">ShaderParamHandle</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Pixel_TextureHandle">TextureHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 </table>
@@ -1765,12 +1821,12 @@
 <table class="enumeration">
 <tr>
 <td>x</td>
-<td>Pixel.Clipper.CInt</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>y</td>
-<td>Pixel.Clipper.CInt</td>
+<td>s64</td>
 <td></td>
 </tr>
 </table>
@@ -5947,7 +6003,7 @@
 </tr>
 <tr>
 <td>lastTexture0Handle</td>
-<td>Pixel.TextureHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
@@ -7339,10 +7395,10 @@
 </table>
 </p>
 <p>Set a shader parameter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">, val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)</code>
 </div>
 <p>Set a shader parameter. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">, val: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setShaderParam</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, param: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, val: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8204,7 +8260,7 @@
 </tr>
 <tr>
 <td>vertexbuffer</td>
-<td>Ogl.GLuint</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8239,7 +8295,7 @@
 </tr>
 <tr>
 <td>whiteTexture</td>
-<td>Ogl.GLuint</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8476,7 +8532,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeMatrices</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mvp: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">, mdl: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ShaderParamHandle</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">computeMatrices</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> self, mvp: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">, mdl: </span><span class="SyntaxConstant">Pixel</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8820,7 +8876,7 @@
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Pixel.RenderTargetHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
@@ -8830,7 +8886,7 @@
 </tr>
 <tr>
 <td>depthStencil</td>
-<td>Pixel.RenderTargetSurfaceHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
@@ -8858,12 +8914,12 @@
 <table class="enumeration">
 <tr>
 <td>hDC</td>
-<td>Win32.HDC</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hRC</td>
-<td>Ogl.HGLRC</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -9230,47 +9286,47 @@
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Pixel.ShaderHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>mvp</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>mdl</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>boundRect</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>textureRect</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>uvMode</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>copyMode</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>textureW</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>textureH</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 </table>
@@ -9293,12 +9349,12 @@
 </tr>
 <tr>
 <td>radius</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 <tr>
 <td>axis</td>
-<td>Pixel.ShaderParamHandle</td>
+<td>s64</td>
 <td></td>
 </tr>
 </table>
@@ -9584,7 +9640,7 @@
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Pixel.TextureHandle</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
@@ -9743,7 +9799,7 @@
 </tr>
 <tr>
 <td>face</td>
-<td>FreeType.FT_Face</td>
+<td>*FreeType.FT_FaceRec</td>
 <td></td>
 </tr>
 <tr>

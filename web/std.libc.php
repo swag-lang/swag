@@ -259,6 +259,47 @@
 <li><a href="#Libc__IOLBF">_IOLBF</a></li>
 <li><a href="#Libc__IONBF">_IONBF</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4></h4>
+<ul>
+<li><a href="#Libc_clock_t">clock_t</a></li>
+<li><a href="#Libc_double_t">double_t</a></li>
+<li><a href="#Libc_float_t">float_t</a></li>
+<li><a href="#Libc_fpos_t">fpos_t</a></li>
+<li><a href="#Libc_int16_t">int16_t</a></li>
+<li><a href="#Libc_int32_t">int32_t</a></li>
+<li><a href="#Libc_int64_t">int64_t</a></li>
+<li><a href="#Libc_int8_t">int8_t</a></li>
+<li><a href="#Libc_int_fast16_t">int_fast16_t</a></li>
+<li><a href="#Libc_int_fast32_t">int_fast32_t</a></li>
+<li><a href="#Libc_int_fast64_t">int_fast64_t</a></li>
+<li><a href="#Libc_int_fast8_t">int_fast8_t</a></li>
+<li><a href="#Libc_int_least16_t">int_least16_t</a></li>
+<li><a href="#Libc_int_least32_t">int_least32_t</a></li>
+<li><a href="#Libc_int_least64_t">int_least64_t</a></li>
+<li><a href="#Libc_int_least8_t">int_least8_t</a></li>
+<li><a href="#Libc_intmax_t">intmax_t</a></li>
+<li><a href="#Libc_intptr_t">intptr_t</a></li>
+<li><a href="#Libc_ptrdiff_t">ptrdiff_t</a></li>
+<li><a href="#Libc_size_t">size_t</a></li>
+<li><a href="#Libc_time_t">time_t</a></li>
+<li><a href="#Libc_uint16_t">uint16_t</a></li>
+<li><a href="#Libc_uint32_t">uint32_t</a></li>
+<li><a href="#Libc_uint64_t">uint64_t</a></li>
+<li><a href="#Libc_uint8_t">uint8_t</a></li>
+<li><a href="#Libc_uint_fast16_t">uint_fast16_t</a></li>
+<li><a href="#Libc_uint_fast32_t">uint_fast32_t</a></li>
+<li><a href="#Libc_uint_fast64_t">uint_fast64_t</a></li>
+<li><a href="#Libc_uint_fast8_t">uint_fast8_t</a></li>
+<li><a href="#Libc_uint_least16_t">uint_least16_t</a></li>
+<li><a href="#Libc_uint_least32_t">uint_least32_t</a></li>
+<li><a href="#Libc_uint_least64_t">uint_least64_t</a></li>
+<li><a href="#Libc_uint_least8_t">uint_least8_t</a></li>
+<li><a href="#Libc_uintmax_t">uintmax_t</a></li>
+<li><a href="#Libc_uintptr_t">uintptr_t</a></li>
+<li><a href="#Libc_va_list">va_list</a></li>
+<li><a href="#Libc_wchar_t">wchar_t</a></li>
+</ul>
 <h3>Functions</h3>
 <h4></h4>
 <ul>
@@ -771,6 +812,204 @@
 <table class="item">
 <tr>
 <td class="item">
+<span class="content" id="Libc_clock_t"><span class="titletype">type alias</span> <span class="titlelight">Libc.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L24" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Libc_clock_t">clock_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_double_t">double_t</td>
+<td>f64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_float_t">float_t</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_fpos_t">fpos_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int16_t">int16_t</td>
+<td>s16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int32_t">int32_t</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int64_t">int64_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int8_t">int8_t</td>
+<td>s8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_fast16_t">int_fast16_t</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_fast32_t">int_fast32_t</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_fast64_t">int_fast64_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_fast8_t">int_fast8_t</td>
+<td>s8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_least16_t">int_least16_t</td>
+<td>s16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_least32_t">int_least32_t</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_least64_t">int_least64_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_int_least8_t">int_least8_t</td>
+<td>s8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_intmax_t">intmax_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_intptr_t">intptr_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_ptrdiff_t">ptrdiff_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_size_t">size_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_time_t">time_t</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint16_t">uint16_t</td>
+<td>u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint32_t">uint32_t</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint64_t">uint64_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint8_t">uint8_t</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_fast16_t">uint_fast16_t</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_fast32_t">uint_fast32_t</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_fast64_t">uint_fast64_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_fast8_t">uint_fast8_t</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_least16_t">uint_least16_t</td>
+<td>u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_least32_t">uint_least32_t</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_least64_t">uint_least64_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uint_least8_t">uint_least8_t</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uintmax_t">uintmax_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_uintptr_t">uintptr_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_va_list">va_list</td>
+<td><a href="swag.runtime.html#Swag_CVaList">Swag.CVaList</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Libc_wchar_t">wchar_t</td>
+<td>u16</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
 <span class="content" id="Libc_FILE"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">FILE</span></span>
 </td>
 <td class="srcref">
@@ -893,7 +1132,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">aligned_alloc</span><span class="SyntaxCode">(aligment: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">aligned_alloc</span><span class="SyntaxCode">(aligment: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1101,7 +1340,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bsearch</span><span class="SyntaxCode">(key: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">bsearch</span><span class="SyntaxCode">(key: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1114,7 +1353,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">calloc</span><span class="SyntaxCode">(nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">calloc</span><span class="SyntaxCode">(nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1192,7 +1431,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clock</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.clock_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">clock</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_clock_t">clock_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -1283,7 +1522,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ctime</span><span class="SyntaxCode">(timer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ctime</span><span class="SyntaxCode">(timer: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1296,7 +1535,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">difftime</span><span class="SyntaxCode">(time1: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t, time2: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">difftime</span><span class="SyntaxCode">(time1: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>, time2: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1605,7 +1844,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fgetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1826,7 +2065,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fread</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fread</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -1917,7 +2156,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fsetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.fpos_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fsetpos</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, pos: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1943,7 +2182,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fwrite</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">fwrite</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, nmemb: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -1995,7 +2234,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gmtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">gmtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
 </div>
 <p>
 <table class="item">
@@ -2558,7 +2797,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">localtime</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>)-&gt;*</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a></code>
 </div>
 <p>
 <table class="item">
@@ -2753,7 +2992,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">malloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">malloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2766,7 +3005,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mblen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mblen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2779,7 +3018,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbstowcs</span><span class="SyntaxCode">(pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbstowcs</span><span class="SyntaxCode">(pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_wchar_t">wchar_t</a>, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -2792,7 +3031,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbtowc</span><span class="SyntaxCode">(pwc: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mbtowc</span><span class="SyntaxCode">(pwc: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_wchar_t">wchar_t</a>, s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2805,7 +3044,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memchr</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memchr</span><span class="SyntaxCode">(ptr: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2818,7 +3057,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcmp</span><span class="SyntaxCode">(ptr1: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcmp</span><span class="SyntaxCode">(ptr1: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, ptr2: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2831,7 +3070,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memcpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2844,7 +3083,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memmove</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memmove</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2857,7 +3096,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memset</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memset</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2870,7 +3109,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mktime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">mktime</span><span class="SyntaxCode">(timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3078,7 +3317,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">qsort</span><span class="SyntaxCode">(base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">qsort</span><span class="SyntaxCode">(base: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, compar: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -3117,7 +3356,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">realloc</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">realloc</span><span class="SyntaxCode">(ptr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3351,7 +3590,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setvbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setvbuf</span><span class="SyntaxCode">(stream: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Libc_FILE">FILE</a></span><span class="SyntaxCode">, buf: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, mode: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, size: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3430,7 +3669,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">snprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: </span><span class="SyntaxType">cvarargs</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3534,7 +3773,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsprintf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3547,7 +3786,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">stdio_common_vsscanf</span><span class="SyntaxCode">(_Options: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, _Buffer: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _BufferCount: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, _Format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, _Locale: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, _ArgList: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3625,7 +3864,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strcspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3651,7 +3890,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strftime</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, maxsize: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strftime</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, maxsize: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, format: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, timeptr: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_tm">tm</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3664,7 +3903,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strlen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strlen</span><span class="SyntaxCode">(s: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3677,7 +3916,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncat</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3703,7 +3942,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strncpy</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;*</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -3742,7 +3981,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strspn</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3859,7 +4098,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strxfrm</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">strxfrm</span><span class="SyntaxCode">(dst: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, src: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, num: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -3963,7 +4202,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">time</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.time_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">time</span><span class="SyntaxCode">(timer: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_time_t">time_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -4205,7 +4444,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsnprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">vsnprintf</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, count: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>, format: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, args: *</span><span class="SyntaxConstant">Swag</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -4244,7 +4483,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wcstombs</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.size_t</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wcstombs</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, pwcs: *</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_wchar_t">wchar_t</a>, n: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a>)-&gt;</span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_size_t">size_t</a></code>
 </div>
 <p>
 <table class="item">
@@ -4257,7 +4496,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wctomb</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, wc: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.wchar_t)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">wctomb</span><span class="SyntaxCode">(s: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, wc: </span><span class="SyntaxConstant">Libc</span><span class="SyntaxCode">.<a href="#Libc_wchar_t">wchar_t</a>)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 </div>
 </div>

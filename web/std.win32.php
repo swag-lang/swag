@@ -1241,6 +1241,67 @@
 <li><a href="#Win32_WS_VISIBLE">WS_VISIBLE</a></li>
 <li><a href="#Win32_WS_VSCROLL">WS_VSCROLL</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4></h4>
+<ul>
+<li><a href="#Win32_ATOM">ATOM</a></li>
+<li><a href="#Win32_BOOL">BOOL</a></li>
+<li><a href="#Win32_BYTE">BYTE</a></li>
+<li><a href="#Win32_CHAR">CHAR</a></li>
+<li><a href="#Win32_COLORREF">COLORREF</a></li>
+<li><a href="#Win32_DWORD">DWORD</a></li>
+<li><a href="#Win32_DWORD64">DWORD64</a></li>
+<li><a href="#Win32_DWORD_PTR">DWORD_PTR</a></li>
+<li><a href="#Win32_HANDLE">HANDLE</a></li>
+<li><a href="#Win32_HBITMAP">HBITMAP</a></li>
+<li><a href="#Win32_HBRUSH">HBRUSH</a></li>
+<li><a href="#Win32_HCURSOR">HCURSOR</a></li>
+<li><a href="#Win32_HDC">HDC</a></li>
+<li><a href="#Win32_HGLOBAL">HGLOBAL</a></li>
+<li><a href="#Win32_HICON">HICON</a></li>
+<li><a href="#Win32_HINSTANCE">HINSTANCE</a></li>
+<li><a href="#Win32_HLOCAL">HLOCAL</a></li>
+<li><a href="#Win32_HMENU">HMENU</a></li>
+<li><a href="#Win32_HMODULE">HMODULE</a></li>
+<li><a href="#Win32_HMONITOR">HMONITOR</a></li>
+<li><a href="#Win32_HRESULT">HRESULT</a></li>
+<li><a href="#Win32_HWND">HWND</a></li>
+<li><a href="#Win32_IP_MASK_STRING">IP_MASK_STRING</a></li>
+<li><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></li>
+<li><a href="#Win32_LONG">LONG</a></li>
+<li><a href="#Win32_LPARAM">LPARAM</a></li>
+<li><a href="#Win32_LPBYTE">LPBYTE</a></li>
+<li><a href="#Win32_LPCH">LPCH</a></li>
+<li><a href="#Win32_LPCSTR">LPCSTR</a></li>
+<li><a href="#Win32_LPCTSTR">LPCTSTR</a></li>
+<li><a href="#Win32_LPCVOID">LPCVOID</a></li>
+<li><a href="#Win32_LPCWSTR">LPCWSTR</a></li>
+<li><a href="#Win32_LPDWORD">LPDWORD</a></li>
+<li><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></li>
+<li><a href="#Win32_LPSTR">LPSTR</a></li>
+<li><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></li>
+<li><a href="#Win32_LPVOID">LPVOID</a></li>
+<li><a href="#Win32_LPWCH">LPWCH</a></li>
+<li><a href="#Win32_LPWSTR">LPWSTR</a></li>
+<li><a href="#Win32_LRESULT">LRESULT</a></li>
+<li><a href="#Win32_PCSTR">PCSTR</a></li>
+<li><a href="#Win32_PCWSTR">PCWSTR</a></li>
+<li><a href="#Win32_PLONG">PLONG</a></li>
+<li><a href="#Win32_SHORT">SHORT</a></li>
+<li><a href="#Win32_SHSTDAPI">SHSTDAPI</a></li>
+<li><a href="#Win32_SIZE_T">SIZE_T</a></li>
+<li><a href="#Win32_SRWLOCK">SRWLOCK</a></li>
+<li><a href="#Win32_UINT">UINT</a></li>
+<li><a href="#Win32_ULONG">ULONG</a></li>
+<li><a href="#Win32_ULONG64">ULONG64</a></li>
+<li><a href="#Win32_USHORT">USHORT</a></li>
+<li><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></li>
+<li><a href="#Win32_WCHAR">WCHAR</a></li>
+<li><a href="#Win32_WORD">WORD</a></li>
+<li><a href="#Win32_WPARAM">WPARAM</a></li>
+<li><a href="#Win32_time_t">time_t</a></li>
+<li><a href="#Win32_va_list">va_list</a></li>
+</ul>
 <h3>Functions</h3>
 <h4></h4>
 <ul>
@@ -2419,22 +2480,22 @@
 </tr>
 <tr>
 <td id="Win32_HWND_BOTTOM">HWND_BOTTOM</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_NOTOPMOST">HWND_NOTOPMOST</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_TOP">HWND_TOP</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_HWND_TOPMOST">HWND_TOPMOST</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -2594,22 +2655,22 @@
 </tr>
 <tr>
 <td id="Win32_INVALID_FILE_ATTRIBUTES">INVALID_FILE_ATTRIBUTES</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_INVALID_FILE_SIZE">INVALID_FILE_SIZE</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_INVALID_HANDLE_VALUE">INVALID_HANDLE_VALUE</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_INVALID_SET_FILE_POINTER">INVALID_SET_FILE_POINTER</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -3724,17 +3785,17 @@
 </tr>
 <tr>
 <td id="Win32_SRWLOCK_INIT">SRWLOCK_INIT</td>
-<td>Win32.SRWLOCK</td>
+<td>*void</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_STD_INPUT_HANDLE">STD_INPUT_HANDLE</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td id="Win32_STD_OUTPUT_HANDLE">STD_OUTPUT_HANDLE</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -3894,7 +3955,7 @@
 </tr>
 <tr>
 <td id="Win32_S_OK">S_OK</td>
-<td>Win32.HRESULT</td>
+<td>*void</td>
 <td></td>
 </tr>
 <tr>
@@ -6442,6 +6503,304 @@
 <table class="item">
 <tr>
 <td class="item">
+<span class="content" id="Win32_ATOM"><span class="titletype">type alias</span> <span class="titlelight">Win32.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Win32_ATOM">ATOM</td>
+<td>const ^void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_BOOL">BOOL</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_BYTE">BYTE</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_CHAR">CHAR</td>
+<td>u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_COLORREF">COLORREF</td>
+<td><a href="#Win32_DWORD">Win32.DWORD</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_DWORD">DWORD</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_DWORD64">DWORD64</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_DWORD_PTR">DWORD_PTR</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HANDLE">HANDLE</td>
+<td>const ^void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HBITMAP">HBITMAP</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HBRUSH">HBRUSH</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HCURSOR">HCURSOR</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HDC">HDC</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HGLOBAL">HGLOBAL</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HICON">HICON</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HINSTANCE">HINSTANCE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HLOCAL">HLOCAL</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HMENU">HMENU</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HMODULE">HMODULE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HMONITOR">HMONITOR</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HRESULT">HRESULT</td>
+<td>*void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_HWND">HWND</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_IP_MASK_STRING">IP_MASK_STRING</td>
+<td><a href="#Win32_IP_ADDRESS_STRING">Win32.IP_ADDRESS_STRING</a></td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LARGE_INTEGER">LARGE_INTEGER</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LONG">LONG</td>
+<td>s32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPARAM">LPARAM</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPBYTE">LPBYTE</td>
+<td>*Win32.BYTE</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPCH">LPCH</td>
+<td>^Win32.CHAR</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPCSTR">LPCSTR</td>
+<td>const ^u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPCTSTR">LPCTSTR</td>
+<td>const ^u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPCVOID">LPCVOID</td>
+<td>const ^void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPCWSTR">LPCWSTR</td>
+<td>const ^u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPDWORD">LPDWORD</td>
+<td>*Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPOVERLAPPED">LPOVERLAPPED</td>
+<td>*Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPSTR">LPSTR</td>
+<td>^Win32.CHAR</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</td>
+<td>func(*void)->Win32.DWORD</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPVOID">LPVOID</td>
+<td>^void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPWCH">LPWCH</td>
+<td>^Win32.WCHAR</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LPWSTR">LPWSTR</td>
+<td>^Win32.WCHAR</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_LRESULT">LRESULT</td>
+<td>s64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PCSTR">PCSTR</td>
+<td>const ^u8</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PCWSTR">PCWSTR</td>
+<td>const ^u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_PLONG">PLONG</td>
+<td>*Win32.LONG</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHORT">SHORT</td>
+<td>s16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SHSTDAPI">SHSTDAPI</td>
+<td>*void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SIZE_T">SIZE_T</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_SRWLOCK">SRWLOCK</td>
+<td>*void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_UINT">UINT</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ULONG">ULONG</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_ULONG64">ULONG64</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_USHORT">USHORT</td>
+<td>u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</td>
+<td>func(*void, Win32.BOOL)</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WCHAR">WCHAR</td>
+<td>u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WORD">WORD</td>
+<td>u16</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_WPARAM">WPARAM</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_time_t">time_t</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Win32_va_list">va_list</td>
+<td>^u8</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
 <span class="content" id="Win32_AcquireSRWLockExclusive"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">AcquireSRWLockExclusive</span></span>
 </td>
 <td class="srcref">
@@ -6449,7 +6808,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AcquireSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AcquireSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6462,7 +6821,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AcquireSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">AcquireSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6475,7 +6834,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">BeginPaint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpPaint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">BeginPaint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpPaint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6488,7 +6847,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">BringWindowToTop</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">BringWindowToTop</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6514,7 +6873,7 @@
 </tr>
 <tr>
 <td>wAttributes</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
@@ -6542,12 +6901,12 @@
 <table class="enumeration">
 <tr>
 <td>x</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>y</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -6565,22 +6924,22 @@
 <table class="enumeration">
 <tr>
 <td>lpCreateParams</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hInstance</td>
-<td>Win32.HINSTANCE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
 <td></td>
 </tr>
 <tr>
 <td>hMenu</td>
-<td>Win32.HMENU</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hwndParent</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -6605,22 +6964,22 @@
 </tr>
 <tr>
 <td>style</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszName</td>
-<td>Win32.LPCSTR</td>
+<td>const ^u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClass</td>
-<td>Win32.LPCSTR</td>
+<td>const ^u8</td>
 <td></td>
 </tr>
 <tr>
 <td>dwExStyle</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -6638,22 +6997,22 @@
 <table class="enumeration">
 <tr>
 <td>lpCreateParams</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hInstance</td>
-<td>Win32.HINSTANCE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
 <td></td>
 </tr>
 <tr>
 <td>hMenu</td>
-<td>Win32.HMENU</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hwndParent</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -6678,22 +7037,22 @@
 </tr>
 <tr>
 <td>style</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszName</td>
-<td>Win32.LPCWSTR</td>
+<td>const ^u16</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClass</td>
-<td>Win32.LPCWSTR</td>
+<td>const ^u16</td>
 <td></td>
 </tr>
 <tr>
 <td>dwExStyle</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -6708,7 +7067,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CancelWaitableTimer</span><span class="SyntaxCode">(hTimer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CancelWaitableTimer</span><span class="SyntaxCode">(hTimer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6721,7 +7080,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ChildWindowFromPoint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ChildWindowFromPoint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6734,7 +7093,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ChildWindowFromPointEx</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ChildWindowFromPointEx</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6747,7 +7106,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ClientToScreen</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ClientToScreen</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6760,7 +7119,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CloseClipboard</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CloseClipboard</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6773,7 +7132,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CloseHandle</span><span class="SyntaxCode">(handle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CloseHandle</span><span class="SyntaxCode">(handle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -6786,7 +7145,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CoInitializeEx</span><span class="SyntaxCode">(pvReserved: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwCoInit: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CoInitializeEx</span><span class="SyntaxCode">(pvReserved: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwCoInit: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HRESULT">HRESULT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6812,7 +7171,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateConsoleScreenBuffer</span><span class="SyntaxCode">(dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpSecurityAttributes: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpScreenBufferData: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateConsoleScreenBuffer</span><span class="SyntaxCode">(dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpSecurityAttributes: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpScreenBufferData: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6825,7 +7184,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateDirectoryA</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateDirectoryA</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6838,7 +7197,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateDirectoryW</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateDirectoryW</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6851,7 +7210,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateEventA</span><span class="SyntaxCode">(lpEventAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, bInitialState: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateEventA</span><span class="SyntaxCode">(lpEventAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, bInitialState: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6864,7 +7223,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateEventW</span><span class="SyntaxCode">(lpEventAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, bInitialState: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateEventW</span><span class="SyntaxCode">(lpEventAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, bInitialState: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6877,7 +7236,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwCreationDisposition: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwFlagsAndAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, hTemplateFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwCreationDisposition: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwFlagsAndAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, hTemplateFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6890,7 +7249,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwCreationDisposition: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwFlagsAndAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, hTemplateFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, dwDesiredAccess: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwShareMode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpSecurityAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwCreationDisposition: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwFlagsAndAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, hTemplateFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6903,7 +7262,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateIconIndirect</span><span class="SyntaxCode">(piconinfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateIconIndirect</span><span class="SyntaxCode">(piconinfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6916,7 +7275,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateMutexA</span><span class="SyntaxCode">(lpMutexAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInitialOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateMutexA</span><span class="SyntaxCode">(lpMutexAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInitialOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6929,7 +7288,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateMutexW</span><span class="SyntaxCode">(lpMutexAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInitialOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateMutexW</span><span class="SyntaxCode">(lpMutexAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInitialOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6942,7 +7301,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateProcessA</span><span class="SyntaxCode">(lpApplicationName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpCommandLine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpProcessAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInheritHandles: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpEnvironment: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">, lpCurrentDirectory: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpStartupInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span><span class="SyntaxCode">, lpProcessInformation: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateProcessA</span><span class="SyntaxCode">(lpApplicationName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpCommandLine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpProcessAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInheritHandles: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpEnvironment: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">, lpCurrentDirectory: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpStartupInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span><span class="SyntaxCode">, lpProcessInformation: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6955,7 +7314,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateProcessW</span><span class="SyntaxCode">(lpApplicationName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpCommandLine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpProcessAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInheritHandles: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpEnvironment: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">, lpCurrentDirectory: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpStartupInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span><span class="SyntaxCode">, lpProcessInformation: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateProcessW</span><span class="SyntaxCode">(lpApplicationName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpCommandLine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpProcessAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bInheritHandles: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpEnvironment: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">, lpCurrentDirectory: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpStartupInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span><span class="SyntaxCode">, lpProcessInformation: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6968,7 +7327,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateThread</span><span class="SyntaxCode">(lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwStackSize: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SIZE_T</span><span class="SyntaxCode">, lpStartAddress: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPTHREAD_START_ROUTINE</span><span class="SyntaxCode">, lpParameter: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpThreadId: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateThread</span><span class="SyntaxCode">(lpThreadAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, dwStackSize: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span><span class="SyntaxCode">, lpStartAddress: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span><span class="SyntaxCode">, lpParameter: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwCreationFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpThreadId: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6981,7 +7340,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateTimerQueueTimer</span><span class="SyntaxCode">(phNewTimer: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, timerQueue: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, callback: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WAITORTIMERCALLBACK</span><span class="SyntaxCode">, parameter: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dueTime: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, period: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ULONG</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateTimerQueueTimer</span><span class="SyntaxCode">(phNewTimer: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, timerQueue: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, callback: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span><span class="SyntaxCode">, parameter: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dueTime: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, period: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -6994,7 +7353,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWaitableTimerA</span><span class="SyntaxCode">(lpTimerAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpTimerName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWaitableTimerA</span><span class="SyntaxCode">(lpTimerAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpTimerName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7007,7 +7366,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWaitableTimerW</span><span class="SyntaxCode">(lpTimerAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, lpTimerName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWaitableTimerW</span><span class="SyntaxCode">(lpTimerAttributes: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span><span class="SyntaxCode">, bManualReset: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, lpTimerName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7020,7 +7379,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWindowExA</span><span class="SyntaxCode">(dwExStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, dwStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Y</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, hWndParent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, hMenu: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMENU</span><span class="SyntaxCode">, hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HINSTANCE</span><span class="SyntaxCode">, lpParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWindowExA</span><span class="SyntaxCode">(dwExStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, dwStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Y</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, hWndParent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, hMenu: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMENU">HMENU</a></span><span class="SyntaxCode">, hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span><span class="SyntaxCode">, lpParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7033,7 +7392,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWindowExW</span><span class="SyntaxCode">(dwExStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, dwStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Y</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, hWndParent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, hMenu: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMENU</span><span class="SyntaxCode">, hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HINSTANCE</span><span class="SyntaxCode">, lpParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateWindowExW</span><span class="SyntaxCode">(dwExStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, dwStyle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">X</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Y</span><span class="SyntaxCode">: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, hWndParent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, hMenu: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMENU">HMENU</a></span><span class="SyntaxCode">, hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span><span class="SyntaxCode">, lpParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7046,7 +7405,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DebugActiveProcess</span><span class="SyntaxCode">(procId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DebugActiveProcess</span><span class="SyntaxCode">(procId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7072,7 +7431,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DefWindowProcA</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, uMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WPARAM</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DefWindowProcA</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, uMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7085,7 +7444,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DefWindowProcW</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, uMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WPARAM</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DefWindowProcW</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, uMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7098,7 +7457,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7111,7 +7470,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7124,7 +7483,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteTimerQueueTimer</span><span class="SyntaxCode">(timerQueue: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, timer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, completionEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteTimerQueueTimer</span><span class="SyntaxCode">(timerQueue: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, timer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, completionEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7137,7 +7496,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DestroyIcon</span><span class="SyntaxCode">(hIcon: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DestroyIcon</span><span class="SyntaxCode">(hIcon: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7150,7 +7509,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DestroyWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DestroyWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7163,7 +7522,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DispatchMessageA</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DispatchMessageA</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7176,7 +7535,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DispatchMessageW</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DispatchMessageW</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7189,7 +7548,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EmptyClipboard</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EmptyClipboard</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7202,7 +7561,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnableWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, bEnable: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnableWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, bEnable: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7215,7 +7574,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EndPaint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpPaint: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EndPaint</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpPaint: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7228,7 +7587,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumDisplayMonitors</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lprcClip: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, lpfnEnum: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwData: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumDisplayMonitors</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span><span class="SyntaxCode">, lprcClip: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, lpfnEnum: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, dwData: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7241,7 +7600,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumWindows</span><span class="SyntaxCode">(lpEnumFunc: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumWindows</span><span class="SyntaxCode">(lpEnumFunc: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7254,7 +7613,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExitProcess</span><span class="SyntaxCode">(uExitCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExitProcess</span><span class="SyntaxCode">(uExitCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7267,7 +7626,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExtractIconExA</span><span class="SyntaxCode">(lpszFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, nIconIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, phiconLarge: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">, phiconSmall: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">, nIcons: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExtractIconExA</span><span class="SyntaxCode">(lpszFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, nIconIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, phiconLarge: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">, phiconSmall: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">, nIcons: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7280,7 +7639,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExtractIconExW</span><span class="SyntaxCode">(lpszFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, nIconIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, phiconLarge: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">, phiconSmall: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">, nIcons: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ExtractIconExW</span><span class="SyntaxCode">(lpszFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, nIconIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, phiconLarge: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">, phiconSmall: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">, nIcons: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7296,12 +7655,12 @@
 <table class="enumeration">
 <tr>
 <td>dwLowDateTime</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwHighDateTime</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -7316,7 +7675,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FileTimeToLocalFileTime</span><span class="SyntaxCode">(lpFileTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLocalFileTime: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FileTimeToLocalFileTime</span><span class="SyntaxCode">(lpFileTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLocalFileTime: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7342,7 +7701,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FillRect</span><span class="SyntaxCode">(hDC: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lprc: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, hbr: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HBRUSH</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FillRect</span><span class="SyntaxCode">(hDC: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span><span class="SyntaxCode">, lprc: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, hbr: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HBRUSH">HBRUSH</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7355,7 +7714,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindClose</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindClose</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7368,7 +7727,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstFileA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7381,7 +7740,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstFileW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7394,7 +7753,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstVolumeA</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstVolumeA</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7407,7 +7766,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstVolumeW</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindFirstVolumeW</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7420,7 +7779,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextFileA</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextFileA</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7433,7 +7792,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextFileW</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextFileW</span><span class="SyntaxCode">(hFindFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpFindFileData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7446,7 +7805,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextVolumeA</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextVolumeA</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7459,7 +7818,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextVolumeW</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindNextVolumeW</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7472,7 +7831,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindVolumeClose</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindVolumeClose</span><span class="SyntaxCode">(hFindVolume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7485,7 +7844,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindWindowA</span><span class="SyntaxCode">(lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindWindowA</span><span class="SyntaxCode">(lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7498,7 +7857,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindWindowW</span><span class="SyntaxCode">(lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FindWindowW</span><span class="SyntaxCode">(lpClassName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpWindowName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7511,7 +7870,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FormatMessageA</span><span class="SyntaxCode">(dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpSource: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCVOID</span><span class="SyntaxCode">, dwMessageId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwLanguageId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, nSize: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Arguments</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.va_list)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">FormatMessageA</span><span class="SyntaxCode">(dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpSource: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCVOID">LPCVOID</a></span><span class="SyntaxCode">, dwMessageId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwLanguageId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, nSize: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, </span><span class="SyntaxConstant">Arguments</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.<a href="#Win32_va_list">va_list</a>)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7558,7 +7917,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GET_X_LPARAM</span><span class="SyntaxCode">(lp: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GET_X_LPARAM</span><span class="SyntaxCode">(lp: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7571,7 +7930,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GET_Y_LPARAM</span><span class="SyntaxCode">(lp: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GET_Y_LPARAM</span><span class="SyntaxCode">(lp: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -7617,7 +7976,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetActiveWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetActiveWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7630,7 +7989,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetAdaptersInfo</span><span class="SyntaxCode">(adapterInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span><span class="SyntaxCode">, sizePointer: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ULONG</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ULONG</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetAdaptersInfo</span><span class="SyntaxCode">(adapterInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span><span class="SyntaxCode">, sizePointer: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7643,7 +8002,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetAsyncKeyState</span><span class="SyntaxCode">(vKey: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SHORT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetAsyncKeyState</span><span class="SyntaxCode">(vKey: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHORT">SHORT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7656,7 +8015,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetClientRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpRect: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetClientRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpRect: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7669,7 +8028,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetClipboardData</span><span class="SyntaxCode">(uFormat: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetClipboardData</span><span class="SyntaxCode">(uFormat: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7682,7 +8041,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetConsoleScreenBufferInfo</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpConsoleScreenBufferInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetConsoleScreenBufferInfo</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpConsoleScreenBufferInfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7695,7 +8054,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentDirectoryA</span><span class="SyntaxCode">(nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentDirectoryA</span><span class="SyntaxCode">(nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7708,7 +8067,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentDirectoryW</span><span class="SyntaxCode">(nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentDirectoryW</span><span class="SyntaxCode">(nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7721,7 +8080,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentProcess</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentProcess</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7734,7 +8093,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentProcessId</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentProcessId</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7747,7 +8106,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentThread</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentThread</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7760,7 +8119,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentThreadId</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCurrentThreadId</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7773,7 +8132,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCursorPos</span><span class="SyntaxCode">(lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetCursorPos</span><span class="SyntaxCode">(lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7786,7 +8145,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetDC</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetDC</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7799,7 +8158,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetDesktopWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetDesktopWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7812,7 +8171,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7825,7 +8184,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesExA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, fInfoLevelId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span><span class="SyntaxCode">, lpFileInformation: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesExA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, fInfoLevelId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span><span class="SyntaxCode">, lpFileInformation: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7838,7 +8197,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesExW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, fInfoLevelId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span><span class="SyntaxCode">, lpFileInformation: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesExW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, fInfoLevelId: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span><span class="SyntaxCode">, lpFileInformation: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7851,7 +8210,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileAttributesW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7864,7 +8223,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileSize</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpFileSizeHigh: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPDWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFileSize</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpFileSizeHigh: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7877,7 +8236,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetForegroundWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetForegroundWindow</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7890,7 +8249,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFullPathNameA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">, lpFilePart: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFullPathNameA</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">, lpFilePart: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7903,7 +8262,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFullPathNameW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCTSTR</span><span class="SyntaxCode">, nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, lpFilePart: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetFullPathNameW</span><span class="SyntaxCode">(lpFileName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCTSTR">LPCTSTR</a></span><span class="SyntaxCode">, nBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, lpFilePart: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7916,7 +8275,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetIconInfo</span><span class="SyntaxCode">(hIcon: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HICON</span><span class="SyntaxCode">, piconinfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetIconInfo</span><span class="SyntaxCode">(hIcon: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span><span class="SyntaxCode">, piconinfo: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7929,7 +8288,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetKeyboardState</span><span class="SyntaxCode">(lpKeystate: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetKeyboardState</span><span class="SyntaxCode">(lpKeystate: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7942,7 +8301,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetLastError</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetLastError</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7968,7 +8327,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMessageA</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMessageA</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7981,7 +8340,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMessageW</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMessageW</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -7994,7 +8353,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetModuleHandleA</span><span class="SyntaxCode">(lpModuleName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMODULE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetModuleHandleA</span><span class="SyntaxCode">(lpModuleName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8007,7 +8366,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetModuleHandleW</span><span class="SyntaxCode">(lpModuleName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMODULE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetModuleHandleW</span><span class="SyntaxCode">(lpModuleName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8020,7 +8379,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMonitorInfoA</span><span class="SyntaxCode">(hMonitor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMONITOR</span><span class="SyntaxCode">, lpmi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMonitorInfoA</span><span class="SyntaxCode">(hMonitor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span><span class="SyntaxCode">, lpmi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8033,7 +8392,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMonitorInfoW</span><span class="SyntaxCode">(hMonitor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMONITOR</span><span class="SyntaxCode">, lpmi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetMonitorInfoW</span><span class="SyntaxCode">(hMonitor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span><span class="SyntaxCode">, lpmi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8046,7 +8405,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetNextWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, wCmd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetNextWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, wCmd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8059,7 +8418,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetProcAddress</span><span class="SyntaxCode">(hModule: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMODULE</span><span class="SyntaxCode">, lpProcName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetProcAddress</span><span class="SyntaxCode">(hModule: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span><span class="SyntaxCode">, lpProcName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8072,7 +8431,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetStdHandle</span><span class="SyntaxCode">(nStdHandle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetStdHandle</span><span class="SyntaxCode">(nStdHandle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8124,7 +8483,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetTopWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetTopWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8137,7 +8496,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetVolumePathNamesForVolumeNameA</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpszVolumePathNames: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCH</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpcchReturnLength: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetVolumePathNamesForVolumeNameA</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpszVolumePathNames: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCH">LPCH</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpcchReturnLength: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8150,7 +8509,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetVolumePathNamesForVolumeNameW</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpszVolumePathNames: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWCH</span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpcchReturnLength: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetVolumePathNamesForVolumeNameW</span><span class="SyntaxCode">(lpszVolumeName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpszVolumePathNames: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWCH">LPWCH</a></span><span class="SyntaxCode">, cchBufferLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpcchReturnLength: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8163,7 +8522,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, uCmd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, uCmd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8176,7 +8535,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowLongPtrA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowLongPtrA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8189,7 +8548,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowLongPtrW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowLongPtrW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8202,7 +8561,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpRect: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpRect: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8215,7 +8574,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowTextA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">, nMaxCount: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowTextA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">, nMaxCount: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8228,7 +8587,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowTextW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, nMaxCount: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetWindowTextW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, nMaxCount: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8241,7 +8600,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalAlloc</span><span class="SyntaxCode">(uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, dwBytes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SIZE_T</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLOBAL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalAlloc</span><span class="SyntaxCode">(uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, dwBytes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8254,7 +8613,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalLock</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLOBAL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalLock</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8267,7 +8626,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalSize</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLOBAL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SIZE_T</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalSize</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8280,7 +8639,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalUnlock</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGLOBAL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GlobalUnlock</span><span class="SyntaxCode">(hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8309,27 +8668,27 @@
 <table class="enumeration">
 <tr>
 <td>fIcon</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>xHotspot</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>yHotspot</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hbmMask</td>
-<td>Win32.HBITMAP</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hbmColor</td>
-<td>Win32.HBITMAP</td>
+<td>const *void</td>
 <td></td>
 </tr>
 </table>
@@ -8352,7 +8711,7 @@
 </tr>
 <tr>
 <td>comboIndex</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8367,7 +8726,7 @@
 </tr>
 <tr>
 <td>addressLength</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8377,17 +8736,17 @@
 </tr>
 <tr>
 <td>index</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>type</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dhcpEnabled</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8412,7 +8771,7 @@
 </tr>
 <tr>
 <td>haveWins</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
@@ -8427,12 +8786,12 @@
 </tr>
 <tr>
 <td>leaseObtained</td>
-<td>Win32.time_t</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>leaseExpires</td>
-<td>Win32.time_t</td>
+<td>u64</td>
 <td></td>
 </tr>
 </table>
@@ -8483,7 +8842,7 @@
 </tr>
 <tr>
 <td>context</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -8498,7 +8857,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">InitializeSRWLock</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">InitializeSRWLock</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8511,7 +8870,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">InvalidateRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpRect: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, bErase: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">InvalidateRect</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpRect: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span><span class="SyntaxCode">, bErase: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8524,7 +8883,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsClipboardFormatAvailable</span><span class="SyntaxCode">(format: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsClipboardFormatAvailable</span><span class="SyntaxCode">(format: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8537,7 +8896,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsDebuggerPresent</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsDebuggerPresent</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8550,7 +8909,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsWindowVisible</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">IsWindowVisible</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8576,7 +8935,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LoadCursorA</span><span class="SyntaxCode">(hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HINSTANCE</span><span class="SyntaxCode">, lpCursorName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HCURSOR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LoadCursorA</span><span class="SyntaxCode">(hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span><span class="SyntaxCode">, lpCursorName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8589,7 +8948,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LoadCursorW</span><span class="SyntaxCode">(hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HINSTANCE</span><span class="SyntaxCode">, lpCursorName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HCURSOR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LoadCursorW</span><span class="SyntaxCode">(hInstance: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span><span class="SyntaxCode">, lpCursorName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8602,7 +8961,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LocalFree</span><span class="SyntaxCode">(hLocal: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HLOCAL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HLOCAL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">LocalFree</span><span class="SyntaxCode">(hLocal: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HLOCAL">HLOCAL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HLOCAL">HLOCAL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8641,7 +9000,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MAKELANGID</span><span class="SyntaxCode">(p: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WORD</span><span class="SyntaxCode">, s: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WORD</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MAKELANGID</span><span class="SyntaxCode">(p: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span><span class="SyntaxCode">, s: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -8695,7 +9054,7 @@
 <table class="enumeration">
 <tr>
 <td>cbSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8710,7 +9069,7 @@
 </tr>
 <tr>
 <td>dwFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -8728,27 +9087,27 @@
 <table class="enumeration">
 <tr>
 <td>hwnd</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>message</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wParam</td>
-<td>Win32.WPARAM</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>lParam</td>
-<td>Win32.LPARAM</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>time</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8758,7 +9117,7 @@
 </tr>
 <tr>
 <td>lPrivate</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -8773,7 +9132,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MapVirtualKeyA</span><span class="SyntaxCode">(uCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, uMapType: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MapVirtualKeyA</span><span class="SyntaxCode">(uCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, uMapType: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8786,7 +9145,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MapVirtualKeyW</span><span class="SyntaxCode">(uCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, uMapType: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MapVirtualKeyW</span><span class="SyntaxCode">(uCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, uMapType: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8799,7 +9158,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MessageBoxA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpText: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpCaption: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, uType: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MessageBoxA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpText: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, lpCaption: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, uType: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8812,7 +9171,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MessageBoxW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpText: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpCaption: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, uType: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MessageBoxW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpText: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, lpCaption: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, uType: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8825,7 +9184,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MonitorFromPoint</span><span class="SyntaxCode">(pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMONITOR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MonitorFromPoint</span><span class="SyntaxCode">(pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8838,7 +9197,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MonitorFromWindow</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HMONITOR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MonitorFromWindow</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8851,7 +9210,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MoveWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, bRepaint: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">MoveWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, nHeight: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, bRepaint: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -8867,32 +9226,32 @@
 <table class="enumeration">
 <tr>
 <td>cbSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hWnd</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>uID</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>uFlags</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>uCallbackMessage</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -8902,12 +9261,12 @@
 </tr>
 <tr>
 <td>dwState</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwStateMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8927,7 +9286,7 @@
 </tr>
 <tr>
 <td>dwInfoFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -8937,7 +9296,7 @@
 </tr>
 <tr>
 <td>hBalloonIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 </table>
@@ -8955,32 +9314,32 @@
 <table class="enumeration">
 <tr>
 <td>cbSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hWnd</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>uID</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>uFlags</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>uCallbackMessage</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -8990,12 +9349,12 @@
 </tr>
 <tr>
 <td>dwState</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwStateMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -9015,7 +9374,7 @@
 </tr>
 <tr>
 <td>dwInfoFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -9025,7 +9384,7 @@
 </tr>
 <tr>
 <td>hBalloonIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 </table>
@@ -9040,7 +9399,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OpenClipboard</span><span class="SyntaxCode">(hWndNewOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OpenClipboard</span><span class="SyntaxCode">(hWndNewOwner: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9053,7 +9412,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OutputDebugStringA</span><span class="SyntaxCode">(lpOutputString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OutputDebugStringA</span><span class="SyntaxCode">(lpOutputString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9066,7 +9425,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OutputDebugStringW</span><span class="SyntaxCode">(lpOutputString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">OutputDebugStringW</span><span class="SyntaxCode">(lpOutputString: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9082,12 +9441,12 @@
 <table class="enumeration">
 <tr>
 <td>hdc</td>
-<td>Win32.HDC</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>fErase</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
@@ -9097,12 +9456,12 @@
 </tr>
 <tr>
 <td>fRestore</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>fIncUpdate</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
@@ -9125,12 +9484,12 @@
 <table class="enumeration">
 <tr>
 <td>x</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>y</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 </table>
@@ -9148,22 +9507,22 @@
 <table class="enumeration">
 <tr>
 <td>hProcess</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hThread</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>dwProcessId</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwThreadId</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -9178,7 +9537,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PeekMessageA</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wRemoveMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PeekMessageA</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wRemoveMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9191,7 +9550,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PeekMessageW</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wRemoveMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PeekMessageW</span><span class="SyntaxCode">(lpMsg: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">, hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, wMsgFilterMin: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wMsgFilterMax: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wRemoveMsg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9204,7 +9563,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PostMessageA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, msg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WPARAM</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PostMessageA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, msg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9217,7 +9576,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PostMessageW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, msg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WPARAM</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">PostMessageW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, msg: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9243,7 +9602,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">QueryPerformanceCounter</span><span class="SyntaxCode">(lpPerformanceCount: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LARGE_INTEGER</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">QueryPerformanceCounter</span><span class="SyntaxCode">(lpPerformanceCount: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9256,7 +9615,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">QueryPerformanceFrequency</span><span class="SyntaxCode">(lpFrequency: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LARGE_INTEGER</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">QueryPerformanceFrequency</span><span class="SyntaxCode">(lpFrequency: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9272,22 +9631,22 @@
 <table class="enumeration">
 <tr>
 <td>left</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>top</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>right</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>bottom</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 </table>
@@ -9302,7 +9661,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReadFile</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">, nNumberOfBytesToRead: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpNumberOfBytesRead: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPDWORD</span><span class="SyntaxCode">, lpOverlapped: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPOVERLAPPED</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReadFile</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">, nNumberOfBytesToRead: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpNumberOfBytesRead: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span><span class="SyntaxCode">, lpOverlapped: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9315,7 +9674,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClassA</span><span class="SyntaxCode">(lpWndClass: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ATOM</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClassA</span><span class="SyntaxCode">(lpWndClass: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ATOM">ATOM</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9328,7 +9687,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClassW</span><span class="SyntaxCode">(lpWndClass: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">ATOM</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClassW</span><span class="SyntaxCode">(lpWndClass: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_ATOM">ATOM</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9341,7 +9700,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClipboardFormatA</span><span class="SyntaxCode">(name: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClipboardFormatA</span><span class="SyntaxCode">(name: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9354,7 +9713,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClipboardFormatW</span><span class="SyntaxCode">(name: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterClipboardFormatW</span><span class="SyntaxCode">(name: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9367,7 +9726,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterHotKey</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, id: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fsModifiers: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, vk: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">RegisterHotKey</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, id: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fsModifiers: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, vk: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9380,7 +9739,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseCapture</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseCapture</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9393,7 +9752,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseDC</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, hDC: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseDC</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, hDC: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9406,7 +9765,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseMutex</span><span class="SyntaxCode">(hMutex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseMutex</span><span class="SyntaxCode">(hMutex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9419,7 +9778,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9432,7 +9791,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ReleaseSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -9445,7 +9804,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ResetEvent</span><span class="SyntaxCode">(hEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ResetEvent</span><span class="SyntaxCode">(hEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9458,7 +9817,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ResumeThread</span><span class="SyntaxCode">(hThread: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ResumeThread</span><span class="SyntaxCode">(hThread: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9474,17 +9833,17 @@
 <table class="enumeration">
 <tr>
 <td>nLength</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpSecurityDescriptor</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 <tr>
 <td>bInheritHandle</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 </table>
@@ -9502,7 +9861,7 @@
 <table class="enumeration">
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -9512,7 +9871,7 @@
 </tr>
 <tr>
 <td>dwAttributes</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -9540,7 +9899,7 @@
 <table class="enumeration">
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -9550,7 +9909,7 @@
 </tr>
 <tr>
 <td>dwAttributes</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -9575,7 +9934,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetFileInfoA</span><span class="SyntaxCode">(pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, dwFileAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, psfi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span><span class="SyntaxCode">, cbFileInfo: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD_PTR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetFileInfoA</span><span class="SyntaxCode">(pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, dwFileAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, psfi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span><span class="SyntaxCode">, cbFileInfo: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9588,7 +9947,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetFileInfoW</span><span class="SyntaxCode">(pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, dwFileAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, psfi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span><span class="SyntaxCode">, cbFileInfo: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD_PTR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetFileInfoW</span><span class="SyntaxCode">(pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">, dwFileAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, psfi: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span><span class="SyntaxCode">, cbFileInfo: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9601,7 +9960,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetSpecialFolderPathA</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPSTR</span><span class="SyntaxCode">, csidl: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fCreate: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetSpecialFolderPathA</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span><span class="SyntaxCode">, csidl: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fCreate: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9614,7 +9973,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetSpecialFolderPathW</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, csidl: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fCreate: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetSpecialFolderPathW</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, pszPath: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, csidl: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, fCreate: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9627,7 +9986,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetStockIconInfo</span><span class="SyntaxCode">(siid: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, psii: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SHGetStockIconInfo</span><span class="SyntaxCode">(siid: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, psii: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10032,12 +10391,12 @@
 <table class="enumeration">
 <tr>
 <td>cbSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -10070,22 +10429,22 @@
 <table class="enumeration">
 <tr>
 <td>left</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>top</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>right</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>bottom</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -10103,92 +10462,92 @@
 <table class="enumeration">
 <tr>
 <td>cb</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpReserved</td>
-<td>Win32.LPSTR</td>
+<td>^Win32.CHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>lpDesktop</td>
-<td>Win32.LPSTR</td>
+<td>^Win32.CHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>lpTitle</td>
-<td>Win32.LPSTR</td>
+<td>^Win32.CHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>dwX</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwXSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwYSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwXCountChars</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwYCountChars</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwFillAttribute</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wShowWindow</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>cbReserved2</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>lpReserved2</td>
-<td>Win32.LPBYTE</td>
+<td>*Win32.BYTE</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdInput</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdOutput</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdError</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 </table>
@@ -10206,92 +10565,92 @@
 <table class="enumeration">
 <tr>
 <td>cb</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpReserved</td>
-<td>Win32.LPWSTR</td>
+<td>^Win32.WCHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>lpDesktop</td>
-<td>Win32.LPWSTR</td>
+<td>^Win32.WCHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>lpTitle</td>
-<td>Win32.LPWSTR</td>
+<td>^Win32.WCHAR</td>
 <td></td>
 </tr>
 <tr>
 <td>dwX</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwXSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwYSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwXCountChars</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwYCountChars</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwFillAttribute</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wShowWindow</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>cbReserved2</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>lpReserved2</td>
-<td>Win32.LPBYTE</td>
+<td>*Win32.BYTE</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdInput</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdOutput</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 <tr>
 <td>hStdError</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 </table>
@@ -10309,42 +10668,42 @@
 <table class="enumeration">
 <tr>
 <td>wYear</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wMonth</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wDayOfWeek</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wDay</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wHour</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wMinute</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wSecond</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wMilliseconds</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -10362,52 +10721,52 @@
 <table class="enumeration">
 <tr>
 <td>dwOemId</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>Must be updated to an union. </td>
 </tr>
 <tr>
 <td>dwPageSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>lpMinimumApplicationAddress</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 <tr>
 <td>lpMaximumApplicationAddress</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 <tr>
 <td>dwActiveProcessorMask</td>
-<td>Win32.DWORD_PTR</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>dwNumberOfProcessors</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwProcessorType</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwAllocationGranularity</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wProcessorLevel</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wProcessorRevision</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -10422,7 +10781,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ScreenToClient</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ScreenToClient</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, lpPoint: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10435,7 +10794,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetActiveWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetActiveWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10448,7 +10807,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCapture</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCapture</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10461,7 +10820,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetClipboardData</span><span class="SyntaxCode">(uFormat: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetClipboardData</span><span class="SyntaxCode">(uFormat: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, hMem: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10474,7 +10833,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleActiveScreenBuffer</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleActiveScreenBuffer</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10487,7 +10846,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleOutputCP</span><span class="SyntaxCode">(codePage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleOutputCP</span><span class="SyntaxCode">(codePage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10500,7 +10859,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleTextAttribute</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, wAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">WORD</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetConsoleTextAttribute</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, wAttributes: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10513,7 +10872,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCurrentDirectoryA</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCurrentDirectoryA</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10526,7 +10885,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCurrentDirectoryW</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCurrentDirectoryW</span><span class="SyntaxCode">(lpPathName: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10539,7 +10898,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCursor</span><span class="SyntaxCode">(hCursor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HCURSOR</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HCURSOR</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetCursor</span><span class="SyntaxCode">(hCursor: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10565,7 +10924,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetEvent</span><span class="SyntaxCode">(hEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetEvent</span><span class="SyntaxCode">(hEvent: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10578,7 +10937,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFilePointer</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lDistanceToMove: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode">, lpDistanceToMoveHigh: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">PLONG</span><span class="SyntaxCode">, dwMoveMethod: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFilePointer</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lDistanceToMove: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode">, lpDistanceToMoveHigh: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_PLONG">PLONG</a></span><span class="SyntaxCode">, dwMoveMethod: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10591,7 +10950,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFileTime</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpCreationTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLastAccessTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLastWriteTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFileTime</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpCreationTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLastAccessTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">, lpLastWriteTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10604,7 +10963,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFocus</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetFocus</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10617,7 +10976,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetLayeredWindowAttributes</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, crKey: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">COLORREF</span><span class="SyntaxCode">, bAlpha: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BYTE</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetLayeredWindowAttributes</span><span class="SyntaxCode">(hwnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, crKey: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_COLORREF">COLORREF</a></span><span class="SyntaxCode">, bAlpha: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10630,7 +10989,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetThreadPriority</span><span class="SyntaxCode">(hThread: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, nPriority: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetThreadPriority</span><span class="SyntaxCode">(hThread: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, nPriority: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10643,7 +11002,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWaitableTimer</span><span class="SyntaxCode">(hTimer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpDueTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LARGE_INTEGER</span><span class="SyntaxCode">, lPeriod: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode">, pfnCompletionRoutine: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, lpArgToCompletionRoutine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPVOID</span><span class="SyntaxCode">, fResume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWaitableTimer</span><span class="SyntaxCode">(hTimer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpDueTime: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span><span class="SyntaxCode">, lPeriod: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode">, pfnCompletionRoutine: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, lpArgToCompletionRoutine: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span><span class="SyntaxCode">, fResume: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10656,7 +11015,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowLongPtrA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, dwNewLong: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowLongPtrA</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, dwNewLong: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10669,7 +11028,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowLongPtrW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, dwNewLong: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LONG</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowLongPtrW</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, nIndex: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, dwNewLong: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10682,7 +11041,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowPos</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, hWndInsertAfter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cy: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SetWindowPos</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, hWndInsertAfter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, x: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cx: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cy: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, uFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10695,7 +11054,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Shell_NotifyIconA</span><span class="SyntaxCode">(dwMessage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Shell_NotifyIconA</span><span class="SyntaxCode">(dwMessage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10708,7 +11067,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Shell_NotifyIconW</span><span class="SyntaxCode">(dwMessage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Shell_NotifyIconW</span><span class="SyntaxCode">(dwMessage: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpData: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10721,7 +11080,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ShowCursor</span><span class="SyntaxCode">(show: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ShowCursor</span><span class="SyntaxCode">(show: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10734,7 +11093,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ShowWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, nCmdShow: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ShowWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, nCmdShow: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10747,7 +11106,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Sleep</span><span class="SyntaxCode">(dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">Sleep</span><span class="SyntaxCode">(dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10760,7 +11119,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SleepEx</span><span class="SyntaxCode">(dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, bAltertable: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SleepEx</span><span class="SyntaxCode">(dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, bAltertable: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -10773,7 +11132,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SwitchToThread</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SwitchToThread</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10799,7 +11158,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ToUnicode</span><span class="SyntaxCode">(wVirtKey: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, wScanCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">, lpKeyState: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BYTE</span><span class="SyntaxCode">, pwszBuff: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPWSTR</span><span class="SyntaxCode">, cchBuff: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, wFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">ToUnicode</span><span class="SyntaxCode">(wVirtKey: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, wScanCode: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">, lpKeyState: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span><span class="SyntaxCode">, pwszBuff: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span><span class="SyntaxCode">, cchBuff: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, wFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10812,7 +11171,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TranslateMessage</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TranslateMessage</span><span class="SyntaxCode">(lpMsg: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10825,7 +11184,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TryAcquireSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TryAcquireSRWLockExclusive</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10838,7 +11197,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TryAcquireSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">SRWLOCK</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">TryAcquireSRWLockShared</span><span class="SyntaxCode">(</span><span class="SyntaxConstant">SRWLock</span><span class="SyntaxCode">: *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10851,7 +11210,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">UnregisterHotKey</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">, id: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">UnregisterHotKey</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">, id: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10864,7 +11223,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">UpdateWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">UpdateWindow</span><span class="SyntaxCode">(hWnd: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -10880,7 +11239,7 @@
 <table class="enumeration">
 <tr>
 <td>dwFileAttributes</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -10900,12 +11259,12 @@
 </tr>
 <tr>
 <td>nFileSizeHigh</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>nFileSizeLow</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -10923,7 +11282,7 @@
 <table class="enumeration">
 <tr>
 <td>dwFileAttributes</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -10943,22 +11302,22 @@
 </tr>
 <tr>
 <td>nFileSizeHigh</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>nFileSizeLow</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwReserved0</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwReserved1</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -10973,17 +11332,17 @@
 </tr>
 <tr>
 <td>dwFileType</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwCreatorType</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wFinderFlags</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -11001,7 +11360,7 @@
 <table class="enumeration">
 <tr>
 <td>dwFileAttributes</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -11021,22 +11380,22 @@
 </tr>
 <tr>
 <td>nFileSizeHigh</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>nFileSizeLow</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwReserved0</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwReserved1</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -11051,17 +11410,17 @@
 </tr>
 <tr>
 <td>dwFileType</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwCreatorType</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>wFinderFlags</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -11079,12 +11438,12 @@
 <table class="enumeration">
 <tr>
 <td>hwnd</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hwndInsertAfter</td>
-<td>Win32.HWND</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -11109,7 +11468,7 @@
 </tr>
 <tr>
 <td>flags</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -11127,7 +11486,7 @@
 <table class="enumeration">
 <tr>
 <td>style</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -11147,32 +11506,32 @@
 </tr>
 <tr>
 <td>hInstance</td>
-<td>Win32.HINSTANCE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
 <td></td>
 </tr>
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hCursor</td>
-<td>Win32.HCURSOR</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hbrBackground</td>
-<td>Win32.HBRUSH</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszMenuName</td>
-<td>Win32.LPCSTR</td>
+<td>const ^u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClassName</td>
-<td>Win32.LPCSTR</td>
+<td>const ^u8</td>
 <td></td>
 </tr>
 </table>
@@ -11190,7 +11549,7 @@
 <table class="enumeration">
 <tr>
 <td>style</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -11210,32 +11569,32 @@
 </tr>
 <tr>
 <td>hInstance</td>
-<td>Win32.HINSTANCE</td>
+<td><a href="#Win32_HANDLE">Win32.HANDLE</a></td>
 <td></td>
 </tr>
 <tr>
 <td>hIcon</td>
-<td>Win32.HICON</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hCursor</td>
-<td>Win32.HCURSOR</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>hbrBackground</td>
-<td>Win32.HBRUSH</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszMenuName</td>
-<td>Win32.LPCWSTR</td>
+<td>const ^u16</td>
 <td></td>
 </tr>
 <tr>
 <td>lpszClassName</td>
-<td>Win32.LPCWSTR</td>
+<td>const ^u16</td>
 <td></td>
 </tr>
 </table>
@@ -11250,7 +11609,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WaitForMultipleObjects</span><span class="SyntaxCode">(nCount: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpHandles: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, bWaitAll: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode">, dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WaitForMultipleObjects</span><span class="SyntaxCode">(nCount: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpHandles: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, bWaitAll: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode">, dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11263,7 +11622,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WaitForSingleObject</span><span class="SyntaxCode">(hHandle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WaitForSingleObject</span><span class="SyntaxCode">(hHandle: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, dwMilliseconds: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11276,7 +11635,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WindowFromPoint</span><span class="SyntaxCode">(pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HWND</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WindowFromPoint</span><span class="SyntaxCode">(pt: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11289,7 +11648,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteConsoleOutputCharacterA</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpCharacter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, nLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwWriteCoord: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpNumberOfCharsWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPDWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteConsoleOutputCharacterA</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpCharacter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span><span class="SyntaxCode">, nLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwWriteCoord: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpNumberOfCharsWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11302,7 +11661,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteConsoleOutputCharacterW</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpCharacter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCTSTR</span><span class="SyntaxCode">, nLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, dwWriteCoord: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpNumberOfCharsWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPDWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteConsoleOutputCharacterW</span><span class="SyntaxCode">(hConsoleOutput: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpCharacter: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCTSTR">LPCTSTR</a></span><span class="SyntaxCode">, nLength: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, dwWriteCoord: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpNumberOfCharsWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11315,7 +11674,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteFile</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HANDLE</span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCVOID</span><span class="SyntaxCode">, nNumberOfBytesToWrite: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, lpNumberOfBytesWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPDWORD</span><span class="SyntaxCode">, lpOverlapped: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPOVERLAPPED</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">BOOL</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">WriteFile</span><span class="SyntaxCode">(hFile: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span><span class="SyntaxCode">, lpBuffer: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPCVOID">LPCVOID</a></span><span class="SyntaxCode">, nNumberOfBytesToWrite: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span><span class="SyntaxCode">, lpNumberOfBytesWritten: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span><span class="SyntaxCode">, lpOverlapped: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">

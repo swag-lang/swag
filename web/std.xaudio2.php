@@ -319,6 +319,15 @@
 <li><a href="#XAudio2_XAUDIO2_VOICE_NOSRC">XAUDIO2_VOICE_NOSRC</a></li>
 <li><a href="#XAudio2_XAUDIO2_VOICE_USEFILTER">XAUDIO2_VOICE_USEFILTER</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4></h4>
+<ul>
+<li><a href="#XAudio2_FLOAT32">FLOAT32</a></li>
+<li><a href="#XAudio2_UINT32">UINT32</a></li>
+<li><a href="#XAudio2_UINT64">UINT64</a></li>
+<li><a href="#XAudio2_X3DAUDIO_HANDLE">X3DAUDIO_HANDLE</a></li>
+<li><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></li>
+</ul>
 <h3>Functions</h3>
 <h4></h4>
 <ul>
@@ -735,6 +744,44 @@
 <td id="XAudio2_XAUDIO2_VOICE_USEFILTER">XAUDIO2_VOICE_USEFILTER</td>
 <td>u32</td>
 <td>Used in IXAudio2::CreateSource/SubmixVoice. </td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
+<span class="content" id="XAudio2_FLOAT32"><span class="titletype">type alias</span> <span class="titlelight">XAudio2.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xaudio2\src\xaudio2.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="XAudio2_FLOAT32">FLOAT32</td>
+<td>f32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_UINT32">UINT32</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_UINT64">UINT64</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_X3DAUDIO_HANDLE">X3DAUDIO_HANDLE</td>
+<td>[20] Win32.BYTE</td>
+<td></td>
+</tr>
+<tr>
+<td id="XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</td>
+<td><a href="#XAudio2_UINT32">XAudio2.UINT32</a></td>
+<td></td>
 </tr>
 </table>
 <p>
@@ -1309,37 +1356,37 @@
 <table class="enumeration">
 <tr>
 <td>wFormatTag</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>nChannels</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>nSamplesPerSec</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>nAvgBytesPerSec</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>nBlockAlign</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>wBitsPerSample</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>cbSize</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 </table>
@@ -1367,7 +1414,7 @@
 </tr>
 <tr>
 <td>dwChannelMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -1387,7 +1434,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X3DAudioInitialize</span><span class="SyntaxCode">(speakerChannelMask: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, speedOfSound: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FLOAT32</span><span class="SyntaxCode">, instance: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">X3DAUDIO_HANDLE</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">X3DAudioInitialize</span><span class="SyntaxCode">(speakerChannelMask: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_UINT32">UINT32</a></span><span class="SyntaxCode">, speedOfSound: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_FLOAT32">FLOAT32</a></span><span class="SyntaxCode">, instance: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_X3DAUDIO_HANDLE">X3DAUDIO_HANDLE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1403,12 +1450,12 @@
 <table class="enumeration">
 <tr>
 <td>flags</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>Either 0 or XAUDIO2_END_OF_STREAM. </td>
 </tr>
 <tr>
 <td>audioBytes</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>Size of the audio data buffer in bytes. </td>
 </tr>
 <tr>
@@ -1418,27 +1465,27 @@
 </tr>
 <tr>
 <td>playBegin</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>First sample in this buffer to be played. </td>
 </tr>
 <tr>
 <td>playLength</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>Length of the region to be played in samples, or 0 to play the whole buffer. </td>
 </tr>
 <tr>
 <td>loopBegin</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>First sample of the region to be looped. </td>
 </tr>
 <tr>
 <td>loopLength</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>Length of the desired loop region in samples, or 0 to loop the entire buffer. </td>
 </tr>
 <tr>
 <td>loopCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </td>
 </tr>
 <tr>
@@ -1466,7 +1513,7 @@
 </tr>
 <tr>
 <td>PacketCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1484,32 +1531,32 @@
 <table class="enumeration">
 <tr>
 <td>traceMask</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>breakMask</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>logThreadID</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>logFileline</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>logFunctionName</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>logTiming</td>
-<td>Win32.BOOL</td>
+<td>s32</td>
 <td></td>
 </tr>
 </table>
@@ -1604,72 +1651,72 @@
 <table class="enumeration">
 <tr>
 <td>AudioCyclesSinceLastQuery</td>
-<td>XAudio2.UINT64</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>TotalCyclesSinceLastQuery</td>
-<td>XAudio2.UINT64</td>
+<td>u64</td>
 <td></td>
 </tr>
 <tr>
 <td>MinimumCyclesPerQuantum</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>MaximumCyclesPerQuantum</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>MemoryUsageInBytes</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>CurrentLatencyInSamples</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>GlitchesSinceEngineStarted</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveSourceVoiceCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>TotalSourceVoiceCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveSubmixVoiceCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveResamplerCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveMatrixMixCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveXmaSourceVoices</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ActiveXmaStreams</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1687,7 +1734,7 @@
 <table class="enumeration">
 <tr>
 <td>flags</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -1710,22 +1757,22 @@
 <table class="enumeration">
 <tr>
 <td>creationFlags</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>activeFlags</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>inputChannels</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>inputSampleRate</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1743,7 +1790,7 @@
 <table class="enumeration">
 <tr>
 <td>sendCount</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
@@ -1771,12 +1818,12 @@
 </tr>
 <tr>
 <td>buffersQueued</td>
-<td>XAudio2.UINT32</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>samplesPlayed</td>
-<td>XAudio2.UINT64</td>
+<td>u64</td>
 <td></td>
 </tr>
 </table>
@@ -1791,7 +1838,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XAudio2Create</span><span class="SyntaxCode">(ppXAudio2: **</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_IXAudio2">IXAudio2</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">UINT32</span><span class="SyntaxCode">, processor: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">XAUDIO2_PROCESSOR</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XAudio2Create</span><span class="SyntaxCode">(ppXAudio2: **</span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_IXAudio2">IXAudio2</a></span><span class="SyntaxCode">, flags: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_UINT32">UINT32</a></span><span class="SyntaxCode">, processor: </span><span class="SyntaxConstant">XAudio2</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HRESULT</span><span class="SyntaxCode"></code>
 </div>
 </div>
 </div>

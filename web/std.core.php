@@ -498,6 +498,33 @@
 <li><a href="#Core_Time_TicksPerMinute">TicksPerMinute</a></li>
 <li><a href="#Core_Time_TicksPerSecond">TicksPerSecond</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4>input</h4>
+<ul>
+<li><a href="#Core_Input_VirtualKey">VirtualKey</a></li>
+</ul>
+<h4>io</h4>
+<ul>
+<li><a href="#Core_File_FileHandle">FileHandle</a></li>
+</ul>
+<h4>math</h4>
+<ul>
+<li><a href="#Core_Math_ConstF32">ConstF32</a></li>
+<li><a href="#Core_Math_ConstF64">ConstF64</a></li>
+</ul>
+<h4>system</h4>
+<ul>
+<li><a href="#Core_Env_ProcessHandle">ProcessHandle</a></li>
+</ul>
+<h4>thread</h4>
+<ul>
+<li><a href="#Core_Threading_ThreadHandle">ThreadHandle</a></li>
+</ul>
+<h4>time</h4>
+<ul>
+<li><a href="#Core_Time_Ticks">Ticks</a></li>
+<li><a href="#Core_Time_TimerHandle">TimerHandle</a></li>
+</ul>
 <h3>Attributes</h3>
 <h4>serialization</h4>
 <ul>
@@ -1912,6 +1939,59 @@
 <tr>
 <td id="Core_WINDOWS">WINDOWS</td>
 <td>bool</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
+<span class="content" id="Core_Env_ProcessHandle"><span class="titletype">type alias</span> <span class="titlelight">Env.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\process.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Core_Env_ProcessHandle">ProcessHandle</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_File_FileHandle">FileHandle</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Input_VirtualKey">VirtualKey</td>
+<td>u32</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Math_ConstF32">ConstF32</td>
+<td>Core.Math.Const'(f32)</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Math_ConstF64">ConstF64</td>
+<td>Core.Math.Const'(f64)</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Threading_ThreadHandle">ThreadHandle</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Time_Ticks">Ticks</td>
+<td>u64</td>
+<td></td>
+</tr>
+<tr>
+<td id="Core_Time_TimerHandle">TimerHandle</td>
+<td>const *void</td>
 <td></td>
 </tr>
 </table>
@@ -5429,7 +5509,7 @@
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Core.Env.ProcessHandle</td>
+<td>const *void</td>
 <td></td>
 </tr>
 </table>
@@ -5903,7 +5983,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td>Core.File.FileHandle</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -9278,7 +9358,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyToVirtualKey</span><span class="SyntaxCode">(key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">VirtualKey</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">keyToVirtualKey</span><span class="SyntaxCode">(key: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_VirtualKey">VirtualKey</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -9305,7 +9385,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">virtualKeyToKey</span><span class="SyntaxCode">(vkey: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">VirtualKey</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">virtualKeyToKey</span><span class="SyntaxCode">(vkey: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_VirtualKey">VirtualKey</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Input</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Input_Key">Key</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11482,7 +11562,7 @@
 </table>
 </p>
 <p>Check if two points are equal with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Point">Point</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -11510,7 +11590,7 @@
 </table>
 </p>
 <p>Check for zero with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12027,7 +12107,7 @@
 </table>
 </p>
 <p>Returns true if this instance has a surface of zero (width and height are null). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmptyEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEmptyEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -12069,7 +12149,7 @@
 </table>
 </p>
 <p>Returns true if this instance is null with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13020,7 +13100,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13076,7 +13156,7 @@
 </table>
 </p>
 <p>Returns true if this vector is null with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13132,7 +13212,7 @@
 </table>
 </p>
 <p>Compute the intersection point of two lines. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lineLineIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">lineLineIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
 	yes: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 	pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">
@@ -13354,7 +13434,7 @@
 </table>
 </p>
 <p>Compute the intersection point of two segments. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">segSegIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">segSegIntersect</span><span class="SyntaxCode">(start0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end0: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, start1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, end1: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">, epsilon: </span><span class="SyntaxType">f32</span><span class="SyntaxCode"> = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
 	yes: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">
 	pos: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector2">Vector2</a></span><span class="SyntaxCode">
@@ -13640,7 +13720,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, other: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Math</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Math_Vector3">Vector3</a></span><span class="SyntaxCode">, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -13668,7 +13748,7 @@
 </table>
 </p>
 <p>Returns true if this vector is null with an epsilon. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> self, eps = </span><span class="SyntaxKeyword">cast</span><span class="SyntaxCode">(</span><span class="SyntaxType">f32</span><span class="SyntaxCode">) </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -14292,8 +14372,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isEqualEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, y: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -14333,8 +14413,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant">ConstF64</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)</code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF32">ConstF32</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)
+</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">isZeroEpsilon</span><span class="SyntaxCode">(x: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, eps = </span><span class="SyntaxConstant"><a href="#Core_Math_ConstF64">ConstF64</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Epsilon</span><span class="SyntaxCode">)</code>
 </div>
 <p>
 <table class="item">
@@ -22628,7 +22708,7 @@
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Win32.HANDLE</td>
+<td>const ^void</td>
 <td></td>
 </tr>
 </table>
@@ -22775,7 +22855,7 @@
 <table class="enumeration">
 <tr>
 <td>v</td>
-<td>Win32.SRWLOCK</td>
+<td>*void</td>
 <td></td>
 </tr>
 </table>
@@ -22850,7 +22930,7 @@
 <table class="enumeration">
 <tr>
 <td>v</td>
-<td>Win32.SRWLOCK</td>
+<td>*void</td>
 <td></td>
 </tr>
 </table>
@@ -23076,7 +23156,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td>Core.Threading.ThreadHandle</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -24028,7 +24108,7 @@
 <table class="enumeration">
 <tr>
 <td>ticks</td>
-<td>Core.Time.Ticks</td>
+<td>u64</td>
 <td></td>
 </tr>
 </table>
@@ -24357,7 +24437,7 @@
 </tr>
 <tr>
 <td>handle</td>
-<td>Core.Time.TimerHandle</td>
+<td>const *void</td>
 <td></td>
 </tr>
 <tr>
@@ -24435,7 +24515,7 @@
 </table>
 </p>
 <p>Convert a date to a 64 bits value. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dateToTicks</span><span class="SyntaxCode">(year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, day: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">dateToTicks</span><span class="SyntaxCode">(year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, day: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Ticks">Ticks</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -24533,7 +24613,7 @@
 </table>
 </p>
 <p>Convert a 64 bits value to a date. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToDate</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToDate</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Ticks">Ticks</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
 	year: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 	month: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">
@@ -24552,7 +24632,7 @@
 </table>
 </p>
 <p>Convert a 64 bits tick value to a time. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToTime</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">ticksToTime</span><span class="SyntaxCode">(ticks: </span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Ticks">Ticks</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">struct</span><span class="SyntaxCode">
 { 
 	hour: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">
 	minute: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">
@@ -24572,7 +24652,7 @@
 </table>
 </p>
 <p>Convert a time to a 64 bits value. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">timeToTicks</span><span class="SyntaxCode">(hour: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, minute: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, second: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, millisecond: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Ticks</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">timeToTicks</span><span class="SyntaxCode">(hour: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, minute: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, second: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, millisecond: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Core</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">Time</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Core_Time_Ticks">Ticks</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">

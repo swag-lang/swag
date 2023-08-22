@@ -25,12 +25,14 @@ static int sortOrder(AstNodeKind kind)
         return 3;
     case AstNodeKind::ConstDecl:
         return 4;
-    case AstNodeKind::FuncDecl:
+    case AstNodeKind::TypeAlias:
         return 5;
-    case AstNodeKind::AttrDecl:
+    case AstNodeKind::FuncDecl:
         return 6;
-    default:
+    case AstNodeKind::AttrDecl:
         return 7;
+    default:
+        return 8;
     }
 }
 
@@ -56,6 +58,7 @@ static bool canCollectNode(AstNode* node)
     case AstNodeKind::EnumDecl:
     case AstNodeKind::ConstDecl:
     case AstNodeKind::AttrDecl:
+    case AstNodeKind::TypeAlias:
         break;
     default:
         return false;
@@ -226,6 +229,9 @@ void GenDoc::outputTitle(OneRef& c)
     case AstNodeKind::ConstDecl:
         name = "const";
         break;
+    case AstNodeKind::TypeAlias:
+        name = "type alias";
+        break;
     default:
         SWAG_ASSERT(false);
         break;
@@ -253,6 +259,8 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += "<span class=\"titlestrong\">";
     if (c.nodes[0]->kind == AstNodeKind::ConstDecl)
         helpContent += "Constants";
+    else if (c.nodes[0]->kind == AstNodeKind::TypeAlias)
+        helpContent += "Type Aliases";
     else
         helpContent += tkn.back();
     helpContent += "</span>";
@@ -300,15 +308,24 @@ Utf8 GenDoc::getOutputNode(AstNode* node)
 
 void GenDoc::outputType(AstNode* node)
 {
-    if (node->typeInfo)
+    auto typeInfo = node->typeInfo;
+    if (typeInfo && typeInfo->kind == TypeInfoKind::Alias)
+        typeInfo = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias)->rawType;
+
+    if (typeInfo)
     {
-        node->typeInfo->computeScopedNameExport();
-        helpContent += getReference(node->typeInfo->scopedNameExport);
+        typeInfo->computeScopedNameExport();
+        helpContent += getReference(typeInfo->scopedNameExport);
     }
     else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
     {
         auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         helpContent += getReference(getOutputNode(varDecl->type));
+    }
+    else if (node->kind == AstNodeKind::TypeAlias)
+    {
+        auto typeDecl = CastAst<AstAlias>(node, AstNodeKind::TypeAlias);
+        helpContent += getReference(getOutputNode(typeDecl->childs.front()));
     }
 }
 
@@ -342,15 +359,15 @@ void GenDoc::collectScopes(Scope* root)
         collectNode(root->owner);
 
     for (auto c : root->childScopes)
-    {
         collectScopes(c);
-    }
 
     if (root->kind == ScopeKind::Namespace)
     {
         for (auto s : root->symTable.allSymbols)
         {
-            if (s->kind == SymbolKind::Variable && !s->nodes.empty())
+            if (s->nodes.empty())
+                continue;
+            if (s->kind == SymbolKind::Variable || s->kind == SymbolKind::TypeAlias)
                 collectNode(s->nodes[0]);
         }
     }
@@ -475,6 +492,7 @@ void GenDoc::generateToc()
     generateTocSection(AstNodeKind::InterfaceDecl, "Interfaces");
     generateTocSection(AstNodeKind::EnumDecl, "Enums");
     generateTocSection(AstNodeKind::ConstDecl, "Constants");
+    generateTocSection(AstNodeKind::TypeAlias, "Type Aliases");
     generateTocSection(AstNodeKind::AttrDecl, "Attributes");
     generateTocSection(AstNodeKind::FuncDecl, "Functions");
 }
@@ -495,6 +513,10 @@ void GenDoc::generateContent()
             if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
                 return true;
             if (a.nodes[0]->kind != AstNodeKind::ConstDecl && b.nodes[0]->kind == AstNodeKind::ConstDecl)
+                return false;
+            if (a.nodes[0]->kind == AstNodeKind::TypeAlias && b.nodes[0]->kind != AstNodeKind::TypeAlias)
+                return true;
+            if (a.nodes[0]->kind != AstNodeKind::TypeAlias && b.nodes[0]->kind == AstNodeKind::TypeAlias)
                 return false;
             return strcmp(a.fullName.buffer, b.fullName.buffer) < 0; });
 
@@ -558,6 +580,47 @@ void GenDoc::generateContent()
                 helpContent += "<td>";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 outputType(varDecl);
+                helpContent += "</td>\n";
+
+                helpContent += "<td>";
+                UserComment subUserComment;
+                auto        subDocComment = getDocComment(n);
+                computeUserComments(subUserComment, subDocComment);
+                outputUserBlock(subUserComment.shortDesc, 1, true);
+                helpContent += "</td>\n";
+
+                helpContent += "</tr>\n";
+            }
+
+            helpContent += "</table>\n";
+            break;
+        }
+
+        case AstNodeKind::TypeAlias:
+        {
+            outputTitle(c);
+
+            helpContent += "<table class=\"enumeration\">\n";
+
+            for (int j = i; j < allNodes.size(); j++)
+            {
+                auto& c1 = allNodes[j];
+                auto  n  = c1.nodes[0];
+                if (n->kind != AstNodeKind::TypeAlias)
+                {
+                    i = j - 1;
+                    break;
+                }
+
+                helpContent += "<tr>\n";
+
+                helpContent += Fmt("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                helpContent += n->token.ctext();
+                helpContent += "</td>\n";
+
+                helpContent += "<td>";
+                auto typeDecl = CastAst<AstAlias>(n, AstNodeKind::TypeAlias);
+                outputType(typeDecl);
                 helpContent += "</td>\n";
 
                 helpContent += "<td>";

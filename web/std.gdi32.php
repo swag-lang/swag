@@ -342,6 +342,15 @@
 <li><a href="#Gdi32_WHITE_BRUSH">WHITE_BRUSH</a></li>
 <li><a href="#Gdi32_WHITE_PEN">WHITE_PEN</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4></h4>
+<ul>
+<li><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></li>
+<li><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></li>
+<li><a href="#Gdi32_HFONT">HFONT</a></li>
+<li><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></li>
+<li><a href="#Gdi32_HPEN">HPEN</a></li>
+</ul>
 <h3>Functions</h3>
 <h4></h4>
 <ul>
@@ -465,7 +474,7 @@
 </tr>
 <tr>
 <td id="Gdi32_BLACKNESS">BLACKNESS</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = BLACK. </td>
 </tr>
 <tr>
@@ -480,7 +489,7 @@
 </tr>
 <tr>
 <td id="Gdi32_CAPTUREBLT">CAPTUREBLT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>Include layered windows. </td>
 </tr>
 <tr>
@@ -525,7 +534,7 @@
 </tr>
 <tr>
 <td id="Gdi32_DSTINVERT">DSTINVERT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = (NOT dest). </td>
 </tr>
 <tr>
@@ -675,27 +684,27 @@
 </tr>
 <tr>
 <td id="Gdi32_MERGECOPY">MERGECOPY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = (source AND pattern). </td>
 </tr>
 <tr>
 <td id="Gdi32_MERGEPAINT">MERGEPAINT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = (NOT source) OR dest. </td>
 </tr>
 <tr>
 <td id="Gdi32_NOMIRRORBITMAP">NOMIRRORBITMAP</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>Do not Mirror the bitmap in this call. </td>
 </tr>
 <tr>
 <td id="Gdi32_NOTSRCCOPY">NOTSRCCOPY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = (NOT source). </td>
 </tr>
 <tr>
 <td id="Gdi32_NOTSRCERASE">NOTSRCERASE</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = (NOT src) AND (NOT dest). </td>
 </tr>
 <tr>
@@ -725,17 +734,17 @@
 </tr>
 <tr>
 <td id="Gdi32_PATCOPY">PATCOPY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = pattern. </td>
 </tr>
 <tr>
 <td id="Gdi32_PATINVERT">PATINVERT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = pattern XOR dest. </td>
 </tr>
 <tr>
 <td id="Gdi32_PATPAINT">PATPAINT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = DPSnoo. </td>
 </tr>
 <tr>
@@ -925,27 +934,27 @@
 </tr>
 <tr>
 <td id="Gdi32_SRCAND">SRCAND</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = source AND dest. </td>
 </tr>
 <tr>
 <td id="Gdi32_SRCCOPY">SRCCOPY</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = source. </td>
 </tr>
 <tr>
 <td id="Gdi32_SRCERASE">SRCERASE</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = source AND (NOT dest ). </td>
 </tr>
 <tr>
 <td id="Gdi32_SRCINVERT">SRCINVERT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = source XOR dest. </td>
 </tr>
 <tr>
 <td id="Gdi32_SRCPAINT">SRCPAINT</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = source OR dest. </td>
 </tr>
 <tr>
@@ -990,7 +999,7 @@
 </tr>
 <tr>
 <td id="Gdi32_WHITENESS">WHITENESS</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td>dest = WHITE. </td>
 </tr>
 <tr>
@@ -1008,6 +1017,44 @@
 <table class="item">
 <tr>
 <td class="item">
+<span class="content" id="Gdi32_FONTENUMPROCA"><span class="titletype">type alias</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gdi32\src\gdi32.swg#L371" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Gdi32_FONTENUMPROCA">FONTENUMPROCA</td>
+<td>func(const *Gdi32.LOGFONTA, const *Gdi32.TEXTMETRICA, Win32.DWORD, Win32.LPARAM)->Win32.BOOL</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_FONTENUMPROCW">FONTENUMPROCW</td>
+<td>func(const *Gdi32.LOGFONTW, const *Gdi32.TEXTMETRICW, Win32.DWORD, Win32.LPARAM)->Win32.BOOL</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HFONT">HFONT</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HGDIOBJ">HGDIOBJ</td>
+<td>const *void</td>
+<td></td>
+</tr>
+<tr>
+<td id="Gdi32_HPEN">HPEN</td>
+<td>const *void</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
 <span class="content" id="Gdi32_BITMAP"><span class="titletype">struct</span> <span class="titlelight">Gdi32.</span><span class="titlestrong">BITMAP</span></span>
 </td>
 <td class="srcref">
@@ -1018,37 +1065,37 @@
 <table class="enumeration">
 <tr>
 <td>bmType</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>bmWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>bmHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>bmWidthBytes</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>bmPlanes</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>bmBitsPixel</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>bmBits</td>
-<td>Win32.LPVOID</td>
+<td>^void</td>
 <td></td>
 </tr>
 </table>
@@ -1089,57 +1136,57 @@
 <table class="enumeration">
 <tr>
 <td>biSize</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>biWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>biHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>biPlanes</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>biBitCount</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>biCompression</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>biSizeImage</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>biXPelsPerMeter</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>biYPelsPerMeter</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>biClrUsed</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>biClrImportant</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1219,7 +1266,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFontIndirectA</span><span class="SyntaxCode">(lplf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HFONT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFontIndirectA</span><span class="SyntaxCode">(lplf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HFONT">HFONT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1232,7 +1279,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFontIndirectW</span><span class="SyntaxCode">(lplf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HFONT</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreateFontIndirectW</span><span class="SyntaxCode">(lplf: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HFONT">HFONT</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1245,7 +1292,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreatePen</span><span class="SyntaxCode">(iStyle: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">COLORREF</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HPEN</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">CreatePen</span><span class="SyntaxCode">(iStyle: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, cWidth: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, color: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">COLORREF</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HPEN">HPEN</a></span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1284,7 +1331,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteObject</span><span class="SyntaxCode">(ho: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGDIOBJ</span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">DeleteObject</span><span class="SyntaxCode">(ho: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span><span class="SyntaxCode">) </span><span class="SyntaxKeyword">throw</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1376,7 +1423,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesA</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FONTENUMPROCA</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesA</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCSTR</span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1389,7 +1436,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesExA</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FONTENUMPROCA</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesExA</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1402,7 +1449,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesExW</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FONTENUMPROCW</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesExW</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">, dwFlags: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1415,7 +1462,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesW</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">FONTENUMPROCW</span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">EnumFontFamiliesW</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, lpLogfont: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPCWSTR</span><span class="SyntaxCode">, lpProc: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span><span class="SyntaxCode">, lParam: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">LPARAM</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1508,7 +1555,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetStockObject</span><span class="SyntaxCode">(i: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGDIOBJ</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">GetStockObject</span><span class="SyntaxCode">(i: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -1524,67 +1571,67 @@
 <table class="enumeration">
 <tr>
 <td>lfHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfEscapement</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfOrientation</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfUnderline</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfStrikeOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfOutPrecision</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfClipPrecision</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfQuality</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
@@ -1607,67 +1654,67 @@
 <table class="enumeration">
 <tr>
 <td>lfHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfEscapement</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfOrientation</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>lfItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfUnderline</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfStrikeOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfOutPrecision</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfClipPrecision</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfQuality</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>lfPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
@@ -1716,122 +1763,122 @@
 <table class="enumeration">
 <tr>
 <td>tmHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAscent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDescent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmInternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmExternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAveCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmMaxCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmOverhang</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectX</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectY</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmFirstChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmLastChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDefaultChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmBreakChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmUnderlined</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmStruckOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmSizeEM</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmCellHeight</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmAvgWidth</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1849,122 +1896,122 @@
 <table class="enumeration">
 <tr>
 <td>tmHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAscent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDescent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmInternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmExternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAveCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmMaxCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmOverhang</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectX</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectY</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmFirstChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmLastChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDefaultChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmBreakChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmUnderlined</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmStruckOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmSizeEM</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmCellHeight</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>ntmAvgWidth</td>
-<td>Win32.UINT</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -1982,132 +2029,132 @@
 <table class="enumeration">
 <tr>
 <td>nSize</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>nVersion</td>
-<td>Win32.WORD</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>dwFlags</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>iPixelType</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cColorBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cRedBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cRedShift</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cGreenBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cGreenShift</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cBlueBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cBlueShift</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAlphaBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAlphaShift</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAccumBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAccumRedBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAccumGreenBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAccumBlueBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAccumAlphaBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cDepthBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cStencilBits</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>cAuxBuffers</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>iLayerType</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>bReserved</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>dwLayerMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwVisibleMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 <tr>
 <td>dwDamageMask</td>
-<td>Win32.DWORD</td>
+<td>u32</td>
 <td></td>
 </tr>
 </table>
@@ -2138,22 +2185,22 @@
 <table class="enumeration">
 <tr>
 <td>rgbBlue</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>rgbGreen</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>rgbRed</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>rgbReserved</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 </table>
@@ -2181,7 +2228,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SelectObject</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, h: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGDIOBJ</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HGDIOBJ</span><span class="SyntaxCode"></code>
+<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">SelectObject</span><span class="SyntaxCode">(hdc: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">HDC</span><span class="SyntaxCode">, h: </span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Gdi32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span><span class="SyntaxCode"></code>
 </div>
 <p>
 <table class="item">
@@ -2275,102 +2322,102 @@
 <table class="enumeration">
 <tr>
 <td>tmHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAscent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDescent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmInternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmExternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAveCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmMaxCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmOverhang</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectX</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectY</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmFirstChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmLastChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDefaultChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmBreakChar</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmUnderlined</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmStruckOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 </table>
@@ -2388,102 +2435,102 @@
 <table class="enumeration">
 <tr>
 <td>tmHeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAscent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDescent</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmInternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmExternalLeading</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmAveCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmMaxCharWidth</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmWeight</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmOverhang</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectX</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDigitizedAspectY</td>
-<td>Win32.LONG</td>
+<td>s32</td>
 <td></td>
 </tr>
 <tr>
 <td>tmFirstChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmLastChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmDefaultChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmBreakChar</td>
-<td>Win32.WCHAR</td>
+<td>u16</td>
 <td></td>
 </tr>
 <tr>
 <td>tmItalic</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmUnderlined</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmStruckOut</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmPitchAndFamily</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 <tr>
 <td>tmCharSet</td>
-<td>Win32.BYTE</td>
+<td>u8</td>
 <td></td>
 </tr>
 </table>

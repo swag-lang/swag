@@ -232,6 +232,12 @@
 <li><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></li>
 <li><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></li>
 </ul>
+<h3>Type Aliases</h3>
+<h4>driver</h4>
+<ul>
+<li><a href="#Audio_BusHandle">BusHandle</a></li>
+<li><a href="#Audio_VoiceHandle">VoiceHandle</a></li>
+</ul>
 <h3>Functions</h3>
 <h4></h4>
 <ul>
@@ -305,6 +311,29 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <table class="item">
 <tr>
 <td class="item">
+<span class="content" id="Audio_BusHandle"><span class="titletype">type alias</span> <span class="titlelight">Audio.</span><span class="titlestrong">Type Aliases</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L323" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="enumeration">
+<tr>
+<td id="Audio_BusHandle">BusHandle</td>
+<td>*XAudio2.IXAudio2SubmixVoice</td>
+<td></td>
+</tr>
+<tr>
+<td id="Audio_VoiceHandle">VoiceHandle</td>
+<td>*XAudio2.IXAudio2SourceVoice</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="item">
+<tr>
+<td class="item">
 <span class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></span>
 </td>
 <td class="srcref">
@@ -316,7 +345,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <table class="enumeration">
 <tr>
 <td>handle</td>
-<td>Audio.BusHandle</td>
+<td>*XAudio2.IXAudio2SubmixVoice</td>
 <td></td>
 </tr>
 </table>
