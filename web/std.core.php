@@ -88,6 +88,10 @@
             text-decoration: none;
             color:           DoggerBlue;
         }
+        .precode a {
+            text-decoration: revert;
+            color:           inherit;
+        }
         .container a:hover {
             text-decoration: underline;
         }

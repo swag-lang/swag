@@ -101,6 +101,10 @@ void GenDoc::outputStyles()
             text-decoration: none;\n\
             color:           DoggerBlue;\n\
         }\n\
+        .precode a {\n\
+            text-decoration: revert;\n\
+            color:           inherit;\n\
+        }\n\
         .container a:hover {\n\
             text-decoration: underline;\n\
         }\n\
