@@ -3137,42 +3137,42 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated(self, *void, const ref SourceCodeLocation)</a></td>
+<td><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated</a></td>
 <td>This function will assert if the given user address is not conform  to an allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory(self)</a></td>
+<td><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory</a></td>
 <td>Check all allocated blocks. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated(self, ^DebugAllocatorHeader, const ref SourceCodeLocation)</a></td>
+<td><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed(self, ^DebugAllocatorHeader)</a></td>
+<td><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_memAlign">memAlign(u64, u32)</a></td>
+<td><a href="#Swag_DebugAllocator_memAlign">memAlign</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize(u64)</a></td>
+<td><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printLeaks">printLeaks(self)</a></td>
+<td><a href="#Swag_DebugAllocator_printLeaks">printLeaks</a></td>
 <td>Output to the console the list of all allocated blocks (leaks). </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_setup">setup(self, IAllocator)</a></td>
+<td><a href="#Swag_DebugAllocator_setup">setup</a></td>
 <td>Setup the allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_opDrop">opDrop(self)</a></td>
+<td><a href="#Swag_DebugAllocator_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 </table>
@@ -4273,27 +4273,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_ScratchAllocator_align">align(u64, u32)</a></td>
+<td><a href="#Swag_ScratchAllocator_align">align</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_alloc">alloc(self, u64, u32)</a></td>
+<td><a href="#Swag_ScratchAllocator_alloc">alloc</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_free">free(self, *void, u64)</a></td>
+<td><a href="#Swag_ScratchAllocator_free">free</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_freeAll">freeAll(self)</a></td>
+<td><a href="#Swag_ScratchAllocator_freeAll">freeAll</a></td>
 <td>Release all memory. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_release">release(self)</a></td>
+<td><a href="#Swag_ScratchAllocator_release">release</a></td>
 <td>Release the allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_setCapacity">setCapacity(self, u64, IAllocator)</a></td>
+<td><a href="#Swag_ScratchAllocator_setCapacity">setCapacity</a></td>
 <td>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>

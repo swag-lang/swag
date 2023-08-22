@@ -320,27 +320,27 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Bus_create">create(u32, *Bus)</a></td>
+<td><a href="#Audio_Bus_create">create</a></td>
 <td>Creates an audio bus. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_destroy">destroy(self)</a></td>
+<td><a href="#Audio_Bus_destroy">destroy</a></td>
 <td>Destroy the bus (immediatly). </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolume">getVolume(self)</a></td>
+<td><a href="#Audio_Bus_getVolume">getVolume</a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolumeDB">getVolumeDB(self)</a></td>
+<td><a href="#Audio_Bus_getVolumeDB">getVolumeDB</a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolume">setVolume(self, f32, u32)</a></td>
+<td><a href="#Audio_Bus_setVolume">setVolume</a></td>
 <td>Set the playing bus volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td><a href="#Audio_Bus_setVolumeDB">setVolumeDB</a></td>
 <td>Set the playing bus volume in DB. </td>
 </tr>
 </table>
@@ -575,7 +575,7 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_SoundFile_load">load(string, bool, bool)</a></td>
+<td><a href="#Audio_SoundFile_load">load</a></td>
 <td>Load a <code class="incode">SoundFile</code> from disk. </td>
 </tr>
 </table>
@@ -705,27 +705,27 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Voice_create">create(*SoundFile, VoiceCreateFlags)</a></td>
+<td><a href="#Audio_Voice_create">create</a></td>
 <td>Creates a new voice for a given sound file. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_destroy">destroy(self)</a></td>
+<td><a href="#Audio_Voice_destroy">destroy</a></td>
 <td>Destroy the voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolume">getVolume(self)</a></td>
+<td><a href="#Audio_Voice_getVolume">getVolume</a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolumeDB">getVolumeDB(self)</a></td>
+<td><a href="#Audio_Voice_getVolumeDB">getVolumeDB</a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_isPlaying">isPlaying(self)</a></td>
+<td><a href="#Audio_Voice_isPlaying">isPlaying</a></td>
 <td>Returns true if the voice is currently playing. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_pause">pause(self)</a></td>
+<td><a href="#Audio_Voice_pause">pause</a></td>
 <td>Pause the playing voice. </td>
 </tr>
 <tr>
@@ -737,23 +737,23 @@ voice.</span><span class="SyntaxFunction">play</span><span class="SyntaxCode">(<
 <td>Plays a voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio(self, f32, u32)</a></td>
+<td><a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio</a></td>
 <td>Set the playing pitch. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setRooting">setRooting(self, const [..] const *Bus)</a></td>
+<td><a href="#Audio_Voice_setRooting">setRooting</a></td>
 <td>Root a voice to a given list of buses. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolume">setVolume(self, f32, u32)</a></td>
+<td><a href="#Audio_Voice_setVolume">setVolume</a></td>
 <td>Set the playing voice volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolumeDB">setVolumeDB(self, f32, u32)</a></td>
+<td><a href="#Audio_Voice_setVolumeDB">setVolumeDB</a></td>
 <td>Set the playing voice volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_stop">stop(self)</a></td>
+<td><a href="#Audio_Voice_stop">stop</a></td>
 <td>Stop the playing voice. </td>
 </tr>
 </table>

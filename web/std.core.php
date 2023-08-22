@@ -1962,59 +1962,59 @@
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_addOnce">addOnce(self, T)</a></td>
+<td><a href="#Core_Array_addOnce">addOnce</a></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_back">back(self)</a></td>
+<td><a href="#Core_Array_back">back</a></td>
 <td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_backPtr">backPtr(self)</a></td>
+<td><a href="#Core_Array_backPtr">backPtr</a></td>
 <td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_clear">clear(self)</a></td>
+<td><a href="#Core_Array_clear">clear</a></td>
 <td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_contains">contains(self, V)</a></td>
+<td><a href="#Core_Array_contains">contains</a></td>
 <td>Returns true if the given <code class="incode">value</code> is in the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_createBuffer">createBuffer(u64)</a></td>
+<td><a href="#Core_Array_createBuffer">createBuffer</a></td>
 <td>Create a working buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_createTemp">createTemp()</a></td>
+<td><a href="#Core_Array_createTemp">createTemp</a></td>
 <td>Create a temporary array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_emplaceAddress">emplaceAddress(self, u32)</a></td>
+<td><a href="#Core_Array_emplaceAddress">emplaceAddress</a></td>
 <td>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
+<td><a href="#Core_Array_emplaceAt">emplaceAt</a></td>
 <td>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
+<td><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress</a></td>
 <td>Reserve room at the end of the array for <code class="incode">num</code> elements. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_free">free(self)</a></td>
+<td><a href="#Core_Array_free">free</a></td>
 <td>Free the array content. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_front">front(self)</a></td>
+<td><a href="#Core_Array_front">front</a></td>
 <td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_frontPtr">frontPtr(self)</a></td>
+<td><a href="#Core_Array_frontPtr">frontPtr</a></td>
 <td>Returns the address of the first element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_grow">grow(self, u64)</a></td>
+<td><a href="#Core_Array_grow">grow</a></td>
 <td>Ensure the Array is big enough to store at least <code class="incode">newCount</code> elements  Number of valid elements does not change. </td>
 </tr>
 <tr>
@@ -2030,15 +2030,15 @@
 <td>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Core_Array_isEmpty">isEmpty</a></td>
 <td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_popBack">popBack(self)</a></td>
+<td><a href="#Core_Array_popBack">popBack</a></td>
 <td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_realloc">realloc(self, u64)</a></td>
+<td><a href="#Core_Array_realloc">realloc</a></td>
 <td></td>
 </tr>
 <tr>
@@ -2050,27 +2050,27 @@
 <td>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_removeAt">removeAt(self, u64)</a></td>
+<td><a href="#Core_Array_removeAt">removeAt</a></td>
 <td>Remove an element at <code class="incode">index</code> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
+<td><a href="#Core_Array_removeAtOrdered">removeAtOrdered</a></td>
 <td>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_removeBack">removeBack(self)</a></td>
+<td><a href="#Core_Array_removeBack">removeBack</a></td>
 <td>Remove the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_removeOrdered">removeOrdered(self, V)</a></td>
+<td><a href="#Core_Array_removeOrdered">removeOrdered</a></td>
 <td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_reserve">reserve(self, u64)</a></td>
+<td><a href="#Core_Array_reserve">reserve</a></td>
 <td>Reserve room for <code class="incode">newCapacity</code> elements without changing the array count  Number of valid elements does not change. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_resize">resize(self, u64)</a></td>
+<td><a href="#Core_Array_resize">resize</a></td>
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
@@ -2082,22 +2082,22 @@
 <td>Sort array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_sortReverse">sortReverse(self)</a></td>
+<td><a href="#Core_Array_sortReverse">sortReverse</a></td>
 <td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_swap">swap(self, u64, u64)</a></td>
+<td><a href="#Core_Array_swap">swap</a></td>
 <td>Swap two elements. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_toSlice">toSlice(self)</a></td>
+<td><a href="#Core_Array_toSlice">toSlice</a></td>
 <td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Array_opAffect">opAffect(self, const [..] T)</a></td>
+<td><a href="#Core_Array_opAffect">opAffect</a></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
@@ -2109,19 +2109,15 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opCount">opCount(self)</a></td>
+<td><a href="#Core_Array_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opData">opData(self)</a></td>
+<td><a href="#Core_Array_opData">opData</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opDrop">opDrop(self)</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
+<td><a href="#Core_Array_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
@@ -2129,27 +2125,31 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
+<td><a href="#Core_Array_opIndex">opIndex(self, u64)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
+<td><a href="#Core_Array_opIndexAffect">opIndexAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opPostCopy">opPostCopy(self)</a></td>
+<td><a href="#Core_Array_opIndexAssign">opIndexAssign</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opSlice">opSlice(self, u64, u64)</a></td>
+<td><a href="#Core_Array_opPostCopy">opPostCopy</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_Array_opSlice">opSlice</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#Core_Array_opVisit">opVisit</a></td>
 <td>Visit every elements of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_Array_opVisitBack">opVisitBack(self, code)</a></td>
+<td><a href="#Core_Array_opVisitBack">opVisitBack</a></td>
 <td>Visit every elements of the array from end to start. </td>
 </tr>
 </table>
@@ -2779,26 +2779,26 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_ArrayPtr_addNewPtr">addNewPtr(self)</a></td>
+<td><a href="#Core_ArrayPtr_addNewPtr">addNewPtr</a></td>
 <td>Allocate a new pointer, and add it to the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_ArrayPtr_clear">clear(self)</a></td>
+<td><a href="#Core_ArrayPtr_clear">clear</a></td>
 <td>Release content. </td>
 </tr>
 <tr>
-<td><a href="#Core_ArrayPtr_deletePtr">deletePtr(self, *T)</a></td>
+<td><a href="#Core_ArrayPtr_deletePtr">deletePtr</a></td>
 <td>Delete one pointer allocated here. </td>
 </tr>
 <tr>
-<td><a href="#Core_ArrayPtr_newPtr">newPtr(self)</a></td>
+<td><a href="#Core_ArrayPtr_newPtr">newPtr</a></td>
 <td>Allocate a new pointer by using the contextual allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_ArrayPtr_opDrop">opDrop(self)</a></td>
+<td><a href="#Core_ArrayPtr_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 </table>
@@ -3048,23 +3048,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_BitArray_and">and(self, const ref BitArray)</a></td>
+<td><a href="#Core_BitArray_and">and</a></td>
 <td>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_get">get(self, u64)</a></td>
+<td><a href="#Core_BitArray_get">get</a></td>
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_invert">invert(self, u64)</a></td>
+<td><a href="#Core_BitArray_invert">invert</a></td>
 <td>Inverts the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_not">not(self)</a></td>
+<td><a href="#Core_BitArray_not">not</a></td>
 <td>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_or">or(self, const ref BitArray)</a></td>
+<td><a href="#Core_BitArray_or">or</a></td>
 <td>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
@@ -3076,42 +3076,42 @@
 <td>Reserve the given amount of bits and set an initial value to all bits. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_set">set(self, u64, bool)</a></td>
+<td><a href="#Core_BitArray_set">set</a></td>
 <td>Sets the bit at a specific position to the specified value. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_setAll">setAll(self, bool)</a></td>
+<td><a href="#Core_BitArray_setAll">setAll</a></td>
 <td>Sets all bits to the specified value. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_xor">xor(self, const ref BitArray)</a></td>
+<td><a href="#Core_BitArray_xor">xor</a></td>
 <td>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_BitArray_opAffect">opAffect(self, const [..] bool)</a></td>
+<td><a href="#Core_BitArray_opAffect">opAffect</a></td>
 <td>Initializes a <code class="incode">BitArray</code> that contains bit values copied from the specified array of booleans. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_opCount">opCount(self)</a></td>
+<td><a href="#Core_BitArray_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_opEquals">opEquals(self, const ref BitArray)</a></td>
+<td><a href="#Core_BitArray_opEquals">opEquals</a></td>
 <td>Compares two arrays, and returns <code class="incode">true</code> if they are equal. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_opIndex">opIndex(self, u64)</a></td>
+<td><a href="#Core_BitArray_opIndex">opIndex</a></td>
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_opIndexAffect">opIndexAffect(self, u64, bool)</a></td>
+<td><a href="#Core_BitArray_opIndexAffect">opIndexAffect</a></td>
 <td>Sets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_BitArray_opVisit">opVisit</a></td>
 <td>Visit all the booleans. </td>
 </tr>
 </table>
@@ -3367,67 +3367,67 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_ByteStream_getSeek">getSeek(self)</a></td>
+<td><a href="#Core_ByteStream_getSeek">getSeek</a></td>
 <td>Returns the seek value. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_isEof">isEof(self)</a></td>
+<td><a href="#Core_ByteStream_isEof">isEof</a></td>
 <td>Returns true if end has been reached. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_length">length(self)</a></td>
+<td><a href="#Core_ByteStream_length">length</a></td>
 <td>Returns length of associated slice. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_moveSeek">moveSeek(self, u64)</a></td>
+<td><a href="#Core_ByteStream_moveSeek">moveSeek</a></td>
 <td>Seek to the next byte. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_openRead">openRead(const [..] u8)</a></td>
+<td><a href="#Core_ByteStream_openRead">openRead</a></td>
 <td>Creates a byte stream to read from a slice. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_openWrite">openWrite(*Array'(u8))</a></td>
+<td><a href="#Core_ByteStream_openWrite">openWrite</a></td>
 <td>Creates a byte stream to write to an array. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_peekU8">peekU8(self)</a></td>
+<td><a href="#Core_ByteStream_peekU8">peekU8</a></td>
 <td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_readBytes">readBytes(self, *u8, u64)</a></td>
+<td><a href="#Core_ByteStream_readBytes">readBytes</a></td>
 <td>Read the given amount of bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_readData">readData(self)</a></td>
+<td><a href="#Core_ByteStream_readData">readData</a></td>
 <td>Get the buffer of datas to read. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_readNative">readNative(self)</a></td>
+<td><a href="#Core_ByteStream_readNative">readNative</a></td>
 <td>Read a <code class="incode">native</code> type value. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_readU8">readU8(self)</a></td>
+<td><a href="#Core_ByteStream_readU8">readU8</a></td>
 <td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice(self)</a></td>
+<td><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice</a></td>
 <td>Returns a slice of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_remainReadToString">remainReadToString(self)</a></td>
+<td><a href="#Core_ByteStream_remainReadToString">remainReadToString</a></td>
 <td>Returns a string of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_setSeek">setSeek(self, u64)</a></td>
+<td><a href="#Core_ByteStream_setSeek">setSeek</a></td>
 <td>Seek to the given position. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_writeBytes">writeBytes(self, const [..] u8)</a></td>
+<td><a href="#Core_ByteStream_writeBytes">writeBytes</a></td>
 <td>Write the given amount of bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_ByteStream_writeNative">writeNative(self, T)</a></td>
+<td><a href="#Core_ByteStream_writeNative">writeNative</a></td>
 <td>Write a <code class="incode">native</code> type value. </td>
 </tr>
 </table>
@@ -3703,19 +3703,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_CommandLine_getField">getField(const *TypeInfoStruct, string)</a></td>
+<td><a href="#Core_CommandLine_getField">getField</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_isOption">isOption(string, const ref ParseOptions)</a></td>
+<td><a href="#Core_CommandLine_isOption">isOption</a></td>
 <td>Returns true if <code class="incode">oneArg</code> is a valid option (starting with a delimiter). </td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_parse">parse(*T, const [..] string, const ref ParseOptions)</a></td>
+<td><a href="#Core_CommandLine_parse">parse</a></td>
 <td>Parse all the arguments and fill the result. </td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_splitArguments">splitArguments(const [..] string, const ref ParseOptions)</a></td>
+<td><a href="#Core_CommandLine_splitArguments">splitArguments</a></td>
 <td>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </td>
 </tr>
 </table>
@@ -3894,63 +3894,63 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Compress_BitStream_consumeBits">consumeBits(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_consumeBits">consumeBits</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_curPtr">curPtr(self)</a></td>
+<td><a href="#Core_Compress_BitStream_curPtr">curPtr</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte(self)</a></td>
+<td><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_init">init(self, const [..] u8)</a></td>
+<td><a href="#Core_Compress_BitStream_init">init</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_peek32">peek32(self, ^u8)</a></td>
+<td><a href="#Core_Compress_BitStream_peek32">peek32</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_peek32Be">peek32Be(self, ^u8)</a></td>
+<td><a href="#Core_Compress_BitStream_peek32Be">peek32Be</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_peekBits">peekBits(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_peekBits">peekBits</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_peekBytes">peekBytes(self, u8, ^u8)</a></td>
+<td><a href="#Core_Compress_BitStream_peekBytes">peekBytes</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_readBits">readBits(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_readBits">readBits</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_refill">refill(self, u8)</a></td>
+<td><a href="#Core_Compress_BitStream_refill">refill</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_revert">revert(self)</a></td>
+<td><a href="#Core_Compress_BitStream_revert">revert</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_size">size(self)</a></td>
+<td><a href="#Core_Compress_BitStream_size">size</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_BitStream_startPtr">startPtr(self)</a></td>
+<td><a href="#Core_Compress_BitStream_startPtr">startPtr</a></td>
 <td></td>
 </tr>
 </table>
@@ -4163,11 +4163,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Compress_Deflate_compress">compress(self, *Array'(u8), const [..] u8)</a></td>
+<td><a href="#Core_Compress_Deflate_compress">compress</a></td>
 <td>Compress the source buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_Deflate_init">init(self, CompressionLevel, CompressionStrategy, CompressionFlags)</a></td>
+<td><a href="#Core_Compress_Deflate_init">init</a></td>
 <td>Initialize the compressor  Can be called multiple times. </td>
 </tr>
 </table>
@@ -4304,7 +4304,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Compress_Inflate_decompress">decompress(self, const [..] u8, u32)</a></td>
+<td><a href="#Core_Compress_Inflate_decompress">decompress</a></td>
 <td>Decompress the associated stream. </td>
 </tr>
 </table>
@@ -4336,11 +4336,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Compress_ZLib_compress">compress(self, const [..] u8, CompressionLevel)</a></td>
+<td><a href="#Core_Compress_ZLib_compress">compress</a></td>
 <td>Decompress stream. </td>
 </tr>
 <tr>
-<td><a href="#Core_Compress_ZLib_decompress">decompress(self, const [..] u8)</a></td>
+<td><a href="#Core_Compress_ZLib_decompress">decompress</a></td>
 <td>Decompress stream. </td>
 </tr>
 </table>
@@ -4429,94 +4429,94 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_ConcatBuffer_addBytes">addBytes(self, const [..] u8, bool)</a></td>
+<td><a href="#Core_ConcatBuffer_addBytes">addBytes</a></td>
 <td>Append a slice of bytes to the buffer  If <code class="incode">contiguous</code> is false, the slice will be divided in chunks if necessary. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_addNative">addNative(self, T)</a></td>
+<td><a href="#Core_ConcatBuffer_addNative">addNative</a></td>
 <td>Append one byte to the buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_addStruct">addStruct(self, T)</a></td>
+<td><a href="#Core_ConcatBuffer_addStruct">addStruct</a></td>
 <td>Append the content of a struct. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_clear">clear(self)</a></td>
+<td><a href="#Core_ConcatBuffer_clear">clear</a></td>
 <td>Clear the content without freing the buffers. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_count">count(self)</a></td>
+<td><a href="#Core_ConcatBuffer_count">count</a></td>
 <td>Returns the number of bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer(self)</a></td>
+<td><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_getOffset">getOffset(const ref ConcatBufferSeek)</a></td>
+<td><a href="#Core_ConcatBuffer_getOffset">getOffset</a></td>
 <td>Get the linearized seek offset. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_getSeek">getSeek(self)</a></td>
+<td><a href="#Core_ConcatBuffer_getSeek">getSeek</a></td>
 <td>Returns the current <code class="incode">seek</code> in the buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_grow">grow(self, u64)</a></td>
+<td><a href="#Core_ConcatBuffer_grow">grow</a></td>
 <td>Be sure that there is enough room to store at least <code class="incode">numBytes</code> bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_makeLinear">makeLinear(self)</a></td>
+<td><a href="#Core_ConcatBuffer_makeLinear">makeLinear</a></td>
 <td>linearize all buckets in one single big bucket. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_moveSeek">moveSeek(self, u64)</a></td>
+<td><a href="#Core_ConcatBuffer_moveSeek">moveSeek</a></td>
 <td>Seek current write pointer. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_moveToString">moveToString(self)</a></td>
+<td><a href="#Core_ConcatBuffer_moveToString">moveToString</a></td>
 <td>Move the content. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_release">release(self)</a></td>
+<td><a href="#Core_ConcatBuffer_release">release</a></td>
 <td>Release all allocated buffers. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_setAllocator">setAllocator(self, IAllocator)</a></td>
+<td><a href="#Core_ConcatBuffer_setAllocator">setAllocator</a></td>
 <td>Associate an allocator with the buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize(self, u64)</a></td>
+<td><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize</a></td>
 <td>Set the granularity of datas when allocated new buckets. Minimum size is 4. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek(self, const ref ConcatBufferSeek)</a></td>
+<td><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek</a></td>
 <td>Set the end <code class="incode">seek</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket(self, [..] u8)</a></td>
+<td><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket</a></td>
 <td>Share <code class="incode">data</code> with the firstBucket. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_setSeek">setSeek(self, const ref ConcatBufferSeek)</a></td>
+<td><a href="#Core_ConcatBuffer_setSeek">setSeek</a></td>
 <td>Set the current <code class="incode">seek</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_toSlice">toSlice(self)</a></td>
+<td><a href="#Core_ConcatBuffer_toSlice">toSlice</a></td>
 <td>Convert to a slice <i>only</i> if the buffer is linear (see <code class="incode">makeLinear</code>). </td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_toString">toString(self)</a></td>
+<td><a href="#Core_ConcatBuffer_toString">toString</a></td>
 <td>Convert buffer to a String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_ConcatBuffer_opCount">opCount(self)</a></td>
+<td><a href="#Core_ConcatBuffer_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_ConcatBuffer_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_ConcatBuffer_opVisit">opVisit</a></td>
 <td>Visit all valid buckets. </td>
 </tr>
 </table>
@@ -5432,7 +5432,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Env_Process_waitForExit">waitForExit(self)</a></td>
+<td><a href="#Core_Env_Process_waitForExit">waitForExit</a></td>
 <td>Wait for the process to be done. </td>
 </tr>
 </table>
@@ -5789,7 +5789,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_File_FileInfo_isDirectory">isDirectory(self)</a></td>
+<td><a href="#Core_File_FileInfo_isDirectory">isDirectory</a></td>
 <td></td>
 </tr>
 </table>
@@ -5921,39 +5921,39 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_File_FileStream_close">close(self)</a></td>
+<td><a href="#Core_File_FileStream_close">close</a></td>
 <td>Close the given file stream. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_getPosition">getPosition(self)</a></td>
+<td><a href="#Core_File_FileStream_getPosition">getPosition</a></td>
 <td>Returns the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_getSize">getSize(self)</a></td>
+<td><a href="#Core_File_FileStream_getSize">getSize</a></td>
 <td>Returns the given file stream length on disk. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_isOpen">isOpen(self)</a></td>
+<td><a href="#Core_File_FileStream_isOpen">isOpen</a></td>
 <td>Returns true if the stream is valid. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_read">read(self, *void, u64)</a></td>
+<td><a href="#Core_File_FileStream_read">read</a></td>
 <td>Read from the given file stream, and returns the number of bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_readValue">readValue(self, *T)</a></td>
+<td><a href="#Core_File_FileStream_readValue">readValue</a></td>
 <td>Read from the given file stream, and returns <code class="incode">true</code> if all bytes have been read. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_setPosition">setPosition(self, SeekOrigin, u64)</a></td>
+<td><a href="#Core_File_FileStream_setPosition">setPosition</a></td>
 <td>Set the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_skipPosition">skipPosition(self, u64)</a></td>
+<td><a href="#Core_File_FileStream_skipPosition">skipPosition</a></td>
 <td>Skip <code class="incode">bytes</code> from current position. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_FileStream_write">write(self, const *void, u64)</a></td>
+<td><a href="#Core_File_FileStream_write">write</a></td>
 <td>Write to the given file stream, and returns the number of written bytes. </td>
 </tr>
 </table>
@@ -6198,19 +6198,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_File_TextReader_close">close(self)</a></td>
+<td><a href="#Core_File_TextReader_close">close</a></td>
 <td>Close the reader. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_TextReader_open">open(self, string, TextEncoding)</a></td>
+<td><a href="#Core_File_TextReader_open">open</a></td>
 <td>Open the reader. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_TextReader_readLine">readLine(self, ref String)</a></td>
+<td><a href="#Core_File_TextReader_readLine">readLine</a></td>
 <td>Read one line of text. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_TextReader_readToEnd">readToEnd(self)</a></td>
+<td><a href="#Core_File_TextReader_readToEnd">readToEnd</a></td>
 <td>Read from the current position to the end, and returns the corresponding  utf8 string. </td>
 </tr>
 </table>
@@ -6300,11 +6300,11 @@
 <td>Parse a list of lines. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_TweakFile_parseFile">parseFile(self, string)</a></td>
+<td><a href="#Core_File_TweakFile_parseFile">parseFile</a></td>
 <td>Read and parse a file. </td>
 </tr>
 <tr>
-<td><a href="#Core_File_TweakFile_registerFolder">registerFolder(self, *T)</a></td>
+<td><a href="#Core_File_TweakFile_registerFolder">registerFolder</a></td>
 <td>Register a new structure to be parsed. </td>
 </tr>
 </table>
@@ -6794,15 +6794,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Hash_Adler32_compute">compute(const [..] u8)</a></td>
+<td><a href="#Core_Hash_Adler32_compute">compute</a></td>
 <td>Returns the adler32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Adler32_init">init(self)</a></td>
+<td><a href="#Core_Hash_Adler32_init">init</a></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Adler32_update">update(self, const [..] u8)</a></td>
+<td><a href="#Core_Hash_Adler32_update">update</a></td>
 <td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
@@ -6869,15 +6869,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Hash_Crc32_compute">compute(const [..] u8)</a></td>
+<td><a href="#Core_Hash_Crc32_compute">compute</a></td>
 <td>Returns the crc32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Crc32_init">init(self)</a></td>
+<td><a href="#Core_Hash_Crc32_init">init</a></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Crc32_update">update(self, const [..] u8)</a></td>
+<td><a href="#Core_Hash_Crc32_update">update</a></td>
 <td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
@@ -6977,19 +6977,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Hash_Md5_compute">compute(const [..] u8)</a></td>
+<td><a href="#Core_Hash_Md5_compute">compute</a></td>
 <td>Returns the md5 value for the given buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Md5_final">final(self, Digest)</a></td>
+<td><a href="#Core_Hash_Md5_final">final</a></td>
 <td>Finalize the computation. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Md5_init">init(self)</a></td>
+<td><a href="#Core_Hash_Md5_init">init</a></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Md5_update">update(self, const [..] u8)</a></td>
+<td><a href="#Core_Hash_Md5_update">update</a></td>
 <td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
@@ -7085,19 +7085,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Hash_Sha256_compute">compute(const [..] u8)</a></td>
+<td><a href="#Core_Hash_Sha256_compute">compute</a></td>
 <td>Returns the sha256 value for the given buffer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Sha256_final">final(self, Digest)</a></td>
+<td><a href="#Core_Hash_Sha256_final">final</a></td>
 <td>Finalize the computation. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Sha256_init">init(self)</a></td>
+<td><a href="#Core_Hash_Sha256_init">init</a></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td><a href="#Core_Hash_Sha256_update">update(self, const [..] u8)</a></td>
+<td><a href="#Core_Hash_Sha256_update">update</a></td>
 <td>Update the hash value with <code class="incode">buffer</code> content. </td>
 </tr>
 </table>
@@ -7242,54 +7242,54 @@
 <td>Add a new key. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_clear">clear(self)</a></td>
+<td><a href="#Core_HashSet_clear">clear</a></td>
 <td>Remove all elements. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_contains">contains(self, K)</a></td>
+<td><a href="#Core_HashSet_contains">contains</a></td>
 <td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_emplaceInternal">emplaceInternal(self, u32, ref K)</a></td>
+<td><a href="#Core_HashSet_emplaceInternal">emplaceInternal</a></td>
 <td>Add a new key. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_free">free(self)</a></td>
+<td><a href="#Core_HashSet_free">free</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_grow">grow(self)</a></td>
+<td><a href="#Core_HashSet_grow">grow</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_hashKey">hashKey(K)</a></td>
+<td><a href="#Core_HashSet_hashKey">hashKey</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_remove">remove(self, K)</a></td>
+<td><a href="#Core_HashSet_remove">remove</a></td>
 <td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_reserve">reserve(self, u64)</a></td>
+<td><a href="#Core_HashSet_reserve">reserve</a></td>
 <td>Reserve <code class="incode">newCapacity</code> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_HashSet_opCount">opCount(self)</a></td>
+<td><a href="#Core_HashSet_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_opDrop">opDrop(self)</a></td>
+<td><a href="#Core_HashSet_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_opPostCopy">opPostCopy(self)</a></td>
+<td><a href="#Core_HashSet_opPostCopy">opPostCopy</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashSet_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_HashSet_opVisit">opVisit</a></td>
 <td></td>
 </tr>
 </table>
@@ -7568,58 +7568,58 @@
 <td>Add a new key value pair. If the key already exists, then the value will be replaced. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_clear">clear(self)</a></td>
+<td><a href="#Core_HashTable_clear">clear</a></td>
 <td>Remove all elements. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_contains">contains(self, K)</a></td>
+<td><a href="#Core_HashTable_contains">contains</a></td>
 <td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_emplaceInternal">emplaceInternal(self, u32, ref K, ref V)</a></td>
+<td><a href="#Core_HashTable_emplaceInternal">emplaceInternal</a></td>
 <td>Use with care !. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_find">find(self, K)</a></td>
+<td><a href="#Core_HashTable_find">find</a></td>
 <td>Find the given key, and returns the corresponding entry. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_free">free(self)</a></td>
+<td><a href="#Core_HashTable_free">free</a></td>
 <td>Free the hashtable content. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_grow">grow(self)</a></td>
+<td><a href="#Core_HashTable_grow">grow</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_hashKey">hashKey(K)</a></td>
+<td><a href="#Core_HashTable_hashKey">hashKey</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_remove">remove(self, K)</a></td>
+<td><a href="#Core_HashTable_remove">remove</a></td>
 <td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_reserve">reserve(self, u64)</a></td>
+<td><a href="#Core_HashTable_reserve">reserve</a></td>
 <td>Reserve <code class="incode">newCapacity</code> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_HashTable_opCount">opCount(self)</a></td>
+<td><a href="#Core_HashTable_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_opDrop">opDrop(self)</a></td>
+<td><a href="#Core_HashTable_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_opPostCopy">opPostCopy(self)</a></td>
+<td><a href="#Core_HashTable_opPostCopy">opPostCopy</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_HashTable_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_HashTable_opVisit">opVisit</a></td>
 <td>alias0 is the key, and alias1 is the value. </td>
 </tr>
 </table>
@@ -7904,31 +7904,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_GamePad_clear">clear(self)</a></td>
+<td><a href="#Core_Input_GamePad_clear">clear</a></td>
 <td>Reset the previous and current state. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_getPosition">getPosition(self, GamePadButton)</a></td>
+<td><a href="#Core_Input_GamePad_getPosition">getPosition</a></td>
 <td>Get the analog position of the given button. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed(self, GamePadButton)</a></td>
+<td><a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed</a></td>
 <td>Determines whether specified input device button has just been pressed. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased(self, GamePadButton)</a></td>
+<td><a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased</a></td>
 <td>Determines whether specified input device button has just been released. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed(self, GamePadButton)</a></td>
+<td><a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed</a></td>
 <td>Determines whether specified input device button is pressed. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased(self, GamePadButton)</a></td>
+<td><a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased</a></td>
 <td>Determines whether specified input device button is released (not pressed). </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_isConnected">isConnected(u32)</a></td>
+<td><a href="#Core_Input_GamePad_isConnected">isConnected</a></td>
 <td>Returns true if the corresponding <code class="incode">padIndex</code> is connected. </td>
 </tr>
 <tr>
@@ -7940,7 +7940,7 @@
 <td>Set the left and right vibration of the given <code class="incode">padIndex</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePad_update">update(self)</a></td>
+<td><a href="#Core_Input_GamePad_update">update</a></td>
 <td>Update the GamePad current state. </td>
 </tr>
 </table>
@@ -8231,11 +8231,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_GamePadState_clear">clear(self)</a></td>
+<td><a href="#Core_Input_GamePadState_clear">clear</a></td>
 <td>Reset state to its default value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_GamePadState_update">update(self, u32)</a></td>
+<td><a href="#Core_Input_GamePadState_update">update</a></td>
 <td>Compute the current state of the given pad index. </td>
 </tr>
 </table>
@@ -9118,19 +9118,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_Keyboard_clear">clear(self)</a></td>
+<td><a href="#Core_Input_Keyboard_clear">clear</a></td>
 <td>Reset the keyboard state. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers(self)</a></td>
+<td><a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers</a></td>
 <td>Returns the currently pressed key modifiers. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed(self, Key)</a></td>
+<td><a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed</a></td>
 <td>Determines whether given key has just been pressed. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased(self, Key)</a></td>
+<td><a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased</a></td>
 <td>Determines whether given key has just been released. </td>
 </tr>
 <tr>
@@ -9142,23 +9142,23 @@
 <td>Returns true if the given key is pressed. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased(self, Key)</a></td>
+<td><a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased</a></td>
 <td>Determines whether given key is currently being released. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_keyToRune">keyToRune(self, Key)</a></td>
+<td><a href="#Core_Input_Keyboard_keyToRune">keyToRune</a></td>
 <td>Try to transform the given key to the corresponding rune. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey(Key)</a></td>
+<td><a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_update">update(self)</a></td>
+<td><a href="#Core_Input_Keyboard_update">update</a></td>
 <td>Compute current state of the keyboard (all keys). </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey(VirtualKey)</a></td>
+<td><a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey</a></td>
 <td></td>
 </tr>
 </table>
@@ -9330,11 +9330,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_KeyboardState_clear">clear(self)</a></td>
+<td><a href="#Core_Input_KeyboardState_clear">clear</a></td>
 <td>Reset keyboard state. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_KeyboardState_update">update(self)</a></td>
+<td><a href="#Core_Input_KeyboardState_update">update</a></td>
 <td>Compute current keyboard state. </td>
 </tr>
 </table>
@@ -9421,31 +9421,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_Mouse_clear">clear(self)</a></td>
+<td><a href="#Core_Input_Mouse_clear">clear</a></td>
 <td>Reset the mouse state to its default value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_getMove">getMove(self)</a></td>
+<td><a href="#Core_Input_Mouse_getMove">getMove</a></td>
 <td>Returns the move between the current position and the previous one. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_getPosition">getPosition(self)</a></td>
+<td><a href="#Core_Input_Mouse_getPosition">getPosition</a></td>
 <td>Returns the mouse position. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos(self)</a></td>
+<td><a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos</a></td>
 <td>Returns the previous mouse position, before the last update. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick(self, MouseButton)</a></td>
+<td><a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed(self, MouseButton)</a></td>
+<td><a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed</a></td>
 <td>Determines whether the specified mouse button has just been pressed. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased(self, MouseButton)</a></td>
+<td><a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased</a></td>
 <td>Determines whether the specified mouse button has just been released. </td>
 </tr>
 <tr>
@@ -9457,11 +9457,11 @@
 <td>Determins if one given mouse button is pressed or not. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased(self, MouseButton)</a></td>
+<td><a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased</a></td>
 <td>Determines whether the specified mouse button is released. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_Mouse_update">update(self)</a></td>
+<td><a href="#Core_Input_Mouse_update">update</a></td>
 <td>Compute the current state of the mouse. </td>
 </tr>
 </table>
@@ -9677,11 +9677,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Input_MouseState_clear">clear(self)</a></td>
+<td><a href="#Core_Input_MouseState_clear">clear</a></td>
 <td>Reset the state to its default value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Input_MouseState_update">update(self)</a></td>
+<td><a href="#Core_Input_MouseState_update">update</a></td>
 <td>Compute the actual state of the mouse. </td>
 </tr>
 </table>
@@ -10383,7 +10383,7 @@
 <td>Add a new element on front. </td>
 </tr>
 <tr>
-<td><a href="#Core_List_clear">clear(self)</a></td>
+<td><a href="#Core_List_clear">clear</a></td>
 <td>Clear all elements. </td>
 </tr>
 <tr>
@@ -10406,15 +10406,15 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_List_opDrop">opDrop(self)</a></td>
+<td><a href="#Core_List_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_List_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_List_opVisit">opVisit</a></td>
 <td>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
 </tr>
 <tr>
-<td><a href="#Core_List_opVisitBack">opVisitBack(self, code)</a></td>
+<td><a href="#Core_List_opVisitBack">opVisitBack</a></td>
 <td>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
 </tr>
 </table>
@@ -10617,35 +10617,35 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Log_addWriter">addWriter(self, ILogWriter)</a></td>
+<td><a href="#Core_Log_addWriter">addWriter</a></td>
 <td>Register a new writer interface. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_clearWriters">clearWriters(self)</a></td>
+<td><a href="#Core_Log_clearWriters">clearWriters</a></td>
 <td>Remove all writers. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_create">create()</a></td>
+<td><a href="#Core_Log_create">create</a></td>
 <td>Create a new log. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_getFlags">getFlags(self)</a></td>
+<td><a href="#Core_Log_getFlags">getFlags</a></td>
 <td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_getPrefix">getPrefix(self)</a></td>
+<td><a href="#Core_Log_getPrefix">getPrefix</a></td>
 <td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_print">print(self, string, const ref SourceCodeLocation)</a></td>
+<td><a href="#Core_Log_print">print</a></td>
 <td>Main print function. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_setFlags">setFlags(self, LogFlags)</a></td>
+<td><a href="#Core_Log_setFlags">setFlags</a></td>
 <td>Set the logger flags. </td>
 </tr>
 <tr>
-<td><a href="#Core_Log_setPrefix">setPrefix(self, string)</a></td>
+<td><a href="#Core_Log_setPrefix">setPrefix</a></td>
 <td>Set the logger prefix. </td>
 </tr>
 </table>
@@ -10831,18 +10831,18 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Angle_toDegrees">toDegrees(self)</a></td>
+<td><a href="#Core_Math_Angle_toDegrees">toDegrees</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Angle_opAffect">opAffect(self, f32)</a></td>
+<td><a href="#Core_Math_Angle_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix(self, f32)</a></td>
+<td><a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix</a></td>
 <td></td>
 </tr>
 </table>
@@ -11016,22 +11016,22 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Int128_mul">mul(s64, s64)</a></td>
+<td><a href="#Core_Math_Int128_mul">mul</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Int128_opCast">opCast(self)</a></td>
+<td><a href="#Core_Math_Int128_opCast">opCast</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Int128_opCmp">opCmp(self, const ref Int128)</a></td>
+<td><a href="#Core_Math_Int128_opCmp">opCmp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Int128_opEquals">opEquals(self, const ref Int128)</a></td>
+<td><a href="#Core_Math_Int128_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -11108,7 +11108,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Matrix3x3_setIdentity">setIdentity(self)</a></td>
+<td><a href="#Core_Math_Matrix3x3_setIdentity">setIdentity</a></td>
 <td></td>
 </tr>
 </table>
@@ -11146,7 +11146,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Matrix4x4_setIdentity">setIdentity(self)</a></td>
+<td><a href="#Core_Math_Matrix4x4_setIdentity">setIdentity</a></td>
 <td></td>
 </tr>
 </table>
@@ -11186,7 +11186,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_NumericArray_from">from(T...)</a></td>
+<td><a href="#Core_Math_NumericArray_from">from</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11198,7 +11198,7 @@
 <td>Multiply & add. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_NumericArray_set">set(self, T...)</a></td>
+<td><a href="#Core_Math_NumericArray_set">set</a></td>
 <td>Set all values. </td>
 </tr>
 </table>
@@ -11221,15 +11221,15 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_NumericArray_opBinary">opBinary(self, NumericArray'(T, N))</a></td>
+<td><a href="#Core_Math_NumericArray_opBinary">opBinary</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_NumericArray_opEquals">opEquals(self, NumericArray'(T, N))</a></td>
+<td><a href="#Core_Math_NumericArray_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_NumericArray_opIndex">opIndex(self, u64)</a></td>
+<td><a href="#Core_Math_NumericArray_opIndex">opIndex</a></td>
 <td></td>
 </tr>
 </table>
@@ -11371,23 +11371,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Point_ceil">ceil(self)</a></td>
+<td><a href="#Core_Math_Point_ceil">ceil</a></td>
 <td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_clear">clear(self)</a></td>
+<td><a href="#Core_Math_Point_clear">clear</a></td>
 <td>Set Point to (0, 0). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon(self, const ref Point, f32)</a></td>
+<td><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon</a></td>
 <td>Check if two points are equal with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_isZero">isZero(self)</a></td>
+<td><a href="#Core_Math_Point_isZero">isZero</a></td>
 <td>Returns <code class="incode">true</code> if the Point is null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon</a></td>
 <td>Check for zero with an epsilon. </td>
 </tr>
 <tr>
@@ -11399,18 +11399,18 @@
 <td>Offset this Point by a given value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_round">round(self)</a></td>
+<td><a href="#Core_Math_Point_round">round</a></td>
 <td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_trunc">trunc(self)</a></td>
+<td><a href="#Core_Math_Point_trunc">trunc</a></td>
 <td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Point_opAffect">opAffect(self, f32)</a></td>
+<td><a href="#Core_Math_Point_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11430,11 +11430,11 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_opEquals">opEquals(self, const ref Point)</a></td>
+<td><a href="#Core_Math_Point_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Point_opUnary">opUnary(self)</a></td>
+<td><a href="#Core_Math_Point_opUnary">opUnary</a></td>
 <td></td>
 </tr>
 </table>
@@ -11657,27 +11657,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Rectangle_applyPadding">applyPadding(self, const ref Vector4)</a></td>
+<td><a href="#Core_Math_Rectangle_applyPadding">applyPadding</a></td>
 <td>Add a padding (offset to each side). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_bottom">bottom(self)</a></td>
+<td><a href="#Core_Math_Rectangle_bottom">bottom</a></td>
 <td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_ceil">ceil(self)</a></td>
+<td><a href="#Core_Math_Rectangle_ceil">ceil</a></td>
 <td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_center">center(self)</a></td>
+<td><a href="#Core_Math_Rectangle_center">center</a></td>
 <td>Central point. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_clear">clear(self)</a></td>
+<td><a href="#Core_Math_Rectangle_clear">clear</a></td>
 <td>Set rectangle to (0, 0, 0, 0). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_constrainIn">constrainIn(self, const ref Rectangle)</a></td>
+<td><a href="#Core_Math_Rectangle_constrainIn">constrainIn</a></td>
 <td>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </td>
 </tr>
 <tr>
@@ -11693,11 +11693,11 @@
 <td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_getUnion">getUnion(const ref Rectangle, const ref Rectangle)</a></td>
+<td><a href="#Core_Math_Rectangle_getUnion">getUnion</a></td>
 <td>Creates a rectangle that represents the union between <code class="incode">a</code> and <code class="incode">b</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_horzCenter">horzCenter(self)</a></td>
+<td><a href="#Core_Math_Rectangle_horzCenter">horzCenter</a></td>
 <td>Horizontal center coordinate (x + width / 2). </td>
 </tr>
 <tr>
@@ -11717,43 +11717,43 @@
 <td>Creates a rectangle that represents the intersetion between <code class="incode">a</code> and <code class="incode">b</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_intersectWith">intersectWith(self, const ref Rectangle)</a></td>
+<td><a href="#Core_Math_Rectangle_intersectWith">intersectWith</a></td>
 <td>Determines if this rectangle intersets with <code class="incode">rect</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Core_Math_Rectangle_isEmpty">isEmpty</a></td>
 <td>Returns true if this instance has a surface of zero (width or height are null). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon</a></td>
 <td>Returns true if this instance has a surface of zero (width and height are null). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_isNormalized">isNormalized(self)</a></td>
+<td><a href="#Core_Math_Rectangle_isNormalized">isNormalized</a></td>
 <td>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_isZero">isZero(self)</a></td>
+<td><a href="#Core_Math_Rectangle_isZero">isZero</a></td>
 <td>Returns true if this instance is null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon</a></td>
 <td>Returns true if this instance is null with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_moveBottom">moveBottom(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_moveBottom">moveBottom</a></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_moveLeft">moveLeft(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_moveLeft">moveLeft</a></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_moveRight">moveRight(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_moveRight">moveRight</a></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_moveTop">moveTop(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_moveTop">moveTop</a></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
@@ -11769,11 +11769,11 @@
 <td>Offset the rectangle position by a x and y values. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_right">right(self)</a></td>
+<td><a href="#Core_Math_Rectangle_right">right</a></td>
 <td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_round">round(self)</a></td>
+<td><a href="#Core_Math_Rectangle_round">round</a></td>
 <td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
@@ -11785,34 +11785,34 @@
 <td>Multiply the width by <code class="incode">x</code> and the height by <code class="incode">y</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_set">set(self, const ref Point, const ref Point)</a></td>
+<td><a href="#Core_Math_Rectangle_set">set</a></td>
 <td>Initialize the rectangle with two position. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_setBottom">setBottom(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_setBottom">setBottom</a></td>
 <td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_setRight">setRight(self, f32)</a></td>
+<td><a href="#Core_Math_Rectangle_setRight">setRight</a></td>
 <td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_setUnion">setUnion(self, const ref Rectangle)</a></td>
+<td><a href="#Core_Math_Rectangle_setUnion">setUnion</a></td>
 <td>Creates a rectangle that represents the union. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_trunc">trunc(self)</a></td>
+<td><a href="#Core_Math_Rectangle_trunc">trunc</a></td>
 <td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Rectangle_vertCenter">vertCenter(self)</a></td>
+<td><a href="#Core_Math_Rectangle_vertCenter">vertCenter</a></td>
 <td>Vertical center coordinate (y + height / 2). </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Rectangle_opEquals">opEquals(self, const ref Rectangle)</a></td>
+<td><a href="#Core_Math_Rectangle_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -12346,23 +12346,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Transform2_createRotation">createRotation(f32, f32, f32)</a></td>
+<td><a href="#Core_Math_Transform2_createRotation">createRotation</a></td>
 <td>Creates a rotation matix, with a given center of rotation. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Transform2_createScale">createScale(f32, f32, f32, f32)</a></td>
+<td><a href="#Core_Math_Transform2_createScale">createScale</a></td>
 <td>Creates a scale matix, with a given center. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Transform2_createTranslation">createTranslation(f32, f32)</a></td>
+<td><a href="#Core_Math_Transform2_createTranslation">createTranslation</a></td>
 <td>Creates a translation matix. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Transform2_multiply">multiply(self, const ref Transform2)</a></td>
+<td><a href="#Core_Math_Transform2_multiply">multiply</a></td>
 <td>Multiply two matricies. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Transform2_setIdentity">setIdentity(self)</a></td>
+<td><a href="#Core_Math_Transform2_setIdentity">setIdentity</a></td>
 <td>Set transform to identity. </td>
 </tr>
 </table>
@@ -12469,46 +12469,46 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Variant_checkValidType">checkValidType(const [..] const *TypeInfo, const *TypeInfo)</a></td>
+<td><a href="#Core_Math_Variant_checkValidType">checkValidType</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_drop">drop(self)</a></td>
+<td><a href="#Core_Math_Variant_drop">drop</a></td>
 <td>Drop the variant content (if necessary). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_get">get(self)</a></td>
+<td><a href="#Core_Math_Variant_get">get</a></td>
 <td>Get the variant value of the given type  Will assert if the current type does not match. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_set">set(self, TN)</a></td>
+<td><a href="#Core_Math_Variant_set">set</a></td>
 <td>Set the variant value. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Variant_opAffect">opAffect(self, TN)</a></td>
+<td><a href="#Core_Math_Variant_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_opCmp">opCmp(self, TN)</a></td>
+<td><a href="#Core_Math_Variant_opCmp">opCmp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_opDrop">opDrop(self)</a></td>
+<td><a href="#Core_Math_Variant_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_opEquals">opEquals(self, TN)</a></td>
+<td><a href="#Core_Math_Variant_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_opPostCopy">opPostCopy(self)</a></td>
+<td><a href="#Core_Math_Variant_opPostCopy">opPostCopy</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Variant_opPostMove">opPostMove(self)</a></td>
+<td><a href="#Core_Math_Variant_opPostMove">opPostMove</a></td>
 <td></td>
 </tr>
 </table>
@@ -12671,19 +12671,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector2_angle">angle(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_angle">angle</a></td>
 <td>Returns the angle with another vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_ceil">ceil(self)</a></td>
+<td><a href="#Core_Math_Vector2_ceil">ceil</a></td>
 <td>Math.ceil. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_clear">clear(self)</a></td>
+<td><a href="#Core_Math_Vector2_clear">clear</a></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_cosAngle">cosAngle(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_cosAngle">cosAngle</a></td>
 <td>Returns the cosine angle with another vector. </td>
 </tr>
 <tr>
@@ -12695,130 +12695,130 @@
 <td>Returns the perpendicular vector in the 2D plane. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_distance">distance(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_distance">distance</a></td>
 <td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_distanceSquared">distanceSquared(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_distanceSquared">distanceSquared</a></td>
 <td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_distanceToLine">distanceToLine(self, const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_distanceToLine">distanceToLine</a></td>
 <td>Returns the distance of the point to the given line. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment(self, const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment</a></td>
 <td>Returns the distance of the point to the given segment. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_dot">dot(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_dot">dot</a></td>
 <td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_floor">floor(self)</a></td>
+<td><a href="#Core_Math_Vector2_floor">floor</a></td>
 <td>Math.floor. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon(self, const ref Vector2, f32)</a></td>
+<td><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></td>
 <td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_isInEllipse">isInEllipse(self, const ref Vector2, f32, f32)</a></td>
+<td><a href="#Core_Math_Vector2_isInEllipse">isInEllipse</a></td>
 <td>Returns true if the point <code class="incode">pt</code> is inside an ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_isInTriangle">isInTriangle(self, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_isInTriangle">isInTriangle</a></td>
 <td>Returns true if the point <code class="incode">pt</code> is inside the triangle defined with 'a, b, c'. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_isZero">isZero(self)</a></td>
+<td><a href="#Core_Math_Vector2_isZero">isZero</a></td>
 <td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon</a></td>
 <td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_length">length(self)</a></td>
+<td><a href="#Core_Math_Vector2_length">length</a></td>
 <td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_lengthSquared">lengthSquared(self)</a></td>
+<td><a href="#Core_Math_Vector2_lengthSquared">lengthSquared</a></td>
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_lerp">lerp(const ref Vector2, const ref Vector2, f32)</a></td>
+<td><a href="#Core_Math_Vector2_lerp">lerp</a></td>
 <td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
+<td><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect</a></td>
 <td>Compute the intersection point of two lines. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_max">max(const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_max">max</a></td>
 <td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_min">min(const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_min">min</a></td>
 <td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg</a></td>
 <td>Returns the minimal segment between two segments (and the minimal distance). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_negate">negate(self)</a></td>
+<td><a href="#Core_Math_Vector2_negate">negate</a></td>
 <td>Negate the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_normalize">normalize(self)</a></td>
+<td><a href="#Core_Math_Vector2_normalize">normalize</a></td>
 <td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe(self)</a></td>
+<td><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe</a></td>
 <td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_polyContains">polyContains(const ref Array'(Vector2), const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_polyContains">polyContains</a></td>
 <td>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_rotate">rotate(self, const ref Angle)</a></td>
+<td><a href="#Core_Math_Vector2_rotate">rotate</a></td>
 <td>Rotate the vector by a given angle. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_round">round(self)</a></td>
+<td><a href="#Core_Math_Vector2_round">round</a></td>
 <td>Math.round. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect(const ref Vector2, const ref Vector2, const ref Vector2, const ref Vector2, f32)</a></td>
+<td><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect</a></td>
 <td>Compute the intersection point of two segments. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_set">set(self, f32, f32)</a></td>
+<td><a href="#Core_Math_Vector2_set">set</a></td>
 <td>Set content. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_setLength">setLength(self, f32)</a></td>
+<td><a href="#Core_Math_Vector2_setLength">setLength</a></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe(self, f32)</a></td>
+<td><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe</a></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_toNormalize">toNormalize(self)</a></td>
+<td><a href="#Core_Math_Vector2_toNormalize">toNormalize</a></td>
 <td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe(self)</a></td>
+<td><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe</a></td>
 <td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector2_opAffect">opAffect(self, f32)</a></td>
+<td><a href="#Core_Math_Vector2_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12838,11 +12838,11 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_opEquals">opEquals(self, const ref Vector2)</a></td>
+<td><a href="#Core_Math_Vector2_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector2_opUnary">opUnary(self)</a></td>
+<td><a href="#Core_Math_Vector2_opUnary">opUnary</a></td>
 <td></td>
 </tr>
 </table>
@@ -13457,90 +13457,90 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector3_clear">clear(self)</a></td>
+<td><a href="#Core_Math_Vector3_clear">clear</a></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_distance">distance(self, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_distance">distance</a></td>
 <td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_distanceSquared">distanceSquared(self, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_distanceSquared">distanceSquared</a></td>
 <td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_dot">dot(self, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_dot">dot</a></td>
 <td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon(self, const ref Vector3, f32)</a></td>
+<td><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon</a></td>
 <td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_isZero">isZero(self)</a></td>
+<td><a href="#Core_Math_Vector3_isZero">isZero</a></td>
 <td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon(self, f32)</a></td>
+<td><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon</a></td>
 <td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_length">length(self)</a></td>
+<td><a href="#Core_Math_Vector3_length">length</a></td>
 <td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_lengthSquared">lengthSquared(self)</a></td>
+<td><a href="#Core_Math_Vector3_lengthSquared">lengthSquared</a></td>
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_lerp">lerp(const ref Vector3, const ref Vector3, f32)</a></td>
+<td><a href="#Core_Math_Vector3_lerp">lerp</a></td>
 <td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_max">max(const ref Vector3, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_max">max</a></td>
 <td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_min">min(const ref Vector3, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_min">min</a></td>
 <td>Returns a vector which is the <code class="incode">min</code> of two vectors. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_negate">negate(self)</a></td>
+<td><a href="#Core_Math_Vector3_negate">negate</a></td>
 <td>Negate the vector. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_normalize">normalize(self)</a></td>
+<td><a href="#Core_Math_Vector3_normalize">normalize</a></td>
 <td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe(self)</a></td>
+<td><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe</a></td>
 <td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_set">set(self, f32, f32, f32)</a></td>
+<td><a href="#Core_Math_Vector3_set">set</a></td>
 <td>Set content. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_setLength">setLength(self, f32)</a></td>
+<td><a href="#Core_Math_Vector3_setLength">setLength</a></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe(self, f32)</a></td>
+<td><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe</a></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_toNormalize">toNormalize(self)</a></td>
+<td><a href="#Core_Math_Vector3_toNormalize">toNormalize</a></td>
 <td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe(self)</a></td>
+<td><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe</a></td>
 <td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector3_opAffect">opAffect(self, f32)</a></td>
+<td><a href="#Core_Math_Vector3_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13560,11 +13560,11 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_opEquals">opEquals(self, const ref Vector3)</a></td>
+<td><a href="#Core_Math_Vector3_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector3_opUnary">opUnary(self)</a></td>
+<td><a href="#Core_Math_Vector3_opUnary">opUnary</a></td>
 <td></td>
 </tr>
 </table>
@@ -13951,26 +13951,26 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector4_clear">clear(self)</a></td>
+<td><a href="#Core_Math_Vector4_clear">clear</a></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector4_lerp">lerp(const ref Vector4, const ref Vector4, f32)</a></td>
+<td><a href="#Core_Math_Vector4_lerp">lerp</a></td>
 <td>Lerp one vector with another. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Math_Vector4_opAffect">opAffect(self, f32)</a></td>
+<td><a href="#Core_Math_Vector4_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector4_opEquals">opEquals(self, const ref Vector4)</a></td>
+<td><a href="#Core_Math_Vector4_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Math_Vector4_opUnary">opUnary(self)</a></td>
+<td><a href="#Core_Math_Vector4_opUnary">opUnary</a></td>
 <td></td>
 </tr>
 </table>
@@ -15118,23 +15118,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Parser_RegExp_clear">clear(self)</a></td>
+<td><a href="#Core_Parser_RegExp_clear">clear</a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Core_Parser_RegExp_compile">compile(self, string, bool)</a></td>
+<td><a href="#Core_Parser_RegExp_compile">compile</a></td>
 <td>Compile the expression. </td>
 </tr>
 <tr>
-<td><a href="#Core_Parser_RegExp_grep">grep(self, string)</a></td>
+<td><a href="#Core_Parser_RegExp_grep">grep</a></td>
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
-<td><a href="#Core_Parser_RegExp_grepAll">grepAll(self, string)</a></td>
+<td><a href="#Core_Parser_RegExp_grepAll">grepAll</a></td>
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
-<td><a href="#Core_Parser_RegExp_match">match(self, string)</a></td>
+<td><a href="#Core_Parser_RegExp_match">match</a></td>
 <td>Returns true if <code class="incode">str</code> matches the regexp. </td>
 </tr>
 </table>
@@ -15477,11 +15477,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Random_CMWC4096_nextU32">nextU32(self)</a></td>
+<td><a href="#Core_Random_CMWC4096_nextU32">nextU32</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Random_CMWC4096_seedU32">seedU32(self, u32)</a></td>
+<td><a href="#Core_Random_CMWC4096_seedU32">seedU32</a></td>
 <td></td>
 </tr>
 </table>
@@ -15537,7 +15537,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Random_MWC_nextU32">nextU32(self)</a></td>
+<td><a href="#Core_Random_MWC_nextU32">nextU32</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15602,7 +15602,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Random_Mt64_nextU64">nextU64(self)</a></td>
+<td><a href="#Core_Random_Mt64_nextU64">nextU64</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15669,7 +15669,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Random_Rng_nextBool">nextBool(self)</a></td>
+<td><a href="#Core_Random_Rng_nextBool">nextBool</a></td>
 <td>Returns a random bool. </td>
 </tr>
 <tr>
@@ -15721,19 +15721,19 @@
 <td>Returns an unsigned random value in a given range  <code class="incode">max</code> is excluded. </td>
 </tr>
 <tr>
-<td><a href="#Core_Random_Rng_seedNow">seedNow(self)</a></td>
+<td><a href="#Core_Random_Rng_seedNow">seedNow</a></td>
 <td>Seed the rng with the current time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Random_Rng_seedU32">seedU32(self, u32)</a></td>
+<td><a href="#Core_Random_Rng_seedU32">seedU32</a></td>
 <td>Seed random generator with a 32 bits value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Random_Rng_seedU64">seedU64(self, u64)</a></td>
+<td><a href="#Core_Random_Rng_seedU64">seedU64</a></td>
 <td>Seed random generator with a 64 bits value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Random_Rng_shuffle">shuffle(self, [..] V)</a></td>
+<td><a href="#Core_Random_Rng_shuffle">shuffle</a></td>
 <td>Randomly change the order of a slice. </td>
 </tr>
 </table>
@@ -16600,23 +16600,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Decoder_end">end(self)</a></td>
+<td><a href="#Core_Serialization_Decoder_end">end</a></td>
 <td>Finish reading. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Decoder_readAll">readAll(self, const [..] u8)</a></td>
+<td><a href="#Core_Serialization_Decoder_readAll">readAll</a></td>
 <td>Read a full struct. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue(self, const ref TypeValue, ^void)</a></td>
+<td><a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Decoder_readValue">readValue(self, ^void, const *TypeInfo)</a></td>
+<td><a href="#Core_Serialization_Decoder_readValue">readValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Decoder_start">start(self, const [..] u8)</a></td>
+<td><a href="#Core_Serialization_Decoder_start">start</a></td>
 <td>Start reading. </td>
 </tr>
 </table>
@@ -16997,23 +16997,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Encoder_end">end(self)</a></td>
+<td><a href="#Core_Serialization_Encoder_end">end</a></td>
 <td>End serialization. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Encoder_start">start(self, *ConcatBuffer)</a></td>
+<td><a href="#Core_Serialization_Encoder_start">start</a></td>
 <td>Start serialization. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Encoder_writeAll">writeAll(self, *ConcatBuffer, any)</a></td>
+<td><a href="#Core_Serialization_Encoder_writeAll">writeAll</a></td>
 <td>Write a full struct. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue(self, const ref TypeValue, const ^void)</a></td>
+<td><a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Encoder_writeValue">writeValue(self, const ^void, const *TypeInfo)</a></td>
+<td><a href="#Core_Serialization_Encoder_writeValue">writeValue</a></td>
 <td></td>
 </tr>
 </table>
@@ -18249,71 +18249,71 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginElement">beginElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginSection">beginSection(self, SectionKind)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginSection">beginSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_beginValue">beginValue(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_beginValue">beginValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endElement">endElement(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endElement">endElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endRoot">endRoot(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endRoot">endRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endSection">endSection(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endSection">endSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endSequence">endSequence(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endSequence">endSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endStruct">endStruct(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endStruct">endStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_endValue">endValue(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_endValue">endValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_getVersion">getVersion(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_getVersion">getVersion</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_readNative">readNative(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_readNative">readNative</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_startRead">startRead(self, const [..] u8)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_startRead">startRead</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks(self)</a></td>
+<td><a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks</a></td>
 <td></td>
 </tr>
 </table>
@@ -18611,67 +18611,67 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection(self, SectionKind, bool)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence(self, const *TypeInfo, *u8, *u64)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endElement">endElement(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endElement">endElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endSection">endSection(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endSection">endSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_endValue">endValue(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_endValue">endValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_readNative">readNative(self)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_readNative">readNative</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_startRead">startRead(self, const [..] u8)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_startRead">startRead</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement(self, *u64)</a></td>
+<td><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement</a></td>
 <td></td>
 </tr>
 </table>
@@ -18995,23 +18995,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Serializer_beginSection">beginSection(self, SectionKind)</a></td>
+<td><a href="#Core_Serialization_Serializer_beginSection">beginSection</a></td>
 <td>Start a new section. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_end">end(self)</a></td>
+<td><a href="#Core_Serialization_Serializer_end">end</a></td>
 <td>End encoding/decoding. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_endSection">endSection(self)</a></td>
+<td><a href="#Core_Serialization_Serializer_endSection">endSection</a></td>
 <td>End the previous section. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_isReading">isReading(self)</a></td>
+<td><a href="#Core_Serialization_Serializer_isReading">isReading</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_isWriting">isWriting(self)</a></td>
+<td><a href="#Core_Serialization_Serializer_isWriting">isWriting</a></td>
 <td></td>
 </tr>
 <tr>
@@ -19023,11 +19023,11 @@
 <td>Serialize one value. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_startRead">startRead(self, IDecoder, const [..] u8)</a></td>
+<td><a href="#Core_Serialization_Serializer_startRead">startRead</a></td>
 <td>Start decoding. </td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Serializer_startWrite">startWrite(self, IEncoder, *ConcatBuffer)</a></td>
+<td><a href="#Core_Serialization_Serializer_startWrite">startWrite</a></td>
 <td>Start encoding. </td>
 </tr>
 </table>
@@ -19207,63 +19207,63 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginElement">beginElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginSection">beginSection(self, SectionKind)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginSection">beginSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_beginValue">beginValue(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_beginValue">beginValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endElement">endElement(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endElement">endElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endRoot">endRoot(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endRoot">endRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endSection">endSection(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endSection">endSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endSequence">endSequence(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endSequence">endSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endStruct">endStruct(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endStruct">endStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_endValue">endValue(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_endValue">endValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_startWrite">startWrite(self, *ConcatBuffer)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_startWrite">startWrite</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent(self)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_JSon_writeNative">writeNative(self, NT)</a></td>
+<td><a href="#Core_Serialization_Write_JSon_writeNative">writeNative</a></td>
 <td></td>
 </tr>
 </table>
@@ -19516,59 +19516,59 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement(self, const ref TypeValue)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection(self, SectionKind)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence(self, const *TypeInfo, const *void, u64)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct(self, const *TypeInfo, const *u8)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endElement">endElement(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endElement">endElement</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endSection">endSection(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endSection">endSection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_endValue">endValue(self)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_endValue">endValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite(self, *ConcatBuffer)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative(self, NT)</a></td>
+<td><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative</a></td>
 <td></td>
 </tr>
 </table>
@@ -19841,23 +19841,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Slice_contains">contains(const [..] T, V)</a></td>
+<td><a href="#Core_Slice_contains">contains</a></td>
 <td>Returns true if the given slice contains the <code class="incode">value</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_equals">equals(const [..] T, const [..] T)</a></td>
+<td><a href="#Core_Slice_equals">equals</a></td>
 <td>Returns true if two slices are equal. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_findLinear">findLinear(const [..] T, V)</a></td>
+<td><a href="#Core_Slice_findLinear">findLinear</a></td>
 <td>Find <code class="incode">value</code> in a slice by performing a linear search. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_findSorted">findSorted(const [..] T, V)</a></td>
+<td><a href="#Core_Slice_findSorted">findSorted</a></td>
 <td>Find <code class="incode">value</code> in a slice by performing a binary search. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_insertionSort">insertionSort([..] T, func(*void, T, T)->s32)</a></td>
+<td><a href="#Core_Slice_insertionSort">insertionSort</a></td>
 <td>Insertion sort algorithm (slow). </td>
 </tr>
 <tr>
@@ -19869,15 +19869,15 @@
 <td>Returns true if the slice is sorted. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_modifyInPlace">modifyInPlace([..] T, func(*T))</a></td>
+<td><a href="#Core_Slice_modifyInPlace">modifyInPlace</a></td>
 <td>Transform the content of a slice with a given lambda. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_quickSort">quickSort([..] T, func(*void, T, T)->s32)</a></td>
+<td><a href="#Core_Slice_quickSort">quickSort</a></td>
 <td>Quick sort algorithm. </td>
 </tr>
 <tr>
-<td><a href="#Core_Slice_reverse">reverse([..] T)</a></td>
+<td><a href="#Core_Slice_reverse">reverse</a></td>
 <td>Reverse the content of a slice. </td>
 </tr>
 <tr>
@@ -20085,47 +20085,47 @@
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_addOnce">addOnce(self, T)</a></td>
+<td><a href="#Core_StaticArray_addOnce">addOnce</a></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_back">back(self)</a></td>
+<td><a href="#Core_StaticArray_back">back</a></td>
 <td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_backPtr">backPtr(self)</a></td>
+<td><a href="#Core_StaticArray_backPtr">backPtr</a></td>
 <td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_clear">clear(self)</a></td>
+<td><a href="#Core_StaticArray_clear">clear</a></td>
 <td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_contains">contains(self, V)</a></td>
+<td><a href="#Core_StaticArray_contains">contains</a></td>
 <td>Returns true if the given <code class="incode">value</code> is in the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_emplaceAddress">emplaceAddress(self, u32)</a></td>
+<td><a href="#Core_StaticArray_emplaceAddress">emplaceAddress</a></td>
 <td>Reserve room at the end of the array for <code class="incode">num</code> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_emplaceAt">emplaceAt(self, u64, [..] T)</a></td>
+<td><a href="#Core_StaticArray_emplaceAt">emplaceAt</a></td>
 <td>Move some values at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress(self, u32)</a></td>
+<td><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress</a></td>
 <td>Reserve room at the end of the array for <code class="incode">num</code> elements. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_free">free(self)</a></td>
+<td><a href="#Core_StaticArray_free">free</a></td>
 <td>Free the array content. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_front">front(self)</a></td>
+<td><a href="#Core_StaticArray_front">front</a></td>
 <td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_frontPtr">frontPtr(self)</a></td>
+<td><a href="#Core_StaticArray_frontPtr">frontPtr</a></td>
 <td>Returns the address of the first element. </td>
 </tr>
 <tr>
@@ -20141,11 +20141,11 @@
 <td>Move a value at the given index. If <code class="incode">index</code> is equal to <code class="incode">count</code>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Core_StaticArray_isEmpty">isEmpty</a></td>
 <td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_popBack">popBack(self)</a></td>
+<td><a href="#Core_StaticArray_popBack">popBack</a></td>
 <td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
@@ -20157,23 +20157,23 @@
 <td>Remove <code class="incode">num</code> elements starting at <code class="incode">index</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_removeAt">removeAt(self, u64)</a></td>
+<td><a href="#Core_StaticArray_removeAt">removeAt</a></td>
 <td>Remove an element at <code class="incode">index</code> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered(self, u64, u64)</a></td>
+<td><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered</a></td>
 <td>Remove <code class="incode">numValues</code> elements at <code class="incode">index</code> by shifting all others. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_removeBack">removeBack(self)</a></td>
+<td><a href="#Core_StaticArray_removeBack">removeBack</a></td>
 <td>Remove the last element. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_removeOrdered">removeOrdered(self, V)</a></td>
+<td><a href="#Core_StaticArray_removeOrdered">removeOrdered</a></td>
 <td>Remove the given <code class="incode">value</code>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_resize">resize(self, u64)</a></td>
+<td><a href="#Core_StaticArray_resize">resize</a></td>
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
@@ -20185,18 +20185,18 @@
 <td>Sort array. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_sortReverse">sortReverse(self)</a></td>
+<td><a href="#Core_StaticArray_sortReverse">sortReverse</a></td>
 <td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_toSlice">toSlice(self)</a></td>
+<td><a href="#Core_StaticArray_toSlice">toSlice</a></td>
 <td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_StaticArray_opAffect">opAffect(self, const [..] T)</a></td>
+<td><a href="#Core_StaticArray_opAffect">opAffect</a></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
@@ -20208,19 +20208,15 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opCount">opCount(self)</a></td>
+<td><a href="#Core_StaticArray_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opData">opData(self)</a></td>
+<td><a href="#Core_StaticArray_opData">opData</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opDrop">opDrop(self)</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
+<td><a href="#Core_StaticArray_opDrop">opDrop</a></td>
 <td></td>
 </tr>
 <tr>
@@ -20228,23 +20224,27 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opIndexAffect">opIndexAffect(self, u64, T)</a></td>
+<td><a href="#Core_StaticArray_opIndex">opIndex(self, u64)</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opIndexAssign">opIndexAssign(self, u64, T)</a></td>
+<td><a href="#Core_StaticArray_opIndexAffect">opIndexAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opSlice">opSlice(self, u64, u64)</a></td>
+<td><a href="#Core_StaticArray_opIndexAssign">opIndexAssign</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Core_StaticArray_opSlice">opSlice</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#Core_StaticArray_opVisit">opVisit</a></td>
 <td>Vist every elements of the array. </td>
 </tr>
 <tr>
-<td><a href="#Core_StaticArray_opVisitBack">opVisitBack(self, code)</a></td>
+<td><a href="#Core_StaticArray_opVisitBack">opVisitBack</a></td>
 <td>Vist every elements of the array from end to start. </td>
 </tr>
 </table>
@@ -20829,7 +20829,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat(self, string)</a></td>
+<td><a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat</a></td>
 <td>Set some format options with a given user string. </td>
 </tr>
 </table>
@@ -20903,7 +20903,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat(self, string)</a></td>
+<td><a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat</a></td>
 <td>Set some format options with a given user string. </td>
 </tr>
 </table>
@@ -21003,47 +21003,47 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_appendAny">appendAny(self, any, string)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_appendAny">appendAny</a></td>
 <td>Append a value. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL</a></td>
 <td>Append a end of line. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat(self, string, ...)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat</a></td>
 <td>Append a formatted string. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_appendRune">appendRune(self, rune)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_appendRune">appendRune</a></td>
 <td>Append a rune. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_appendString">appendString(self, string)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_appendString">appendString</a></td>
 <td>Append a string. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_clear">clear(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_clear">clear</a></td>
 <td>Clear the content of the builder. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_count">count(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_count">count</a></td>
 <td>Returns the number of characters. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_moveToString">moveToString(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_moveToString">moveToString</a></td>
 <td>Return the content as a string by eating the content of the string builder (if possible). </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize(self, u64)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize</a></td>
 <td>Set sizes of buckets of the string builder. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_toString">toString(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_toString">toString</a></td>
 <td>Return the content as a string. </td>
 </tr>
 <tr>
-<td><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated(self)</a></td>
+<td><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated</a></td>
 <td>Force a ending 0. </td>
 </tr>
 </table>
@@ -21846,79 +21846,79 @@
 <td>Append a byte to the String. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_appendFormat">appendFormat(self, string, ...)</a></td>
+<td><a href="#Core_String_appendFormat">appendFormat</a></td>
 <td>Append a formatted string. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_back">back(self)</a></td>
+<td><a href="#Core_String_back">back</a></td>
 <td>Get the last byte. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_clear">clear(self)</a></td>
+<td><a href="#Core_String_clear">clear</a></td>
 <td>Set the length of the String to 0. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_ensureNotNull">ensureNotNull(self)</a></td>
+<td><a href="#Core_String_ensureNotNull">ensureNotNull</a></td>
 <td>Transform a null string in an empty one. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_from">from(string)</a></td>
+<td><a href="#Core_String_from">from</a></td>
 <td>Convert a literal string to a String. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_grow">grow(self, u64)</a></td>
+<td><a href="#Core_String_grow">grow</a></td>
 <td>Ensure the String is big enough to store a given amount of bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_insert">insert(self, u64, string)</a></td>
+<td><a href="#Core_String_insert">insert</a></td>
 <td>Insert a substring at the given position. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Core_String_isEmpty">isEmpty</a></td>
 <td>Returns true if the String has zero length. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_isNull">isNull(self)</a></td>
+<td><a href="#Core_String_isNull">isNull</a></td>
 <td>Returns true if the String is null (undefined). </td>
 </tr>
 <tr>
-<td><a href="#Core_String_isNullOrEmpty">isNullOrEmpty(self)</a></td>
+<td><a href="#Core_String_isNullOrEmpty">isNullOrEmpty</a></td>
 <td>Returns true if the String is null or empty. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_join">join(string...)</a></td>
+<td><a href="#Core_String_join">join</a></td>
 <td>Join a list of strings to make a unique one. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_joinWith">joinWith(string, string...)</a></td>
+<td><a href="#Core_String_joinWith">joinWith</a></td>
 <td>Join an list of strings to make a unique one, by using a given <code class="incode">separator</code>  between them. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_makeLower">makeLower(self, CharacterSet)</a></td>
+<td><a href="#Core_String_makeLower">makeLower</a></td>
 <td>Convert the string inplace to lower case. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_makeUpper">makeUpper(self, CharacterSet)</a></td>
+<td><a href="#Core_String_makeUpper">makeUpper</a></td>
 <td>Convert the string inplace to upper case. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_remove">remove(self, u64, u64)</a></td>
+<td><a href="#Core_String_remove">remove</a></td>
 <td>Remove some bytes at the given index. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_removeBack">removeBack(self, u64)</a></td>
+<td><a href="#Core_String_removeBack">removeBack</a></td>
 <td>Remove some bytes at the end. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_replace">replace(self, string, string, ComparisonType)</a></td>
+<td><a href="#Core_String_replace">replace</a></td>
 <td>Replace all occurences of <code class="incode">what</code> with <code class="incode">by</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_reserve">reserve(self, u64)</a></td>
+<td><a href="#Core_String_reserve">reserve</a></td>
 <td>Reserve room for at least <code class="incode">newCapacity</code> bytes. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_toCharArray">toCharArray(self)</a></td>
+<td><a href="#Core_String_toCharArray">toCharArray</a></td>
 <td>Convert string to a 32 bits character array. </td>
 </tr>
 <tr>
@@ -21930,11 +21930,11 @@
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_toSlice">toSlice(self)</a></td>
+<td><a href="#Core_String_toSlice">toSlice</a></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_toString">toString(self)</a></td>
+<td><a href="#Core_String_toString">toString</a></td>
 <td>Returns a string type. </td>
 </tr>
 <tr>
@@ -21946,22 +21946,22 @@
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_trim">trim(self)</a></td>
+<td><a href="#Core_String_trim">trim</a></td>
 <td>Removes all leading and trailing white-space characters from the current String. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_trimEnd">trimEnd(self)</a></td>
+<td><a href="#Core_String_trimEnd">trimEnd</a></td>
 <td>Remove whitespaces at the end of the String. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_trimStart">trimStart(self)</a></td>
+<td><a href="#Core_String_trimStart">trimStart</a></td>
 <td>Remove whitespaces at the start of the String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_String_opAffect">opAffect(self, string)</a></td>
+<td><a href="#Core_String_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
@@ -21989,43 +21989,43 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opCmp">opCmp(self, string)</a></td>
+<td><a href="#Core_String_opCmp">opCmp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opCount">opCount(self)</a></td>
+<td><a href="#Core_String_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opData">opData(self)</a></td>
+<td><a href="#Core_String_opData">opData</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opEquals">opEquals(self, string)</a></td>
+<td><a href="#Core_String_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opIndex">opIndex(self, u64)</a></td>
+<td><a href="#Core_String_opIndex">opIndex</a></td>
 <td>Returns the byte at the given index. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_opIndexAffect">opIndexAffect(self, u64, u8)</a></td>
+<td><a href="#Core_String_opIndexAffect">opIndexAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opIndexAssign">opIndexAssign(self, u64, u8)</a></td>
+<td><a href="#Core_String_opIndexAssign">opIndexAssign</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opSlice">opSlice(self, u64, u64)</a></td>
+<td><a href="#Core_String_opSlice">opSlice</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_String_opVisitBytes">opVisitBytes(self, code)</a></td>
+<td><a href="#Core_String_opVisitBytes">opVisitBytes</a></td>
 <td>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </td>
 </tr>
 <tr>
-<td><a href="#Core_String_opVisitRunes">opVisitRunes(self, code)</a></td>
+<td><a href="#Core_String_opVisitRunes">opVisitRunes</a></td>
 <td>Visit the string runes  See Utf8.visitRunes for aliases. </td>
 </tr>
 </table>
@@ -22631,31 +22631,31 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Sync_Event_create">create()</a></td>
+<td><a href="#Core_Sync_Event_create">create</a></td>
 <td>Creates a new event. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_init">init(self, bool, bool)</a></td>
+<td><a href="#Core_Sync_Event_init">init</a></td>
 <td>Initialize event. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_isValid">isValid(self)</a></td>
+<td><a href="#Core_Sync_Event_isValid">isValid</a></td>
 <td>Returns true if the event is valid. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_release">release(self)</a></td>
+<td><a href="#Core_Sync_Event_release">release</a></td>
 <td>Destroy an existing event. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_reset">reset(self)</a></td>
+<td><a href="#Core_Sync_Event_reset">reset</a></td>
 <td>Reset the event state. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_signal">signal(self)</a></td>
+<td><a href="#Core_Sync_Event_signal">signal</a></td>
 <td>Signal the event. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Event_wait">wait(self)</a></td>
+<td><a href="#Core_Sync_Event_wait">wait</a></td>
 <td>Wait for the event to be signaled. </td>
 </tr>
 </table>
@@ -22778,15 +22778,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Sync_Mutex_lock">lock(self)</a></td>
+<td><a href="#Core_Sync_Mutex_lock">lock</a></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Mutex_tryLock">tryLock(self)</a></td>
+<td><a href="#Core_Sync_Mutex_tryLock">tryLock</a></td>
 <td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_Mutex_unlock">unlock(self)</a></td>
+<td><a href="#Core_Sync_Mutex_unlock">unlock</a></td>
 <td>Unlock mutex. </td>
 </tr>
 </table>
@@ -22853,35 +22853,35 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Sync_RWLock_lock">lock(self)</a></td>
+<td><a href="#Core_Sync_RWLock_lock">lock</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_lockExclusive">lockExclusive(self)</a></td>
+<td><a href="#Core_Sync_RWLock_lockExclusive">lockExclusive</a></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_lockShared">lockShared(self)</a></td>
+<td><a href="#Core_Sync_RWLock_lockShared">lockShared</a></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive(self)</a></td>
+<td><a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive</a></td>
 <td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_tryLockShared">tryLockShared(self)</a></td>
+<td><a href="#Core_Sync_RWLock_tryLockShared">tryLockShared</a></td>
 <td>Try to lock the mutex, and return <code class="incode">true</code> if it's the case. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_unlock">unlock(self)</a></td>
+<td><a href="#Core_Sync_RWLock_unlock">unlock</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive(self)</a></td>
+<td><a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive</a></td>
 <td>Unlock mutex. </td>
 </tr>
 <tr>
-<td><a href="#Core_Sync_RWLock_unlockShared">unlockShared(self)</a></td>
+<td><a href="#Core_Sync_RWLock_unlockShared">unlockShared</a></td>
 <td>Unlock mutex. </td>
 </tr>
 </table>
@@ -23089,39 +23089,39 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Threading_Thread_init">init(self, func(*void, Thread), *void, ThreadPriority, s32)</a></td>
+<td><a href="#Core_Threading_Thread_init">init</a></td>
 <td>Initialize a thread in pause state. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_isDone">isDone(self)</a></td>
+<td><a href="#Core_Threading_Thread_isDone">isDone</a></td>
 <td>Returns true if the thread has finished. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_isValid">isValid(self)</a></td>
+<td><a href="#Core_Threading_Thread_isValid">isValid</a></td>
 <td>Returns true if the thread is valid. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd(self)</a></td>
+<td><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd</a></td>
 <td>Force the thread to safely exist  User code needs to check for <code class="incode">requestEnd</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_setPriority">setPriority(self, ThreadPriority)</a></td>
+<td><a href="#Core_Threading_Thread_setPriority">setPriority</a></td>
 <td>Set the thread priority. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_sleep">sleep(const ref Duration)</a></td>
+<td><a href="#Core_Threading_Thread_sleep">sleep</a></td>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_start">start(self)</a></td>
+<td><a href="#Core_Threading_Thread_start">start</a></td>
 <td>Resume the given thread, if it was paused. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_wait">wait(self)</a></td>
+<td><a href="#Core_Threading_Thread_wait">wait</a></td>
 <td>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </td>
 </tr>
 <tr>
-<td><a href="#Core_Threading_Thread_yield">yield()</a></td>
+<td><a href="#Core_Threading_Thread_yield">yield</a></td>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 </table>
@@ -23350,46 +23350,46 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek(self)</a></td>
+<td><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek</a></td>
 <td>Returns the day of week of the current date. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName(DayOfWeek)</a></td>
+<td><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName</a></td>
 <td>Returns the day of week name. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_isValid">isValid(self)</a></td>
+<td><a href="#Core_Time_DateTime_isValid">isValid</a></td>
 <td>Returns true if this is a valid datatime. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_monthName">monthName(u16)</a></td>
+<td><a href="#Core_Time_DateTime_monthName">monthName</a></td>
 <td>Returns the month name. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_now">now()</a></td>
+<td><a href="#Core_Time_DateTime_now">now</a></td>
 <td>Returns a DateTime containing the current date and time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_parse">parse(string, DateTimeFormat, bool)</a></td>
+<td><a href="#Core_Time_DateTime_parse">parse</a></td>
 <td>Convert a string to a DateTime with the given format. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_setNow">setNow(self)</a></td>
+<td><a href="#Core_Time_DateTime_setNow">setNow</a></td>
 <td>Initialize the structure with the current local date and time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_toString">toString(self, DateTimeFormat)</a></td>
+<td><a href="#Core_Time_DateTime_toString">toString</a></td>
 <td>Convert to string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_DateTime_opCmp">opCmp(self, const ref DateTime)</a></td>
+<td><a href="#Core_Time_DateTime_opCmp">opCmp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_DateTime_opEquals">opEquals(self, const ref DateTime)</a></td>
+<td><a href="#Core_Time_DateTime_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -23641,22 +23641,22 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_Duration_fromMs">fromMs(u32)</a></td>
+<td><a href="#Core_Time_Duration_fromMs">fromMs</a></td>
 <td>Returns a duration initialized with milliseconds. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Duration_toMs">toMs(self)</a></td>
+<td><a href="#Core_Time_Duration_toMs">toMs</a></td>
 <td>Returns the value in milliseconds. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_Duration_opAffect">opAffect(self, s32)</a></td>
+<td><a href="#Core_Time_Duration_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix(self, s32)</a></td>
+<td><a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix</a></td>
 <td></td>
 </tr>
 </table>
@@ -23760,15 +23760,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_FrameTiming_pause">pause(self)</a></td>
+<td><a href="#Core_Time_FrameTiming_pause">pause</a></td>
 <td>Pause frame timing & count. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_FrameTiming_unpause">unpause(self)</a></td>
+<td><a href="#Core_Time_FrameTiming_unpause">unpause</a></td>
 <td>Unpause frame timing & count. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_FrameTiming_update">update(self)</a></td>
+<td><a href="#Core_Time_FrameTiming_update">update</a></td>
 <td>Update frame timers. </td>
 </tr>
 </table>
@@ -23846,39 +23846,39 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds</a></td>
 <td>Gets the total elapsed time in microseconds, after a call to <code class="incode">stop</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow</a></td>
 <td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds</a></td>
 <td>Gets the total elapsed time in milliseconds, after a call to <code class="incode">stop</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow</a></td>
 <td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_reset">reset(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_reset">reset</a></td>
 <td>Stops time interval measurement and resets the elapsed time to zero. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_restart">restart(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_restart">restart</a></td>
 <td>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure(string)</a></td>
+<td><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure</a></td>
 <td>Measure until the end of the scope, and print the result in the console. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_start">start(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_start">start</a></td>
 <td>Starts, or resumes, measuring elapsed time for an interval. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Stopwatch_stop">stop(self)</a></td>
+<td><a href="#Core_Time_Stopwatch_stop">stop</a></td>
 <td>Stops measuring elapsed time for an interval. </td>
 </tr>
 </table>
@@ -24031,74 +24031,74 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_TimeSpan_addDays">addDays(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addDays">addDays</a></td>
 <td>Add or remove the given amount of days to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addHours">addHours(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addHours">addHours</a></td>
 <td>Add or remove the given amount of hours to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds</a></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addMinutes">addMinutes(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addMinutes">addMinutes</a></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addMonths">addMonths(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addMonths">addMonths</a></td>
 <td>Add or remove the given amount of months to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addSeconds">addSeconds(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addSeconds">addSeconds</a></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_addYears">addYears(self, s32)</a></td>
+<td><a href="#Core_Time_TimeSpan_addYears">addYears</a></td>
 <td>Add or remove the given amount of years to the TimeSpan. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_from">from(const ref DateTime)</a></td>
+<td><a href="#Core_Time_TimeSpan_from">from</a></td>
 <td>Creates a TimeSpan with the given DateTime. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_now">now()</a></td>
+<td><a href="#Core_Time_TimeSpan_now">now</a></td>
 <td>Returns the current date and time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_setNow">setNow(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_setNow">setNow</a></td>
 <td>Initialize the TimeSpan with the current date and time. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_toDateTime">toDateTime(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_toDateTime">toDateTime</a></td>
 <td>Converts a TimeSpan to a DateTime. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_totalDays">totalDays(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_totalDays">totalDays</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_totalHours">totalHours(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_totalHours">totalHours</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds(self)</a></td>
+<td><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_TimeSpan_opCmp">opCmp(self, const ref TimeSpan)</a></td>
+<td><a href="#Core_Time_TimeSpan_opCmp">opCmp</a></td>
 <td></td>
 </tr>
 </table>
@@ -24365,15 +24365,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_Time_Timer_create">create(u32, func(Timer), bool)</a></td>
+<td><a href="#Core_Time_Timer_create">create</a></td>
 <td>Creates a new timer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Timer_init">init(self, u32, func(Timer), bool)</a></td>
+<td><a href="#Core_Time_Timer_init">init</a></td>
 <td>Initialize timer. </td>
 </tr>
 <tr>
-<td><a href="#Core_Time_Timer_release">release(self)</a></td>
+<td><a href="#Core_Time_Timer_release">release</a></td>
 <td>Release the timer. </td>
 </tr>
 </table>
@@ -24706,11 +24706,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_UUID_clear">clear(self)</a></td>
+<td><a href="#Core_UUID_clear">clear</a></td>
 <td>Clear id. </td>
 </tr>
 <tr>
-<td><a href="#Core_UUID_getRandom">getRandom()</a></td>
+<td><a href="#Core_UUID_getRandom">getRandom</a></td>
 <td>Get a version 4 UUID (random). </td>
 </tr>
 <tr>
@@ -24725,7 +24725,7 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_UUID_opEquals">opEquals(self, const ref UUID)</a></td>
+<td><a href="#Core_UUID_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>

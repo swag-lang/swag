@@ -98,7 +98,7 @@ Utf8 GenDoc::getDocComment(AstNode* node)
 
 void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
-    VectorNative<AstNode*> symbols;
+    MapUtf8<VectorNative<AstNode*>> symbolsMap;
     for (auto sym : scope->symTable.allSymbols)
     {
         for (auto n1 : sym->nodes)
@@ -113,10 +113,18 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
 
             if (!canCollectNode(n1))
                 continue;
-            symbols.push_back(n1);
+
+            auto it = symbolsMap.find(n1->token.text);
+            if (it != symbolsMap.end())
+                it->second.push_back(n1);
+            else
+                symbolsMap[n1->token.text] = {n1};
         }
     }
 
+    VectorNative<AstNode*> symbols;
+    for (auto& c : symbolsMap)
+        symbols.append(c.second);
     sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
          {
             auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
@@ -138,32 +146,36 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         helpContent += "<td>";
         Utf8 name = n1->token.text;
 
+        // Deal with overloads. If multiple functions with the same name, then output parameters too
         if (kind == AstNodeKind::FuncDecl)
         {
             AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
-            name += "(";
-            if (funcNode->parameters && !funcNode->parameters->childs.empty())
+            if (symbolsMap.find(funcNode->token.text)->second.size() > 1)
             {
-                bool firstParam = true;
-                for (auto c : funcNode->parameters->childs)
+                name += "(";
+                if (funcNode->parameters && !funcNode->parameters->childs.empty())
                 {
-                    if (c->kind != AstNodeKind::FuncDeclParam)
-                        continue;
-                    AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
-                    if (!varNode->type && !varNode->typeInfo)
-                        continue;
-                    if (!firstParam)
-                        name += ", ";
-                    if (varNode->typeInfo && varNode->typeInfo->flags & TYPEINFO_SELF)
-                        name += "self";
-                    else if (varNode->typeInfo)
-                        name += varNode->typeInfo->name;
-                    else
-                        name += getOutputNode(varNode->type);
-                    firstParam = false;
+                    bool firstParam = true;
+                    for (auto c : funcNode->parameters->childs)
+                    {
+                        if (c->kind != AstNodeKind::FuncDeclParam)
+                            continue;
+                        AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
+                        if (!varNode->type && !varNode->typeInfo)
+                            continue;
+                        if (!firstParam)
+                            name += ", ";
+                        if (varNode->typeInfo && varNode->typeInfo->flags & TYPEINFO_SELF)
+                            name += "self";
+                        else if (varNode->typeInfo)
+                            name += varNode->typeInfo->name;
+                        else
+                            name += getOutputNode(varNode->type);
+                        firstParam = false;
+                    }
                 }
+                name += ")";
             }
-            name += ")";
         }
 
         helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());

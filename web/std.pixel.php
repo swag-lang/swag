@@ -1596,19 +1596,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Brush_createHatch">createHatch(HatchStyle, const ref Color)</a></td>
+<td><a href="#Pixel_Brush_createHatch">createHatch</a></td>
 <td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createSolid">createSolid(const ref Color)</a></td>
+<td><a href="#Pixel_Brush_createSolid">createSolid</a></td>
 <td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTexture">createTexture(const ref Texture)</a></td>
+<td><a href="#Pixel_Brush_createTexture">createTexture</a></td>
 <td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTiled">createTiled(const ref Texture)</a></td>
+<td><a href="#Pixel_Brush_createTiled">createTiled</a></td>
 <td>Returns a tiled texture brush. </td>
 </tr>
 </table>
@@ -1773,7 +1773,7 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals(self, const ref IntPoint)</a></td>
+<td><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -1938,7 +1938,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Color_fromAbgr">fromAbgr(u32)</a></td>
+<td><a href="#Pixel_Color_fromAbgr">fromAbgr</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
@@ -1958,59 +1958,59 @@
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgbf">fromArgbf(f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_fromArgbf">fromArgbf</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromHsl">fromHsl(f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_fromHsl">fromHsl</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgb">fromRgb(u8, u8, u8)</a></td>
+<td><a href="#Pixel_Color_fromRgb">fromRgb</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgbf">fromRgbf(f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_fromRgbf">fromRgbf</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromVector4">fromVector4(const ref Vector4)</a></td>
+<td><a href="#Pixel_Color_fromVector4">fromVector4</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlend">getBlend(const ref Color, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Color_getBlend">getBlend</a></td>
 <td>Blend two colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha(const ref Color, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></td>
 <td>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDarker">getDarker(const ref Color, f32)</a></td>
+<td><a href="#Pixel_Color_getDarker">getDarker</a></td>
 <td>Returns a darker color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb(self, const ref Color)</a></td>
+<td><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></td>
 <td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getLighter">getLighter(const ref Color, f32)</a></td>
+<td><a href="#Pixel_Color_getLighter">getLighter</a></td>
 <td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_isOpaque">isOpaque(self)</a></td>
+<td><a href="#Pixel_Color_isOpaque">isOpaque</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgb">setArgb(self, u8, u8, u8, u8)</a></td>
+<td><a href="#Pixel_Color_setArgb">setArgb</a></td>
 <td>Set all components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgbf">setArgbf(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_setArgbf">setArgbf</a></td>
 <td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setHsl">setHsl(self, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_setHsl">setHsl</a></td>
 <td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
@@ -2022,23 +2022,23 @@
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgbf">setRgbf(self, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Color_setRgbf">setRgbf</a></td>
 <td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toArgbf">toArgbf(self)</a></td>
+<td><a href="#Pixel_Color_toArgbf">toArgbf</a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toHsl">toHsl(self)</a></td>
+<td><a href="#Pixel_Color_toHsl">toHsl</a></td>
 <td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toRgbf">toRgbf(self)</a></td>
+<td><a href="#Pixel_Color_toRgbf">toRgbf</a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toVector4">toVector4(self)</a></td>
+<td><a href="#Pixel_Color_toVector4">toVector4</a></td>
 <td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
@@ -2893,11 +2893,11 @@
 <td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc(self, rune)</a></td>
+<td><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc</a></td>
 <td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_release">release(*Font)</a></td>
+<td><a href="#Pixel_Font_release">release</a></td>
 <td>Release the given font. </td>
 </tr>
 </table>
@@ -2982,23 +2982,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_FontFamily_createTypeFace">createTypeFace(const ref FontFamilyEnumerate, FontFamilyStyle)</a></td>
+<td><a href="#Pixel_FontFamily_createTypeFace">createTypeFace</a></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs()</a></td>
+<td><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs</a></td>
 <td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFont">getFont(self, FontFamilyStyle)</a></td>
+<td><a href="#Pixel_FontFamily_getFont">getFont</a></td>
 <td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFromOs">getFromOs(string)</a></td>
+<td><a href="#Pixel_FontFamily_getFromOs">getFromOs</a></td>
 <td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_setFont">setFont(self, *Font, FontFamilyStyle)</a></td>
+<td><a href="#Pixel_FontFamily_setFont">setFont</a></td>
 <td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
@@ -3162,23 +3162,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getFrame">getFrame(self, *Image, bool)</a></td>
+<td><a href="#Pixel_Gif_Decoder_getFrame">getFrame</a></td>
 <td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames(self)</a></td>
+<td><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></td>
 <td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_init">init(self, const [..] u8, bool)</a></td>
+<td><a href="#Pixel_Gif_Decoder_init">init</a></td>
 <td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame(self, *Image)</a></td>
+<td><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame</a></td>
 <td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_rewind">rewind(self)</a></td>
+<td><a href="#Pixel_Gif_Decoder_rewind">rewind</a></td>
 <td>Restart at frame 0. </td>
 </tr>
 </table>
@@ -3656,15 +3656,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_addDecoder">addDecoder()</a></td>
+<td><a href="#Pixel_Image_addDecoder">addDecoder</a></td>
 <td>Register an image decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_addEncoder">addEncoder()</a></td>
+<td><a href="#Pixel_Image_addEncoder">addEncoder</a></td>
 <td>Register an image encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocPixels">allocPixels(self)</a></td>
+<td><a href="#Pixel_Image_allocPixels">allocPixels</a></td>
 <td>Allocate pixels. </td>
 </tr>
 <tr>
@@ -3676,39 +3676,39 @@
 <td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyKernel">applyKernel(self, Kernel)</a></td>
+<td><a href="#Pixel_Image_applyKernel">applyKernel</a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer(self)</a></td>
+<td><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer</a></td>
 <td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canLoad">canLoad(string)</a></td>
+<td><a href="#Pixel_Image_canLoad">canLoad</a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canSave">canSave(string)</a></td>
+<td><a href="#Pixel_Image_canSave">canSave</a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_clear">clear(self)</a></td>
+<td><a href="#Pixel_Image_clear">clear</a></td>
 <td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_colorize">colorize(self, f32, f32, f32)</a></td>
+<td><a href="#Pixel_Image_colorize">colorize</a></td>
 <td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_contrast">contrast(self, f32)</a></td>
+<td><a href="#Pixel_Image_contrast">contrast</a></td>
 <td>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_copyPixel">copyPixel(^u8, ^u8)</a></td>
+<td><a href="#Pixel_Image_copyPixel">copyPixel</a></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_create">create(s32, s32, PixelFormat, const [..] u8)</a></td>
+<td><a href="#Pixel_Image_create">create</a></td>
 <td>Creates a new image. </td>
 </tr>
 <tr>
@@ -3720,35 +3720,35 @@
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_decode">decode(string, const [..] u8, const ref DecodeOptions)</a></td>
+<td><a href="#Pixel_Image_decode">decode</a></td>
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fade">fade(self, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Image_fade">fade</a></td>
 <td>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fill">fill(self, const ref Color)</a></td>
+<td><a href="#Pixel_Image_fill">fill</a></td>
 <td>Fill image with <code class="incode">color</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient2">fillGradient2(self, const ref Color, const ref Color)</a></td>
+<td><a href="#Pixel_Image_fillGradient2">fillGradient2</a></td>
 <td>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient4">fillGradient4(self, const ref Color, const ref Color, const ref Color, const ref Color)</a></td>
+<td><a href="#Pixel_Image_fillGradient4">fillGradient4</a></td>
 <td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillHsl">fillHsl(self, FillHslType, const ref Color)</a></td>
+<td><a href="#Pixel_Image_fillHsl">fillHsl</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_flip">flip(self)</a></td>
+<td><a href="#Pixel_Image_flip">flip</a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer(self)</a></td>
+<td><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer</a></td>
 <td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
@@ -3760,79 +3760,79 @@
 <td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_gamma">gamma(self, f32)</a></td>
+<td><a href="#Pixel_Image_gamma">gamma</a></td>
 <td>Change the gamma. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_getPixelColor">getPixelColor(self, s32, s32)</a></td>
+<td><a href="#Pixel_Image_getPixelColor">getPixelColor</a></td>
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_grayScale">grayScale(self, f32)</a></td>
+<td><a href="#Pixel_Image_grayScale">grayScale</a></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_halfSize">halfSize(self)</a></td>
+<td><a href="#Pixel_Image_halfSize">halfSize</a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_init">init(self, s32, s32, PixelFormat)</a></td>
+<td><a href="#Pixel_Image_init">init</a></td>
 <td>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_invert">invert(self)</a></td>
+<td><a href="#Pixel_Image_invert">invert</a></td>
 <td>Invert colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_isValid">isValid(self)</a></td>
+<td><a href="#Pixel_Image_isValid">isValid</a></td>
 <td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_lightness">lightness(self, f32)</a></td>
+<td><a href="#Pixel_Image_lightness">lightness</a></td>
 <td>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_load">load(string, const ref DecodeOptions)</a></td>
+<td><a href="#Pixel_Image_load">load</a></td>
 <td>Load the given image file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mirror">mirror(self)</a></td>
+<td><a href="#Pixel_Image_mirror">mirror</a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mix">mix(self, const ref Image, s32, s32, MixMode)</a></td>
+<td><a href="#Pixel_Image_mix">mix</a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_release">release(self)</a></td>
+<td><a href="#Pixel_Image_release">release</a></td>
 <td>Release the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_resize">resize(self, s32, s32, ResizeMode)</a></td>
+<td><a href="#Pixel_Image_resize">resize</a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_save">save(self, string, any)</a></td>
+<td><a href="#Pixel_Image_save">save</a></td>
 <td>Save the image to a file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setAlpha">setAlpha(self, u8)</a></td>
+<td><a href="#Pixel_Image_setAlpha">setAlpha</a></td>
 <td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setChannel">setChannel(self, ChannelMode, ChannelValueMode, u8)</a></td>
+<td><a href="#Pixel_Image_setChannel">setChannel</a></td>
 <td>Change specified color channels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelFormat">setPixelFormat(self, PixelFormat)</a></td>
+<td><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8(^u8, u8, u8, u8, u8)</a></td>
+<td><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></td>
 <td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toApplyKernel">toApplyKernel(self, Kernel)</a></td>
+<td><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
@@ -3844,50 +3844,50 @@
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toFlip">toFlip(self)</a></td>
+<td><a href="#Pixel_Image_toFlip">toFlip</a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHICON">toHICON(self)</a></td>
+<td><a href="#Pixel_Image_toHICON">toHICON</a></td>
 <td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHalfSize">toHalfSize(self)</a></td>
+<td><a href="#Pixel_Image_toHalfSize">toHalfSize</a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMirror">toMirror(self)</a></td>
+<td><a href="#Pixel_Image_toMirror">toMirror</a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMix">toMix(self, const ref Image, s32, s32, MixMode)</a></td>
+<td><a href="#Pixel_Image_toMix">toMix</a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toResize">toResize(self, s32, s32, ResizeMode)</a></td>
+<td><a href="#Pixel_Image_toResize">toResize</a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat(self, PixelFormat)</a></td>
+<td><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toTurn">toTurn(self, TurnAngle)</a></td>
+<td><a href="#Pixel_Image_toTurn">toTurn</a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_turn">turn(self, TurnAngle)</a></td>
+<td><a href="#Pixel_Image_turn">turn</a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_visitPixels">visitPixels(self, *void, s32, code)</a></td>
+<td><a href="#Pixel_Image_visitPixels">visitPixels</a></td>
 <td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Pixel_Image_opVisit">opVisit</a></td>
 <td></td>
 </tr>
 </table>
@@ -5277,7 +5277,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePath_arcTo">arcTo(self, f32, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
+<td><a href="#Pixel_LinePath_arcTo">arcTo</a></td>
 <td>Add an arc from the previous point. </td>
 </tr>
 <tr>
@@ -5289,47 +5289,47 @@
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_clearCache">clearCache(self)</a></td>
+<td><a href="#Pixel_LinePath_clearCache">clearCache</a></td>
 <td>Clear internal cache. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_close">close(self)</a></td>
+<td><a href="#Pixel_LinePath_close">close</a></td>
 <td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_curveTo">curveTo(self, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_curveTo">curveTo</a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_flatten">flatten(self, PaintQuality)</a></td>
+<td><a href="#Pixel_LinePath_flatten">flatten</a></td>
 <td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_lineTo">lineTo(self, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_lineTo">lineTo</a></td>
 <td>Add a line from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setArc">setArc(self, f32, f32, f32, const ref Angle, const ref Angle)</a></td>
+<td><a href="#Pixel_LinePath_setArc">setArc</a></td>
 <td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setCircle">setCircle(self, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_setCircle">setCircle</a></td>
 <td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setEllipse">setEllipse(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_setEllipse">setEllipse</a></td>
 <td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRect">setRect(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_setRect">setRect</a></td>
 <td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRoundRect">setRoundRect(self, f32, f32, f32, f32, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_setRoundRect">setRoundRect</a></td>
 <td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_start">start(self, f32, f32)</a></td>
+<td><a href="#Pixel_LinePath_start">start</a></td>
 <td>Reset the path. </td>
 </tr>
 </table>
@@ -5549,23 +5549,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePathList_clean">clean(self)</a></td>
+<td><a href="#Pixel_LinePathList_clean">clean</a></td>
 <td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_clear">clear(self)</a></td>
+<td><a href="#Pixel_LinePathList_clear">clear</a></td>
 <td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_count">count(self)</a></td>
+<td><a href="#Pixel_LinePathList_count">count</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_flatten">flatten(self, PaintQuality)</a></td>
+<td><a href="#Pixel_LinePathList_flatten">flatten</a></td>
 <td>Flatten all paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_newPath">newPath(self)</a></td>
+<td><a href="#Pixel_LinePathList_newPath">newPath</a></td>
 <td>Returns a new path. </td>
 </tr>
 <tr>
@@ -5685,15 +5685,15 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_dropContext">dropContext(self, const ref RenderingContext)</a></td>
+<td><a href="#Pixel_NativeRenderOgl_dropContext">dropContext</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
+<td><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers(self, const ref RenderingContext)</a></td>
+<td><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers</a></td>
 <td></td>
 </tr>
 </table>
@@ -5970,27 +5970,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Painter_addParams">addParams(self, PaintParams)</a></td>
+<td><a href="#Pixel_Painter_addParams">addParams</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_begin">begin(self)</a></td>
+<td><a href="#Pixel_Painter_begin">begin</a></td>
 <td>Call this before drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget(self, *RenderTarget, bool)</a></td>
+<td><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget</a></td>
 <td>Bind a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_capStyleExtent">capStyleExtent(LineCapStyle, f32, f32)</a></td>
+<td><a href="#Pixel_Painter_capStyleExtent">capStyleExtent</a></td>
 <td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_clear">clear(self, const ref Color)</a></td>
+<td><a href="#Pixel_Painter_clear">clear</a></td>
 <td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_computeLayout">computeLayout(self, const ref Rectangle, *RichString, const ref RichStringFormat)</a></td>
+<td><a href="#Pixel_Painter_computeLayout">computeLayout</a></td>
 <td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
@@ -6062,7 +6062,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRichString">drawRichString(self, const ref Rectangle, *RichString, const ref RichStringFormat, bool)</a></td>
+<td><a href="#Pixel_Painter_drawRichString">drawRichString</a></td>
 <td>Draw a rich string. </td>
 </tr>
 <tr>
@@ -6090,7 +6090,7 @@
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawStringCenter">drawStringCenter(self, f32, f32, string, *Font, const ref Color, UnderlineStyle, f32)</a></td>
+<td><a href="#Pixel_Painter_drawStringCenter">drawStringCenter</a></td>
 <td>Draw a simple string (centered). </td>
 </tr>
 <tr>
@@ -6118,11 +6118,11 @@
 <td>Draw a texture image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_end">end(self)</a></td>
+<td><a href="#Pixel_Painter_end">end</a></td>
 <td>Call this after drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_endClippingRegion">endClippingRegion(self)</a></td>
+<td><a href="#Pixel_Painter_endClippingRegion">endClippingRegion</a></td>
 <td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
@@ -6198,7 +6198,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getClippingRect">getClippingRect(self)</a></td>
+<td><a href="#Pixel_Painter_getClippingRect">getClippingRect</a></td>
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
@@ -6210,23 +6210,23 @@
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getParams">getParams(self)</a></td>
+<td><a href="#Pixel_Painter_getParams">getParams</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getQuality">getQuality(self)</a></td>
+<td><a href="#Pixel_Painter_getQuality">getQuality</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getTransform">getTransform(self)</a></td>
+<td><a href="#Pixel_Painter_getTransform">getTransform</a></td>
 <td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect(self)</a></td>
+<td><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect</a></td>
 <td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureRune">measureRune(rune, *Font)</a></td>
+<td><a href="#Pixel_Painter_measureRune">measureRune</a></td>
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
@@ -6238,55 +6238,55 @@
 <td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popClippingRect">popClippingRect(self)</a></td>
+<td><a href="#Pixel_Painter_popClippingRect">popClippingRect</a></td>
 <td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popState">popState(self)</a></td>
+<td><a href="#Pixel_Painter_popState">popState</a></td>
 <td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popTransform">popTransform(self)</a></td>
+<td><a href="#Pixel_Painter_popTransform">popTransform</a></td>
 <td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingRect">pushClippingRect(self, const ref Rectangle, bool)</a></td>
+<td><a href="#Pixel_Painter_pushClippingRect">pushClippingRect</a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect(self, const ref Rectangle)</a></td>
+<td><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect</a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushState">pushState(self)</a></td>
+<td><a href="#Pixel_Painter_pushState">pushState</a></td>
 <td>Save the current paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushTransform">pushTransform(self)</a></td>
+<td><a href="#Pixel_Painter_pushTransform">pushTransform</a></td>
 <td>Push the current transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
+<td><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget</a></td>
 <td>Release the render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_removeParams">removeParams(self, PaintParams)</a></td>
+<td><a href="#Pixel_Painter_removeParams">removeParams</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRect">resetClippingRect(self)</a></td>
+<td><a href="#Pixel_Painter_resetClippingRect">resetClippingRect</a></td>
 <td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion(self)</a></td>
+<td><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion</a></td>
 <td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetState">resetState(self)</a></td>
+<td><a href="#Pixel_Painter_resetState">resetState</a></td>
 <td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetTransform">resetTransform(self)</a></td>
+<td><a href="#Pixel_Painter_resetTransform">resetTransform</a></td>
 <td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
@@ -6298,19 +6298,19 @@
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace(self, const ref Angle)</a></td>
+<td><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace</a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_scaleTransform">scaleTransform(self, f32, f32)</a></td>
+<td><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setAntialiased">setAntialiased(self, bool)</a></td>
+<td><a href="#Pixel_Painter_setAntialiased">setAntialiased</a></td>
 <td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setBlendingMode">setBlendingMode(self, BlendingMode)</a></td>
+<td><a href="#Pixel_Painter_setBlendingMode">setBlendingMode</a></td>
 <td>Set the current blending mode. </td>
 </tr>
 <tr>
@@ -6322,7 +6322,7 @@
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode(self, ClippingMode)</a></td>
+<td><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode</a></td>
 <td>Set the clipping region mode. </td>
 </tr>
 <tr>
@@ -6334,31 +6334,31 @@
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha(self)</a></td>
+<td><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor(self)</a></td>
+<td><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull(self)</a></td>
+<td><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode(self, InterpolationMode)</a></td>
+<td><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode</a></td>
 <td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setParams">setParams(self, PaintParams, PaintParams)</a></td>
+<td><a href="#Pixel_Painter_setParams">setParams</a></td>
 <td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setQuality">setQuality(self, PaintQuality)</a></td>
+<td><a href="#Pixel_Painter_setQuality">setQuality</a></td>
 <td>Set the paint quality. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShader">setShader(self, *ShaderBase)</a></td>
+<td><a href="#Pixel_Painter_setShader">setShader</a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
@@ -6370,23 +6370,23 @@
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setState">setState(self, const ref PaintState)</a></td>
+<td><a href="#Pixel_Painter_setState">setState</a></td>
 <td>Set the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setTransform">setTransform(self, const ref Transform2)</a></td>
+<td><a href="#Pixel_Painter_setTransform">setTransform</a></td>
 <td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_startClippingRegion">startClippingRegion(self, ClippingMode)</a></td>
+<td><a href="#Pixel_Painter_startClippingRegion">startClippingRegion</a></td>
 <td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_translateTransform">translateTransform(self, f32, f32)</a></td>
+<td><a href="#Pixel_Painter_translateTransform">translateTransform</a></td>
 <td>Set the paint position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget(self)</a></td>
+<td><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget</a></td>
 <td>Bind a render target. </td>
 </tr>
 </table>
@@ -7506,15 +7506,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Pen_createDash">createDash(DashStyle, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Pen_createDash">createDash</a></td>
 <td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createHatch">createHatch(HatchStyle, const ref Color, f32)</a></td>
+<td><a href="#Pixel_Pen_createHatch">createHatch</a></td>
 <td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createSolid">createSolid(const ref Color, f32)</a></td>
+<td><a href="#Pixel_Pen_createSolid">createSolid</a></td>
 <td>Returns a solid color pen. </td>
 </tr>
 </table>
@@ -7808,27 +7808,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint(self, f32, f32)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint</a></td>
 <td>Register a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_clear">clear(self)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_clear">clear</a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine(self)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine</a></td>
 <td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles(self)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles</a></td>
 <td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine(self)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine</a></td>
 <td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate(self)</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate</a></td>
 <td>Triangulate. </td>
 </tr>
 </table>
@@ -8005,27 +8005,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Polygon_add">add(self, const ref Vector2)</a></td>
+<td><a href="#Pixel_Polygon_add">add</a></td>
 <td>Add a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clean">clean(self)</a></td>
+<td><a href="#Pixel_Polygon_clean">clean</a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clear">clear(self)</a></td>
+<td><a href="#Pixel_Polygon_clear">clear</a></td>
 <td>Clear all points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_compute">compute(self)</a></td>
+<td><a href="#Pixel_Polygon_compute">compute</a></td>
 <td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getClean">getClean(self)</a></td>
+<td><a href="#Pixel_Polygon_getClean">getClean</a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getOffset">getOffset(self, f32, JoinStyle, f32)</a></td>
+<td><a href="#Pixel_Polygon_getOffset">getOffset</a></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
@@ -8037,7 +8037,7 @@
 <td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_normalizeDist">normalizeDist(self, f32, bool)</a></td>
+<td><a href="#Pixel_Polygon_normalizeDist">normalizeDist</a></td>
 <td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
@@ -8290,75 +8290,75 @@
 <td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_begin">begin(self, const ref RenderingContext)</a></td>
+<td><a href="#Pixel_RenderOgl_begin">begin</a></td>
 <td>To be called before rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget(self, *RenderTarget, *Rectangle)</a></td>
+<td><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget</a></td>
 <td>Set the current render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_clear">clear(self)</a></td>
+<td><a href="#Pixel_RenderOgl_clear">clear</a></td>
 <td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices(self, ShaderParamHandle, ShaderParamHandle)</a></td>
+<td><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget(self, s32, s32)</a></td>
+<td><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget</a></td>
 <td>Create a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createShader">createShader(self, *ShaderBase, const [..] u8, const [..] u8)</a></td>
+<td><a href="#Pixel_RenderOgl_createShader">createShader</a></td>
 <td>Create the given shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget(self, *RenderTarget)</a></td>
+<td><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget</a></td>
 <td>Delete a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_draw">draw(self, *Painter)</a></td>
+<td><a href="#Pixel_RenderOgl_draw">draw</a></td>
 <td>Draw the given painter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_end">end(self)</a></td>
+<td><a href="#Pixel_RenderOgl_end">end</a></td>
 <td>To be called after rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget(self, s32, s32)</a></td>
+<td><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></td>
 <td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize(self)</a></td>
+<td><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></td>
 <td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels(self, const ref Texture, PixelFormat)</a></td>
+<td><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels</a></td>
 <td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_init">init(self)</a></td>
+<td><a href="#Pixel_RenderOgl_init">init</a></td>
 <td>First init. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative(PixelFormat)</a></td>
+<td><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget(self, *RenderTarget)</a></td>
+<td><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget</a></td>
 <td>Release the given render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_removeTexture">removeTexture(self, *Texture)</a></td>
+<td><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></td>
 <td>Unregister a texture created with <code class="incode">addImage</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect(self)</a></td>
+<td><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></td>
 <td>Reset the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetTransform">resetTransform(self)</a></td>
+<td><a href="#Pixel_RenderOgl_resetTransform">resetTransform</a></td>
 <td>Reset the world transform. </td>
 </tr>
 <tr>
@@ -8370,35 +8370,35 @@
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform(self, f32, f32)</a></td>
+<td><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext(self, const ref RenderingContext)</a></td>
+<td><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext</a></td>
 <td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect(self, const ref Rectangle)</a></td>
+<td><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect</a></td>
 <td>Force the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setShader">setShader(self, *ShaderBase)</a></td>
+<td><a href="#Pixel_RenderOgl_setShader">setShader</a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_translateTransform">translateTransform(self, f32, f32)</a></td>
+<td><a href="#Pixel_RenderOgl_translateTransform">translateTransform</a></td>
 <td>Translate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget(self)</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget</a></td>
 <td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage(self, s32, s32, s32, s32)</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage</a></td>
 <td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_updateTexture">updateTexture(self, const ref Texture, const *u8)</a></td>
+<td><a href="#Pixel_RenderOgl_updateTexture">updateTexture</a></td>
 <td>Update content of texture. </td>
 </tr>
 </table>
@@ -8984,38 +8984,38 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_compute">compute(self, bool)</a></td>
+<td><a href="#Pixel_RichString_compute">compute</a></td>
 <td>Compute layout. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_getNaked">getNaked(string)</a></td>
+<td><a href="#Pixel_RichString_getNaked">getNaked</a></td>
 <td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_invalidate">invalidate(self)</a></td>
+<td><a href="#Pixel_RichString_invalidate">invalidate</a></td>
 <td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Pixel_RichString_isEmpty">isEmpty</a></td>
 <td>Returns <code class="incode">true</code> if the string is empty. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_set">set(self, string)</a></td>
+<td><a href="#Pixel_RichString_set">set</a></td>
 <td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_opAffect">opAffect(self, string)</a></td>
+<td><a href="#Pixel_RichString_opAffect">opAffect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opCount">opCount(self)</a></td>
+<td><a href="#Pixel_RichString_opCount">opCount</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opEquals">opEquals(self, string)</a></td>
+<td><a href="#Pixel_RichString_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -9433,27 +9433,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_StringPainter_color">color(self, const ref Color)</a></td>
+<td><a href="#Pixel_StringPainter_color">color</a></td>
 <td>Set text color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_draw">draw(self, *Painter, const ref Rectangle, string)</a></td>
+<td><a href="#Pixel_StringPainter_draw">draw</a></td>
 <td>Draw string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_flags">flags(self, StringFormatFlags)</a></td>
+<td><a href="#Pixel_StringPainter_flags">flags</a></td>
 <td>Set drawing flags. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_font">font(self, *Font)</a></td>
+<td><a href="#Pixel_StringPainter_font">font</a></td>
 <td>Set font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_horzAlign">horzAlign(self, StringHorzAlignment)</a></td>
+<td><a href="#Pixel_StringPainter_horzAlign">horzAlign</a></td>
 <td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_vertAlign">vertAlign(self, StringVertAlignment)</a></td>
+<td><a href="#Pixel_StringPainter_vertAlign">vertAlign</a></td>
 <td>Set vertical alignment. </td>
 </tr>
 </table>
@@ -9607,11 +9607,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Texture_getByteSize">getByteSize(self)</a></td>
+<td><a href="#Pixel_Texture_getByteSize">getByteSize</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Texture_isValid">isValid(self)</a></td>
+<td><a href="#Pixel_Texture_isValid">isValid</a></td>
 <td></td>
 </tr>
 </table>
@@ -9761,43 +9761,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_TypeFace_create">create(string, const [..] u8)</a></td>
+<td><a href="#Pixel_TypeFace_create">create</a></td>
 <td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT(string, HFONT)</a></td>
+<td><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT</a></td>
 <td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getFamilyName">getFamilyName(self)</a></td>
+<td><a href="#Pixel_TypeFace_getFamilyName">getFamilyName</a></td>
 <td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline(self, *LinePathList, rune, u32, u32)</a></td>
+<td><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline</a></td>
 <td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getStringOutline">getStringOutline(self, *LinePathList, string, u32, u32)</a></td>
+<td><a href="#Pixel_TypeFace_getStringOutline">getStringOutline</a></td>
 <td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isBold">isBold(self)</a></td>
+<td><a href="#Pixel_TypeFace_isBold">isBold</a></td>
 <td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isItalic">isItalic(self)</a></td>
+<td><a href="#Pixel_TypeFace_isItalic">isItalic</a></td>
 <td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_load">load(string)</a></td>
+<td><a href="#Pixel_TypeFace_load">load</a></td>
 <td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_release">release(*TypeFace)</a></td>
+<td><a href="#Pixel_TypeFace_release">release</a></td>
 <td>Release the given typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_renderGlyph">renderGlyph(self, rune, u32, bool, bool)</a></td>
+<td><a href="#Pixel_TypeFace_renderGlyph">renderGlyph</a></td>
 <td>Render one glyph. </td>
 </tr>
 </table>

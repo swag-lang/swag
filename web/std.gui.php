@@ -1262,143 +1262,143 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Application_addTimer">addTimer(self, const ref Duration, *Wnd)</a></td>
+<td><a href="#Gui_Application_addTimer">addTimer</a></td>
 <td>Register a new timer for the given <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_createSurface">createSurface(self, s32, s32, s32, s32, SurfaceFlags, *Wnd, HookEvent)</a></td>
+<td><a href="#Gui_Application_createSurface">createSurface</a></td>
 <td>Creates a new surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_deleteTimer">deleteTimer(self, *Timer)</a></td>
+<td><a href="#Gui_Application_deleteTimer">deleteTimer</a></td>
 <td>Delete and unregister timer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_destroyWnd">destroyWnd(self, *Wnd)</a></td>
+<td><a href="#Gui_Application_destroyWnd">destroyWnd</a></td>
 <td>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_doModalLoop">doModalLoop(self, *Surface, func(*void, *Application))</a></td>
+<td><a href="#Gui_Application_doModalLoop">doModalLoop</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_exitModal">exitModal(self, string)</a></td>
+<td><a href="#Gui_Application_exitModal">exitModal</a></td>
 <td>End current modal loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon(self, string, bool)</a></td>
+<td><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDt">getDt(self)</a></td>
+<td><a href="#Gui_Application_getDt">getDt</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getFileIcon">getFileIcon(self, string, bool)</a></td>
+<td><a href="#Gui_Application_getFileIcon">getFileIcon</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut(self, KeyModifiers, Key)</a></td>
+<td><a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut</a></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor(self, WndId)</a></td>
+<td><a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor</a></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getKeyboard">getKeyboard(self)</a></td>
+<td><a href="#Gui_Application_getKeyboard">getKeyboard</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouse">getMouse(self)</a></td>
+<td><a href="#Gui_Application_getMouse">getMouse</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouseCapture">getMouseCapture(self)</a></td>
+<td><a href="#Gui_Application_getMouseCapture">getMouseCapture</a></td>
 <td>Return the captured wnd for mouse. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getRenderer">getRenderer(self)</a></td>
+<td><a href="#Gui_Application_getRenderer">getRenderer</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getWndAtMouse">getWndAtMouse(self)</a></td>
+<td><a href="#Gui_Application_getWndAtMouse">getWndAtMouse</a></td>
 <td>Returns the window under the given point. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_invalidate">invalidate(self)</a></td>
+<td><a href="#Gui_Application_invalidate">invalidate</a></td>
 <td>Force all surfaces to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_loadState">loadState(self)</a></td>
+<td><a href="#Gui_Application_loadState">loadState</a></td>
 <td>Load the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_popCursor">popCursor(self)</a></td>
+<td><a href="#Gui_Application_popCursor">popCursor</a></td>
 <td>Pop a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postEvent">postEvent(self, *Event)</a></td>
+<td><a href="#Gui_Application_postEvent">postEvent</a></td>
 <td>Post a new event (thread safe). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postQuitEvent">postQuitEvent(self, s32)</a></td>
+<td><a href="#Gui_Application_postQuitEvent">postQuitEvent</a></td>
 <td>Ask to exit the application. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_pushCursor">pushCursor(self, const ref Cursor)</a></td>
+<td><a href="#Gui_Application_pushCursor">pushCursor</a></td>
 <td>Push a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerFrameEvent">registerFrameEvent(self, *Wnd)</a></td>
+<td><a href="#Gui_Application_registerFrameEvent">registerFrameEvent</a></td>
 <td>Register a window to receive a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHookEvents">registerHookEvents(self, *Wnd)</a></td>
+<td><a href="#Gui_Application_registerHookEvents">registerHookEvents</a></td>
 <td>Register a window to receive hook events. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHotKey">registerHotKey(self, KeyModifiers, Key, WndId, *Wnd)</a></td>
+<td><a href="#Gui_Application_registerHotKey">registerHotKey</a></td>
 <td>Register a global os key action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_run">run(self)</a></td>
+<td><a href="#Gui_Application_run">run</a></td>
 <td>Run until exit. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runFrame">runFrame(self)</a></td>
+<td><a href="#Gui_Application_runFrame">runFrame</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runSurface">runSurface(s32, s32, s32, s32, string, *Wnd, bool, bool, HookEvent, func(*Application))</a></td>
+<td><a href="#Gui_Application_runSurface">runSurface</a></td>
 <td>Create a main surface, and run. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_saveState">saveState(self)</a></td>
+<td><a href="#Gui_Application_saveState">saveState</a></td>
 <td>Save the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_sendEvent">sendEvent(self, *Event)</a></td>
+<td><a href="#Gui_Application_sendEvent">sendEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setActivated">setActivated(self, bool)</a></td>
+<td><a href="#Gui_Application_setActivated">setActivated</a></td>
 <td>Set activated state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setAppIcon">setAppIcon(self, const ref Image)</a></td>
+<td><a href="#Gui_Application_setAppIcon">setAppIcon</a></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setConfigPath">setConfigPath(self, string)</a></td>
+<td><a href="#Gui_Application_setConfigPath">setConfigPath</a></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent(self, *Wnd)</a></td>
+<td><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent</a></td>
 <td>Unregister a window that receives a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents(self, *Wnd)</a></td>
+<td><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents</a></td>
 <td>Unregister a window to receive hook events. </td>
 </tr>
 </table>
@@ -2009,11 +2009,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_BlendColor_apply">apply(self, *Wnd, const ref Color)</a></td>
+<td><a href="#Gui_BlendColor_apply">apply</a></td>
 <td>Apply the color lerp to reach <code class="incode">target</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_BlendColor_cur">cur(self)</a></td>
+<td><a href="#Gui_BlendColor_cur">cur</a></td>
 <td></td>
 </tr>
 </table>
@@ -2158,7 +2158,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_CheckButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_CheckButton_create">create</a></td>
 <td></td>
 </tr>
 </table>
@@ -2462,23 +2462,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ColorPicker_change">change(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Gui_ColorPicker_change">change</a></td>
 <td>Change one component, HSL or alpha. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ColorPicker_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_getColor">getColor(self)</a></td>
+<td><a href="#Gui_ColorPicker_getColor">getColor</a></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setColor">setColor(self, const ref Color)</a></td>
+<td><a href="#Gui_ColorPicker_setColor">setColor</a></td>
 <td>Set the base color, and repaint. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setMode">setMode(self, ColorPickerMode)</a></td>
+<td><a href="#Gui_ColorPicker_setMode">setMode</a></td>
 <td>Set the color picker box mode. </td>
 </tr>
 </table>
@@ -2724,19 +2724,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ColorPickerCtrl_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_getColor">getColor(self)</a></td>
+<td><a href="#Gui_ColorPickerCtrl_getColor">getColor</a></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setColor">setColor(self, const ref Color)</a></td>
+<td><a href="#Gui_ColorPickerCtrl_setColor">setColor</a></td>
 <td>Set the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setMode">setMode(self, ColorPickerViewMode)</a></td>
+<td><a href="#Gui_ColorPickerCtrl_setMode">setMode</a></td>
 <td>Change the display mode. </td>
 </tr>
 </table>
@@ -3019,27 +3019,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ComboBox_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
+<td><a href="#Gui_ComboBox_addItem">addItem</a></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_addSeparator">addSeparator(self)</a></td>
+<td><a href="#Gui_ComboBox_addSeparator">addSeparator</a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_clear">clear(self)</a></td>
+<td><a href="#Gui_ComboBox_clear">clear</a></td>
 <td>Remove all items. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_create">create(*Wnd, const ref Rectangle, WndId, ComboBoxKind)</a></td>
+<td><a href="#Gui_ComboBox_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_getSelectedItem">getSelectedItem(self)</a></td>
+<td><a href="#Gui_ComboBox_getSelectedItem">getSelectedItem</a></td>
 <td>Returns the selected item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_selectItem">selectItem(self, u32)</a></td>
+<td><a href="#Gui_ComboBox_selectItem">selectItem</a></td>
 <td>Set the selected item index. </td>
 </tr>
 </table>
@@ -3254,7 +3254,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ComboCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ComboCtrl_create">create</a></td>
 <td></td>
 </tr>
 </table>
@@ -3424,19 +3424,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Cursor_apply">apply(const ref Cursor)</a></td>
+<td><a href="#Gui_Cursor_apply">apply</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_clear">clear(self)</a></td>
+<td><a href="#Gui_Cursor_clear">clear</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_from">from(CursorShape)</a></td>
+<td><a href="#Gui_Cursor_from">from</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_wait">wait()</a></td>
+<td><a href="#Gui_Cursor_wait">wait</a></td>
 <td>Force the wait cursor. </td>
 </tr>
 </table>
@@ -3608,23 +3608,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Dialog_addButton">addButton(self, string, WndId, bool)</a></td>
+<td><a href="#Gui_Dialog_addButton">addButton</a></td>
 <td>Add a button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createDialog">createDialog(*Surface, s32, s32, string)</a></td>
+<td><a href="#Gui_Dialog_createDialog">createDialog</a></td>
 <td>Creates a simple dialog box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createSurface">createSurface(self, *Surface, s32, s32, s32, s32, SurfaceFlags)</a></td>
+<td><a href="#Gui_Dialog_createSurface">createSurface</a></td>
 <td>Creates an associated surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_doModal">doModal(self)</a></td>
+<td><a href="#Gui_Dialog_doModal">doModal</a></td>
 <td>Display dialog as modal, and returns the user selected window id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_validateId">validateId(self, WndId)</a></td>
+<td><a href="#Gui_Dialog_validateId">validateId</a></td>
 <td></td>
 </tr>
 </table>
@@ -3924,51 +3924,51 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditBox_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_EditBox_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_deleteSelection">deleteSelection(self)</a></td>
+<td><a href="#Gui_EditBox_deleteSelection">deleteSelection</a></td>
 <td>Delete selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_getText">getText(self)</a></td>
+<td><a href="#Gui_EditBox_getText">getText</a></td>
 <td>Get the associated text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_selectAll">selectAll(self)</a></td>
+<td><a href="#Gui_EditBox_selectAll">selectAll</a></td>
 <td>Select all text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setForm">setForm(self, EditBoxForm)</a></td>
+<td><a href="#Gui_EditBox_setForm">setForm</a></td>
 <td>Set the editbox form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputF64">setInputF64(self, f64, f64)</a></td>
+<td><a href="#Gui_EditBox_setInputF64">setInputF64</a></td>
 <td>Editbox will edit floating points. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputS64">setInputS64(self, s64, s64)</a></td>
+<td><a href="#Gui_EditBox_setInputS64">setInputS64</a></td>
 <td>Editbox will edit signed integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputU64">setInputU64(self, u64, u64)</a></td>
+<td><a href="#Gui_EditBox_setInputU64">setInputU64</a></td>
 <td>Editbox will edit unsigned integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setNote">setNote(self, string)</a></td>
+<td><a href="#Gui_EditBox_setNote">setNote</a></td>
 <td>Set the editbox note. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setSelection">setSelection(self, u64, u64)</a></td>
+<td><a href="#Gui_EditBox_setSelection">setSelection</a></td>
 <td>Set current selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setText">setText(self, string)</a></td>
+<td><a href="#Gui_EditBox_setText">setText</a></td>
 <td>Set the editbox content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setTextSilent">setTextSilent(self, string)</a></td>
+<td><a href="#Gui_EditBox_setTextSilent">setTextSilent</a></td>
 <td>Set the editbox content, but do not notify change. </td>
 </tr>
 </table>
@@ -4361,7 +4361,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditCtrl_create">create(*Wnd, string, string, const ref Rectangle, WndId, EditBoxFlags)</a></td>
+<td><a href="#Gui_EditCtrl_create">create</a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4428,23 +4428,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EditDlg_createMultiLine">createMultiLine(*Surface, s32)</a></td>
+<td><a href="#Gui_EditDlg_createMultiLine">createMultiLine</a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_createSingleLine">createSingleLine(*Surface)</a></td>
+<td><a href="#Gui_EditDlg_createSingleLine">createSingleLine</a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_getText">getText(self)</a></td>
+<td><a href="#Gui_EditDlg_getText">getText</a></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setMessage">setMessage(self, string, s32)</a></td>
+<td><a href="#Gui_EditDlg_setMessage">setMessage</a></td>
 <td>Associate a message above the editbox. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setText">setText(self, string)</a></td>
+<td><a href="#Gui_EditDlg_setText">setText</a></td>
 <td>Set the text. </td>
 </tr>
 </table>
@@ -4544,7 +4544,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_EmbInfoCtrl_create">create(*Wnd, string, EmbInfoCtrlKind, s32, bool)</a></td>
+<td><a href="#Gui_EmbInfoCtrl_create">create</a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4865,15 +4865,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_FileDlg_create">create(*Surface, const ref FileDlgOptions)</a></td>
+<td><a href="#Gui_FileDlg_create">create</a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedName">getSelectedName(self)</a></td>
+<td><a href="#Gui_FileDlg_getSelectedName">getSelectedName</a></td>
 <td>Get the first selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedNames">getSelectedNames(self)</a></td>
+<td><a href="#Gui_FileDlg_getSelectedNames">getSelectedNames</a></td>
 <td>Get all selections. </td>
 </tr>
 </table>
@@ -5160,19 +5160,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_FrameWnd_createView">createView(self, HookEvent)</a></td>
+<td><a href="#Gui_FrameWnd_createView">createView</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags(self, FrameWndFlags, FrameWndFlags)</a></td>
+<td><a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags</a></td>
 <td>Set the frame wnd flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameForm">setFrameForm(self, FrameWndForm)</a></td>
+<td><a href="#Gui_FrameWnd_setFrameForm">setFrameForm</a></td>
 <td>Set the frame wnd form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setView">setView(self, *Wnd)</a></td>
+<td><a href="#Gui_FrameWnd_setView">setView</a></td>
 <td></td>
 </tr>
 </table>
@@ -5430,23 +5430,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td><a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout</a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_create">create(*Wnd, s32, s32, const ref Rectangle)</a></td>
+<td><a href="#Gui_GridLayoutCtrl_create">create</a></td>
 <td>Create a layout control. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild(self, *Wnd, s32, s32, s32, s32)</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild</a></td>
 <td>Set the wnd associated with the given <code class="incode">col</code> and <code class="incode">row</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColSize">setColSize(self, s32, f32)</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setColSize">setColSize</a></td>
 <td>Set size, in pixel, of a given column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize(self, s32, f32)</a></td>
+<td><a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize</a></td>
 <td>Set size, in pixel, of a given row. </td>
 </tr>
 </table>
@@ -5644,47 +5644,47 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Header_addItem">addItem(self, string, f32, const ref Icon)</a></td>
+<td><a href="#Gui_Header_addItem">addItem</a></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_Header_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItem">getItem(self, u32)</a></td>
+<td><a href="#Gui_Header_getItem">getItem</a></td>
 <td>Returns the given item, by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemByCol">getItemByCol(self, u32)</a></td>
+<td><a href="#Gui_Header_getItemByCol">getItemByCol</a></td>
 <td>Returns the given item, by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPosition">getItemPosition(self, u32)</a></td>
+<td><a href="#Gui_Header_getItemPosition">getItemPosition</a></td>
 <td>Get an item position by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol(self, u32)</a></td>
+<td><a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol</a></td>
 <td>Get an item position by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidth">getItemWidth(self, u32)</a></td>
+<td><a href="#Gui_Header_getItemWidth">getItemWidth</a></td>
 <td>Get an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol(self, u32)</a></td>
+<td><a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol</a></td>
 <td>Get an item width by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth(self)</a></td>
+<td><a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth</a></td>
 <td>Get the header total width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidth">setItemWidth(self, u32, f32)</a></td>
+<td><a href="#Gui_Header_setItemWidth">setItemWidth</a></td>
 <td>Set an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol(self, u32, f32)</a></td>
+<td><a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol</a></td>
 <td>Set an item width by column. </td>
 </tr>
 </table>
@@ -6199,30 +6199,30 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Icon_clear">clear(self)</a></td>
+<td><a href="#Gui_Icon_clear">clear</a></td>
 <td>Set icon to invalid. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_from">from(*ImageList, s32, f32, f32)</a></td>
+<td><a href="#Gui_Icon_from">from</a></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_isValid">isValid(self)</a></td>
+<td><a href="#Gui_Icon_isValid">isValid</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_paint">paint(self, *Painter, f32, f32, const ref Color)</a></td>
+<td><a href="#Gui_Icon_paint">paint</a></td>
 <td>Paint icon at the given position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_set">set(self, *ImageList, s32, f32, f32)</a></td>
+<td><a href="#Gui_Icon_set">set</a></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Icon_opEquals">opEquals(self, const ref Icon)</a></td>
+<td><a href="#Gui_Icon_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -6354,23 +6354,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_IconBar_addCheckableItem">addCheckableItem(self, const ref Icon, WndId)</a></td>
+<td><a href="#Gui_IconBar_addCheckableItem">addCheckableItem</a></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem(self, const ref Icon, WndId)</a></td>
+<td><a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem</a></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addItem">addItem(self, const ref Icon, WndId, IconButtonFlags)</a></td>
+<td><a href="#Gui_IconBar_addItem">addItem</a></td>
 <td>Add a new button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_create">create(*Wnd, f32, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_IconBar_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags(self, IconBarFlags, IconBarFlags)</a></td>
+<td><a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags</a></td>
 <td>Change bar flags. </td>
 </tr>
 </table>
@@ -6558,15 +6558,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_IconButton_create">create(*Wnd, const ref Icon, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_IconButton_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setCheck">setCheck(self, bool)</a></td>
+<td><a href="#Gui_IconButton_setCheck">setCheck</a></td>
 <td>Set the check state of the button (if the button is checkable). </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setForm">setForm(self, IconButtonForm)</a></td>
+<td><a href="#Gui_IconButton_setForm">setForm</a></td>
 <td>Set the button form. </td>
 </tr>
 </table>
@@ -6890,15 +6890,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ImageList_countX">countX(self)</a></td>
+<td><a href="#Gui_ImageList_countX">countX</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_countY">countY(self)</a></td>
+<td><a href="#Gui_ImageList_countY">countY</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_set">set(self, const ref Texture, s32, s32, s32)</a></td>
+<td><a href="#Gui_ImageList_set">set</a></td>
 <td>Initialize image list. </td>
 </tr>
 </table>
@@ -6973,15 +6973,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ImageRect_clear">clear(self)</a></td>
+<td><a href="#Gui_ImageRect_clear">clear</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ImageRect_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setFile">setFile(self, string)</a></td>
+<td><a href="#Gui_ImageRect_setFile">setFile</a></td>
 <td>Load and set movie. </td>
 </tr>
 <tr>
@@ -6997,7 +6997,7 @@
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setMovie">setMovie(self, const ref ImageList)</a></td>
+<td><a href="#Gui_ImageRect_setMovie">setMovie</a></td>
 <td>Set movie as an image list. </td>
 </tr>
 </table>
@@ -7258,15 +7258,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Label_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_Label_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_getText">getText(self)</a></td>
+<td><a href="#Gui_Label_getText">getText</a></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_setText">setText(self, string)</a></td>
+<td><a href="#Gui_Label_setText">setText</a></td>
 <td>Change the text. </td>
 </tr>
 </table>
@@ -7519,23 +7519,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ListCtrl_addColumn">addColumn(self, string, f32, const ref Icon)</a></td>
+<td><a href="#Gui_ListCtrl_addColumn">addColumn</a></td>
 <td>Add one column in a multi columns list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_clear">clear(self)</a></td>
+<td><a href="#Gui_ListCtrl_clear">clear</a></td>
 <td>Clear all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapse">collapse(self, *ListLine)</a></td>
+<td><a href="#Gui_ListCtrl_collapse">collapse</a></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapseAll">collapseAll(self)</a></td>
+<td><a href="#Gui_ListCtrl_collapseAll">collapseAll</a></td>
 <td>Collapse all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_computeLayout">computeLayout(self)</a></td>
+<td><a href="#Gui_ListCtrl_computeLayout">computeLayout</a></td>
 <td>Compute global layout, once all lines have been added. </td>
 </tr>
 <tr>
@@ -7547,83 +7547,83 @@
 <td>Add one line, and set first column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createSimple">createSimple(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ListCtrl_createSimple">createSimple</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine(self, u32)</a></td>
+<td><a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine</a></td>
 <td>Set the corresponding line visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_expand">expand(self, *ListLine)</a></td>
+<td><a href="#Gui_ListCtrl_expand">expand</a></td>
 <td>Expand the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines(self)</a></td>
+<td><a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines</a></td>
 <td>Get all the checked lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex(self)</a></td>
+<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex</a></td>
 <td>Returns the first visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFocusLine">getFocusLine(self)</a></td>
+<td><a href="#Gui_ListCtrl_getFocusLine">getFocusLine</a></td>
 <td>Get the line with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex(self)</a></td>
+<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex</a></td>
 <td>Returns the last visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLine">getLine(self, u32)</a></td>
+<td><a href="#Gui_ListCtrl_getLine">getLine</a></td>
 <td>Get a line by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineCount">getLineCount(self)</a></td>
+<td><a href="#Gui_ListCtrl_getLineCount">getLineCount</a></td>
 <td>Returns the number of lines in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineHeight">getLineHeight(self)</a></td>
+<td><a href="#Gui_ListCtrl_getLineHeight">getLineHeight</a></td>
 <td>Get the height of one line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine(self)</a></td>
+<td><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine</a></td>
 <td>Returns a selected line  Mostly for singlesel mode. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines(self)</a></td>
+<td><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines</a></td>
 <td>Get all the selected lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isLineSelected">isLineSelected(self, u32)</a></td>
+<td><a href="#Gui_ListCtrl_isLineSelected">isLineSelected</a></td>
 <td>Returns. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine(self, u32)</a></td>
+<td><a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine</a></td>
 <td>Returns true if the line at the given index is selected. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLine">selectLine(self, u32, bool)</a></td>
+<td><a href="#Gui_ListCtrl_selectLine">selectLine</a></td>
 <td>Select of unselect the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLines">selectLines(self, u32, u32, bool)</a></td>
+<td><a href="#Gui_ListCtrl_selectLines">selectLines</a></td>
 <td>Select a range of lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth(self, u32, f32)</a></td>
+<td><a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth</a></td>
 <td>Set the column width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setFocus">setFocus(self)</a></td>
+<td><a href="#Gui_ListCtrl_setFocus">setFocus</a></td>
 <td>Set focus to the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount(self, u32)</a></td>
+<td><a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount</a></td>
 <td>Set the number of lines in a virtual list. </td>
 </tr>
 <tr>
@@ -7635,11 +7635,11 @@
 <td>Sort the list by a given column  If <code class="incode">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_toggleExpand">toggleExpand(self, *ListLine)</a></td>
+<td><a href="#Gui_ListCtrl_toggleExpand">toggleExpand</a></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_unselectAll">unselectAll(self)</a></td>
+<td><a href="#Gui_ListCtrl_unselectAll">unselectAll</a></td>
 <td>Unselect all lines. </td>
 </tr>
 </table>
@@ -8232,19 +8232,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ListLine_canExpand">canExpand(self)</a></td>
+<td><a href="#Gui_ListLine_canExpand">canExpand</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_getItem">getItem(self, u32)</a></td>
+<td><a href="#Gui_ListLine_getItem">getItem</a></td>
 <td>Get an item by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_isParentOf">isParentOf(self, *ListLine)</a></td>
+<td><a href="#Gui_ListLine_isParentOf">isParentOf</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_setItem">setItem(self, u32, string, const ref Icon)</a></td>
+<td><a href="#Gui_ListLine_setItem">setItem</a></td>
 <td>Initialize a given column item. </td>
 </tr>
 </table>
@@ -8514,27 +8514,27 @@
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addSeparator">addSeparator(self)</a></td>
+<td><a href="#Gui_MenuCtrl_addSeparator">addSeparator</a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup(self)</a></td>
+<td><a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createBar">createBar(*Wnd, const ref Rectangle, WndId, *Wnd)</a></td>
+<td><a href="#Gui_MenuCtrl_createBar">createBar</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createPopup">createPopup(*Wnd, WndId, *Wnd)</a></td>
+<td><a href="#Gui_MenuCtrl_createPopup">createPopup</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_doModal">doModal(self, const ref Point, PopupPos, bool)</a></td>
+<td><a href="#Gui_MenuCtrl_doModal">doModal</a></td>
 <td>Make the popup menu modal  Will return the selected id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_updateState">updateState(self)</a></td>
+<td><a href="#Gui_MenuCtrl_updateState">updateState</a></td>
 <td></td>
 </tr>
 </table>
@@ -8743,43 +8743,43 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_MessageDlg_confirm">confirm(*Surface, string, string)</a></td>
+<td><a href="#Gui_MessageDlg_confirm">confirm</a></td>
 <td>Message box to <code class="incode">confirm</code> something. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_create">create(*Surface, string, const ref Icon)</a></td>
+<td><a href="#Gui_MessageDlg_create">create</a></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_doModal">doModal(self, *Surface)</a></td>
+<td><a href="#Gui_MessageDlg_doModal">doModal</a></td>
 <td>Display the box, centered, and returns the id of the pressed button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_error">error(*Surface, string, string)</a></td>
+<td><a href="#Gui_MessageDlg_error">error</a></td>
 <td>Message box to show an error. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_ok">ok(*Surface, string, const ref Icon)</a></td>
+<td><a href="#Gui_MessageDlg_ok">ok</a></td>
 <td>Message box with a <code class="incode">ok</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_okCancel">okCancel(*Surface, string, string, const ref Icon)</a></td>
+<td><a href="#Gui_MessageDlg_okCancel">okCancel</a></td>
 <td>Message box with a <code class="incode">ok</code> and <code class="incode">cancel</code> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIcon">setIcon(self, const ref Icon, const ref Color)</a></td>
+<td><a href="#Gui_MessageDlg_setIcon">setIcon</a></td>
 <td>Set big icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIconColor">setIconColor(self, const ref Color)</a></td>
+<td><a href="#Gui_MessageDlg_setIconColor">setIconColor</a></td>
 <td>Set big icon color (icon must has been set before). </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNo">yesNo(*Surface, string, string, string, const ref Icon)</a></td>
+<td><a href="#Gui_MessageDlg_yesNo">yesNo</a></td>
 <td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel(*Surface, string, string, const ref Icon)</a></td>
+<td><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel</a></td>
 <td>Message box with a <code class="incode">yes</code> and <code class="incode">no</code> button. </td>
 </tr>
 </table>
@@ -9075,15 +9075,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Movie_clear">clear(self)</a></td>
+<td><a href="#Gui_Movie_clear">clear</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_isValid">isValid(self)</a></td>
+<td><a href="#Gui_Movie_isValid">isValid</a></td>
 <td>Returns true if the movie has valid content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_pause">pause(self, bool)</a></td>
+<td><a href="#Gui_Movie_pause">pause</a></td>
 <td>Set/Reset pause state. </td>
 </tr>
 <tr>
@@ -9095,11 +9095,11 @@
 <td>Associate a filename. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_setFrameIndex">setFrameIndex(self, s32)</a></td>
+<td><a href="#Gui_Movie_setFrameIndex">setFrameIndex</a></td>
 <td>Set the current video frame. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_update">update(self, f32)</a></td>
+<td><a href="#Gui_Movie_update">update</a></td>
 <td>Update timing and change frames. </td>
 </tr>
 </table>
@@ -9356,7 +9356,7 @@
 <td>One shot paint to image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PaintImage_init">init(self, s32, s32)</a></td>
+<td><a href="#Gui_PaintImage_init">init</a></td>
 <td>First init the PaintImage instance. </td>
 </tr>
 </table>
@@ -9447,23 +9447,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PalettePicker_addColor">addColor(self, const ref Color)</a></td>
+<td><a href="#Gui_PalettePicker_addColor">addColor</a></td>
 <td>Add a color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addHueColors">addHueColors(self, s32, f32, f32)</a></td>
+<td><a href="#Gui_PalettePicker_addHueColors">addHueColors</a></td>
 <td>Add a range of changing <code class="incode">hue</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addLumColors">addLumColors(self, s32, const ref Color)</a></td>
+<td><a href="#Gui_PalettePicker_addLumColors">addLumColors</a></td>
 <td>Add a range of changing <code class="incode">luminance</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addSatColors">addSatColors(self, s32, const ref Color, f32)</a></td>
+<td><a href="#Gui_PalettePicker_addSatColors">addSatColors</a></td>
 <td>Add a range of changing <code class="incode">saturation</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_PalettePicker_create">create</a></td>
 <td></td>
 </tr>
 </table>
@@ -9633,19 +9633,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PopupListCtrl_addItem">addItem(self, string, WndId, const ref Icon, *void, *void)</a></td>
+<td><a href="#Gui_PopupListCtrl_addItem">addItem</a></td>
 <td>Add a new item in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_addSeparator">addSeparator(self)</a></td>
+<td><a href="#Gui_PopupListCtrl_addSeparator">addSeparator</a></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_create">create(*Wnd)</a></td>
+<td><a href="#Gui_PopupListCtrl_create">create</a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_show">show(self, f32, f32, f32)</a></td>
+<td><a href="#Gui_PopupListCtrl_show">show</a></td>
 <td>Show popup. </td>
 </tr>
 </table>
@@ -9934,11 +9934,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ProgressBar_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ProgressBar_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ProgressBar_setProgression">setProgression(self, f32)</a></td>
+<td><a href="#Gui_ProgressBar_setProgression">setProgression</a></td>
 <td>Set the progression in [0..1] range. </td>
 </tr>
 </table>
@@ -10094,19 +10094,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PropertyList_addItem">addItem(self, any)</a></td>
+<td><a href="#Gui_PropertyList_addItem">addItem</a></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_PropertyList_create">create</a></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_refresh">refresh(self)</a></td>
+<td><a href="#Gui_PropertyList_refresh">refresh</a></td>
 <td>Refresh displayed values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_setStringFilter">setStringFilter(self, string)</a></td>
+<td><a href="#Gui_PropertyList_setStringFilter">setStringFilter</a></td>
 <td>Show hidden content depending on the input filter. </td>
 </tr>
 </table>
@@ -10277,11 +10277,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PropertyListCtrl_addItem">addItem(self, any)</a></td>
+<td><a href="#Gui_PropertyListCtrl_addItem">addItem</a></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyListCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_PropertyListCtrl_create">create</a></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 </table>
@@ -10458,7 +10458,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_PushButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_PushButton_create">create</a></td>
 <td></td>
 </tr>
 </table>
@@ -10589,11 +10589,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RadioButton_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_RadioButton_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RadioButton_setChecked">setChecked(self, bool)</a></td>
+<td><a href="#Gui_RadioButton_setChecked">setChecked</a></td>
 <td>Set the checked state. </td>
 </tr>
 </table>
@@ -11108,155 +11108,155 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RichEditCtrl_addMapping">addMapping(self, Key, KeyModifiers, RichEditCommand)</a></td>
+<td><a href="#Gui_RichEditCtrl_addMapping">addMapping</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_addText">addText(self, string, RichEditStyleRef)</a></td>
+<td><a href="#Gui_RichEditCtrl_addText">addText</a></td>
 <td>Append a text with a given style. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canRedo">canRedo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_canRedo">canRedo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canUndo">canUndo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_canUndo">canUndo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_charPressed">charPressed(self, Key, rune, KeyModifiers)</a></td>
+<td><a href="#Gui_RichEditCtrl_charPressed">charPressed</a></td>
 <td>Simulate a keyboard character pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_checkSelection">checkSelection(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_checkSelection">checkSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clear">clear(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_clear">clear</a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearMapping">clearMapping(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_clearMapping">clearMapping</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearSelection">clearSelection(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_clearSelection">clearSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearUndo">clearUndo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_clearUndo">clearUndo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_RichEditCtrl_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine(self, string, bool)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine</a></td>
 <td>Delete a given text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLine">deleteLine(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteLine">deleteLine</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteRight">deleteRight(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteRight">deleteRight</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible(self, bool)</a></td>
+<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible(self, const ref RichEditCursor, bool)</a></td>
+<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize</a></td>
 <td>Evaluate the rendering size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_executeCommand">executeCommand(self, RichEditCommand)</a></td>
+<td><a href="#Gui_RichEditCtrl_executeCommand">executeCommand</a></td>
 <td>Execute a command. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos(self, const ref RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos(self, const ref RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint(self, const ref Point)</a></td>
+<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand(self, Key, KeyModifiers)</a></td>
+<td><a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRune">getRune(self, const ref RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_getRune">getRune</a></td>
 <td>Get the rune at the given cursor pos. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize(self, *RichEditLine, u64, f32)</a></td>
+<td><a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText</a></td>
 <td>Get the selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset(self, s32, *s32)</a></td>
+<td><a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getText">getText(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getText">getText</a></td>
 <td>Get the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles</a></td>
 <td>Get the full text with the associated styles per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getXExtent">getXExtent(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_getXExtent">getXExtent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine(self, string)</a></td>
+<td><a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine</a></td>
 <td>Insert text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertRune">insertRune(self, rune)</a></td>
+<td><a href="#Gui_RichEditCtrl_insertRune">insertRune</a></td>
 <td>Insert a rune. </td>
 </tr>
 <tr>
@@ -11268,139 +11268,139 @@
 <td>Insert a text with a style per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly</a></td>
 <td>Returns true if the rich edit is read only. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_keyPressed">keyPressed(self, Key, KeyModifiers)</a></td>
+<td><a href="#Gui_RichEditCtrl_keyPressed">keyPressed</a></td>
 <td>Simulate a keyboard pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_lexAll">lexAll(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_lexAll">lexAll</a></td>
 <td>Lex the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft(self, *RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight(self, *RichEditCursor, bool)</a></td>
+<td><a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_popUndo">popUndo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_popUndo">popUndo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pushUndo">pushUndo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_pushUndo">pushUndo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_redo">redo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_redo">redo</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectAll">selectAll(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_selectAll">selectAll</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectWord">selectWord(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_selectWord">selectWord</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos(self, const ref RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setFocus">setFocus(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_setFocus">setFocus</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setForm">setForm(self, RichEditForm)</a></td>
+<td><a href="#Gui_RichEditCtrl_setForm">setForm</a></td>
 <td>Set form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setLexer">setLexer(self, IRichEditLexer)</a></td>
+<td><a href="#Gui_RichEditCtrl_setLexer">setLexer</a></td>
 <td>Associate a lexer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection(self, bool)</a></td>
+<td><a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags(self, RichEditFlags)</a></td>
+<td><a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags</a></td>
 <td>Set richedit flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setSelection">setSelection(self, const ref RichEditCursor, const ref RichEditCursor)</a></td>
+<td><a href="#Gui_RichEditCtrl_setSelection">setSelection</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setText">setText(self, string)</a></td>
+<td><a href="#Gui_RichEditCtrl_setText">setText</a></td>
 <td>Set the text content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_undo">undo(self)</a></td>
+<td><a href="#Gui_RichEditCtrl_undo">undo</a></td>
 <td></td>
 </tr>
 </table>
@@ -12614,7 +12614,7 @@
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_RichEditRuneStyle_opEquals">opEquals(self, const ref RichEditRuneStyle)</a></td>
+<td><a href="#Gui_RichEditRuneStyle_opEquals">opEquals</a></td>
 <td></td>
 </tr>
 </table>
@@ -12949,11 +12949,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect(self)</a></td>
+<td><a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_getScrollPos">getScrollPos(self)</a></td>
+<td><a href="#Gui_ScrollWnd_getScrollPos">getScrollPos</a></td>
 <td>Get the current scroll position. </td>
 </tr>
 <tr>
@@ -12965,7 +12965,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollSize">setScrollSize(self, f32, f32)</a></td>
+<td><a href="#Gui_ScrollWnd_setScrollSize">setScrollSize</a></td>
 <td>Set the scroll size (window virtual size). </td>
 </tr>
 </table>
@@ -13119,30 +13119,30 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex(self, u32)</a></td>
+<td><a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isEmpty">isEmpty(self)</a></td>
+<td><a href="#Gui_SelModel_isEmpty">isEmpty</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isSelected">isSelected(self, u32)</a></td>
+<td><a href="#Gui_SelModel_isSelected">isSelected</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_select">select(self, u32, bool)</a></td>
+<td><a href="#Gui_SelModel_select">select</a></td>
 <td>Select the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_unselectAll">unselectAll(self)</a></td>
+<td><a href="#Gui_SelModel_unselectAll">unselectAll</a></td>
 <td>Unselect all. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SelModel_opVisit">opVisit(self, code)</a></td>
+<td><a href="#Gui_SelModel_opVisit">opVisit</a></td>
 <td></td>
 </tr>
 </table>
@@ -13306,22 +13306,22 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SigArray_call">call(self, ...)</a></td>
+<td><a href="#Gui_SigArray_call">call</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_disable">disable(self)</a></td>
+<td><a href="#Gui_SigArray_disable">disable</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_enable">enable(self)</a></td>
+<td><a href="#Gui_SigArray_enable">enable</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SigArray_opAssign">opAssign(self, T)</a></td>
+<td><a href="#Gui_SigArray_opAssign">opAssign</a></td>
 <td></td>
 </tr>
 </table>
@@ -13536,39 +13536,39 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Slider_create">create(*Wnd, const ref Rectangle, WndId, bool, bool)</a></td>
+<td><a href="#Gui_Slider_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValue">getValue(self)</a></td>
+<td><a href="#Gui_Slider_getValue">getValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueLeft">getValueLeft(self)</a></td>
+<td><a href="#Gui_Slider_getValueLeft">getValueLeft</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueRight">getValueRight(self)</a></td>
+<td><a href="#Gui_Slider_getValueRight">getValueRight</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setMinMax">setMinMax(self, f32, f32, f32)</a></td>
+<td><a href="#Gui_Slider_setMinMax">setMinMax</a></td>
 <td>Set the <code class="incode">min</code>, <code class="incode">max</code> and <code class="incode">steps</code> values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setRangeValues">setRangeValues(self, f32, f32)</a></td>
+<td><a href="#Gui_Slider_setRangeValues">setRangeValues</a></td>
 <td>Set left and right values, for a range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValue">setValue(self, f32)</a></td>
+<td><a href="#Gui_Slider_setValue">setValue</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueLeft">setValueLeft(self, f32)</a></td>
+<td><a href="#Gui_Slider_setValueLeft">setValueLeft</a></td>
 <td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueRight">setValueRight(self, f32)</a></td>
+<td><a href="#Gui_Slider_setValueRight">setValueRight</a></td>
 <td>Set the right value (in case of a range). </td>
 </tr>
 </table>
@@ -13770,23 +13770,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SliderCtrl_create">create(*Wnd, string, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_SliderCtrl_create">create</a></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32(self, f32, f32)</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32</a></td>
 <td>Set a f32 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64(self, s64, s64)</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64</a></td>
 <td>Set a f64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64(self, u64, u64)</a></td>
+<td><a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64</a></td>
 <td>Set a u64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setValue">setValue(self, f32)</a></td>
+<td><a href="#Gui_SliderCtrl_setValue">setValue</a></td>
 <td>Set the slider current value. </td>
 </tr>
 </table>
@@ -13952,19 +13952,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_SplitterCtrl_addPane">addPane(self, *Wnd, f32, bool)</a></td>
+<td><a href="#Gui_SplitterCtrl_addPane">addPane</a></td>
 <td>Add a new pane. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_create">create(*Wnd, const ref Rectangle, bool, WndId)</a></td>
+<td><a href="#Gui_SplitterCtrl_create">create</a></td>
 <td>Creates a new SplitterCtrl instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_isVertical">isVertical(self)</a></td>
+<td><a href="#Gui_SplitterCtrl_isVertical">isVertical</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize(self, u32, f32)</a></td>
+<td><a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize</a></td>
 <td>Set the pane size (size of the first view). </td>
 </tr>
 </table>
@@ -14166,11 +14166,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td><a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout</a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_create">create(*Wnd, StackLayoutKind, const ref Rectangle)</a></td>
+<td><a href="#Gui_StackLayoutCtrl_create">create</a></td>
 <td>Create a layout control. </td>
 </tr>
 </table>
@@ -14383,95 +14383,95 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Surface_bringToTop">bringToTop(self)</a></td>
+<td><a href="#Gui_Surface_bringToTop">bringToTop</a></td>
 <td>Bring the surface at the top of the Z order. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_center">center(self, *Surface)</a></td>
+<td><a href="#Gui_Surface_center">center</a></td>
 <td>Center this surface relative to <code class="incode">from</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_constaintToScreen">constaintToScreen(self)</a></td>
+<td><a href="#Gui_Surface_constaintToScreen">constaintToScreen</a></td>
 <td>Constraint a window to be inside the closest monitor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_create">create(*Surface, s32, s32, s32, s32, SurfaceFlags, *Surface)</a></td>
+<td><a href="#Gui_Surface_create">create</a></td>
 <td>Creates the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_destroy">destroy(self)</a></td>
+<td><a href="#Gui_Surface_destroy">destroy</a></td>
 <td>Destroy the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_disable">disable(self)</a></td>
+<td><a href="#Gui_Surface_disable">disable</a></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_enable">enable(self)</a></td>
+<td><a href="#Gui_Surface_enable">enable</a></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_getView">getView(self)</a></td>
+<td><a href="#Gui_Surface_getView">getView</a></td>
 <td>Returns inside view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_hide">hide(self)</a></td>
+<td><a href="#Gui_Surface_hide">hide</a></td>
 <td>Hide the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidate">invalidate(self)</a></td>
+<td><a href="#Gui_Surface_invalidate">invalidate</a></td>
 <td>Invalidate the full surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
+<td><a href="#Gui_Surface_invalidateRect">invalidateRect</a></td>
 <td>Invalidate one part of the surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_paint">paint(self)</a></td>
+<td><a href="#Gui_Surface_paint">paint</a></td>
 <td>Main surface paint function. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_screenToSurface">screenToSurface(self, *Point)</a></td>
+<td><a href="#Gui_Surface_screenToSurface">screenToSurface</a></td>
 <td>Transform a point in screen space relative to the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setIcon">setIcon(self, const ref Icon)</a></td>
+<td><a href="#Gui_Surface_setIcon">setIcon</a></td>
 <td>Set the surface icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setPosition">setPosition(self, const ref Rectangle)</a></td>
+<td><a href="#Gui_Surface_setPosition">setPosition</a></td>
 <td>Set the surface position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags(self, SurfaceFlags, SurfaceFlags)</a></td>
+<td><a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags</a></td>
 <td>Change flag surfaces. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setTitle">setTitle(self, string)</a></td>
+<td><a href="#Gui_Surface_setTitle">setTitle</a></td>
 <td>Set the surface title. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setView">setView(self, *Wnd)</a></td>
+<td><a href="#Gui_Surface_setView">setView</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_show">show(self)</a></td>
+<td><a href="#Gui_Surface_show">show</a></td>
 <td>Show the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMaximized">showMaximized(self)</a></td>
+<td><a href="#Gui_Surface_showMaximized">showMaximized</a></td>
 <td>Show the surface as maximized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMinimized">showMinimized(self)</a></td>
+<td><a href="#Gui_Surface_showMinimized">showMinimized</a></td>
 <td>Show the surface as minimized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showNormal">showNormal(self)</a></td>
+<td><a href="#Gui_Surface_showNormal">showNormal</a></td>
 <td>Show the surface in its default state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_surfaceToScreen">surfaceToScreen(self, *Point)</a></td>
+<td><a href="#Gui_Surface_surfaceToScreen">surfaceToScreen</a></td>
 <td>Transform a point relative to the surface in screen space. </td>
 </tr>
 </table>
@@ -15071,19 +15071,19 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Tab_addItem">addItem(self, string, const ref Icon, *Wnd)</a></td>
+<td><a href="#Gui_Tab_addItem">addItem</a></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_Tab_create">create</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_select">select(self, u32)</a></td>
+<td><a href="#Gui_Tab_select">select</a></td>
 <td>Select one tab at the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_setForm">setForm(self, TabForm)</a></td>
+<td><a href="#Gui_Tab_setForm">setForm</a></td>
 <td>Set the tab form. </td>
 </tr>
 </table>
@@ -15406,15 +15406,15 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Theme_createDefaultFont">createDefaultFont(self, u32, FontFamilyStyle)</a></td>
+<td><a href="#Gui_Theme_createDefaultFont">createDefaultFont</a></td>
 <td>Create a default font with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS(self, u32, FontFamilyStyle)</a></td>
+<td><a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS</a></td>
 <td>Create a default font (fixed size) with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawIconText">drawIconText(*Painter, const ref Rectangle, const ref Icon, *RichString, const ref RichStringFormat, f32)</a></td>
+<td><a href="#Gui_Theme_drawIconText">drawIconText</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15426,15 +15426,15 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon24">getIcon24(self, ThemeIcons24, f32)</a></td>
+<td><a href="#Gui_Theme_getIcon24">getIcon24</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon64">getIcon64(self, ThemeIcons64, f32)</a></td>
+<td><a href="#Gui_Theme_getIcon64">getIcon64</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_setTextColors">setTextColors(self, *RichStringFormat, const ref Color)</a></td>
+<td><a href="#Gui_Theme_setTextColors">setTextColors</a></td>
 <td></td>
 </tr>
 </table>
@@ -18265,27 +18265,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors(self, string)</a></td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics(self, string)</a></td>
+<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearFont">clearFont(self)</a></td>
+<td><a href="#Gui_ThemeStyle_clearFont">clearFont</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors(self)</a></td>
+<td><a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_create">create(self, *ThemeStyle)</a></td>
+<td><a href="#Gui_ThemeStyle_create">create</a></td>
 <td>Create a specific style based on the parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_getFont">getFont(self)</a></td>
+<td><a href="#Gui_ThemeStyle_getFont">getFont</a></td>
 <td></td>
 </tr>
 <tr>
@@ -18297,11 +18297,11 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors(self, string)</a></td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics(self, string)</a></td>
+<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics</a></td>
 <td></td>
 </tr>
 </table>
@@ -18483,7 +18483,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_Timer_restart">restart(self)</a></td>
+<td><a href="#Gui_Timer_restart">restart</a></td>
 <td></td>
 </tr>
 </table>
@@ -18569,7 +18569,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_ToggleButton_create">create(*Wnd, const ref Rectangle, WndId)</a></td>
+<td><a href="#Gui_ToggleButton_create">create</a></td>
 <td></td>
 </tr>
 </table>
@@ -18814,19 +18814,19 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToFront">bringToFront(self)</a></td>
+<td><a href="#Gui_Wnd_bringToFront">bringToFront</a></td>
 <td>Force the window to be the first painted (before all siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToTop">bringToTop(self)</a></td>
+<td><a href="#Gui_Wnd_bringToTop">bringToTop</a></td>
 <td>Force the window to be the last painted (on top of siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_captureMouse">captureMouse(self)</a></td>
+<td><a href="#Gui_Wnd_captureMouse">captureMouse</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_computeStyle">computeStyle(self)</a></td>
+<td><a href="#Gui_Wnd_computeStyle">computeStyle</a></td>
 <td></td>
 </tr>
 <tr>
@@ -18842,139 +18842,139 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroy">destroy(self)</a></td>
+<td><a href="#Gui_Wnd_destroy">destroy</a></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroyNow">destroyNow(self)</a></td>
+<td><a href="#Gui_Wnd_destroyNow">destroyNow</a></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_disable">disable(self)</a></td>
+<td><a href="#Gui_Wnd_disable">disable</a></td>
 <td>Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_enable">enable(self, bool)</a></td>
+<td><a href="#Gui_Wnd_enable">enable</a></td>
 <td>Enable/Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_fitPosInParent">fitPosInParent(self, f32, f32, bool, bool)</a></td>
+<td><a href="#Gui_Wnd_fitPosInParent">fitPosInParent</a></td>
 <td>Be sure rect is fully inside the parent rectangle (if possible). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getApp">getApp(self)</a></td>
+<td><a href="#Gui_Wnd_getApp">getApp</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getChildById">getChildById(self, string)</a></td>
+<td><a href="#Gui_Wnd_getChildById">getChildById</a></td>
 <td>Retrieve the child with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRect">getClientRect(self)</a></td>
+<td><a href="#Gui_Wnd_getClientRect">getClientRect</a></td>
 <td>Returns the client area. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding(self)</a></td>
+<td><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding</a></td>
 <td>Returns the client area, with <code class="incode">padding</code> applied. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFocus">getFocus(self)</a></td>
+<td><a href="#Gui_Wnd_getFocus">getFocus</a></td>
 <td>Get the window with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFont">getFont(self)</a></td>
+<td><a href="#Gui_Wnd_getFont">getFont</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut(self, KeyModifiers, Key)</a></td>
+<td><a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut</a></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor(self, WndId)</a></td>
+<td><a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor</a></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getMouseCapture">getMouseCapture(self)</a></td>
+<td><a href="#Gui_Wnd_getMouseCapture">getMouseCapture</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getOwner">getOwner(self)</a></td>
+<td><a href="#Gui_Wnd_getOwner">getOwner</a></td>
 <td>Get the owner of the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getParentById">getParentById(self, string)</a></td>
+<td><a href="#Gui_Wnd_getParentById">getParentById</a></td>
 <td>Retrieve the parent with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getRectIn">getRectIn(self, *Wnd)</a></td>
+<td><a href="#Gui_Wnd_getRectIn">getRectIn</a></td>
 <td>Get the wnd position relative to a given parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect(self)</a></td>
+<td><a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect</a></td>
 <td>Get the wnd position in the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTheme">getTheme(self)</a></td>
+<td><a href="#Gui_Wnd_getTheme">getTheme</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeColors">getThemeColors(self)</a></td>
+<td><a href="#Gui_Wnd_getThemeColors">getThemeColors</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics(self)</a></td>
+<td><a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeRects">getThemeRects(self)</a></td>
+<td><a href="#Gui_Wnd_getThemeRects">getThemeRects</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTiming">getTiming(self)</a></td>
+<td><a href="#Gui_Wnd_getTiming">getTiming</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopView">getTopView(self)</a></td>
+<td><a href="#Gui_Wnd_getTopView">getTopView</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopWnd">getTopWnd(self)</a></td>
+<td><a href="#Gui_Wnd_getTopWnd">getTopWnd</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getWndAt">getWndAt(self, f32, f32, bool, bool)</a></td>
+<td><a href="#Gui_Wnd_getWndAt">getWndAt</a></td>
 <td>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hasFocus">hasFocus(self)</a></td>
+<td><a href="#Gui_Wnd_hasFocus">hasFocus</a></td>
 <td>Returns true if the window has the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hide">hide(self)</a></td>
+<td><a href="#Gui_Wnd_hide">hide</a></td>
 <td>Hide the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidate">invalidate(self)</a></td>
+<td><a href="#Gui_Wnd_invalidate">invalidate</a></td>
 <td>Force the window to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidateRect">invalidateRect(self, const ref Rectangle)</a></td>
+<td><a href="#Gui_Wnd_invalidateRect">invalidateRect</a></td>
 <td>Force o local position to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isEnabled">isEnabled(self)</a></td>
+<td><a href="#Gui_Wnd_isEnabled">isEnabled</a></td>
 <td>Returns true if window, and all its parents, are enabled. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isParentOf">isParentOf(self, *Wnd)</a></td>
+<td><a href="#Gui_Wnd_isParentOf">isParentOf</a></td>
 <td>Returns true if <code class="incode">child</code> is in the child hieararchy of <code class="incode">self</code>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisible">isVisible(self, bool)</a></td>
+<td><a href="#Gui_Wnd_isVisible">isVisible</a></td>
 <td>Returns true if window, and all its parents, are visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisibleState">isVisibleState(self)</a></td>
+<td><a href="#Gui_Wnd_isVisibleState">isVisibleState</a></td>
 <td></td>
 </tr>
 <tr>
@@ -18986,91 +18986,91 @@
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_move">move(self, f32, f32)</a></td>
+<td><a href="#Gui_Wnd_move">move</a></td>
 <td>Move the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_notifyEvent">notifyEvent(self, Kind)</a></td>
+<td><a href="#Gui_Wnd_notifyEvent">notifyEvent</a></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent(self, Kind)</a></td>
+<td><a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent</a></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_paint">paint(self, *PaintContext)</a></td>
+<td><a href="#Gui_Wnd_paint">paint</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postCommandEvent">postCommandEvent(self, WndId)</a></td>
+<td><a href="#Gui_Wnd_postCommandEvent">postCommandEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postEvent">postEvent(self, *Event)</a></td>
+<td><a href="#Gui_Wnd_postEvent">postEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent(self)</a></td>
+<td><a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postQuitEvent">postQuitEvent(self)</a></td>
+<td><a href="#Gui_Wnd_postQuitEvent">postQuitEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postResizeEvent">postResizeEvent(self)</a></td>
+<td><a href="#Gui_Wnd_postResizeEvent">postResizeEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_processEvent">processEvent(self, *Event)</a></td>
+<td><a href="#Gui_Wnd_processEvent">processEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerAction">registerAction(self)</a></td>
+<td><a href="#Gui_Wnd_registerAction">registerAction</a></td>
 <td>Register one new action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut(self, KeyModifiers, Key, WndId)</a></td>
+<td><a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut</a></td>
 <td>Register a keyboard shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_releaseMouse">releaseMouse(self)</a></td>
+<td><a href="#Gui_Wnd_releaseMouse">releaseMouse</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_resize">resize(self, f32, f32, bool)</a></td>
+<td><a href="#Gui_Wnd_resize">resize</a></td>
 <td>Resize the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_screenToSurface">screenToSurface(self, const ref Point)</a></td>
+<td><a href="#Gui_Wnd_screenToSurface">screenToSurface</a></td>
 <td>Convert a screen coordinate to a surface coordinate (relative to my surface). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent(self, WndId)</a></td>
+<td><a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent</a></td>
 <td>Send the command event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent(self, WndId)</a></td>
+<td><a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent</a></td>
 <td>Send the command state event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent(self)</a></td>
+<td><a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendEvent">sendEvent(self, *Event)</a></td>
+<td><a href="#Gui_Wnd_sendEvent">sendEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent(self)</a></td>
+<td><a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendStateEvent">sendStateEvent(self, EventKind)</a></td>
+<td><a href="#Gui_Wnd_sendStateEvent">sendStateEvent</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_serializeState">serializeState(self, *Serializer)</a></td>
+<td><a href="#Gui_Wnd_serializeState">serializeState</a></td>
 <td></td>
 </tr>
 <tr>
@@ -19090,19 +19090,19 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setFocus">setFocus(self)</a></td>
+<td><a href="#Gui_Wnd_setFocus">setFocus</a></td>
 <td>Set the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setMargin">setMargin(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Gui_Wnd_setMargin">setMargin</a></td>
 <td>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPadding">setPadding(self, f32, f32, f32, f32)</a></td>
+<td><a href="#Gui_Wnd_setPadding">setPadding</a></td>
 <td>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setParent">setParent(self, *Wnd)</a></td>
+<td><a href="#Gui_Wnd_setParent">setParent</a></td>
 <td>Set window parent. </td>
 </tr>
 <tr>
@@ -19114,15 +19114,15 @@
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_show">show(self, bool)</a></td>
+<td><a href="#Gui_Wnd_show">show</a></td>
 <td>Show the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal(self, const ref Point)</a></td>
+<td><a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal</a></td>
 <td>Convert a surface coordinate to a local coordinate (relative to me). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_updateCommandState">updateCommandState(self)</a></td>
+<td><a href="#Gui_Wnd_updateCommandState">updateCommandState</a></td>
 <td>Main function to update command state of various windows/widgets. </td>
 </tr>
 </table>
@@ -20506,11 +20506,11 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout(self)</a></td>
+<td><a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout</a></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_create">create(*Wnd, const ref Rectangle)</a></td>
+<td><a href="#Gui_WrapLayoutCtrl_create">create</a></td>
 <td>Create a layout control. </td>
 </tr>
 </table>
