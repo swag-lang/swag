@@ -99,10 +99,6 @@
         .container a:hover {
             text-decoration: underline;
         }
-        .container a.src {
-            font-size:          90%;
-            color:              LightGrey;
-        }
         table.item {
             border-collapse:    separate;
             background-color:   Black;

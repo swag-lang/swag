@@ -112,10 +112,6 @@ void GenDoc::outputStyles()
         .container a:hover {\n\
             text-decoration: underline;\n\
         }\n\
-        .container a.src {\n\
-            font-size:          90%;\n\
-            color:              LightGrey;\n\
-        }\n\
         table.item {\n\
             border-collapse:    separate;\n\
             background-color:   Black;\n\
