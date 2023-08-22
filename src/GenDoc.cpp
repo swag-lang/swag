@@ -279,7 +279,12 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
                 Utf8 nameToRef;
                 while (SWAG_IS_ALNUM(*pz) || *pz == '_' || *pz == '.')
                     nameToRef += *pz++;
-                repl += getReference(nameToRef);
+
+                auto ref = findReference(nameToRef);
+                if (ref.empty())
+                    repl += nameToRef;
+                else
+                    repl += ref;
             }
             else
             {
@@ -314,14 +319,6 @@ Utf8 GenDoc::findReference(const Utf8& name)
     }
 
     return "";
-}
-
-Utf8 GenDoc::getReference(const Utf8& name)
-{
-    auto ref = findReference(name);
-    if (ref.empty())
-        return name;
-    return ref;
 }
 
 void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
