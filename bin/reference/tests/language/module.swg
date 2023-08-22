@@ -11,7 +11,6 @@
         cfg.warnDefaultDisabled = true
         cfg.warnAsWarning = "Wrn0009"
 
-        cfg.docTitleToc = "Content"
         cfg.docTitleContent = "Swag language reference"
         cfg.docCss = "css/style.css"
         cfg.docIcon = "favicon.ico"

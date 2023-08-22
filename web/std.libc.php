@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module libc</title>
+<?php include('common/start-head.php'); ?><title>Module libc</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <style>
 
         .container {
@@ -190,9 +191,9 @@
     .SyntaxString    { color: #bb6643; }
     .SyntaxAttribute { color: #7f7f7f; }
 </style>
-</head>
+<?php include('common/end-head.php'); ?></head>
 <body>
-<div class="container">
+<?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
 <div class="leftpage">
 <h2>Table of Contents</h2>

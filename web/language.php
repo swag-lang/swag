@@ -197,7 +197,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
 <div class="leftpage">
-<h2>Content</h2>
+<h2>Table of Contents</h2>
 <ul>
 <li><a href="#000_introduction">Introduction</a></li>
 <li><a href="#001_hello_mad_world">Hello mad world</a></li>
