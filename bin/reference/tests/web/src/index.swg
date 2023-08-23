@@ -12,25 +12,23 @@
     </div>
 </div>
 
-<table style="table-layout:fixed;">
-<tr>
-    <td width=33% style="vertical-align:top; padding-left:30px; padding-right:30px;">
+<div style="display:flex;flex-wrap:wrap;">
+    <div style="flex:1; vertical-align:top; padding-left:30px; padding-right:30px;">
         <h2>A sophisticated toy</h2>
         <p>Swag is a system programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
         This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
-    </td>
-    <td width=33% style="vertical-align:top; padding-left:30px; padding-right:30px;">
+    </div>
+    <div style="flex:1; vertical-align:top; padding-left:30px; padding-right:30px;">
         <h2>Native or interpreted</h2>
         <p>The Swag compiler can generate fast <b>native</b> code, or act as an interpreter for a <b>scripting</b> language.</p>
         Imagine C++, but where everything could be <i>constexpr</i>.
-    </td>
-    <td width=33% style="vertical-align:top; padding-left:30px; padding-right:30px;">
+    </div>
+    <div style="flex:1; vertical-align:top; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
         <p>Swag has type reflection at both runtime and compile time, meta programmation, generics, a powerful macro system...</p>
         <b>Enjoy.</b>
-    </td>
-</tr>
-</table>
+    </div>
+</div>
 <p align="center" style="padding:50px;"> <img src="imgs/syntax.png"> </p>
 ---
 
