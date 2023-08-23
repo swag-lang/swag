@@ -205,28 +205,28 @@
 <h3>Under windows 10/11 </h3>
 <p>You should register the location of the swag compiler (<code class="incode">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
-<div class="precode"><code></span><span class="SyntaxCode"># </span><span class="SyntaxConstant">You</span><span class="SyntaxCode"> must replace </span><span class="SyntaxString">`f:\swag-lang\swag\bin`</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">with</span><span class="SyntaxCode"> your location of </span><span class="SyntaxString">`swag.exe`</span><span class="SyntaxCode">
+<div class="precode"><code><span class="SyntaxCode"># <span class="SyntaxConstant">You</span> must replace <span class="SyntaxString">`f:\swag-lang\swag\bin`</span> <span class="SyntaxKeyword">with</span> your location of <span class="SyntaxString">`swag.exe`</span>
 
-[</span><span class="SyntaxConstant">Environment</span><span class="SyntaxCode">]::</span><span class="SyntaxConstant">SetEnvironmentVariable</span><span class="SyntaxCode">(
-   </span><span class="SyntaxString">"Path"</span><span class="SyntaxCode">,
-   [</span><span class="SyntaxConstant">Environment</span><span class="SyntaxCode">]::</span><span class="SyntaxConstant">GetEnvironmentVariable</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Path"</span><span class="SyntaxCode">, </span><span class="SyntaxString">"User"</span><span class="SyntaxCode">) + </span><span class="SyntaxString">";f:\swag-lang\swag\bin"</span><span class="SyntaxCode">,
-   </span><span class="SyntaxString">"User"</span><span class="SyntaxCode">
-)</code>
+[<span class="SyntaxConstant">Environment</span>]::<span class="SyntaxConstant">SetEnvironmentVariable</span>(
+   <span class="SyntaxString">"Path"</span>,
+   [<span class="SyntaxConstant">Environment</span>]::<span class="SyntaxConstant">GetEnvironmentVariable</span>(<span class="SyntaxString">"Path"</span>, <span class="SyntaxString">"User"</span>) + <span class="SyntaxString">";f:\swag-lang\swag\bin"</span>,
+   <span class="SyntaxString">"User"</span>
+)</span></code>
 </div>
 <h1>Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
-<div class="precode"><code></span><span class="SyntaxCode">$ swag new -w:first
-=&gt; workspace '</span><span class="SyntaxConstant">F</span><span class="SyntaxCode">:/</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' has been created
-=&gt; module '</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' has been created
-=&gt; type 'swag run -w:</span><span class="SyntaxConstant">F</span><span class="SyntaxCode">:\</span><span class="SyntaxFunction">first</span><span class="SyntaxCode">' to build </span><span class="SyntaxLogic">and</span><span class="SyntaxCode"> run that module</code>
+<div class="precode"><code><span class="SyntaxCode">$ swag new -w:first
+=&gt; workspace '<span class="SyntaxConstant">F</span>:/<span class="SyntaxFunction">first</span>' has been created
+=&gt; module '<span class="SyntaxFunction">first</span>' has been created
+=&gt; type 'swag run -w:<span class="SyntaxConstant">F</span>:\<span class="SyntaxFunction">first</span>' to build <span class="SyntaxLogic">and</span> run that module</span></code>
 </div>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxFunction">#main</span><span class="SyntaxCode">
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxFunction">#main</span>
 {
-    </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(</span><span class="SyntaxString">"Hello world!\n"</span><span class="SyntaxCode">)
-}</code>
+    <span class="SyntaxIntrinsic">@print</span>(<span class="SyntaxString">"Hello world!\n"</span>)
+}</span></code>
 </div>
 <p>A workspace contains a predefined number of sub folders: </p>
 <ul>
@@ -244,19 +244,19 @@
 </ul>
 <p>A module always contains a special file named <code class="incode">module.swg</code>. This file is used to configure the module, and is <b>mandatory</b>. </p>
 <h3>To compile your workspace </h3>
-<div class="precode"><code></span><span class="SyntaxCode">$ swag build -w:first
-            </span><span class="SyntaxConstant">Workspace</span><span class="SyntaxCode"> first [fast-debug-windows-x86_64]
-             </span><span class="SyntaxConstant">Building</span><span class="SyntaxCode"> first
-                 </span><span class="SyntaxConstant">Done</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0.067</span><span class="SyntaxCode">s</code>
+<div class="precode"><code><span class="SyntaxCode">$ swag build -w:first
+            <span class="SyntaxConstant">Workspace</span> first [fast-debug-windows-x86_64]
+             <span class="SyntaxConstant">Building</span> first
+                 <span class="SyntaxConstant">Done</span> <span class="SyntaxNumber">0.067</span>s</span></code>
 </div>
 <p>You can omit the workspace name (<code class="incode">-w:first</code> or <code class="incode">--workspace:first</code>) if you call the compiler directly from the workspace folder. This command will compile all modules in <code class="incode">modules/</code>. </p>
 <p>You can also build and run your workspace. </p>
-<div class="precode"><code></span><span class="SyntaxCode">$ swag run -w:first
-            </span><span class="SyntaxConstant">Workspace</span><span class="SyntaxCode"> first [fast-debug-windows-x86_64]
-             </span><span class="SyntaxConstant">Building</span><span class="SyntaxCode"> first
-      </span><span class="SyntaxConstant">Running</span><span class="SyntaxCode"> backend first
-</span><span class="SyntaxConstant">Hello</span><span class="SyntaxCode"> world!
-                 </span><span class="SyntaxConstant">Done</span><span class="SyntaxCode"> </span><span class="SyntaxNumber">0.093</span><span class="SyntaxCode">s</code>
+<div class="precode"><code><span class="SyntaxCode">$ swag run -w:first
+            <span class="SyntaxConstant">Workspace</span> first [fast-debug-windows-x86_64]
+             <span class="SyntaxConstant">Building</span> first
+      <span class="SyntaxConstant">Running</span> backend first
+<span class="SyntaxConstant">Hello</span> world!
+                 <span class="SyntaxConstant">Done</span> <span class="SyntaxNumber">0.093</span>s</span></code>
 </div>
 <h3>Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>

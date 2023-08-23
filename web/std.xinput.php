@@ -257,73 +257,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_A</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_A</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_B</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_B</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_BACK</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_BACK</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_DOWN</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_DOWN</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_LEFT</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_LEFT</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_RIGHT</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_RIGHT</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_UP</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_UP</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_SHOULDER</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_THUMB</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_THUMB</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_SHOULDER</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_THUMB</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_THUMB</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_START</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_START</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_X</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_X</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XINPUT_GAMEPAD_Y</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_Y</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -340,38 +340,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">wButtons</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">wButtons</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">bLeftTrigger</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">bLeftTrigger</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">bRightTrigger</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">bRightTrigger</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sThumbLX</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sThumbLX</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sThumbLY</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sThumbLY</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sThumbRX</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sThumbRX</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sThumbRY</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sThumbRY</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -388,13 +388,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">dwPacketNumber</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">dwPacketNumber</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gamepad</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gamepad</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -411,13 +411,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">wLeftMotorSpeed</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">wLeftMotorSpeed</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">wRightMotorSpeed</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">wRightMotorSpeed</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -432,7 +432,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputGetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pState: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">XInputGetState</span>(dwUserIndex: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, pState: *<span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -445,7 +445,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxConstant">XInputSetState</span><span class="SyntaxCode">(dwUserIndex: </span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode">, pVibration: *</span><span class="SyntaxConstant">XInput</span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxConstant">Win32</span><span class="SyntaxCode">.</span><span class="SyntaxConstant">DWORD</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">XInputSetState</span>(dwUserIndex: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, pVibration: *<span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span></span></code>
 </div>
 </div>
 </div>

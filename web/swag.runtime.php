@@ -495,233 +495,233 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Swag_F32_Bias" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bias</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_Bias" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bias</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_ExpBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExpBits</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_ExpBits" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ExpBits</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Inf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_Inf" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Inf</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_MantBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MantBits</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_MantBits" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MantBits</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Nan" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Nan</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_Nan" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Nan</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_NegInf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NegInf</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td id="Swag_F32_NegInf" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NegInf</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Bias" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bias</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_Bias" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bias</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_ExpBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExpBits</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_ExpBits" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ExpBits</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Inf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inf</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_Inf" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Inf</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_MantBits" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MantBits</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_MantBits" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MantBits</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Nan" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Nan</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_Nan" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Nan</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_NegInf" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NegInf</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f64</span><span class="SyntaxCode"></td>
+<td id="Swag_F64_NegInf" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NegInf</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_MaxErrors" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxErrors</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_MaxErrors" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxErrors</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td>Maximum nested errors. </td>
 </tr>
 <tr>
-<td id="Swag_MaxLenErrorMsg" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxLenErrorMsg</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_MaxLenErrorMsg" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxLenErrorMsg</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td>Maximum length of an error message. </td>
 </tr>
 <tr>
-<td id="Swag_MaxTraces" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxTraces</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_MaxTraces" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxTraces</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td>Maximum error traces. </td>
 </tr>
 <tr>
-<td id="Swag_S16_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td id="Swag_S16_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S16_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s16</span><span class="SyntaxCode"></td>
+<td id="Swag_S16_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_S32_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td id="Swag_S32_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
+<td id="Swag_S64_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s64</span><span class="SyntaxCode"></td>
+<td id="Swag_S64_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
+<td id="Swag_S8_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s8</span><span class="SyntaxCode"></td>
+<td id="Swag_S8_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAll" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyAll</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyAll" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyAll</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAny" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyAny</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyAny" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyAny</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBool" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyBool</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyBool" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyBool</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBoundCheck" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyBoundCheck</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyBoundCheck" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyBoundCheck</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyMath" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyMath</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyMath" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyMath</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNaN" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyNaN</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyNaN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyNaN</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNullCheck" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyNullCheck</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyNullCheck" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyNullCheck</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyOverflow" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyOverflow</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyOverflow" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyOverflow</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySanity" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetySanity</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetySanity" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetySanity</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySwitch" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetySwitch</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetySwitch" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetySwitch</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyUnreachable" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SafetyUnreachable</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_SafetyUnreachable" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SafetyUnreachable</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="Swag_U16_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td id="Swag_U16_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_U32_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td id="Swag_U32_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td id="Swag_U64_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td id="Swag_U64_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U8_Max" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Max</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td id="Swag_U8_Max" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
 <td>Max <code class="incode">u8</code> value. </td>
 </tr>
 <tr>
-<td id="Swag_U8_Min" class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Min</span><span class="SyntaxCode"></td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td id="Swag_U8_Min" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
 <td>Min <code class="incode">u8</code> value. </td>
 </tr>
 </table>
@@ -736,12 +736,12 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@abs</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@abs</span>(value: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -754,8 +754,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@acos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@acos</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@acos</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -769,7 +769,7 @@
 </table>
 </p>
 <p>Returns a system allocated memory block of <code class="incode">size</code> bytes. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@alloc</span><span class="SyntaxCode">(size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@alloc</span>(size: <span class="SyntaxType">u64</span>)-&gt;^<span class="SyntaxType">void</span></span></code>
 </div>
 <p> Use <a href="#@free">@free</a> to release the allocated memory. </p>
 <p>
@@ -783,7 +783,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@args</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxType">string</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@args</span>()-&gt;<span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">string</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -796,8 +796,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@asin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@asin</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@asin</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -811,7 +811,7 @@
 </table>
 </p>
 <p>Panic if the expression is false. Typically used in tests. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@assert</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@assert</span>(value: <span class="SyntaxType">bool</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -824,8 +824,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atan</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atan</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -838,8 +838,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan2</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atan2</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atan2</span>(value1: <span class="SyntaxType">f32</span>, value2: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atan2</span>(value1: <span class="SyntaxType">f64</span>, value2: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -853,15 +853,15 @@
 </table>
 </p>
 <p>Atomic <code class="incode">add</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">s16</span>, value: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">s32</span>, value: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">s64</span>, value: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">s8</span>, value: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomadd</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">u16</span>, value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">u32</span>, value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">u64</span>, value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomadd</span>(addr: *<span class="SyntaxType">u8</span>, value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -875,15 +875,15 @@
 </table>
 </p>
 <p>Atomic <code class="incode">and</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">s16</span>, value: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">s32</span>, value: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">s64</span>, value: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">s8</span>, value: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomand</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">u16</span>, value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">u32</span>, value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">u64</span>, value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomand</span>(addr: *<span class="SyntaxType">u8</span>, value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -897,15 +897,15 @@
 </table>
 </p>
 <p>Atomic 'compare and exchange'. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">s16</span>, compareTo: <span class="SyntaxType">s16</span>, exchangeWith: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">s32</span>, compareTo: <span class="SyntaxType">s32</span>, exchangeWith: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">s64</span>, compareTo: <span class="SyntaxType">s64</span>, exchangeWith: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">s8</span>, compareTo: <span class="SyntaxType">s8</span>, exchangeWith: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomcmpxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, compareTo: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">u16</span>, compareTo: <span class="SyntaxType">u16</span>, exchangeWith: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">u32</span>, compareTo: <span class="SyntaxType">u32</span>, exchangeWith: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">u64</span>, compareTo: <span class="SyntaxType">u64</span>, exchangeWith: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomcmpxchg</span>(addr: *<span class="SyntaxType">u8</span>, compareTo: <span class="SyntaxType">u8</span>, exchangeWith: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -919,15 +919,15 @@
 </table>
 </p>
 <p>Atomic <code class="incode">or</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">s16</span>, value: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">s32</span>, value: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">s64</span>, value: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">s8</span>, value: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">u16</span>, value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">u32</span>, value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">u64</span>, value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomor</span>(addr: *<span class="SyntaxType">u8</span>, value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -941,15 +941,15 @@
 </table>
 </p>
 <p>Atomic <code class="incode">exchange</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">s16</span>, exchangeWith: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">s32</span>, exchangeWith: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">s64</span>, exchangeWith: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">s8</span>, exchangeWith: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxchg</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, exchangeWith: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">u16</span>, exchangeWith: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">u32</span>, exchangeWith: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">u64</span>, exchangeWith: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxchg</span>(addr: *<span class="SyntaxType">u8</span>, exchangeWith: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -963,15 +963,15 @@
 </table>
 </p>
 <p>Atomic <code class="incode">xor</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">s16</span>, value: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">s32</span>, value: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">s64</span>, value: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">s8</span>, value: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@atomxor</span><span class="SyntaxCode">(addr: *</span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">u16</span>, value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">u32</span>, value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">u64</span>, value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@atomxor</span>(addr: *<span class="SyntaxType">u8</span>, value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -985,10 +985,10 @@
 </table>
 </p>
 <p>Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountlz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountlz</span>(value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountlz</span>(value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountlz</span>(value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountlz</span>(value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1002,10 +1002,10 @@
 </table>
 </p>
 <p>Count the number of bits set to 1. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcountnz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountnz</span>(value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountnz</span>(value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountnz</span>(value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcountnz</span>(value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1019,10 +1019,10 @@
 </table>
 </p>
 <p>Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@bitcounttz</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcounttz</span>(value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcounttz</span>(value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcounttz</span>(value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@bitcounttz</span>(value: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1036,7 +1036,7 @@
 </table>
 </p>
 <p>Stop a bytecode execution, and launch the bytecode debugger. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@breakpoint</span><span class="SyntaxCode">()</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@breakpoint</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -1050,10 +1050,10 @@
 </table>
 </p>
 <p>Reverses the order of bytes in an integer. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@byteswap</span>(value: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@byteswap</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@byteswap</span>(value: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@byteswap</span>(value: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1066,8 +1066,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@ceil</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@ceil</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@ceil</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@ceil</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1081,7 +1081,7 @@
 </table>
 </p>
 <p>Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with the compiler. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compiler</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@compiler</span>()-&gt;<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1095,7 +1095,7 @@
 </table>
 </p>
 <p>Raise a compiler error at the given source location. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilererror</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@compilererror</span>(message: <span class="SyntaxType">string</span>, loc: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1109,7 +1109,7 @@
 </table>
 </p>
 <p>Raise a compiler warning at the given source location. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@compilerwarning</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@compilerwarning</span>(message: <span class="SyntaxType">string</span>, loc: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1122,8 +1122,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cos</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@cos</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@cos</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1136,8 +1136,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cosh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@cosh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@cosh</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@cosh</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1150,7 +1150,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@dbgalloc</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocator">DebugAllocator</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@dbgalloc</span>()-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocator">DebugAllocator</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1164,7 +1164,7 @@
 </table>
 </p>
 <p>Returns the current raised <a href="#Swag_Error">Error</a> or null if none. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@err</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@err</span>()-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1177,8 +1177,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@exp</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@exp</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1191,8 +1191,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@exp2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@exp2</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@exp2</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1205,8 +1205,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@floor</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@floor</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@floor</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@floor</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1220,7 +1220,7 @@
 </table>
 </p>
 <p>Free a system memory block allocated with <a href="#@alloc">@alloc</a>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@free</span><span class="SyntaxCode">(ptr: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@free</span>(ptr: ^<span class="SyntaxType">void</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1234,7 +1234,7 @@
 </table>
 </p>
 <p>Get the current thread context. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getcontext</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@getcontext</span>()-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1248,7 +1248,7 @@
 </table>
 </p>
 <p>Get informations about the current process. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@getpinfos</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ProcessInfos">ProcessInfos</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@getpinfos</span>()-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1262,7 +1262,7 @@
 </table>
 </p>
 <p>Returns the list of all global variables. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@gvtd</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Gvtd">Gvtd</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@gvtd</span>()-&gt;<span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Gvtd">Gvtd</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1276,7 +1276,7 @@
 </table>
 </p>
 <p>Returns <code class="incode">true</code> is the current execution is bytecode. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@isbytecode</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@isbytecode</span>()-&gt;<span class="SyntaxType">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1289,7 +1289,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@itftableof</span><span class="SyntaxCode">(structType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span><span class="SyntaxCode">, itfType: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@itftableof</span>(structType: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>, itfType: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1302,8 +1302,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1316,8 +1316,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log10</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log10</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log10</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log10</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1330,8 +1330,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@log2</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log2</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@log2</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1344,16 +1344,16 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@max</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">f32</span>, value2: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">f64</span>, value2: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">s16</span>, value2: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">s32</span>, value2: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">s64</span>, value2: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">s8</span>, value2: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">u16</span>, value2: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">u32</span>, value2: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">u64</span>, value2: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@max</span>(value1: <span class="SyntaxType">u8</span>, value2: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1367,7 +1367,7 @@
 </table>
 </p>
 <p>Compare two memory blocks, and returns -1, 0 if equal, or 1. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcmp</span><span class="SyntaxCode">(dst: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@memcmp</span>(dst: <span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span>, src: <span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span>, size: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1381,7 +1381,7 @@
 </table>
 </p>
 <p>Copy one memory block to another address. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memcpy</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@memcpy</span>(dst: ^<span class="SyntaxType">void</span>, src: <span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span>, size: <span class="SyntaxType">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1395,7 +1395,7 @@
 </table>
 </p>
 <p>Move one memory block to another address. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memmove</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, src: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@memmove</span>(dst: ^<span class="SyntaxType">void</span>, src: <span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span>, size: <span class="SyntaxType">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1409,7 +1409,7 @@
 </table>
 </p>
 <p>Set all bytes of a given memory block to <code class="incode">value</code>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@memset</span><span class="SyntaxCode">(dst: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@memset</span>(dst: ^<span class="SyntaxType">void</span>, value: <span class="SyntaxType">u8</span>, size: <span class="SyntaxType">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1422,16 +1422,16 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">s8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s8</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u16</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u16</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@min</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">f32</span>, value2: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">f64</span>, value2: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">s16</span>, value2: <span class="SyntaxType">s16</span>)-&gt;<span class="SyntaxType">s16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">s32</span>, value2: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">s64</span>, value2: <span class="SyntaxType">s64</span>)-&gt;<span class="SyntaxType">s64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">s8</span>, value2: <span class="SyntaxType">s8</span>)-&gt;<span class="SyntaxType">s8</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">u16</span>, value2: <span class="SyntaxType">u16</span>)-&gt;<span class="SyntaxType">u16</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">u32</span>, value2: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">u64</span>, value2: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@min</span>(value1: <span class="SyntaxType">u8</span>, value2: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1445,7 +1445,7 @@
 </table>
 </p>
 <p>Returns the list of all loaded modules. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@modules</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@modules</span>()-&gt;<span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1459,9 +1459,9 @@
 </table>
 </p>
 <p>Returns '(val1 * val2) + val3'. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, val3: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@muladd</span>(val1: <span class="SyntaxType">f32</span>, val2: <span class="SyntaxType">f32</span>, val3: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span></span></code>
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@muladd</span><span class="SyntaxCode">(val1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, val2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, val3: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@muladd</span>(val1: <span class="SyntaxType">f64</span>, val2: <span class="SyntaxType">f64</span>, val3: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1475,7 +1475,7 @@
 </table>
 </p>
 <p>Stop the execution and panic. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@panic</span><span class="SyntaxCode">(message: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, loc: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@panic</span>(message: <span class="SyntaxType">string</span>, loc: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1488,8 +1488,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@pow</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@pow</span><span class="SyntaxCode">(value1: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">, value2: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@pow</span>(value1: <span class="SyntaxType">f32</span>, value2: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@pow</span>(value1: <span class="SyntaxType">f64</span>, value2: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1503,7 +1503,7 @@
 </table>
 </p>
 <p>Basic print to console function. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@print</span><span class="SyntaxCode">(params: ...)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@print</span>(params: ...)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1517,7 +1517,7 @@
 </table>
 </p>
 <p>Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@realloc</span><span class="SyntaxCode">(ptr: ^</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)-&gt;^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@realloc</span>(ptr: ^<span class="SyntaxType">void</span>, size: <span class="SyntaxType">u64</span>)-&gt;^<span class="SyntaxType">void</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1530,8 +1530,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@round</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@round</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@round</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@round</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1544,7 +1544,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@rtflags</span><span class="SyntaxCode">()-&gt;</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_RuntimeFlags">RuntimeFlags</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@rtflags</span>()-&gt;<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_RuntimeFlags">RuntimeFlags</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1558,7 +1558,7 @@
 </table>
 </p>
 <p>Replace the current thread context. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@setcontext</span><span class="SyntaxCode">(context: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@setcontext</span>(context: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Context">Context</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1571,8 +1571,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sin</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sin</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sin</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1585,8 +1585,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sinh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sinh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sinh</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sinh</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1599,8 +1599,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sqrt</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sqrt</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sqrt</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1614,7 +1614,7 @@
 </table>
 </p>
 <p>Compare two zero terminated strings, and returns -1, 0 if equal, or 1. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">s32</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@strcmp</span>(str1: <span class="SyntaxType">cstring</span>, str2: <span class="SyntaxType">cstring</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1628,7 +1628,7 @@
 </table>
 </p>
 <p>Compares two strings, and returns <code class="incode">true</code> if they are equal. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@stringcmp</span><span class="SyntaxCode">(str1: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, str2: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@stringcmp</span>(str1: <span class="SyntaxType">string</span>, str2: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1642,7 +1642,7 @@
 </table>
 </p>
 <p>Returns the length of the given 0 terminated string. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@strlen</span><span class="SyntaxCode">(str: </span><span class="SyntaxType">cstring</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@strlen</span>(str: <span class="SyntaxType">cstring</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1655,7 +1655,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@sysalloc</span><span class="SyntaxCode">()-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SystemAllocator">SystemAllocator</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@sysalloc</span>()-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SystemAllocator">SystemAllocator</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1668,8 +1668,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tan</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@tan</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@tan</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1682,8 +1682,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@tanh</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@tanh</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@tanh</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1696,8 +1696,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f32</span><span class="SyntaxCode">
-</span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@trunc</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">f64</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">f64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@trunc</span>(value: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span>
+<span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@trunc</span>(value: <span class="SyntaxType">f64</span>)-&gt;<span class="SyntaxType">f64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1710,7 +1710,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxIntrinsic">@typecmp</span><span class="SyntaxCode">(typeA: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">, typeB: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">, cmpFlags: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">bool</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxIntrinsic">@typecmp</span>(typeA: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span>, typeB: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span>, cmpFlags: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span>)-&gt;<span class="SyntaxType">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1724,361 +1724,361 @@
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_AllocatorRequest"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AllocatorRequest</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AllocatorRequest"><span class="SyntaxCode"><span class="SyntaxConstant">AllocatorRequest</span></span></a></td>
 <td>Represents the request for a given allocator. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Attribute"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Attribute"><span class="SyntaxCode"><span class="SyntaxConstant">Attribute</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttributeParam"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeParam</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AttributeParam"><span class="SyntaxCode"><span class="SyntaxConstant">AttributeParam</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfg"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfg</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfg"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfg</span></span></a></td>
 <td>The current module build configuration. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendLLVM"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendLLVM</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfgBackendLLVM"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfgBackendLLVM</span></span></a></td>
 <td><code class="incode">LLVM</code> backend specific options. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendX64"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendX64</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfgBackendX64"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfgBackendX64</span></span></a></td>
 <td><code class="incode">x86_64</code> backend specific options. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CVaList"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CVaList</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_CVaList"><span class="SyntaxCode"><span class="SyntaxConstant">CVaList</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMessage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMessage</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_CompilerMessage"><span class="SyntaxCode"><span class="SyntaxConstant">CompilerMessage</span></span></a></td>
 <td>A message received in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Context"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Context</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Context"><span class="SyntaxCode"><span class="SyntaxConstant">Context</span></span></a></td>
 <td>Thread context as returned by [@context]. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocator</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator"><span class="SyntaxCode"><span class="SyntaxConstant">DebugAllocator</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocatorFooter"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocatorFooter</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocatorFooter"><span class="SyntaxCode"><span class="SyntaxConstant">DebugAllocatorFooter</span></span></a></td>
 <td>Will be put just after the returned address. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocatorHeader"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DebugAllocatorHeader</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocatorHeader"><span class="SyntaxCode"><span class="SyntaxConstant">DebugAllocatorHeader</span></span></a></td>
 <td>Will be put just before the returned address. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Error"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Error"><span class="SyntaxCode"><span class="SyntaxConstant">Error</span></span></a></td>
 <td>Store a <code class="incode">throw</code> error informations. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Gvtd"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gvtd</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Gvtd"><span class="SyntaxCode"><span class="SyntaxConstant">Gvtd</span></span></a></td>
 <td>Defined a global variable. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Interface"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Interface</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Interface"><span class="SyntaxCode"><span class="SyntaxConstant">Interface</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Module"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Module</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Module"><span class="SyntaxCode"><span class="SyntaxConstant">Module</span></span></a></td>
 <td>Defined some informations about a loaded module. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ProcessInfos"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ProcessInfos</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ProcessInfos"><span class="SyntaxCode"><span class="SyntaxConstant">ProcessInfos</span></span></a></td>
 <td>Defined some informations about the current process. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ScratchAllocator</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator"><span class="SyntaxCode"><span class="SyntaxConstant">ScratchAllocator</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_SourceCodeLocation"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SourceCodeLocation</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_SourceCodeLocation"><span class="SyntaxCode"><span class="SyntaxConstant">SourceCodeLocation</span></span></a></td>
 <td>Represent a part of a source code file. </td>
 </tr>
 <tr>
-<td><a href="#Swag_SystemAllocator"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SystemAllocator</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_SystemAllocator"><span class="SyntaxCode"><span class="SyntaxConstant">SystemAllocator</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfo"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfo</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfo"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfo</span></span></a></td>
 <td>Will be available for all types. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoAlias"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoAlias</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoAlias"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoAlias</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoArray"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoArray</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoArray"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoArray</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoEnum"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoEnum</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoEnum"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoEnum</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoFunc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoFunc</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoFunc"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoFunc</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoGeneric"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoGeneric</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoGeneric"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoGeneric</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNamespace"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNamespace</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoNamespace"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoNamespace</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNative"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNative</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoNative"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoNative</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoPointer"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoPointer</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoPointer"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoPointer</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoSlice"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoSlice</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoSlice"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoSlice</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoStruct"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoStruct</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoStruct"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoStruct</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoVariadic"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoVariadic</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoVariadic"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoVariadic</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeValue"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeValue</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeValue"><span class="SyntaxCode"><span class="SyntaxConstant">TypeValue</span></span></a></td>
 <td>Represents a value, like a function parameter or an enum value. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_AllocatorMode"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AllocatorMode</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AllocatorMode"><span class="SyntaxCode"><span class="SyntaxConstant">AllocatorMode</span></span></a></td>
 <td>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_AttributeUsage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeUsage</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AttributeUsage"><span class="SyntaxCode"><span class="SyntaxConstant">AttributeUsage</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Backend"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Backend</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Backend"><span class="SyntaxCode"><span class="SyntaxConstant">Backend</span></span></a></td>
 <td>The type of backend to use. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfgBackendKind"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfgBackendKind</span></span></a></td>
 <td>The kind of native backend to generate. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendOptim"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendOptim</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfgBackendOptim"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfgBackendOptim</span></span></a></td>
 <td>These are the optimization levels for the backend. </td>
 </tr>
 <tr>
-<td><a href="#Swag_BuildCfgBackendSubKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">BuildCfgBackendSubKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_BuildCfgBackendSubKind"><span class="SyntaxCode"><span class="SyntaxConstant">BuildCfgBackendSubKind</span></span></a></td>
 <td>The native backend sub category. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMsgKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMsgKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_CompilerMsgKind"><span class="SyntaxCode"><span class="SyntaxConstant">CompilerMsgKind</span></span></a></td>
 <td>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_CompilerMsgMask"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CompilerMsgMask</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_CompilerMsgMask"><span class="SyntaxCode"><span class="SyntaxConstant">CompilerMsgMask</span></span></a></td>
 <td>The type of message you want to retreive in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ContextFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ContextFlags</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ContextFlags"><span class="SyntaxCode"><span class="SyntaxConstant">ContextFlags</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DocKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DocKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DocKind"><span class="SyntaxCode"><span class="SyntaxConstant">DocKind</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ExceptionKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExceptionKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ExceptionKind"><span class="SyntaxCode"><span class="SyntaxConstant">ExceptionKind</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_RuntimeFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">RuntimeFlags</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_RuntimeFlags"><span class="SyntaxCode"><span class="SyntaxConstant">RuntimeFlags</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TargetArch"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TargetArch</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TargetArch"><span class="SyntaxCode"><span class="SyntaxConstant">TargetArch</span></span></a></td>
 <td>Target processor. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TargetOs"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TargetOs</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TargetOs"><span class="SyntaxCode"><span class="SyntaxConstant">TargetOs</span></span></a></td>
 <td>The <code class="incode">OS</code> to target when generating native code. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeCmpFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeCmpFlags</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeCmpFlags"><span class="SyntaxCode"><span class="SyntaxConstant">TypeCmpFlags</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoFlags</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoFlags"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoFlags</span></span></a></td>
 <td>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoKind"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoKind</span></span></a></td>
 <td>The kind of the typeinfo. </td>
 </tr>
 <tr>
-<td><a href="#Swag_TypeInfoNativeKind"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeInfoNativeKind</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_TypeInfoNativeKind"><span class="SyntaxCode"><span class="SyntaxConstant">TypeInfoNativeKind</span></span></a></td>
 <td>The native type if the type is... native. </td>
 </tr>
 <tr>
-<td><a href="#Swag_WarnLevel"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">WarnLevel</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_WarnLevel"><span class="SyntaxCode"><span class="SyntaxConstant">WarnLevel</span></span></a></td>
 <td>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </td>
 </tr>
 </table>
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_Align"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Align</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Align"><span class="SyntaxCode"><span class="SyntaxConstant">Align</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttrMulti"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttrMulti</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AttrMulti"><span class="SyntaxCode"><span class="SyntaxConstant">AttrMulti</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_AttrUsage"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttrUsage</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_AttrUsage"><span class="SyntaxCode"><span class="SyntaxConstant">AttrUsage</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_CalleeReturn"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CalleeReturn</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_CalleeReturn"><span class="SyntaxCode"><span class="SyntaxConstant">CalleeReturn</span></span></a></td>
 <td>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Compiler"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Compiler</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Compiler"><span class="SyntaxCode"><span class="SyntaxConstant">Compiler</span></span></a></td>
 <td>The following function or variable is only defined at compile time. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Complete"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Complete</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Complete"><span class="SyntaxCode"><span class="SyntaxConstant">Complete</span></span></a></td>
 <td>The following switch must be complete. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ConstExpr"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ConstExpr</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ConstExpr"><span class="SyntaxCode"><span class="SyntaxConstant">ConstExpr</span></span></a></td>
 <td>Can be executed at compile time. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Deprecated"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Deprecated</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Deprecated"><span class="SyntaxCode"><span class="SyntaxConstant">Deprecated</span></span></a></td>
 <td>The following definition is deprecated and should not be used. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Discardable"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Discardable</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Discardable"><span class="SyntaxCode"><span class="SyntaxConstant">Discardable</span></span></a></td>
 <td>The following function accepts that the called does not use its return value. </td>
 </tr>
 <tr>
-<td><a href="#Swag_EnumFlags"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumFlags</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_EnumFlags"><span class="SyntaxCode"><span class="SyntaxConstant">EnumFlags</span></span></a></td>
 <td>The following enum is a set of flags. </td>
 </tr>
 <tr>
-<td><a href="#Swag_EnumIndex"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumIndex</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_EnumIndex"><span class="SyntaxCode"><span class="SyntaxConstant">EnumIndex</span></span></a></td>
 <td>The following enum can be used to index arrays without casting. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ExportType"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ExportType</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ExportType"><span class="SyntaxCode"><span class="SyntaxConstant">ExportType</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Foreign"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Foreign</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Foreign"><span class="SyntaxCode"><span class="SyntaxConstant">Foreign</span></span></a></td>
 <td>The following function is foreign (imported). </td>
 </tr>
 <tr>
-<td><a href="#Swag_Global"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Global</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Global"><span class="SyntaxCode"><span class="SyntaxConstant">Global</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Implicit"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Implicit</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Implicit"><span class="SyntaxCode"><span class="SyntaxConstant">Implicit</span></span></a></td>
 <td>Can force an <code class="incode">opCast</code> special function to work as implicit. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Incomplete"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Incomplete</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Incomplete"><span class="SyntaxCode"><span class="SyntaxConstant">Incomplete</span></span></a></td>
 <td>The following switch is incomplete. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Inline"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Inline</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Inline"><span class="SyntaxCode"><span class="SyntaxConstant">Inline</span></span></a></td>
 <td>Force a function to be inlined. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Macro"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Macro</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Macro"><span class="SyntaxCode"><span class="SyntaxConstant">Macro</span></span></a></td>
 <td>The following function is a <code class="incode">macro</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Match"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Match</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Match"><span class="SyntaxCode"><span class="SyntaxConstant">Match</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Mixin"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Mixin</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Mixin"><span class="SyntaxCode"><span class="SyntaxConstant">Mixin</span></span></a></td>
 <td>The following function is a <code class="incode">mixin</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoCopy"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoCopy</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_NoCopy"><span class="SyntaxCode"><span class="SyntaxConstant">NoCopy</span></span></a></td>
 <td>The following struct should never be copied. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoDoc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoDoc</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_NoDoc"><span class="SyntaxCode"><span class="SyntaxConstant">NoDoc</span></span></a></td>
 <td>Do not generate documentation. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NoInline"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NoInline</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_NoInline"><span class="SyntaxCode"><span class="SyntaxConstant">NoInline</span></span></a></td>
 <td>Never inline the following function. </td>
 </tr>
 <tr>
-<td><a href="#Swag_NotGeneric"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">NotGeneric</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_NotGeneric"><span class="SyntaxCode"><span class="SyntaxConstant">NotGeneric</span></span></a></td>
 <td>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Offset"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Offset</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Offset"><span class="SyntaxCode"><span class="SyntaxConstant">Offset</span></span></a></td>
 <td>Struct field member relocation. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Opaque"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Opaque</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Opaque"><span class="SyntaxCode"><span class="SyntaxConstant">Opaque</span></span></a></td>
 <td>When exporting the following struct, do not export its content. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Optim"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Optim</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Optim"><span class="SyntaxCode"><span class="SyntaxConstant">Optim</span></span></a></td>
 <td>Enable/Disable a given function optimization. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Overflow"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Overflow</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Overflow"><span class="SyntaxCode"><span class="SyntaxConstant">Overflow</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Pack"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pack</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Pack"><span class="SyntaxCode"><span class="SyntaxConstant">Pack</span></span></a></td>
 <td><code class="incode">struct</code> packing information. </td>
 </tr>
 <tr>
-<td><a href="#Swag_PrintBc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrintBc</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_PrintBc"><span class="SyntaxCode"><span class="SyntaxConstant">PrintBc</span></span></a></td>
 <td>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </td>
 </tr>
 <tr>
-<td><a href="#Swag_PrintGenBc"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PrintGenBc</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_PrintGenBc"><span class="SyntaxCode"><span class="SyntaxConstant">PrintGenBc</span></span></a></td>
 <td>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </td>
 </tr>
 <tr>
-<td><a href="#Swag_Safety"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Safety</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Safety"><span class="SyntaxCode"><span class="SyntaxConstant">Safety</span></span></a></td>
 <td>Enable/Disable one or more safety checks. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Strict"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Strict"><span class="SyntaxCode"><span class="SyntaxConstant">Strict</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Tls"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tls</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Tls"><span class="SyntaxCode"><span class="SyntaxConstant">Tls</span></span></a></td>
 <td>Put the following global variable in the <code class="incode">tls</code> segment. </td>
 </tr>
 <tr>
-<td><a href="#Swag_Using"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Using</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Using"><span class="SyntaxCode"><span class="SyntaxConstant">Using</span></span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_Warn"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Warn</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_Warn"><span class="SyntaxCode"><span class="SyntaxConstant">Warn</span></span></a></td>
 <td>Change the behavior of a given warning or list of warnings. </td>
 </tr>
 </table>
@@ -2095,7 +2095,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Align">Align</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Align">Align</a></span>(value: <span class="SyntaxType">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2111,23 +2111,23 @@
 <p>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alloc</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Alloc</span></span></td>
 <td>Allocate a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Free</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Free</span></span></td>
 <td>Free a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Realloc</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Realloc</span></span></td>
 <td>Reallocate a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FreeAll</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeAll</span></span></td>
 <td>Free all memory allocated with the underlying allocator (ff possible). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AssertIsAllocated</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AssertIsAllocated</span></span></td>
 <td>The allocator must assert if the address is not currently allocated (if possible). </td>
 </tr>
 </table>
@@ -2145,38 +2145,38 @@
 <p>Represents the request for a given allocator. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">callerLoc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">callerLoc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>The caller code, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">hint</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">hint</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>A hint message, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">address</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">address</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
 <td>The returned address or the address to deal with. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">size</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">size</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>The requested size or the size to deal with. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">oldSize</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">oldSize</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>When reallocating. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">mode</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorMode">AllocatorMode</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">mode</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorMode">AllocatorMode</a></span></span></td>
 <td>Alloc, free, reallocate... </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">alignement</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">alignement</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Alignement constraint. </td>
 </tr>
 </table>
@@ -2213,7 +2213,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_AttrMulti">AttrMulti</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_AttrMulti">AttrMulti</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2228,7 +2228,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_AttrUsage">AttrUsage</a></span><span class="SyntaxCode">(usage: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AttributeUsage">AttributeUsage</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2243,13 +2243,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">type</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">type</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">params</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AttributeParam">AttributeParam</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">params</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AttributeParam">AttributeParam</a></span></span></td>
 <td>Attribute parameters. </td>
 </tr>
 </table>
@@ -2266,13 +2266,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">name</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">name</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Name of the attribute parameter. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">value</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">any</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">value</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">any</span></span></td>
 <td>Optional default value. </td>
 </tr>
 </table>
@@ -2289,55 +2289,55 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enum</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Enum</span></span></td>
 <td>Attribute can be used on an enum. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">EnumValue</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EnumValue</span></span></td>
 <td>Attribute can be used on an enum value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">StructVariable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">StructVariable</span></span></td>
 <td>Attribute can be used on an struct member. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">GlobalVariable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GlobalVariable</span></span></td>
 <td>Attribute can be used on a global variable. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Variable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Variable</span></span></td>
 <td>Attribute can be used on any variable. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Struct</span></span></td>
 <td>Attribute can be used on a struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Function</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Function</span></span></td>
 <td>Attribute can be used on a function. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FunctionParameter</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FunctionParameter</span></span></td>
 <td>Attribute can be used on a struct parameter. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">File</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">File</span></span></td>
 <td>Attribute can be used with <code class="incode">#global</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Constant</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Constant</span></span></td>
 <td>Attribute can be used on a constant. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Multi</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Multi</span></span></td>
 <td>Attribute can be used more than once. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Gen</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">All</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">All</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2355,15 +2355,15 @@
 <p>The type of backend to use. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ByteCode</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ByteCode</span></span></td>
 <td>Bytecode. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">X64</span></span></td>
 <td>X86_64 backend. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">LLVM</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LLVM</span></span></td>
 <td>LLVM backend. </td>
 </tr>
 </table>
@@ -2381,218 +2381,218 @@
 <p>The current module build configuration. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">moduleVersion</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">moduleVersion</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>The module version. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">moduleRevision</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">moduleRevision</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>The module revision. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">moduleBuildNum</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">moduleBuildNum</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>The module build value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">moduleNamespace</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">moduleNamespace</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The namespace name of the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">embbedImports</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">embbedImports</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Module should embbed all its dependencies. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">scratchAllocatorCapacity</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">scratchAllocatorCapacity</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td>Default capacity of the <code class="incode">temp</code> allocator (in bytes). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">safetyGuards</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">safetyGuards</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
 <td>Activate specific safety checks. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">debugAllocator</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">debugAllocator</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Use Swag.DebugAllocator by default. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">debugAllocatorCaptureStack</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">debugAllocatorCaptureStack</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Capture the call stack for each allocation. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">debugAllocatorLeaks</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">debugAllocatorLeaks</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Detect memory leaks. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">errorStackTrace</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">errorStackTrace</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Add stack trace in case a <code class="incode">throw</code> is raised. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">warnAsErrors</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">warnAsErrors</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX...". </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">warnAsWarning</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">warnAsWarning</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">warnAsDisabled</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">warnAsDisabled</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Disable some specific warnings. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">warnDefaultDisabled</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">warnDefaultDisabled</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>All warnings are disabled, except those specified above. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">warnDefaultErrors</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">warnDefaultErrors</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>All warnings are treated as errors, except those specified above. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">byteCodeOptimizeLevel</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">s32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">byteCodeOptimizeLevel</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
 <td>Optimization level of bytecode [0, 1 or 2]. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">byteCodeDebugInline</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">byteCodeDebugInline</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Trace into inlined code when generating debug infos. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">byteCodeEmitAssume</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">byteCodeEmitAssume</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td><code class="incode">assume</code> will panic if an error is raised. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">byteCodeInline</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">byteCodeInline</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">byteCodeAutoInline</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">byteCodeAutoInline</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Automatic inlining of some other functions. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendKind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendKind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></span></span></td>
 <td>Backend type (executable, dynamic lib...). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendSubKind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendSubKind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></span></span></td>
 <td>Backend sub kind. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendDebugInformations</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendDebugInformations</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Output debug informations if <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendOptimize</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendOptimize</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></span></span></td>
 <td>Backend optimization level. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendNumCU</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendNumCU</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">linkerArgs</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">linkerArgs</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Additional linker arguments. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendLLVM</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendLLVM</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></span></span></td>
 <td>Specific LLVM options. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">backendX64</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">backendX64</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span></span></td>
 <td>Specific X86_64 options. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">repoPath</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">repoPath</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Repository access path to the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docKind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DocKind">DocKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docKind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DocKind">DocKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docOutputName</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docOutputName</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The name of the output file (without extension). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docOutputExtension</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docOutputExtension</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The output extension. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docTitleToc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docTitleToc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Title for the table of content. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docTitleContent</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docTitleContent</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Title for the main document content. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docCss</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docCss</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The <code class="incode">css</code> file to include in generated documentations. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docIcon</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docIcon</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The icon path of the page. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docStartHead</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docStartHead</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>To insert at the start of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docEndHead</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docEndHead</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>To insert at the end of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docStartBody</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docStartBody</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>To insert add at the start of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docEndBody</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docEndBody</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>To insert add at the end of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docStyleSection</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docStyleSection</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Generate a default &lt;style&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">docSyntaxColorLum</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">f32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">docSyntaxColorLum</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
 <td>Code syntax color luminosity between 0 and 1. </td>
 </tr>
 </table>
@@ -2611,19 +2611,19 @@
 <p>The kind of native backend to generate. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
 <td>Nothing. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Export</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Export</span></span></td>
 <td>The module is an <code class="incode">export</code> module which does not have its own code. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Executable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Executable</span></span></td>
 <td>The module needs to be compiled to an executable application. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">DynamicLib</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DynamicLib</span></span></td>
 <td>The module needs to be compiled to an dynamic library. </td>
 </tr>
 </table>
@@ -2641,38 +2641,38 @@
 <p><code class="incode">LLVM</code> backend specific options. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">outputIR</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">outputIR</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Output IR in a file. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathFma</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathFma</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathNoNaN</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathNoNaN</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathNoInf</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathNoInf</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathNoSignedZero</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathNoSignedZero</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>true in <code class="incode">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathUnsafe</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathUnsafe</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fpMathApproxFunc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fpMathApproxFunc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2690,27 +2690,27 @@
 <p>These are the optimization levels for the backend. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O0</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">O0</span></span></td>
 <td>No optimization. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O1</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">O1</span></span></td>
 <td>Optimizations level 1. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O2</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">O2</span></span></td>
 <td>Optimizations level 2. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">O3</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">O3</span></span></td>
 <td>Optimizations level 3. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Os</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Os</span></span></td>
 <td>Optim for size level 1. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Oz</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Oz</span></span></td>
 <td>Optim for size level 2. </td>
 </tr>
 </table>
@@ -2729,11 +2729,11 @@
 <p>The native backend sub category. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Default</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Console</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Console</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2763,8 +2763,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">buf</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">2048</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">buf</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">2048</span>] <span class="SyntaxType">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2782,7 +2782,7 @@
 <p>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_CalleeReturn">CalleeReturn</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_CalleeReturn">CalleeReturn</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2798,7 +2798,7 @@
 <p>The following function or variable is only defined at compile time. </p>
 <div class="addinfos"><b>Usage</b>: function global-var const 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Compiler">Compiler</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Compiler">Compiler</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2814,23 +2814,23 @@
 <p>A message received in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">moduleName</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">moduleName</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Name of the module for which the message is sent. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">name</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">name</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">type</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">type</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>Depends on <code class="incode">kind</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">kind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">kind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></span></span></td>
 <td>Kind of the message. </td>
 </tr>
 </table>
@@ -2849,35 +2849,35 @@
 <p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassAfterSemantic</span></span></td>
 <td>Called once the program semantic has been done. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeRunByteCode</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassBeforeRunByteCode</span></span></td>
 <td>Called just before running bytecode. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeOutput</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassBeforeOutput</span></span></td>
 <td>Called just before generating the native code. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAllDone</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassAllDone</span></span></td>
 <td>Called when everything has be done. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemFunctions</span></span></td>
 <td>Called for each function in the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemTypes</span></span></td>
 <td>Called for each type in the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemGlobals</span></span></td>
 <td>Called for each global variable in the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeGen</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AttributeGen</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2895,39 +2895,39 @@
 <p>The type of message you want to retreive in a <code class="incode">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAfterSemantic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassAfterSemantic</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeRun</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassBeforeRun</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassBeforeOutput</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassBeforeOutput</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PassAllDone</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PassAllDone</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemFunctions</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemFunctions</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemTypes</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemTypes</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">SemGlobals</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SemGlobals</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">AttributeGen</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AttributeGen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">All</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">All</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2946,7 +2946,7 @@
 <p>The following switch must be complete. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Complete">Complete</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Complete">Complete</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2962,7 +2962,7 @@
 <p>Can be executed at compile time. </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_ConstExpr">ConstExpr</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_ConstExpr">ConstExpr</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2978,58 +2978,58 @@
 <p>Thread context as returned by [@context]. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocator</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocator</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td>The current allocator interface. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">flags</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ContextFlags">ContextFlags</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">flags</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ContextFlags">ContextFlags</a></span></span></td>
 <td>Context flags. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">tempAllocator</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">tempAllocator</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span></span></td>
 <td>Other fields, can be in any order A temporary allocator. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">traces</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">32</span><span class="SyntaxCode">] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">traces</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>Stack trace, in case of errors. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">errors</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">32</span><span class="SyntaxCode">] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">errors</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Error">Error</a></span></span></td>
 <td>All errors. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">exceptionLoc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">exceptionLoc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>When an exception is raised, this is the code location. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">exceptionParams</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">4</span><span class="SyntaxCode">] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">exceptionParams</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">4</span>] <span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
 <td>When an exception is raised, this are the parameters. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">panic</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(</span><span class="SyntaxType">string</span><span class="SyntaxCode">, </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">panic</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxType">string</span>, <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></td>
 <td>A function to call if there's a panic. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">errorIndex</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">errorIndex</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Number of errors in the array. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">traceIndex</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">traceIndex</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>The current trace index. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">hasError</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">hasError</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>!= 0 if an error is raised. </td>
 </tr>
 </table>
@@ -3046,15 +3046,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Test</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Test</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">ByteCode</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ByteCode</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3071,115 +3071,115 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocator</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocator</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">mutex</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MutexRW</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">mutex</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MutexRW</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">firstAlloc</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">firstAlloc</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>First allocated block. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">firstFree</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">firstFree</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>First freed block. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">lastFree</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">lastFree</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>Last freed block. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sizeAlloc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sizeAlloc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>Total allocated memory, in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sizeFree</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sizeFree</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>Total of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">countAlloc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">countAlloc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Number of allocated blocks. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">nextId</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">nextId</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>The next allocated id to assign. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">maxFreeSize</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">maxFreeSize</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">breakOnAllocId</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">breakOnAllocId</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">showMaxLeaks</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">showMaxLeaks</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Maximum number of memory leaks to show. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">captureAllocStack</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">captureAllocStack</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>For each allocation, capture stack. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">detectLeaks</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">detectLeaks</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
 <td>Detect memory leaks if true. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_assertIsAllocated"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_assertIsAllocated"><span class="SyntaxCode"><span class="SyntaxFunction">assertIsAllocated</span>()</spa</a></td>
 <td>This function will assert if the given user address is not conform  to an allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkAllMemory"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_checkAllMemory"><span class="SyntaxCode"><span class="SyntaxFunction">checkAllMemory</span>()</spa</a></td>
 <td>Check all allocated blocks. </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsAllocated"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_checkIsAllocated"><span class="SyntaxCode"><span class="SyntaxFunction">checkIsAllocated</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_checkIsFreed"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_checkIsFreed"><span class="SyntaxCode"><span class="SyntaxFunction">checkIsFreed</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_memAlign"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">memAlign</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_memAlign"><span class="SyntaxCode"><span class="SyntaxFunction">memAlign</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printDisplaySize"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">printDisplaySize</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_printDisplaySize"><span class="SyntaxCode"><span class="SyntaxFunction">printDisplaySize</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_printLeaks"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_printLeaks"><span class="SyntaxCode"><span class="SyntaxFunction">printLeaks</span>()</spa</a></td>
 <td>Output to the console the list of all allocated blocks (leaks). </td>
 </tr>
 <tr>
-<td><a href="#Swag_DebugAllocator_setup"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setup</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_setup"><span class="SyntaxCode"><span class="SyntaxFunction">setup</span>()</spa</a></td>
 <td>Setup the allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_DebugAllocator_opDrop"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_DebugAllocator_opDrop"><span class="SyntaxCode"><span class="SyntaxFunction">opDrop</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -3194,7 +3194,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">alloc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3207,7 +3207,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">free</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3220,7 +3220,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">releaseLast</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">releaseLast</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3233,7 +3233,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">req</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3247,7 +3247,7 @@
 </table>
 </p>
 <p>This function will assert if the given user address is not conform  to an allocated block. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">assertIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">assertIsAllocated</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, addr: *<span class="SyntaxType">void</span>, callerLoc = <span class="SyntaxCompiler">#callerlocation</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3261,7 +3261,7 @@
 </table>
 </p>
 <p>Check all allocated blocks. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkAllMemory</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">checkAllMemory</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3274,7 +3274,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsAllocated</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">, callerLoc = #callerlocation)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">checkIsAllocated</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, ptrHeader: ^<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SyntaxCompiler">#callerlocation</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3287,7 +3287,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">checkIsFreed</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, ptrHeader: ^</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">checkIsFreed</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, ptrHeader: ^<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3300,7 +3300,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">memAlign</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">memAlign</span>(value: <span class="SyntaxType">u64</span>, alignement: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3313,7 +3313,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">opDrop</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opDrop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3326,7 +3326,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printDisplaySize</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">printDisplaySize</span>(value: <span class="SyntaxType">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3340,7 +3340,7 @@
 </table>
 </p>
 <p>Output to the console the list of all allocated blocks (leaks). </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">printLeaks</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">printLeaks</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3354,7 +3354,7 @@
 </table>
 </p>
 <p>Setup the allocator. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setup</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setup</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, allocator: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3370,8 +3370,8 @@
 <p>Will be put just after the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">magic</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">magic</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3389,58 +3389,58 @@
 <p>Will be put just before the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">loc</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">loc</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocAddr</td>
-<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocAddr</span></td>
+<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocSize</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocSize</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">userSize</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">userSize</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">hint</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">hint</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">prev</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">prev</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">next</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">next</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">stack</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">16</span><span class="SyntaxCode">] *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">stack</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">16</span>] *<span class="SyntaxType">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">stackCount</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">stackCount</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">magic</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">magic</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocId</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocId</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3458,7 +3458,7 @@
 <p>The following definition is deprecated and should not be used. </p>
 <div class="addinfos"><b>Usage</b>: function enum enum-value struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Deprecated">Deprecated</a></span><span class="SyntaxCode">(msg: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxKeyword">null</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="SyntaxType">string</span> = <span class="SyntaxKeyword">null</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3474,7 +3474,7 @@
 <p>The following function accepts that the called does not use its return value. </p>
 <div class="addinfos"><b>Usage</b>: function var 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Discardable">Discardable</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Discardable">Discardable</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3489,19 +3489,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">None</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
 <td>Do not generate documentation for that module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Api</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Api</span></span></td>
 <td>Generate 'api like' documentation. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Examples</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Examples</span></span></td>
 <td>Generate 'examples like' documentation. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pages</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pages</span></span></td>
 <td>Generate one page per file. </td>
 </tr>
 </table>
@@ -3519,7 +3519,7 @@
 <p>The following enum is a set of flags. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_EnumFlags">EnumFlags</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_EnumFlags">EnumFlags</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3535,7 +3535,7 @@
 <p>The following enum can be used to index arrays without casting. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_EnumIndex">EnumIndex</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_EnumIndex">EnumIndex</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3551,23 +3551,23 @@
 <p>Store a <code class="incode">throw</code> error informations. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">msgBuf</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">128</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">msgBuf</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">128</span>] <span class="SyntaxType">u8</span></span></td>
 <td>Buffer to store the error message. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">msg</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">msg</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Error message. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pushHasError</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pushHasError</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pushTraceIndex</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pushTraceIndex</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3584,15 +3584,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Panic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Panic</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Error</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Warning</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Warning</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3609,7 +3609,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_ExportType">ExportType</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="SyntaxType">string</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3643,7 +3643,7 @@
 <p>The following function is foreign (imported). </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Foreign">Foreign</a></span><span class="SyntaxCode">(module: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, function: </span><span class="SyntaxType">string</span><span class="SyntaxCode"> = </span><span class="SyntaxString">""</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="SyntaxType">string</span>, function: <span class="SyntaxType">string</span> = <span class="SyntaxString">""</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3658,7 +3658,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Global">Global</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Global">Global</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3674,13 +3674,13 @@
 <p>Defined a global variable. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">ptr</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">ptr</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
 <td>Pointer to the global variable memory. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">opDrop</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">opDrop</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)</span></td>
 <td>The <code class="incode">opDrop</code> function to call when the process must exit. </td>
 </tr>
 </table>
@@ -3697,8 +3697,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">req</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">, *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">req</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span>, *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -3713,7 +3713,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">req</span>(<span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3729,18 +3729,18 @@
 <p>This is the interface to communicate with the compiler. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">getMessage</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">getMessage</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
 <td>Returns the compiler message in a <code class="incode">#message</code> function. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">getBuildCfg</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">getBuildCfg</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></td>
 <td>Returns the build configuration of the current module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">compileString</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span><span class="SyntaxCode">, </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">compileString</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ICompiler">ICompiler</a></span>, <span class="SyntaxType">string</span>)</span></td>
 <td>Compile a global string. </td>
 </tr>
 </table>
@@ -3756,7 +3756,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">compileString</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, str: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">compileString</span>(<span class="SyntaxKeyword">self</span>, str: <span class="SyntaxType">string</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3769,7 +3769,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getBuildCfg</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getBuildCfg</span>(<span class="SyntaxKeyword">self</span>)-&gt;*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3782,7 +3782,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">getMessage</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getMessage</span>(<span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3798,7 +3798,7 @@
 <p>Can force an <code class="incode">opCast</code> special function to work as implicit. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Implicit">Implicit</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Implicit">Implicit</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3814,7 +3814,7 @@
 <p>The following switch is incomplete. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Incomplete">Incomplete</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Incomplete">Incomplete</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3830,7 +3830,7 @@
 <p>Force a function to be inlined. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Inline">Inline</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Inline">Inline</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3845,13 +3845,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">obj</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">obj</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
 <td>Pointer to the associated struct instance. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">itable</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> ^^</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">itable</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^^<span class="SyntaxType">void</span></span></td>
 <td>Pointer to the virtual table. </td>
 </tr>
 </table>
@@ -3869,7 +3869,7 @@
 <p>The following function is a <code class="incode">macro</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Macro">Macro</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Macro">Macro</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3884,7 +3884,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Match">Match</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Match">Match</a></span>(what: <span class="SyntaxType">string</span>, value: <span class="SyntaxType">bool</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3900,7 +3900,7 @@
 <p>The following function is a <code class="incode">mixin</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Mixin">Mixin</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Mixin">Mixin</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3916,13 +3916,13 @@
 <p>Defined some informations about a loaded module. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">name</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">name</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Name of the module. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">types</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">types</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>All exported types. </td>
 </tr>
 </table>
@@ -3940,7 +3940,7 @@
 <p>The following struct should never be copied. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoCopy">NoCopy</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_NoCopy">NoCopy</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3956,7 +3956,7 @@
 <p>Do not generate documentation. </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoDoc">NoDoc</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_NoDoc">NoDoc</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3972,7 +3972,7 @@
 <p>Never inline the following function. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NoInline">NoInline</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_NoInline">NoInline</a></span></span></code>
 </div>
 <p> This is a hint for the <code class="incode">llvm</code> backend. </p>
 <p>
@@ -3989,7 +3989,7 @@
 <p>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_NotGeneric">NotGeneric</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_NotGeneric">NotGeneric</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4005,7 +4005,7 @@
 <p>Struct field member relocation. </p>
 <div class="addinfos"><b>Usage</b>: struct-var 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Offset">Offset</a></span><span class="SyntaxCode">(name: </span><span class="SyntaxType">string</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Offset">Offset</a></span>(name: <span class="SyntaxType">string</span>)</span></code>
 </div>
 <p> The field offset in the struct should be the same as the variable <code class="incode">name</code> </p>
 <p>
@@ -4022,7 +4022,7 @@
 <p>When exporting the following struct, do not export its content. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Opaque">Opaque</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Opaque">Opaque</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4038,7 +4038,7 @@
 <p>Enable/Disable a given function optimization. </p>
 <div class="addinfos"><b>Usage</b>: function multi 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Optim">Optim</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Optim">Optim</a></span>(what: <span class="SyntaxType">string</span>, value: <span class="SyntaxType">bool</span>)</span></code>
 </div>
 <p> Options are: </p>
 <table class="enumeration">
@@ -4059,7 +4059,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Overflow">Overflow</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Overflow">Overflow</a></span>(value: <span class="SyntaxType">bool</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4075,7 +4075,7 @@
 <p><code class="incode">struct</code> packing information. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Pack">Pack</a></span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u8</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Pack">Pack</a></span>(value: <span class="SyntaxType">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4091,7 +4091,7 @@
 <p>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_PrintBc">PrintBc</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_PrintBc">PrintBc</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4107,7 +4107,7 @@
 <p>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_PrintGenBc">PrintGenBc</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_PrintGenBc">PrintGenBc</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4123,13 +4123,13 @@
 <p>Defined some informations about the current process. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">modules</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">modules</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Module">Module</a></span></span></td>
 <td>The list of all modules. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">args</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">args</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The application arguments, as returned by <a href="#@args">@args</a>. </td>
 </tr>
 </table>
@@ -4146,11 +4146,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">FromCompiler</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FromCompiler</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4204,11 +4204,11 @@
 <p>Enable/Disable one or more safety checks. </p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, value: </span><span class="SyntaxType">bool</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Safety">Safety</a></span>(what: <span class="SyntaxType">string</span>, value: <span class="SyntaxType">bool</span>)</span></code>
 </div>
 <p> For example: </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Safety("", false)]</span><span class="SyntaxCode">                    </span><span class="SyntaxComment">// Disable all</span><span class="SyntaxCode">
- </span><span class="SyntaxAttribute">#[Swag.Safety("boundcheck|nan", false)]</span><span class="SyntaxCode">      </span><span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxAttribute">#[Swag.Safety("", false)]</span>                    <span class="SyntaxComment">// Disable all</span>
+ <span class="SyntaxAttribute">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SyntaxComment">// Disable 'boundcheck' and 'nan' checks</span></span></code>
 </div>
 <p> Safety checks are: </p>
 <table class="enumeration">
@@ -4237,70 +4237,70 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">allocator</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">allocator</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">block</td>
-<td class="codetype"></span><span class="SyntaxCode">^</span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">block</span></td>
+<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">capacity</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">capacity</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">used</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">used</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">maxUsed</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">maxUsed</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">firstLeak</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">firstLeak</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">totalLeak</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">totalLeak</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">maxLeak</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">maxLeak</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Swag_ScratchAllocator_align"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">align</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_align"><span class="SyntaxCode"><span class="SyntaxFunction">align</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_alloc"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_alloc"><span class="SyntaxCode"><span class="SyntaxFunction">alloc</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_free"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">free</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_free"><span class="SyntaxCode"><span class="SyntaxFunction">free</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_freeAll"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_freeAll"><span class="SyntaxCode"><span class="SyntaxFunction">freeAll</span>()</spa</a></td>
 <td>Release all memory. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_release"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">release</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_release"><span class="SyntaxCode"><span class="SyntaxFunction">release</span>()</spa</a></td>
 <td>Release the allocated block. </td>
 </tr>
 <tr>
-<td><a href="#Swag_ScratchAllocator_setCapacity"></span><span class="SyntaxCode"></span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode"></a></td>
+<td><a href="#Swag_ScratchAllocator_setCapacity"><span class="SyntaxCode"><span class="SyntaxFunction">setCapacity</span>()</spa</a></td>
 <td>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>
@@ -4315,7 +4315,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">alloc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4328,7 +4328,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">free</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4341,7 +4341,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">req</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4356,18 +4356,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">prev</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">prev</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">next</td>
-<td class="codetype"></span><span class="SyntaxCode">*</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">next</span></td>
+<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SyntaxConstant"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">size</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">size</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4382,7 +4382,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">align</span><span class="SyntaxCode">(value: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode">)-&gt;</span><span class="SyntaxType">u64</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">align</span>(value: <span class="SyntaxType">u64</span>, alignement: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4395,7 +4395,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">alloc</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, alignement: </span><span class="SyntaxType">u32</span><span class="SyntaxCode"> = </span><span class="SyntaxNumber">0</span><span class="SyntaxCode">)-&gt;*</span><span class="SyntaxType">void</span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">alloc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, size: <span class="SyntaxType">u64</span>, alignement: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>)-&gt;*<span class="SyntaxType">void</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4408,7 +4408,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, addr: *</span><span class="SyntaxType">void</span><span class="SyntaxCode">, size: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">free</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, addr: *<span class="SyntaxType">void</span>, size: <span class="SyntaxType">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4422,7 +4422,7 @@
 </table>
 </p>
 <p>Release all memory. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">freeAll</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">freeAll</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4436,7 +4436,7 @@
 </table>
 </p>
 <p>Release the allocated block. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">release</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">release</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4450,7 +4450,7 @@
 </table>
 </p>
 <p>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">setCapacity</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, newCapacity: </span><span class="SyntaxType">u64</span><span class="SyntaxCode">, allocator: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setCapacity</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, newCapacity: <span class="SyntaxType">u64</span>, allocator: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4466,28 +4466,28 @@
 <p>Represent a part of a source code file. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fileName</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fileName</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Full path name of the source file. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">lineStart</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">lineStart</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Start line (starts at 0). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">colStart</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">colStart</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Start column. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">lineEnd</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">lineEnd</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>End line. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">colEnd</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">colEnd</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>End column. </td>
 </tr>
 </table>
@@ -4505,7 +4505,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Strict">Strict</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Strict">Strict</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4529,7 +4529,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">free</span><span class="SyntaxCode">(request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">free</span>(request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4542,7 +4542,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode"> </span><span class="SyntaxFunction">req</span><span class="SyntaxCode">(</span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> </span><span class="SyntaxKeyword">self</span><span class="SyntaxCode">, request: *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">req</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, request: *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4558,7 +4558,7 @@
 <p>Target processor. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">X86_64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">X86_64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4576,15 +4576,15 @@
 <p>The <code class="incode">OS</code> to target when generating native code. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Windows</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Windows</span></span></td>
 <td>Windows 10/11. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Linux</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Linux</span></span></td>
 <td>Linux (<b>unsupported</b>). </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">MaxOSX</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxOSX</span></span></td>
 <td>MacOS (<b>unsupported</b>). </td>
 </tr>
 </table>
@@ -4602,7 +4602,7 @@
 <p>Put the following global variable in the <code class="incode">tls</code> segment. </p>
 <div class="addinfos"><b>Usage</b>: global-var 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Tls">Tls</a></span><span class="SyntaxCode"></code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Tls">Tls</a></span></span></code>
 </div>
 <p> A copy of the variable will be available for each thread. </p>
 <p>
@@ -4618,11 +4618,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Strict</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CastAny</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CastAny</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4640,38 +4640,38 @@
 <p>Will be available for all types. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fullname</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fullname</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The full scoped name of the type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">name</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">name</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>The unscoped name. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">sizeof</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">sizeof</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">crc32</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">crc32</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>A unique CRC to identify the type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">flags</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">flags</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></span></span></td>
 <td>Some additional flags. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">kind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoKind">TypeInfoKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">kind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfoKind">TypeInfoKind</a></span></span></td>
 <td>The kind of the type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">padding</td>
-<td class="codetype"></span><span class="SyntaxCode">[</span><span class="SyntaxNumber">3</span><span class="SyntaxCode">] </span><span class="SyntaxType">u8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">padding</span></td>
+<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] <span class="SyntaxType">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4688,13 +4688,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">rawType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">rawType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -4711,28 +4711,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pointedType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">finalType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">finalType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If this is an array with multiple dimensions, this will be the final type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">count</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">count</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>Number of elements in the array. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">totalCount</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">totalCount</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
 <td>The total number of elements in case this has multiple dimensions. </td>
 </tr>
 </table>
@@ -4749,23 +4749,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">values</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">values</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the values. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">rawType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">rawType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying enum type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">attributes</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">attributes</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4783,71 +4783,71 @@
 <p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Zero</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerTypeInfo</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PointerTypeInfo</span></span></td>
 <td>This is a pointer to a <a href="#Swag_TypeInfo">TypeInfo</a> struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Integer</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Integer</span></span></td>
 <td>This is a native integer. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Float</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Float</span></span></td>
 <td>This is a native float. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Unsigned</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Unsigned</span></span></td>
 <td>This is a native unsigned integer. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasPostCopy</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HasPostCopy</span></span></td>
 <td>This is a struct with a <code class="incode">opPostCopy</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasPostMove</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HasPostMove</span></span></td>
 <td>This is a struct with a <code class="incode">opPostMove</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">HasDrop</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HasDrop</span></span></td>
 <td>This is a struct with a <code class="incode">opDrop</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Strict</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Strict</span></span></td>
 <td>This is a typealias with the Swag.Strict attribute]. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CanCopy</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CanCopy</span></span></td>
 <td>This is a struct that can be copied. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Tuple</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Tuple</span></span></td>
 <td>This is a tuple. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CString</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CString</span></span></td>
 <td>This is a <code class="incode">cstring</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Generic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Generic</span></span></td>
 <td>This is a generic type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerRef</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PointerRef</span></span></td>
 <td>This is a reference. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerMoveRef</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PointerMoveRef</span></span></td>
 <td>This is a move reference. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">PointerArithmetic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PointerArithmetic</span></span></td>
 <td>This is a pointer to multiple values. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Character</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Character</span></span></td>
 <td>This is a 32 bits character. </td>
 </tr>
 </table>
@@ -4864,28 +4864,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">generics</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">generics</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">parameters</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">parameters</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Parameters. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">returnType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">returnType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The return type, or <code class="incode">null</code>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">attributes</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">attributes</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -4902,13 +4902,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">rawType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">rawType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4926,83 +4926,83 @@
 <p>The kind of the typeinfo. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Invalid</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Invalid</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Native</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Native</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNative">TypeInfoNative</a>. See <a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Namespace</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Namespace</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enum</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Enum</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoEnum">TypeInfoEnum</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Func</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Func</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Lambda</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Lambda</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Pointer</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pointer</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoPointer">TypeInfoPointer</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Array</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Array</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Slice</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Slice</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoSlice">TypeInfoSlice</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeListTuple</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TypeListTuple</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypeListArray</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TypeListArray</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Variadic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Variadic</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">TypedVariadic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TypedVariadic</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CVariadic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CVariadic</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Struct</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Struct</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Generic</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Generic</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Alias</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Alias</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Code</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Code</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Interface</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Interface</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>, but this is an interface. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Attribute</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Attribute</span></span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute. </td>
 </tr>
 </table>
@@ -5019,8 +5019,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5037,13 +5037,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">nativeKind</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">nativeKind</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5061,71 +5061,71 @@
 <p>The native type if the type is... native. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">S8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">S16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">S32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">S64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">S64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U8</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">U8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U16</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">U16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">U32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">U64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">U64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">F32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">F64</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">F64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Bool</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Rune</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Rune</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">String</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Any</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Any</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">CString</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CString</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Undefined</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Undefined</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5143,13 +5143,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pointedType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The pointed type. </td>
 </tr>
 </table>
@@ -5166,13 +5166,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pointedType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5189,63 +5189,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">opInit</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">opInit</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)</span></td>
 <td>Pointer to the function to initialize an instance of that struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">opDrop</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">opDrop</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)</span></td>
 <td>Pointer to the function to drop an instance of that struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">opPostCopy</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">opPostCopy</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)</span></td>
 <td>Pointer to the function to call after a copy. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">opPostMove</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">func</span><span class="SyntaxCode">(*</span><span class="SyntaxType">void</span><span class="SyntaxCode">)</td>
+<td class="codetype"><span class="SyntaxCode">opPostMove</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)</span></td>
 <td>Pointer to the function to call after a move. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">structName</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">structName</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>User name of the struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fromGeneric</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fromGeneric</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If it comes from a generic instantiation, this is the original generic struct. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">generics</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">generics</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">fields</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">fields</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the fields. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">methods</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">methods</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the methods, if exported. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">interfaces</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">interfaces</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the interfaces. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">attributes</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">attributes</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
@@ -5262,13 +5262,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">using</span><span class="SyntaxCode"> base</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">rawType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">rawType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
@@ -5286,33 +5286,33 @@
 <p>Represents a value, like a function parameter or an enum value. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">name</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">string</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">name</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
 <td>Name of the value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">pointedType</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">pointedType</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>Type of the value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">value</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxType">void</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">value</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
 <td>Pointer to the constant value. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">attributes</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> [..] </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">attributes</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> [..] <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>Associated attributes. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">offset</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">offset</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Offset, in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode">crc32</td>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxType">u32</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode">crc32</span></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
 <td>Unique crc32. </td>
 </tr>
 </table>
@@ -5365,7 +5365,7 @@
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Using">Using</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxKeyword">const</span><span class="SyntaxCode"> *</span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span><span class="SyntaxCode">...)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Using">Using</a></span>(what: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_TypeInfo">TypeInfo</a></span>...)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5381,12 +5381,12 @@
 <p>Change the behavior of a given warning or list of warnings. </p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxKeyword">attr</span><span class="SyntaxCode"> </span><span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span><span class="SyntaxCode">(what: </span><span class="SyntaxType">string</span><span class="SyntaxCode">, level: </span><span class="SyntaxConstant"><a href="#Swag">Swag</a></span><span class="SyntaxCode">.</span><span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span><span class="SyntaxCode">)</code>
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">attr</span> <span class="SyntaxConstant"><a href="#Swag_Warn">Warn</a></span>(what: <span class="SyntaxType">string</span>, level: <span class="SyntaxConstant"><a href="#Swag">Swag</a></span>.<span class="SyntaxConstant"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></code>
 </div>
 <p> For example: </p>
-<div class="precode"><code></span><span class="SyntaxCode"></span><span class="SyntaxAttribute">#[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
+<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxAttribute">#[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
  #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
- #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]</span><span class="SyntaxCode"></code>
+ #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]</span></span></code>
 </div>
 <p> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
 <p>
@@ -5403,15 +5403,15 @@
 <p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Enable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Enable</span></span></td>
 <td>Enable the given warning. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Disable</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Disable</span></span></td>
 <td>Disable the given warning. </td>
 </tr>
 <tr>
-<td class="codetype"></span><span class="SyntaxCode"></span><span class="SyntaxConstant">Error</span><span class="SyntaxCode"></td>
+<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Error</span></span></td>
 <td>Force the given warning to be raised as an error. </td>
 </tr>
 </table>

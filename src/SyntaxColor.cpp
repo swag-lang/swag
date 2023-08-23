@@ -152,6 +152,8 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
     {
     case SyntaxColorMode::ForLog:
     {
+        if (color == SyntaxColor::SyntaxDefault)
+            color = SyntaxColor::SyntaxCode;
         auto rgb = getSyntaxColor(color, g_CommandLine.errorSyntaxColorLum);
         return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
     }
@@ -162,6 +164,8 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
         const char* colorName = nullptr;
         switch (color)
         {
+        case SyntaxColor::SyntaxDefault:
+            return "</span>";
         case SyntaxColor::SyntaxCode:
             colorName = "SyntaxCode";
             break;
@@ -201,7 +205,7 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
         }
 
         if (colorName)
-            return Fmt("</span><span class=\"%s\">", colorName);
+            return Fmt("<span class=\"%s\">", colorName);
         break;
     }
     }
@@ -257,7 +261,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -276,7 +280,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -296,7 +300,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             if (*pz == '"')
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -316,7 +320,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             if (*pz == '`')
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -328,7 +332,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             while (*pz && !SWAG_IS_EOL(*pz))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -341,7 +345,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -354,7 +358,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             while (*pz && (SWAG_IS_HEX(*pz) || *pz == '_'))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -384,7 +388,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             }
 
             pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxCode);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
             continue;
         }
 
@@ -446,7 +450,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 case TokenId::KwdPrivate:
                     result += getColor(mode, SyntaxColor::SyntaxKeyword);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
                     break;
 
                 case TokenId::KwdCode:
@@ -455,7 +459,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 case TokenId::CompilerType:
                     result += getColor(mode, SyntaxColor::SyntaxType);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
                     break;
 
                 case TokenId::KwdIf:
@@ -479,7 +483,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 case TokenId::KwdOrElse:
                     result += getColor(mode, SyntaxColor::SyntaxLogic);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
                     break;
 
                 case TokenId::CompilerRun:
@@ -492,7 +496,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 case TokenId::CompilerFuncTest:
                     result += getColor(mode, SyntaxColor::SyntaxFunction);
                     result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
                     break;
 
                 default:
@@ -500,7 +504,13 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                     {
                         result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
                         result += identifier;
-                        result += getColor(mode, SyntaxColor::SyntaxCode);
+                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    }
+                    else if (identifier[0] == '#')
+                    {
+                        result += getColor(mode, SyntaxColor::SyntaxCompiler);
+                        result += identifier;
+                        result += getColor(mode, SyntaxColor::SyntaxDefault);
                     }
                     else
                     {
@@ -514,32 +524,29 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             {
                 result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxCode);
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
             }
             else if (identifier == "self" || identifier == "Self")
             {
                 result += getColor(mode, SyntaxColor::SyntaxKeyword);
                 result += identifier;
-                result += getColor(mode, SyntaxColor::SyntaxCode);
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
+            }
+            else if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
+            {
+                result += getColor(mode, SyntaxColor::SyntaxFunction);
+                result += identifier;
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
+            }
+            else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
+            {
+                result += getColor(mode, SyntaxColor::SyntaxConstant);
+                result += identifier;
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
             }
             else
             {
-                if (identifier[0] >= 'a' and identifier[0] <= 'z' && (c == '(' || c == '\''))
-                {
-                    result += getColor(mode, SyntaxColor::SyntaxFunction);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
-                }
-                else if (identifier[0] >= 'A' and identifier[0] <= 'Z')
-                {
-                    result += getColor(mode, SyntaxColor::SyntaxConstant);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxCode);
-                }
-                else
-                {
-                    result += identifier;
-                }
+                result += identifier;
             }
 
             continue;
@@ -549,5 +556,6 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
         pz = Utf8::decodeUtf8(pz, c, offset);
     }
 
+    result += getColor(mode, SyntaxColor::SyntaxDefault);
     return result;
 }

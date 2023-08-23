@@ -204,11 +204,11 @@
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3>Create a workspace and a test module </h3>
 <p>First create a workspace with the <code class="incode">--test</code> option. </p>
-<div class="precode"><code></span><span class="SyntaxCode">$ swag new -w:myWorkspace --test</code>
+<div class="precode"><code><span class="SyntaxCode">$ swag new -w:myWorkspace --test</span></code>
 </div>
 <p>This will also create a test module <code class="incode">myWorkspace</code> located in <code class="incode">myWorkspace\tests</code>. </p>
 <p>You can then compile and run the tests with the <code class="incode">test</code> command. </p>
-<div class="precode"><code></span><span class="SyntaxCode">$ swag test -w:myWorkspace</code>
+<div class="precode"><code><span class="SyntaxCode">$ swag test -w:myWorkspace</span></code>
 </div>
 <p>To force the build, add <code class="incode">--rebuild</code>. </p>
 <h3>Write tests </h3>
