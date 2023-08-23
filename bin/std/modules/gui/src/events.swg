@@ -68,7 +68,7 @@ impl Event
 
 struct CommandEvent
 {
-    using base: Event{kind = EventKind.Command}
+    using base: Event{kind: EventKind.Command}
     id:         WndId
     source:     *Wnd
 }
@@ -89,7 +89,7 @@ struct CommandStateEvent
         Hidden
     }
 
-    using base: Event{kind = EventKind.ComputeCommandState}
+    using base: Event{kind: EventKind.ComputeCommandState}
     id:         WndId
     source:     *Wnd
 
@@ -106,19 +106,19 @@ struct CommandStateEvent
 
 struct TimerEvent
 {
-    using base: Event{kind = EventKind.Timer}
+    using base: Event{kind: EventKind.Timer}
     timer:      *Timer
 }
 
 struct FrameEvent
 {
-    using base: Event{kind = EventKind.Frame}
+    using base: Event{kind: EventKind.Frame}
     firstFrame: bool
 }
 
 struct CreateEvent
 {
-    using base: Event{kind = EventKind.Create}
+    using base: Event{kind: EventKind.Create}
 }
 
 struct StateEvent
@@ -128,24 +128,24 @@ struct StateEvent
 
 struct DestroyEvent
 {
-    using base: Event{kind = EventKind.Destroy}
+    using base: Event{kind: EventKind.Destroy}
 }
 
 struct PaintEvent
 {
-    using base: Event{kind = EventKind.Paint}
+    using base: Event{kind: EventKind.Paint}
     bc: *PaintContext
 }
 
 struct ResizeEvent
 {
-    using base: Event{kind = EventKind.Resize}
+    using base: Event{kind: EventKind.Resize}
     oldSize: Math.Point
 }
 
 struct MoveEvent
 {
-    using base: Event{kind = EventKind.Move}
+    using base: Event{kind: EventKind.Move}
     oldPos: Math.Point
 }
 
@@ -168,7 +168,7 @@ struct MouseEvent
 
 struct QuitEvent
 {
-    using base: Event{kind = EventKind.Quit}
+    using base: Event{kind: EventKind.Quit}
     quitCode: s32
 }
 
@@ -180,7 +180,7 @@ struct FocusEvent
 
 struct SysUserEvent
 {
-    using base: Event{kind = EventKind.SysUser}
+    using base: Event{kind: EventKind.SysUser}
     userMsg:    u64
     param0:     u64
     param1:     u64
@@ -188,7 +188,7 @@ struct SysUserEvent
 
 struct SysCommandEvent
 {
-    using base: Event{kind = EventKind.SysCommand}
+    using base: Event{kind: EventKind.SysCommand}
 
     enum Kind
     {
@@ -204,20 +204,20 @@ struct SysCommandEvent
 
 struct SetThemeEvent
 {
-    using base: Event{kind = EventKind.SetTheme}
+    using base: Event{kind: EventKind.SetTheme}
     style:  *ThemeStyle
     parent: *ThemeStyle
 }
 
 struct SerializeStateEvent
 {
-    using base: Event{kind = EventKind.SerializeState}
+    using base: Event{kind: EventKind.SerializeState}
     ser: *Serialization.Serializer
 }
 
 struct NotifyEvent
 {
-    using base: Event{kind = EventKind.Notify}
+    using base: Event{kind: EventKind.Notify}
 
     enum Kind
     {

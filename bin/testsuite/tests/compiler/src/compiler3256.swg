@@ -12,5 +12,5 @@ func create(parent: *Rectangle, name: string, position: Rectangle, id: string = 
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    create(id = "titi")
+    create(id: "titi")
 }

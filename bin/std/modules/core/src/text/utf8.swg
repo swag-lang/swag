@@ -651,7 +651,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         return Core.Latin1.compare(src, dst) // bytes compare
 
     case Latin1NoCase:
-        return Core.Latin1.compare(src, dst, ignoreCase = true)
+        return Core.Latin1.compare(src, dst, ignoreCase: true)
 
     case Unicode:
         return Core.Latin1.compare(src, dst) // bytes compare

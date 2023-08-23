@@ -187,17 +187,17 @@ impl ColorPickerCtrl
                 case SaturationLightness:
                     var c = Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickAlpha.change(s = cb.sat, l = cb.lum)
+                    v.pickAlpha.change(s: cb.sat, l: cb.lum)
                 case HueSaturation:
                     var c = Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickBar.change(h = cb.hue, s = cb.sat)
-                    v.pickAlpha.change(h = cb.hue, s = cb.sat)
+                    v.pickBar.change(h: cb.hue, s: cb.sat)
+                    v.pickAlpha.change(h: cb.hue, s: cb.sat)
                 case HueLightness:
                     var c = Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickBar.change(h = cb.hue, l = cb.lum)
-                    v.pickAlpha.change(h = cb.hue, l = cb.lum)
+                    v.pickBar.change(h: cb.hue, l: cb.lum)
+                    v.pickAlpha.change(h: cb.hue, l: cb.lum)
                 case GreenBlue:
                     v.color.g = cast(u8) (cb.g * 255)
                     v.color.b = cast(u8) (cb.b * 255)
@@ -220,18 +220,18 @@ impl ColorPickerCtrl
                 case SaturationLightness:
                     var c = Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickBox.change(h = cb.hue)
-                    v.pickAlpha.change(h = cb.hue)
+                    v.pickBox.change(h: cb.hue)
+                    v.pickAlpha.change(h: cb.hue)
                 case HueSaturation:
                     var c = Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickBox.change(l = cb.lum)
-                    v.pickAlpha.change(l = cb.lum)
+                    v.pickBox.change(l: cb.lum)
+                    v.pickAlpha.change(l: cb.lum)
                 case HueLightness:
                     var c = Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickBox.change(s = cb.sat)
-                    v.pickAlpha.change(s = cb.sat)
+                    v.pickBox.change(s: cb.sat)
+                    v.pickAlpha.change(s: cb.sat)
                 case GreenBlue:
                     v.color.r = cast(u8) (cb.r * 255)
                     v.updatePickers()

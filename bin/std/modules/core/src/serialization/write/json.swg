@@ -14,7 +14,7 @@ struct JSon
     output:         *ConcatBuffer
     indent:         u32
     fmtInt:         StrConv.ConvertFormatInt
-    fmtFloat:       StrConv.ConvertFormatFloat{fmt = `g`'u8}
+    fmtFloat:       StrConv.ConvertFormatFloat{fmt: `g`'u8}
     lastSeekValue:  ConcatBufferSeek
 }
 

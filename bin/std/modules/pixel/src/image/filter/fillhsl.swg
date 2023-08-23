@@ -53,7 +53,7 @@ impl Image
                 pix += bpp8
             }
 
-            visitPixels(stride = width)
+            visitPixels(stride: width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }
@@ -83,7 +83,7 @@ impl Image
                 pix += bpp8
             }
 
-            visitPixels(stride = width)
+            visitPixels(stride: width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }
@@ -113,7 +113,7 @@ impl Image
                 pix += bpp8
             }
 
-            visitPixels(stride = width)
+            visitPixels(stride: width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }

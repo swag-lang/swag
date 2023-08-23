@@ -59,7 +59,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        g_Slider = Slider.create(wnd, {0, 0, 200}, range = true)
+        g_Slider = Slider.create(wnd, {0, 0, 200}, range: true)
         g_Slider.setMinMax(-2.5, 2.5)
         g_Slider.setRangeValues(-2.5, 2.5)
         g_Slider.sigChanged += closure|wnd|(s)
@@ -90,5 +90,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     try Jobs.setNumWorkers()
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
-    Application.runSurface(100, 100, 512, 512, title = "Mandelbrot", hook = &onEvent, init = &test)
+    Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent, init: &test)
 }

@@ -102,7 +102,7 @@ impl IWnd for RecentView
                         .addItem(CmdIdFileLocation)
                     }
 
-                    discard menu.doModal(evt.surfacePos, autoDestroy = true)
+                    discard menu.doModal(evt.surfacePos, autoDestroy: true)
                 }
             }
         }
@@ -217,7 +217,7 @@ impl RecentWnd
         var cptRecent = 0
         visit r, idx: res
         {
-            let capture = catch recent.addRecent(r.fullname, front = false)
+            let capture = catch recent.addRecent(r.fullname, front: false)
             defer(err) Memory.delete(capture)
             if @errmsg continue
 
@@ -325,13 +325,13 @@ impl RecentWnd
         {
             recentView.items.insertAt(0, item)
             if sel
-                recentView.select(0, force = true)
+                recentView.select(0, force: true)
         }
         else
         {
             recentView.items.add(item)
             if sel
-                recentView.select(recentView.items.count - 1, force = true)
+                recentView.select(recentView.items.count - 1, force: true)
         }
 
         invalidate()

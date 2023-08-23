@@ -103,7 +103,7 @@ impl Capture
     {
         var result: retval
 
-        var rect = Math.Rectangle{width = width * zoom, height = height * zoom}
+        var rect = Math.Rectangle{width: width * zoom, height: height * zoom}
         var painter: Pixel.Painter
 
         let app = editView.getApp()
@@ -125,7 +125,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel
                     continue
-                paintForm(app, &painter, rect, f, zoom, snapMode = true)
+                paintForm(app, &painter, rect, f, zoom, snapMode: true)
             }
         }
         else
@@ -135,7 +135,7 @@ impl Capture
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel
                     continue
-                paintForm(app, &painter, rect, f, zoom, snapMode = true)
+                paintForm(app, &painter, rect, f, zoom, snapMode: true)
             }
         }
 

@@ -97,7 +97,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
     }
 
     {
-        let list = createListMulti(view, checkable = true)
+        let list = createListMulti(view, checkable: true)
         list.frameFlags.add(.FocusBorder)
         list.header.headerFlags.remove(.Clickable)
         list.setPosition({5, 400, 400, 300})

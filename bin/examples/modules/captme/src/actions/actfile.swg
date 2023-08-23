@@ -103,7 +103,7 @@ impl IActionUI for ActionFile
             main.saveAsImage()
 
         case CmdIdSaveAsLinkedImage:
-            main.saveAsImage(linked = true)
+            main.saveAsImage(linked: true)
 
         case CmdIdOpenImage:
             main.openImage()
@@ -214,11 +214,11 @@ impl MainWnd
 
     mtd newImage()
     {
-        let dlg = Dialog.createDialog(surface, 350, 235, title = "New Image")
+        let dlg = Dialog.createDialog(surface, 350, 235, title: "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        let edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags = .RightAlign)
-        let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags = .RightAlign)
+        let edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags: .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
         if dlg.doModal() != Dialog.BtnOk

@@ -130,7 +130,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             Ast::removeFromParent(paramExpression);
 
             // Name
-            if (token.id == TokenId::SymEqual)
+            if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
                     return context->report({paramExpression, Fmt(Err(Syn0110), token.ctext())});

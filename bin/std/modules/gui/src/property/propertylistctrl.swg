@@ -20,7 +20,7 @@ impl PropertyListCtrl
 
         with ed
         {
-            .splitter = SplitterCtrl.create(ed, vertical = false)
+            .splitter = SplitterCtrl.create(ed, vertical: false)
             .splitter.dockStyle = .Center
 
             .list = ListCtrl.createSimple(.splitter)
@@ -65,7 +65,7 @@ impl PropertyListCtrl
 
             let str = it.item0.label.getText()
             let naked = RichString.getNaked(str)
-			let line = list.createLine(naked, parentLine = parentLine)
+			let line = list.createLine(naked, parentLine: parentLine)
 			line.userData0 = it.item0
 
 			if it.item1 == 0

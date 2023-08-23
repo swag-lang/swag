@@ -18,5 +18,5 @@ func toto(x: s32, y: bool)
 
 #test
 {
-    toto(y = true, x = 666)
+    toto(y: true, x: 666)
 }

@@ -10,7 +10,7 @@ func test() throw
     let bus = Bus.create(2)
     bus.setVolume(0.0)
 
-    var x = SoundFile.load(sndPath("sngl08m.wav"), loadDatas = false)
+    var x = SoundFile.load(sndPath("sngl08m.wav"), loadDatas: false)
     let voice = Voice.create(&x)
     voice.setRooting([bus])
 

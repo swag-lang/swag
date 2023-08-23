@@ -93,7 +93,7 @@ You can initialize a struct variable in different ways.
     @assert(v1.y == 20)
 
     // You can name fields, and omit some.
-    var v2 = MyStruct{y = 20}
+    var v2 = MyStruct{y: 20}
     @assert(v2.x == 1)
     @assert(v2.y == 20)
 

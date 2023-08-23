@@ -1010,7 +1010,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     if (node->hasExtMisc() && node->extMisc()->isNamed)
     {
         concat.addString(node->extMisc()->isNamed->token.text);
-        CONCAT_FIXED_STR(concat, " = ");
+        CONCAT_FIXED_STR(concat, ": ");
     }
 
     switch (node->kind)

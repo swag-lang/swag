@@ -5,7 +5,7 @@ impl Image
     mtd const doFlip(dstImage: *Image)
     {
         let f = dstImage
-        visitPixels(f, stride = width)
+        visitPixels(f, stride: width)
         {
             let dstImage = cast(*Image) userData
             let w8 = image.width * image.bpp8

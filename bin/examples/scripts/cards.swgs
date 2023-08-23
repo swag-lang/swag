@@ -97,12 +97,12 @@ func loadRes(app: *Application)
     g_TextFont.regular      = Font.create(g_TTRegular, TEXT_FONT_SIZE)
     g_TextFont.bold         = Font.create(g_TTBold, TEXT_FONT_SIZE)
     g_TextFont.italic       = Font.create(g_TTItalic, TEXT_FONT_SIZE)
-    g_TextFont.boldItalic   = Font.create(g_TTItalic, TEXT_FONT_SIZE, forceBold = true)
+    g_TextFont.boldItalic   = Font.create(g_TTItalic, TEXT_FONT_SIZE, forceBold: true)
 
     g_TextFont2.regular     = Font.create(g_TTRegular, TEXT_FONT2_SIZE)
     g_TextFont2.bold        = Font.create(g_TTBold, TEXT_FONT2_SIZE)
     g_TextFont2.italic      = Font.create(g_TTItalic, TEXT_FONT2_SIZE)
-    g_TextFont2.boldItalic  = Font.create(g_TTItalic, TEXT_FONT2_SIZE, forceBold = true)
+    g_TextFont2.boldItalic  = Font.create(g_TTItalic, TEXT_FONT2_SIZE, forceBold: true)
 
     g_SubTitleFont = Font.create(g_TTItalic, SUBTITLE_FONT_SIZE)
 
@@ -354,7 +354,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     var lines = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     visit l: lines
     {
-        var tokens = Tokenize.split(l, `;`'rune, removeEmpty = false)
+        var tokens = Tokenize.split(l, `;`'rune, removeEmpty: false)
 
         var fi: ImageInfo
         var folders = Tokenize.split(tokens[0], `/`'rune)

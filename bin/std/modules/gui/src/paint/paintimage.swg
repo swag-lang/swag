@@ -49,7 +49,7 @@ impl PaintImage
     // First init the PaintImage instance
     public mtd init(w, h: s32)
     {
-        surface = assume app.createSurface(0, 0, 1, 1, hook = &onEvent)
+        surface = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
         surface.userData = self
         self.w = #self.w
         self.h = #self.h

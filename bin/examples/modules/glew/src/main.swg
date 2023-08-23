@@ -139,27 +139,27 @@ func swapParams(what: string)->String
 
         ///////////////////
         var idx = line1.indexOf("(") + 1
-        var glewStr = String.from(cast(string) line1.getTo(`)`, idx, includeDelimiter = false))
+        var glewStr = String.from(cast(string) line1.getTo(`)`, idx, includeDelimiter: false))
         #if LOG Console.printf("glewStr: %\n", glewStr)
         glewStr += `;`'u8
 
         ///////////////////
         let line2 = findLine(glewStr)
         idx = line2.indexOf(" ") + 1
-        let proc = cast(string) line2.getTo(` `, idx, includeDelimiter = false)
+        let proc = cast(string) line2.getTo(` `, idx, includeDelimiter: false)
         #if LOG Console.printf("proc: %\n", proc)
 
         let line3 = findLine(proc)
         ///////////////////
         idx = line3.indexOf(" ")
         idx += 1
-        var retType = String.from(cast(string) line3.getTo(` `, idx, includeDelimiter = false))
+        var retType = String.from(cast(string) line3.getTo(` `, idx, includeDelimiter: false))
         if retType == "void" retType.clear()
         #if LOG Console.printf("retType: %\n", retType)
 
         idx = line3.lastIndexOf("(")
         idx += 1
-        var proto = String.from(cast(string) line3.getTo(`)`, idx, includeDelimiter = false))
+        var proto = String.from(cast(string) line3.getTo(`)`, idx, includeDelimiter: false))
         proto += ", "
 
         ///////////////////

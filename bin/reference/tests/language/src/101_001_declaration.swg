@@ -78,16 +78,16 @@ You can name parameters, and don't have to respect parameters order in that case
     func sub(x, y: s32) => x - y
 
     {
-        let x1 = sub(x = 5, y = 2)
+        let x1 = sub(x: 5, y: 2)
         @assert(x1 == 3)
-        let x2 = sub(y = 5, x = 2)
+        let x2 = sub(y: 5, x: 2)
         @assert(x2 == -3)
     }
 
     {
         func returnMe(x, y: s32 = 0) => x + y * 2
-        @assert(returnMe(x = 10) == 10)
-        @assert(returnMe(y = 10) == 20)
+        @assert(returnMe(x: 10) == 10)
+        @assert(returnMe(y: 10) == 20)
     }
 }
 

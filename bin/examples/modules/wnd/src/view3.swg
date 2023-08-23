@@ -10,7 +10,7 @@ func createView3(_tabView: *Tab, view: *Wnd)
         let sb1 = ColorPicker.create(view, {240, 10, 20, 200})
         sb1.setMode(.HueVert)
         sb1.sigChanged += closure|sb0|(t) {
-            sb0.change(h = t.hue)
+            sb0.change(h: t.hue)
         }
         sb1.setColor(Argb.Green)
 

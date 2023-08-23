@@ -30,8 +30,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         if pevt.button == .Right
         {
             let menu = MenuCtrl.createPopup(wnd)
-            menu.addItem("Coucou", "0", rightName = "Ctrl+A")
-            menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled = true)
+            menu.addItem("Coucou", "0", rightName: "Ctrl+A")
+            menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled: true)
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
             menu.addSeparator()
 
@@ -155,7 +155,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         btn.sigPressed += func(btn) { var edt = cast(*EditBox) btn.parent; edt.setText(null); }
         edit.setForm(EditBoxForm.Round)
         edit.setNote("")
-        edit.setPadding(right = 4.0)
+        edit.setPadding(right: 4.0)
         edit.rightMargin = 24
 
         edit = EditBox.create(view, "", {360, 180, 100})
@@ -195,7 +195,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider.setMinMax(-127, 128)
         slider.setValue(0)
 
-        slider = Slider.create(view, {10, 380}, range = true)
+        slider = Slider.create(view, {10, 380}, range: true)
         slider.setMinMax(-2.5, 2.5)
         slider.setRangeValues(-2.5, 2.5)
 
@@ -206,13 +206,13 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider = Slider.create(view, {10, 440})
         slider.disable()
 
-        slider = Slider.create(view, {340, 600}, vertical = true)
+        slider = Slider.create(view, {340, 600}, vertical: true)
         slider.setMinMax(0, 1, 0.1)
         slider.setValue(0.55)
 
-        let slider0 = Slider.create(view, {10, 470}, id = "slider0")
+        let slider0 = Slider.create(view, {10, 470}, id: "slider0")
         slider0.sliderFlags &= ~.HilightBar
-        let edit0 = EditBox.create(view, "0", {210, 464, 45}, id = "edit0")
+        let edit0 = EditBox.create(view, "0", {210, 464, 45}, id: "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
@@ -303,7 +303,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        let tab = Tab.create(view, {600, 150, 400, 100}, id = "tab0")
+        let tab = Tab.create(view, {600, 150, 400, 100}, id: "tab0")
         tab.setForm(TabForm.Round)
         tab.barLayout = .Fixed
 
@@ -347,7 +347,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // Scroll
     {
-        let swnd = Wnd.create'ScrollWnd(view, {600, 350, 400, 200}, id = "scroll")
+        let swnd = Wnd.create'ScrollWnd(view, {600, 350, 400, 200}, id: "scroll")
         swnd.createView'Wnd()
         swnd.view.backgroundStyle = .Dialog
         discard PushButton.create(swnd.view, "Normal", {5, 15})
@@ -380,7 +380,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         combo.selectItem(0)
         combo.disable()
 
-        combo = ComboBox.create(view, {360, 520}, kind = .Edit)
+        combo = ComboBox.create(view, {360, 520}, kind: .Edit)
         combo.addItem("Coucou", "0")
         combo.addItem("Coucou1", "1")
         combo.addItem("Coucou2", "2")

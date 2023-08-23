@@ -5,7 +5,7 @@ func(T) toto(x: T)
 
 #test
 {
-    toto(x = 1's32)
+    toto(x: 1's32)
 }
 
 func(T, V) titi(x: T, y: V)
@@ -16,5 +16,5 @@ func(T, V) titi(x: T, y: V)
 
 #test
 {
-    titi(y = 1'f32, x = 1's32)
+    titi(y: 1'f32, x: 1's32)
 }

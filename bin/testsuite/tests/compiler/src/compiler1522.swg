@@ -6,7 +6,7 @@ struct X
 
 #test
 {
-    var p: X{y = true, x = 666}
+    var p: X{y: true, x: 666}
     @assert(p.x == 666)
     @assert(p.y == true)
 }

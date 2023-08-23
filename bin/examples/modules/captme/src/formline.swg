@@ -184,7 +184,7 @@ impl IForm for FormLine
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        var painter: Painter{fake = true}
+        var painter: Painter{fake: true}
         painter.begin()
         paint(null, &painter, z, false)
         painter.end()

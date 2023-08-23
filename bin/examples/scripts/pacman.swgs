@@ -1476,17 +1476,17 @@ func soundState()
     case DEATH:
         if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
         if g_VoiceScared { g_VoiceScared.destroy(); g_VoiceScared = null; }
-        if !g_VoiceRetreat g_VoiceRetreat = assume Audio.Voice.play(&g_SoundRetreat, playFlags = .Loop)
+        if !g_VoiceRetreat g_VoiceRetreat = assume Audio.Voice.play(&g_SoundRetreat, playFlags: .Loop)
 
     case FRIGHTENED:
         if g_VoiceSiren { g_VoiceSiren.destroy(); g_VoiceSiren = null; }
         if g_VoiceRetreat { g_VoiceRetreat.destroy(); g_VoiceRetreat = null; }
-        if !g_VoiceScared g_VoiceScared = assume Audio.Voice.play(&g_SoundScared, playFlags = .Loop)
+        if !g_VoiceScared g_VoiceScared = assume Audio.Voice.play(&g_SoundScared, playFlags: .Loop)
 
     case SIREN:
         if g_VoiceScared { g_VoiceScared.destroy(); g_VoiceScared = null; }
         if g_VoiceRetreat { g_VoiceRetreat.destroy(); g_VoiceRetreat = null; }
-        if !g_VoiceSiren { g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags = .Loop); assume g_VoiceSiren.setVolume(0.4); }
+        if !g_VoiceSiren { g_VoiceSiren = assume Audio.Voice.play(&g_SoundSiren, playFlags: .Loop); assume g_VoiceSiren.setVolume(0.4); }
     }
 }
 
@@ -2090,5 +2090,5 @@ func loadBindTextures()
         }
     }
 
-    Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title = "Pacman", hook = &onEvent, init = &test)
+    Application.runSurface(100, 100, cast(s32) (300 * Scale), cast(s32) (345 * Scale), title: "Pacman", hook: &onEvent, init: &test)
 }

@@ -346,7 +346,7 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with let topMenu = MenuCtrl.createBar(parent, owner = self)
+        with let topMenu = MenuCtrl.createBar(parent, owner: self)
         {
             .bringToFront()
             .dockStyle = .Top
@@ -354,7 +354,7 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
-        with let fileMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let fileMenu = MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
@@ -369,7 +369,7 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
-        with let captureMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let captureMenu = MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureLastArea)
@@ -391,7 +391,7 @@ impl MainWnd
             .addItem(CmdIdCaptureHideEditor)
             .addItem(CmdIdCaptureShowEditor)
 
-            with let delayMenu = MenuCtrl.createPopup(captureMenu, owner = self)
+            with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: self)
             {
                 .addItem(CmdIdCaptureDelay0)
                 .addSeparator()
@@ -409,7 +409,7 @@ impl MainWnd
             .addItem(CmdIdCaptureToClipboard)
         }
 
-        with let editMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let editMenu = MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
@@ -426,7 +426,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with let imageMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let imageMenu = MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
@@ -438,7 +438,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
-        with let viewMenu = MenuCtrl.createPopup(parent, owner = self)
+        with let viewMenu = MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
@@ -453,7 +453,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId, canCheck = true)
         {
-            with let b = IconButton.create(editToolBar, {}, position = {0, 0, 60, 64})
+            with let b = IconButton.create(editToolBar, {}, position: {0, 0, 60, 64})
             {
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
@@ -517,8 +517,8 @@ impl MainWnd
 
         res.createToolbar(topBar)
 
-        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), {0, 0, 64, 64}, id = CmdIdCapture)
-        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), {64, 0, 64, 64}, id = CmdIdLibrary)
+        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
 
         // Main edit area
         with res.editWnd = EditWnd.create(res, res)
@@ -552,7 +552,7 @@ impl MainWnd
         }
 
         // Right bar
-        with res.quickStyleBar = SplitterCtrl.create(res, {0, 0, 300, 600}, vertical = true)
+        with res.quickStyleBar = SplitterCtrl.create(res, {0, 0, 300, 600}, vertical: true)
         {
             .dockStyle = .Right
             .splitterFlags.add(.HideBars)
@@ -569,11 +569,11 @@ impl MainWnd
             .main = res
         }
 
-        var item = res.quickStyleBar.addPane(res.quickWnd, title = true)
+        var item = res.quickStyleBar.addPane(res.quickWnd, title: true)
         item.tryPreserveSize = true
         item.label.setText("Quick Styles")
 
-        item = res.quickStyleBar.addPane(res.propWnd, title = true)
+        item = res.quickStyleBar.addPane(res.propWnd, title: true)
         item.label.setText("Tool Properties")
 
         res.quickStyleBar.setPaneSize(0, 300)
@@ -597,7 +597,7 @@ impl MainWnd
                 menu.menuCtrlFlags |= .NoKeyShortcuts
                 menu.addItem(CmdIdZoom1)
                 menu.addItem(CmdIdZoomFit)
-                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy = true)
+                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
 
@@ -612,7 +612,7 @@ impl MainWnd
                 menu.menuCtrlFlags.add(.NoKeyShortcuts)
                 menu.addItem(CmdIdResizeImage)
                 menu.addItem(CmdIdResizeCanevas)
-                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy = true)
+                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
 

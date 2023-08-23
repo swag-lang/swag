@@ -145,7 +145,7 @@ impl Dialog
         }
 
         if #self.id == BtnCancel or #self.id == BtnNo
-            surface.setSurfaceFlags(add = .CloseBtn)
+            surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
     }

@@ -390,7 +390,7 @@ func displayPage4(painter: *Pixel.Painter)
         var rect = Rectangle{650, 50, 200, 700}
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
 
-        var sf = RichStringFormat{flags = StringFormatFlags.WordWrap}
+        var sf = RichStringFormat{flags: StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
         sf.font.regular = Res.fontDefault
         sf.palette[0] = Argb.Black
@@ -402,7 +402,7 @@ func displayPage4(painter: *Pixel.Painter)
 
     {
         var rect = Rectangle{100, 225, 200, 700}
-        var sf = RichStringFormat{flags = StringFormatFlags.WordWrap}
+        var sf = RichStringFormat{flags: StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
         sf.font.regular = Res.fontDefault
         sf.palette[0] = Color.fromArgb(0x1FFF0000)
@@ -692,7 +692,7 @@ impl IWnd for MyView
     var app: Gui.Application
 
     let view = Wnd.create'MyView()
-    let surface = try app.createSurface(100, 100, W, H, view = view)
+    let surface = try app.createSurface(100, 100, W, H, view: view)
 
     assume
     {

@@ -79,7 +79,7 @@ impl IWnd for LibraryView
         {
             let item = &items[selectedItem]
             catch File.touch(item.fi.fullname)
-            mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front = true, sel = true)
+            mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true)
             mainWnd.swapLibraryMode()
             mainWnd.updateState()
         }

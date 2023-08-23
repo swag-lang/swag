@@ -6,5 +6,5 @@ func toto(x, y, z: f32 = -1)
 //#[Swag.PrintBc]
 #test
 {
-    toto(y = 4)
+    toto(y: 4)
 }

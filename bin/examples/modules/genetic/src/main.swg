@@ -45,7 +45,7 @@ impl IWnd for MyView
     assume
     {
         let view = Wnd.create'MyView()
-        let surface = app.createSurface(100, 100, W, H, view = view)
+        let surface = app.createSurface(100, 100, W, H, view: view)
 
         let rdr = surface.app.getRenderer()
         let dataPath = Path.getDirectoryName(#location.fileName)

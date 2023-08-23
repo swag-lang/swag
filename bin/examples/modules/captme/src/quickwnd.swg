@@ -113,10 +113,10 @@ impl QuickWnd
     mtd btnPopup(btn: *Button, pos: Math.Point)
     {
         let menu = MenuCtrl.createPopup(self)
-        menu.addItem("Remove Quick Style", "0", disabled = !btn)
+        menu.addItem("Remove Quick Style", "0", disabled: !btn)
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)
-        let res = menu.doModal(pos, autoDestroy = true)
+        let res = menu.doModal(pos, autoDestroy: true)
         if res == "0"
         {
             let qbtn = cast(*QuickButton) btn
@@ -577,7 +577,7 @@ impl QuickWnd
             }
 
             btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
-            Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom = 1, quickMode = true)
+            Capture.paintForm(btnp.getApp(), painter, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             if @countof(title)
                 painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)

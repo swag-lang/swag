@@ -336,7 +336,7 @@ impl RichEditView
             count   = 1
         }
 
-        var str: String{allocator = @getcontext().tempAllocator}
+        var str: String{allocator: @getcontext().tempAllocator}
         str.reserve(line.length())
 
         var oldStyle, newStyle: RichEditRuneStyle
