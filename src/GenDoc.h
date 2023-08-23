@@ -6,6 +6,10 @@ struct Scope;
 struct AstStruct;
 struct AstFuncDecl;
 
+static const uint32_t GENDOC_CODE_REFS       = 0x00000001;
+static const uint32_t GENDOC_CODE_BLOCK      = 0x00000002;
+static const uint32_t GENDOC_CODE_SYNTAX_COL = 0x00000004;
+
 struct GenDoc
 {
     enum class UserBlockKind
@@ -13,6 +17,7 @@ struct GenDoc
         Paragraph,
         RawParagraph,
         Code,
+        CodeRaw,
         Blockquote,
         Table,
         List,
@@ -40,7 +45,7 @@ struct GenDoc
     Utf8 findReference(const Utf8& name);
     void computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     Utf8 getFormattedText(const Utf8& user);
-    void outputCode(const Utf8& code, bool makeRefs, bool block);
+    void outputCode(const Utf8& code, uint32_t flags);
     void outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
     void outputUserComment(const UserComment& user, int titleLevel = 1);
 

@@ -14,7 +14,7 @@ All intrinsics are part of the [compiler runtime](std/swag.runtime.php) which co
 */
 
 /**
-Next, a version that this time uses the `Core.Console.print` function in the [Std.Core](std/std.core.html) module. The `Std.Core` module would have to be imported in order to be used, but let's keep it simple.
+Next, a version that this time uses the `Core.Console.print` function in the [Std.Core](std.core.html) module. The `Std.Core` module would have to be imported in order to be used, but let's keep it simple.
 ```
 #main
 {

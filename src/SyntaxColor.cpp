@@ -486,6 +486,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                     result += getColor(mode, SyntaxColor::SyntaxDefault);
                     break;
 
+                case TokenId::CompilerDependencies:
                 case TokenId::CompilerRun:
                 case TokenId::CompilerAst:
                 case TokenId::CompilerFuncMessage:

@@ -3196,7 +3196,7 @@
 <tr>
 <td id="Ogl_GL_COMPARE_R_TO_TEXTURE_ARB" class="codetype"><span class="SCst">GL_COMPARE_R_TO_TEXTURE_ARB</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>----------------------------- GL_ARB_imaging ----------------------------. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_COMPILE" class="codetype"><span class="SCst">GL_COMPILE</span></td>
@@ -3366,7 +3366,7 @@
 <tr>
 <td id="Ogl_GL_CONVOLUTION_BORDER_COLOR" class="codetype"><span class="SCst">GL_CONVOLUTION_BORDER_COLOR</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>------------------- GL_ARB_framebuffer_no_attachments -------------------. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Ogl_GL_CONVOLUTION_BORDER_MODE" class="codetype"><span class="SCst">GL_CONVOLUTION_BORDER_MODE</span></td>

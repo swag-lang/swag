@@ -7,7 +7,6 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
-#pragma optimize("", off)
 
 void GenDoc::outputStyles()
 {
@@ -224,7 +223,7 @@ Utf8 GenDoc::toRef(Utf8 str)
     return str;
 }
 
-void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
+void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 {
     if (code.empty())
         return;
@@ -245,7 +244,7 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
     if (repl.empty())
         return;
 
-    if (block)
+    if (flags & GENDOC_CODE_BLOCK)
     {
         helpContent += "<div class=\"precode\">";
         helpContent += "<code>";
@@ -259,10 +258,18 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
     }
 
     // Syntax coloration
-    auto codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
+    Utf8 codeText;
+    if (flags & GENDOC_CODE_SYNTAX_COL)
+        codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
+    else
+    {
+        codeText = Fmt("<span class=\"%s\">", SYN_CODE);
+        codeText += repl;
+        codeText += "</span>";
+    }
 
     // References
-    if (!makeRefs)
+    if (!(flags & GENDOC_CODE_REFS))
         repl = std::move(codeText);
     else
     {
@@ -291,7 +298,7 @@ void GenDoc::outputCode(const Utf8& code, bool makeRefs, bool block)
 
     helpContent += repl;
 
-    if (block)
+    if (flags & GENDOC_CODE_BLOCK)
     {
         helpContent += "</code>\n";
         helpContent += "</div>\n";
@@ -339,21 +346,26 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             if (line.empty())
                 continue;
 
-            if (line == "---")
+            if (line.startsWith("---"))
             {
                 blk.kind = UserBlockKind::RawParagraph;
                 start++;
             }
-            else if (line == "```")
+            else if (line.startsWith("```"))
             {
                 blk.kind = UserBlockKind::Code;
                 start++;
             }
-            else if (line[0] == '>')
+            else if (line.startsWith("```raw"))
+            {
+                blk.kind = UserBlockKind::CodeRaw;
+                start++;
+            }
+            else if (line.startsWith(">"))
             {
                 blk.kind = UserBlockKind::Blockquote;
             }
-            else if (line[0] == '|')
+            else if (line.startsWith("|"))
             {
                 blk.kind = UserBlockKind::Table;
             }
@@ -417,7 +429,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 break;
 
             case UserBlockKind::RawParagraph:
-                if (line == "---")
+                if (line.startsWith("---"))
                 {
                     mustEnd = true;
                     start++;
@@ -427,7 +439,8 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 break;
 
             case UserBlockKind::Code:
-                if (line == "```")
+            case UserBlockKind::CodeRaw:
+                if (line.startsWith("```"))
                 {
                     mustEnd = true;
                     start++;
@@ -439,13 +452,13 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             case UserBlockKind::Paragraph:
                 if (line.empty())
                     mustEnd = true;
-                else if (line == "---")
+                else if (line.startsWith("---"))
                     mustEnd = true;
-                else if (line == "```")
+                else if (line.startsWith("```"))
                     mustEnd = true;
-                else if (line[0] == '>')
+                else if (line.startsWith(">"))
                     mustEnd = true;
-                else if (line[0] == '|')
+                else if (line.startsWith("|"))
                     mustEnd = true;
                 else if (line.startsWith("* "))
                     mustEnd = true;
@@ -460,7 +473,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 break;
 
             case UserBlockKind::Table:
-                if (line[0] != '|')
+                if (!line.startsWith("|"))
                     mustEnd = true;
                 else
                     blk.lines.push_back(lines[start]);
@@ -478,7 +491,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 break;
 
             case UserBlockKind::Blockquote:
-                if (line[0] != '>')
+                if (!line.startsWith(">"))
                     mustEnd = true;
                 else
                 {
@@ -520,6 +533,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     switch (user.kind)
     {
     case UserBlockKind::Code:
+    case UserBlockKind::CodeRaw:
     {
         Utf8 block;
         for (auto& l : user.lines)
@@ -528,7 +542,11 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             block += "\n";
         }
 
-        outputCode(block, false, true);
+        uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
+        if (user.kind == UserBlockKind::CodeRaw)
+            flags &= ~GENDOC_CODE_SYNTAX_COL;
+
+        outputCode(block, flags);
         return;
     }
 

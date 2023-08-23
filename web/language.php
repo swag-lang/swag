@@ -307,6 +307,10 @@
 <li><a href="#222_002_compiler_interface">Compiler interface</a></li>
 </ul>
 <li><a href="#230_documentation">Documentation</a></li>
+<ul>
+<li><a href="#231_001_Api">Api</a></li>
+<li><a href="#231_002_Examples">Examples</a></li>
+<li><a href="#231_003_Pages">Pages</a></li>
 </ul>
 </div>
 </div>
@@ -335,7 +339,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@print</span>(<span class="SStr">"Hello mad world !\n"</span>)
 }</span></code>
 </div>
-<p>Next, a version that this time uses the <code class="incode">Core.Console.print</code> function in the <a href="std/std.core.html">Std.Core</a> module. The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
+<p>Next, a version that this time uses the <code class="incode">Core.Console.print</code> function in the <a href="std.core.html">Std.Core</a> module. The <code class="incode">Std.Core</code> module would have to be imported in order to be used, but let's keep it simple. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#main</span>
 {
     <span class="SCst">Core</span>.<span class="SCst">Console</span>.<span class="SFct">print</span>(<span class="SStr">"Hello mad world !"</span>, <span class="SStr">"\n"</span>)
@@ -7143,19 +7147,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <h2 id="230_documentation">Documentation</h2><p>The Swag compiler can generate documentation for all the modules of a given workspace. </p>
 <div class="precode"><code><span class="SCde">swag doc -w:myWorkspaceFolder</span></code>
 </div>
-<p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. The rest is placed in various source files. </p>
-<p>The documentation comment needs to be placed just before a function, struct or enum. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+<p>Swag can generate documentations in various modes. That mode should be specified in the <code class="incode">module.swg</code> file, in the <a href="swag.runtime.php#Swag_BuildCfg">Swag.BuildCfg</a> struct. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
-    <span class="SCmt">// Everything between empty lines is considered to be a simple paragraph. Which</span>
-    <span class="SCmt">// means that if you put several comments on several lines like this, they all</span>
-    <span class="SCmt">// will be part of the same paragraph.</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// This is another paragraph because there's an empty line before.</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// This is yet another paragraph.</span>
+    <span class="SCmp">#import</span> <span class="SStr">"pixel"</span>
+
+    <span class="SFct">#run</span>
+    {
+        <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
+        <span class="SKwd">let</span> cfg = itf.<span class="SFct">getBuildCfg</span>()
+        cfg.docKind = .<span class="SCst">Api</span> <span class="SCmt">// Specify the documentation generation mode</span>
+    }
 }</span></code>
 </div>
+<table class="enumeration">
+<tr><td> Swag.DocKind.Api      </td><td> Generates an api documentation (all public symbols)</td></tr>
+<tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
+<tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of <code class="incode">Examples</code>)</td></tr>
+</table>
+<h3>Format of comments </h3>
 <p>The first paragraph is considered to be the 'short description' which can appear on specific parts of the documentation. So make it short. </p>
 <p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -7183,7 +7193,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p> You can create a list of bullet points with <code class="incode"><i></code>.</i> </p>
+<p> You can create a <b>list</b> of bullet points with <code class="incode"><i></code>.</i> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
  {
     <span class="SCmt">// * This is a bullet point</span>
@@ -7195,7 +7205,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>You can create a quote with <code class="incode">&gt;</code> </p>
+<p>You can create a <b>quote</b> with <code class="incode">&gt;</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// This is the short description.</span>
@@ -7209,7 +7219,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>You can create a table with <code class="incode">|</code>. </p>
+<p>You can create a <b>table</b> with <code class="incode">|</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// A table with 4 lines of 2 columns:</span>
@@ -7222,7 +7232,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>You can create a code paragraph with three backticks. </p>
+<p>You can create a <b>code paragraph</b> with three backticks. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// For example:</span>
@@ -7235,13 +7245,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>For constants or enum values, the document comment is the one declared at the end of the line. </p>
+<p>You can create a code paragraph <b>without</b> syntax coloration by adding <code class="incode">raw</code> after the three backticks. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>     <span class="SCmt">// This is a documentation comment</span>
-    <span class="SKwd">enum</span> <span class="SCst">Color</span>
+    <span class="SCmt">// For example:</span>
+    <span class="SCmt">// ```raw</span>
+    <span class="SCmt">// if a == true</span>
+    <span class="SCmt">//   @print("true")</span>
+    <span class="SCmt">// ```</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>()
     {
-        <span class="SCst">Red</span>         <span class="SCmt">// This is a documentation comment</span>
     }
 }</span></code>
 </div>
@@ -7254,12 +7267,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// **bold**</span>
     <span class="SCmt">// # Title</span>
     <span class="SCmt">// ## Title</span>
+    <span class="SCmt">// ### Title</span>
     <span class="SKwd">struct</span> <span class="SCst">RGB</span>
     {
         r, g, b: <span class="STpe">s32</span>
     }
 }</span></code>
 </div>
+<h3>References </h3>
 <p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7284,6 +7299,42 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
+
+<h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
+<p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// This is the main module documentation.</span>
+<span class="SFct">#dependencies</span>
+{
+}</span></code>
+</div>
+<p>Other comments need to be placed just before a function, struct or enum. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Everything between empty lines is considered to be a simple paragraph. Which</span>
+    <span class="SCmt">// means that if you put several comments on several lines like this, they all</span>
+    <span class="SCmt">// will be part of the same paragraph.</span>
+    <span class="SCmt">//</span>
+    <span class="SCmt">// This is another paragraph because there's an empty line before.</span>
+    <span class="SCmt">//</span>
+    <span class="SCmt">// This is yet another paragraph.</span>
+}</span></code>
+</div>
+<p>For constants or enum values, the document comment is the one declared at the end of the line. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>     <span class="SCmt">// This is a documentation comment</span>
+    <span class="SKwd">enum</span> <span class="SCst">Color</span>
+    {
+        <span class="SCst">Red</span>         <span class="SCmt">// This is a documentation comment</span>
+    }
+}</span></code>
+</div>
+
+<h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file is a chapter or a sub chapter. </p>
+<p>This documentation has been generated in that mode, with the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
+
+<h3 id="231_003_Pages">Pages</h3><p>In <code class="incode">Swag.DocKind.Pages</code> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <code class="incode">Swag.DocKind.Examples</code> mode. </p>
+<p>Can be usefull to generate web pages for example. For <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 </div>
 </div>
 </div>

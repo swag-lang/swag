@@ -1,26 +1,29 @@
 /**
 The Swag compiler can generate documentation for all the modules of a given workspace.
-```
+```raw
 swag doc -w:myWorkspaceFolder
 ```
-The main module documentation should be placed at the top of the corresponding `module.swg` file. The rest is placed in various source files.
-*/
-
-/**
-The documentation comment needs to be placed just before a function, struct or enum.
-*/
-#test
+Swag can generate documentations in various modes. That mode should be specified in the 'module.swg' file, in the [Swag.BuildCfg] struct.
+```
+#dependencies
 {
-    // Everything between empty lines is considered to be a simple paragraph. Which
-    // means that if you put several comments on several lines like this, they all
-    // will be part of the same paragraph.
-    //
-    // This is another paragraph because there's an empty line before.
-    //
-    // This is yet another paragraph.
+    #import "pixel"
+
+    #run
+    {
+        let itf = @compiler()
+        let cfg = itf.getBuildCfg()
+        cfg.docKind = .Api // Specify the documentation generation mode
+    }
 }
+```
+| Swag.DocKind.Api      | Generates an api documentation (all public symbols)
+| Swag.DocKind.Examples | Generates a documentation like this one
+| Swag.DocKind.Pages    | Generates different pages, where each file is a page (a variation of 'Examples')
+*/
 
 /**
+# Format of comments
 The first paragraph is considered to be the 'short description' which can appear on specific parts
 of the documentation. So make it short.
 
@@ -55,7 +58,7 @@ are respected.
 }
 
 /**
- You can create a list of bullet points with `*`.
+ You can create a **list** of bullet points with `*`.
  */
  #test
  {
@@ -69,7 +72,7 @@ are respected.
 }
 
 /**
-You can create a quote with `>`
+You can create a **quote** with `>`
 */
 #test
 {
@@ -85,7 +88,7 @@ You can create a quote with `>`
 }
 
 /**
-You can create a table with `|`.
+You can create a **table** with `|`.
 */
 #test
 {
@@ -100,7 +103,7 @@ You can create a table with `|`.
 }
 
 /**
-You can create a code paragraph with three backticks.
+You can create a **code paragraph** with three backticks.
 */
 #test
 {
@@ -115,14 +118,17 @@ You can create a code paragraph with three backticks.
 }
 
 /**
-For constants or enum values, the document comment is the one declared at the end of the line.
+You can create a code paragraph **without** syntax coloration by adding 'raw' after the three backticks.
 */
 #test
 {
-    const A = 0     // This is a documentation comment
-    enum Color
+    // For example:
+    // ```raw
+    // if a == true
+    //   @print("true")
+    // ```
+    func test()
     {
-        Red         // This is a documentation comment
     }
 }
 
@@ -137,6 +143,7 @@ Some other markdown markers (or kind of) are also supported inside paragraphs.
     // **bold**
     // # Title
     // ## Title
+    // ### Title
     struct RGB
     {
         r, g, b: s32
@@ -144,6 +151,7 @@ Some other markdown markers (or kind of) are also supported inside paragraphs.
 }
 
 /**
+# References
 You can create a reference to something in the current module with `[name]` or `[name1.name2 etc.]`
 */
 #test

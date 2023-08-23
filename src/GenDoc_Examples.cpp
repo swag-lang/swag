@@ -44,7 +44,7 @@ bool GenDoc::processFile(const Path& fileName, int titleLevel)
             code += "\n";
         }
 
-        outputCode(code, false, true);
+        outputCode(code, GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
 
         Vector<Utf8> linesUser;
         while (i < lines.size())

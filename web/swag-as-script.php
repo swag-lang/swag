@@ -209,7 +209,7 @@
 =&gt; type 'swag script -f:myScript.<span class="SFct">swgs</span>' to run that script</span></code>
 </div>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
-<span class="SCmp">#dependencies</span>
+<span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Here you can add your external dependencies</span>
     <span class="SCmt">// #import "core" location="swag@std"</span>
@@ -231,7 +231,7 @@
 <p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag pendulum.swgs</code> </p>
 <h2>Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmp">#dependencies</span>
+<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
     <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
@@ -244,7 +244,7 @@
 </ul>
 <h2>More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <code class="incode">#load &lt;filename&gt;</code> in the <code class="incode">#dependencies</code> block. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmp">#dependencies</span>
+<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
     <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>

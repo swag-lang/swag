@@ -327,17 +327,17 @@ void GenDoc::outputType(AstNode* node)
     if (typeInfo)
     {
         typeInfo->computeScopedNameExport();
-        outputCode(typeInfo->scopedNameExport, true, false);
+        outputCode(typeInfo->scopedNameExport, GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
     else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
     {
         auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        outputCode(getOutputNode(varDecl->type), true, false);
+        outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
     else if (node->kind == AstNodeKind::TypeAlias)
     {
         auto typeDecl = CastAst<AstAlias>(node, AstNodeKind::TypeAlias);
-        outputCode(getOutputNode(typeDecl->childs.front()), true, false);
+        outputCode(getOutputNode(typeDecl->childs.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
 }
 
@@ -671,7 +671,7 @@ void GenDoc::generateContent()
                 code += "struct ";
                 code += structNode->token.text;
                 code += getOutputNode(structNode->genericParameters);
-                outputCode(code, true, true);
+                outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
             }
 
             // Fields
@@ -822,12 +822,12 @@ void GenDoc::generateContent()
                 if (!subUserComment.shortDesc.lines.empty())
                 {
                     outputUserBlock(subUserComment.shortDesc);
-                    outputCode(code, true, true);
+                    outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
                     code.clear();
                 }
             }
 
-            outputCode(code, true, true);
+            outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
 
             for (auto n : c.nodes)
             {
@@ -887,7 +887,7 @@ void GenDoc::generateContent()
                 if (attrNode->parameters)
                     code += getOutputNode(attrNode->parameters);
                 code += "\n";
-                outputCode(code, true, true);
+                outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
             }
 
             for (auto n : c.nodes)

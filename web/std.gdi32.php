@@ -881,7 +881,7 @@
 <tr>
 <td id="Gdi32_PS_DASH" class="codetype"><span class="SCst">PS_DASH</span></td>
 <td class="codetype"><span class="STpe">s32</span></td>
-<td>-------. </td>
+<td></td>
 </tr>
 <tr>
 <td id="Gdi32_PS_DASHDOT" class="codetype"><span class="SCst">PS_DASHDOT</span></td>

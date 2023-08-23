@@ -7,7 +7,7 @@ You should register the location of the swag compiler (`swag.exe`) in the PATH e
 
 You can open a Powershell window, and run the following code :
 
-```
+```raw
 # You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
 
 [Environment]::SetEnvironmentVariable(
@@ -24,7 +24,7 @@ A module will compile to a dynamic library or an executable.
 
 To create a fresh new workspace named *first* :
 
-```
+```raw
 $ swag new -w:first
 => workspace 'F:/first' has been created
 => module 'first' has been created
@@ -59,7 +59,7 @@ A module is also organized in a predefined way:
 A module always contains a special file named `module.swg`. This file is used to configure the module, and is **mandatory**.
 
 ### To compile your workspace
-```
+```raw
 $ swag build -w:first
             Workspace first [fast-debug-windows-x86_64]
              Building first
@@ -71,7 +71,7 @@ This command will compile all modules in `modules/`.
 
 You can also build and run your workspace.
 
-```
+```raw
 $ swag run -w:first
             Workspace first [fast-debug-windows-x86_64]
              Building first
