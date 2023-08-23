@@ -1,7 +1,7 @@
 <header class="sticky top-0 z-50">
     <div class="xl:m-auto w-full xl:w-[75rem] xl:flex justify-between items-center p-2" x-data="{ open_menu: false }">
         <div class="flex justify-between items-center">
-            <a href="index.php"><img src="imgs/swag_logo.png" alt="SWAG" class="w-24 xl:w-50" /></a>
+            <a href="index.php"><img src="imgs/swag_logo_128.png" alt="SWAG" class="w-24 xl:w-50" /></a>
             <div class="xl:hidden">
                 <img src="imgs/burger.png" alt="" class="w-10 cursor-pointer" @click="open_menu = ! open_menu" />
             </div>
