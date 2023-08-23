@@ -326,12 +326,12 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </p>
 <table class="enumeration">
 <tr>
-<td id="Audio_BusHandle" class="codetype"><span class="SCde"><span class="SCst">BusHandle</span></span></td>
+<td id="Audio_BusHandle" class="codetype"><span class="SCst">BusHandle</span></td>
 <td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Audio_VoiceHandle" class="codetype"><span class="SCde"><span class="SCst">VoiceHandle</span></span></td>
+<td id="Audio_VoiceHandle" class="codetype"><span class="SCst">VoiceHandle</span></td>
 <td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SourceVoice</span></span></td>
 <td></td>
 </tr>
@@ -556,17 +556,17 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sampleCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Total number of samples. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dataSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Total size, in bytes, of datas. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dataSeek</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>The position in the file where the datas are stored. </td>
 </tr>
 <tr>
@@ -581,32 +581,32 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frequency</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Sound frequency. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">channelCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Number of channels (2 for stereo...). </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">channelMask</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Identifier of the channels. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bitsPerSample</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Number of bits per sample in the datas. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">duration</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Duration, in seconds, of the sound. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">validBitsPerSample</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
@@ -647,27 +647,27 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>SoundFile internal format. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Unknown</span></span></td>
+<td class="codetype"><span class="SCst">Unknown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pcm8</span></span></td>
+<td class="codetype"><span class="SCst">Pcm8</span></td>
 <td>Pcm, uncompressed, 8 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pcm16</span></span></td>
+<td class="codetype"><span class="SCst">Pcm16</span></td>
 <td>Pcm, uncompressed, 16 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pcm24</span></span></td>
+<td class="codetype"><span class="SCst">Pcm24</span></td>
 <td>Pcm, uncompressed, 24 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pcm32</span></span></td>
+<td class="codetype"><span class="SCst">Pcm32</span></td>
 <td>Pcm, uncompressed, 32 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Float32</span></span></td>
+<td class="codetype"><span class="SCst">Float32</span></td>
 <td>Pcm, uncompressed, float 32 bits per sample. </td>
 </tr>
 </table>
@@ -685,47 +685,47 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Format</span></span></td>
+<td class="codetype"><span class="SCst">Format</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Frequency</span></span></td>
+<td class="codetype"><span class="SCst">Frequency</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ChannelCount</span></span></td>
+<td class="codetype"><span class="SCst">ChannelCount</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ChannelMask</span></span></td>
+<td class="codetype"><span class="SCst">ChannelMask</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BitsPerSample</span></span></td>
+<td class="codetype"><span class="SCst">BitsPerSample</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Duration</span></span></td>
+<td class="codetype"><span class="SCst">Duration</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SampleCount</span></span></td>
+<td class="codetype"><span class="SCst">SampleCount</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ValidBitsPerSample</span></span></td>
+<td class="codetype"><span class="SCst">ValidBitsPerSample</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Data</span></span></td>
+<td class="codetype"><span class="SCst">Data</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MetaData</span></span></td>
+<td class="codetype"><span class="SCst">MetaData</span></td>
 <td></td>
 </tr>
 </table>
@@ -985,19 +985,19 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AcceptPitch</span></span></td>
+<td class="codetype"><span class="SCst">AcceptPitch</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AcceptFilters</span></span></td>
+<td class="codetype"><span class="SCst">AcceptFilters</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
@@ -1014,19 +1014,19 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Loop</span></span></td>
+<td class="codetype"><span class="SCst">Loop</span></td>
 <td>Play in loops. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DestroyOnStop</span></span></td>
+<td class="codetype"><span class="SCst">DestroyOnStop</span></td>
 <td>Destroy the voice once the sound has been played. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
@@ -1043,19 +1043,19 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PlayedOnce</span></span></td>
+<td class="codetype"><span class="SCst">PlayedOnce</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Playing</span></span></td>
+<td class="codetype"><span class="SCst">Playing</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PendingDestroy</span></span></td>
+<td class="codetype"><span class="SCst">PendingDestroy</span></td>
 <td></td>
 </tr>
 </table>

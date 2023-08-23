@@ -260,73 +260,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_A</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SCst">XINPUT_GAMEPAD_A</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_B</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SCst">XINPUT_GAMEPAD_B</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_BACK</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SCst">XINPUT_GAMEPAD_BACK</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_DOWN</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_DOWN</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_LEFT</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_LEFT</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_RIGHT</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_RIGHT</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_UP</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_UP</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_LEFT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCst">XINPUT_GAMEPAD_LEFT_SHOULDER</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_LEFT_THUMB</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SCst">XINPUT_GAMEPAD_LEFT_THUMB</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCst">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_RIGHT_THUMB</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SCst">XINPUT_GAMEPAD_RIGHT_THUMB</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_START</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SCst">XINPUT_GAMEPAD_START</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_X</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SCst">XINPUT_GAMEPAD_X</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_Y</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SCst">XINPUT_GAMEPAD_Y</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
@@ -344,37 +344,37 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">wButtons</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bLeftTrigger</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bRightTrigger</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sThumbLX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
+<td class="codetype"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sThumbLY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
+<td class="codetype"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sThumbRX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
+<td class="codetype"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sThumbRY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
+<td class="codetype"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 </table>
@@ -392,11 +392,11 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">dwPacketNumber</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gamepad</span></span></td>
+<td class="codetype"><span class="SCst">Gamepad</span></td>
 <td class="codetype"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
@@ -415,12 +415,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">wLeftMotorSpeed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wRightMotorSpeed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>

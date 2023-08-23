@@ -1718,233 +1718,233 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Core_ASSERT" class="codetype"><span class="SCde"><span class="SCst">ASSERT</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td id="Core_ASSERT" class="codetype"><span class="SCst">ASSERT</span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_BIG_ENDIAN" class="codetype"><span class="SCde"><span class="SCst">BIG_ENDIAN</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td id="Core_BIG_ENDIAN" class="codetype"><span class="SCst">BIG_ENDIAN</span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Env_EndLine" class="codetype"><span class="SCde"><span class="SCst">EndLine</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td id="Core_Env_EndLine" class="codetype"><span class="SCst">EndLine</span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Latin1_CharProperties" class="codetype"><span class="SCde"><span class="SCst">CharProperties</span></span></td>
+<td id="Core_Latin1_CharProperties" class="codetype"><span class="SCst">CharProperties</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">256</span>] <span class="SCst">Core</span>.<span class="SCst">Latin1</span>.<span class="SCst"><a href="#Core_Latin1_CharAttribute">CharAttribute</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_AltDirectorySeparatorChar" class="codetype"><span class="SCde"><span class="SCst">AltDirectorySeparatorChar</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td id="Core_Path_AltDirectorySeparatorChar" class="codetype"><span class="SCst">AltDirectorySeparatorChar</span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_DirectorySeparatorChar" class="codetype"><span class="SCde"><span class="SCst">DirectorySeparatorChar</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td id="Core_Path_DirectorySeparatorChar" class="codetype"><span class="SCst">DirectorySeparatorChar</span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_VolumeSeparatorChar" class="codetype"><span class="SCde"><span class="SCst">VolumeSeparatorChar</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td id="Core_Path_VolumeSeparatorChar" class="codetype"><span class="SCst">VolumeSeparatorChar</span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Random_NN" class="codetype"><span class="SCde"><span class="SCst">NN</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Core_Random_NN" class="codetype"><span class="SCst">NN</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorIncomplete" class="codetype"><span class="SCde"><span class="SCst">ParseErrorIncomplete</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td id="Core_StrConv_ParseErrorIncomplete" class="codetype"><span class="SCst">ParseErrorIncomplete</span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorInvalid" class="codetype"><span class="SCde"><span class="SCst">ParseErrorInvalid</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td id="Core_StrConv_ParseErrorInvalid" class="codetype"><span class="SCst">ParseErrorInvalid</span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorOverflow" class="codetype"><span class="SCde"><span class="SCst">ParseErrorOverflow</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td id="Core_StrConv_ParseErrorOverflow" class="codetype"><span class="SCst">ParseErrorOverflow</span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StringSmallSize" class="codetype"><span class="SCde"><span class="SCst">StringSmallSize</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_StringSmallSize" class="codetype"><span class="SCst">StringSmallSize</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DayOfWeekNames" class="codetype"><span class="SCde"><span class="SCst">DayOfWeekNames</span></span></td>
+<td id="Core_Time_DayOfWeekNames" class="codetype"><span class="SCst">DayOfWeekNames</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">7</span>] <span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer100Years" class="codetype"><span class="SCde"><span class="SCst">DaysPer100Years</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Core_Time_DaysPer100Years" class="codetype"><span class="SCst">DaysPer100Years</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer400Years" class="codetype"><span class="SCde"><span class="SCst">DaysPer400Years</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Core_Time_DaysPer400Years" class="codetype"><span class="SCst">DaysPer400Years</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer4Years" class="codetype"><span class="SCde"><span class="SCst">DaysPer4Years</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Core_Time_DaysPer4Years" class="codetype"><span class="SCst">DaysPer4Years</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPerYear" class="codetype"><span class="SCde"><span class="SCst">DaysPerYear</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Core_Time_DaysPerYear" class="codetype"><span class="SCst">DaysPerYear</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo10000" class="codetype"><span class="SCde"><span class="SCst">DaysTo10000</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_DaysTo10000" class="codetype"><span class="SCst">DaysTo10000</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/9999. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1601" class="codetype"><span class="SCde"><span class="SCst">DaysTo1601</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_DaysTo1601" class="codetype"><span class="SCst">DaysTo1601</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/1600. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1899" class="codetype"><span class="SCde"><span class="SCst">DaysTo1899</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_DaysTo1899" class="codetype"><span class="SCst">DaysTo1899</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/30/1899. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1970" class="codetype"><span class="SCde"><span class="SCst">DaysTo1970</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_DaysTo1970" class="codetype"><span class="SCst">DaysTo1970</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/1969. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth365" class="codetype"><span class="SCde"><span class="SCst">DaysToMonth365</span></span></td>
+<td id="Core_Time_DaysToMonth365" class="codetype"><span class="SCst">DaysToMonth365</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth366" class="codetype"><span class="SCde"><span class="SCst">DaysToMonth366</span></span></td>
+<td id="Core_Time_DaysToMonth366" class="codetype"><span class="SCst">DaysToMonth366</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMilliSeconds" class="codetype"><span class="SCde"><span class="SCst">MaxMilliSeconds</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MaxMilliSeconds" class="codetype"><span class="SCst">MaxMilliSeconds</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMillis" class="codetype"><span class="SCde"><span class="SCst">MaxMillis</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MaxMillis" class="codetype"><span class="SCst">MaxMillis</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxTicks" class="codetype"><span class="SCde"><span class="SCst">MaxTicks</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MaxTicks" class="codetype"><span class="SCst">MaxTicks</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerDay" class="codetype"><span class="SCde"><span class="SCst">MillisPerDay</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MillisPerDay" class="codetype"><span class="SCst">MillisPerDay</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerHour" class="codetype"><span class="SCde"><span class="SCst">MillisPerHour</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MillisPerHour" class="codetype"><span class="SCst">MillisPerHour</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerMinute" class="codetype"><span class="SCde"><span class="SCst">MillisPerMinute</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MillisPerMinute" class="codetype"><span class="SCst">MillisPerMinute</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerSecond" class="codetype"><span class="SCde"><span class="SCst">MillisPerSecond</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_MillisPerSecond" class="codetype"><span class="SCst">MillisPerSecond</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MonthNames" class="codetype"><span class="SCde"><span class="SCst">MonthNames</span></span></td>
+<td id="Core_Time_MonthNames" class="codetype"><span class="SCst">MonthNames</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">12</span>] <span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerDay" class="codetype"><span class="SCde"><span class="SCst">TicksPerDay</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_TicksPerDay" class="codetype"><span class="SCst">TicksPerDay</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerHour" class="codetype"><span class="SCde"><span class="SCst">TicksPerHour</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_TicksPerHour" class="codetype"><span class="SCst">TicksPerHour</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMilliSecond" class="codetype"><span class="SCde"><span class="SCst">TicksPerMilliSecond</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_TicksPerMilliSecond" class="codetype"><span class="SCst">TicksPerMilliSecond</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMinute" class="codetype"><span class="SCde"><span class="SCst">TicksPerMinute</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_TicksPerMinute" class="codetype"><span class="SCst">TicksPerMinute</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerSecond" class="codetype"><span class="SCde"><span class="SCst">TicksPerSecond</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_TicksPerSecond" class="codetype"><span class="SCst">TicksPerSecond</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_RuneError" class="codetype"><span class="SCde"><span class="SCst">RuneError</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td id="Core_Utf16_RuneError" class="codetype"><span class="SCst">RuneError</span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr1" class="codetype"><span class="SCde"><span class="SCst">Surr1</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="Core_Utf16_Surr1" class="codetype"><span class="SCst">Surr1</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr2" class="codetype"><span class="SCde"><span class="SCst">Surr2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="Core_Utf16_Surr2" class="codetype"><span class="SCst">Surr2</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr3" class="codetype"><span class="SCde"><span class="SCst">Surr3</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="Core_Utf16_Surr3" class="codetype"><span class="SCst">Surr3</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_SurrSelf" class="codetype"><span class="SCde"><span class="SCst">SurrSelf</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="Core_Utf16_SurrSelf" class="codetype"><span class="SCst">SurrSelf</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_MaxRunes" class="codetype"><span class="SCde"><span class="SCst">MaxRunes</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td id="Core_Utf8_MaxRunes" class="codetype"><span class="SCst">MaxRunes</span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_RuneError" class="codetype"><span class="SCde"><span class="SCst">RuneError</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td id="Core_Utf8_RuneError" class="codetype"><span class="SCst">RuneError</span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMax" class="codetype"><span class="SCde"><span class="SCst">SurrogateMax</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td id="Core_Utf8_SurrogateMax" class="codetype"><span class="SCst">SurrogateMax</span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMin" class="codetype"><span class="SCde"><span class="SCst">SurrogateMin</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td id="Core_Utf8_SurrogateMin" class="codetype"><span class="SCst">SurrogateMin</span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_WINDOWS" class="codetype"><span class="SCde"><span class="SCst">WINDOWS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td id="Core_WINDOWS" class="codetype"><span class="SCst">WINDOWS</span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -1961,42 +1961,42 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Core_Env_ProcessHandle" class="codetype"><span class="SCde"><span class="SCst">ProcessHandle</span></span></td>
+<td id="Core_Env_ProcessHandle" class="codetype"><span class="SCst">ProcessHandle</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_File_FileHandle" class="codetype"><span class="SCde"><span class="SCst">FileHandle</span></span></td>
+<td id="Core_File_FileHandle" class="codetype"><span class="SCst">FileHandle</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Input_VirtualKey" class="codetype"><span class="SCde"><span class="SCst">VirtualKey</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="Core_Input_VirtualKey" class="codetype"><span class="SCst">VirtualKey</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF32" class="codetype"><span class="SCde"><span class="SCst">ConstF32</span></span></td>
+<td id="Core_Math_ConstF32" class="codetype"><span class="SCst">ConstF32</span></td>
 <td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF64" class="codetype"><span class="SCde"><span class="SCst">ConstF64</span></span></td>
+<td id="Core_Math_ConstF64" class="codetype"><span class="SCst">ConstF64</span></td>
 <td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Threading_ThreadHandle" class="codetype"><span class="SCde"><span class="SCst">ThreadHandle</span></span></td>
+<td id="Core_Threading_ThreadHandle" class="codetype"><span class="SCst">ThreadHandle</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_Ticks" class="codetype"><span class="SCde"><span class="SCst">Ticks</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Core_Time_Ticks" class="codetype"><span class="SCst">Ticks</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TimerHandle" class="codetype"><span class="SCde"><span class="SCst">TimerHandle</span></span></td>
+<td id="Core_Time_TimerHandle" class="codetype"><span class="SCst">TimerHandle</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -2028,12 +2028,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of valid datas. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of elements that can be stored in the buffer. </td>
 </tr>
 </table>
@@ -3126,12 +3126,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -3445,12 +3445,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">seek</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">eof</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -3758,11 +3758,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Latin1</span></span></td>
+<td class="codetype"><span class="SCst">Latin1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Unicode</span></span></td>
+<td class="codetype"><span class="SCst">Unicode</span></td>
 <td></td>
 </tr>
 </table>
@@ -3778,15 +3778,15 @@
 <h3>Structs</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_CommandLine_IsSet"><span class="SCde"><span class="SCst">IsSet</span></span></a></td>
+<td><a href="#Core_CommandLine_IsSet"><span class="SCst">IsSet</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_ParseOptions"><span class="SCde"><span class="SCst">ParseOptions</span></span></a></td>
+<td><a href="#Core_CommandLine_ParseOptions"><span class="SCst">ParseOptions</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_Result"><span class="SCde"><span class="SCst">Result</span></span></a></td>
+<td><a href="#Core_CommandLine_Result"><span class="SCst">Result</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -3812,7 +3812,7 @@
 <h3>Attributes</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_CommandLine_ArgParams"><span class="SCde"><span class="SCst">ArgParams</span></span></a></td>
+<td><a href="#Core_CommandLine_ArgParams"><span class="SCst">ArgParams</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -3962,22 +3962,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">curByte</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">codeBuffer</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">numBits</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">eof</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -4274,15 +4274,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ComputeAdler32</span></span></td>
+<td class="codetype"><span class="SCst">ComputeAdler32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
@@ -4299,23 +4299,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NoCompression</span></span></td>
+<td class="codetype"><span class="SCst">NoCompression</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BestSpeed</span></span></td>
+<td class="codetype"><span class="SCst">BestSpeed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BestCompression</span></span></td>
+<td class="codetype"><span class="SCst">BestCompression</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UberCompression</span></span></td>
+<td class="codetype"><span class="SCst">UberCompression</span></td>
 <td></td>
 </tr>
 </table>
@@ -4332,23 +4332,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Filtered</span></span></td>
+<td class="codetype"><span class="SCst">Filtered</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HuffmanOnly</span></span></td>
+<td class="codetype"><span class="SCst">HuffmanOnly</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Rle</span></span></td>
+<td class="codetype"><span class="SCst">Rle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Fixed</span></span></td>
+<td class="codetype"><span class="SCst">Fixed</span></td>
 <td></td>
 </tr>
 </table>
@@ -4502,12 +4502,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">granularity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isAtEnd</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -4942,17 +4942,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">countBefore</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -4992,63 +4992,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Black</span></span></td>
+<td class="codetype"><span class="SCst">Black</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">White</span></span></td>
+<td class="codetype"><span class="SCst">White</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray</span></span></td>
+<td class="codetype"><span class="SCst">Gray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Red</span></span></td>
+<td class="codetype"><span class="SCst">Red</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
+<td class="codetype"><span class="SCst">Blue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Green</span></span></td>
+<td class="codetype"><span class="SCst">Green</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cyan</span></span></td>
+<td class="codetype"><span class="SCst">Cyan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Yellow</span></span></td>
+<td class="codetype"><span class="SCst">Yellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Magenta</span></span></td>
+<td class="codetype"><span class="SCst">Magenta</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkRed</span></span></td>
+<td class="codetype"><span class="SCst">DarkRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkBlue</span></span></td>
+<td class="codetype"><span class="SCst">DarkBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkGreen</span></span></td>
+<td class="codetype"><span class="SCst">DarkGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkCyan</span></span></td>
+<td class="codetype"><span class="SCst">DarkCyan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkYellow</span></span></td>
+<td class="codetype"><span class="SCst">DarkYellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkMagenta</span></span></td>
+<td class="codetype"><span class="SCst">DarkMagenta</span></td>
 <td></td>
 </tr>
 </table>
@@ -5328,7 +5328,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">matchExtension</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5338,22 +5338,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">recurse</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wantFiles</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wantDirectories</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wantSpecialDirectories</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5548,47 +5548,47 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Font</span></span></td>
+<td class="codetype"><span class="SCst">Font</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UserAppData</span></span></td>
+<td class="codetype"><span class="SCst">UserAppData</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UserDocuments</span></span></td>
+<td class="codetype"><span class="SCst">UserDocuments</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CommonAppData</span></span></td>
+<td class="codetype"><span class="SCst">CommonAppData</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Desktop</span></span></td>
+<td class="codetype"><span class="SCst">Desktop</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UserPictures</span></span></td>
+<td class="codetype"><span class="SCst">UserPictures</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UserVideos</span></span></td>
+<td class="codetype"><span class="SCst">UserVideos</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UserMusic</span></span></td>
+<td class="codetype"><span class="SCst">UserMusic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CommonPictures</span></span></td>
+<td class="codetype"><span class="SCst">CommonPictures</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CommonVideos</span></span></td>
+<td class="codetype"><span class="SCst">CommonVideos</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CommonMusic</span></span></td>
+<td class="codetype"><span class="SCst">CommonMusic</span></td>
 <td></td>
 </tr>
 </table>
@@ -5606,12 +5606,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">fileName</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">arguments</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 </table>
@@ -5743,15 +5743,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Read</span></span></td>
+<td class="codetype"><span class="SCst">Read</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Write</span></span></td>
+<td class="codetype"><span class="SCst">Write</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReadWrite</span></span></td>
+<td class="codetype"><span class="SCst">ReadWrite</span></td>
 <td></td>
 </tr>
 </table>
@@ -5768,63 +5768,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReadOnly</span></span></td>
+<td class="codetype"><span class="SCst">ReadOnly</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hidden</span></span></td>
+<td class="codetype"><span class="SCst">Hidden</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">System</span></span></td>
+<td class="codetype"><span class="SCst">System</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Directory</span></span></td>
+<td class="codetype"><span class="SCst">Directory</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Archive</span></span></td>
+<td class="codetype"><span class="SCst">Archive</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Device</span></span></td>
+<td class="codetype"><span class="SCst">Device</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Normal</span></span></td>
+<td class="codetype"><span class="SCst">Normal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Temporary</span></span></td>
+<td class="codetype"><span class="SCst">Temporary</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SparseFile</span></span></td>
+<td class="codetype"><span class="SCst">SparseFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReparsePoint</span></span></td>
+<td class="codetype"><span class="SCst">ReparsePoint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Compressed</span></span></td>
+<td class="codetype"><span class="SCst">Compressed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Offline</span></span></td>
+<td class="codetype"><span class="SCst">Offline</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NotContentIndexed</span></span></td>
+<td class="codetype"><span class="SCst">NotContentIndexed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Encrypted</span></span></td>
+<td class="codetype"><span class="SCst">Encrypted</span></td>
 <td></td>
 </tr>
 </table>
@@ -5867,7 +5867,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -5904,27 +5904,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Append</span></span></td>
+<td class="codetype"><span class="SCst">Append</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Create</span></span></td>
+<td class="codetype"><span class="SCst">Create</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CreateNew</span></span></td>
+<td class="codetype"><span class="SCst">CreateNew</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Open</span></span></td>
+<td class="codetype"><span class="SCst">Open</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OpenOrCreate</span></span></td>
+<td class="codetype"><span class="SCst">OpenOrCreate</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Truncate</span></span></td>
+<td class="codetype"><span class="SCst">Truncate</span></td>
 <td></td>
 </tr>
 </table>
@@ -5941,27 +5941,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Delete</span></span></td>
+<td class="codetype"><span class="SCst">Delete</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Inheritable</span></span></td>
+<td class="codetype"><span class="SCst">Inheritable</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Read</span></span></td>
+<td class="codetype"><span class="SCst">Read</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Write</span></span></td>
+<td class="codetype"><span class="SCst">Write</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReadWrite</span></span></td>
+<td class="codetype"><span class="SCst">ReadWrite</span></td>
 <td></td>
 </tr>
 </table>
@@ -5989,17 +5989,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canRead</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canSeek</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canWrite</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -6204,15 +6204,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Begin</span></span></td>
+<td class="codetype"><span class="SCst">Begin</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Current</span></span></td>
+<td class="codetype"><span class="SCst">Current</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">End</span></span></td>
+<td class="codetype"><span class="SCst">End</span></td>
 <td></td>
 </tr>
 </table>
@@ -6229,11 +6229,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Ascii</span></span></td>
+<td class="codetype"><span class="SCst">Ascii</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Utf8</span></span></td>
+<td class="codetype"><span class="SCst">Utf8</span></td>
 <td></td>
 </tr>
 </table>
@@ -6266,17 +6266,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">byteSeek</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bufferSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">checkPreamble</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -6802,17 +6802,17 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">negativeSign</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">positiveSign</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">decimalSeparator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 </table>
@@ -6872,7 +6872,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">adler</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -6947,7 +6947,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">crc</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -7158,12 +7158,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">datalen</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bitlen</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -7271,23 +7271,23 @@
 </div>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_FREE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_FREE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_DELETED</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_DELETED</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_FIRST</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_FIRST</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_MASK</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_MASK</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7302,17 +7302,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">deleted</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of deleted entries. </td>
 </tr>
 </table>
@@ -7573,12 +7573,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">hash</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">key</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">K</span></span></td>
+<td class="codetype"><span class="SCst">K</span></td>
 <td></td>
 </tr>
 </table>
@@ -7597,23 +7597,23 @@
 </div>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_FREE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_FREE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_DELETED</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_DELETED</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_FIRST</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_FIRST</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HASH_MASK</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">HASH_MASK</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7628,17 +7628,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">deleted</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Number of deleted entries. </td>
 </tr>
 </table>
@@ -7920,17 +7920,17 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">hash</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">key</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">K</span></span></td>
+<td class="codetype"><span class="SCst">K</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">value</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">V</span></span></td>
+<td class="codetype"><span class="SCst">V</span></td>
 <td></td>
 </tr>
 </table>
@@ -7977,12 +7977,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">padIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">connected</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8172,103 +8172,103 @@
 <p>Enumerates gamepad buttons. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">A</span></span></td>
+<td class="codetype"><span class="SCst">A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">B</span></span></td>
+<td class="codetype"><span class="SCst">B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Back</span></span></td>
+<td class="codetype"><span class="SCst">Back</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BigButton</span></span></td>
+<td class="codetype"><span class="SCst">BigButton</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DPadDown</span></span></td>
+<td class="codetype"><span class="SCst">DPadDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DPadLeft</span></span></td>
+<td class="codetype"><span class="SCst">DPadLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DPadRight</span></span></td>
+<td class="codetype"><span class="SCst">DPadRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DPadUp</span></span></td>
+<td class="codetype"><span class="SCst">DPadUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftShoulder</span></span></td>
+<td class="codetype"><span class="SCst">LeftShoulder</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftStick</span></span></td>
+<td class="codetype"><span class="SCst">LeftStick</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftThumbstickDown</span></span></td>
+<td class="codetype"><span class="SCst">LeftThumbstickDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftThumbstickLeft</span></span></td>
+<td class="codetype"><span class="SCst">LeftThumbstickLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftThumbstickRight</span></span></td>
+<td class="codetype"><span class="SCst">LeftThumbstickRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftThumbstickUp</span></span></td>
+<td class="codetype"><span class="SCst">LeftThumbstickUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftTrigger</span></span></td>
+<td class="codetype"><span class="SCst">LeftTrigger</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightShoulder</span></span></td>
+<td class="codetype"><span class="SCst">RightShoulder</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightStick</span></span></td>
+<td class="codetype"><span class="SCst">RightStick</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightThumbstickDown</span></span></td>
+<td class="codetype"><span class="SCst">RightThumbstickDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightThumbstickLeft</span></span></td>
+<td class="codetype"><span class="SCst">RightThumbstickLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightThumbstickRight</span></span></td>
+<td class="codetype"><span class="SCst">RightThumbstickRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightThumbstickUp</span></span></td>
+<td class="codetype"><span class="SCst">RightThumbstickUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightTrigger</span></span></td>
+<td class="codetype"><span class="SCst">RightTrigger</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Start</span></span></td>
+<td class="codetype"><span class="SCst">Start</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">X</span></span></td>
+<td class="codetype"><span class="SCst">X</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Y</span></span></td>
+<td class="codetype"><span class="SCst">Y</span></td>
 <td></td>
 </tr>
 </table>
@@ -8285,7 +8285,7 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeviceNotConnected</span></span></td>
+<td class="codetype"><span class="SCst">DeviceNotConnected</span></td>
 <td></td>
 </tr>
 </table>
@@ -8366,755 +8366,755 @@
 <p>Defines the keys on a keyboard. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">A</span></span></td>
+<td class="codetype"><span class="SCst">A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Add</span></span></td>
+<td class="codetype"><span class="SCst">Add</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Apps</span></span></td>
+<td class="codetype"><span class="SCst">Apps</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Attn</span></span></td>
+<td class="codetype"><span class="SCst">Attn</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">B</span></span></td>
+<td class="codetype"><span class="SCst">B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Back</span></span></td>
+<td class="codetype"><span class="SCst">Back</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserBack</span></span></td>
+<td class="codetype"><span class="SCst">BrowserBack</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserFavorites</span></span></td>
+<td class="codetype"><span class="SCst">BrowserFavorites</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserForward</span></span></td>
+<td class="codetype"><span class="SCst">BrowserForward</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserHome</span></span></td>
+<td class="codetype"><span class="SCst">BrowserHome</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserRefresh</span></span></td>
+<td class="codetype"><span class="SCst">BrowserRefresh</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserSearch</span></span></td>
+<td class="codetype"><span class="SCst">BrowserSearch</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BrowserStop</span></span></td>
+<td class="codetype"><span class="SCst">BrowserStop</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">C</span></span></td>
+<td class="codetype"><span class="SCst">C</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cancel</span></span></td>
+<td class="codetype"><span class="SCst">Cancel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Capital</span></span></td>
+<td class="codetype"><span class="SCst">Capital</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CapsLock</span></span></td>
+<td class="codetype"><span class="SCst">CapsLock</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clear</span></span></td>
+<td class="codetype"><span class="SCst">Clear</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Control</span></span></td>
+<td class="codetype"><span class="SCst">Control</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Crsel</span></span></td>
+<td class="codetype"><span class="SCst">Crsel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D</span></span></td>
+<td class="codetype"><span class="SCst">D</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D0</span></span></td>
+<td class="codetype"><span class="SCst">D0</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D1</span></span></td>
+<td class="codetype"><span class="SCst">D1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D2</span></span></td>
+<td class="codetype"><span class="SCst">D2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D3</span></span></td>
+<td class="codetype"><span class="SCst">D3</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D4</span></span></td>
+<td class="codetype"><span class="SCst">D4</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D5</span></span></td>
+<td class="codetype"><span class="SCst">D5</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D6</span></span></td>
+<td class="codetype"><span class="SCst">D6</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D7</span></span></td>
+<td class="codetype"><span class="SCst">D7</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D8</span></span></td>
+<td class="codetype"><span class="SCst">D8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">D9</span></span></td>
+<td class="codetype"><span class="SCst">D9</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Decimal</span></span></td>
+<td class="codetype"><span class="SCst">Decimal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Delete</span></span></td>
+<td class="codetype"><span class="SCst">Delete</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Divide</span></span></td>
+<td class="codetype"><span class="SCst">Divide</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Down</span></span></td>
+<td class="codetype"><span class="SCst">Down</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">E</span></span></td>
+<td class="codetype"><span class="SCst">E</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">End</span></span></td>
+<td class="codetype"><span class="SCst">End</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Enter</span></span></td>
+<td class="codetype"><span class="SCst">Enter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EraseEof</span></span></td>
+<td class="codetype"><span class="SCst">EraseEof</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Escape</span></span></td>
+<td class="codetype"><span class="SCst">Escape</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Execute</span></span></td>
+<td class="codetype"><span class="SCst">Execute</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Exsel</span></span></td>
+<td class="codetype"><span class="SCst">Exsel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F</span></span></td>
+<td class="codetype"><span class="SCst">F</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F1</span></span></td>
+<td class="codetype"><span class="SCst">F1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F10</span></span></td>
+<td class="codetype"><span class="SCst">F10</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F11</span></span></td>
+<td class="codetype"><span class="SCst">F11</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F12</span></span></td>
+<td class="codetype"><span class="SCst">F12</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F13</span></span></td>
+<td class="codetype"><span class="SCst">F13</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F14</span></span></td>
+<td class="codetype"><span class="SCst">F14</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F15</span></span></td>
+<td class="codetype"><span class="SCst">F15</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F16</span></span></td>
+<td class="codetype"><span class="SCst">F16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F17</span></span></td>
+<td class="codetype"><span class="SCst">F17</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F18</span></span></td>
+<td class="codetype"><span class="SCst">F18</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F19</span></span></td>
+<td class="codetype"><span class="SCst">F19</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F2</span></span></td>
+<td class="codetype"><span class="SCst">F2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F20</span></span></td>
+<td class="codetype"><span class="SCst">F20</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F21</span></span></td>
+<td class="codetype"><span class="SCst">F21</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F22</span></span></td>
+<td class="codetype"><span class="SCst">F22</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F23</span></span></td>
+<td class="codetype"><span class="SCst">F23</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F24</span></span></td>
+<td class="codetype"><span class="SCst">F24</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F3</span></span></td>
+<td class="codetype"><span class="SCst">F3</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F4</span></span></td>
+<td class="codetype"><span class="SCst">F4</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F5</span></span></td>
+<td class="codetype"><span class="SCst">F5</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F6</span></span></td>
+<td class="codetype"><span class="SCst">F6</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F7</span></span></td>
+<td class="codetype"><span class="SCst">F7</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F8</span></span></td>
+<td class="codetype"><span class="SCst">F8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F9</span></span></td>
+<td class="codetype"><span class="SCst">F9</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FinalMode</span></span></td>
+<td class="codetype"><span class="SCst">FinalMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">G</span></span></td>
+<td class="codetype"><span class="SCst">G</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">H</span></span></td>
+<td class="codetype"><span class="SCst">H</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HanguelMode</span></span></td>
+<td class="codetype"><span class="SCst">HanguelMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HangulMode</span></span></td>
+<td class="codetype"><span class="SCst">HangulMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HanjaMode</span></span></td>
+<td class="codetype"><span class="SCst">HanjaMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Help</span></span></td>
+<td class="codetype"><span class="SCst">Help</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Home</span></span></td>
+<td class="codetype"><span class="SCst">Home</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">I</span></span></td>
+<td class="codetype"><span class="SCst">I</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IMEAccept</span></span></td>
+<td class="codetype"><span class="SCst">IMEAccept</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IMEAceept</span></span></td>
+<td class="codetype"><span class="SCst">IMEAceept</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IMEConvert</span></span></td>
+<td class="codetype"><span class="SCst">IMEConvert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IMEModeChange</span></span></td>
+<td class="codetype"><span class="SCst">IMEModeChange</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IMENonConvert</span></span></td>
+<td class="codetype"><span class="SCst">IMENonConvert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Insert</span></span></td>
+<td class="codetype"><span class="SCst">Insert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">J</span></span></td>
+<td class="codetype"><span class="SCst">J</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">JunjaMode</span></span></td>
+<td class="codetype"><span class="SCst">JunjaMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">K</span></span></td>
+<td class="codetype"><span class="SCst">K</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">KanaMode</span></span></td>
+<td class="codetype"><span class="SCst">KanaMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">KanjiMode</span></span></td>
+<td class="codetype"><span class="SCst">KanjiMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">L</span></span></td>
+<td class="codetype"><span class="SCst">L</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LButton</span></span></td>
+<td class="codetype"><span class="SCst">LButton</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LControl</span></span></td>
+<td class="codetype"><span class="SCst">LControl</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LMenu</span></span></td>
+<td class="codetype"><span class="SCst">LMenu</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LShift</span></span></td>
+<td class="codetype"><span class="SCst">LShift</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LWin</span></span></td>
+<td class="codetype"><span class="SCst">LWin</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LaunchApplication1</span></span></td>
+<td class="codetype"><span class="SCst">LaunchApplication1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LaunchApplication2</span></span></td>
+<td class="codetype"><span class="SCst">LaunchApplication2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LaunchMail</span></span></td>
+<td class="codetype"><span class="SCst">LaunchMail</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LineFeed</span></span></td>
+<td class="codetype"><span class="SCst">LineFeed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">M</span></span></td>
+<td class="codetype"><span class="SCst">M</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MButton</span></span></td>
+<td class="codetype"><span class="SCst">MButton</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediaNextTrack</span></span></td>
+<td class="codetype"><span class="SCst">MediaNextTrack</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediaPlayPause</span></span></td>
+<td class="codetype"><span class="SCst">MediaPlayPause</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediaPreviousTrack</span></span></td>
+<td class="codetype"><span class="SCst">MediaPreviousTrack</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediaStop</span></span></td>
+<td class="codetype"><span class="SCst">MediaStop</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MenuCtrl</span></span></td>
+<td class="codetype"><span class="SCst">MenuCtrl</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Multiply</span></span></td>
+<td class="codetype"><span class="SCst">Multiply</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">N</span></span></td>
+<td class="codetype"><span class="SCst">N</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Next</span></span></td>
+<td class="codetype"><span class="SCst">Next</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NoName</span></span></td>
+<td class="codetype"><span class="SCst">NoName</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumLock</span></span></td>
+<td class="codetype"><span class="SCst">NumLock</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad0</span></span></td>
+<td class="codetype"><span class="SCst">NumPad0</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad1</span></span></td>
+<td class="codetype"><span class="SCst">NumPad1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad2</span></span></td>
+<td class="codetype"><span class="SCst">NumPad2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad3</span></span></td>
+<td class="codetype"><span class="SCst">NumPad3</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad4</span></span></td>
+<td class="codetype"><span class="SCst">NumPad4</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad5</span></span></td>
+<td class="codetype"><span class="SCst">NumPad5</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad6</span></span></td>
+<td class="codetype"><span class="SCst">NumPad6</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad7</span></span></td>
+<td class="codetype"><span class="SCst">NumPad7</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad8</span></span></td>
+<td class="codetype"><span class="SCst">NumPad8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NumPad9</span></span></td>
+<td class="codetype"><span class="SCst">NumPad9</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">O</span></span></td>
+<td class="codetype"><span class="SCst">O</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem1</span></span></td>
+<td class="codetype"><span class="SCst">Oem1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem102</span></span></td>
+<td class="codetype"><span class="SCst">Oem102</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem2</span></span></td>
+<td class="codetype"><span class="SCst">Oem2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem3</span></span></td>
+<td class="codetype"><span class="SCst">Oem3</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem4</span></span></td>
+<td class="codetype"><span class="SCst">Oem4</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem5</span></span></td>
+<td class="codetype"><span class="SCst">Oem5</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem6</span></span></td>
+<td class="codetype"><span class="SCst">Oem6</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem7</span></span></td>
+<td class="codetype"><span class="SCst">Oem7</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Oem8</span></span></td>
+<td class="codetype"><span class="SCst">Oem8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemBackslash</span></span></td>
+<td class="codetype"><span class="SCst">OemBackslash</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemClear</span></span></td>
+<td class="codetype"><span class="SCst">OemClear</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemCloseBrackets</span></span></td>
+<td class="codetype"><span class="SCst">OemCloseBrackets</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemComma</span></span></td>
+<td class="codetype"><span class="SCst">OemComma</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemMinus</span></span></td>
+<td class="codetype"><span class="SCst">OemMinus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemOpenBrackets</span></span></td>
+<td class="codetype"><span class="SCst">OemOpenBrackets</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemPeriod</span></span></td>
+<td class="codetype"><span class="SCst">OemPeriod</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemPipe</span></span></td>
+<td class="codetype"><span class="SCst">OemPipe</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemPlus</span></span></td>
+<td class="codetype"><span class="SCst">OemPlus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemQuestion</span></span></td>
+<td class="codetype"><span class="SCst">OemQuestion</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemQuotes</span></span></td>
+<td class="codetype"><span class="SCst">OemQuotes</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemSemicolon</span></span></td>
+<td class="codetype"><span class="SCst">OemSemicolon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OemTilde</span></span></td>
+<td class="codetype"><span class="SCst">OemTilde</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">P</span></span></td>
+<td class="codetype"><span class="SCst">P</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pa1</span></span></td>
+<td class="codetype"><span class="SCst">Pa1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Packet</span></span></td>
+<td class="codetype"><span class="SCst">Packet</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PageDown</span></span></td>
+<td class="codetype"><span class="SCst">PageDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PageUp</span></span></td>
+<td class="codetype"><span class="SCst">PageUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pause</span></span></td>
+<td class="codetype"><span class="SCst">Pause</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Play</span></span></td>
+<td class="codetype"><span class="SCst">Play</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Print</span></span></td>
+<td class="codetype"><span class="SCst">Print</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PrintScreen</span></span></td>
+<td class="codetype"><span class="SCst">PrintScreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Prior</span></span></td>
+<td class="codetype"><span class="SCst">Prior</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Process</span></span></td>
+<td class="codetype"><span class="SCst">Process</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Q</span></span></td>
+<td class="codetype"><span class="SCst">Q</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">R</span></span></td>
+<td class="codetype"><span class="SCst">R</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RButton</span></span></td>
+<td class="codetype"><span class="SCst">RButton</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RControl</span></span></td>
+<td class="codetype"><span class="SCst">RControl</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RMenu</span></span></td>
+<td class="codetype"><span class="SCst">RMenu</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RShift</span></span></td>
+<td class="codetype"><span class="SCst">RShift</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RWin</span></span></td>
+<td class="codetype"><span class="SCst">RWin</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Return</span></span></td>
+<td class="codetype"><span class="SCst">Return</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">S</span></span></td>
+<td class="codetype"><span class="SCst">S</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Scroll</span></span></td>
+<td class="codetype"><span class="SCst">Scroll</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Select</span></span></td>
+<td class="codetype"><span class="SCst">Select</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectMedia</span></span></td>
+<td class="codetype"><span class="SCst">SelectMedia</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Separator</span></span></td>
+<td class="codetype"><span class="SCst">Separator</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Shift</span></span></td>
+<td class="codetype"><span class="SCst">Shift</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sleep</span></span></td>
+<td class="codetype"><span class="SCst">Sleep</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Space</span></span></td>
+<td class="codetype"><span class="SCst">Space</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Subtract</span></span></td>
+<td class="codetype"><span class="SCst">Subtract</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Tab</span></span></td>
+<td class="codetype"><span class="SCst">Tab</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">U</span></span></td>
+<td class="codetype"><span class="SCst">U</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Up</span></span></td>
+<td class="codetype"><span class="SCst">Up</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">V</span></span></td>
+<td class="codetype"><span class="SCst">V</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VolumeDown</span></span></td>
+<td class="codetype"><span class="SCst">VolumeDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VolumeMute</span></span></td>
+<td class="codetype"><span class="SCst">VolumeMute</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VolumeUp</span></span></td>
+<td class="codetype"><span class="SCst">VolumeUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">W</span></span></td>
+<td class="codetype"><span class="SCst">W</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">X</span></span></td>
+<td class="codetype"><span class="SCst">X</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">XButton1</span></span></td>
+<td class="codetype"><span class="SCst">XButton1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">XButton2</span></span></td>
+<td class="codetype"><span class="SCst">XButton2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Y</span></span></td>
+<td class="codetype"><span class="SCst">Y</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Z</span></span></td>
+<td class="codetype"><span class="SCst">Z</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zoom</span></span></td>
+<td class="codetype"><span class="SCst">Zoom</span></td>
 <td></td>
 </tr>
 </table>
@@ -9131,23 +9131,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Shift</span></span></td>
+<td class="codetype"><span class="SCst">Shift</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Control</span></span></td>
+<td class="codetype"><span class="SCst">Control</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Alt</span></span></td>
+<td class="codetype"><span class="SCst">Alt</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CtrlShift</span></span></td>
+<td class="codetype"><span class="SCst">CtrlShift</span></td>
 <td></td>
 </tr>
 </table>
@@ -9186,17 +9186,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">pressedRepeatStartTimeMs</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">pressedRepeatTimeMs</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canRepeat</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -9499,7 +9499,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dblClkTimeMs</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -9705,23 +9705,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Middle</span></span></td>
+<td class="codetype"><span class="SCst">Middle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">XButton1</span></span></td>
+<td class="codetype"><span class="SCst">XButton1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">XButton2</span></span></td>
+<td class="codetype"><span class="SCst">XButton2</span></td>
 <td></td>
 </tr>
 </table>
@@ -9873,12 +9873,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">startIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9916,7 +9916,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">pendingIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -9933,15 +9933,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">InPending</span></span></td>
+<td class="codetype"><span class="SCst">InPending</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Done</span></span></td>
+<td class="codetype"><span class="SCst">Done</span></td>
 <td></td>
 </tr>
 </table>
@@ -9971,7 +9971,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">offset</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10107,63 +10107,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Control</span></span></td>
+<td class="codetype"><span class="SCst">Control</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Punctuation</span></span></td>
+<td class="codetype"><span class="SCst">Punctuation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BinDigit</span></span></td>
+<td class="codetype"><span class="SCst">BinDigit</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HexDigit</span></span></td>
+<td class="codetype"><span class="SCst">HexDigit</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Digit</span></span></td>
+<td class="codetype"><span class="SCst">Digit</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Symbol</span></span></td>
+<td class="codetype"><span class="SCst">Symbol</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Spacing</span></span></td>
+<td class="codetype"><span class="SCst">Spacing</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Upper</span></span></td>
+<td class="codetype"><span class="SCst">Upper</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Lower</span></span></td>
+<td class="codetype"><span class="SCst">Lower</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Printable</span></span></td>
+<td class="codetype"><span class="SCst">Printable</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LowerUtf8</span></span></td>
+<td class="codetype"><span class="SCst">LowerUtf8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UpperUtf8</span></span></td>
+<td class="codetype"><span class="SCst">UpperUtf8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Graphical</span></span></td>
+<td class="codetype"><span class="SCst">Graphical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Letter</span></span></td>
+<td class="codetype"><span class="SCst">Letter</span></td>
 <td></td>
 </tr>
 </table>
@@ -10445,7 +10445,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -10652,7 +10652,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">value</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 </table>
@@ -10690,7 +10690,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">prefix</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10859,39 +10859,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Prefix</span></span></td>
+<td class="codetype"><span class="SCst">Prefix</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Date</span></span></td>
+<td class="codetype"><span class="SCst">Date</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Time</span></span></td>
+<td class="codetype"><span class="SCst">Time</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ShortFileName</span></span></td>
+<td class="codetype"><span class="SCst">ShortFileName</span></td>
 <td>Exclusive with LongFileName. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LongFileName</span></span></td>
+<td class="codetype"><span class="SCst">LongFileName</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Line</span></span></td>
+<td class="codetype"><span class="SCst">Line</span></td>
 <td>Exclusive with FullLoc. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FullLoc</span></span></td>
+<td class="codetype"><span class="SCst">FullLoc</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
@@ -10909,7 +10909,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">rad</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -10985,93 +10985,93 @@
 </div>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pi</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Pi</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">E</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">E</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TwoPi</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">TwoPi</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PiBy2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">PiBy2</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PiBy3</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">PiBy3</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PiBy4</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">PiBy4</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PiBy6</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">PiBy6</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PiBy8</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">PiBy8</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ThreePiBy4</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">ThreePiBy4</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OneByPi</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">OneByPi</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TwoByPi</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">TwoByPi</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sqrt2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Sqrt2</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OneBySqrt2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">OneBySqrt2</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Ln2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Ln2</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Ln10</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Ln10</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Log2E</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Log2E</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Log10E</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Log10E</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Epsilon</span></span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">Epsilon</span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 </table>
@@ -11089,12 +11089,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">lo</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hi</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 </table>
@@ -11444,12 +11444,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -11720,22 +11720,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Left position. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Top position. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Rectangle width. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Rectangle height. </td>
 </tr>
 </table>
@@ -12384,32 +12384,32 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">m11</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">m12</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">m21</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">m22</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">m31</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">m32</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12419,12 +12419,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">ty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -12546,8 +12546,8 @@
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AllFlags</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="SCst">AllFlags</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -12744,12 +12744,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -13512,17 +13512,17 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">z</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -14001,22 +14001,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">z</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">w</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -15533,12 +15533,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">c</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">i</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>special invalid value (&gt; 4095) to force the seed on first get. </td>
 </tr>
 </table>
@@ -15593,12 +15593,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">w</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">z</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -15663,7 +15663,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mti</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -15725,12 +15725,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">rng</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">seedDone</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -16656,7 +16656,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">serializer</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
@@ -17029,11 +17029,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IgnoreStructFieldError</span></span></td>
+<td class="codetype"><span class="SCst">IgnoreStructFieldError</span></td>
 <td></td>
 </tr>
 </table>
@@ -17053,12 +17053,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">serializer</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">T</span></span></td>
+<td class="codetype"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">errorIfUnknown</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td>If true, raise an error if a type cannot be saved, and just ignore if false. </td>
 </tr>
 </table>
@@ -18300,12 +18300,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">line</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">col</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18646,12 +18646,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">convertValToArray</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">convertArrayToVal</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -18965,7 +18965,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">tryForward</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td>Accept to try to read a newest version, otherwise error. </td>
 </tr>
 </table>
@@ -18988,12 +18988,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">afterFatSeek</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">version</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -19003,7 +19003,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">skipFat</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -19020,15 +19020,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Raw</span></span></td>
+<td class="codetype"><span class="SCst">Raw</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Unordered</span></span></td>
+<td class="codetype"><span class="SCst">Unordered</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Ordered</span></span></td>
+<td class="codetype"><span class="SCst">Ordered</span></td>
 <td></td>
 </tr>
 </table>
@@ -19056,7 +19056,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isWrite</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -19253,7 +19253,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">indent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -19544,12 +19544,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">indentLevel</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">saveBlanks</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -19863,19 +19863,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Root</span></span></td>
+<td class="codetype"><span class="SCst">Root</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Fat</span></span></td>
+<td class="codetype"><span class="SCst">Fat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sequence</span></span></td>
+<td class="codetype"><span class="SCst">Sequence</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Version</span></span></td>
+<td class="codetype"><span class="SCst">Version</span></td>
 <td></td>
 </tr>
 </table>
@@ -20122,7 +20122,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -20838,7 +20838,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">value</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">any</span></span></td>
+<td class="codetype"><span class="STpe">any</span></td>
 <td></td>
 </tr>
 </table>
@@ -20862,17 +20862,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">precision</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s8</span></span></td>
+<td class="codetype"><span class="STpe">s8</span></td>
 <td>-1 is for 'most possible precision'. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">fmt</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceSign</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -20930,22 +20930,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">base</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceSign</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -21775,12 +21775,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">length</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -23040,12 +23040,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">requestEnd</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -23227,23 +23227,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Lowest</span></span></td>
+<td class="codetype"><span class="SCst">Lowest</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BelowNormal</span></span></td>
+<td class="codetype"><span class="SCst">BelowNormal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Normal</span></span></td>
+<td class="codetype"><span class="SCst">Normal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AboveNormal</span></span></td>
+<td class="codetype"><span class="SCst">AboveNormal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Highest</span></span></td>
+<td class="codetype"><span class="SCst">Highest</span></td>
 <td></td>
 </tr>
 </table>
@@ -23276,37 +23276,37 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">year</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">month</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">day</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hour</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">minute</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">second</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">millisecond</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
@@ -23520,19 +23520,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DateTime</span></span></td>
+<td class="codetype"><span class="SCst">DateTime</span></td>
 <td>DDDD MMMM D YYYY HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DateTimeMs</span></span></td>
+<td class="codetype"><span class="SCst">DateTimeMs</span></td>
 <td>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Iso</span></span></td>
+<td class="codetype"><span class="SCst">Iso</span></td>
 <td>YYYY-MM-DD HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IsoMs</span></span></td>
+<td class="codetype"><span class="SCst">IsoMs</span></td>
 <td>YYYY-MM-DD HH:MM:SS.ZZZ. </td>
 </tr>
 </table>
@@ -23549,31 +23549,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sunday</span></span></td>
+<td class="codetype"><span class="SCst">Sunday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Monday</span></span></td>
+<td class="codetype"><span class="SCst">Monday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Tuesday</span></span></td>
+<td class="codetype"><span class="SCst">Tuesday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Wednesday</span></span></td>
+<td class="codetype"><span class="SCst">Wednesday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Thursday</span></span></td>
+<td class="codetype"><span class="SCst">Thursday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Friday</span></span></td>
+<td class="codetype"><span class="SCst">Friday</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Saturday</span></span></td>
+<td class="codetype"><span class="SCst">Saturday</span></td>
 <td></td>
 </tr>
 </table>
@@ -23592,7 +23592,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">timeInSeconds</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>The duration in seconds. </td>
 </tr>
 </table>
@@ -23686,32 +23686,32 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">dtMin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dtMax</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dt</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Current delta time, in seconds. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Frame counter. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">prevTick</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paused</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -23787,17 +23787,17 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">isStarted</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">startTimeStamp</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">elapsedTicks</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -23982,7 +23982,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">ticks</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -25116,19 +25116,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Latin1</span></span></td>
+<td class="codetype"><span class="SCst">Latin1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Latin1NoCase</span></span></td>
+<td class="codetype"><span class="SCst">Latin1NoCase</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Unicode</span></span></td>
+<td class="codetype"><span class="SCst">Unicode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UnicodeNoCase</span></span></td>
+<td class="codetype"><span class="SCst">UnicodeNoCase</span></td>
 <td></td>
 </tr>
 </table>

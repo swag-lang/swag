@@ -448,7 +448,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">const</span> this_1_is_2_also__3_valid = <span class="SNum">0</span></span></code>
 </div>
 <p>But your identifiers cannot start with two underscores. This is reserved by the compiler. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// const __this_is_invalid = 0</span></span></code>
+<div class="precode"><code><span class="SCmt">// const __this_is_invalid = 0</span></code>
 </div>
 <p>Note that some identifiers may start with <code class="incode">#</code>. This indicates a <b>compiler special keyword</b>. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmp">#assert</span>
@@ -6299,7 +6299,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>. </p>
 </blockquote>
 <h3>overflow </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("overflow", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("overflow", true)]</span></code>
 </div>
 <p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
 <p>Operators that can overflow are : <code class="incode">+ - * &lt;&lt; &gt;&gt;</code> and their equivalent <code class="incode">+= -= <i>= &lt;&lt;= &gt;&gt;=</code>.</i> </p>
@@ -6364,7 +6364,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3>any </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("any", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("any", true)]</span></code>
 </div>
 <p>Swag will panic if a bad cast from <code class="incode">any</code> is performed. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -6376,7 +6376,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3>boundcheck </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></code>
 </div>
 <p>Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string... </p>
 <p>Safety for fixed size arrays. </p>
@@ -6414,7 +6414,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3>math </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("math", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("math", true)]</span></code>
 </div>
 <p>Swag will panic if some math operations are invalid. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -6440,15 +6440,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3>switch </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("switch", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("switch", true)]</span></code>
 </div>
 <p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
 <h3>bool </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("bool", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("bool", true)]</span></code>
 </div>
 <p>Swag will panic if a boolean value is not <code class="incode">true</code> (1) or <code class="incode">false</code> (0). </p>
 <h3>nan </h3>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("nan", true)]</span></span></code>
+<div class="precode"><code><span class="SAtr">#[Swag.Safety("nan", true)]</span></code>
 </div>
 <p>Swag will panic if a floating point <code class="incode">NaN</code> is used in an operation. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>

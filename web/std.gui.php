@@ -1048,28 +1048,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Gui_Clipboard_Format" class="codetype"><span class="SCde"><span class="SCst">Format</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Gui_Clipboard_Format" class="codetype"><span class="SCst">Format</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_FrameCallback" class="codetype"><span class="SCde"><span class="SCst">FrameCallback</span></span></td>
+<td id="Gui_FrameCallback" class="codetype"><span class="SCst">FrameCallback</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_HookEvent" class="codetype"><span class="SCde"><span class="SCst">HookEvent</span></span></td>
+<td id="Gui_HookEvent" class="codetype"><span class="SCst">HookEvent</span></td>
 <td class="codetype"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_RichEditStyleRef" class="codetype"><span class="SCde"><span class="SCst">RichEditStyleRef</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td id="Gui_RichEditStyleRef" class="codetype"><span class="SCst">RichEditStyleRef</span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_WndId" class="codetype"><span class="SCde"><span class="SCst">WndId</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td id="Gui_WndId" class="codetype"><span class="SCst">WndId</span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 </table>
@@ -1092,7 +1092,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 </table>
@@ -1109,23 +1109,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">X</span></span></td>
+<td class="codetype"><span class="SCst">X</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Y</span></span></td>
+<td class="codetype"><span class="SCst">Y</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Width</span></span></td>
+<td class="codetype"><span class="SCst">Width</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Height</span></span></td>
+<td class="codetype"><span class="SCst">Height</span></td>
 <td></td>
 </tr>
 </table>
@@ -1213,17 +1213,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endModalExit</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">inModalLoop</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">quitCode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1233,22 +1233,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mustQuit</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endModal</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isActivated</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">fadeDisabledSurface</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1258,7 +1258,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">duringTimerEvents</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1308,7 +1308,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxRunFrame</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2002,23 +2002,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Window</span></span></td>
+<td class="codetype"><span class="SCst">Window</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Dialog</span></span></td>
+<td class="codetype"><span class="SCst">Dialog</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DialogBar</span></span></td>
+<td class="codetype"><span class="SCst">DialogBar</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">View</span></span></td>
+<td class="codetype"><span class="SCst">View</span></td>
 <td></td>
 </tr>
 </table>
@@ -2051,17 +2051,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">factor</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">start</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">speed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -2137,22 +2137,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressing</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHot</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isIn</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -2169,15 +2169,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UnChecked</span></span></td>
+<td class="codetype"><span class="SCst">UnChecked</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Checked</span></span></td>
+<td class="codetype"><span class="SCst">Checked</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Undefined</span></span></td>
+<td class="codetype"><span class="SCst">Undefined</span></td>
 <td></td>
 </tr>
 </table>
@@ -2273,15 +2273,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ThreeState</span></span></td>
+<td class="codetype"><span class="SCst">ThreeState</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightAlign</span></span></td>
+<td class="codetype"><span class="SCst">RightAlign</span></td>
 <td></td>
 </tr>
 </table>
@@ -2444,37 +2444,37 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hue</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sat</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lum</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">a</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">r</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">g</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">b</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2489,12 +2489,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2509,12 +2509,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">xCur</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">yCur</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -2696,7 +2696,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">oldColorDone</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2880,83 +2880,83 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationLightness</span></span></td>
+<td class="codetype"><span class="SCst">SaturationLightness</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueSaturation</span></span></td>
+<td class="codetype"><span class="SCst">HueSaturation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueLightness</span></span></td>
+<td class="codetype"><span class="SCst">HueLightness</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenBlue</span></span></td>
+<td class="codetype"><span class="SCst">GreenBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedBlue</span></span></td>
+<td class="codetype"><span class="SCst">RedBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedGreen</span></span></td>
+<td class="codetype"><span class="SCst">RedGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueVert</span></span></td>
+<td class="codetype"><span class="SCst">HueVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueHorz</span></span></td>
+<td class="codetype"><span class="SCst">HueHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightnessVert</span></span></td>
+<td class="codetype"><span class="SCst">LightnessVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightnessHorz</span></span></td>
+<td class="codetype"><span class="SCst">LightnessHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationVert</span></span></td>
+<td class="codetype"><span class="SCst">SaturationVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationHorz</span></span></td>
+<td class="codetype"><span class="SCst">SaturationHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AlphaHorz</span></span></td>
+<td class="codetype"><span class="SCst">AlphaHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AlphaVert</span></span></td>
+<td class="codetype"><span class="SCst">AlphaVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedHorz</span></span></td>
+<td class="codetype"><span class="SCst">RedHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedVert</span></span></td>
+<td class="codetype"><span class="SCst">RedVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenHorz</span></span></td>
+<td class="codetype"><span class="SCst">GreenHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenVert</span></span></td>
+<td class="codetype"><span class="SCst">GreenVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BlueHorz</span></span></td>
+<td class="codetype"><span class="SCst">BlueHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BlueVert</span></span></td>
+<td class="codetype"><span class="SCst">BlueVert</span></td>
 <td></td>
 </tr>
 </table>
@@ -2973,27 +2973,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationLightness</span></span></td>
+<td class="codetype"><span class="SCst">SaturationLightness</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueSaturation</span></span></td>
+<td class="codetype"><span class="SCst">HueSaturation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueLightness</span></span></td>
+<td class="codetype"><span class="SCst">HueLightness</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenBlue</span></span></td>
+<td class="codetype"><span class="SCst">GreenBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedBlue</span></span></td>
+<td class="codetype"><span class="SCst">RedBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedGreen</span></span></td>
+<td class="codetype"><span class="SCst">RedGreen</span></td>
 <td></td>
 </tr>
 </table>
@@ -3021,12 +3021,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">minWidthPopup</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxHeightPopup</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3041,7 +3041,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHot</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3051,12 +3051,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selectedIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxIconSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3243,7 +3243,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isSeparator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -3260,15 +3260,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Select</span></span></td>
+<td class="codetype"><span class="SCst">Select</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Edit</span></span></td>
+<td class="codetype"><span class="SCst">Edit</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CheckBox</span></span></td>
+<td class="codetype"><span class="SCst">CheckBox</span></td>
 <td></td>
 </tr>
 </table>
@@ -3291,12 +3291,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">labelSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3362,7 +3362,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3390,7 +3390,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3430,17 +3430,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">disabled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">checked</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hidden</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -3565,51 +3565,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Arrow</span></span></td>
+<td class="codetype"><span class="SCst">Arrow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SizeWE</span></span></td>
+<td class="codetype"><span class="SCst">SizeWE</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SizeNS</span></span></td>
+<td class="codetype"><span class="SCst">SizeNS</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SizeNWSE</span></span></td>
+<td class="codetype"><span class="SCst">SizeNWSE</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SizeNESW</span></span></td>
+<td class="codetype"><span class="SCst">SizeNESW</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SizeAll</span></span></td>
+<td class="codetype"><span class="SCst">SizeAll</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cross</span></span></td>
+<td class="codetype"><span class="SCst">Cross</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Help</span></span></td>
+<td class="codetype"><span class="SCst">Help</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hand</span></span></td>
+<td class="codetype"><span class="SCst">Hand</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IBeam</span></span></td>
+<td class="codetype"><span class="SCst">IBeam</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">No</span></span></td>
+<td class="codetype"><span class="SCst">No</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Wait</span></span></td>
+<td class="codetype"><span class="SCst">Wait</span></td>
 <td></td>
 </tr>
 </table>
@@ -3795,27 +3795,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
+<td class="codetype"><span class="SCst">Center</span></td>
 <td></td>
 </tr>
 </table>
@@ -3876,12 +3876,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxLength</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">rightMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3926,27 +3926,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isInvalid</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHot</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isDragging</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selBeg</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selEnd</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3956,27 +3956,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">visibleCaret</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">posSelBeg</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">posSelEnd</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollPosX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">countRunes</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -4276,19 +4276,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Incomplete</span></span></td>
+<td class="codetype"><span class="SCst">Incomplete</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Valid</span></span></td>
+<td class="codetype"><span class="SCst">Valid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">InvalidDismiss</span></span></td>
+<td class="codetype"><span class="SCst">InvalidDismiss</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">InvalidShow</span></span></td>
+<td class="codetype"><span class="SCst">InvalidShow</span></td>
 <td></td>
 </tr>
 </table>
@@ -4305,19 +4305,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AutoLoseFocus</span></span></td>
+<td class="codetype"><span class="SCst">AutoLoseFocus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReadOnly</span></span></td>
+<td class="codetype"><span class="SCst">ReadOnly</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightAlign</span></span></td>
+<td class="codetype"><span class="SCst">RightAlign</span></td>
 <td></td>
 </tr>
 </table>
@@ -4334,19 +4334,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 </table>
@@ -4363,19 +4363,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">String</span></span></td>
+<td class="codetype"><span class="SCst">String</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">S64</span></span></td>
+<td class="codetype"><span class="SCst">S64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">U64</span></span></td>
+<td class="codetype"><span class="SCst">U64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">F64</span></span></td>
+<td class="codetype"><span class="SCst">F64</span></td>
 <td></td>
 </tr>
 </table>
@@ -4398,12 +4398,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">labelSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">editSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -4634,11 +4634,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Critical</span></span></td>
+<td class="codetype"><span class="SCst">Critical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Information</span></span></td>
+<td class="codetype"><span class="SCst">Information</span></td>
 <td></td>
 </tr>
 </table>
@@ -4671,7 +4671,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">accepted</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -4713,143 +4713,143 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Create</span></span></td>
+<td class="codetype"><span class="SCst">Create</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Destroy</span></span></td>
+<td class="codetype"><span class="SCst">Destroy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Resize</span></span></td>
+<td class="codetype"><span class="SCst">Resize</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Move</span></span></td>
+<td class="codetype"><span class="SCst">Move</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PrePaint</span></span></td>
+<td class="codetype"><span class="SCst">PrePaint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Paint</span></span></td>
+<td class="codetype"><span class="SCst">Paint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PostPaint</span></span></td>
+<td class="codetype"><span class="SCst">PostPaint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">KeyPressed</span></span></td>
+<td class="codetype"><span class="SCst">KeyPressed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">KeyReleased</span></span></td>
+<td class="codetype"><span class="SCst">KeyReleased</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Rune</span></span></td>
+<td class="codetype"><span class="SCst">Rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseAccept</span></span></td>
+<td class="codetype"><span class="SCst">MouseAccept</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MousePressed</span></span></td>
+<td class="codetype"><span class="SCst">MousePressed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseReleased</span></span></td>
+<td class="codetype"><span class="SCst">MouseReleased</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseDoubleClick</span></span></td>
+<td class="codetype"><span class="SCst">MouseDoubleClick</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseMove</span></span></td>
+<td class="codetype"><span class="SCst">MouseMove</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseEnter</span></span></td>
+<td class="codetype"><span class="SCst">MouseEnter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseLeave</span></span></td>
+<td class="codetype"><span class="SCst">MouseLeave</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MouseWheel</span></span></td>
+<td class="codetype"><span class="SCst">MouseWheel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Quit</span></span></td>
+<td class="codetype"><span class="SCst">Quit</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SysCommand</span></span></td>
+<td class="codetype"><span class="SCst">SysCommand</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetTheme</span></span></td>
+<td class="codetype"><span class="SCst">SetTheme</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Timer</span></span></td>
+<td class="codetype"><span class="SCst">Timer</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetFocus</span></span></td>
+<td class="codetype"><span class="SCst">SetFocus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">KillFocus</span></span></td>
+<td class="codetype"><span class="SCst">KillFocus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Command</span></span></td>
+<td class="codetype"><span class="SCst">Command</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ComputeCommandState</span></span></td>
+<td class="codetype"><span class="SCst">ComputeCommandState</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ApplyCommandState</span></span></td>
+<td class="codetype"><span class="SCst">ApplyCommandState</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Frame</span></span></td>
+<td class="codetype"><span class="SCst">Frame</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SerializeState</span></span></td>
+<td class="codetype"><span class="SCst">SerializeState</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Show</span></span></td>
+<td class="codetype"><span class="SCst">Show</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hide</span></span></td>
+<td class="codetype"><span class="SCst">Hide</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Invalidate</span></span></td>
+<td class="codetype"><span class="SCst">Invalidate</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SysUser</span></span></td>
+<td class="codetype"><span class="SCst">SysUser</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Notify</span></span></td>
+<td class="codetype"><span class="SCst">Notify</span></td>
 <td></td>
 </tr>
 </table>
@@ -5004,19 +5004,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CreateFile</span></span></td>
+<td class="codetype"><span class="SCst">CreateFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectOneFile</span></span></td>
+<td class="codetype"><span class="SCst">SelectOneFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectMultiFiles</span></span></td>
+<td class="codetype"><span class="SCst">SelectMultiFiles</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectFolder</span></span></td>
+<td class="codetype"><span class="SCst">SelectFolder</span></td>
 <td></td>
 </tr>
 </table>
@@ -5034,27 +5034,27 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">title</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnOkName</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">openFolder</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">editName</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">drivePane</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5137,11 +5137,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MousePressed</span></span></td>
+<td class="codetype"><span class="SCst">MousePressed</span></td>
 <td></td>
 </tr>
 </table>
@@ -5164,7 +5164,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">firstFrame</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -5207,7 +5207,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">anchorPos</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5354,23 +5354,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 </table>
@@ -5387,19 +5387,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Borders</span></span></td>
+<td class="codetype"><span class="SCst">Borders</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FocusBorder</span></span></td>
+<td class="codetype"><span class="SCst">FocusBorder</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SmallShadow</span></span></td>
+<td class="codetype"><span class="SCst">SmallShadow</span></td>
 <td></td>
 </tr>
 </table>
@@ -5416,15 +5416,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 </table>
@@ -5452,22 +5452,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">numColumns</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">numRows</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">spacingHorz</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">spacingVert</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5606,19 +5606,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AdaptSizeToContent</span></span></td>
+<td class="codetype"><span class="SCst">AdaptSizeToContent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AdaptColWidth</span></span></td>
+<td class="codetype"><span class="SCst">AdaptColWidth</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AdaptRowHeight</span></span></td>
+<td class="codetype"><span class="SCst">AdaptRowHeight</span></td>
 <td></td>
 </tr>
 </table>
@@ -5651,7 +5651,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">marginItems</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5666,37 +5666,37 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotSeparator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">moving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">clicked</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">correctMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sortColumn</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sortMark</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -5952,11 +5952,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clickable</span></span></td>
+<td class="codetype"><span class="SCst">Clickable</span></td>
 <td></td>
 </tr>
 </table>
@@ -5973,15 +5973,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 </table>
@@ -6009,37 +6009,37 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">minWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sizeable</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">clickable</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">column</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -6241,17 +6241,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">index</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sizeX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sizeY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -6391,12 +6391,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6528,11 +6528,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Vertical</span></span></td>
+<td class="codetype"><span class="SCst">Vertical</span></td>
 <td></td>
 </tr>
 </table>
@@ -6605,7 +6605,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isChecked</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6761,31 +6761,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightUp</span></span></td>
+<td class="codetype"><span class="SCst">RightUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightDown</span></span></td>
+<td class="codetype"><span class="SCst">RightDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 </table>
@@ -6802,27 +6802,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Full</span></span></td>
+<td class="codetype"><span class="SCst">Full</span></td>
 <td></td>
 </tr>
 </table>
@@ -6839,23 +6839,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Checkable</span></span></td>
+<td class="codetype"><span class="SCst">Checkable</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CheckableToggle</span></span></td>
+<td class="codetype"><span class="SCst">CheckableToggle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Popup</span></span></td>
+<td class="codetype"><span class="SCst">Popup</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
+<td class="codetype"><span class="SCst">Center</span></td>
 <td></td>
 </tr>
 </table>
@@ -6872,15 +6872,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RoundSquare</span></span></td>
+<td class="codetype"><span class="SCst">RoundSquare</span></td>
 <td></td>
 </tr>
 </table>
@@ -6897,19 +6897,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 </table>
@@ -6932,17 +6932,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">totalFrames</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameSizeX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameSizeY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -7171,7 +7171,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7214,7 +7214,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">char</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">rune</span></span></td>
+<td class="codetype"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 </table>
@@ -7242,7 +7242,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7396,19 +7396,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WordWrap</span></span></td>
+<td class="codetype"><span class="SCst">WordWrap</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightText</span></span></td>
+<td class="codetype"><span class="SCst">LightText</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AutoHeight</span></span></td>
+<td class="codetype"><span class="SCst">AutoHeight</span></td>
 <td></td>
 </tr>
 </table>
@@ -7431,27 +7431,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">horizontalExtent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lineHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">indentWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconMarginFirstCol</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7466,7 +7466,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">leftTextMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7541,12 +7541,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">focusIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7566,12 +7566,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">virtualCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isVirtual</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8125,35 +8125,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HideSelection</span></span></td>
+<td class="codetype"><span class="SCst">HideSelection</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AlternateLines</span></span></td>
+<td class="codetype"><span class="SCst">AlternateLines</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorzLines</span></span></td>
+<td class="codetype"><span class="SCst">HorzLines</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VertLines</span></span></td>
+<td class="codetype"><span class="SCst">VertLines</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ForceMarginExpandMark</span></span></td>
+<td class="codetype"><span class="SCst">ForceMarginExpandMark</span></td>
 <td>Force one margin even if no expand mark. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NoMouseEmptySel</span></span></td>
+<td class="codetype"><span class="SCst">NoMouseEmptySel</span></td>
 <td>Click does not clear selection if not on an item. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HotTrack</span></span></td>
+<td class="codetype"><span class="SCst">HotTrack</span></td>
 <td></td>
 </tr>
 </table>
@@ -8186,7 +8186,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">column</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8239,27 +8239,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">leftTextMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceExpandMark</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canCheck</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">separator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8274,17 +8274,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">index</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">level</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">expanded</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8374,15 +8374,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Single</span></span></td>
+<td class="codetype"><span class="SCst">Single</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Multi</span></span></td>
+<td class="codetype"><span class="SCst">Multi</span></td>
 <td></td>
 </tr>
 </table>
@@ -8410,7 +8410,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">discardMouseRelease</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8500,32 +8500,32 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paddingSel</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selectedIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bar</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endModal</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endModalResult</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8545,12 +8545,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirtyLayout</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paintByFrame</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8763,11 +8763,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NoKeyShortcuts</span></span></td>
+<td class="codetype"><span class="SCst">NoKeyShortcuts</span></td>
 <td></td>
 </tr>
 </table>
@@ -9057,22 +9057,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">enableCache</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mustLoop</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">inPause</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">playFreq</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9082,12 +9082,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">numFrames</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9122,12 +9122,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">currentTime</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirtyFrame</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -9261,15 +9261,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SpriteSheet</span></span></td>
+<td class="codetype"><span class="SCst">SpriteSheet</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gif</span></span></td>
+<td class="codetype"><span class="SCst">Gif</span></td>
 <td></td>
 </tr>
 </table>
@@ -9310,7 +9310,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lastDeadChar</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -9366,7 +9366,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isDisabled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -9484,12 +9484,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">boxSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">boxMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9499,7 +9499,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -9640,32 +9640,32 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">heightItem</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">heightSeparator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">minWidthPopup</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxHeightPopup</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">simFitX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">simFitY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9675,7 +9675,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selectedIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9685,7 +9685,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxIconSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -9783,7 +9783,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isSeparator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9826,7 +9826,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -9893,32 +9893,32 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">pos</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">separator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">disabled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">checked</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hidden</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9950,15 +9950,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TopLeft</span></span></td>
+<td class="codetype"><span class="SCst">TopLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AnchorTopCenter</span></span></td>
+<td class="codetype"><span class="SCst">AnchorTopCenter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AnchorBottomCenter</span></span></td>
+<td class="codetype"><span class="SCst">AnchorBottomCenter</span></td>
 <td></td>
 </tr>
 </table>
@@ -9986,7 +9986,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">progression</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -10054,11 +10054,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Infinite</span></span></td>
+<td class="codetype"><span class="SCst">Infinite</span></td>
 <td></td>
 </tr>
 </table>
@@ -10081,37 +10081,37 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nameMarginBefore</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nameHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nameMarginAfter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">descMarginAfter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">enumFlagsMarginBefore</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxSizeCombo</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxSizeEditValue</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10461,7 +10461,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">extendFocus</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -10573,19 +10573,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Normal</span></span></td>
+<td class="codetype"><span class="SCst">Normal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Strong</span></span></td>
+<td class="codetype"><span class="SCst">Strong</span></td>
 <td></td>
 </tr>
 </table>
@@ -10608,7 +10608,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">quitCode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -10631,7 +10631,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">checked</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10722,11 +10722,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightAlign</span></span></td>
+<td class="codetype"><span class="SCst">RightAlign</span></td>
 <td></td>
 </tr>
 </table>
@@ -10766,183 +10766,183 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorLeft</span></span></td>
+<td class="codetype"><span class="SCst">CursorLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorRight</span></span></td>
+<td class="codetype"><span class="SCst">CursorRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorUp</span></span></td>
+<td class="codetype"><span class="SCst">CursorUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorDown</span></span></td>
+<td class="codetype"><span class="SCst">CursorDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorStartLine</span></span></td>
+<td class="codetype"><span class="SCst">CursorStartLine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorEndLine</span></span></td>
+<td class="codetype"><span class="SCst">CursorEndLine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorStartFile</span></span></td>
+<td class="codetype"><span class="SCst">CursorStartFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorEndFile</span></span></td>
+<td class="codetype"><span class="SCst">CursorEndFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorWordLeft</span></span></td>
+<td class="codetype"><span class="SCst">CursorWordLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorWordRight</span></span></td>
+<td class="codetype"><span class="SCst">CursorWordRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorPageUp</span></span></td>
+<td class="codetype"><span class="SCst">CursorPageUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CursorPageDown</span></span></td>
+<td class="codetype"><span class="SCst">CursorPageDown</span></td>
 <td>CMD_CURSOR_MATCH_PAIR. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ScrollLineUp</span></span></td>
+<td class="codetype"><span class="SCst">ScrollLineUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ScrollLineDown</span></span></td>
+<td class="codetype"><span class="SCst">ScrollLineDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeleteLeft</span></span></td>
+<td class="codetype"><span class="SCst">DeleteLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeleteRight</span></span></td>
+<td class="codetype"><span class="SCst">DeleteRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeleteLine</span></span></td>
+<td class="codetype"><span class="SCst">DeleteLine</span></td>
 <td>CMD_EDIT_DELETE_LINE. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EditTabulation</span></span></td>
+<td class="codetype"><span class="SCst">EditTabulation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EditBackTabulation</span></span></td>
+<td class="codetype"><span class="SCst">EditBackTabulation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeleteWordLeft</span></span></td>
+<td class="codetype"><span class="SCst">DeleteWordLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeleteWordRight</span></span></td>
+<td class="codetype"><span class="SCst">DeleteWordRight</span></td>
 <td>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ToggleOverwrite</span></span></td>
+<td class="codetype"><span class="SCst">ToggleOverwrite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ClipboardCopy</span></span></td>
+<td class="codetype"><span class="SCst">ClipboardCopy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ClipboardPaste</span></span></td>
+<td class="codetype"><span class="SCst">ClipboardPaste</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ClipboardCut</span></span></td>
+<td class="codetype"><span class="SCst">ClipboardCut</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Undo</span></span></td>
+<td class="codetype"><span class="SCst">Undo</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Redo</span></span></td>
+<td class="codetype"><span class="SCst">Redo</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRuneLeft</span></span></td>
+<td class="codetype"><span class="SCst">SelectRuneLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRuneRight</span></span></td>
+<td class="codetype"><span class="SCst">SelectRuneRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRuneUp</span></span></td>
+<td class="codetype"><span class="SCst">SelectRuneUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRuneDown</span></span></td>
+<td class="codetype"><span class="SCst">SelectRuneDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRectLeft</span></span></td>
+<td class="codetype"><span class="SCst">SelectRectLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRectRight</span></span></td>
+<td class="codetype"><span class="SCst">SelectRectRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRectUp</span></span></td>
+<td class="codetype"><span class="SCst">SelectRectUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectRectDown</span></span></td>
+<td class="codetype"><span class="SCst">SelectRectDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectStartLine</span></span></td>
+<td class="codetype"><span class="SCst">SelectStartLine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectEndLine</span></span></td>
+<td class="codetype"><span class="SCst">SelectEndLine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectStartFile</span></span></td>
+<td class="codetype"><span class="SCst">SelectStartFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectEndFile</span></span></td>
+<td class="codetype"><span class="SCst">SelectEndFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectAllFile</span></span></td>
+<td class="codetype"><span class="SCst">SelectAllFile</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectWordLeft</span></span></td>
+<td class="codetype"><span class="SCst">SelectWordLeft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectWordRight</span></span></td>
+<td class="codetype"><span class="SCst">SelectWordRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectPageUp</span></span></td>
+<td class="codetype"><span class="SCst">SelectPageUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SelectPageDown</span></span></td>
+<td class="codetype"><span class="SCst">SelectPageDown</span></td>
 <td>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </td>
 </tr>
 </table>
@@ -10970,27 +10970,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lineSpacing</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">overwriteMode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tabSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">marginLeft</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">marginRight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -11070,32 +11070,32 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasSelRect</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">modified</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">recomputeScroll</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirtyFirstLineView</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceCaretVisible</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceCaretVisibleCenter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -11115,42 +11115,42 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">currentUndo</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">undoCounter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">modifiedUndoMarker</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">serialUndo</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">countVisibleLines</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">firstVisibleLineView</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lastVisibleLineView</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">clipFormat</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12449,12 +12449,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">lineIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">charPosInLine</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -12471,35 +12471,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReadOnly</span></span></td>
+<td class="codetype"><span class="SCst">ReadOnly</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ShowFocusSel</span></span></td>
+<td class="codetype"><span class="SCst">ShowFocusSel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CurLineBorder</span></span></td>
+<td class="codetype"><span class="SCst">CurLineBorder</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DrawBlanks</span></span></td>
+<td class="codetype"><span class="SCst">DrawBlanks</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TabToSpaces</span></span></td>
+<td class="codetype"><span class="SCst">TabToSpaces</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WordWrap</span></span></td>
+<td class="codetype"><span class="SCst">WordWrap</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AutoLoseFocus</span></span></td>
+<td class="codetype"><span class="SCst">AutoLoseFocus</span></td>
 <td></td>
 </tr>
 </table>
@@ -12516,11 +12516,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RichEditCtrl</span></span></td>
+<td class="codetype"><span class="SCst">RichEditCtrl</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Edit</span></span></td>
+<td class="codetype"><span class="SCst">Edit</span></td>
 <td></td>
 </tr>
 </table>
@@ -12697,7 +12697,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">concatChars</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12722,12 +12722,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">serial</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasSelRect</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12764,23 +12764,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Delete</span></span></td>
+<td class="codetype"><span class="SCst">Delete</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Insert</span></span></td>
+<td class="codetype"><span class="SCst">Insert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Selection</span></span></td>
+<td class="codetype"><span class="SCst">Selection</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Show</span></span></td>
+<td class="codetype"><span class="SCst">Show</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hide</span></span></td>
+<td class="codetype"><span class="SCst">Hide</span></td>
 <td></td>
 </tr>
 </table>
@@ -12814,12 +12814,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollIncrementV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollIncrementH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12859,112 +12859,112 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">smoothScroll</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">showBarV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">needV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">posBoxV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sizeBoxV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHotV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHotBarV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressedV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">showBarH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">needH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">posBoxH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">sizeBoxH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHotH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHotBarH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressedH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isGrabbing</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">correcMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">offsetClientV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">offsetClientH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paddingZ</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paddingW</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13125,23 +13125,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SmallBar</span></span></td>
+<td class="codetype"><span class="SCst">SmallBar</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ForceHorizontal</span></span></td>
+<td class="codetype"><span class="SCst">ForceHorizontal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ForceVertical</span></span></td>
+<td class="codetype"><span class="SCst">ForceVertical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TransparentBar</span></span></td>
+<td class="codetype"><span class="SCst">TransparentBar</span></td>
 <td></td>
 </tr>
 </table>
@@ -13346,7 +13346,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">disabled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -13437,23 +13437,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 </table>
@@ -13476,27 +13476,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">value1</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">value2</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">min</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">max</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">steps</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13521,42 +13521,42 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressed1</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPressed2</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHot1</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHot2</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasValue1</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasValue2</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">correcMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13785,12 +13785,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">labelSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">editSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13933,23 +13933,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Range</span></span></td>
+<td class="codetype"><span class="SCst">Range</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HilightBar</span></span></td>
+<td class="codetype"><span class="SCst">HilightBar</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Vertical</span></span></td>
+<td class="codetype"><span class="SCst">Vertical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Integer</span></span></td>
+<td class="codetype"><span class="SCst">Integer</span></td>
 <td></td>
 </tr>
 </table>
@@ -13977,22 +13977,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">titleSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">correctMoving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">moving</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -14122,15 +14122,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Vertical</span></span></td>
+<td class="codetype"><span class="SCst">Vertical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HideBars</span></span></td>
+<td class="codetype"><span class="SCst">HideBars</span></td>
 <td></td>
 </tr>
 </table>
@@ -14153,17 +14153,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">minSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">maxSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14173,7 +14173,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tryPreserveSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14206,7 +14206,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">spacing</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -14275,39 +14275,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TopAutoSize</span></span></td>
+<td class="codetype"><span class="SCst">TopAutoSize</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LeftAutoSize</span></span></td>
+<td class="codetype"><span class="SCst">LeftAutoSize</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorzCenter</span></span></td>
+<td class="codetype"><span class="SCst">HorzCenter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorzCenterVertCenter</span></span></td>
+<td class="codetype"><span class="SCst">HorzCenterVertCenter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VertCenter</span></span></td>
+<td class="codetype"><span class="SCst">VertCenter</span></td>
 <td></td>
 </tr>
 </table>
@@ -14403,22 +14403,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isDirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isHidden</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isDisabled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isMinimized</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14856,47 +14856,47 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BigCaption</span></span></td>
+<td class="codetype"><span class="SCst">BigCaption</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SmallCaption</span></span></td>
+<td class="codetype"><span class="SCst">SmallCaption</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MinimizeBtn</span></span></td>
+<td class="codetype"><span class="SCst">MinimizeBtn</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MaximizeBtn</span></span></td>
+<td class="codetype"><span class="SCst">MaximizeBtn</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CloseBtn</span></span></td>
+<td class="codetype"><span class="SCst">CloseBtn</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Border</span></span></td>
+<td class="codetype"><span class="SCst">Border</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sizeable</span></span></td>
+<td class="codetype"><span class="SCst">Sizeable</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Secondary</span></span></td>
+<td class="codetype"><span class="SCst">Secondary</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TopMost</span></span></td>
+<td class="codetype"><span class="SCst">TopMost</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OverlappedWindow</span></span></td>
+<td class="codetype"><span class="SCst">OverlappedWindow</span></td>
 <td></td>
 </tr>
 </table>
@@ -14924,7 +14924,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isMaximized</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -14967,7 +14967,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">movingSurface</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14977,7 +14977,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">cursorSet</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -15023,17 +15023,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">userMsg</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">param0</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">param1</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -15091,27 +15091,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">selectedIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">firstVisibleIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hotIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">barHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mostRightPos</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -15254,19 +15254,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FlatRound</span></span></td>
+<td class="codetype"><span class="SCst">FlatRound</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 </table>
@@ -15283,15 +15283,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Divide</span></span></td>
+<td class="codetype"><span class="SCst">Divide</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Fixed</span></span></td>
+<td class="codetype"><span class="SCst">Fixed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Auto</span></span></td>
+<td class="codetype"><span class="SCst">Auto</span></td>
 <td></td>
 </tr>
 </table>
@@ -15308,15 +15308,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Button</span></span></td>
+<td class="codetype"><span class="SCst">Button</span></td>
 <td></td>
 </tr>
 </table>
@@ -15334,12 +15334,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">pos</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -15371,19 +15371,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Button</span></span></td>
+<td class="codetype"><span class="SCst">Button</span></td>
 <td></td>
 </tr>
 </table>
@@ -15400,15 +15400,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Flat</span></span></td>
+<td class="codetype"><span class="SCst">Flat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 </table>
@@ -15426,7 +15426,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">intialized</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -15592,88 +15592,88 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transparent</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Transparent</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Blue</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightBlue</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">LightBlue</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Disabled</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Disabled</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LighterSmall</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">LighterSmall</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LighterMedium</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">LighterMedium</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LighterBig</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">LighterBig</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LighterVeryBig</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">LighterVeryBig</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">White</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">White</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray1</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray1</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray2</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray3</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray3</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray4</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray4</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray5</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray5</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray6</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray6</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray7</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray7</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray8</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">Gray8</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -17075,99 +17075,99 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WndMinimize</span></span></td>
+<td class="codetype"><span class="SCst">WndMinimize</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WndMaximize</span></span></td>
+<td class="codetype"><span class="SCst">WndMaximize</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WndClose</span></span></td>
+<td class="codetype"><span class="SCst">WndClose</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Search</span></span></td>
+<td class="codetype"><span class="SCst">Search</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RightPopupArrow</span></span></td>
+<td class="codetype"><span class="SCst">RightPopupArrow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BottomPopupArrow</span></span></td>
+<td class="codetype"><span class="SCst">BottomPopupArrow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SortArrowDown</span></span></td>
+<td class="codetype"><span class="SCst">SortArrowDown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SortArrowUp</span></span></td>
+<td class="codetype"><span class="SCst">SortArrowUp</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SortArrowRight</span></span></td>
+<td class="codetype"><span class="SCst">SortArrowRight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Picker</span></span></td>
+<td class="codetype"><span class="SCst">Picker</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Play</span></span></td>
+<td class="codetype"><span class="SCst">Play</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pause</span></span></td>
+<td class="codetype"><span class="SCst">Pause</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Stop</span></span></td>
+<td class="codetype"><span class="SCst">Stop</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SendToBack</span></span></td>
+<td class="codetype"><span class="SCst">SendToBack</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SendBackward</span></span></td>
+<td class="codetype"><span class="SCst">SendBackward</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BringForward</span></span></td>
+<td class="codetype"><span class="SCst">BringForward</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BringToFront</span></span></td>
+<td class="codetype"><span class="SCst">BringToFront</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Plus</span></span></td>
+<td class="codetype"><span class="SCst">Plus</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">More</span></span></td>
+<td class="codetype"><span class="SCst">More</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Undo</span></span></td>
+<td class="codetype"><span class="SCst">Undo</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Redo</span></span></td>
+<td class="codetype"><span class="SCst">Redo</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Copy</span></span></td>
+<td class="codetype"><span class="SCst">Copy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Paste</span></span></td>
+<td class="codetype"><span class="SCst">Paste</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cut</span></span></td>
+<td class="codetype"><span class="SCst">Cut</span></td>
 <td></td>
 </tr>
 </table>
@@ -17184,23 +17184,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Question</span></span></td>
+<td class="codetype"><span class="SCst">Question</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Warning</span></span></td>
+<td class="codetype"><span class="SCst">Warning</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Critical</span></span></td>
+<td class="codetype"><span class="SCst">Critical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Information</span></span></td>
+<td class="codetype"><span class="SCst">Information</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HourGlass</span></span></td>
+<td class="codetype"><span class="SCst">HourGlass</span></td>
 <td></td>
 </tr>
 </table>
@@ -17223,12 +17223,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">corner</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">keepBordersRatio</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -17784,92 +17784,92 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">defaultFontSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">defaultFixedFontSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">surfaceWnd_ShadowSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wnd_BorderSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wnd_BigCaptionCY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wnd_SmallCaptionCY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wnd_CaptionMarginTitle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tabBar_FlatHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tabBar_RoundHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">tabBar_ButtonHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnPush_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnPush_Width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnPush_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconText_Margin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnCheck_Size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnCheck_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dialog_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dialog_BtnPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -17889,202 +17889,202 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">editBox_Width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">editBox_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnToggle_Width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnToggle_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">slider_Width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">slider_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">slider_BoxSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">slider_StepSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuPopup_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuPopup_SpaceLines</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuPopup_ShadowSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuPopup_IconTextMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuPopup_SeparatorHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuBar_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">menuBar_SpaceBetween</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">iconBar_ButtonsPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollBar_NormalSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollBar_SmallSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollBar_BoxPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">scrollBar_BoxMinSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboBox_Width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboBox_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboBox_RightMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboBox_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">comboBox_IconTextMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">popupList_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">popupList_IconTextMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">popupList_SeparatorPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_WidthArrow</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_HeightArrow</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_MarginArrow</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_SpacingIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_SpacingArrowH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_SpacingArrowV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_SpacingTextH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">btnIcon_SpacingTextV</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_SquarePadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_RoundPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_FlatPadding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18094,42 +18094,42 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_AnchorWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_AnchorHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_AnchorOverlap</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_AnchorRoundBorderMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frameWnd_AnchorSquareBorderMargin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">list_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">list_ExpandSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">header_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18139,52 +18139,52 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">header_Separator</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">splitView_BarSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">progressBar_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">progressBar_ClipOffset</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">progressBar_SpeedInf</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">colorPicker_RoundPick</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">colorPicker_SquarePick</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">label_Height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">richEdit_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">toolTip_Padding</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -18290,7 +18290,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18490,7 +18490,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -18508,7 +18508,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">timeMs</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18523,7 +18523,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">toDelete</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -18589,7 +18589,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isToggled</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18776,7 +18776,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">id</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18831,17 +18831,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isAllocated</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPendingDestroy</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">createEventDone</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -20480,35 +20480,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NoScroll</span></span></td>
+<td class="codetype"><span class="SCst">NoScroll</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ClipChildren</span></span></td>
+<td class="codetype"><span class="SCst">ClipChildren</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Disabled</span></span></td>
+<td class="codetype"><span class="SCst">Disabled</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hidden</span></span></td>
+<td class="codetype"><span class="SCst">Hidden</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PreChildsPaint</span></span></td>
+<td class="codetype"><span class="SCst">PreChildsPaint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PostChildsPaint</span></span></td>
+<td class="codetype"><span class="SCst">PostChildsPaint</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TopMost</span></span></td>
+<td class="codetype"><span class="SCst">TopMost</span></td>
 <td></td>
 </tr>
 </table>
@@ -20531,22 +20531,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">spacing</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wrapWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wrapHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">resultHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>

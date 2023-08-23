@@ -723,58 +723,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Bmp_BI_BITFIELDS" class="codetype"><span class="SCde"><span class="SCst">BI_BITFIELDS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Pixel_Bmp_BI_BITFIELDS" class="codetype"><span class="SCst">BI_BITFIELDS</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RGB" class="codetype"><span class="SCde"><span class="SCst">BI_RGB</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RGB" class="codetype"><span class="SCst">BI_RGB</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE4" class="codetype"><span class="SCde"><span class="SCst">BI_RLE4</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RLE4" class="codetype"><span class="SCst">BI_RLE4</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE8" class="codetype"><span class="SCde"><span class="SCst">BI_RLE8</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RLE8" class="codetype"><span class="SCst">BI_RLE8</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ClipperScaleCoords" class="codetype"><span class="SCde"><span class="SCst">ClipperScaleCoords</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f64</span></span></td>
+<td id="Pixel_ClipperScaleCoords" class="codetype"><span class="SCst">ClipperScaleCoords</span></td>
+<td class="codetype"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidRenderTargetHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_InvalidRenderTargetHandle" class="codetype"><span class="SCst">InvalidRenderTargetHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidRenderTargetSurfaceHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="codetype"><span class="SCst">InvalidRenderTargetSurfaceHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidShaderHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_InvalidShaderHandle" class="codetype"><span class="SCst">InvalidShaderHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderParamHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidShaderParamHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td id="Pixel_InvalidShaderParamHandle" class="codetype"><span class="SCst">InvalidShaderParamHandle</span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidTextureHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidTextureHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_InvalidTextureHandle" class="codetype"><span class="SCst">InvalidTextureHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_MaxAAEdge" class="codetype"><span class="SCde"><span class="SCst">MaxAAEdge</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="Pixel_MaxAAEdge" class="codetype"><span class="SCst">MaxAAEdge</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -791,33 +791,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Clipper_CInt" class="codetype"><span class="SCde"><span class="SCst">CInt</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td id="Pixel_Clipper_CInt" class="codetype"><span class="SCst">CInt</span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetHandle" class="codetype"><span class="SCde"><span class="SCst">RenderTargetHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_RenderTargetHandle" class="codetype"><span class="SCst">RenderTargetHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetSurfaceHandle" class="codetype"><span class="SCde"><span class="SCst">RenderTargetSurfaceHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_RenderTargetSurfaceHandle" class="codetype"><span class="SCst">RenderTargetSurfaceHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderHandle" class="codetype"><span class="SCde"><span class="SCst">ShaderHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_ShaderHandle" class="codetype"><span class="SCst">ShaderHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderParamHandle" class="codetype"><span class="SCde"><span class="SCst">ShaderParamHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td id="Pixel_ShaderParamHandle" class="codetype"><span class="SCst">ShaderParamHandle</span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_TextureHandle" class="codetype"><span class="SCde"><span class="SCst">TextureHandle</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="Pixel_TextureHandle" class="codetype"><span class="SCst">TextureHandle</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -834,567 +834,567 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AliceBlue</span></span></td>
+<td class="codetype"><span class="SCst">AliceBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AntiqueWhite</span></span></td>
+<td class="codetype"><span class="SCst">AntiqueWhite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Aqua</span></span></td>
+<td class="codetype"><span class="SCst">Aqua</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Aquamarine</span></span></td>
+<td class="codetype"><span class="SCst">Aquamarine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Azure</span></span></td>
+<td class="codetype"><span class="SCst">Azure</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Beige</span></span></td>
+<td class="codetype"><span class="SCst">Beige</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bisque</span></span></td>
+<td class="codetype"><span class="SCst">Bisque</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Black</span></span></td>
+<td class="codetype"><span class="SCst">Black</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BlanchedAlmond</span></span></td>
+<td class="codetype"><span class="SCst">BlanchedAlmond</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
+<td class="codetype"><span class="SCst">Blue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BlueViolet</span></span></td>
+<td class="codetype"><span class="SCst">BlueViolet</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Brown</span></span></td>
+<td class="codetype"><span class="SCst">Brown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BurlyWood</span></span></td>
+<td class="codetype"><span class="SCst">BurlyWood</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CadetBlue</span></span></td>
+<td class="codetype"><span class="SCst">CadetBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Chartreuse</span></span></td>
+<td class="codetype"><span class="SCst">Chartreuse</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Chocolate</span></span></td>
+<td class="codetype"><span class="SCst">Chocolate</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Coral</span></span></td>
+<td class="codetype"><span class="SCst">Coral</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CornflowerBlue</span></span></td>
+<td class="codetype"><span class="SCst">CornflowerBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cornsilk</span></span></td>
+<td class="codetype"><span class="SCst">Cornsilk</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Crimson</span></span></td>
+<td class="codetype"><span class="SCst">Crimson</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cyan</span></span></td>
+<td class="codetype"><span class="SCst">Cyan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkBlue</span></span></td>
+<td class="codetype"><span class="SCst">DarkBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkCyan</span></span></td>
+<td class="codetype"><span class="SCst">DarkCyan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkGoldenrod</span></span></td>
+<td class="codetype"><span class="SCst">DarkGoldenrod</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkGray</span></span></td>
+<td class="codetype"><span class="SCst">DarkGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkGreen</span></span></td>
+<td class="codetype"><span class="SCst">DarkGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkKhaki</span></span></td>
+<td class="codetype"><span class="SCst">DarkKhaki</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkMagenta</span></span></td>
+<td class="codetype"><span class="SCst">DarkMagenta</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkOliveGreen</span></span></td>
+<td class="codetype"><span class="SCst">DarkOliveGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkOrange</span></span></td>
+<td class="codetype"><span class="SCst">DarkOrange</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkOrchid</span></span></td>
+<td class="codetype"><span class="SCst">DarkOrchid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkRed</span></span></td>
+<td class="codetype"><span class="SCst">DarkRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkSalmon</span></span></td>
+<td class="codetype"><span class="SCst">DarkSalmon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkSeaGreen</span></span></td>
+<td class="codetype"><span class="SCst">DarkSeaGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkSlateBlue</span></span></td>
+<td class="codetype"><span class="SCst">DarkSlateBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkSlateGray</span></span></td>
+<td class="codetype"><span class="SCst">DarkSlateGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkTurquoise</span></span></td>
+<td class="codetype"><span class="SCst">DarkTurquoise</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DarkViolet</span></span></td>
+<td class="codetype"><span class="SCst">DarkViolet</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeepPink</span></span></td>
+<td class="codetype"><span class="SCst">DeepPink</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DeepSkyBlue</span></span></td>
+<td class="codetype"><span class="SCst">DeepSkyBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DimGray</span></span></td>
+<td class="codetype"><span class="SCst">DimGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DodgerBlue</span></span></td>
+<td class="codetype"><span class="SCst">DodgerBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Firebrick</span></span></td>
+<td class="codetype"><span class="SCst">Firebrick</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FloralWhite</span></span></td>
+<td class="codetype"><span class="SCst">FloralWhite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ForestGreen</span></span></td>
+<td class="codetype"><span class="SCst">ForestGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Fuchsia</span></span></td>
+<td class="codetype"><span class="SCst">Fuchsia</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gainsboro</span></span></td>
+<td class="codetype"><span class="SCst">Gainsboro</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GhostWhite</span></span></td>
+<td class="codetype"><span class="SCst">GhostWhite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gold</span></span></td>
+<td class="codetype"><span class="SCst">Gold</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Goldenrod</span></span></td>
+<td class="codetype"><span class="SCst">Goldenrod</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gray</span></span></td>
+<td class="codetype"><span class="SCst">Gray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Green</span></span></td>
+<td class="codetype"><span class="SCst">Green</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenYellow</span></span></td>
+<td class="codetype"><span class="SCst">GreenYellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Honeydew</span></span></td>
+<td class="codetype"><span class="SCst">Honeydew</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HotPink</span></span></td>
+<td class="codetype"><span class="SCst">HotPink</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">IndianRed</span></span></td>
+<td class="codetype"><span class="SCst">IndianRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Indigo</span></span></td>
+<td class="codetype"><span class="SCst">Indigo</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Ivory</span></span></td>
+<td class="codetype"><span class="SCst">Ivory</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Khaki</span></span></td>
+<td class="codetype"><span class="SCst">Khaki</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Lavender</span></span></td>
+<td class="codetype"><span class="SCst">Lavender</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LavenderBlush</span></span></td>
+<td class="codetype"><span class="SCst">LavenderBlush</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LawnGreen</span></span></td>
+<td class="codetype"><span class="SCst">LawnGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LemonChiffon</span></span></td>
+<td class="codetype"><span class="SCst">LemonChiffon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightBlue</span></span></td>
+<td class="codetype"><span class="SCst">LightBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightCoral</span></span></td>
+<td class="codetype"><span class="SCst">LightCoral</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightCyan</span></span></td>
+<td class="codetype"><span class="SCst">LightCyan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightGoldenrodYellow</span></span></td>
+<td class="codetype"><span class="SCst">LightGoldenrodYellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightGray</span></span></td>
+<td class="codetype"><span class="SCst">LightGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightGreen</span></span></td>
+<td class="codetype"><span class="SCst">LightGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightPink</span></span></td>
+<td class="codetype"><span class="SCst">LightPink</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightSalmon</span></span></td>
+<td class="codetype"><span class="SCst">LightSalmon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightSeaGreen</span></span></td>
+<td class="codetype"><span class="SCst">LightSeaGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightSkyBlue</span></span></td>
+<td class="codetype"><span class="SCst">LightSkyBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightSlateGray</span></span></td>
+<td class="codetype"><span class="SCst">LightSlateGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightSteelBlue</span></span></td>
+<td class="codetype"><span class="SCst">LightSteelBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightYellow</span></span></td>
+<td class="codetype"><span class="SCst">LightYellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Lime</span></span></td>
+<td class="codetype"><span class="SCst">Lime</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LimeGreen</span></span></td>
+<td class="codetype"><span class="SCst">LimeGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Linen</span></span></td>
+<td class="codetype"><span class="SCst">Linen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Magenta</span></span></td>
+<td class="codetype"><span class="SCst">Magenta</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Maroon</span></span></td>
+<td class="codetype"><span class="SCst">Maroon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumAquamarine</span></span></td>
+<td class="codetype"><span class="SCst">MediumAquamarine</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumBlue</span></span></td>
+<td class="codetype"><span class="SCst">MediumBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumOrchid</span></span></td>
+<td class="codetype"><span class="SCst">MediumOrchid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumPurple</span></span></td>
+<td class="codetype"><span class="SCst">MediumPurple</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumSeaGreen</span></span></td>
+<td class="codetype"><span class="SCst">MediumSeaGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumSlateBlue</span></span></td>
+<td class="codetype"><span class="SCst">MediumSlateBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumSpringGreen</span></span></td>
+<td class="codetype"><span class="SCst">MediumSpringGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumTurquoise</span></span></td>
+<td class="codetype"><span class="SCst">MediumTurquoise</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MediumVioletRed</span></span></td>
+<td class="codetype"><span class="SCst">MediumVioletRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MidnightBlue</span></span></td>
+<td class="codetype"><span class="SCst">MidnightBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MintCream</span></span></td>
+<td class="codetype"><span class="SCst">MintCream</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MistyRose</span></span></td>
+<td class="codetype"><span class="SCst">MistyRose</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Moccasin</span></span></td>
+<td class="codetype"><span class="SCst">Moccasin</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NavajoWhite</span></span></td>
+<td class="codetype"><span class="SCst">NavajoWhite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Navy</span></span></td>
+<td class="codetype"><span class="SCst">Navy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OldLace</span></span></td>
+<td class="codetype"><span class="SCst">OldLace</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Olive</span></span></td>
+<td class="codetype"><span class="SCst">Olive</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OliveDrab</span></span></td>
+<td class="codetype"><span class="SCst">OliveDrab</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Orange</span></span></td>
+<td class="codetype"><span class="SCst">Orange</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OrangeRed</span></span></td>
+<td class="codetype"><span class="SCst">OrangeRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Orchid</span></span></td>
+<td class="codetype"><span class="SCst">Orchid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PaleGoldenrod</span></span></td>
+<td class="codetype"><span class="SCst">PaleGoldenrod</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PaleGreen</span></span></td>
+<td class="codetype"><span class="SCst">PaleGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PaleTurquoise</span></span></td>
+<td class="codetype"><span class="SCst">PaleTurquoise</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PaleVioletRed</span></span></td>
+<td class="codetype"><span class="SCst">PaleVioletRed</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PapayaWhip</span></span></td>
+<td class="codetype"><span class="SCst">PapayaWhip</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PeachPuff</span></span></td>
+<td class="codetype"><span class="SCst">PeachPuff</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Peru</span></span></td>
+<td class="codetype"><span class="SCst">Peru</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pink</span></span></td>
+<td class="codetype"><span class="SCst">Pink</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Plum</span></span></td>
+<td class="codetype"><span class="SCst">Plum</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PowderBlue</span></span></td>
+<td class="codetype"><span class="SCst">PowderBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Purple</span></span></td>
+<td class="codetype"><span class="SCst">Purple</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Red</span></span></td>
+<td class="codetype"><span class="SCst">Red</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RosyBrown</span></span></td>
+<td class="codetype"><span class="SCst">RosyBrown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RoyalBlue</span></span></td>
+<td class="codetype"><span class="SCst">RoyalBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaddleBrown</span></span></td>
+<td class="codetype"><span class="SCst">SaddleBrown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Salmon</span></span></td>
+<td class="codetype"><span class="SCst">Salmon</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SandyBrown</span></span></td>
+<td class="codetype"><span class="SCst">SandyBrown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SeaGreen</span></span></td>
+<td class="codetype"><span class="SCst">SeaGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SeaShell</span></span></td>
+<td class="codetype"><span class="SCst">SeaShell</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sienna</span></span></td>
+<td class="codetype"><span class="SCst">Sienna</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Silver</span></span></td>
+<td class="codetype"><span class="SCst">Silver</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SkyBlue</span></span></td>
+<td class="codetype"><span class="SCst">SkyBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SlateBlue</span></span></td>
+<td class="codetype"><span class="SCst">SlateBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SlateGray</span></span></td>
+<td class="codetype"><span class="SCst">SlateGray</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Snow</span></span></td>
+<td class="codetype"><span class="SCst">Snow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SpringGreen</span></span></td>
+<td class="codetype"><span class="SCst">SpringGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SteelBlue</span></span></td>
+<td class="codetype"><span class="SCst">SteelBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Tan</span></span></td>
+<td class="codetype"><span class="SCst">Tan</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Teal</span></span></td>
+<td class="codetype"><span class="SCst">Teal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Thistle</span></span></td>
+<td class="codetype"><span class="SCst">Thistle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Tomato</span></span></td>
+<td class="codetype"><span class="SCst">Tomato</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Turquoise</span></span></td>
+<td class="codetype"><span class="SCst">Turquoise</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Violet</span></span></td>
+<td class="codetype"><span class="SCst">Violet</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Wheat</span></span></td>
+<td class="codetype"><span class="SCst">Wheat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">White</span></span></td>
+<td class="codetype"><span class="SCst">White</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WhiteSmoke</span></span></td>
+<td class="codetype"><span class="SCst">WhiteSmoke</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Yellow</span></span></td>
+<td class="codetype"><span class="SCst">Yellow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">YellowGreen</span></span></td>
+<td class="codetype"><span class="SCst">YellowGreen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 </table>
@@ -1425,31 +1425,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Copy</span></span></td>
+<td class="codetype"><span class="SCst">Copy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
+<td class="codetype"><span class="SCst">Alpha</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Add</span></span></td>
+<td class="codetype"><span class="SCst">Add</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sub</span></span></td>
+<td class="codetype"><span class="SCst">Sub</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SubDst</span></span></td>
+<td class="codetype"><span class="SCst">SubDst</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Min</span></span></td>
+<td class="codetype"><span class="SCst">Min</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Max</span></span></td>
+<td class="codetype"><span class="SCst">Max</span></td>
 <td></td>
 </tr>
 </table>
@@ -1541,57 +1541,57 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">biSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biWidth</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biHeight</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biPlanes</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biBitCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biCompression</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biSizeImage</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biXPelsPerMeter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biYPelsPerMeter</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biClrUsed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">biClrImportant</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1608,11 +1608,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Inside</span></span></td>
+<td class="codetype"><span class="SCst">Inside</span></td>
 <td></td>
 </tr>
 </table>
@@ -1747,15 +1747,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SolidColor</span></span></td>
+<td class="codetype"><span class="SCst">SolidColor</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Texture</span></span></td>
+<td class="codetype"><span class="SCst">Texture</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hatch</span></span></td>
+<td class="codetype"><span class="SCst">Hatch</span></td>
 <td></td>
 </tr>
 </table>
@@ -1772,19 +1772,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Intersection</span></span></td>
+<td class="codetype"><span class="SCst">Intersection</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Union</span></span></td>
+<td class="codetype"><span class="SCst">Union</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Difference</span></span></td>
+<td class="codetype"><span class="SCst">Difference</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Xor</span></span></td>
+<td class="codetype"><span class="SCst">Xor</span></td>
 <td></td>
 </tr>
 </table>
@@ -1801,15 +1801,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReverseSolution</span></span></td>
+<td class="codetype"><span class="SCst">ReverseSolution</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">StrictlySimple</span></span></td>
+<td class="codetype"><span class="SCst">StrictlySimple</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PreserveCollinear</span></span></td>
+<td class="codetype"><span class="SCst">PreserveCollinear</span></td>
 <td></td>
 </tr>
 </table>
@@ -1827,12 +1827,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 </table>
@@ -1869,15 +1869,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Miter</span></span></td>
+<td class="codetype"><span class="SCst">Miter</span></td>
 <td></td>
 </tr>
 </table>
@@ -1894,19 +1894,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EvenOdd</span></span></td>
+<td class="codetype"><span class="SCst">EvenOdd</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NonZero</span></span></td>
+<td class="codetype"><span class="SCst">NonZero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Positive</span></span></td>
+<td class="codetype"><span class="SCst">Positive</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Negative</span></span></td>
+<td class="codetype"><span class="SCst">Negative</span></td>
 <td></td>
 </tr>
 </table>
@@ -1923,11 +1923,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Subject</span></span></td>
+<td class="codetype"><span class="SCst">Subject</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clip</span></span></td>
+<td class="codetype"><span class="SCst">Clip</span></td>
 <td></td>
 </tr>
 </table>
@@ -1955,11 +1955,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Set</span></span></td>
+<td class="codetype"><span class="SCst">Set</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clear</span></span></td>
+<td class="codetype"><span class="SCst">Clear</span></td>
 <td></td>
 </tr>
 </table>
@@ -1977,27 +1977,27 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">a</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">r</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">g</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">b</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">argb</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -2514,22 +2514,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">r</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">g</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">b</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">a</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -2569,95 +2569,95 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clear</span></span></td>
+<td class="codetype"><span class="SCst">Clear</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ColorMask</span></span></td>
+<td class="codetype"><span class="SCst">ColorMask</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Transform</span></span></td>
+<td class="codetype"><span class="SCst">Transform</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DrawTriangles</span></span></td>
+<td class="codetype"><span class="SCst">DrawTriangles</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BindTexture0</span></span></td>
+<td class="codetype"><span class="SCst">BindTexture0</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ResetTexture0</span></span></td>
+<td class="codetype"><span class="SCst">ResetTexture0</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BindTextureFont</span></span></td>
+<td class="codetype"><span class="SCst">BindTextureFont</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ResetTextureFont</span></span></td>
+<td class="codetype"><span class="SCst">ResetTextureFont</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetClippingRect</span></span></td>
+<td class="codetype"><span class="SCst">SetClippingRect</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ResetClippingRect</span></span></td>
+<td class="codetype"><span class="SCst">ResetClippingRect</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">StartClippingRegion</span></span></td>
+<td class="codetype"><span class="SCst">StartClippingRegion</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EndClippingRegion</span></span></td>
+<td class="codetype"><span class="SCst">EndClippingRegion</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ResetClippingRegion</span></span></td>
+<td class="codetype"><span class="SCst">ResetClippingRegion</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetClippingRegionMode</span></span></td>
+<td class="codetype"><span class="SCst">SetClippingRegionMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UpdateFont</span></span></td>
+<td class="codetype"><span class="SCst">UpdateFont</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">StartNoOverlap</span></span></td>
+<td class="codetype"><span class="SCst">StartNoOverlap</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">StopNoOverlap</span></span></td>
+<td class="codetype"><span class="SCst">StopNoOverlap</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetBlendingMode</span></span></td>
+<td class="codetype"><span class="SCst">SetBlendingMode</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BindRenderTarget</span></span></td>
+<td class="codetype"><span class="SCst">BindRenderTarget</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">UnbindRenderTarget</span></span></td>
+<td class="codetype"><span class="SCst">UnbindRenderTarget</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ReleaseRenderTarget</span></span></td>
+<td class="codetype"><span class="SCst">ReleaseRenderTarget</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetShader</span></span></td>
+<td class="codetype"><span class="SCst">SetShader</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SetShaderParam</span></span></td>
+<td class="codetype"><span class="SCst">SetShaderParam</span></td>
 <td></td>
 </tr>
 </table>
@@ -2674,19 +2674,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Triangle</span></span></td>
+<td class="codetype"><span class="SCst">Triangle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 </table>
@@ -2703,23 +2703,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pattern</span></span></td>
+<td class="codetype"><span class="SCst">Pattern</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Dot</span></span></td>
+<td class="codetype"><span class="SCst">Dot</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Dash</span></span></td>
+<td class="codetype"><span class="SCst">Dash</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DashDot</span></span></td>
+<td class="codetype"><span class="SCst">DashDot</span></td>
 <td></td>
 </tr>
 </table>
@@ -2737,7 +2737,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">decodePixels</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -2754,11 +2754,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Blur</span></span></td>
+<td class="codetype"><span class="SCst">Blur</span></td>
 <td></td>
 </tr>
 </table>
@@ -2775,11 +2775,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Separate</span></span></td>
+<td class="codetype"><span class="SCst">Separate</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Merge</span></span></td>
+<td class="codetype"><span class="SCst">Merge</span></td>
 <td></td>
 </tr>
 </table>
@@ -2829,23 +2829,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Line</span></span></td>
+<td class="codetype"><span class="SCst">Line</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Arc</span></span></td>
+<td class="codetype"><span class="SCst">Arc</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bezier1</span></span></td>
+<td class="codetype"><span class="SCst">Bezier1</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bezier2</span></span></td>
+<td class="codetype"><span class="SCst">Bezier2</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Curve</span></span></td>
+<td class="codetype"><span class="SCst">Curve</span></td>
 <td></td>
 </tr>
 </table>
@@ -2863,37 +2863,37 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">ascent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">descent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">underlinePos</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">underlineSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceBold</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceItalic</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2908,7 +2908,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -2928,7 +2928,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -3159,19 +3159,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Regular</span></span></td>
+<td class="codetype"><span class="SCst">Regular</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bold</span></span></td>
+<td class="codetype"><span class="SCst">Bold</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Italic</span></span></td>
+<td class="codetype"><span class="SCst">Italic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BoldItalic</span></span></td>
+<td class="codetype"><span class="SCst">BoldItalic</span></td>
 <td></td>
 </tr>
 </table>
@@ -3347,17 +3347,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bpp</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -3367,22 +3367,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">curX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">curY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nextY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -3405,37 +3405,37 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">atlasIndex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">advanceX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">advanceY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">shiftX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">shiftY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -3452,147 +3452,147 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Dot</span></span></td>
+<td class="codetype"><span class="SCst">Dot</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Horizontal</span></span></td>
+<td class="codetype"><span class="SCst">Horizontal</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorizontalLight</span></span></td>
+<td class="codetype"><span class="SCst">HorizontalLight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorizontalNarrow</span></span></td>
+<td class="codetype"><span class="SCst">HorizontalNarrow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Vertical</span></span></td>
+<td class="codetype"><span class="SCst">Vertical</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VerticalLight</span></span></td>
+<td class="codetype"><span class="SCst">VerticalLight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VerticalNarrow</span></span></td>
+<td class="codetype"><span class="SCst">VerticalNarrow</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SolidDiamond</span></span></td>
+<td class="codetype"><span class="SCst">SolidDiamond</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">OutlinedDiamond</span></span></td>
+<td class="codetype"><span class="SCst">OutlinedDiamond</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HorizontalDark</span></span></td>
+<td class="codetype"><span class="SCst">HorizontalDark</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">VerticalDark</span></span></td>
+<td class="codetype"><span class="SCst">VerticalDark</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Grid</span></span></td>
+<td class="codetype"><span class="SCst">Grid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GridLarge</span></span></td>
+<td class="codetype"><span class="SCst">GridLarge</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GridDotted</span></span></td>
+<td class="codetype"><span class="SCst">GridDotted</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Cross</span></span></td>
+<td class="codetype"><span class="SCst">Cross</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CrossLarge</span></span></td>
+<td class="codetype"><span class="SCst">CrossLarge</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent5</span></span></td>
+<td class="codetype"><span class="SCst">Percent5</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent10</span></span></td>
+<td class="codetype"><span class="SCst">Percent10</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent20</span></span></td>
+<td class="codetype"><span class="SCst">Percent20</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent25</span></span></td>
+<td class="codetype"><span class="SCst">Percent25</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent30</span></span></td>
+<td class="codetype"><span class="SCst">Percent30</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent40</span></span></td>
+<td class="codetype"><span class="SCst">Percent40</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent50</span></span></td>
+<td class="codetype"><span class="SCst">Percent50</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent60</span></span></td>
+<td class="codetype"><span class="SCst">Percent60</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent70</span></span></td>
+<td class="codetype"><span class="SCst">Percent70</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent75</span></span></td>
+<td class="codetype"><span class="SCst">Percent75</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent80</span></span></td>
+<td class="codetype"><span class="SCst">Percent80</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Percent90</span></span></td>
+<td class="codetype"><span class="SCst">Percent90</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CheckBoard</span></span></td>
+<td class="codetype"><span class="SCst">CheckBoard</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CheckBoardLarge</span></span></td>
+<td class="codetype"><span class="SCst">CheckBoardLarge</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Weave</span></span></td>
+<td class="codetype"><span class="SCst">Weave</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DiagonalForward</span></span></td>
+<td class="codetype"><span class="SCst">DiagonalForward</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DiagonalForwardLight</span></span></td>
+<td class="codetype"><span class="SCst">DiagonalForwardLight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DiagonalBackward</span></span></td>
+<td class="codetype"><span class="SCst">DiagonalBackward</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DiagonalBackwardLight</span></span></td>
+<td class="codetype"><span class="SCst">DiagonalBackwardLight</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DiagonalCross</span></span></td>
+<td class="codetype"><span class="SCst">DiagonalCross</span></td>
 <td></td>
 </tr>
 </table>
@@ -3664,22 +3664,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>The width of the image. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>The height of the image. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width8</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>The width, in bytes. </td>
 </tr>
 <tr>
@@ -3689,12 +3689,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bpp</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td>Bits per pixel. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">bpp8</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td>Bytes per pixel. </td>
 </tr>
 <tr>
@@ -3954,27 +3954,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Red</span></span></td>
+<td class="codetype"><span class="SCst">Red</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Green</span></span></td>
+<td class="codetype"><span class="SCst">Green</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
+<td class="codetype"><span class="SCst">Blue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
+<td class="codetype"><span class="SCst">Alpha</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RGB</span></span></td>
+<td class="codetype"><span class="SCst">RGB</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RGBA</span></span></td>
+<td class="codetype"><span class="SCst">RGBA</span></td>
 <td></td>
 </tr>
 </table>
@@ -3991,23 +3991,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Color</span></span></td>
+<td class="codetype"><span class="SCst">Color</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MinRGB</span></span></td>
+<td class="codetype"><span class="SCst">MinRGB</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MaxRGB</span></span></td>
+<td class="codetype"><span class="SCst">MaxRGB</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MeanRGB</span></span></td>
+<td class="codetype"><span class="SCst">MeanRGB</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
+<td class="codetype"><span class="SCst">Alpha</span></td>
 <td></td>
 </tr>
 </table>
@@ -4024,51 +4024,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueVert</span></span></td>
+<td class="codetype"><span class="SCst">HueVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueHorz</span></span></td>
+<td class="codetype"><span class="SCst">HueHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationVert</span></span></td>
+<td class="codetype"><span class="SCst">SaturationVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationHorz</span></span></td>
+<td class="codetype"><span class="SCst">SaturationHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightnessVert</span></span></td>
+<td class="codetype"><span class="SCst">LightnessVert</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LightnessHorz</span></span></td>
+<td class="codetype"><span class="SCst">LightnessHorz</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueSaturation</span></span></td>
+<td class="codetype"><span class="SCst">HueSaturation</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HueLightness</span></span></td>
+<td class="codetype"><span class="SCst">HueLightness</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SaturationLightness</span></span></td>
+<td class="codetype"><span class="SCst">SaturationLightness</span></td>
 <td>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GreenBlue</span></span></td>
+<td class="codetype"><span class="SCst">GreenBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedBlue</span></span></td>
+<td class="codetype"><span class="SCst">RedBlue</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RedGreen</span></span></td>
+<td class="codetype"><span class="SCst">RedGreen</span></td>
 <td></td>
 </tr>
 </table>
@@ -4086,99 +4086,99 @@
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur3x3A</span></span></td>
+<td class="codetype"><span class="SCst">GaussianBlur3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur3x3B</span></span></td>
+<td class="codetype"><span class="SCst">GaussianBlur3x3B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur5x5A</span></span></td>
+<td class="codetype"><span class="SCst">GaussianBlur5x5A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BoxBlur3x3A</span></span></td>
+<td class="codetype"><span class="SCst">BoxBlur3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BoxBlur5x5A</span></span></td>
+<td class="codetype"><span class="SCst">BoxBlur5x5A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sharpen3x3A</span></span></td>
+<td class="codetype"><span class="SCst">Sharpen3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Sharpen3x3B</span></span></td>
+<td class="codetype"><span class="SCst">Sharpen3x3B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Soften3x3A</span></span></td>
+<td class="codetype"><span class="SCst">Soften3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3A</span></span></td>
+<td class="codetype"><span class="SCst">EmbossLeft3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3B</span></span></td>
+<td class="codetype"><span class="SCst">EmbossLeft3x3B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3C</span></span></td>
+<td class="codetype"><span class="SCst">EmbossLeft3x3C</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3A</span></span></td>
+<td class="codetype"><span class="SCst">EmbossRight3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3B</span></span></td>
+<td class="codetype"><span class="SCst">EmbossRight3x3B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3C</span></span></td>
+<td class="codetype"><span class="SCst">EmbossRight3x3C</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3A</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3B</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3B</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3C</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3C</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3D</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3D</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3E</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3E</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3F</span></span></td>
+<td class="codetype"><span class="SCst">EdgeDetect3x3F</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SobelHorizontal3x3A</span></span></td>
+<td class="codetype"><span class="SCst">SobelHorizontal3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SobelVertical3x3A</span></span></td>
+<td class="codetype"><span class="SCst">SobelVertical3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PrevitHorizontal3x3A</span></span></td>
+<td class="codetype"><span class="SCst">PrevitHorizontal3x3A</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PrevitVertical3x3A</span></span></td>
+<td class="codetype"><span class="SCst">PrevitVertical3x3A</span></td>
 <td></td>
 </tr>
 </table>
@@ -4195,11 +4195,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Copy</span></span></td>
+<td class="codetype"><span class="SCst">Copy</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AlphaBlend</span></span></td>
+<td class="codetype"><span class="SCst">AlphaBlend</span></td>
 <td></td>
 </tr>
 </table>
@@ -4216,35 +4216,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Raw</span></span></td>
+<td class="codetype"><span class="SCst">Raw</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bilinear</span></span></td>
+<td class="codetype"><span class="SCst">Bilinear</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bicubic</span></span></td>
+<td class="codetype"><span class="SCst">Bicubic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Gaussian</span></span></td>
+<td class="codetype"><span class="SCst">Gaussian</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Quadratic</span></span></td>
+<td class="codetype"><span class="SCst">Quadratic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hermite</span></span></td>
+<td class="codetype"><span class="SCst">Hermite</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Hamming</span></span></td>
+<td class="codetype"><span class="SCst">Hamming</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Catrom</span></span></td>
+<td class="codetype"><span class="SCst">Catrom</span></td>
 <td></td>
 </tr>
 </table>
@@ -4261,15 +4261,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">T90</span></span></td>
+<td class="codetype"><span class="SCst">T90</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">T180</span></span></td>
+<td class="codetype"><span class="SCst">T180</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">T270</span></span></td>
+<td class="codetype"><span class="SCst">T270</span></td>
 <td></td>
 </tr>
 </table>
@@ -5057,11 +5057,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span></span></td>
+<td class="codetype"><span class="SCst">Pixel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Linear</span></span></td>
+<td class="codetype"><span class="SCst">Linear</span></td>
 <td></td>
 </tr>
 </table>
@@ -5078,23 +5078,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bevel</span></span></td>
+<td class="codetype"><span class="SCst">Bevel</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Miter</span></span></td>
+<td class="codetype"><span class="SCst">Miter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MiterBevel</span></span></td>
+<td class="codetype"><span class="SCst">MiterBevel</span></td>
 <td></td>
 </tr>
 </table>
@@ -5149,7 +5149,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">quality</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
+<td class="codetype"><span class="STpe">u8</span></td>
 <td>Encoding quality between 1 and 100. </td>
 </tr>
 </table>
@@ -5203,31 +5203,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Triangle</span></span></td>
+<td class="codetype"><span class="SCst">Triangle</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
+<td class="codetype"><span class="SCst">Round</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
+<td class="codetype"><span class="SCst">Square</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ArrowAnchor</span></span></td>
+<td class="codetype"><span class="SCst">ArrowAnchor</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">SquareAnchor</span></span></td>
+<td class="codetype"><span class="SCst">SquareAnchor</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RoundAnchor</span></span></td>
+<td class="codetype"><span class="SCst">RoundAnchor</span></td>
 <td></td>
 </tr>
 </table>
@@ -5260,17 +5260,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isClosed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isDirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">serial</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5280,12 +5280,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isPolyOnly</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isFlatten</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5813,15 +5813,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
+<td class="codetype"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Antialiased</span></span></td>
+<td class="codetype"><span class="SCst">Antialiased</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
@@ -5838,11 +5838,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Draft</span></span></td>
+<td class="codetype"><span class="SCst">Draft</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Normal</span></span></td>
+<td class="codetype"><span class="SCst">Normal</span></td>
 <td></td>
 </tr>
 </table>
@@ -5895,7 +5895,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">clippingRectOn</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5933,7 +5933,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">fake</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5993,27 +5993,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lastTexture0Handle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasTextureFont</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">drawingBegin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">overlapMode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">canSetTexture0</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -7470,7 +7470,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7500,32 +7500,32 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capStartScaleX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capStartScaleY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capEndScaleX</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">capEndScaleY</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">joinMiterLimit</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">plotOffset</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -7620,19 +7620,19 @@
 <p>Desribe the layout format of one image pixel. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BGR8</span></span></td>
+<td class="codetype"><span class="SCst">BGR8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BGRA8</span></span></td>
+<td class="codetype"><span class="SCst">BGRA8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RGB8</span></span></td>
+<td class="codetype"><span class="SCst">RGB8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">RGBA8</span></span></td>
+<td class="codetype"><span class="SCst">RGBA8</span></td>
 <td></td>
 </tr>
 </table>
@@ -7748,7 +7748,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">filtering</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -7996,7 +7996,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">interior</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8019,22 +8019,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isClockwise</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isConvex</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">area</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">totalLen</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8246,7 +8246,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">vertexbuffer</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8281,7 +8281,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">whiteTexture</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8321,7 +8321,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">overlapMode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -8858,7 +8858,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">handle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8868,17 +8868,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">depthStencil</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paintAlpha</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">paintAlphaIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -8906,12 +8906,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -8929,7 +8929,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">slice</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8939,22 +8939,22 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">hasFontStyle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isSpace</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">isEol</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">colorIdx</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9013,7 +9013,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dirty</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td>If dirty, <code class="incode">Compute</code>. </td>
 </tr>
 </table>
@@ -9227,7 +9227,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">lineGap</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9268,47 +9268,47 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">handle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mvp</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">mdl</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">boundRect</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">textureRect</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">uvMode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">copyMode</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">textureW</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">textureH</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 </table>
@@ -9331,12 +9331,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">radius</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">axis</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
+<td class="codetype"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 </table>
@@ -9371,19 +9371,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
+<td class="codetype"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">WordWrap</span></span></td>
+<td class="codetype"><span class="SCst">WordWrap</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Clip</span></span></td>
+<td class="codetype"><span class="SCst">Clip</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">DontAdaptSingleLineHeight</span></span></td>
+<td class="codetype"><span class="SCst">DontAdaptSingleLineHeight</span></td>
 <td></td>
 </tr>
 </table>
@@ -9400,19 +9400,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
+<td class="codetype"><span class="SCst">Center</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
+<td class="codetype"><span class="SCst">Left</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
+<td class="codetype"><span class="SCst">Right</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Justify</span></span></td>
+<td class="codetype"><span class="SCst">Justify</span></td>
 <td></td>
 </tr>
 </table>
@@ -9430,22 +9430,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">ascent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum size above baseline. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">descent</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum size below baseline. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>ascent + descent. </td>
 </tr>
 </table>
@@ -9596,15 +9596,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
+<td class="codetype"><span class="SCst">Center</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
+<td class="codetype"><span class="SCst">Top</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
+<td class="codetype"><span class="SCst">Bottom</span></td>
 <td></td>
 </tr>
 </table>
@@ -9622,7 +9622,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">handle</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9632,17 +9632,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">width</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">height</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">valid</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -9771,7 +9771,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">fullname</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
+<td class="codetype"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9786,17 +9786,17 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceBoldDiv</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceItalic</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">forceBold</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
@@ -9996,15 +9996,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Fill</span></span></td>
+<td class="codetype"><span class="SCst">Fill</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">FillSubRect</span></span></td>
+<td class="codetype"><span class="SCst">FillSubRect</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Tile</span></span></td>
+<td class="codetype"><span class="SCst">Tile</span></td>
 <td></td>
 </tr>
 </table>
@@ -10021,15 +10021,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
+<td class="codetype"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Underline</span></span></td>
+<td class="codetype"><span class="SCst">Underline</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">Strikeout</span></span></td>
+<td class="codetype"><span class="SCst">Strikeout</span></td>
 <td></td>
 </tr>
 </table>
@@ -10057,7 +10057,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">color</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -10067,7 +10067,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">aanum</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>

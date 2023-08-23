@@ -220,8 +220,8 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     uint32_t    c, offset;
     Utf8        result;
 
-    result += getColor(mode, SyntaxColor::SyntaxCode);
-    pz = Utf8::decodeUtf8(pz, c, offset);
+    bool hasCode = false;
+    pz           = Utf8::decodeUtf8(pz, c, offset);
     while (c)
     {
         Utf8 identifier;
@@ -546,16 +546,23 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             }
             else
             {
+                hasCode = true;
                 result += identifier;
             }
 
             continue;
         }
 
+        hasCode = true;
         result += c;
         pz = Utf8::decodeUtf8(pz, c, offset);
     }
 
-    result += getColor(mode, SyntaxColor::SyntaxDefault);
+    if (hasCode)
+    {
+        result.insert(0, getColor(mode, SyntaxColor::SyntaxCode));
+        result += getColor(mode, SyntaxColor::SyntaxDefault);
+    }
+
     return result;
 }

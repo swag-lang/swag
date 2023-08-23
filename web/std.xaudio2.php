@@ -362,393 +362,393 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XAudio2_FORMAT_EXTENSIBLE" class="codetype"><span class="SCde"><span class="SCst">FORMAT_EXTENSIBLE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td id="XAudio2_FORMAT_EXTENSIBLE" class="codetype"><span class="SCst">FORMAT_EXTENSIBLE</span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor1" class="codetype"><span class="SCde"><span class="SCst">Processor1</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor1" class="codetype"><span class="SCst">Processor1</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor10" class="codetype"><span class="SCde"><span class="SCst">Processor10</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor10" class="codetype"><span class="SCst">Processor10</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor11" class="codetype"><span class="SCde"><span class="SCst">Processor11</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor11" class="codetype"><span class="SCst">Processor11</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor12" class="codetype"><span class="SCde"><span class="SCst">Processor12</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor12" class="codetype"><span class="SCst">Processor12</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor13" class="codetype"><span class="SCde"><span class="SCst">Processor13</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor13" class="codetype"><span class="SCst">Processor13</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor14" class="codetype"><span class="SCde"><span class="SCst">Processor14</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor14" class="codetype"><span class="SCst">Processor14</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor15" class="codetype"><span class="SCde"><span class="SCst">Processor15</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor15" class="codetype"><span class="SCst">Processor15</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor16" class="codetype"><span class="SCde"><span class="SCst">Processor16</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor16" class="codetype"><span class="SCst">Processor16</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor17" class="codetype"><span class="SCde"><span class="SCst">Processor17</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor17" class="codetype"><span class="SCst">Processor17</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor18" class="codetype"><span class="SCde"><span class="SCst">Processor18</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor18" class="codetype"><span class="SCst">Processor18</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor19" class="codetype"><span class="SCde"><span class="SCst">Processor19</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor19" class="codetype"><span class="SCst">Processor19</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor2" class="codetype"><span class="SCde"><span class="SCst">Processor2</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor2" class="codetype"><span class="SCst">Processor2</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor20" class="codetype"><span class="SCde"><span class="SCst">Processor20</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor20" class="codetype"><span class="SCst">Processor20</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor21" class="codetype"><span class="SCde"><span class="SCst">Processor21</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor21" class="codetype"><span class="SCst">Processor21</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor22" class="codetype"><span class="SCde"><span class="SCst">Processor22</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor22" class="codetype"><span class="SCst">Processor22</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor23" class="codetype"><span class="SCde"><span class="SCst">Processor23</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor23" class="codetype"><span class="SCst">Processor23</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor24" class="codetype"><span class="SCde"><span class="SCst">Processor24</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor24" class="codetype"><span class="SCst">Processor24</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor25" class="codetype"><span class="SCde"><span class="SCst">Processor25</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor25" class="codetype"><span class="SCst">Processor25</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor26" class="codetype"><span class="SCde"><span class="SCst">Processor26</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor26" class="codetype"><span class="SCst">Processor26</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor27" class="codetype"><span class="SCde"><span class="SCst">Processor27</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor27" class="codetype"><span class="SCst">Processor27</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor28" class="codetype"><span class="SCde"><span class="SCst">Processor28</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor28" class="codetype"><span class="SCst">Processor28</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor29" class="codetype"><span class="SCde"><span class="SCst">Processor29</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor29" class="codetype"><span class="SCst">Processor29</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor3" class="codetype"><span class="SCde"><span class="SCst">Processor3</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor3" class="codetype"><span class="SCst">Processor3</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor30" class="codetype"><span class="SCde"><span class="SCst">Processor30</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor30" class="codetype"><span class="SCst">Processor30</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor31" class="codetype"><span class="SCde"><span class="SCst">Processor31</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor31" class="codetype"><span class="SCst">Processor31</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor32" class="codetype"><span class="SCde"><span class="SCst">Processor32</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor32" class="codetype"><span class="SCst">Processor32</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor4" class="codetype"><span class="SCde"><span class="SCst">Processor4</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor4" class="codetype"><span class="SCst">Processor4</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor5" class="codetype"><span class="SCde"><span class="SCst">Processor5</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor5" class="codetype"><span class="SCst">Processor5</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor6" class="codetype"><span class="SCde"><span class="SCst">Processor6</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor6" class="codetype"><span class="SCst">Processor6</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor7" class="codetype"><span class="SCde"><span class="SCst">Processor7</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor7" class="codetype"><span class="SCst">Processor7</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor8" class="codetype"><span class="SCde"><span class="SCst">Processor8</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor8" class="codetype"><span class="SCst">Processor8</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_Processor9" class="codetype"><span class="SCde"><span class="SCst">Processor9</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_Processor9" class="codetype"><span class="SCst">Processor9</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_X3DAUDIO_HANDLE_BYTESIZE" class="codetype"><span class="SCde"><span class="SCst">X3DAUDIO_HANDLE_BYTESIZE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_X3DAUDIO_HANDLE_BYTESIZE" class="codetype"><span class="SCst">X3DAUDIO_HANDLE_BYTESIZE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_X3DAUDIO_SPEED_OF_SOUND" class="codetype"><span class="SCde"><span class="SCst">X3DAUDIO_SPEED_OF_SOUND</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_X3DAUDIO_SPEED_OF_SOUND" class="codetype"><span class="SCst">X3DAUDIO_SPEED_OF_SOUND</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_1024_QUANTUM" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_1024_QUANTUM</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_1024_QUANTUM" class="codetype"><span class="SCst">XAUDIO2_1024_QUANTUM</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in XAudio2Create to specify nondefault processing quantum of 21.33 ms (1024 samples at 48KHz). </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_ANY_PROCESSOR" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_ANY_PROCESSOR</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_ANY_PROCESSOR" class="codetype"><span class="SCst">XAUDIO2_ANY_PROCESSOR</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_COMMIT_ALL" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_COMMIT_ALL</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_COMMIT_ALL" class="codetype"><span class="SCst">XAUDIO2_COMMIT_ALL</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Used in IXAudio2::CommitChanges. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_COMMIT_NOW" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_COMMIT_NOW</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_COMMIT_NOW" class="codetype"><span class="SCst">XAUDIO2_COMMIT_NOW</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Numeric values with special meanings Used as an OperationSet argument. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_DEBUG_ENGINE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_DEBUG_ENGINE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_DEBUG_ENGINE" class="codetype"><span class="SCst">XAUDIO2_DEBUG_ENGINE</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in XAudio2Create. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_CHANNELS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_DEFAULT_CHANNELS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_DEFAULT_CHANNELS" class="codetype"><span class="SCst">XAUDIO2_DEFAULT_CHANNELS</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Used in CreateMasteringVoice. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_FREQ_RATIO" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_DEFAULT_FREQ_RATIO</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_DEFAULT_FREQ_RATIO" class="codetype"><span class="SCst">XAUDIO2_DEFAULT_FREQ_RATIO</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Default MaxFrequencyRatio argument. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_DEFAULT_SAMPLERATE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_DEFAULT_SAMPLERATE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_DEFAULT_SAMPLERATE" class="codetype"><span class="SCst">XAUDIO2_DEFAULT_SAMPLERATE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Used in CreateMasteringVoice. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_END_OF_STREAM" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_END_OF_STREAM</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_END_OF_STREAM" class="codetype"><span class="SCst">XAUDIO2_END_OF_STREAM</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in XAUDIO2_BUFFER.Flags. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_INVALID_OPSET" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_INVALID_OPSET</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_INVALID_OPSET" class="codetype"><span class="SCst">XAUDIO2_INVALID_OPSET</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Not allowed for OperationSet arguments. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_API_CALLS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_API_CALLS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_API_CALLS" class="codetype"><span class="SCst">XAUDIO2_LOG_API_CALLS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Public API function entries and exits. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_DETAIL" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_DETAIL</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_DETAIL" class="codetype"><span class="SCst">XAUDIO2_LOG_DETAIL</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>More detailed chit-chat. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_ERRORS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_ERRORS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_ERRORS" class="codetype"><span class="SCst">XAUDIO2_LOG_ERRORS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Values for the TraceMask and BreakMask bitmaps.  Only ERRORS and WARNINGS are valid in BreakMask.  WARNINGS implies ERRORS, DETAIL implies INFO, and FUNC_CALLS implies API_CALLS.  By default, TraceMask is ERRORS and WARNINGS and all the other settings are zero. For handled errors with serious effects. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_FUNC_CALLS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_FUNC_CALLS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_FUNC_CALLS" class="codetype"><span class="SCst">XAUDIO2_LOG_FUNC_CALLS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Internal function entries and exits. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_INFO" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_INFO</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_INFO" class="codetype"><span class="SCst">XAUDIO2_LOG_INFO</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Informational chit-chat (e.g. state changes). </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_LOCKS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_LOCKS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_LOCKS" class="codetype"><span class="SCst">XAUDIO2_LOG_LOCKS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Usage of critical sections and mutexes. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_MEMORY" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_MEMORY</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_MEMORY" class="codetype"><span class="SCst">XAUDIO2_LOG_MEMORY</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Memory heap usage information. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_STREAMING" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_STREAMING</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_STREAMING" class="codetype"><span class="SCst">XAUDIO2_LOG_STREAMING</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Audio streaming information. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_TIMING" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_TIMING</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_TIMING" class="codetype"><span class="SCst">XAUDIO2_LOG_TIMING</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Delays detected and other timing data. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOG_WARNINGS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOG_WARNINGS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOG_WARNINGS" class="codetype"><span class="SCst">XAUDIO2_LOG_WARNINGS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>For handled errors that may be recoverable. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_LOOP_INFINITE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_LOOP_INFINITE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_LOOP_INFINITE" class="codetype"><span class="SCst">XAUDIO2_LOOP_INFINITE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Used in XAUDIO2_BUFFER.LoopCount. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_AUDIO_CHANNELS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_AUDIO_CHANNELS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_AUDIO_CHANNELS" class="codetype"><span class="SCst">XAUDIO2_MAX_AUDIO_CHANNELS</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum channels in an audio stream. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_BUFFERS_SYSTEM" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_BUFFERS_SYSTEM</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_BUFFERS_SYSTEM" class="codetype"><span class="SCst">XAUDIO2_MAX_BUFFERS_SYSTEM</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum buffers allowed for system threads (Xbox 360 only). </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_BUFFER_BYTES" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_BUFFER_BYTES</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_BUFFER_BYTES" class="codetype"><span class="SCst">XAUDIO2_MAX_BUFFER_BYTES</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Maximum bytes allowed in a source buffer. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_FILTER_FREQUENCY" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_FILTER_FREQUENCY</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_FILTER_FREQUENCY" class="codetype"><span class="SCst">XAUDIO2_MAX_FILTER_FREQUENCY</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum XAUDIO2_FILTER_PARAMETERS.Frequency. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_FILTER_ONEOVERQ" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_FILTER_ONEOVERQ</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_FILTER_ONEOVERQ" class="codetype"><span class="SCst">XAUDIO2_MAX_FILTER_ONEOVERQ</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum XAUDIO2_FILTER_PARAMETERS.OneOverQ. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_FREQ_RATIO" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_FREQ_RATIO</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_FREQ_RATIO" class="codetype"><span class="SCst">XAUDIO2_MAX_FREQ_RATIO</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum MaxFrequencyRatio argument. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_INSTANCES" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_INSTANCES</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_INSTANCES" class="codetype"><span class="SCst">XAUDIO2_MAX_INSTANCES</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum simultaneous XAudio2 objects on Xbox 360. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_LOOP_COUNT" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_LOOP_COUNT</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_LOOP_COUNT" class="codetype"><span class="SCst">XAUDIO2_MAX_LOOP_COUNT</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum non-infinite XAUDIO2_BUFFER.LoopCount. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_QUEUED_BUFFERS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_QUEUED_BUFFERS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_QUEUED_BUFFERS" class="codetype"><span class="SCst">XAUDIO2_MAX_QUEUED_BUFFERS</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum buffers allowed in a voice queue. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_SAMPLE_RATE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_SAMPLE_RATE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_SAMPLE_RATE" class="codetype"><span class="SCst">XAUDIO2_MAX_SAMPLE_RATE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Maximum audio sample rate supported. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MAX_VOLUME_LEVEL" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MAX_VOLUME_LEVEL</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_MAX_VOLUME_LEVEL" class="codetype"><span class="SCst">XAUDIO2_MAX_VOLUME_LEVEL</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Maximum acceptable volume level (2^24). </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MIN_FREQ_RATIO" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MIN_FREQ_RATIO</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_XAUDIO2_MIN_FREQ_RATIO" class="codetype"><span class="SCst">XAUDIO2_MIN_FREQ_RATIO</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td>Minimum SetFrequencyRatio argument. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_MIN_SAMPLE_RATE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_MIN_SAMPLE_RATE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_MIN_SAMPLE_RATE" class="codetype"><span class="SCst">XAUDIO2_MIN_SAMPLE_RATE</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Minimum audio sample rate supported. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_NO_LOOP_REGION" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_NO_LOOP_REGION</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td id="XAudio2_XAUDIO2_NO_LOOP_REGION" class="codetype"><span class="SCst">XAUDIO2_NO_LOOP_REGION</span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td>Used in XAUDIO2_BUFFER.LoopCount. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT" class="codetype"><span class="SCst">XAUDIO2_NO_VIRTUAL_AUDIO_CLIENT</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in CreateMasteringVoice to create a virtual audio client. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_PLAY_TAILS" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_PLAY_TAILS</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_PLAY_TAILS" class="codetype"><span class="SCst">XAUDIO2_PLAY_TAILS</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in IXAudio2SourceVoice::Stop. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_SEND_USEFILTER" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_SEND_USEFILTER</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_SEND_USEFILTER" class="codetype"><span class="SCst">XAUDIO2_SEND_USEFILTER</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in XAUDIO2_SEND_DESCRIPTOR.Flags. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_STOP_ENGINE_WHEN_IDLE" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_STOP_ENGINE_WHEN_IDLE</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_STOP_ENGINE_WHEN_IDLE" class="codetype"><span class="SCst">XAUDIO2_STOP_ENGINE_WHEN_IDLE</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in XAudio2Create to force the engine to Stop when no source voices are Started, and Start when a voice is Started. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOPITCH" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_VOICE_NOPITCH</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_VOICE_NOPITCH" class="codetype"><span class="SCst">XAUDIO2_VOICE_NOPITCH</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in IXAudio2::CreateSourceVoice. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOSAMPLESPLAYED" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_VOICE_NOSAMPLESPLAYED</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_VOICE_NOSAMPLESPLAYED" class="codetype"><span class="SCst">XAUDIO2_VOICE_NOSAMPLESPLAYED</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in IXAudio2SourceVoice::GetState. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_VOICE_NOSRC" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_VOICE_NOSRC</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_VOICE_NOSRC" class="codetype"><span class="SCst">XAUDIO2_VOICE_NOSRC</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in IXAudio2::CreateSourceVoice. </td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_VOICE_USEFILTER" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_VOICE_USEFILTER</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_XAUDIO2_VOICE_USEFILTER" class="codetype"><span class="SCst">XAUDIO2_VOICE_USEFILTER</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Used in IXAudio2::CreateSource/SubmixVoice. </td>
 </tr>
 </table>
@@ -765,27 +765,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XAudio2_FLOAT32" class="codetype"><span class="SCde"><span class="SCst">FLOAT32</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td id="XAudio2_FLOAT32" class="codetype"><span class="SCst">FLOAT32</span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_UINT32" class="codetype"><span class="SCde"><span class="SCst">UINT32</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td id="XAudio2_UINT32" class="codetype"><span class="SCst">UINT32</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_UINT64" class="codetype"><span class="SCde"><span class="SCst">UINT64</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td id="XAudio2_UINT64" class="codetype"><span class="SCst">UINT64</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_X3DAUDIO_HANDLE" class="codetype"><span class="SCde"><span class="SCst">X3DAUDIO_HANDLE</span></span></td>
+<td id="XAudio2_X3DAUDIO_HANDLE" class="codetype"><span class="SCst">X3DAUDIO_HANDLE</span></td>
 <td class="codetype"><span class="SCde">[<span class="SNum">20</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XAudio2_XAUDIO2_PROCESSOR" class="codetype"><span class="SCde"><span class="SCst">XAUDIO2_PROCESSOR</span></span></td>
+<td id="XAudio2_XAUDIO2_PROCESSOR" class="codetype"><span class="SCst">XAUDIO2_PROCESSOR</span></td>
 <td class="codetype"><span class="SCde"><span class="SCst">XAudio2</span>.<span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span></span></td>
 <td></td>
 </tr>
@@ -803,51 +803,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Other</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Other</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_ForegroundOnlyMedia</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_ForegroundOnlyMedia</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_BackgroundCapableMedia</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_BackgroundCapableMedia</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Communications</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Communications</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Alerts</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Alerts</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_SoundEffects</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_SoundEffects</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_GameEffects</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_GameEffects</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_GameMedia</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_GameMedia</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_GameChat</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_GameChat</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Speech</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Speech</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Movie</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Movie</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCategory_Media</span></span></td>
+<td class="codetype"><span class="SCst">AudioCategory_Media</span></td>
 <td></td>
 </tr>
 </table>
@@ -1362,37 +1362,37 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">wFormatTag</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nChannels</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nSamplesPerSec</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nAvgBytesPerSec</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">nBlockAlign</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">wBitsPerSample</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">cbSize</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
+<td class="codetype"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
@@ -1420,7 +1420,7 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">dwChannelMask</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1456,12 +1456,12 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">flags</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Either 0 or XAUDIO2_END_OF_STREAM. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">audioBytes</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Size of the audio data buffer in bytes. </td>
 </tr>
 <tr>
@@ -1471,27 +1471,27 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">playBegin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>First sample in this buffer to be played. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">playLength</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Length of the region to be played in samples, or 0 to play the whole buffer. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">loopBegin</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>First sample of the region to be looped. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">loopLength</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Length of the desired loop region in samples, or 0 to loop the entire buffer. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">loopCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td>Number of times to repeat the loop region, or XAUDIO2_LOOP_INFINITE to loop forever. </td>
 </tr>
 <tr>
@@ -1518,8 +1518,8 @@
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">PacketCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">PacketCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1537,32 +1537,32 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">traceMask</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">breakMask</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">logThreadID</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">logFileline</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">logFunctionName</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">logTiming</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
+<td class="codetype"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1596,12 +1596,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">frequency</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">oneOverQ</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
+<td class="codetype"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1619,27 +1619,27 @@
 <p>Used in XAUDIO2_FILTER_PARAMETERS below. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LowPassFilter</span></span></td>
+<td class="codetype"><span class="SCst">LowPassFilter</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">BandPassFilter</span></span></td>
+<td class="codetype"><span class="SCst">BandPassFilter</span></td>
 <td>Attenuates frequencies above the cutoff frequency (state-variable filter). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HighPassFilter</span></span></td>
+<td class="codetype"><span class="SCst">HighPassFilter</span></td>
 <td>Attenuates frequencies outside a given range      (state-variable filter). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">NotchFilter</span></span></td>
+<td class="codetype"><span class="SCst">NotchFilter</span></td>
 <td>Attenuates frequencies below the cutoff frequency (state-variable filter). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">LowPassOnePoleFilter</span></span></td>
+<td class="codetype"><span class="SCst">LowPassOnePoleFilter</span></td>
 <td>Attenuates frequencies inside a given range       (state-variable filter). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">HighPassOnePoleFilter</span></span></td>
+<td class="codetype"><span class="SCst">HighPassOnePoleFilter</span></td>
 <td>Attenuates frequencies above the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect)  Attenuates frequencies below the cutoff frequency (one-pole filter, XAUDIO2_FILTER_PARAMETERS.OneOverQ has no effect). </td>
 </tr>
 </table>
@@ -1656,73 +1656,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">AudioCyclesSinceLastQuery</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="SCst">AudioCyclesSinceLastQuery</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TotalCyclesSinceLastQuery</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="SCst">TotalCyclesSinceLastQuery</span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MinimumCyclesPerQuantum</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">MinimumCyclesPerQuantum</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MaximumCyclesPerQuantum</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">MaximumCyclesPerQuantum</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">MemoryUsageInBytes</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">MemoryUsageInBytes</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">CurrentLatencyInSamples</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">CurrentLatencyInSamples</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">GlitchesSinceEngineStarted</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">GlitchesSinceEngineStarted</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveSourceVoiceCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveSourceVoiceCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">TotalSourceVoiceCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">TotalSourceVoiceCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveSubmixVoiceCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveSubmixVoiceCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveResamplerCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveResamplerCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveMatrixMixCount</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveMatrixMixCount</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveXmaSourceVoices</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveXmaSourceVoices</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SCst">ActiveXmaStreams</span></span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="SCst">ActiveXmaStreams</span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1740,7 +1740,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">flags</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1763,22 +1763,22 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">creationFlags</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">activeFlags</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">inputChannels</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">inputSampleRate</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
@@ -1796,7 +1796,7 @@
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">sendCount</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
@@ -1824,12 +1824,12 @@
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">buffersQueued</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
+<td class="codetype"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">samplesPlayed</span></td>
-<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
+<td class="codetype"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
