@@ -202,15 +202,12 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
-<blockquote>
-<p>There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </p>
-</blockquote>
 <p style="white-space: break-spaces"><div style="background-color:Black" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
     <div style="margin-top:50px; padding-bottom:40px; color:White; font-size:20px;">
-        <p><a href="getting-started.php" style="color:Orange;">Getting Started</a></p>
-        <p><a href="https://github.com/swag-lang/swag/releases" style="color:Orange;">Download the Compiler</a> </p>
+        <p><a href="getting-started.php" style="color:#F7F900;">Getting Started</a></p>
+        <p><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900;">Download the Compiler</a> </p>
     </div>
 </div>
 
@@ -233,8 +230,13 @@
 </div>
 <p align="center" style="padding:50px;"> <img src="imgs/syntax.png"> </p></p>
 <blockquote>
-<p>To take a look at the language, this is <a href="language.php">here</a>. </p><p>To take a look at the standard list of modules, this is <a href="std.php">here</a>. </p><p>To use Swag as a scripting language, this is <a href="swag-as-script.php">here</a>. </p>
+<p>There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </p>
 </blockquote>
+<ul>
+<li>To take a look at the language, this is <a href="language.php">here</a>.</li>
+<li>To take a look at the standard list of modules, this is <a href="std.php">here</a>.</li>
+<li>To use Swag as a scripting language, this is <a href="swag-as-script.php">here</a>.</li>
+</ul>
 </div>
 </div>
 </div>

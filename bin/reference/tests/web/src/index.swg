@@ -1,14 +1,11 @@
 /**
-> There's **no official** release yet.
->
-> Everything (including this web site) is still under construction...
 ---
 <div style="background-color:Black" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
     <div style="margin-top:50px; padding-bottom:40px; color:White; font-size:20px;">
-        <p><a href="getting-started.php" style="color:Orange;">Getting Started</a></p>
-        <p><a href="https://github.com/swag-lang/swag/releases" style="color:Orange;">Download the Compiler</a> </p>
+        <p><a href="getting-started.php" style="color:#F7F900;">Getting Started</a></p>
+        <p><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900;">Download the Compiler</a> </p>
     </div>
 </div>
 
@@ -32,9 +29,11 @@
 <p align="center" style="padding:50px;"> <img src="imgs/syntax.png"> </p>
 ---
 
-> To take a look at the language, this is [here](language.php).
+> There's **no official** release yet.
 >
-> To take a look at the standard list of modules, this is [here](std.php).
->
-> To use Swag as a scripting language, this is [here](swag-as-script.php).
+> Everything (including this web site) is still under construction...
+
+* To take a look at the language, this is [here](language.php).
+* To take a look at the standard list of modules, this is [here](std.php).
+* To use Swag as a scripting language, this is [here](swag-as-script.php).
 */

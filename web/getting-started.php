@@ -272,7 +272,7 @@
 <li><code class="incode">std/</code> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
 </ul>
 <h1>The Swag language </h1>
-<p>You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
+<p>You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
 <p>It's a good starting point to familiarize yourself with the language. </p>
 <p>And as this is a normal Swag workspace, you could also build and test it with <code class="incode">swag test -w:swag/reference</code>. </p>
 <p>You will also find some small examples (mostly written for tests) in <code class="incode">swag/bin/examples/modules</code>. To build and run one of them from the console, go to the workspace folder (<code class="incode">/examples</code>) and type for example <code class="incode">swag run -m:wnd</code>. </p>

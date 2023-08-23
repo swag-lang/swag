@@ -95,7 +95,7 @@ The Swag folder contains the compiler `swag.exe`, but also a bunch of sub folder
 * `std/` is the [standard workspace](std.php) which contains all the standard modules that come with the compiler. A big work in progress.
 
 # The Swag language
-You should take a look at the `reference/` sub folder in the Swag directory, or to the corresponding [documentation](language.php).
+You should take a look at the `reference/` sub folder in the Swag directory, or to the corresponding generated [documentation](language.php).
 It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...).
 
 It's a good starting point to familiarize yourself with the language.
