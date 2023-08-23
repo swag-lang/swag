@@ -3412,7 +3412,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(v1.y == <span class="SNum">20</span>)
 
     <span class="SCmt">// You can name fields, and omit some.</span>
-    <span class="SKwd">var</span> v2 = <span class="SCst">MyStruct</span>{y = <span class="SNum">20</span>}
+    <span class="SKwd">var</span> v2 = <span class="SCst">MyStruct</span>{y: <span class="SNum">20</span>}
     <span class="SItr">@assert</span>(v2.x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(v2.y == <span class="SNum">20</span>)
 
@@ -4178,7 +4178,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
             x, y, z: <span class="STpe">f32</span>
         }
 
-        <span class="SKwd">var</span> v = <span class="SCst">MyUnion</span>{x = <span class="SNum">666</span>}
+        <span class="SKwd">var</span> v = <span class="SCst">MyUnion</span>{x: <span class="SNum">666</span>}
         <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)
         <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>)
     }
@@ -4361,16 +4361,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">func</span> <span class="SFct">sub</span>(x, y: <span class="STpe">s32</span>) =&gt; x - y
 
     {
-        <span class="SKwd">let</span> x1 = <span class="SFct">sub</span>(x = <span class="SNum">5</span>, y = <span class="SNum">2</span>)
+        <span class="SKwd">let</span> x1 = <span class="SFct">sub</span>(x: <span class="SNum">5</span>, y: <span class="SNum">2</span>)
         <span class="SItr">@assert</span>(x1 == <span class="SNum">3</span>)
-        <span class="SKwd">let</span> x2 = <span class="SFct">sub</span>(y = <span class="SNum">5</span>, x = <span class="SNum">2</span>)
+        <span class="SKwd">let</span> x2 = <span class="SFct">sub</span>(y: <span class="SNum">5</span>, x: <span class="SNum">2</span>)
         <span class="SItr">@assert</span>(x2 == -<span class="SNum">3</span>)
     }
 
     {
         <span class="SKwd">func</span> <span class="SFct">returnMe</span>(x, y: <span class="STpe">s32</span> = <span class="SNum">0</span>) =&gt; x + y * <span class="SNum">2</span>
-        <span class="SItr">@assert</span>(<span class="SFct">returnMe</span>(x = <span class="SNum">10</span>) == <span class="SNum">10</span>)
-        <span class="SItr">@assert</span>(<span class="SFct">returnMe</span>(y = <span class="SNum">10</span>) == <span class="SNum">20</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">returnMe</span>(x: <span class="SNum">10</span>) == <span class="SNum">10</span>)
+        <span class="SItr">@assert</span>(<span class="SFct">returnMe</span>(y: <span class="SNum">10</span>) == <span class="SNum">20</span>)
     }
 }</span></code>
 </div>
@@ -6851,11 +6851,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
             <span class="SLgc">return</span> <span class="STpe">s32</span>
     }
 
-    <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString = <span class="SKwd">false</span>))
+    <span class="SKwd">var</span> x: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">false</span>))
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) == <span class="STpe">s32</span>
     x = <span class="SNum">0</span>
 
-    <span class="SKwd">var</span> x1: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString = <span class="SKwd">true</span>))
+    <span class="SKwd">var</span> x1: <span class="SItr">@decltype</span>(<span class="SFct">getType</span>(needAString: <span class="SKwd">true</span>))
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x1) == <span class="STpe">string</span>
     x1 = <span class="SStr">"0"</span>
 }</span></code>
