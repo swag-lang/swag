@@ -7289,16 +7289,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>The attribute <code class="incode">#<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// This function will be ignored when generating documentation.</span>
-    <span class="SAtr">#[Swag.NoDoc]</span>
-    <span class="SKwd">func</span> <span class="SFct">one</span>()
-    {
-    }
-}</span></code>
-</div>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. </p>
@@ -7329,9 +7319,22 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
+<p>The attribute <code class="incode">#<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// This function will be ignored when generating documentation.</span>
+    <span class="SAtr">#[Swag.NoDoc]</span>
+    <span class="SKwd">func</span> <span class="SFct">one</span>()
+    {
+    }
+}</span></code>
+</div>
 
 <h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file is a chapter or a sub chapter. </p>
 <p>This documentation has been generated in that mode, with the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
+<p>Comments must start with <code class="incode">/**</code>, on their own line. </p>
+<div class="precode"><code><span class="SCde">*/</span></code>
+</div>
 
 <h3 id="231_003_Pages">Pages</h3><p>In <code class="incode">Swag.DocKind.Pages</code> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <code class="incode">Swag.DocKind.Examples</code> mode. </p>
 <p>Can be usefull to generate web pages for example. For <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>

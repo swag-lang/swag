@@ -166,15 +166,3 @@ You can create a reference to something in the current module with `[name]` or `
     {
     }
 }
-
-/**
-The attribute `#[Swag.NoDoc]` can be used to avoid a given element to appear in the documentation.
-*/
-#test
-{
-    // This function will be ignored when generating documentation.
-    #[Swag.NoDoc]
-    func one()
-    {
-    }
-}

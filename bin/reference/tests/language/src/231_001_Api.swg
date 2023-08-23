@@ -38,3 +38,15 @@ For constants or enum values, the document comment is the one declared at the en
         Red         // This is a documentation comment
     }
 }
+
+/**
+The attribute `#[Swag.NoDoc]` can be used to avoid a given element to appear in the documentation.
+*/
+#test
+{
+    // This function will be ignored when generating documentation.
+    #[Swag.NoDoc]
+    func one()
+    {
+    }
+}
