@@ -65,6 +65,7 @@
                 margin:  10px;
             }
         }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -180,18 +181,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 </head>
 <body>
@@ -202,37 +204,37 @@
 <b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
 <h1>Script file </h1>
 <p>Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
-<div class="precode"><code><span class="SyntaxCode">$ swag new -f:myScript
-=&gt; script file 'myScript.<span class="SyntaxFunction">swgs</span>' has been created
-=&gt; type 'swag script -f:myScript.<span class="SyntaxFunction">swgs</span>' to run that script</span></code>
+<div class="precode"><code><span class="SCde">$ swag new -f:myScript
+=&gt; script file 'myScript.<span class="SFct">swgs</span>' has been created
+=&gt; type 'swag script -f:myScript.<span class="SFct">swgs</span>' to run that script</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxComment">// Swag script file</span>
-<span class="SyntaxCompiler">#dependencies</span>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
+<span class="SCmp">#dependencies</span>
 {
-    <span class="SyntaxComment">// Here you can add your external dependencies</span>
-    <span class="SyntaxComment">// #import "core" location="swag@std"</span>
+    <span class="SCmt">// Here you can add your external dependencies</span>
+    <span class="SCmt">// #import "core" location="swag@std"</span>
 }
 
-<span class="SyntaxFunction">#run</span>
+<span class="SFct">#run</span>
 {
-    <span class="SyntaxIntrinsic">@print</span>(<span class="SyntaxString">"Hello world !\n"</span>)
+    <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
 }</span></code>
 </div>
 <p>You can then run your script with the <code class="incode">script</code> command. </p>
-<div class="precode"><code><span class="SyntaxCode">$ swag script -f:myScript
-<span class="SyntaxConstant">Hello</span> world !</span></code>
+<div class="precode"><code><span class="SCde">$ swag script -f:myScript
+<span class="SCst">Hello</span> world !</span></code>
 </div>
 <p>You can also just specify the script file <b>with the extension</b> as a command. </p>
-<div class="precode"><code><span class="SyntaxCode">$ swag myScript.swgs
-<span class="SyntaxConstant">Hello</span> world !</span></code>
+<div class="precode"><code><span class="SCde">$ swag myScript.swgs
+<span class="SCst">Hello</span> world !</span></code>
 </div>
 <p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag pendulum.swgs</code> </p>
 <h2>Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxCompiler">#dependencies</span>
+<div class="precode"><code><span class="SCde"><span class="SCmp">#dependencies</span>
 {
-    <span class="SyntaxComment">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
-    <span class="SyntaxCompiler">#import</span> <span class="SyntaxString">"core"</span> location=<span class="SyntaxString">"swag@std"</span>
+    <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
+    <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
 }</span></code>
 </div>
 <p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
@@ -242,10 +244,10 @@
 </ul>
 <h2>More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <code class="incode">#load &lt;filename&gt;</code> in the <code class="incode">#dependencies</code> block. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxCompiler">#dependencies</span>
+<div class="precode"><code><span class="SCde"><span class="SCmp">#dependencies</span>
 {
-    <span class="SyntaxCompiler">#load</span> <span class="SyntaxString">"myOtherFile.swgs"</span>
-    <span class="SyntaxCompiler">#load</span> <span class="SyntaxString">"folder/myOtherOtherFile.swgs"</span>
+    <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
+    <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
 }</span></code>
 </div>
 <h2>Debug </h2>

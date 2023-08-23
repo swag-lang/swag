@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -257,73 +260,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_A</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_B</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_BACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_BACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_DPAD_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_DPAD_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_LEFT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_LEFT_THUMB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_LEFT_THUMB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_RIGHT_THUMB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_RIGHT_THUMB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_START</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_START</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_X</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_X</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XINPUT_GAMEPAD_Y</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SCde"><span class="SCst">XINPUT_GAMEPAD_Y</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -340,38 +343,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">wButtons</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wButtons</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bLeftTrigger</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">bLeftTrigger</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bRightTrigger</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">bRightTrigger</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sThumbLX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">sThumbLX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sThumbLY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">sThumbLY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sThumbRX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">sThumbRX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sThumbRY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">sThumbRY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -388,13 +391,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwPacketNumber</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwPacketNumber</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gamepad</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gamepad</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -411,13 +414,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">wLeftMotorSpeed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wLeftMotorSpeed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wRightMotorSpeed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wRightMotorSpeed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -432,7 +435,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">XInputGetState</span>(dwUserIndex: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, pState: *<span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pState: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -445,7 +448,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">XInputSetState</span>(dwUserIndex: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, pVibration: *<span class="SyntaxConstant">XInput</span>.<span class="SyntaxConstant"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pVibration: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
 </div>
 </div>
 </div>

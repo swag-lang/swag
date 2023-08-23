@@ -65,6 +65,7 @@
                 margin:  10px;
             }
         }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -180,18 +181,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 </head>
 <body>
@@ -204,11 +206,11 @@
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3>Create a workspace and a test module </h3>
 <p>First create a workspace with the <code class="incode">--test</code> option. </p>
-<div class="precode"><code><span class="SyntaxCode">$ swag new -w:myWorkspace --test</span></code>
+<div class="precode"><code><span class="SCde">$ swag new -w:myWorkspace --test</span></code>
 </div>
 <p>This will also create a test module <code class="incode">myWorkspace</code> located in <code class="incode">myWorkspace\tests</code>. </p>
 <p>You can then compile and run the tests with the <code class="incode">test</code> command. </p>
-<div class="precode"><code><span class="SyntaxCode">$ swag test -w:myWorkspace</span></code>
+<div class="precode"><code><span class="SCde">$ swag test -w:myWorkspace</span></code>
 </div>
 <p>To force the build, add <code class="incode">--rebuild</code>. </p>
 <h3>Write tests </h3>

@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -416,603 +419,603 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Gdi32_ANSI_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ANSI_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_ANSI_CHARSET" class="codetype"><span class="SCde"><span class="SCst">ANSI_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_ANSI_FIXED_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ANSI_FIXED_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_ANSI_FIXED_FONT" class="codetype"><span class="SCde"><span class="SCst">ANSI_FIXED_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_ANSI_VAR_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ANSI_VAR_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_ANSI_VAR_FONT" class="codetype"><span class="SCde"><span class="SCst">ANSI_VAR_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_ARABIC_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ARABIC_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_ARABIC_CHARSET" class="codetype"><span class="SCde"><span class="SCst">ARABIC_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BALTIC_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BALTIC_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BALTIC_CHARSET" class="codetype"><span class="SCde"><span class="SCst">BALTIC_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_BITFIELDS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_BITFIELDS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_BITFIELDS" class="codetype"><span class="SCde"><span class="SCst">BI_BITFIELDS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_JPEG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_JPEG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_JPEG" class="codetype"><span class="SCde"><span class="SCst">BI_JPEG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_PNG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_PNG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_PNG" class="codetype"><span class="SCde"><span class="SCst">BI_PNG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_RGB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RGB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_RGB" class="codetype"><span class="SCde"><span class="SCst">BI_RGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_RLE4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RLE4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_RLE4" class="codetype"><span class="SCde"><span class="SCst">BI_RLE4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BI_RLE8" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RLE8</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BI_RLE8" class="codetype"><span class="SCde"><span class="SCst">BI_RLE8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BKMODE_LAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BKMODE_LAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BKMODE_LAST" class="codetype"><span class="SCde"><span class="SCst">BKMODE_LAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BLACKNESS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BLACKNESS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_BLACKNESS" class="codetype"><span class="SCde"><span class="SCst">BLACKNESS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = BLACK. </td>
 </tr>
 <tr>
-<td id="Gdi32_BLACK_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BLACK_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BLACK_BRUSH" class="codetype"><span class="SCde"><span class="SCst">BLACK_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_BLACK_PEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BLACK_PEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_BLACK_PEN" class="codetype"><span class="SCde"><span class="SCst">BLACK_PEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_CAPTUREBLT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CAPTUREBLT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_CAPTUREBLT" class="codetype"><span class="SCde"><span class="SCst">CAPTUREBLT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Include layered windows. </td>
 </tr>
 <tr>
-<td id="Gdi32_CHINESEBIG5_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CHINESEBIG5_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_CHINESEBIG5_CHARSET" class="codetype"><span class="SCde"><span class="SCst">CHINESEBIG5_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DEFAULT_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DEFAULT_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DEFAULT_CHARSET" class="codetype"><span class="SCde"><span class="SCst">DEFAULT_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DEFAULT_PALETTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DEFAULT_PALETTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DEFAULT_PALETTE" class="codetype"><span class="SCde"><span class="SCst">DEFAULT_PALETTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DEVICE_DEFAULT_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DEVICE_DEFAULT_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DEVICE_DEFAULT_FONT" class="codetype"><span class="SCde"><span class="SCst">DEVICE_DEFAULT_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DEVICE_FONTTYPE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DEVICE_FONTTYPE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_DEVICE_FONTTYPE" class="codetype"><span class="SCde"><span class="SCst">DEVICE_FONTTYPE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DIB_PAL_COLORS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DIB_PAL_COLORS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DIB_PAL_COLORS" class="codetype"><span class="SCde"><span class="SCst">DIB_PAL_COLORS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DIB_RGB_COLORS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DIB_RGB_COLORS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DIB_RGB_COLORS" class="codetype"><span class="SCde"><span class="SCst">DIB_RGB_COLORS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DKGRAY_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DKGRAY_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_DKGRAY_BRUSH" class="codetype"><span class="SCde"><span class="SCst">DKGRAY_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_DSTINVERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DSTINVERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_DSTINVERT" class="codetype"><span class="SCde"><span class="SCst">DSTINVERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = (NOT dest). </td>
 </tr>
 <tr>
-<td id="Gdi32_EASTEUROPE_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EASTEUROPE_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_EASTEUROPE_CHARSET" class="codetype"><span class="SCde"><span class="SCst">EASTEUROPE_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_BLACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_BLACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_BLACK" class="codetype"><span class="SCde"><span class="SCst">FW_BLACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_BOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_BOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_BOLD" class="codetype"><span class="SCde"><span class="SCst">FW_BOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_DEMIBOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_DEMIBOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_DEMIBOLD" class="codetype"><span class="SCde"><span class="SCst">FW_DEMIBOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_DONTCARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_DONTCARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_DONTCARE" class="codetype"><span class="SCde"><span class="SCst">FW_DONTCARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_EXTRABOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_EXTRABOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_EXTRABOLD" class="codetype"><span class="SCde"><span class="SCst">FW_EXTRABOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_EXTRALIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_EXTRALIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_EXTRALIGHT" class="codetype"><span class="SCde"><span class="SCst">FW_EXTRALIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_HEAVY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_HEAVY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_HEAVY" class="codetype"><span class="SCde"><span class="SCst">FW_HEAVY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_LIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_LIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_LIGHT" class="codetype"><span class="SCde"><span class="SCst">FW_LIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_MEDIUM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_MEDIUM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_MEDIUM" class="codetype"><span class="SCde"><span class="SCst">FW_MEDIUM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_NORMAL" class="codetype"><span class="SCde"><span class="SCst">FW_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_REGULAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_REGULAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_REGULAR" class="codetype"><span class="SCde"><span class="SCst">FW_REGULAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_SEMIBOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_SEMIBOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_SEMIBOLD" class="codetype"><span class="SCde"><span class="SCst">FW_SEMIBOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_THIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_THIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_THIN" class="codetype"><span class="SCde"><span class="SCst">FW_THIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_ULTRABOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_ULTRABOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_ULTRABOLD" class="codetype"><span class="SCde"><span class="SCst">FW_ULTRABOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FW_ULTRALIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FW_ULTRALIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_FW_ULTRALIGHT" class="codetype"><span class="SCde"><span class="SCst">FW_ULTRALIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_GB2312_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GB2312_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_GB2312_CHARSET" class="codetype"><span class="SCde"><span class="SCst">GB2312_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_GDI_ERROR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GDI_ERROR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_GDI_ERROR" class="codetype"><span class="SCde"><span class="SCst">GDI_ERROR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_GRAY_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GRAY_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_GRAY_BRUSH" class="codetype"><span class="SCde"><span class="SCst">GRAY_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_GREEK_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GREEK_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_GREEK_CHARSET" class="codetype"><span class="SCde"><span class="SCst">GREEK_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HANGEUL_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HANGEUL_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_HANGEUL_CHARSET" class="codetype"><span class="SCde"><span class="SCst">HANGEUL_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HANGUL_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HANGUL_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_HANGUL_CHARSET" class="codetype"><span class="SCde"><span class="SCst">HANGUL_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HEBREW_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HEBREW_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_HEBREW_CHARSET" class="codetype"><span class="SCde"><span class="SCst">HEBREW_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HOLLOW_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HOLLOW_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_HOLLOW_BRUSH" class="codetype"><span class="SCde"><span class="SCst">HOLLOW_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_JOHAB_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">JOHAB_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_JOHAB_CHARSET" class="codetype"><span class="SCde"><span class="SCst">JOHAB_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_LF_FACESIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LF_FACESIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_LF_FACESIZE" class="codetype"><span class="SCde"><span class="SCst">LF_FACESIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_LF_FULLFACESIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LF_FULLFACESIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_LF_FULLFACESIZE" class="codetype"><span class="SCde"><span class="SCst">LF_FULLFACESIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_LTGRAY_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LTGRAY_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_LTGRAY_BRUSH" class="codetype"><span class="SCde"><span class="SCst">LTGRAY_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_MAC_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAC_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_MAC_CHARSET" class="codetype"><span class="SCde"><span class="SCst">MAC_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_MERGECOPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MERGECOPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_MERGECOPY" class="codetype"><span class="SCde"><span class="SCst">MERGECOPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = (source AND pattern). </td>
 </tr>
 <tr>
-<td id="Gdi32_MERGEPAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MERGEPAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_MERGEPAINT" class="codetype"><span class="SCde"><span class="SCst">MERGEPAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = (NOT source) OR dest. </td>
 </tr>
 <tr>
-<td id="Gdi32_NOMIRRORBITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NOMIRRORBITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_NOMIRRORBITMAP" class="codetype"><span class="SCde"><span class="SCst">NOMIRRORBITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Do not Mirror the bitmap in this call. </td>
 </tr>
 <tr>
-<td id="Gdi32_NOTSRCCOPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NOTSRCCOPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_NOTSRCCOPY" class="codetype"><span class="SCde"><span class="SCst">NOTSRCCOPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = (NOT source). </td>
 </tr>
 <tr>
-<td id="Gdi32_NOTSRCERASE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NOTSRCERASE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_NOTSRCERASE" class="codetype"><span class="SCde"><span class="SCst">NOTSRCERASE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = (NOT src) AND (NOT dest). </td>
 </tr>
 <tr>
-<td id="Gdi32_NULL_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NULL_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_NULL_BRUSH" class="codetype"><span class="SCde"><span class="SCst">NULL_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_NULL_PEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NULL_PEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_NULL_PEN" class="codetype"><span class="SCde"><span class="SCst">NULL_PEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_OEM_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OEM_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_OEM_CHARSET" class="codetype"><span class="SCde"><span class="SCst">OEM_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_OEM_FIXED_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OEM_FIXED_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_OEM_FIXED_FONT" class="codetype"><span class="SCde"><span class="SCst">OEM_FIXED_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_OPAQUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OPAQUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_OPAQUE" class="codetype"><span class="SCde"><span class="SCst">OPAQUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PATCOPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PATCOPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PATCOPY" class="codetype"><span class="SCde"><span class="SCst">PATCOPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = pattern. </td>
 </tr>
 <tr>
-<td id="Gdi32_PATINVERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PATINVERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PATINVERT" class="codetype"><span class="SCde"><span class="SCst">PATINVERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = pattern XOR dest. </td>
 </tr>
 <tr>
-<td id="Gdi32_PATPAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PATPAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PATPAINT" class="codetype"><span class="SCde"><span class="SCst">PATPAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = DPSnoo. </td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DEPTH_DONTCARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DEPTH_DONTCARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DEPTH_DONTCARE" class="codetype"><span class="SCde"><span class="SCst">PFD_DEPTH_DONTCARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DIRECT3D_ACCELERATED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DIRECT3D_ACCELERATED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DIRECT3D_ACCELERATED" class="codetype"><span class="SCde"><span class="SCst">PFD_DIRECT3D_ACCELERATED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DOUBLEBUFFER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DOUBLEBUFFER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DOUBLEBUFFER" class="codetype"><span class="SCde"><span class="SCst">PFD_DOUBLEBUFFER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DOUBLEBUFFER_DONTCARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DOUBLEBUFFER_DONTCARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DOUBLEBUFFER_DONTCARE" class="codetype"><span class="SCde"><span class="SCst">PFD_DOUBLEBUFFER_DONTCARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DRAW_TO_BITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DRAW_TO_BITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DRAW_TO_BITMAP" class="codetype"><span class="SCde"><span class="SCst">PFD_DRAW_TO_BITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_DRAW_TO_WINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_DRAW_TO_WINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_DRAW_TO_WINDOW" class="codetype"><span class="SCde"><span class="SCst">PFD_DRAW_TO_WINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_GENERIC_ACCELERATED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_GENERIC_ACCELERATED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_GENERIC_ACCELERATED" class="codetype"><span class="SCde"><span class="SCst">PFD_GENERIC_ACCELERATED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_GENERIC_FORMAT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_GENERIC_FORMAT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_GENERIC_FORMAT" class="codetype"><span class="SCde"><span class="SCst">PFD_GENERIC_FORMAT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_MAIN_PLANE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_MAIN_PLANE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PFD_MAIN_PLANE" class="codetype"><span class="SCde"><span class="SCst">PFD_MAIN_PLANE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_NEED_PALETTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_NEED_PALETTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_NEED_PALETTE" class="codetype"><span class="SCde"><span class="SCst">PFD_NEED_PALETTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_NEED_SYSTEM_PALETTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_NEED_SYSTEM_PALETTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_NEED_SYSTEM_PALETTE" class="codetype"><span class="SCde"><span class="SCst">PFD_NEED_SYSTEM_PALETTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_OVERLAY_PLANE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_OVERLAY_PLANE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PFD_OVERLAY_PLANE" class="codetype"><span class="SCde"><span class="SCst">PFD_OVERLAY_PLANE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_STEREO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_STEREO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_STEREO" class="codetype"><span class="SCde"><span class="SCst">PFD_STEREO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_STEREO_DONTCARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_STEREO_DONTCARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_STEREO_DONTCARE" class="codetype"><span class="SCde"><span class="SCst">PFD_STEREO_DONTCARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SUPPORT_COMPOSITION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SUPPORT_COMPOSITION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SUPPORT_COMPOSITION" class="codetype"><span class="SCde"><span class="SCst">PFD_SUPPORT_COMPOSITION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SUPPORT_DIRECTDRAW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SUPPORT_DIRECTDRAW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SUPPORT_DIRECTDRAW" class="codetype"><span class="SCde"><span class="SCst">PFD_SUPPORT_DIRECTDRAW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SUPPORT_GDI" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SUPPORT_GDI</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SUPPORT_GDI" class="codetype"><span class="SCde"><span class="SCst">PFD_SUPPORT_GDI</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SUPPORT_OPENGL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SUPPORT_OPENGL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SUPPORT_OPENGL" class="codetype"><span class="SCde"><span class="SCst">PFD_SUPPORT_OPENGL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SWAP_COPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SWAP_COPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SWAP_COPY" class="codetype"><span class="SCde"><span class="SCst">PFD_SWAP_COPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SWAP_EXCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SWAP_EXCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SWAP_EXCHANGE" class="codetype"><span class="SCde"><span class="SCst">PFD_SWAP_EXCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_SWAP_LAYER_BUFFERS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_SWAP_LAYER_BUFFERS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PFD_SWAP_LAYER_BUFFERS" class="codetype"><span class="SCde"><span class="SCst">PFD_SWAP_LAYER_BUFFERS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_TYPE_COLORINDEX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_TYPE_COLORINDEX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PFD_TYPE_COLORINDEX" class="codetype"><span class="SCde"><span class="SCst">PFD_TYPE_COLORINDEX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_TYPE_RGBA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_TYPE_RGBA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PFD_TYPE_RGBA" class="codetype"><span class="SCde"><span class="SCst">PFD_TYPE_RGBA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PFD_UNDERLAY_PLANE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PFD_UNDERLAY_PLANE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PFD_UNDERLAY_PLANE" class="codetype"><span class="SCde"><span class="SCst">PFD_UNDERLAY_PLANE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_ALTERNATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_ALTERNATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_ALTERNATE" class="codetype"><span class="SCde"><span class="SCst">PS_ALTERNATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_DASH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_DASH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_DASH" class="codetype"><span class="SCde"><span class="SCst">PS_DASH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>-------. </td>
 </tr>
 <tr>
-<td id="Gdi32_PS_DASHDOT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_DASHDOT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_DASHDOT" class="codetype"><span class="SCde"><span class="SCst">PS_DASHDOT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>_._._._. </td>
 </tr>
 <tr>
-<td id="Gdi32_PS_DASHDOTDOT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_DASHDOTDOT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_DASHDOTDOT" class="codetype"><span class="SCde"><span class="SCst">PS_DASHDOTDOT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>_.._.._. </td>
 </tr>
 <tr>
-<td id="Gdi32_PS_DOT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_DOT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_DOT" class="codetype"><span class="SCde"><span class="SCst">PS_DOT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>....... </td>
 </tr>
 <tr>
-<td id="Gdi32_PS_INSIDEFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_INSIDEFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_INSIDEFRAME" class="codetype"><span class="SCde"><span class="SCst">PS_INSIDEFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_NULL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_NULL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_NULL" class="codetype"><span class="SCde"><span class="SCst">PS_NULL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_SOLID" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_SOLID</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_SOLID" class="codetype"><span class="SCde"><span class="SCst">PS_SOLID</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_STYLE_MASK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_STYLE_MASK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_PS_STYLE_MASK" class="codetype"><span class="SCde"><span class="SCst">PS_STYLE_MASK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_PS_USERSTYLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PS_USERSTYLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_PS_USERSTYLE" class="codetype"><span class="SCde"><span class="SCst">PS_USERSTYLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_RASTER_FONTTYPE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RASTER_FONTTYPE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_RASTER_FONTTYPE" class="codetype"><span class="SCde"><span class="SCst">RASTER_FONTTYPE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_RUSSIAN_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RUSSIAN_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_RUSSIAN_CHARSET" class="codetype"><span class="SCde"><span class="SCst">RUSSIAN_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_SHIFTJIS_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHIFTJIS_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_SHIFTJIS_CHARSET" class="codetype"><span class="SCde"><span class="SCst">SHIFTJIS_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_SRCAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRCAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_SRCAND" class="codetype"><span class="SCde"><span class="SCst">SRCAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = source AND dest. </td>
 </tr>
 <tr>
-<td id="Gdi32_SRCCOPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRCCOPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_SRCCOPY" class="codetype"><span class="SCde"><span class="SCst">SRCCOPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = source. </td>
 </tr>
 <tr>
-<td id="Gdi32_SRCERASE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRCERASE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_SRCERASE" class="codetype"><span class="SCde"><span class="SCst">SRCERASE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = source AND (NOT dest ). </td>
 </tr>
 <tr>
-<td id="Gdi32_SRCINVERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRCINVERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_SRCINVERT" class="codetype"><span class="SCde"><span class="SCst">SRCINVERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = source XOR dest. </td>
 </tr>
 <tr>
-<td id="Gdi32_SRCPAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRCPAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_SRCPAINT" class="codetype"><span class="SCde"><span class="SCst">SRCPAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = source OR dest. </td>
 </tr>
 <tr>
-<td id="Gdi32_SYMBOL_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SYMBOL_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_SYMBOL_CHARSET" class="codetype"><span class="SCde"><span class="SCst">SYMBOL_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_SYSTEM_FIXED_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SYSTEM_FIXED_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_SYSTEM_FIXED_FONT" class="codetype"><span class="SCde"><span class="SCst">SYSTEM_FIXED_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_SYSTEM_FONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SYSTEM_FONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_SYSTEM_FONT" class="codetype"><span class="SCde"><span class="SCst">SYSTEM_FONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_THAI_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THAI_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_THAI_CHARSET" class="codetype"><span class="SCde"><span class="SCst">THAI_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_TRANSPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TRANSPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_TRANSPARENT" class="codetype"><span class="SCde"><span class="SCst">TRANSPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_TRUETYPE_FONTTYPE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TRUETYPE_FONTTYPE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_TRUETYPE_FONTTYPE" class="codetype"><span class="SCde"><span class="SCst">TRUETYPE_FONTTYPE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_TURKISH_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TURKISH_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_TURKISH_CHARSET" class="codetype"><span class="SCde"><span class="SCst">TURKISH_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_VIETNAMESE_CHARSET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VIETNAMESE_CHARSET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_VIETNAMESE_CHARSET" class="codetype"><span class="SCde"><span class="SCst">VIETNAMESE_CHARSET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_WHITENESS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WHITENESS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Gdi32_WHITENESS" class="codetype"><span class="SCde"><span class="SCst">WHITENESS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>dest = WHITE. </td>
 </tr>
 <tr>
-<td id="Gdi32_WHITE_BRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WHITE_BRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_WHITE_BRUSH" class="codetype"><span class="SCde"><span class="SCst">WHITE_BRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_WHITE_PEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WHITE_PEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Gdi32_WHITE_PEN" class="codetype"><span class="SCde"><span class="SCst">WHITE_PEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1029,28 +1032,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Gdi32_FONTENUMPROCA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FONTENUMPROCA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>, <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_TEXTMETRICA">TEXTMETRICA</a></span>, <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></td>
+<td id="Gdi32_FONTENUMPROCA" class="codetype"><span class="SCde"><span class="SCst">FONTENUMPROCA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>, <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICA">TEXTMETRICA</a></span>, <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_FONTENUMPROCW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FONTENUMPROCW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>, <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_TEXTMETRICW">TEXTMETRICW</a></span>, <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></td>
+<td id="Gdi32_FONTENUMPROCW" class="codetype"><span class="SCde"><span class="SCst">FONTENUMPROCW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>, <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_TEXTMETRICW">TEXTMETRICW</a></span>, <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HFONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HFONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Gdi32_HFONT" class="codetype"><span class="SCde"><span class="SCst">HFONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HGDIOBJ" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HGDIOBJ</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Gdi32_HGDIOBJ" class="codetype"><span class="SCde"><span class="SCst">HGDIOBJ</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gdi32_HPEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HPEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Gdi32_HPEN" class="codetype"><span class="SCde"><span class="SCst">HPEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1067,38 +1070,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bmType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bmWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bmHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmWidthBytes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bmWidthBytes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmPlanes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">bmPlanes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmBitsPixel</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">bmBitsPixel</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmBits</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">bmBits</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1115,13 +1118,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmiHeader</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_BITMAPINFOHEADER">BITMAPINFOHEADER</a></span></span></td>
+<td class="codetype"><span class="SCde">bmiHeader</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_BITMAPINFOHEADER">BITMAPINFOHEADER</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bmiColors</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">1</span>] <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_RGBQUAD">RGBQUAD</a></span></span></td>
+<td class="codetype"><span class="SCde">bmiColors</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">1</span>] <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_RGBQUAD">RGBQUAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1138,58 +1141,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">biSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biPlanes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">biPlanes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biBitCount</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">biBitCount</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biCompression</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biCompression</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biSizeImage</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biSizeImage</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biXPelsPerMeter</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biXPelsPerMeter</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biYPelsPerMeter</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biYPelsPerMeter</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biClrUsed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biClrUsed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biClrImportant</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biClrImportant</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1204,7 +1207,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">BitBlt</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, cx: <span class="SyntaxType">s32</span>, cy: <span class="SyntaxType">s32</span>, hdcSrc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x1: <span class="SyntaxType">s32</span>, y1: <span class="SyntaxType">s32</span>, rop: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BitBlt</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, hdcSrc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x1: <span class="STpe">s32</span>, y1: <span class="STpe">s32</span>, rop: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1217,7 +1220,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ChoosePixelFormat</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, ppfd: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>)-&gt;<span class="SyntaxType">s32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChoosePixelFormat</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, ppfd: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1230,7 +1233,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateCompatibleBitmap</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, cx: <span class="SyntaxType">s32</span>, cy: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateCompatibleBitmap</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1243,7 +1246,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateCompatibleDC</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateCompatibleDC</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HDC</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1256,7 +1259,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateDIBSection</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, pbmi: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_BITMAPINFO">BITMAPINFO</a></span>, usage: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">UINT</span>, ppvBits: **<span class="SyntaxType">void</span>, hSection: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HANDLE</span>, offset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDIBSection</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, pbmi: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_BITMAPINFO">BITMAPINFO</a></span>, usage: <span class="SCst">Win32</span>.<span class="SCst">UINT</span>, ppvBits: **<span class="STpe">void</span>, hSection: <span class="SCst">Win32</span>.<span class="SCst">HANDLE</span>, offset: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1269,7 +1272,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateFontIndirectA</span>(lplf: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>)-&gt;<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HFONT">HFONT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFontIndirectA</span>(lplf: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>)-&gt;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HFONT">HFONT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1282,7 +1285,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateFontIndirectW</span>(lplf: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>)-&gt;<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HFONT">HFONT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFontIndirectW</span>(lplf: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>)-&gt;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HFONT">HFONT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1295,7 +1298,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreatePen</span>(iStyle: <span class="SyntaxType">s32</span>, cWidth: <span class="SyntaxType">s32</span>, color: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span>)-&gt;<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HPEN">HPEN</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreatePen</span>(iStyle: <span class="STpe">s32</span>, cWidth: <span class="STpe">s32</span>, color: <span class="SCst">Win32</span>.<span class="SCst">COLORREF</span>)-&gt;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HPEN">HPEN</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1308,7 +1311,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateSolidBrush</span>(color: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBRUSH</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateSolidBrush</span>(color: <span class="SCst">Win32</span>.<span class="SCst">COLORREF</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HBRUSH</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1321,7 +1324,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DeleteDC</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteDC</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1334,7 +1337,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DeleteObject</span>(ho: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteObject</span>(ho: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1347,7 +1350,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DescribePixelFormat</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, iPixelFormat: <span class="SyntaxType">s32</span>, nBytes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">UINT</span>, ppfd: *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>)-&gt;<span class="SyntaxType">s32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DescribePixelFormat</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, iPixelFormat: <span class="STpe">s32</span>, nBytes: <span class="SCst">Win32</span>.<span class="SCst">UINT</span>, ppfd: *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1362,23 +1365,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfLogFont</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span></span></td>
+<td class="codetype"><span class="SCde">elfLogFont</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfFullName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">64</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BYTE</span></span></td>
+<td class="codetype"><span class="SCde">elfFullName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfStyle</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BYTE</span></span></td>
+<td class="codetype"><span class="SCde">elfStyle</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfScript</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BYTE</span></span></td>
+<td class="codetype"><span class="SCde">elfScript</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1395,23 +1398,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfLogFont</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span></span></td>
+<td class="codetype"><span class="SCde">elfLogFont</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfFullName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">64</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">WCHAR</span></span></td>
+<td class="codetype"><span class="SCde">elfFullName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfStyle</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">WCHAR</span></span></td>
+<td class="codetype"><span class="SCde">elfStyle</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">elfScript</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">WCHAR</span></span></td>
+<td class="codetype"><span class="SCde">elfScript</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1426,7 +1429,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumFontFamiliesA</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, lpLogfont: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPCSTR</span>, lpProc: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumFontFamiliesA</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, lpLogfont: <span class="SCst">Win32</span>.<span class="SCst">LPCSTR</span>, lpProc: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1439,7 +1442,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumFontFamiliesExA</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, lpLogfont: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>, lpProc: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumFontFamiliesExA</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, lpLogfont: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTA">LOGFONTA</a></span>, lpProc: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_FONTENUMPROCA">FONTENUMPROCA</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1452,7 +1455,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumFontFamiliesExW</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, lpLogfont: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>, lpProc: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumFontFamiliesExW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, lpLogfont: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_LOGFONTW">LOGFONTW</a></span>, lpProc: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1465,7 +1468,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumFontFamiliesW</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, lpLogfont: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPCWSTR</span>, lpProc: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPARAM</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumFontFamiliesW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, lpLogfont: <span class="SCst">Win32</span>.<span class="SCst">LPCWSTR</span>, lpProc: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_FONTENUMPROCW">FONTENUMPROCW</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst">LPARAM</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1478,7 +1481,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetBitmapBits</span>(hbit: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span>, cb: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LONG</span>, lpvBits: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetBitmapBits</span>(hbit: <span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span>, cb: <span class="SCst">Win32</span>.<span class="SCst">LONG</span>, lpvBits: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1491,7 +1494,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetDIBits</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, hbm: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span>, start: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">UINT</span>, cLines: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">UINT</span>, lpvBits: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>, lpbmi: *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_BITMAPINFO">BITMAPINFO</a></span>, usage: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">UINT</span>)-&gt;<span class="SyntaxType">s32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDIBits</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, hbm: <span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span>, start: <span class="SCst">Win32</span>.<span class="SCst">UINT</span>, cLines: <span class="SCst">Win32</span>.<span class="SCst">UINT</span>, lpvBits: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>, lpbmi: *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_BITMAPINFO">BITMAPINFO</a></span>, usage: <span class="SCst">Win32</span>.<span class="SCst">UINT</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1504,7 +1507,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFontData</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, dwTable: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, dwOffset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, pvBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>, cjBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFontData</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, dwTable: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, dwOffset: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pvBuffer: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>, cjBuffer: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1517,8 +1520,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetObjectA</span>(h: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HANDLE</span>, c: <span class="SyntaxType">s32</span>, pv: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>) <span class="SyntaxKeyword">throw</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetObjectA</span>(h: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HANDLE</span>, c: <span class="SyntaxType">s32</span>, pv: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">Win32</span>.<span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>) <span class="SKwd">throw</span>
+<span class="SKwd">func</span> <span class="SCst">GetObjectA</span>(h: <span class="SCst">Win32</span>.<span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1531,8 +1534,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetObjectW</span>(h: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HANDLE</span>, c: <span class="SyntaxType">s32</span>, pv: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>) <span class="SyntaxKeyword">throw</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetObjectW</span>(h: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HANDLE</span>, c: <span class="SyntaxType">s32</span>, pv: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">Win32</span>.<span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>) <span class="SKwd">throw</span>
+<span class="SKwd">func</span> <span class="SCst">GetObjectW</span>(h: <span class="SCst">Win32</span>.<span class="SCst">HANDLE</span>, c: <span class="STpe">s32</span>, pv: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1545,7 +1548,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetPixel</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetPixel</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1558,7 +1561,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetStockObject</span>(i: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStockObject</span>(i: <span class="STpe">s32</span>)-&gt;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1573,73 +1576,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfEscapement</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfEscapement</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfOrientation</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfOrientation</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfUnderline</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfUnderline</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfStrikeOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfStrikeOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfOutPrecision</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfOutPrecision</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfClipPrecision</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfClipPrecision</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfQuality</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfQuality</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfFaceName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">CHAR</span></span></td>
+<td class="codetype"><span class="SCde">lfFaceName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">CHAR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1656,73 +1659,73 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfEscapement</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfEscapement</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfOrientation</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfOrientation</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lfWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfUnderline</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfUnderline</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfStrikeOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfStrikeOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfOutPrecision</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfOutPrecision</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfClipPrecision</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfClipPrecision</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfQuality</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfQuality</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lfPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lfFaceName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">WCHAR</span></span></td>
+<td class="codetype"><span class="SCde">lfFaceName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst">WCHAR</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1737,7 +1740,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">LineTo</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LineTo</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1750,7 +1753,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MoveTo</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveTo</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1765,123 +1768,123 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAscent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAscent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDescent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDescent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmInternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmInternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmExternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmExternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAveCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAveCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmMaxCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmMaxCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmOverhang</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmOverhang</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmFirstChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmFirstChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmLastChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmLastChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDefaultChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmDefaultChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmBreakChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmBreakChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmUnderlined</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmUnderlined</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmStruckOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmStruckOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmSizeEM</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmSizeEM</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmCellHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmCellHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmAvgWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmAvgWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1898,123 +1901,123 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAscent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAscent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDescent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDescent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmInternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmInternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmExternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmExternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAveCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAveCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmMaxCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmMaxCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmOverhang</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmOverhang</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmFirstChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmFirstChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmLastChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmLastChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDefaultChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmDefaultChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmBreakChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmBreakChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmUnderlined</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmUnderlined</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmStruckOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmStruckOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmSizeEM</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmSizeEM</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmCellHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmCellHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ntmAvgWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">ntmAvgWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2031,133 +2034,133 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">nSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">nSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nVersion</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">nVersion</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iPixelType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">iPixelType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cColorBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cColorBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cRedBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cRedBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cRedShift</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cRedShift</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cGreenBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cGreenBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cGreenShift</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cGreenShift</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cBlueBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cBlueBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cBlueShift</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cBlueShift</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAlphaBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAlphaBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAlphaShift</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAlphaShift</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAccumBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAccumBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAccumRedBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAccumRedBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAccumGreenBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAccumGreenBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAccumBlueBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAccumBlueBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAccumAlphaBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAccumAlphaBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cDepthBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cDepthBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cStencilBits</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cStencilBits</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAuxBuffers</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">cAuxBuffers</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iLayerType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">iLayerType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bReserved</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">bReserved</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwLayerMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwLayerMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwVisibleMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwVisibleMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwDamageMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwDamageMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2172,7 +2175,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RGB</span>(r: <span class="SyntaxType">s32</span>, g: <span class="SyntaxType">s32</span>, b: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RGB</span>(r: <span class="STpe">s32</span>, g: <span class="STpe">s32</span>, b: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2187,23 +2190,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">rgbBlue</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">rgbBlue</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rgbGreen</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">rgbGreen</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rgbRed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">rgbRed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rgbReserved</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">rgbReserved</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2218,7 +2221,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">Rectangle</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, left: <span class="SyntaxType">s32</span>, top: <span class="SyntaxType">s32</span>, right: <span class="SyntaxType">s32</span>, bottom: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Rectangle</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, left: <span class="STpe">s32</span>, top: <span class="STpe">s32</span>, right: <span class="STpe">s32</span>, bottom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2231,7 +2234,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SelectObject</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, h: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span>)-&gt;<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SelectObject</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, h: <span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span>)-&gt;<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_HGDIOBJ">HGDIOBJ</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2244,7 +2247,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetBitmapBits</span>(hbit: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span>, cb: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">DWORD</span>, lpvBits: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPVOID</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetBitmapBits</span>(hbit: <span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span>, cb: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, lpvBits: <span class="SCst">Win32</span>.<span class="SCst">LPVOID</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2257,7 +2260,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetBkColor</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, color: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetBkColor</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, color: <span class="SCst">Win32</span>.<span class="SCst">COLORREF</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2270,7 +2273,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetBkMode</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, mode: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetBkMode</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, mode: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2283,7 +2286,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetPixelFormat</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, fmt: <span class="SyntaxType">s32</span>, ppfd: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetPixelFormat</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, fmt: <span class="STpe">s32</span>, ppfd: <span class="SKwd">const</span> *<span class="SCst">Gdi32</span>.<span class="SCst"><a href="#Gdi32_PIXELFORMATDESCRIPTOR">PIXELFORMATDESCRIPTOR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2296,7 +2299,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetTextColor</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, color: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">COLORREF</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetTextColor</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, color: <span class="SCst">Win32</span>.<span class="SCst">COLORREF</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">COLORREF</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2309,7 +2312,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SwapBuffers</span>(arg1: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwapBuffers</span>(arg1: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2324,103 +2327,103 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAscent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAscent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDescent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDescent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmInternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmInternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmExternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmExternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAveCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAveCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmMaxCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmMaxCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmOverhang</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmOverhang</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmFirstChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmFirstChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmLastChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmLastChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDefaultChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmDefaultChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmBreakChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmBreakChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmUnderlined</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmUnderlined</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmStruckOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmStruckOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2437,103 +2440,103 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAscent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAscent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDescent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDescent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmInternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmInternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmExternalLeading</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmExternalLeading</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmAveCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmAveCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmMaxCharWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmMaxCharWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmWeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmWeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmOverhang</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmOverhang</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDigitizedAspectY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">tmDigitizedAspectY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmFirstChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmFirstChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmLastChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmLastChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmDefaultChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmDefaultChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmBreakChar</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">tmBreakChar</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmUnderlined</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmUnderlined</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmStruckOut</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmStruckOut</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmPitchAndFamily</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmPitchAndFamily</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tmCharSet</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tmCharSet</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2548,7 +2551,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">TextOutA</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, lpString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPCSTR</span>, c: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutA</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">Win32</span>.<span class="SCst">LPCSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2561,7 +2564,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">TextOutW</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, lpString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">LPCWSTR</span>, c: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">BOOL</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">Win32</span>.<span class="SCst">LPCWSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
 </div>
 </div>

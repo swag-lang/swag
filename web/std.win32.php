@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -1542,4963 +1545,4963 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Win32_BACKGROUND_BLUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BACKGROUND_BLUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_BACKGROUND_BLUE" class="codetype"><span class="SCde"><span class="SCst">BACKGROUND_BLUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_GREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BACKGROUND_GREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_BACKGROUND_GREEN" class="codetype"><span class="SCde"><span class="SCst">BACKGROUND_GREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_INTENSITY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BACKGROUND_INTENSITY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_BACKGROUND_INTENSITY" class="codetype"><span class="SCde"><span class="SCst">BACKGROUND_INTENSITY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_MASK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BACKGROUND_MASK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_BACKGROUND_MASK" class="codetype"><span class="SCde"><span class="SCst">BACKGROUND_MASK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_RED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BACKGROUND_RED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_BACKGROUND_RED" class="codetype"><span class="SCde"><span class="SCst">BACKGROUND_RED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_BITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_BITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_BITMAP" class="codetype"><span class="SCde"><span class="SCst">CF_BITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_DIB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_DIB" class="codetype"><span class="SCde"><span class="SCst">CF_DIB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIBV5" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_DIBV5</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_DIBV5" class="codetype"><span class="SCde"><span class="SCst">CF_DIBV5</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIF" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_DIF</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_DIF" class="codetype"><span class="SCde"><span class="SCst">CF_DIF</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_ENHMETAFILE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_ENHMETAFILE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_ENHMETAFILE" class="codetype"><span class="SCde"><span class="SCst">CF_ENHMETAFILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_HDROP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_HDROP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_HDROP" class="codetype"><span class="SCde"><span class="SCst">CF_HDROP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_LOCALE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_LOCALE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_LOCALE" class="codetype"><span class="SCde"><span class="SCst">CF_LOCALE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_METAFILEPICT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_METAFILEPICT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_METAFILEPICT" class="codetype"><span class="SCde"><span class="SCst">CF_METAFILEPICT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_OEMTEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_OEMTEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_OEMTEXT" class="codetype"><span class="SCde"><span class="SCst">CF_OEMTEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PALETTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_PALETTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_PALETTE" class="codetype"><span class="SCde"><span class="SCst">CF_PALETTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PENDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_PENDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_PENDATA" class="codetype"><span class="SCde"><span class="SCst">CF_PENDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_RIFF" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_RIFF</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_RIFF" class="codetype"><span class="SCde"><span class="SCst">CF_RIFF</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_SYLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_SYLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_SYLK" class="codetype"><span class="SCde"><span class="SCst">CF_SYLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_TEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_TEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_TEXT" class="codetype"><span class="SCde"><span class="SCst">CF_TEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_TIFF" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_TIFF</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_TIFF" class="codetype"><span class="SCde"><span class="SCst">CF_TIFF</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_UNICODETEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_UNICODETEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_UNICODETEXT" class="codetype"><span class="SCde"><span class="SCst">CF_UNICODETEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_WAVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CF_WAVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CF_WAVE" class="codetype"><span class="SCde"><span class="SCst">CF_WAVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CONSOLE_TEXTMODE_BUFFER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CONSOLE_TEXTMODE_BUFFER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CONSOLE_TEXTMODE_BUFFER" class="codetype"><span class="SCde"><span class="SCst">CONSOLE_TEXTMODE_BUFFER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_ALWAYS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CREATE_ALWAYS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CREATE_ALWAYS" class="codetype"><span class="SCde"><span class="SCst">CREATE_ALWAYS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_NEW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CREATE_NEW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CREATE_NEW" class="codetype"><span class="SCde"><span class="SCst">CREATE_NEW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_SUSPENDED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CREATE_SUSPENDED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CREATE_SUSPENDED" class="codetype"><span class="SCde"><span class="SCst">CREATE_SUSPENDED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_ADMINTOOLS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_ADMINTOOLS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_ADMINTOOLS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_ADMINTOOLS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Start Menu\Programs\Administrative Tools. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_ALTSTARTUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_ALTSTARTUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_ALTSTARTUP" class="codetype"><span class="SCde"><span class="SCst">CSIDL_ALTSTARTUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>non localized startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_APPDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_APPDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_APPDATA" class="codetype"><span class="SCde"><span class="SCst">CSIDL_APPDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Application Data. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_BITBUCKET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_BITBUCKET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_BITBUCKET" class="codetype"><span class="SCde"><span class="SCst">CSIDL_BITBUCKET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;desktop&gt;\Recycle Bin. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CDBURN_AREA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_CDBURN_AREA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_CDBURN_AREA" class="codetype"><span class="SCde"><span class="SCst">CSIDL_CDBURN_AREA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_ADMINTOOLS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_ADMINTOOLS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Start Menu\Programs\Administrative Tools. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_ALTSTARTUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_ALTSTARTUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>non localized common startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_APPDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_APPDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_APPDATA" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_APPDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Application Data. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_DESKTOPDIRECTORY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_DESKTOPDIRECTORY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Desktop. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_DOCUMENTS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_DOCUMENTS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_DOCUMENTS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_DOCUMENTS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_FAVORITES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_FAVORITES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_FAVORITES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_FAVORITES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_MUSIC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_MUSIC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_MUSIC" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_MUSIC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\My Music. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_OEM_LINKS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_OEM_LINKS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_OEM_LINKS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_OEM_LINKS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Links to All Users OEM specific apps. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_PICTURES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_PICTURES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_PICTURES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_PICTURES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\My Pictures. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_PROGRAMS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_PROGRAMS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_PROGRAMS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_PROGRAMS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Start Menu\Programs. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_STARTMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_STARTMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_STARTMENU" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_STARTMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Start Menu. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_STARTUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_STARTUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_STARTUP" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_STARTUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_TEMPLATES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_TEMPLATES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_TEMPLATES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_TEMPLATES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\Templates. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_VIDEO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMMON_VIDEO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMMON_VIDEO" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMMON_VIDEO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>All Users\My Video. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMPUTERSNEARME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COMPUTERSNEARME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COMPUTERSNEARME" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COMPUTERSNEARME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Computers Near Me (computered from Workgroup membership). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CONNECTIONS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_CONNECTIONS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_CONNECTIONS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_CONNECTIONS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Network and Dial-up Connections. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CONTROLS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_CONTROLS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_CONTROLS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_CONTROLS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>My Computer\Control Panel. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COOKIES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_COOKIES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_COOKIES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_COOKIES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DESKTOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_DESKTOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_DESKTOP" class="codetype"><span class="SCde"><span class="SCst">CSIDL_DESKTOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;desktop&gt;. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DESKTOPDIRECTORY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_DESKTOPDIRECTORY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_DESKTOPDIRECTORY" class="codetype"><span class="SCde"><span class="SCst">CSIDL_DESKTOPDIRECTORY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Desktop. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DRIVES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_DRIVES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_DRIVES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_DRIVES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>My Computer. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FAVORITES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FAVORITES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FAVORITES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FAVORITES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Favorites. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_CREATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_CREATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_CREATE" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_CREATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>combine with CSIDL_ value to force folder creation in SHGetFolderPath(). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_DONT_UNEXPAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_DONT_UNEXPAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>combine with CSIDL_ value to avoid unexpanding environment variables. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_DONT_VERIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_DONT_VERIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_DONT_VERIFY" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_DONT_VERIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>combine with CSIDL_ value to return an unverified folder path. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_MASK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_MASK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_MASK" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_MASK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>mask for all possible flag values. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_NO_ALIAS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_NO_ALIAS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_NO_ALIAS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_NO_ALIAS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>combine with CSIDL_ value to insure non-typealias versions of the pidl. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_PER_USER_INIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FLAG_PER_USER_INIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FLAG_PER_USER_INIT" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FLAG_PER_USER_INIT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>combine with CSIDL_ value to indicate per-user init (eg. upgrade). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FONTS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_FONTS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_FONTS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_FONTS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>windows\fonts. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_HISTORY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_HISTORY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_HISTORY" class="codetype"><span class="SCde"><span class="SCst">CSIDL_HISTORY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_INTERNET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_INTERNET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_INTERNET" class="codetype"><span class="SCde"><span class="SCst">CSIDL_INTERNET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Internet Explorer (icon on desktop). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_INTERNET_CACHE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_INTERNET_CACHE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_INTERNET_CACHE" class="codetype"><span class="SCde"><span class="SCst">CSIDL_INTERNET_CACHE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_LOCAL_APPDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_LOCAL_APPDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_LOCAL_APPDATA" class="codetype"><span class="SCde"><span class="SCst">CSIDL_LOCAL_APPDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYDOCUMENTS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_MYDOCUMENTS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_MYDOCUMENTS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_MYDOCUMENTS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Personal was just a silly name for My Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYMUSIC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_MYMUSIC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_MYMUSIC" class="codetype"><span class="SCde"><span class="SCst">CSIDL_MYMUSIC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>"My Music" folder. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYPICTURES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_MYPICTURES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_MYPICTURES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_MYPICTURES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>C:\Program Files\My Pictures. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYVIDEO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_MYVIDEO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_MYVIDEO" class="codetype"><span class="SCde"><span class="SCst">CSIDL_MYVIDEO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>"My Videos" folder. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_NETHOOD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_NETHOOD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_NETHOOD" class="codetype"><span class="SCde"><span class="SCst">CSIDL_NETHOOD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\nethood. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_NETWORK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_NETWORK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_NETWORK" class="codetype"><span class="SCde"><span class="SCst">CSIDL_NETWORK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Network Neighborhood (My Network Places). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PERSONAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PERSONAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PERSONAL" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PERSONAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>My Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PRINTERS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PRINTERS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PRINTERS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PRINTERS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>My Computer\Printers. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PRINTHOOD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PRINTHOOD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PRINTHOOD" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PRINTHOOD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\PrintHood. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROFILE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROFILE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROFILE" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROFILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>USERPROFILE. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAMS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROGRAMS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROGRAMS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROGRAMS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Start Menu\Programs. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROGRAM_FILES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROGRAM_FILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>C:\Program Files. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILESX86" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROGRAM_FILESX86</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROGRAM_FILESX86" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROGRAM_FILESX86</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>x86 C:\Program Files on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROGRAM_FILES_COMMON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROGRAM_FILES_COMMON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>C:\Program Files\Common. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_PROGRAM_FILES_COMMONX86</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="codetype"><span class="SCde"><span class="SCst">CSIDL_PROGRAM_FILES_COMMONX86</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>x86 Program Files\Common on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RECENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_RECENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_RECENT" class="codetype"><span class="SCde"><span class="SCst">CSIDL_RECENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Recent. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RESOURCES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_RESOURCES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_RESOURCES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_RESOURCES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Resource Direcotry. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RESOURCES_LOCALIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_RESOURCES_LOCALIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_RESOURCES_LOCALIZED" class="codetype"><span class="SCde"><span class="SCst">CSIDL_RESOURCES_LOCALIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Localized Resource Direcotry. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SENDTO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_SENDTO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_SENDTO" class="codetype"><span class="SCde"><span class="SCst">CSIDL_SENDTO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\SendTo. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_STARTMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_STARTMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_STARTMENU" class="codetype"><span class="SCde"><span class="SCst">CSIDL_STARTMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>&lt;user name&gt;\Start Menu. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_STARTUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_STARTUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_STARTUP" class="codetype"><span class="SCde"><span class="SCst">CSIDL_STARTUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Start Menu\Programs\Startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SYSTEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_SYSTEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_SYSTEM" class="codetype"><span class="SCde"><span class="SCst">CSIDL_SYSTEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>GetSystemDirectory(). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SYSTEMX86" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_SYSTEMX86</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_SYSTEMX86" class="codetype"><span class="SCde"><span class="SCst">CSIDL_SYSTEMX86</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>x86 system directory on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_TEMPLATES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_TEMPLATES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_TEMPLATES" class="codetype"><span class="SCde"><span class="SCst">CSIDL_TEMPLATES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_WINDOWS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CSIDL_WINDOWS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CSIDL_WINDOWS" class="codetype"><span class="SCde"><span class="SCst">CSIDL_WINDOWS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>GetWindowsDirectory(). </td>
 </tr>
 <tr>
-<td id="Win32_CS_BYTEALIGNCLIENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_BYTEALIGNCLIENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_BYTEALIGNCLIENT" class="codetype"><span class="SCde"><span class="SCst">CS_BYTEALIGNCLIENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_BYTEALIGNWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_BYTEALIGNWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_BYTEALIGNWINDOW" class="codetype"><span class="SCde"><span class="SCst">CS_BYTEALIGNWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_CLASSDC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_CLASSDC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_CLASSDC" class="codetype"><span class="SCde"><span class="SCst">CS_CLASSDC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_DBLCLKS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_DBLCLKS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_DBLCLKS" class="codetype"><span class="SCde"><span class="SCst">CS_DBLCLKS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_DROPSHADOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_DROPSHADOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_DROPSHADOW" class="codetype"><span class="SCde"><span class="SCst">CS_DROPSHADOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_GLOBALCLASS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_GLOBALCLASS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_GLOBALCLASS" class="codetype"><span class="SCde"><span class="SCst">CS_GLOBALCLASS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_HREDRAW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_HREDRAW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_HREDRAW" class="codetype"><span class="SCde"><span class="SCst">CS_HREDRAW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_IME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_IME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_IME" class="codetype"><span class="SCde"><span class="SCst">CS_IME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_NOCLOSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_NOCLOSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_NOCLOSE" class="codetype"><span class="SCde"><span class="SCst">CS_NOCLOSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_OWNDC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_OWNDC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_OWNDC" class="codetype"><span class="SCde"><span class="SCst">CS_OWNDC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_PARENTDC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_PARENTDC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_PARENTDC" class="codetype"><span class="SCde"><span class="SCst">CS_PARENTDC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_SAVEBITS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_SAVEBITS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_SAVEBITS" class="codetype"><span class="SCde"><span class="SCst">CS_SAVEBITS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_VREDRAW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CS_VREDRAW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CS_VREDRAW" class="codetype"><span class="SCde"><span class="SCst">CS_VREDRAW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_ALL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CWP_ALL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CWP_ALL" class="codetype"><span class="SCde"><span class="SCst">CWP_ALL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPDISABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CWP_SKIPDISABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CWP_SKIPDISABLED" class="codetype"><span class="SCde"><span class="SCst">CWP_SKIPDISABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPINVISIBLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CWP_SKIPINVISIBLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CWP_SKIPINVISIBLE" class="codetype"><span class="SCde"><span class="SCst">CWP_SKIPINVISIBLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPTRANSPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CWP_SKIPTRANSPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_CWP_SKIPTRANSPARENT" class="codetype"><span class="SCde"><span class="SCst">CWP_SKIPTRANSPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CW_USEDEFAULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CW_USEDEFAULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_CW_USEDEFAULT" class="codetype"><span class="SCde"><span class="SCst">CW_USEDEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DEFAULT_MINIMUM_ENTITIES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DEFAULT_MINIMUM_ENTITIES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_DEFAULT_MINIMUM_ENTITIES" class="codetype"><span class="SCde"><span class="SCst">DEFAULT_MINIMUM_ENTITIES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DM_POINTERHITTEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DM_POINTERHITTEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_DM_POINTERHITTEST" class="codetype"><span class="SCde"><span class="SCst">DM_POINTERHITTEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_DEVICE_NOT_CONNECTED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ERROR_DEVICE_NOT_CONNECTED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_ERROR_DEVICE_NOT_CONNECTED" class="codetype"><span class="SCde"><span class="SCst">ERROR_DEVICE_NOT_CONNECTED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_FILE_NOT_FOUND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ERROR_FILE_NOT_FOUND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_ERROR_FILE_NOT_FOUND" class="codetype"><span class="SCde"><span class="SCst">ERROR_FILE_NOT_FOUND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_IO_PENDING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ERROR_IO_PENDING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_ERROR_IO_PENDING" class="codetype"><span class="SCde"><span class="SCst">ERROR_IO_PENDING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_NO_MORE_FILES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ERROR_NO_MORE_FILES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_ERROR_NO_MORE_FILES" class="codetype"><span class="SCde"><span class="SCst">ERROR_NO_MORE_FILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_SUCCESS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ERROR_SUCCESS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_ERROR_SUCCESS" class="codetype"><span class="SCde"><span class="SCst">ERROR_SUCCESS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FALSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FALSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_FALSE" class="codetype"><span class="SCde"><span class="SCst">FALSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_ARCHIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_ARCHIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_ARCHIVE" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_ARCHIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_COMPRESSED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_COMPRESSED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_COMPRESSED" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_COMPRESSED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_DEVICE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_DEVICE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_DEVICE" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_DEVICE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_DIRECTORY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_DIRECTORY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_DIRECTORY" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_DIRECTORY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_EA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_EA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_EA" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_EA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_ENCRYPTED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_ENCRYPTED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_HIDDEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_HIDDEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_HIDDEN" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_HIDDEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_INTEGRITY_STREAM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_INTEGRITY_STREAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_NORMAL" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_NO_SCRUB_DATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_NO_SCRUB_DATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_OFFLINE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_OFFLINE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_OFFLINE" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_OFFLINE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_PINNED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_PINNED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_PINNED" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_PINNED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_READONLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_READONLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_READONLY" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_READONLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_RECALL_ON_OPEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_OPEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_REPARSE_POINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_REPARSE_POINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_SPARSE_FILE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_SPARSE_FILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_SYSTEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_SYSTEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_SYSTEM" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_SYSTEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_TEMPORARY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_TEMPORARY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_TEMPORARY" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_TEMPORARY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_UNPINNED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_UNPINNED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_UNPINNED" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_UNPINNED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_VIRTUAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_ATTRIBUTE_VIRTUAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_ATTRIBUTE_VIRTUAL" class="codetype"><span class="SCde"><span class="SCst">FILE_ATTRIBUTE_VIRTUAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_BEGIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_BEGIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_BEGIN" class="codetype"><span class="SCde"><span class="SCst">FILE_BEGIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_CURRENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_CURRENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_CURRENT" class="codetype"><span class="SCde"><span class="SCst">FILE_CURRENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_END" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_END</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_END" class="codetype"><span class="SCde"><span class="SCst">FILE_END</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_READ_ATTRIBUTES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_READ_ATTRIBUTES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_READ_ATTRIBUTES" class="codetype"><span class="SCde"><span class="SCst">FILE_READ_ATTRIBUTES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_DELETE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_SHARE_DELETE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_SHARE_DELETE" class="codetype"><span class="SCde"><span class="SCst">FILE_SHARE_DELETE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_READ" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_SHARE_READ</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_SHARE_READ" class="codetype"><span class="SCde"><span class="SCst">FILE_SHARE_READ</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_WRITE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_SHARE_WRITE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_SHARE_WRITE" class="codetype"><span class="SCde"><span class="SCst">FILE_SHARE_WRITE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_WRITE_ATTRIBUTES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FILE_WRITE_ATTRIBUTES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FILE_WRITE_ATTRIBUTES" class="codetype"><span class="SCde"><span class="SCst">FILE_WRITE_ATTRIBUTES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_BLUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FOREGROUND_BLUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FOREGROUND_BLUE" class="codetype"><span class="SCde"><span class="SCst">FOREGROUND_BLUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_GREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FOREGROUND_GREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FOREGROUND_GREEN" class="codetype"><span class="SCde"><span class="SCst">FOREGROUND_GREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_INTENSITY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FOREGROUND_INTENSITY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FOREGROUND_INTENSITY" class="codetype"><span class="SCde"><span class="SCst">FOREGROUND_INTENSITY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_MASK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FOREGROUND_MASK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FOREGROUND_MASK" class="codetype"><span class="SCde"><span class="SCst">FOREGROUND_MASK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_RED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FOREGROUND_RED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FOREGROUND_RED" class="codetype"><span class="SCde"><span class="SCst">FOREGROUND_RED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_ALLOCATE_BUFFER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_ALLOCATE_BUFFER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_ARGUMENT_ARRAY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_ARGUMENT_ARRAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_FROM_HMODULE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_FROM_HMODULE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_STRING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_FROM_STRING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_STRING" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_FROM_STRING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_FROM_SYSTEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_FROM_SYSTEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_IGNORE_INSERTS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_IGNORE_INSERTS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FORMAT_MESSAGE_MAX_WIDTH_MASK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK" class="codetype"><span class="SCde"><span class="SCst">FORMAT_MESSAGE_MAX_WIDTH_MASK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_ALL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GENERIC_ALL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GENERIC_ALL" class="codetype"><span class="SCde"><span class="SCst">GENERIC_ALL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_EXECUTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GENERIC_EXECUTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GENERIC_EXECUTE" class="codetype"><span class="SCde"><span class="SCst">GENERIC_EXECUTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_READ" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GENERIC_READ</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GENERIC_READ" class="codetype"><span class="SCde"><span class="SCst">GENERIC_READ</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_WRITE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GENERIC_WRITE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GENERIC_WRITE" class="codetype"><span class="SCde"><span class="SCst">GENERIC_WRITE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_DDESHARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_DDESHARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_DDESHARE" class="codetype"><span class="SCde"><span class="SCst">GMEM_DDESHARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_DISCARDABLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_DISCARDABLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_DISCARDABLE" class="codetype"><span class="SCde"><span class="SCst">GMEM_DISCARDABLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_FIXED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_FIXED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_FIXED" class="codetype"><span class="SCde"><span class="SCst">GMEM_FIXED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_INVALID_HANDLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_INVALID_HANDLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_INVALID_HANDLE" class="codetype"><span class="SCde"><span class="SCst">GMEM_INVALID_HANDLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_LOWER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_LOWER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_LOWER" class="codetype"><span class="SCde"><span class="SCst">GMEM_LOWER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_MODIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_MODIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_MODIFY" class="codetype"><span class="SCde"><span class="SCst">GMEM_MODIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_MOVEABLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_MOVEABLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_MOVEABLE" class="codetype"><span class="SCde"><span class="SCst">GMEM_MOVEABLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOCOMPACT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_NOCOMPACT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_NOCOMPACT" class="codetype"><span class="SCde"><span class="SCst">GMEM_NOCOMPACT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NODISCARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_NODISCARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_NODISCARD" class="codetype"><span class="SCde"><span class="SCst">GMEM_NODISCARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_NOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_NOTIFY" class="codetype"><span class="SCde"><span class="SCst">GMEM_NOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOT_BANKED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_NOT_BANKED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_NOT_BANKED" class="codetype"><span class="SCde"><span class="SCst">GMEM_NOT_BANKED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_SHARE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_SHARE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_SHARE" class="codetype"><span class="SCde"><span class="SCst">GMEM_SHARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_VALID_FLAGS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_VALID_FLAGS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_VALID_FLAGS" class="codetype"><span class="SCde"><span class="SCst">GMEM_VALID_FLAGS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_ZEROINIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GMEM_ZEROINIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GMEM_ZEROINIT" class="codetype"><span class="SCde"><span class="SCst">GMEM_ZEROINIT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_HINSTANCE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GWLP_HINSTANCE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_GWLP_HINSTANCE" class="codetype"><span class="SCde"><span class="SCst">GWLP_HINSTANCE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_HWNDPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GWLP_HWNDPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_GWLP_HWNDPARENT" class="codetype"><span class="SCde"><span class="SCst">GWLP_HWNDPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_ID" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GWLP_ID</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_GWLP_ID" class="codetype"><span class="SCde"><span class="SCst">GWLP_ID</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_USERDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GWLP_USERDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_GWLP_USERDATA" class="codetype"><span class="SCde"><span class="SCst">GWLP_USERDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_WNDPROC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GWLP_WNDPROC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_GWLP_WNDPROC" class="codetype"><span class="SCde"><span class="SCst">GWLP_WNDPROC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_CHILD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_CHILD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_CHILD" class="codetype"><span class="SCde"><span class="SCst">GW_CHILD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_ENABLEDPOPUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_ENABLEDPOPUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_ENABLEDPOPUP" class="codetype"><span class="SCde"><span class="SCst">GW_ENABLEDPOPUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_HWNDFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_HWNDFIRST" class="codetype"><span class="SCde"><span class="SCst">GW_HWNDFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_HWNDLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_HWNDLAST" class="codetype"><span class="SCde"><span class="SCst">GW_HWNDLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDNEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_HWNDNEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_HWNDNEXT" class="codetype"><span class="SCde"><span class="SCst">GW_HWNDNEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDPREV" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_HWNDPREV</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_HWNDPREV" class="codetype"><span class="SCde"><span class="SCst">GW_HWNDPREV</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_MAX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_MAX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_MAX" class="codetype"><span class="SCde"><span class="SCst">GW_MAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_OWNER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GW_OWNER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_GW_OWNER" class="codetype"><span class="SCde"><span class="SCst">GW_OWNER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_BOTTOM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HWND_BOTTOM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HWND_BOTTOM" class="codetype"><span class="SCde"><span class="SCst">HWND_BOTTOM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_NOTOPMOST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HWND_NOTOPMOST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HWND_NOTOPMOST" class="codetype"><span class="SCde"><span class="SCst">HWND_NOTOPMOST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_TOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HWND_TOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HWND_TOP" class="codetype"><span class="SCde"><span class="SCst">HWND_TOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_TOPMOST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HWND_TOPMOST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HWND_TOPMOST" class="codetype"><span class="SCde"><span class="SCst">HWND_TOPMOST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDABORT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDABORT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDABORT" class="codetype"><span class="SCde"><span class="SCst">IDABORT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDCANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDCANCEL" class="codetype"><span class="SCde"><span class="SCst">IDCANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCLOSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDCLOSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDCLOSE" class="codetype"><span class="SCde"><span class="SCst">IDCLOSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCONTINUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDCONTINUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDCONTINUE" class="codetype"><span class="SCde"><span class="SCst">IDCONTINUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_APPSTARTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_APPSTARTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_APPSTARTING" class="codetype"><span class="SCde"><span class="SCst">IDC_APPSTARTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_ARROW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_ARROW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_ARROW" class="codetype"><span class="SCde"><span class="SCst">IDC_ARROW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_CROSS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_CROSS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_CROSS" class="codetype"><span class="SCde"><span class="SCst">IDC_CROSS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_HAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_HAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_HAND" class="codetype"><span class="SCde"><span class="SCst">IDC_HAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_HELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_HELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_HELP" class="codetype"><span class="SCde"><span class="SCst">IDC_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_IBEAM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_IBEAM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_IBEAM" class="codetype"><span class="SCde"><span class="SCst">IDC_IBEAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_ICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_ICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_ICON" class="codetype"><span class="SCde"><span class="SCst">IDC_ICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_NO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_NO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_NO" class="codetype"><span class="SCde"><span class="SCst">IDC_NO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_PERSON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_PERSON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_PERSON" class="codetype"><span class="SCde"><span class="SCst">IDC_PERSON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_PIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_PIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_PIN" class="codetype"><span class="SCde"><span class="SCst">IDC_PIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZE" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZEALL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZEALL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZEALL" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZEALL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENESW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZENESW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZENESW" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZENESW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZENS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZENS" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZENS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENWSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZENWSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZENWSE" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZENWSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZEWE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_SIZEWE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_SIZEWE" class="codetype"><span class="SCde"><span class="SCst">IDC_SIZEWE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_UPARROW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_UPARROW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_UPARROW" class="codetype"><span class="SCde"><span class="SCst">IDC_UPARROW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_WAIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDC_WAIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDC_WAIT" class="codetype"><span class="SCde"><span class="SCst">IDC_WAIT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDHELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDHELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDHELP" class="codetype"><span class="SCde"><span class="SCst">IDHELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDIGNORE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDIGNORE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDIGNORE" class="codetype"><span class="SCde"><span class="SCst">IDIGNORE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDNO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDNO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDNO" class="codetype"><span class="SCde"><span class="SCst">IDNO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDOK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDOK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDOK" class="codetype"><span class="SCde"><span class="SCst">IDOK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDRETRY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDRETRY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDRETRY" class="codetype"><span class="SCde"><span class="SCst">IDRETRY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDTIMEOUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDTIMEOUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDTIMEOUT" class="codetype"><span class="SCde"><span class="SCst">IDTIMEOUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDTRYAGAIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDTRYAGAIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDTRYAGAIN" class="codetype"><span class="SCde"><span class="SCst">IDTRYAGAIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDYES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IDYES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_IDYES" class="codetype"><span class="SCde"><span class="SCst">IDYES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INFINITE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">INFINITE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_INFINITE" class="codetype"><span class="SCde"><span class="SCst">INFINITE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_FILE_ATTRIBUTES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">INVALID_FILE_ATTRIBUTES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_INVALID_FILE_ATTRIBUTES" class="codetype"><span class="SCde"><span class="SCst">INVALID_FILE_ATTRIBUTES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_FILE_SIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">INVALID_FILE_SIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_INVALID_FILE_SIZE" class="codetype"><span class="SCde"><span class="SCst">INVALID_FILE_SIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_HANDLE_VALUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">INVALID_HANDLE_VALUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td id="Win32_INVALID_HANDLE_VALUE" class="codetype"><span class="SCde"><span class="SCst">INVALID_HANDLE_VALUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_SET_FILE_POINTER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">INVALID_SET_FILE_POINTER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_INVALID_SET_FILE_POINTER" class="codetype"><span class="SCde"><span class="SCst">INVALID_SET_FILE_POINTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LANG_ENGLISH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LANG_ENGLISH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_LANG_ENGLISH" class="codetype"><span class="SCde"><span class="SCst">LANG_ENGLISH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LWA_ALPHA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LWA_ALPHA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_LWA_ALPHA" class="codetype"><span class="SCde"><span class="SCst">LWA_ALPHA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LWA_COLORKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LWA_COLORKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_LWA_COLORKEY" class="codetype"><span class="SCde"><span class="SCst">LWA_COLORKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_CHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAPVK_VK_TO_CHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAPVK_VK_TO_CHAR" class="codetype"><span class="SCde"><span class="SCst">MAPVK_VK_TO_CHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_VSC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAPVK_VK_TO_VSC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAPVK_VK_TO_VSC" class="codetype"><span class="SCde"><span class="SCst">MAPVK_VK_TO_VSC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_VSC_EX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAPVK_VK_TO_VSC_EX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAPVK_VK_TO_VSC_EX" class="codetype"><span class="SCde"><span class="SCst">MAPVK_VK_TO_VSC_EX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VSC_TO_VK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAPVK_VSC_TO_VK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAPVK_VSC_TO_VK" class="codetype"><span class="SCde"><span class="SCst">MAPVK_VSC_TO_VK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VSC_TO_VK_EX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAPVK_VSC_TO_VK_EX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAPVK_VSC_TO_VK_EX" class="codetype"><span class="SCde"><span class="SCst">MAPVK_VSC_TO_VK_EX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAXIMUM_WAIT_OBJECTS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAXIMUM_WAIT_OBJECTS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MAXIMUM_WAIT_OBJECTS" class="codetype"><span class="SCde"><span class="SCst">MAXIMUM_WAIT_OBJECTS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_ADAPTER_ADDRESS_LENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH" class="codetype"><span class="SCde"><span class="SCst">MAX_ADAPTER_ADDRESS_LENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_ADAPTER_DESCRIPTION_LENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH" class="codetype"><span class="SCde"><span class="SCst">MAX_ADAPTER_DESCRIPTION_LENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_NAME_LENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_ADAPTER_NAME_LENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_ADAPTER_NAME_LENGTH" class="codetype"><span class="SCde"><span class="SCst">MAX_ADAPTER_NAME_LENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DHCPV6_DUID_LENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_DHCPV6_DUID_LENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_DHCPV6_DUID_LENGTH" class="codetype"><span class="SCde"><span class="SCst">MAX_DHCPV6_DUID_LENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_DNS_SUFFIX_STRING_LENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH" class="codetype"><span class="SCde"><span class="SCst">MAX_DNS_SUFFIX_STRING_LENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DOMAIN_NAME_LEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_DOMAIN_NAME_LEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_DOMAIN_NAME_LEN" class="codetype"><span class="SCde"><span class="SCst">MAX_DOMAIN_NAME_LEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_HOSTNAME_LEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_HOSTNAME_LEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_HOSTNAME_LEN" class="codetype"><span class="SCde"><span class="SCst">MAX_HOSTNAME_LEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_PATH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_PATH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_PATH" class="codetype"><span class="SCde"><span class="SCst">MAX_PATH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_SCOPE_ID_LEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MAX_SCOPE_ID_LEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_MAX_SCOPE_ID_LEN" class="codetype"><span class="SCde"><span class="SCst">MAX_SCOPE_ID_LEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ABORTRETRYIGNORE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ABORTRETRYIGNORE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ABORTRETRYIGNORE" class="codetype"><span class="SCde"><span class="SCst">MB_ABORTRETRYIGNORE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_APPLMODAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_APPLMODAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_APPLMODAL" class="codetype"><span class="SCde"><span class="SCst">MB_APPLMODAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_CANCELTRYCONTINUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_CANCELTRYCONTINUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_CANCELTRYCONTINUE" class="codetype"><span class="SCde"><span class="SCst">MB_CANCELTRYCONTINUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFAULT_DESKTOP_ONLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_DEFAULT_DESKTOP_ONLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_DEFAULT_DESKTOP_ONLY" class="codetype"><span class="SCde"><span class="SCst">MB_DEFAULT_DESKTOP_ONLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_DEFBUTTON1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_DEFBUTTON1" class="codetype"><span class="SCde"><span class="SCst">MB_DEFBUTTON1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_DEFBUTTON2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_DEFBUTTON2" class="codetype"><span class="SCde"><span class="SCst">MB_DEFBUTTON2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_DEFBUTTON3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_DEFBUTTON3" class="codetype"><span class="SCde"><span class="SCst">MB_DEFBUTTON3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_DEFBUTTON4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_DEFBUTTON4" class="codetype"><span class="SCde"><span class="SCst">MB_DEFBUTTON4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_HELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_HELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_HELP" class="codetype"><span class="SCde"><span class="SCst">MB_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONASTERISK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONASTERISK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONASTERISK" class="codetype"><span class="SCde"><span class="SCst">MB_ICONASTERISK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONERROR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONERROR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONERROR" class="codetype"><span class="SCde"><span class="SCst">MB_ICONERROR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONEXCLAMATION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONEXCLAMATION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONEXCLAMATION" class="codetype"><span class="SCde"><span class="SCst">MB_ICONEXCLAMATION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONHAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONHAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONHAND" class="codetype"><span class="SCde"><span class="SCst">MB_ICONHAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONINFORMATION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONINFORMATION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONINFORMATION" class="codetype"><span class="SCde"><span class="SCst">MB_ICONINFORMATION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONQUESTION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONQUESTION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONQUESTION" class="codetype"><span class="SCde"><span class="SCst">MB_ICONQUESTION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONSTOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONSTOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONSTOP" class="codetype"><span class="SCde"><span class="SCst">MB_ICONSTOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONWARNING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_ICONWARNING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_ICONWARNING" class="codetype"><span class="SCde"><span class="SCst">MB_ICONWARNING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_NOFOCUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_NOFOCUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_NOFOCUS" class="codetype"><span class="SCde"><span class="SCst">MB_NOFOCUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_OK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_OK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_OK" class="codetype"><span class="SCde"><span class="SCst">MB_OK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_OKCANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_OKCANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_OKCANCEL" class="codetype"><span class="SCde"><span class="SCst">MB_OKCANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RETRYCANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_RETRYCANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_RETRYCANCEL" class="codetype"><span class="SCde"><span class="SCst">MB_RETRYCANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_RIGHT" class="codetype"><span class="SCde"><span class="SCst">MB_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RTLREADING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_RTLREADING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_RTLREADING" class="codetype"><span class="SCde"><span class="SCst">MB_RTLREADING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_SETFOREGROUND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_SETFOREGROUND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_SETFOREGROUND" class="codetype"><span class="SCde"><span class="SCst">MB_SETFOREGROUND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_SYSTEMMODAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_SYSTEMMODAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_SYSTEMMODAL" class="codetype"><span class="SCde"><span class="SCst">MB_SYSTEMMODAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_TASKMODAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_TASKMODAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_TASKMODAL" class="codetype"><span class="SCde"><span class="SCst">MB_TASKMODAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_TOPMOST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_TOPMOST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_TOPMOST" class="codetype"><span class="SCde"><span class="SCst">MB_TOPMOST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_USERICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_USERICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_USERICON" class="codetype"><span class="SCde"><span class="SCst">MB_USERICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_YESNO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_YESNO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_YESNO" class="codetype"><span class="SCde"><span class="SCst">MB_YESNO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_YESNOCANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MB_YESNOCANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MB_YESNOCANCEL" class="codetype"><span class="SCde"><span class="SCst">MB_YESNOCANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MN_GETHMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MN_GETHMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MN_GETHMENU" class="codetype"><span class="SCde"><span class="SCst">MN_GETHMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_ALT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MOD_ALT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MOD_ALT" class="codetype"><span class="SCde"><span class="SCst">MOD_ALT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_CONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MOD_CONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MOD_CONTROL" class="codetype"><span class="SCde"><span class="SCst">MOD_CONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_NOREPEAT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MOD_NOREPEAT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MOD_NOREPEAT" class="codetype"><span class="SCde"><span class="SCst">MOD_NOREPEAT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_SHIFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MOD_SHIFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MOD_SHIFT" class="codetype"><span class="SCde"><span class="SCst">MOD_SHIFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_WIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MOD_WIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MOD_WIN" class="codetype"><span class="SCde"><span class="SCst">MOD_WIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTONEAREST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MONITOR_DEFAULTTONEAREST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MONITOR_DEFAULTTONEAREST" class="codetype"><span class="SCde"><span class="SCst">MONITOR_DEFAULTTONEAREST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTONULL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MONITOR_DEFAULTTONULL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MONITOR_DEFAULTTONULL" class="codetype"><span class="SCde"><span class="SCst">MONITOR_DEFAULTTONULL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTOPRIMARY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MONITOR_DEFAULTTOPRIMARY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_MONITOR_DEFAULTTOPRIMARY" class="codetype"><span class="SCde"><span class="SCst">MONITOR_DEFAULTTOPRIMARY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_GUID" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_GUID</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_GUID" class="codetype"><span class="SCde"><span class="SCst">NIF_GUID</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_ICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_ICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_ICON" class="codetype"><span class="SCde"><span class="SCst">NIF_ICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_INFO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_INFO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_INFO" class="codetype"><span class="SCde"><span class="SCst">NIF_INFO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_MESSAGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_MESSAGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_MESSAGE" class="codetype"><span class="SCde"><span class="SCst">NIF_MESSAGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_REALTIME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_REALTIME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_REALTIME" class="codetype"><span class="SCde"><span class="SCst">NIF_REALTIME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_SHOWTIP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_SHOWTIP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_SHOWTIP" class="codetype"><span class="SCde"><span class="SCst">NIF_SHOWTIP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_STATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_STATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_STATE" class="codetype"><span class="SCde"><span class="SCst">NIF_STATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_TIP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIF_TIP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIF_TIP" class="codetype"><span class="SCde"><span class="SCst">NIF_TIP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_ADD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIM_ADD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIM_ADD" class="codetype"><span class="SCde"><span class="SCst">NIM_ADD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_DELETE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIM_DELETE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIM_DELETE" class="codetype"><span class="SCde"><span class="SCst">NIM_DELETE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_MODIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIM_MODIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIM_MODIFY" class="codetype"><span class="SCde"><span class="SCst">NIM_MODIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_SETFOCUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIM_SETFOCUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIM_SETFOCUS" class="codetype"><span class="SCde"><span class="SCst">NIM_SETFOCUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_SETVERSION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NIM_SETVERSION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_NIM_SETVERSION" class="codetype"><span class="SCde"><span class="SCst">NIM_SETVERSION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_OPEN_ALWAYS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OPEN_ALWAYS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_OPEN_ALWAYS" class="codetype"><span class="SCde"><span class="SCst">OPEN_ALWAYS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_OPEN_EXISTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OPEN_EXISTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_OPEN_EXISTING" class="codetype"><span class="SCde"><span class="SCst">OPEN_EXISTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_NOREMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PM_NOREMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_PM_NOREMOVE" class="codetype"><span class="SCde"><span class="SCst">PM_NOREMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_NOYIELD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PM_NOYIELD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_PM_NOYIELD" class="codetype"><span class="SCde"><span class="SCst">PM_NOYIELD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_REMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PM_REMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_PM_REMOVE" class="codetype"><span class="SCde"><span class="SCst">PM_REMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_ARRANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_ARRANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_ARRANGE" class="codetype"><span class="SCde"><span class="SCst">SC_ARRANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_CLOSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_CLOSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_CLOSE" class="codetype"><span class="SCde"><span class="SCst">SC_CLOSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_CONTEXTHELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_CONTEXTHELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_CONTEXTHELP" class="codetype"><span class="SCde"><span class="SCst">SC_CONTEXTHELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_DEFAULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_DEFAULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_DEFAULT" class="codetype"><span class="SCde"><span class="SCst">SC_DEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_HOTKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_HOTKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_HOTKEY" class="codetype"><span class="SCde"><span class="SCst">SC_HOTKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_HSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_HSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_HSCROLL" class="codetype"><span class="SCde"><span class="SCst">SC_HSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_KEYMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_KEYMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_KEYMENU" class="codetype"><span class="SCde"><span class="SCst">SC_KEYMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MAXIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_MAXIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_MAXIMIZE" class="codetype"><span class="SCde"><span class="SCst">SC_MAXIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MINIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_MINIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_MINIMIZE" class="codetype"><span class="SCde"><span class="SCst">SC_MINIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MONITORPOWER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_MONITORPOWER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_MONITORPOWER" class="codetype"><span class="SCde"><span class="SCst">SC_MONITORPOWER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MOUSEMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_MOUSEMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_MOUSEMENU" class="codetype"><span class="SCde"><span class="SCst">SC_MOUSEMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_MOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_MOVE" class="codetype"><span class="SCde"><span class="SCst">SC_MOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_NEXTWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_NEXTWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_NEXTWINDOW" class="codetype"><span class="SCde"><span class="SCst">SC_NEXTWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_PREVWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_PREVWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_PREVWINDOW" class="codetype"><span class="SCde"><span class="SCst">SC_PREVWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_RESTORE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_RESTORE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_RESTORE" class="codetype"><span class="SCde"><span class="SCst">SC_RESTORE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SCREENSAVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_SCREENSAVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_SCREENSAVE" class="codetype"><span class="SCde"><span class="SCst">SC_SCREENSAVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SEPARATOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_SEPARATOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_SEPARATOR" class="codetype"><span class="SCde"><span class="SCst">SC_SEPARATOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_SIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_SIZE" class="codetype"><span class="SCde"><span class="SCst">SC_SIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_TASKLIST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_TASKLIST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_TASKLIST" class="codetype"><span class="SCde"><span class="SCst">SC_TASKLIST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_VSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SC_VSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SC_VSCROLL" class="codetype"><span class="SCde"><span class="SCst">SC_VSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ADDOVERLAYS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_ADDOVERLAYS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_ADDOVERLAYS" class="codetype"><span class="SCde"><span class="SCst">SHGFI_ADDOVERLAYS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>apply the appropriate overlays. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ATTRIBUTES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_ATTRIBUTES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_ATTRIBUTES" class="codetype"><span class="SCde"><span class="SCst">SHGFI_ATTRIBUTES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get attributes. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ATTR_SPECIFIED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_ATTR_SPECIFIED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_ATTR_SPECIFIED" class="codetype"><span class="SCde"><span class="SCst">SHGFI_ATTR_SPECIFIED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get only specified attributes. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_DISPLAYNAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_DISPLAYNAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_DISPLAYNAME" class="codetype"><span class="SCde"><span class="SCst">SHGFI_DISPLAYNAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get display name. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_EXETYPE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_EXETYPE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_EXETYPE" class="codetype"><span class="SCde"><span class="SCst">SHGFI_EXETYPE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>return exe type. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_ICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_ICON" class="codetype"><span class="SCde"><span class="SCst">SHGFI_ICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ICONLOCATION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_ICONLOCATION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_ICONLOCATION" class="codetype"><span class="SCde"><span class="SCst">SHGFI_ICONLOCATION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get icon location. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_LARGEICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_LARGEICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_LARGEICON" class="codetype"><span class="SCde"><span class="SCst">SHGFI_LARGEICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get large icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_LINKOVERLAY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_LINKOVERLAY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_LINKOVERLAY" class="codetype"><span class="SCde"><span class="SCst">SHGFI_LINKOVERLAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>put a link overlay on icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_OPENICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_OPENICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_OPENICON" class="codetype"><span class="SCde"><span class="SCst">SHGFI_OPENICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get open icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_OVERLAYINDEX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_OVERLAYINDEX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_OVERLAYINDEX" class="codetype"><span class="SCde"><span class="SCst">SHGFI_OVERLAYINDEX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Get the index of the overlay. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_PIDL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_PIDL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_PIDL" class="codetype"><span class="SCde"><span class="SCst">SHGFI_PIDL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>pszPath is a pidl. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SELECTED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_SELECTED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_SELECTED" class="codetype"><span class="SCde"><span class="SCst">SHGFI_SELECTED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>show icon in selected state. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SHELLICONSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_SHELLICONSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_SHELLICONSIZE" class="codetype"><span class="SCde"><span class="SCst">SHGFI_SHELLICONSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get shell size icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SMALLICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_SMALLICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_SMALLICON" class="codetype"><span class="SCde"><span class="SCst">SHGFI_SMALLICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get small icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SYSICONINDEX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_SYSICONINDEX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_SYSICONINDEX" class="codetype"><span class="SCde"><span class="SCst">SHGFI_SYSICONINDEX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get system icon index. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_TYPENAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_TYPENAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_TYPENAME" class="codetype"><span class="SCde"><span class="SCst">SHGFI_TYPENAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>get type name. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_USEFILEATTRIBUTES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGFI_USEFILEATTRIBUTES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGFI_USEFILEATTRIBUTES" class="codetype"><span class="SCde"><span class="SCst">SHGFI_USEFILEATTRIBUTES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>use passed dwFileAttribute. </td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_ICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_ICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_ICON" class="codetype"><span class="SCde"><span class="SCst">SHGSI_ICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_ICONLOCATION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_ICONLOCATION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SHGSI_ICONLOCATION" class="codetype"><span class="SCde"><span class="SCst">SHGSI_ICONLOCATION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>you always get the icon location. </td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_LARGEICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_LARGEICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_LARGEICON" class="codetype"><span class="SCde"><span class="SCst">SHGSI_LARGEICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_LINKOVERLAY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_LINKOVERLAY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_LINKOVERLAY" class="codetype"><span class="SCde"><span class="SCst">SHGSI_LINKOVERLAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SELECTED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_SELECTED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_SELECTED" class="codetype"><span class="SCde"><span class="SCst">SHGSI_SELECTED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SHELLICONSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_SHELLICONSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_SHELLICONSIZE" class="codetype"><span class="SCde"><span class="SCst">SHGSI_SHELLICONSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SMALLICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_SMALLICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_SMALLICON" class="codetype"><span class="SCde"><span class="SCst">SHGSI_SMALLICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SYSICONINDEX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHGSI_SYSICONINDEX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SHGSI_SYSICONINDEX" class="codetype"><span class="SCde"><span class="SCst">SHGSI_SYSICONINDEX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_ARRANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_ARRANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_ARRANGE" class="codetype"><span class="SCde"><span class="SCst">SM_ARRANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CARETBLINKINGENABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CARETBLINKINGENABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_CARETBLINKINGENABLED" class="codetype"><span class="SCde"><span class="SCst">SM_CARETBLINKINGENABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CLEANBOOT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CLEANBOOT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CLEANBOOT" class="codetype"><span class="SCde"><span class="SCst">SM_CLEANBOOT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMETRICS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CMETRICS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CMETRICS" class="codetype"><span class="SCde"><span class="SCst">SM_CMETRICS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMONITORS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CMONITORS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CMONITORS" class="codetype"><span class="SCde"><span class="SCst">SM_CMONITORS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMOUSEBUTTONS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CMOUSEBUTTONS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CMOUSEBUTTONS" class="codetype"><span class="SCde"><span class="SCst">SM_CMOUSEBUTTONS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CONVERTIBLESLATEMODE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CONVERTIBLESLATEMODE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_CONVERTIBLESLATEMODE" class="codetype"><span class="SCde"><span class="SCst">SM_CONVERTIBLESLATEMODE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXBORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXBORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXBORDER" class="codetype"><span class="SCde"><span class="SCst">SM_CXBORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXCURSOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXCURSOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXCURSOR" class="codetype"><span class="SCde"><span class="SCst">SM_CXCURSOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDLGFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXDLGFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXDLGFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CXDLGFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDOUBLECLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXDOUBLECLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXDOUBLECLK" class="codetype"><span class="SCde"><span class="SCst">SM_CXDOUBLECLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDRAG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXDRAG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXDRAG" class="codetype"><span class="SCde"><span class="SCst">SM_CXDRAG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXEDGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXEDGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXEDGE" class="codetype"><span class="SCde"><span class="SCst">SM_CXEDGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFIXEDFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXFIXEDFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXFIXEDFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CXFIXEDFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFOCUSBORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXFOCUSBORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXFOCUSBORDER" class="codetype"><span class="SCde"><span class="SCst">SM_CXFOCUSBORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CXFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFULLSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXFULLSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXFULLSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CXFULLSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXHSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXHSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXHSCROLL" class="codetype"><span class="SCde"><span class="SCst">SM_CXHSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXHTHUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXHTHUMB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXHTHUMB" class="codetype"><span class="SCde"><span class="SCst">SM_CXHTHUMB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXICON" class="codetype"><span class="SCde"><span class="SCst">SM_CXICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXICONSPACING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXICONSPACING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXICONSPACING" class="codetype"><span class="SCde"><span class="SCst">SM_CXICONSPACING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMAXIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMAXIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMAXIMIZED" class="codetype"><span class="SCde"><span class="SCst">SM_CXMAXIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMAXTRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMAXTRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMAXTRACK" class="codetype"><span class="SCde"><span class="SCst">SM_CXMAXTRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMENUCHECK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMENUCHECK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMENUCHECK" class="codetype"><span class="SCde"><span class="SCst">SM_CXMENUCHECK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMENUSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMENUSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMENUSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CXMENUSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMIN" class="codetype"><span class="SCde"><span class="SCst">SM_CXMIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMINIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMINIMIZED" class="codetype"><span class="SCde"><span class="SCst">SM_CXMINIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINSPACING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMINSPACING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMINSPACING" class="codetype"><span class="SCde"><span class="SCst">SM_CXMINSPACING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINTRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXMINTRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXMINTRACK" class="codetype"><span class="SCde"><span class="SCst">SM_CXMINTRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXPADDEDBORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXPADDEDBORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXPADDEDBORDER" class="codetype"><span class="SCde"><span class="SCst">SM_CXPADDEDBORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CXSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CXSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSIZEFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXSIZEFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXSIZEFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CXSIZEFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSMICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXSMICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXSMICON" class="codetype"><span class="SCde"><span class="SCst">SM_CXSMICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSMSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXSMSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXSMSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CXSMSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXVIRTUALSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXVIRTUALSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXVIRTUALSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CXVIRTUALSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXVSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CXVSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CXVSCROLL" class="codetype"><span class="SCde"><span class="SCst">SM_CXVSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYBORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYBORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYBORDER" class="codetype"><span class="SCde"><span class="SCst">SM_CYBORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYCAPTION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYCAPTION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYCAPTION" class="codetype"><span class="SCde"><span class="SCst">SM_CYCAPTION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYCURSOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYCURSOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYCURSOR" class="codetype"><span class="SCde"><span class="SCst">SM_CYCURSOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDLGFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYDLGFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYDLGFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CYDLGFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDOUBLECLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYDOUBLECLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYDOUBLECLK" class="codetype"><span class="SCde"><span class="SCst">SM_CYDOUBLECLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDRAG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYDRAG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYDRAG" class="codetype"><span class="SCde"><span class="SCst">SM_CYDRAG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYEDGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYEDGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYEDGE" class="codetype"><span class="SCde"><span class="SCst">SM_CYEDGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFIXEDFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYFIXEDFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYFIXEDFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CYFIXEDFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFOCUSBORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYFOCUSBORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYFOCUSBORDER" class="codetype"><span class="SCde"><span class="SCst">SM_CYFOCUSBORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CYFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFULLSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYFULLSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYFULLSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CYFULLSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYHSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYHSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYHSCROLL" class="codetype"><span class="SCde"><span class="SCst">SM_CYHSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYICON" class="codetype"><span class="SCde"><span class="SCst">SM_CYICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYICONSPACING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYICONSPACING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYICONSPACING" class="codetype"><span class="SCde"><span class="SCst">SM_CYICONSPACING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYKANJIWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYKANJIWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYKANJIWINDOW" class="codetype"><span class="SCde"><span class="SCst">SM_CYKANJIWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMAXIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMAXIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMAXIMIZED" class="codetype"><span class="SCde"><span class="SCst">SM_CYMAXIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMAXTRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMAXTRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMAXTRACK" class="codetype"><span class="SCde"><span class="SCst">SM_CYMAXTRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMENU" class="codetype"><span class="SCde"><span class="SCst">SM_CYMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENUCHECK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMENUCHECK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMENUCHECK" class="codetype"><span class="SCde"><span class="SCst">SM_CYMENUCHECK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENUSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMENUSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMENUSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CYMENUSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMIN" class="codetype"><span class="SCde"><span class="SCst">SM_CYMIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMINIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMINIMIZED" class="codetype"><span class="SCde"><span class="SCst">SM_CYMINIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINSPACING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMINSPACING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMINSPACING" class="codetype"><span class="SCde"><span class="SCst">SM_CYMINSPACING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINTRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYMINTRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYMINTRACK" class="codetype"><span class="SCde"><span class="SCst">SM_CYMINTRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CYSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CYSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSIZEFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSIZEFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSIZEFRAME" class="codetype"><span class="SCde"><span class="SCst">SM_CYSIZEFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMCAPTION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSMCAPTION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSMCAPTION" class="codetype"><span class="SCde"><span class="SCst">SM_CYSMCAPTION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSMICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSMICON" class="codetype"><span class="SCde"><span class="SCst">SM_CYSMICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYSMSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYSMSIZE" class="codetype"><span class="SCde"><span class="SCst">SM_CYSMSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVIRTUALSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYVIRTUALSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYVIRTUALSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_CYVIRTUALSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYVSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYVSCROLL" class="codetype"><span class="SCde"><span class="SCst">SM_CYVSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVTHUMB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_CYVTHUMB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_CYVTHUMB" class="codetype"><span class="SCde"><span class="SCst">SM_CYVTHUMB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DBCSENABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_DBCSENABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_DBCSENABLED" class="codetype"><span class="SCde"><span class="SCst">SM_DBCSENABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DEBUG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_DEBUG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_DEBUG" class="codetype"><span class="SCde"><span class="SCst">SM_DEBUG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DIGITIZER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_DIGITIZER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_DIGITIZER" class="codetype"><span class="SCde"><span class="SCst">SM_DIGITIZER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_IMMENABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_IMMENABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_IMMENABLED" class="codetype"><span class="SCde"><span class="SCst">SM_IMMENABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MAXIMUMTOUCHES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MAXIMUMTOUCHES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MAXIMUMTOUCHES" class="codetype"><span class="SCde"><span class="SCst">SM_MAXIMUMTOUCHES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MEDIACENTER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MEDIACENTER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MEDIACENTER" class="codetype"><span class="SCde"><span class="SCst">SM_MEDIACENTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MENUDROPALIGNMENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MENUDROPALIGNMENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MENUDROPALIGNMENT" class="codetype"><span class="SCde"><span class="SCst">SM_MENUDROPALIGNMENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MIDEASTENABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MIDEASTENABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MIDEASTENABLED" class="codetype"><span class="SCde"><span class="SCst">SM_MIDEASTENABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MOUSEHORIZONTALWHEELPRESENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT" class="codetype"><span class="SCde"><span class="SCst">SM_MOUSEHORIZONTALWHEELPRESENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEPRESENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MOUSEPRESENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MOUSEPRESENT" class="codetype"><span class="SCde"><span class="SCst">SM_MOUSEPRESENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEWHEELPRESENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_MOUSEWHEELPRESENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_MOUSEWHEELPRESENT" class="codetype"><span class="SCde"><span class="SCst">SM_MOUSEWHEELPRESENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_NETWORK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_NETWORK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_NETWORK" class="codetype"><span class="SCde"><span class="SCst">SM_NETWORK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_PENWINDOWS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_PENWINDOWS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_PENWINDOWS" class="codetype"><span class="SCde"><span class="SCst">SM_PENWINDOWS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_REMOTECONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_REMOTECONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_REMOTECONTROL" class="codetype"><span class="SCde"><span class="SCst">SM_REMOTECONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_REMOTESESSION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_REMOTESESSION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_REMOTESESSION" class="codetype"><span class="SCde"><span class="SCst">SM_REMOTESESSION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_RESERVED1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_RESERVED1" class="codetype"><span class="SCde"><span class="SCst">SM_RESERVED1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_RESERVED2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_RESERVED2" class="codetype"><span class="SCde"><span class="SCst">SM_RESERVED2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_RESERVED3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_RESERVED3" class="codetype"><span class="SCde"><span class="SCst">SM_RESERVED3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_RESERVED4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_RESERVED4" class="codetype"><span class="SCde"><span class="SCst">SM_RESERVED4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SAMEDISPLAYFORMAT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SAMEDISPLAYFORMAT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SAMEDISPLAYFORMAT" class="codetype"><span class="SCde"><span class="SCst">SM_SAMEDISPLAYFORMAT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SECURE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SECURE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SECURE" class="codetype"><span class="SCde"><span class="SCst">SM_SECURE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SERVERR2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SERVERR2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SERVERR2" class="codetype"><span class="SCde"><span class="SCst">SM_SERVERR2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SHOWSOUNDS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SHOWSOUNDS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SHOWSOUNDS" class="codetype"><span class="SCde"><span class="SCst">SM_SHOWSOUNDS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SHUTTINGDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SHUTTINGDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_SHUTTINGDOWN" class="codetype"><span class="SCde"><span class="SCst">SM_SHUTTINGDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SLOWMACHINE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SLOWMACHINE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SLOWMACHINE" class="codetype"><span class="SCde"><span class="SCst">SM_SLOWMACHINE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_STARTER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_STARTER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_STARTER" class="codetype"><span class="SCde"><span class="SCst">SM_STARTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SWAPBUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SWAPBUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_SWAPBUTTON" class="codetype"><span class="SCde"><span class="SCst">SM_SWAPBUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SYSTEMDOCKED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_SYSTEMDOCKED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SM_SYSTEMDOCKED" class="codetype"><span class="SCde"><span class="SCst">SM_SYSTEMDOCKED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_TABLETPC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_TABLETPC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_TABLETPC" class="codetype"><span class="SCde"><span class="SCst">SM_TABLETPC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_XVIRTUALSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_XVIRTUALSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_XVIRTUALSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_XVIRTUALSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_YVIRTUALSCREEN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SM_YVIRTUALSCREEN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SM_YVIRTUALSCREEN" class="codetype"><span class="SCde"><span class="SCst">SM_YVIRTUALSCREEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SRWLOCK_INIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRWLOCK_INIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="Win32_SRWLOCK_INIT" class="codetype"><span class="SCde"><span class="SCst">SRWLOCK_INIT</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_STD_INPUT_HANDLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">STD_INPUT_HANDLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_STD_INPUT_HANDLE" class="codetype"><span class="SCde"><span class="SCst">STD_INPUT_HANDLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_STD_OUTPUT_HANDLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">STD_OUTPUT_HANDLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_STD_OUTPUT_HANDLE" class="codetype"><span class="SCde"><span class="SCst">STD_OUTPUT_HANDLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SUBLANG_DEFAULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SUBLANG_DEFAULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SUBLANG_DEFAULT" class="codetype"><span class="SCde"><span class="SCst">SUBLANG_DEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_ASYNCWINDOWPOS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_ASYNCWINDOWPOS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_ASYNCWINDOWPOS" class="codetype"><span class="SCde"><span class="SCst">SWP_ASYNCWINDOWPOS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_DEFERERASE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_DEFERERASE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_DEFERERASE" class="codetype"><span class="SCde"><span class="SCst">SWP_DEFERERASE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_DRAWFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_DRAWFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_DRAWFRAME" class="codetype"><span class="SCde"><span class="SCst">SWP_DRAWFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_FRAMECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_FRAMECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_FRAMECHANGED" class="codetype"><span class="SCde"><span class="SCst">SWP_FRAMECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_HIDEWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_HIDEWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_HIDEWINDOW" class="codetype"><span class="SCde"><span class="SCst">SWP_HIDEWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOACTIVATE" class="codetype"><span class="SCde"><span class="SCst">SWP_NOACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOCOPYBITS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOCOPYBITS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOCOPYBITS" class="codetype"><span class="SCde"><span class="SCst">SWP_NOCOPYBITS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOMOVE" class="codetype"><span class="SCde"><span class="SCst">SWP_NOMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOOWNERZORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOOWNERZORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOOWNERZORDER" class="codetype"><span class="SCde"><span class="SCst">SWP_NOOWNERZORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOREDRAW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOREDRAW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOREDRAW" class="codetype"><span class="SCde"><span class="SCst">SWP_NOREDRAW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOREPOSITION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOREPOSITION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOREPOSITION" class="codetype"><span class="SCde"><span class="SCst">SWP_NOREPOSITION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOSENDCHANGING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOSENDCHANGING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOSENDCHANGING" class="codetype"><span class="SCde"><span class="SCst">SWP_NOSENDCHANGING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOSIZE" class="codetype"><span class="SCde"><span class="SCst">SWP_NOSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOZORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_NOZORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_NOZORDER" class="codetype"><span class="SCde"><span class="SCst">SWP_NOZORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_SHOWWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SWP_SHOWWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_SWP_SHOWWINDOW" class="codetype"><span class="SCde"><span class="SCst">SWP_SHOWWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_FORCEMINIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_FORCEMINIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_FORCEMINIMIZE" class="codetype"><span class="SCde"><span class="SCst">SW_FORCEMINIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_HIDE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_HIDE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_HIDE" class="codetype"><span class="SCde"><span class="SCst">SW_HIDE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MAX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_MAX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_MAX" class="codetype"><span class="SCde"><span class="SCst">SW_MAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MAXIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_MAXIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_MAXIMIZE" class="codetype"><span class="SCde"><span class="SCst">SW_MAXIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MINIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_MINIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_MINIMIZE" class="codetype"><span class="SCde"><span class="SCst">SW_MINIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_NORMAL" class="codetype"><span class="SCde"><span class="SCst">SW_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_RESTORE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_RESTORE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_RESTORE" class="codetype"><span class="SCde"><span class="SCst">SW_RESTORE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOW" class="codetype"><span class="SCde"><span class="SCst">SW_SHOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWDEFAULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWDEFAULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWDEFAULT" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWDEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMAXIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWMAXIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWMAXIMIZED" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWMAXIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMINIMIZED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWMINIMIZED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWMINIMIZED" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWMINIMIZED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMINNOACTIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWMINNOACTIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWMINNOACTIVE" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWMINNOACTIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWNA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWNA" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWNA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNOACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWNOACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWNOACTIVATE" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWNOACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SW_SHOWNORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_SW_SHOWNORMAL" class="codetype"><span class="SCde"><span class="SCst">SW_SHOWNORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_S_OK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">S_OK</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="Win32_S_OK" class="codetype"><span class="SCde"><span class="SCst">S_OK</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THREAD_PRIORITY_ABOVE_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL" class="codetype"><span class="SCde"><span class="SCst">THREAD_PRIORITY_ABOVE_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THREAD_PRIORITY_BELOW_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL" class="codetype"><span class="SCde"><span class="SCst">THREAD_PRIORITY_BELOW_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_HIGHEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THREAD_PRIORITY_HIGHEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_THREAD_PRIORITY_HIGHEST" class="codetype"><span class="SCde"><span class="SCst">THREAD_PRIORITY_HIGHEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_LOWEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THREAD_PRIORITY_LOWEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_THREAD_PRIORITY_LOWEST" class="codetype"><span class="SCde"><span class="SCst">THREAD_PRIORITY_LOWEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">THREAD_PRIORITY_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_THREAD_PRIORITY_NORMAL" class="codetype"><span class="SCde"><span class="SCst">THREAD_PRIORITY_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_TRUE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TRUE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_TRUE" class="codetype"><span class="SCde"><span class="SCst">TRUE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_TRUNCATE_EXISTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TRUNCATE_EXISTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_TRUNCATE_EXISTING" class="codetype"><span class="SCde"><span class="SCst">TRUNCATE_EXISTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ACCEPT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ACCEPT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ACCEPT" class="codetype"><span class="SCde"><span class="SCst">VK_ACCEPT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ADD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ADD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ADD" class="codetype"><span class="SCde"><span class="SCst">VK_ADD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_APPS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_APPS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_APPS" class="codetype"><span class="SCde"><span class="SCst">VK_APPS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ATTN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ATTN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ATTN" class="codetype"><span class="SCde"><span class="SCst">VK_ATTN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BACK" class="codetype"><span class="SCde"><span class="SCst">VK_BACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_BACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_BACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_BACK" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_BACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_FAVORITES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_FAVORITES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_FAVORITES" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_FAVORITES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_FORWARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_FORWARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_FORWARD" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_FORWARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_HOME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_HOME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_HOME" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_HOME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_REFRESH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_REFRESH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_REFRESH" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_REFRESH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_SEARCH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_SEARCH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_SEARCH" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_SEARCH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_STOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_BROWSER_STOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_BROWSER_STOP" class="codetype"><span class="SCde"><span class="SCst">VK_BROWSER_STOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CANCEL" class="codetype"><span class="SCde"><span class="SCst">VK_CANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CAPITAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CAPITAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CAPITAL" class="codetype"><span class="SCde"><span class="SCst">VK_CAPITAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CLEAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CLEAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CLEAR" class="codetype"><span class="SCde"><span class="SCst">VK_CLEAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CONTROL" class="codetype"><span class="SCde"><span class="SCst">VK_CONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CONVERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CONVERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CONVERT" class="codetype"><span class="SCde"><span class="SCst">VK_CONVERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CRSEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_CRSEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_CRSEL" class="codetype"><span class="SCde"><span class="SCst">VK_CRSEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DECIMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_DECIMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_DECIMAL" class="codetype"><span class="SCde"><span class="SCst">VK_DECIMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DELETE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_DELETE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_DELETE" class="codetype"><span class="SCde"><span class="SCst">VK_DELETE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DIVIDE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_DIVIDE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_DIVIDE" class="codetype"><span class="SCde"><span class="SCst">VK_DIVIDE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_END" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_END</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_END" class="codetype"><span class="SCde"><span class="SCst">VK_END</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EREOF" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_EREOF</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_EREOF" class="codetype"><span class="SCde"><span class="SCst">VK_EREOF</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ESCAPE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ESCAPE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ESCAPE" class="codetype"><span class="SCde"><span class="SCst">VK_ESCAPE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EXECUTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_EXECUTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_EXECUTE" class="codetype"><span class="SCde"><span class="SCst">VK_EXECUTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EXSEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_EXSEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_EXSEL" class="codetype"><span class="SCde"><span class="SCst">VK_EXSEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F1" class="codetype"><span class="SCde"><span class="SCst">VK_F1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F10" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F10</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F10" class="codetype"><span class="SCde"><span class="SCst">VK_F10</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F11" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F11</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F11" class="codetype"><span class="SCde"><span class="SCst">VK_F11</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F12" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F12</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F12" class="codetype"><span class="SCde"><span class="SCst">VK_F12</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F13" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F13</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F13" class="codetype"><span class="SCde"><span class="SCst">VK_F13</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F14" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F14</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F14" class="codetype"><span class="SCde"><span class="SCst">VK_F14</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F15" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F15</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F15" class="codetype"><span class="SCde"><span class="SCst">VK_F15</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F16" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F16</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F16" class="codetype"><span class="SCde"><span class="SCst">VK_F16</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F17" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F17</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F17" class="codetype"><span class="SCde"><span class="SCst">VK_F17</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F18" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F18</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F18" class="codetype"><span class="SCde"><span class="SCst">VK_F18</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F19" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F19</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F19" class="codetype"><span class="SCde"><span class="SCst">VK_F19</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F2" class="codetype"><span class="SCde"><span class="SCst">VK_F2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F20" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F20</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F20" class="codetype"><span class="SCde"><span class="SCst">VK_F20</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F21" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F21</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F21" class="codetype"><span class="SCde"><span class="SCst">VK_F21</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F22" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F22</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F22" class="codetype"><span class="SCde"><span class="SCst">VK_F22</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F23" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F23</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F23" class="codetype"><span class="SCde"><span class="SCst">VK_F23</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F24" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F24</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F24" class="codetype"><span class="SCde"><span class="SCst">VK_F24</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F3" class="codetype"><span class="SCde"><span class="SCst">VK_F3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F4" class="codetype"><span class="SCde"><span class="SCst">VK_F4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F5" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F5</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F5" class="codetype"><span class="SCde"><span class="SCst">VK_F5</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F6" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F6</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F6" class="codetype"><span class="SCde"><span class="SCst">VK_F6</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F7" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F7</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F7" class="codetype"><span class="SCde"><span class="SCst">VK_F7</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F8" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F8</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F8" class="codetype"><span class="SCde"><span class="SCst">VK_F8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F9" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_F9</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_F9" class="codetype"><span class="SCde"><span class="SCst">VK_F9</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_FINAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_FINAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_FINAL" class="codetype"><span class="SCde"><span class="SCst">VK_FINAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_A" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_A</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_A" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_B" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_B</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_B" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_DPAD_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_DPAD_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_DPAD_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_DPAD_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_DPAD_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_DPAD_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_DPAD_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_UP" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_DPAD_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_THUMBSTICK_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_LEFT_TRIGGER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_LEFT_TRIGGER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_MENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_MENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_MENU" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_MENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_SHOULDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_SHOULDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_THUMBSTICK_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_RIGHT_TRIGGER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_RIGHT_TRIGGER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_VIEW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_VIEW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_VIEW" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_VIEW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_X" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_X</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_X" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_X</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_Y" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_GAMEPAD_Y</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_GAMEPAD_Y" class="codetype"><span class="SCde"><span class="SCst">VK_GAMEPAD_Y</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANGEUL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_HANGEUL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_HANGEUL" class="codetype"><span class="SCde"><span class="SCst">VK_HANGEUL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANGUL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_HANGUL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_HANGUL" class="codetype"><span class="SCde"><span class="SCst">VK_HANGUL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANJA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_HANJA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_HANJA" class="codetype"><span class="SCde"><span class="SCst">VK_HANJA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_HELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_HELP" class="codetype"><span class="SCde"><span class="SCst">VK_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HOME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_HOME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_HOME" class="codetype"><span class="SCde"><span class="SCst">VK_HOME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_00" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ICO_00</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ICO_00" class="codetype"><span class="SCde"><span class="SCst">VK_ICO_00</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_CLEAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ICO_CLEAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ICO_CLEAR" class="codetype"><span class="SCde"><span class="SCst">VK_ICO_CLEAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_HELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ICO_HELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ICO_HELP" class="codetype"><span class="SCde"><span class="SCst">VK_ICO_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_INSERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_INSERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_INSERT" class="codetype"><span class="SCde"><span class="SCst">VK_INSERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_JUNJA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_JUNJA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_JUNJA" class="codetype"><span class="SCde"><span class="SCst">VK_JUNJA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_KANA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_KANA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_KANA" class="codetype"><span class="SCde"><span class="SCst">VK_KANA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_KANJI" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_KANJI</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_KANJI" class="codetype"><span class="SCde"><span class="SCst">VK_KANJI</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_APP1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LAUNCH_APP1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LAUNCH_APP1" class="codetype"><span class="SCde"><span class="SCst">VK_LAUNCH_APP1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_APP2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LAUNCH_APP2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LAUNCH_APP2" class="codetype"><span class="SCde"><span class="SCst">VK_LAUNCH_APP2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_MAIL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LAUNCH_MAIL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LAUNCH_MAIL" class="codetype"><span class="SCde"><span class="SCst">VK_LAUNCH_MAIL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_MEDIA_SELECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LAUNCH_MEDIA_SELECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LAUNCH_MEDIA_SELECT" class="codetype"><span class="SCde"><span class="SCst">VK_LAUNCH_MEDIA_SELECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LBUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LBUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LBUTTON" class="codetype"><span class="SCde"><span class="SCst">VK_LBUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LCONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LCONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LCONTROL" class="codetype"><span class="SCde"><span class="SCst">VK_LCONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LEFT" class="codetype"><span class="SCde"><span class="SCst">VK_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LMENU" class="codetype"><span class="SCde"><span class="SCst">VK_LMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LSHIFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LSHIFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LSHIFT" class="codetype"><span class="SCde"><span class="SCst">VK_LSHIFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LWIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_LWIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_LWIN" class="codetype"><span class="SCde"><span class="SCst">VK_LWIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MBUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MBUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MBUTTON" class="codetype"><span class="SCde"><span class="SCst">VK_MBUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_NEXT_TRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MEDIA_NEXT_TRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MEDIA_NEXT_TRACK" class="codetype"><span class="SCde"><span class="SCst">VK_MEDIA_NEXT_TRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_PLAY_PAUSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MEDIA_PLAY_PAUSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MEDIA_PLAY_PAUSE" class="codetype"><span class="SCde"><span class="SCst">VK_MEDIA_PLAY_PAUSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_PREV_TRACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MEDIA_PREV_TRACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MEDIA_PREV_TRACK" class="codetype"><span class="SCde"><span class="SCst">VK_MEDIA_PREV_TRACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_STOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MEDIA_STOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MEDIA_STOP" class="codetype"><span class="SCde"><span class="SCst">VK_MEDIA_STOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MENU" class="codetype"><span class="SCde"><span class="SCst">VK_MENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MODECHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MODECHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MODECHANGE" class="codetype"><span class="SCde"><span class="SCst">VK_MODECHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MULTIPLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_MULTIPLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_MULTIPLY" class="codetype"><span class="SCde"><span class="SCst">VK_MULTIPLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_ACCEPT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_ACCEPT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_ACCEPT" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_ACCEPT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_CANCEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_CANCEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_CANCEL" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_CANCEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_LEFT" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_MENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_MENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_MENU" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_MENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_RIGHT" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_UP" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_VIEW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NAVIGATION_VIEW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NAVIGATION_VIEW" class="codetype"><span class="SCde"><span class="SCst">VK_NAVIGATION_VIEW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NEXT" class="codetype"><span class="SCde"><span class="SCst">VK_NEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NONAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NONAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NONAME" class="codetype"><span class="SCde"><span class="SCst">VK_NONAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NONCONVERT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NONCONVERT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NONCONVERT" class="codetype"><span class="SCde"><span class="SCst">VK_NONCONVERT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMLOCK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMLOCK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMLOCK" class="codetype"><span class="SCde"><span class="SCst">VK_NUMLOCK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD0" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD0</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD0" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD0</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD1" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD2" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD3" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD4" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD5" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD5</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD5" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD5</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD6" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD6</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD6" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD6</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD7" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD7</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD7" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD7</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD8" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD8</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD8" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD9" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_NUMPAD9</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_NUMPAD9" class="codetype"><span class="SCde"><span class="SCst">VK_NUMPAD9</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_1" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_102" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_102</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_102" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_102</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_2" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_3" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_4" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_5" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_5</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_5" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_5</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_6" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_6</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_6" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_6</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_7" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_7</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_7" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_7</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_8" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_8</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_8" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_ATTN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_ATTN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_ATTN" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_ATTN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_AUTO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_AUTO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_AUTO" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_AUTO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_AX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_AX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_AX" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_AX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_BACKTAB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_BACKTAB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_BACKTAB" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_BACKTAB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_CLEAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_CLEAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_CLEAR" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_CLEAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_COMMA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_COMMA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_COMMA" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_COMMA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_COPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_COPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_COPY" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_COPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_CUSEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_CUSEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_CUSEL" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_CUSEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_ENLW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_ENLW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_ENLW" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_ENLW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FINISH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FINISH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FINISH" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FINISH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_JISHO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FJ_JISHO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FJ_JISHO" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FJ_JISHO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_LOYA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FJ_LOYA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FJ_LOYA" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FJ_LOYA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_MASSHOU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FJ_MASSHOU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FJ_MASSHOU" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FJ_MASSHOU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_ROYA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FJ_ROYA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FJ_ROYA" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FJ_ROYA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_TOUROKU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_FJ_TOUROKU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_FJ_TOUROKU" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_FJ_TOUROKU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_JUMP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_JUMP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_JUMP" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_JUMP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_MINUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_MINUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_MINUS" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_MINUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_NEC_EQUAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_NEC_EQUAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_NEC_EQUAL" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_NEC_EQUAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_PA1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_PA1" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_PA1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_PA2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_PA2" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_PA2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA3" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_PA3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_PA3" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_PA3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PERIOD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_PERIOD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_PERIOD" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_PERIOD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PLUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_PLUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_PLUS" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_PLUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_RESET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_RESET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_RESET" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_RESET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_WSCTRL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_OEM_WSCTRL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_OEM_WSCTRL" class="codetype"><span class="SCde"><span class="SCst">VK_OEM_WSCTRL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PA1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PA1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PA1" class="codetype"><span class="SCde"><span class="SCst">VK_PA1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PACKET" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PACKET</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PACKET" class="codetype"><span class="SCde"><span class="SCst">VK_PACKET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PAUSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PAUSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PAUSE" class="codetype"><span class="SCde"><span class="SCst">VK_PAUSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PLAY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PLAY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PLAY" class="codetype"><span class="SCde"><span class="SCst">VK_PLAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PRINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PRINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PRINT" class="codetype"><span class="SCde"><span class="SCst">VK_PRINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PRIOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PRIOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PRIOR" class="codetype"><span class="SCde"><span class="SCst">VK_PRIOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PROCESSKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_PROCESSKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_PROCESSKEY" class="codetype"><span class="SCde"><span class="SCst">VK_PROCESSKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RBUTTON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RBUTTON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RBUTTON" class="codetype"><span class="SCde"><span class="SCst">VK_RBUTTON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RCONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RCONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RCONTROL" class="codetype"><span class="SCde"><span class="SCst">VK_RCONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RETURN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RETURN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RETURN" class="codetype"><span class="SCde"><span class="SCst">VK_RETURN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RIGHT" class="codetype"><span class="SCde"><span class="SCst">VK_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RMENU" class="codetype"><span class="SCde"><span class="SCst">VK_RMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RSHIFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RSHIFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RSHIFT" class="codetype"><span class="SCde"><span class="SCst">VK_RSHIFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RWIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_RWIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_RWIN" class="codetype"><span class="SCde"><span class="SCst">VK_RWIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SCROLL" class="codetype"><span class="SCde"><span class="SCst">VK_SCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SELECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SELECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SELECT" class="codetype"><span class="SCde"><span class="SCst">VK_SELECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SEPARATOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SEPARATOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SEPARATOR" class="codetype"><span class="SCde"><span class="SCst">VK_SEPARATOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SHIFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SHIFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SHIFT" class="codetype"><span class="SCde"><span class="SCst">VK_SHIFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SLEEP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SLEEP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SLEEP" class="codetype"><span class="SCde"><span class="SCst">VK_SLEEP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SNAPSHOT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SNAPSHOT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SNAPSHOT" class="codetype"><span class="SCde"><span class="SCst">VK_SNAPSHOT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SPACE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SPACE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SPACE" class="codetype"><span class="SCde"><span class="SCst">VK_SPACE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SUBTRACT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_SUBTRACT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_SUBTRACT" class="codetype"><span class="SCde"><span class="SCst">VK_SUBTRACT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_TAB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_TAB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_TAB" class="codetype"><span class="SCde"><span class="SCst">VK_TAB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_UP" class="codetype"><span class="SCde"><span class="SCst">VK_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_DOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_VOLUME_DOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_VOLUME_DOWN" class="codetype"><span class="SCde"><span class="SCst">VK_VOLUME_DOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_MUTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_VOLUME_MUTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_VOLUME_MUTE" class="codetype"><span class="SCde"><span class="SCst">VK_VOLUME_MUTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_UP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_VOLUME_UP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_VOLUME_UP" class="codetype"><span class="SCde"><span class="SCst">VK_VOLUME_UP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_XBUTTON1" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_XBUTTON1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_XBUTTON1" class="codetype"><span class="SCde"><span class="SCst">VK_XBUTTON1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_XBUTTON2" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_XBUTTON2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_XBUTTON2" class="codetype"><span class="SCde"><span class="SCst">VK_XBUTTON2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ZOOM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VK_ZOOM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_VK_ZOOM" class="codetype"><span class="SCde"><span class="SCst">VK_ZOOM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_ABANDONED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WAIT_ABANDONED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WAIT_ABANDONED" class="codetype"><span class="SCde"><span class="SCst">WAIT_ABANDONED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_FAILED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WAIT_FAILED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WAIT_FAILED" class="codetype"><span class="SCde"><span class="SCst">WAIT_FAILED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_OBJECT_0" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WAIT_OBJECT_0</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WAIT_OBJECT_0" class="codetype"><span class="SCde"><span class="SCst">WAIT_OBJECT_0</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_TIMEOUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WAIT_TIMEOUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WAIT_TIMEOUT" class="codetype"><span class="SCde"><span class="SCst">WAIT_TIMEOUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_ACTIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WA_ACTIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_WA_ACTIVE" class="codetype"><span class="SCde"><span class="SCst">WA_ACTIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_CLICKACTIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WA_CLICKACTIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_WA_CLICKACTIVE" class="codetype"><span class="SCde"><span class="SCst">WA_CLICKACTIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_INACTIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WA_INACTIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_WA_INACTIVE" class="codetype"><span class="SCde"><span class="SCst">WA_INACTIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WHEEL_DELTA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WHEEL_DELTA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_WHEEL_DELTA" class="codetype"><span class="SCde"><span class="SCst">WHEEL_DELTA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_ACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ACTIVATEAPP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ACTIVATEAPP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ACTIVATEAPP" class="codetype"><span class="SCde"><span class="SCst">WM_ACTIVATEAPP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_AFXFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_AFXFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_AFXFIRST" class="codetype"><span class="SCde"><span class="SCst">WM_AFXFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_AFXLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_AFXLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_AFXLAST" class="codetype"><span class="SCde"><span class="SCst">WM_AFXLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_APP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_APP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_APP" class="codetype"><span class="SCde"><span class="SCst">WM_APP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_APPCOMMAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_APPCOMMAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_APPCOMMAND" class="codetype"><span class="SCde"><span class="SCst">WM_APPCOMMAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ASKCBFORMATNAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ASKCBFORMATNAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ASKCBFORMATNAME" class="codetype"><span class="SCde"><span class="SCst">WM_ASKCBFORMATNAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CANCELJOURNAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CANCELJOURNAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CANCELJOURNAL" class="codetype"><span class="SCde"><span class="SCst">WM_CANCELJOURNAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CANCELMODE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CANCELMODE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CANCELMODE" class="codetype"><span class="SCde"><span class="SCst">WM_CANCELMODE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CAPTURECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CAPTURECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CAPTURECHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_CAPTURECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHANGECBCHAIN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CHANGECBCHAIN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CHANGECBCHAIN" class="codetype"><span class="SCde"><span class="SCst">WM_CHANGECBCHAIN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHANGEUISTATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CHANGEUISTATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CHANGEUISTATE" class="codetype"><span class="SCde"><span class="SCst">WM_CHANGEUISTATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CHAR" class="codetype"><span class="SCde"><span class="SCst">WM_CHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHARTOITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CHARTOITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CHARTOITEM" class="codetype"><span class="SCde"><span class="SCst">WM_CHARTOITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHILDACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CHILDACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CHILDACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_CHILDACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLEAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CLEAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CLEAR" class="codetype"><span class="SCde"><span class="SCst">WM_CLEAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLIPBOARDUPDATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CLIPBOARDUPDATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CLIPBOARDUPDATE" class="codetype"><span class="SCde"><span class="SCst">WM_CLIPBOARDUPDATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLOSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CLOSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CLOSE" class="codetype"><span class="SCde"><span class="SCst">WM_CLOSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMMAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COMMAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COMMAND" class="codetype"><span class="SCde"><span class="SCst">WM_COMMAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMMNOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COMMNOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COMMNOTIFY" class="codetype"><span class="SCde"><span class="SCst">WM_COMMNOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMPACTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COMPACTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COMPACTING" class="codetype"><span class="SCde"><span class="SCst">WM_COMPACTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMPAREITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COMPAREITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COMPAREITEM" class="codetype"><span class="SCde"><span class="SCst">WM_COMPAREITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CONTEXTMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CONTEXTMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CONTEXTMENU" class="codetype"><span class="SCde"><span class="SCst">WM_CONTEXTMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COPY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COPY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COPY" class="codetype"><span class="SCde"><span class="SCst">WM_COPY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COPYDATA" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_COPYDATA</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_COPYDATA" class="codetype"><span class="SCde"><span class="SCst">WM_COPYDATA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CREATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CREATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CREATE" class="codetype"><span class="SCde"><span class="SCst">WM_CREATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORBTN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORBTN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORBTN" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORBTN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORDLG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORDLG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORDLG" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORDLG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLOREDIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLOREDIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLOREDIT" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLOREDIT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORLISTBOX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORLISTBOX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORLISTBOX" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORLISTBOX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORMSGBOX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORMSGBOX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORMSGBOX" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORMSGBOX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORSCROLLBAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORSCROLLBAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORSCROLLBAR" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORSCROLLBAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORSTATIC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CTLCOLORSTATIC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CTLCOLORSTATIC" class="codetype"><span class="SCde"><span class="SCst">WM_CTLCOLORSTATIC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_CUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_CUT" class="codetype"><span class="SCde"><span class="SCst">WM_CUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEADCHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DEADCHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DEADCHAR" class="codetype"><span class="SCde"><span class="SCst">WM_DEADCHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DELETEITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DELETEITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DELETEITEM" class="codetype"><span class="SCde"><span class="SCst">WM_DELETEITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DESTROY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DESTROY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DESTROY" class="codetype"><span class="SCde"><span class="SCst">WM_DESTROY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DESTROYCLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DESTROYCLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DESTROYCLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_DESTROYCLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEVICECHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DEVICECHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DEVICECHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_DEVICECHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEVMODECHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DEVMODECHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DEVMODECHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_DEVMODECHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DISPLAYCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DISPLAYCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DISPLAYCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_DISPLAYCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DPICHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DPICHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_DPICHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED_AFTERPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DPICHANGED_AFTERPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DPICHANGED_AFTERPARENT" class="codetype"><span class="SCde"><span class="SCst">WM_DPICHANGED_AFTERPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED_BEFOREPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DPICHANGED_BEFOREPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DPICHANGED_BEFOREPARENT" class="codetype"><span class="SCde"><span class="SCst">WM_DPICHANGED_BEFOREPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DRAWCLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DRAWCLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DRAWCLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_DRAWCLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DRAWITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DRAWITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DRAWITEM" class="codetype"><span class="SCde"><span class="SCst">WM_DRAWITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DROPFILES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DROPFILES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DROPFILES" class="codetype"><span class="SCde"><span class="SCst">WM_DROPFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMCOLORIZATIONCOLORCHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_DWMCOLORIZATIONCOLORCHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMCOMPOSITIONCHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMCOMPOSITIONCHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMCOMPOSITIONCHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_DWMCOMPOSITIONCHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMNCRENDERINGCHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMNCRENDERINGCHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMNCRENDERINGCHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_DWMNCRENDERINGCHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMSENDICONICLIVEPREVIEWBITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP" class="codetype"><span class="SCde"><span class="SCst">WM_DWMSENDICONICLIVEPREVIEWBITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMSENDICONICTHUMBNAIL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMSENDICONICTHUMBNAIL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMSENDICONICTHUMBNAIL" class="codetype"><span class="SCde"><span class="SCst">WM_DWMSENDICONICTHUMBNAIL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_DWMWINDOWMAXIMIZEDCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_DWMWINDOWMAXIMIZEDCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENABLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ENABLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ENABLE" class="codetype"><span class="SCde"><span class="SCst">WM_ENABLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERIDLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ENTERIDLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ENTERIDLE" class="codetype"><span class="SCde"><span class="SCst">WM_ENTERIDLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERMENULOOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ENTERMENULOOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ENTERMENULOOP" class="codetype"><span class="SCde"><span class="SCst">WM_ENTERMENULOOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERSIZEMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ENTERSIZEMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ENTERSIZEMOVE" class="codetype"><span class="SCde"><span class="SCst">WM_ENTERSIZEMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ERASEBKGND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ERASEBKGND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ERASEBKGND" class="codetype"><span class="SCde"><span class="SCst">WM_ERASEBKGND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_EXITMENULOOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_EXITMENULOOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_EXITMENULOOP" class="codetype"><span class="SCde"><span class="SCst">WM_EXITMENULOOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_EXITSIZEMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_EXITSIZEMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_EXITSIZEMOVE" class="codetype"><span class="SCde"><span class="SCst">WM_EXITSIZEMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_FONTCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_FONTCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_FONTCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_FONTCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GESTURE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GESTURE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GESTURE" class="codetype"><span class="SCde"><span class="SCst">WM_GESTURE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GESTURENOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GESTURENOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GESTURENOTIFY" class="codetype"><span class="SCde"><span class="SCst">WM_GESTURENOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETDLGCODE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETDLGCODE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETDLGCODE" class="codetype"><span class="SCde"><span class="SCst">WM_GETDLGCODE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETDPISCALEDSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETDPISCALEDSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETDPISCALEDSIZE" class="codetype"><span class="SCde"><span class="SCst">WM_GETDPISCALEDSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETFONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETFONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETFONT" class="codetype"><span class="SCde"><span class="SCst">WM_GETFONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETHOTKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETHOTKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETHOTKEY" class="codetype"><span class="SCde"><span class="SCst">WM_GETHOTKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETICON" class="codetype"><span class="SCde"><span class="SCst">WM_GETICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETMINMAXINFO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETMINMAXINFO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETMINMAXINFO" class="codetype"><span class="SCde"><span class="SCst">WM_GETMINMAXINFO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETOBJECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETOBJECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETOBJECT" class="codetype"><span class="SCde"><span class="SCst">WM_GETOBJECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETTEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETTEXT" class="codetype"><span class="SCde"><span class="SCst">WM_GETTEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTEXTLENGTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETTEXTLENGTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETTEXTLENGTH" class="codetype"><span class="SCde"><span class="SCst">WM_GETTEXTLENGTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTITLEBARINFOEX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_GETTITLEBARINFOEX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_GETTITLEBARINFOEX" class="codetype"><span class="SCde"><span class="SCst">WM_GETTITLEBARINFOEX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HANDHELDFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HANDHELDFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HANDHELDFIRST" class="codetype"><span class="SCde"><span class="SCst">WM_HANDHELDFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HANDHELDLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HANDHELDLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HANDHELDLAST" class="codetype"><span class="SCde"><span class="SCst">WM_HANDHELDLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HELP" class="codetype"><span class="SCde"><span class="SCst">WM_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HOTKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HOTKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HOTKEY" class="codetype"><span class="SCde"><span class="SCst">WM_HOTKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HSCROLL" class="codetype"><span class="SCde"><span class="SCst">WM_HSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HSCROLLCLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_HSCROLLCLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_HSCROLLCLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_HSCROLLCLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ICONERASEBKGND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_ICONERASEBKGND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_ICONERASEBKGND" class="codetype"><span class="SCde"><span class="SCst">WM_ICONERASEBKGND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_CHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_CHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_CHAR" class="codetype"><span class="SCde"><span class="SCst">WM_IME_CHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_COMPOSITION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_COMPOSITION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_COMPOSITION" class="codetype"><span class="SCde"><span class="SCst">WM_IME_COMPOSITION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_COMPOSITIONFULL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_COMPOSITIONFULL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_COMPOSITIONFULL" class="codetype"><span class="SCde"><span class="SCst">WM_IME_COMPOSITIONFULL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_CONTROL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_CONTROL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_CONTROL" class="codetype"><span class="SCde"><span class="SCst">WM_IME_CONTROL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_ENDCOMPOSITION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_ENDCOMPOSITION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_ENDCOMPOSITION" class="codetype"><span class="SCde"><span class="SCst">WM_IME_ENDCOMPOSITION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_KEYDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_KEYDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_IME_KEYDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_KEYLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_KEYLAST" class="codetype"><span class="SCde"><span class="SCst">WM_IME_KEYLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_KEYUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_KEYUP" class="codetype"><span class="SCde"><span class="SCst">WM_IME_KEYUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_NOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_NOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_NOTIFY" class="codetype"><span class="SCde"><span class="SCst">WM_IME_NOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_REQUEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_REQUEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_REQUEST" class="codetype"><span class="SCde"><span class="SCst">WM_IME_REQUEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_SELECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_SELECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_SELECT" class="codetype"><span class="SCde"><span class="SCst">WM_IME_SELECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_SETCONTEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_SETCONTEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_SETCONTEXT" class="codetype"><span class="SCde"><span class="SCst">WM_IME_SETCONTEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_STARTCOMPOSITION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_IME_STARTCOMPOSITION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_IME_STARTCOMPOSITION" class="codetype"><span class="SCde"><span class="SCst">WM_IME_STARTCOMPOSITION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITDIALOG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INITDIALOG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INITDIALOG" class="codetype"><span class="SCde"><span class="SCst">WM_INITDIALOG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INITMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INITMENU" class="codetype"><span class="SCde"><span class="SCst">WM_INITMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITMENUPOPUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INITMENUPOPUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INITMENUPOPUP" class="codetype"><span class="SCde"><span class="SCst">WM_INITMENUPOPUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INPUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INPUT" class="codetype"><span class="SCde"><span class="SCst">WM_INPUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUTLANGCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INPUTLANGCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INPUTLANGCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_INPUTLANGCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUTLANGCHANGEREQUEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INPUTLANGCHANGEREQUEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INPUTLANGCHANGEREQUEST" class="codetype"><span class="SCde"><span class="SCst">WM_INPUTLANGCHANGEREQUEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUT_DEVICE_CHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_INPUT_DEVICE_CHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_INPUT_DEVICE_CHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_INPUT_DEVICE_CHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_KEYDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_KEYDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_KEYDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_KEYFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_KEYFIRST" class="codetype"><span class="SCde"><span class="SCst">WM_KEYFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_KEYLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_KEYLAST" class="codetype"><span class="SCde"><span class="SCst">WM_KEYLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_KEYUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_KEYUP" class="codetype"><span class="SCde"><span class="SCst">WM_KEYUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KILLFOCUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_KILLFOCUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_KILLFOCUS" class="codetype"><span class="SCde"><span class="SCst">WM_KILLFOCUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_LBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_LBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_LBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_LBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_LBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_LBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_LBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_LBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_LBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_MBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_MBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_MBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_MDIACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDICASCADE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDICASCADE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDICASCADE" class="codetype"><span class="SCde"><span class="SCst">WM_MDICASCADE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDICREATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDICREATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDICREATE" class="codetype"><span class="SCde"><span class="SCst">WM_MDICREATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIDESTROY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIDESTROY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIDESTROY" class="codetype"><span class="SCde"><span class="SCst">WM_MDIDESTROY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIGETACTIVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIGETACTIVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIGETACTIVE" class="codetype"><span class="SCde"><span class="SCst">WM_MDIGETACTIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIICONARRANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIICONARRANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIICONARRANGE" class="codetype"><span class="SCde"><span class="SCst">WM_MDIICONARRANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIMAXIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIMAXIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIMAXIMIZE" class="codetype"><span class="SCde"><span class="SCst">WM_MDIMAXIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDINEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDINEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDINEXT" class="codetype"><span class="SCde"><span class="SCst">WM_MDINEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIREFRESHMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIREFRESHMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIREFRESHMENU" class="codetype"><span class="SCde"><span class="SCst">WM_MDIREFRESHMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIRESTORE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDIRESTORE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDIRESTORE" class="codetype"><span class="SCde"><span class="SCst">WM_MDIRESTORE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDISETMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDISETMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDISETMENU" class="codetype"><span class="SCde"><span class="SCst">WM_MDISETMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDITILE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MDITILE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MDITILE" class="codetype"><span class="SCde"><span class="SCst">WM_MDITILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MEASUREITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MEASUREITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MEASUREITEM" class="codetype"><span class="SCde"><span class="SCst">WM_MEASUREITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUCHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENUCHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENUCHAR" class="codetype"><span class="SCde"><span class="SCst">WM_MENUCHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUCOMMAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENUCOMMAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENUCOMMAND" class="codetype"><span class="SCde"><span class="SCst">WM_MENUCOMMAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUDRAG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENUDRAG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENUDRAG" class="codetype"><span class="SCde"><span class="SCst">WM_MENUDRAG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUGETOBJECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENUGETOBJECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENUGETOBJECT" class="codetype"><span class="SCde"><span class="SCst">WM_MENUGETOBJECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENURBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENURBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENURBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_MENURBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUSELECT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MENUSELECT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MENUSELECT" class="codetype"><span class="SCde"><span class="SCst">WM_MENUSELECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEFIRST" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEHOVER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEHOVER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEHOVER" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEHOVER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEHWHEEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEHWHEEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEHWHEEL" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEHWHEEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSELAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSELAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSELAST" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSELAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSELEAVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSELEAVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSELEAVE" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSELEAVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEMOVE" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEWHEEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOUSEWHEEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOUSEWHEEL" class="codetype"><span class="SCde"><span class="SCst">WM_MOUSEWHEEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOVE" class="codetype"><span class="SCde"><span class="SCst">WM_MOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOVING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_MOVING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_MOVING" class="codetype"><span class="SCde"><span class="SCst">WM_MOVING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_NCACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCCALCSIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCCALCSIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCCALCSIZE" class="codetype"><span class="SCde"><span class="SCst">WM_NCCALCSIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCCREATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCCREATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCCREATE" class="codetype"><span class="SCde"><span class="SCst">WM_NCCREATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCDESTROY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCDESTROY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCDESTROY" class="codetype"><span class="SCde"><span class="SCst">WM_NCDESTROY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCHITTEST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCHITTEST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCHITTEST" class="codetype"><span class="SCde"><span class="SCst">WM_NCHITTEST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCLBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCLBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_NCLBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCLBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCLBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_NCLBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCLBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCLBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_NCLBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_NCMBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_NCMBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_NCMBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSEHOVER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMOUSEHOVER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMOUSEHOVER" class="codetype"><span class="SCde"><span class="SCst">WM_NCMOUSEHOVER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSELEAVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMOUSELEAVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMOUSELEAVE" class="codetype"><span class="SCde"><span class="SCst">WM_NCMOUSELEAVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSEMOVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCMOUSEMOVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCMOUSEMOVE" class="codetype"><span class="SCde"><span class="SCst">WM_NCMOUSEMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCPAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCPAINT" class="codetype"><span class="SCde"><span class="SCst">WM_NCPAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCPOINTERDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCPOINTERDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_NCPOINTERDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCPOINTERUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCPOINTERUP" class="codetype"><span class="SCde"><span class="SCst">WM_NCPOINTERUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERUPDATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCPOINTERUPDATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCPOINTERUPDATE" class="codetype"><span class="SCde"><span class="SCst">WM_NCPOINTERUPDATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCRBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCRBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_NCRBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCRBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCRBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_NCRBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCRBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCRBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_NCRBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCXBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCXBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_NCXBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCXBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCXBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_NCXBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NCXBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NCXBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_NCXBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NEXTDLGCTL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NEXTDLGCTL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NEXTDLGCTL" class="codetype"><span class="SCde"><span class="SCst">WM_NEXTDLGCTL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NEXTMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NEXTMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NEXTMENU" class="codetype"><span class="SCde"><span class="SCst">WM_NEXTMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NOTIFY" class="codetype"><span class="SCde"><span class="SCst">WM_NOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NOTIFYFORMAT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_NOTIFYFORMAT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_NOTIFYFORMAT" class="codetype"><span class="SCde"><span class="SCst">WM_NOTIFYFORMAT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PAINT" class="codetype"><span class="SCde"><span class="SCst">WM_PAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINTCLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PAINTCLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PAINTCLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_PAINTCLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINTICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PAINTICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PAINTICON" class="codetype"><span class="SCde"><span class="SCst">WM_PAINTICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PALETTECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PALETTECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PALETTECHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_PALETTECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PALETTEISCHANGING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PALETTEISCHANGING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PALETTEISCHANGING" class="codetype"><span class="SCde"><span class="SCst">WM_PALETTEISCHANGING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PARENTNOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PARENTNOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PARENTNOTIFY" class="codetype"><span class="SCde"><span class="SCst">WM_PARENTNOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PASTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PASTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PASTE" class="codetype"><span class="SCde"><span class="SCst">WM_PASTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PENWINFIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PENWINFIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PENWINFIRST" class="codetype"><span class="SCde"><span class="SCst">WM_PENWINFIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PENWINLAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PENWINLAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PENWINLAST" class="codetype"><span class="SCde"><span class="SCst">WM_PENWINLAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERCAPTURECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERCAPTURECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERCAPTURECHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERCAPTURECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICECHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERDEVICECHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERDEVICECHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERDEVICECHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICEINRANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERDEVICEINRANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERDEVICEINRANGE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERDEVICEINRANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICEOUTOFRANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERDEVICEOUTOFRANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERDEVICEOUTOFRANGE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERDEVICEOUTOFRANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERENTER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERENTER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERENTER" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERENTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERHWHEEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERHWHEEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERHWHEEL" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERHWHEEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERLEAVE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERLEAVE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERLEAVE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERLEAVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDAWAY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERROUTEDAWAY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERROUTEDAWAY" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERROUTEDAWAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDRELEASED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERROUTEDRELEASED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERROUTEDRELEASED" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERROUTEDRELEASED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDTO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERROUTEDTO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERROUTEDTO" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERROUTEDTO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERUP" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERUPDATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERUPDATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERUPDATE" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERUPDATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERWHEEL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POINTERWHEEL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POINTERWHEEL" class="codetype"><span class="SCde"><span class="SCst">WM_POINTERWHEEL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POWER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POWER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POWER" class="codetype"><span class="SCde"><span class="SCst">WM_POWER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POWERBROADCAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_POWERBROADCAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_POWERBROADCAST" class="codetype"><span class="SCde"><span class="SCst">WM_POWERBROADCAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PRINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PRINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PRINT" class="codetype"><span class="SCde"><span class="SCst">WM_PRINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PRINTCLIENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_PRINTCLIENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_PRINTCLIENT" class="codetype"><span class="SCde"><span class="SCst">WM_PRINTCLIENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYDRAGICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_QUERYDRAGICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_QUERYDRAGICON" class="codetype"><span class="SCde"><span class="SCst">WM_QUERYDRAGICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYNEWPALETTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_QUERYNEWPALETTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_QUERYNEWPALETTE" class="codetype"><span class="SCde"><span class="SCst">WM_QUERYNEWPALETTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYUISTATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_QUERYUISTATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_QUERYUISTATE" class="codetype"><span class="SCde"><span class="SCst">WM_QUERYUISTATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUEUESYNC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_QUEUESYNC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_QUEUESYNC" class="codetype"><span class="SCde"><span class="SCst">WM_QUEUESYNC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUIT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_QUIT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_QUIT" class="codetype"><span class="SCde"><span class="SCst">WM_QUIT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_RBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_RBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_RBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_RBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_RBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_RBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_RBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_RBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_RBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RENDERALLFORMATS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_RENDERALLFORMATS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_RENDERALLFORMATS" class="codetype"><span class="SCde"><span class="SCst">WM_RENDERALLFORMATS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RENDERFORMAT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_RENDERFORMAT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_RENDERFORMAT" class="codetype"><span class="SCde"><span class="SCst">WM_RENDERFORMAT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETCURSOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETCURSOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETCURSOR" class="codetype"><span class="SCde"><span class="SCst">WM_SETCURSOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETFOCUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETFOCUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETFOCUS" class="codetype"><span class="SCde"><span class="SCst">WM_SETFOCUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETFONT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETFONT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETFONT" class="codetype"><span class="SCde"><span class="SCst">WM_SETFONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETHOTKEY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETHOTKEY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETHOTKEY" class="codetype"><span class="SCde"><span class="SCst">WM_SETHOTKEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETICON" class="codetype"><span class="SCde"><span class="SCst">WM_SETICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETREDRAW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETREDRAW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETREDRAW" class="codetype"><span class="SCde"><span class="SCst">WM_SETREDRAW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETTEXT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETTEXT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETTEXT" class="codetype"><span class="SCde"><span class="SCst">WM_SETTEXT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETTINGCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SETTINGCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SETTINGCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_SETTINGCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SHOWWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SHOWWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SHOWWINDOW" class="codetype"><span class="SCde"><span class="SCst">WM_SHOWWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SIZE" class="codetype"><span class="SCde"><span class="SCst">WM_SIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZECLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SIZECLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SIZECLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_SIZECLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SIZING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SIZING" class="codetype"><span class="SCde"><span class="SCst">WM_SIZING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SPOOLERSTATUS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SPOOLERSTATUS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SPOOLERSTATUS" class="codetype"><span class="SCde"><span class="SCst">WM_SPOOLERSTATUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_STYLECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_STYLECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_STYLECHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_STYLECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_STYLECHANGING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_STYLECHANGING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_STYLECHANGING" class="codetype"><span class="SCde"><span class="SCst">WM_STYLECHANGING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYNCPAINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYNCPAINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYNCPAINT" class="codetype"><span class="SCde"><span class="SCst">WM_SYNCPAINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSCHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSCHAR" class="codetype"><span class="SCde"><span class="SCst">WM_SYSCHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCOLORCHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSCOLORCHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSCOLORCHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_SYSCOLORCHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCOMMAND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSCOMMAND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSCOMMAND" class="codetype"><span class="SCde"><span class="SCst">WM_SYSCOMMAND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSDEADCHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSDEADCHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSDEADCHAR" class="codetype"><span class="SCde"><span class="SCst">WM_SYSDEADCHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSKEYDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSKEYDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSKEYDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_SYSKEYDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSKEYUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_SYSKEYUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_SYSKEYUP" class="codetype"><span class="SCde"><span class="SCst">WM_SYSKEYUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TABLET_FIRST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TABLET_FIRST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TABLET_FIRST" class="codetype"><span class="SCde"><span class="SCst">WM_TABLET_FIRST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TABLET_LAST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TABLET_LAST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TABLET_LAST" class="codetype"><span class="SCde"><span class="SCst">WM_TABLET_LAST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TCARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TCARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TCARD" class="codetype"><span class="SCde"><span class="SCst">WM_TCARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_THEMECHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_THEMECHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_THEMECHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_THEMECHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TIMECHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TIMECHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TIMECHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_TIMECHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TIMER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TIMER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TIMER" class="codetype"><span class="SCde"><span class="SCst">WM_TIMER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TOUCH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TOUCH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TOUCH" class="codetype"><span class="SCde"><span class="SCst">WM_TOUCH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TOUCHHITTESTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_TOUCHHITTESTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_TOUCHHITTESTING" class="codetype"><span class="SCde"><span class="SCst">WM_TOUCHHITTESTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNDO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_UNDO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_UNDO" class="codetype"><span class="SCde"><span class="SCst">WM_UNDO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNICHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_UNICHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_UNICHAR" class="codetype"><span class="SCde"><span class="SCst">WM_UNICHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNINITMENUPOPUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_UNINITMENUPOPUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_UNINITMENUPOPUP" class="codetype"><span class="SCde"><span class="SCst">WM_UNINITMENUPOPUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UPDATEUISTATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_UPDATEUISTATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_UPDATEUISTATE" class="codetype"><span class="SCde"><span class="SCst">WM_UPDATEUISTATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_USER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_USER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_USER" class="codetype"><span class="SCde"><span class="SCst">WM_USER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_USERCHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_USERCHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_USERCHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_USERCHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VKEYTOITEM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_VKEYTOITEM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_VKEYTOITEM" class="codetype"><span class="SCde"><span class="SCst">WM_VKEYTOITEM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_VSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_VSCROLL" class="codetype"><span class="SCde"><span class="SCst">WM_VSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VSCROLLCLIPBOARD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_VSCROLLCLIPBOARD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_VSCROLLCLIPBOARD" class="codetype"><span class="SCde"><span class="SCst">WM_VSCROLLCLIPBOARD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WINDOWPOSCHANGED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_WINDOWPOSCHANGED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_WINDOWPOSCHANGED" class="codetype"><span class="SCde"><span class="SCst">WM_WINDOWPOSCHANGED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WINDOWPOSCHANGING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_WINDOWPOSCHANGING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_WINDOWPOSCHANGING" class="codetype"><span class="SCde"><span class="SCst">WM_WINDOWPOSCHANGING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WININICHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_WININICHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_WININICHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_WININICHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WTSSESSION_CHANGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_WTSSESSION_CHANGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_WTSSESSION_CHANGE" class="codetype"><span class="SCde"><span class="SCst">WM_WTSSESSION_CHANGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONDBLCLK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_XBUTTONDBLCLK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_XBUTTONDBLCLK" class="codetype"><span class="SCde"><span class="SCst">WM_XBUTTONDBLCLK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONDOWN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_XBUTTONDOWN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_XBUTTONDOWN" class="codetype"><span class="SCde"><span class="SCst">WM_XBUTTONDOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WM_XBUTTONUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WM_XBUTTONUP" class="codetype"><span class="SCde"><span class="SCst">WM_XBUTTONUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_BORDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_BORDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_BORDER" class="codetype"><span class="SCde"><span class="SCst">WS_BORDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CAPTION" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_CAPTION</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_CAPTION" class="codetype"><span class="SCde"><span class="SCst">WS_CAPTION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CHILD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_CHILD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_CHILD" class="codetype"><span class="SCde"><span class="SCst">WS_CHILD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CLIPCHILDREN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_CLIPCHILDREN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_CLIPCHILDREN" class="codetype"><span class="SCde"><span class="SCst">WS_CLIPCHILDREN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CLIPSIBLINGS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_CLIPSIBLINGS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_CLIPSIBLINGS" class="codetype"><span class="SCde"><span class="SCst">WS_CLIPSIBLINGS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_DISABLED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_DISABLED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_DISABLED" class="codetype"><span class="SCde"><span class="SCst">WS_DISABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_DLGFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_DLGFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_DLGFRAME" class="codetype"><span class="SCde"><span class="SCst">WS_DLGFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_ACCEPTFILES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_ACCEPTFILES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_ACCEPTFILES" class="codetype"><span class="SCde"><span class="SCst">WS_EX_ACCEPTFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_APPWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_APPWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_APPWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_EX_APPWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CLIENTEDGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_CLIENTEDGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_CLIENTEDGE" class="codetype"><span class="SCde"><span class="SCst">WS_EX_CLIENTEDGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_COMPOSITED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_COMPOSITED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_COMPOSITED" class="codetype"><span class="SCde"><span class="SCst">WS_EX_COMPOSITED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CONTEXTHELP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_CONTEXTHELP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_CONTEXTHELP" class="codetype"><span class="SCde"><span class="SCst">WS_EX_CONTEXTHELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CONTROLPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_CONTROLPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_CONTROLPARENT" class="codetype"><span class="SCde"><span class="SCst">WS_EX_CONTROLPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_DLGMODALFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_DLGMODALFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_DLGMODALFRAME" class="codetype"><span class="SCde"><span class="SCst">WS_EX_DLGMODALFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LAYERED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_LAYERED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_LAYERED" class="codetype"><span class="SCde"><span class="SCst">WS_EX_LAYERED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LAYOUTRTL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_LAYOUTRTL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_LAYOUTRTL" class="codetype"><span class="SCde"><span class="SCst">WS_EX_LAYOUTRTL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LEFT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_LEFT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_LEFT" class="codetype"><span class="SCde"><span class="SCst">WS_EX_LEFT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LEFTSCROLLBAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_LEFTSCROLLBAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_LEFTSCROLLBAR" class="codetype"><span class="SCde"><span class="SCst">WS_EX_LEFTSCROLLBAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LTRREADING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_LTRREADING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_LTRREADING" class="codetype"><span class="SCde"><span class="SCst">WS_EX_LTRREADING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_MDICHILD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_MDICHILD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_MDICHILD" class="codetype"><span class="SCde"><span class="SCst">WS_EX_MDICHILD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOACTIVATE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_NOACTIVATE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_NOACTIVATE" class="codetype"><span class="SCde"><span class="SCst">WS_EX_NOACTIVATE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOINHERITLAYOUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_NOINHERITLAYOUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_NOINHERITLAYOUT" class="codetype"><span class="SCde"><span class="SCst">WS_EX_NOINHERITLAYOUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOPARENTNOTIFY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_NOPARENTNOTIFY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_NOPARENTNOTIFY" class="codetype"><span class="SCde"><span class="SCst">WS_EX_NOPARENTNOTIFY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOREDIRECTIONBITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_NOREDIRECTIONBITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_NOREDIRECTIONBITMAP" class="codetype"><span class="SCde"><span class="SCst">WS_EX_NOREDIRECTIONBITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_OVERLAPPEDWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_OVERLAPPEDWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_OVERLAPPEDWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_EX_OVERLAPPEDWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_PALETTEWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_PALETTEWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_PALETTEWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_EX_PALETTEWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_RIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_RIGHT" class="codetype"><span class="SCde"><span class="SCst">WS_EX_RIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RIGHTSCROLLBAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_RIGHTSCROLLBAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_RIGHTSCROLLBAR" class="codetype"><span class="SCde"><span class="SCst">WS_EX_RIGHTSCROLLBAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RTLREADING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_RTLREADING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_RTLREADING" class="codetype"><span class="SCde"><span class="SCst">WS_EX_RTLREADING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_STATICEDGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_STATICEDGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_STATICEDGE" class="codetype"><span class="SCde"><span class="SCst">WS_EX_STATICEDGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TOOLWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_TOOLWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_TOOLWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_EX_TOOLWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TOPMOST" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_TOPMOST</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_TOPMOST" class="codetype"><span class="SCde"><span class="SCst">WS_EX_TOPMOST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TRANSPARENT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_TRANSPARENT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_TRANSPARENT" class="codetype"><span class="SCde"><span class="SCst">WS_EX_TRANSPARENT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_WINDOWEDGE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_EX_WINDOWEDGE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_EX_WINDOWEDGE" class="codetype"><span class="SCde"><span class="SCst">WS_EX_WINDOWEDGE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_GROUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_GROUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_GROUP" class="codetype"><span class="SCde"><span class="SCst">WS_GROUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_HSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_HSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_HSCROLL" class="codetype"><span class="SCde"><span class="SCst">WS_HSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MAXIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_MAXIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_MAXIMIZE" class="codetype"><span class="SCde"><span class="SCst">WS_MAXIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MAXIMIZEBOX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_MAXIMIZEBOX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_MAXIMIZEBOX" class="codetype"><span class="SCde"><span class="SCst">WS_MAXIMIZEBOX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MINIMIZE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_MINIMIZE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_MINIMIZE" class="codetype"><span class="SCde"><span class="SCst">WS_MINIMIZE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MINIMIZEBOX" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_MINIMIZEBOX</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_MINIMIZEBOX" class="codetype"><span class="SCde"><span class="SCst">WS_MINIMIZEBOX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_OVERLAPPED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_OVERLAPPED</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_OVERLAPPED" class="codetype"><span class="SCde"><span class="SCst">WS_OVERLAPPED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_OVERLAPPEDWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_OVERLAPPEDWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_OVERLAPPEDWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_OVERLAPPEDWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_POPUP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_POPUP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_POPUP" class="codetype"><span class="SCde"><span class="SCst">WS_POPUP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_POPUPWINDOW" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_POPUPWINDOW</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_POPUPWINDOW" class="codetype"><span class="SCde"><span class="SCst">WS_POPUPWINDOW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_SYSMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_SYSMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_SYSMENU" class="codetype"><span class="SCde"><span class="SCst">WS_SYSMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_TABSTOP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_TABSTOP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_TABSTOP" class="codetype"><span class="SCde"><span class="SCst">WS_TABSTOP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_THICKFRAME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_THICKFRAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_THICKFRAME" class="codetype"><span class="SCde"><span class="SCst">WS_THICKFRAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_VISIBLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_VISIBLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_VISIBLE" class="codetype"><span class="SCde"><span class="SCst">WS_VISIBLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_VSCROLL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WS_VSCROLL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_WS_VSCROLL" class="codetype"><span class="SCde"><span class="SCst">WS_VSCROLL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6515,288 +6518,288 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Win32_ATOM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ATOM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td id="Win32_ATOM" class="codetype"><span class="SCde"><span class="SCst">ATOM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BOOL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BOOL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_BOOL" class="codetype"><span class="SCde"><span class="SCst">BOOL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BYTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BYTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td id="Win32_BYTE" class="codetype"><span class="SCde"><span class="SCst">BYTE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td id="Win32_CHAR" class="codetype"><span class="SCde"><span class="SCst">CHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_COLORREF" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">COLORREF</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_COLORREF" class="codetype"><span class="SCde"><span class="SCst">COLORREF</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DWORD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_DWORD" class="codetype"><span class="SCde"><span class="SCst">DWORD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD64" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DWORD64</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_DWORD64" class="codetype"><span class="SCde"><span class="SCst">DWORD64</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD_PTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DWORD_PTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_DWORD_PTR" class="codetype"><span class="SCde"><span class="SCst">DWORD_PTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HANDLE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HANDLE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HANDLE" class="codetype"><span class="SCde"><span class="SCst">HANDLE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HBITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HBITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HBITMAP" class="codetype"><span class="SCde"><span class="SCst">HBITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HBRUSH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HBRUSH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HBRUSH" class="codetype"><span class="SCde"><span class="SCst">HBRUSH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HCURSOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HCURSOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HCURSOR" class="codetype"><span class="SCde"><span class="SCst">HCURSOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HDC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HDC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HDC" class="codetype"><span class="SCde"><span class="SCst">HDC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HGLOBAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HGLOBAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HGLOBAL" class="codetype"><span class="SCde"><span class="SCst">HGLOBAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HICON" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HICON</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HICON" class="codetype"><span class="SCde"><span class="SCst">HICON</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HINSTANCE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HINSTANCE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HINSTANCE" class="codetype"><span class="SCde"><span class="SCst">HINSTANCE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HLOCAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HLOCAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HLOCAL" class="codetype"><span class="SCde"><span class="SCst">HLOCAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMENU" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HMENU</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HMENU" class="codetype"><span class="SCde"><span class="SCst">HMENU</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMODULE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HMODULE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HMODULE" class="codetype"><span class="SCde"><span class="SCst">HMODULE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMONITOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HMONITOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HMONITOR" class="codetype"><span class="SCde"><span class="SCst">HMONITOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HRESULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HRESULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HRESULT" class="codetype"><span class="SCde"><span class="SCst">HRESULT</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HWND</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td id="Win32_HWND" class="codetype"><span class="SCde"><span class="SCst">HWND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IP_MASK_STRING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IP_MASK_STRING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td id="Win32_IP_MASK_STRING" class="codetype"><span class="SCde"><span class="SCst">IP_MASK_STRING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LARGE_INTEGER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LARGE_INTEGER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td id="Win32_LARGE_INTEGER" class="codetype"><span class="SCde"><span class="SCst">LARGE_INTEGER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LONG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LONG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Win32_LONG" class="codetype"><span class="SCde"><span class="SCst">LONG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPARAM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPARAM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_LPARAM" class="codetype"><span class="SCde"><span class="SCst">LPARAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPBYTE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPBYTE</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td id="Win32_LPBYTE" class="codetype"><span class="SCde"><span class="SCst">LPBYTE</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPCH</span></span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td id="Win32_LPCH" class="codetype"><span class="SCde"><span class="SCst">LPCH</span></span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPCSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td id="Win32_LPCSTR" class="codetype"><span class="SCde"><span class="SCst">LPCSTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCTSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPCTSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td id="Win32_LPCTSTR" class="codetype"><span class="SCde"><span class="SCst">LPCTSTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCVOID" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPCVOID</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td id="Win32_LPCVOID" class="codetype"><span class="SCde"><span class="SCst">LPCVOID</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCWSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPCWSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td id="Win32_LPCWSTR" class="codetype"><span class="SCde"><span class="SCst">LPCWSTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPDWORD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPDWORD</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPDWORD" class="codetype"><span class="SCde"><span class="SCst">LPDWORD</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPOVERLAPPED" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPOVERLAPPED</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPOVERLAPPED" class="codetype"><span class="SCde"><span class="SCst">LPOVERLAPPED</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td id="Win32_LPSTR" class="codetype"><span class="SCde"><span class="SCst">LPSTR</span></span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPTHREAD_START_ROUTINE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPTHREAD_START_ROUTINE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPTHREAD_START_ROUTINE" class="codetype"><span class="SCde"><span class="SCst">LPTHREAD_START_ROUTINE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPVOID" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPVOID</span></span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td id="Win32_LPVOID" class="codetype"><span class="SCde"><span class="SCst">LPVOID</span></span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPWCH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPWCH</span></span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td id="Win32_LPWCH" class="codetype"><span class="SCde"><span class="SCst">LPWCH</span></span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPWSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LPWSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td id="Win32_LPWSTR" class="codetype"><span class="SCde"><span class="SCst">LPWSTR</span></span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LRESULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LRESULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td id="Win32_LRESULT" class="codetype"><span class="SCde"><span class="SCst">LRESULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PCSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PCSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td id="Win32_PCSTR" class="codetype"><span class="SCde"><span class="SCst">PCSTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PCWSTR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PCWSTR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td id="Win32_PCWSTR" class="codetype"><span class="SCde"><span class="SCst">PCWSTR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PLONG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PLONG</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span></span></td>
+<td id="Win32_PLONG" class="codetype"><span class="SCde"><span class="SCst">PLONG</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHORT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHORT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td id="Win32_SHORT" class="codetype"><span class="SCde"><span class="SCst">SHORT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHSTDAPI" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SHSTDAPI</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="Win32_SHSTDAPI" class="codetype"><span class="SCde"><span class="SCst">SHSTDAPI</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SIZE_T" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIZE_T</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_SIZE_T" class="codetype"><span class="SCde"><span class="SCst">SIZE_T</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SRWLOCK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SRWLOCK</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="Win32_SRWLOCK" class="codetype"><span class="SCde"><span class="SCst">SRWLOCK</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_UINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">UINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_UINT" class="codetype"><span class="SCde"><span class="SCst">UINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ULONG" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ULONG</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="Win32_ULONG" class="codetype"><span class="SCde"><span class="SCst">ULONG</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ULONG64" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ULONG64</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_ULONG64" class="codetype"><span class="SCde"><span class="SCst">ULONG64</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_USHORT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">USHORT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="Win32_USHORT" class="codetype"><span class="SCde"><span class="SCst">USHORT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAITORTIMERCALLBACK" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WAITORTIMERCALLBACK</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxType">void</span>, <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
+<td id="Win32_WAITORTIMERCALLBACK" class="codetype"><span class="SCde"><span class="SCst">WAITORTIMERCALLBACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WCHAR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WCHAR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="Win32_WCHAR" class="codetype"><span class="SCde"><span class="SCst">WCHAR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WORD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WORD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="Win32_WORD" class="codetype"><span class="SCde"><span class="SCst">WORD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WPARAM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WPARAM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_WPARAM" class="codetype"><span class="SCde"><span class="SCst">WPARAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_time_t" class="codetype"><span class="SyntaxCode">time_t</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Win32_time_t" class="codetype"><span class="SCde">time_t</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_va_list" class="codetype"><span class="SyntaxCode">va_list</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">u8</span></span></td>
+<td id="Win32_va_list" class="codetype"><span class="SCde">va_list</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6811,7 +6814,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">AcquireSRWLockExclusive</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6824,7 +6827,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">AcquireSRWLockShared</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6837,7 +6840,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">BeginPaint</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BeginPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6850,7 +6853,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">BringWindowToTop</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BringWindowToTop</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6865,28 +6868,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="codetype"><span class="SCde">dwSize</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwCursorPosition</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="codetype"><span class="SCde">dwCursorPosition</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">srWindow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SMALL_RECT">SMALL_RECT</a></span></span></td>
+<td class="codetype"><span class="SCde">srWindow</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SMALL_RECT">SMALL_RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwMaximumWindowSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="codetype"><span class="SCde">dwMaximumWindowSize</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6903,13 +6906,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6926,63 +6929,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpCreateParams</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpCreateParams</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hInstance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="codetype"><span class="SCde">hInstance</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hMenu</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hMenu</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hwndParent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hwndParent</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cy</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cy</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">style</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">style</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lpszName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszClass</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lpszClass</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwExStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwExStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -6999,63 +7002,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpCreateParams</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpCreateParams</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hInstance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="codetype"><span class="SCde">hInstance</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hMenu</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hMenu</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hwndParent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hwndParent</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cy</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cy</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">style</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">style</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">lpszName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszClass</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">lpszClass</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwExStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwExStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7070,7 +7073,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CancelWaitableTimer</span>(hTimer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CancelWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7083,7 +7086,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ChildWindowFromPoint</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPoint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7096,7 +7099,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ChildWindowFromPointEx</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPointEx</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7109,7 +7112,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ClientToScreen</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ClientToScreen</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7122,7 +7125,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CloseClipboard</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7135,7 +7138,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CloseHandle</span>(handle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseHandle</span>(handle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7148,7 +7151,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CoInitializeEx</span>(pvReserved: *<span class="SyntaxType">void</span>, dwCoInit: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HRESULT">HRESULT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoInitializeEx</span>(pvReserved: *<span class="STpe">void</span>, dwCoInit: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HRESULT">HRESULT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7161,7 +7164,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CoUninitialize</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoUninitialize</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -7174,7 +7177,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7187,7 +7190,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateDirectoryA</span>(lpPathName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7200,7 +7203,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateDirectoryW</span>(lpPathName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7213,7 +7216,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateEventA</span>(lpEventAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventA</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7226,7 +7229,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateEventW</span>(lpEventAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventW</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7239,7 +7242,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateFileA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7252,7 +7255,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateFileW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7265,7 +7268,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateIconIndirect</span>(piconinfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateIconIndirect</span>(piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7278,7 +7281,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateMutexA</span>(lpMutexAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexA</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7291,7 +7294,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateMutexW</span>(lpMutexAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexW</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7304,7 +7307,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateProcessA</span>(lpApplicationName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessA</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7317,7 +7320,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateProcessW</span>(lpApplicationName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessW</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7330,7 +7333,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateThread</span>(lpThreadAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="SyntaxType">void</span>, dwCreationFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateThread</span>(lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="STpe">void</span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7343,7 +7346,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="SyntaxType">void</span>, dueTime: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="STpe">void</span>, dueTime: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7356,7 +7359,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7369,7 +7372,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7382,7 +7385,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateWindowExA</span>(dwExStyle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SyntaxConstant">X</span>: <span class="SyntaxType">s32</span>, <span class="SyntaxConstant">Y</span>: <span class="SyntaxType">s32</span>, nWidth: <span class="SyntaxType">s32</span>, nHeight: <span class="SyntaxType">s32</span>, hWndParent: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExA</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7395,7 +7398,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">CreateWindowExW</span>(dwExStyle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SyntaxConstant">X</span>: <span class="SyntaxType">s32</span>, <span class="SyntaxConstant">Y</span>: <span class="SyntaxType">s32</span>, nWidth: <span class="SyntaxType">s32</span>, nHeight: <span class="SyntaxType">s32</span>, hWndParent: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExW</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7408,7 +7411,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DebugActiveProcess</span>(procId: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugActiveProcess</span>(procId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7421,7 +7424,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DebugBreak</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugBreak</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -7434,7 +7437,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DefWindowProcA</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7447,7 +7450,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DefWindowProcW</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7460,7 +7463,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DeleteFileA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7473,7 +7476,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DeleteFileW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7486,7 +7489,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DeleteTimerQueueTimer</span>(timerQueue: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteTimerQueueTimer</span>(timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7499,7 +7502,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DestroyIcon</span>(hIcon: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyIcon</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7512,7 +7515,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DestroyWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7525,7 +7528,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DispatchMessageA</span>(lpMsg: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageA</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7538,7 +7541,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">DispatchMessageW</span>(lpMsg: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageW</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7551,7 +7554,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EmptyClipboard</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EmptyClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7564,7 +7567,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnableWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnableWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7577,7 +7580,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EndPaint</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EndPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7590,7 +7593,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumDisplayMonitors</span>(hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span>, dwData: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumDisplayMonitors</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SKwd">const</span> *<span class="STpe">void</span>, dwData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7603,7 +7606,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">EnumWindows</span>(lpEnumFunc: <span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumWindows</span>(lpEnumFunc: <span class="SKwd">const</span> *<span class="STpe">void</span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7616,7 +7619,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ExitProcess</span>(uExitCode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7629,7 +7632,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ExtractIconExA</span>(lpszFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="SyntaxType">s32</span>, phiconLarge: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExA</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7642,7 +7645,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ExtractIconExW</span>(lpszFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="SyntaxType">s32</span>, phiconLarge: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExW</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7657,13 +7660,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwLowDateTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwLowDateTime</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwHighDateTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwHighDateTime</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7678,7 +7681,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7691,7 +7694,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FileTimeToSystemTime</span>(lpFileTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToSystemTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7704,7 +7707,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FillRect</span>(hDC: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FillRect</span>(hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7717,7 +7720,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindClose</span>(hFindFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindClose</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7730,7 +7733,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindFirstFileA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7743,7 +7746,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindFirstFileW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7756,7 +7759,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindFirstVolumeA</span>(lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7769,7 +7772,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindFirstVolumeW</span>(lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7782,7 +7785,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindNextFileA</span>(hFindFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileA</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7795,7 +7798,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindNextFileW</span>(hFindFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileW</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7808,7 +7811,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindNextVolumeA</span>(hFindVolume: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeA</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7821,7 +7824,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindNextVolumeW</span>(hFindVolume: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeW</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7834,7 +7837,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindVolumeClose</span>(hFindVolume: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindVolumeClose</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7847,7 +7850,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindWindowA</span>(lpClassName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowA</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7860,7 +7863,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FindWindowW</span>(lpClassName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowW</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7873,7 +7876,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FormatMessageA</span>(dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SyntaxConstant">Arguments</span>: *<span class="SyntaxConstant">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FormatMessageA</span>(dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">Arguments</span>: *<span class="SCst">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7888,11 +7891,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GetFileExInfoStandard</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GetFileExInfoStandard</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GetFileExMaxInfoLevel</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GetFileExMaxInfoLevel</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7907,7 +7910,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7920,7 +7923,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GET_X_LPARAM</span>(lp: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_X_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7933,7 +7936,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GET_Y_LPARAM</span>(lp: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_Y_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7948,23 +7951,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Data1</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Data1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Data2</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Data2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Data3</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Data3</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Data4</span></span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">8</span>] <span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Data4</span></span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7979,7 +7982,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetActiveWindow</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetActiveWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7992,7 +7995,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetAdaptersInfo</span>(adapterInfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ULONG">ULONG</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAdaptersInfo</span>(adapterInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8005,7 +8008,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetAsyncKeyState</span>(vKey: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SHORT">SHORT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAsyncKeyState</span>(vKey: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHORT">SHORT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8018,7 +8021,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetClientRect</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClientRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8031,7 +8034,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetClipboardData</span>(uFormat: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8044,7 +8047,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8057,7 +8060,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentDirectoryA</span>(nBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryA</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8070,7 +8073,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentDirectoryW</span>(nBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryW</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8083,7 +8086,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentProcess</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcess</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8096,7 +8099,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentProcessId</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcessId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8109,7 +8112,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentThread</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8122,7 +8125,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCurrentThreadId</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThreadId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8135,7 +8138,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetCursorPos</span>(lpPoint: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCursorPos</span>(lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8148,7 +8151,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetDC</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8161,7 +8164,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetDesktopWindow</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDesktopWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8174,7 +8177,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFileAttributesA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8187,7 +8190,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFileAttributesExA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8200,7 +8203,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFileAttributesExW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8213,7 +8216,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFileAttributesW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8226,7 +8229,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFileSize</span>(hFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileSize</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8239,7 +8242,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetForegroundWindow</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetForegroundWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8252,7 +8255,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFullPathNameA</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8265,7 +8268,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetFullPathNameW</span>(lpFileName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8278,7 +8281,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetIconInfo</span>(hIcon: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetIconInfo</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8291,7 +8294,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetKeyboardState</span>(lpKeystate: *<span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetKeyboardState</span>(lpKeystate: *<span class="STpe">u8</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8304,7 +8307,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetLastError</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLastError</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8317,7 +8320,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetLocalTime</span>(lpSystemTime: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLocalTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8330,7 +8333,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetMessageA</span>(lpMsg: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8343,7 +8346,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetMessageW</span>(lpMsg: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8356,7 +8359,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetModuleHandleA</span>(lpModuleName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleA</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8369,7 +8372,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetModuleHandleW</span>(lpModuleName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleW</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8382,7 +8385,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetMonitorInfoA</span>(hMonitor: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoA</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8395,7 +8398,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetMonitorInfoW</span>(hMonitor: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoW</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8408,7 +8411,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetNextWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetNextWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8421,7 +8424,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetProcAddress</span>(hModule: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetProcAddress</span>(hModule: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8434,7 +8437,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetStdHandle</span>(nStdHandle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStdHandle</span>(nStdHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8447,7 +8450,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetSystemInfo</span>(lpSystemInfo: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemInfo</span>(lpSystemInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8460,7 +8463,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetSystemMetrics</span>(nIndex: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemMetrics</span>(nIndex: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8473,7 +8476,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetSystemTime</span>(lpSystemTime: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8486,7 +8489,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetTopWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetTopWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8499,7 +8502,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8512,7 +8515,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8525,7 +8528,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8538,7 +8541,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindowLongPtrA</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="SyntaxType">s32</span>)-&gt;*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8551,7 +8554,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindowLongPtrW</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="SyntaxType">s32</span>)-&gt;*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8564,7 +8567,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindowRect</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8577,7 +8580,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindowTextA</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8590,7 +8593,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GetWindowTextW</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8603,7 +8606,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GlobalAlloc</span>(uFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalAlloc</span>(uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8616,7 +8619,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GlobalLock</span>(hMem: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalLock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8629,7 +8632,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GlobalSize</span>(hMem: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalSize</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8642,7 +8645,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">GlobalUnlock</span>(hMem: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalUnlock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8655,7 +8658,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">HIWORD</span>(l: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">HIWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8670,28 +8673,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">fIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">fIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">xHotspot</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">xHotspot</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">yHotspot</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">yHotspot</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hbmMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hbmMask</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hbmColor</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hbmColor</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8708,93 +8711,93 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">next</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span></span></td>
+<td class="codetype"><span class="SCde">next</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">comboIndex</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">comboIndex</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">adapterName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">adapterName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">description</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">132</span>] <span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">description</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">132</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">addressLength</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">addressLength</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">address</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">8</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="codetype"><span class="SCde">address</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">8</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">index</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">index</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">type</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">type</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dhcpEnabled</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dhcpEnabled</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">currentIpAddress</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">currentIpAddress</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ipAddressList</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">ipAddressList</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">gatewayList</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">gatewayList</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dhcpServer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">dhcpServer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">haveWins</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">haveWins</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">primaryWinsServer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">primaryWinsServer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">secondaryWinsServer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">secondaryWinsServer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">leaseObtained</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">leaseObtained</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">leaseExpires</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">leaseExpires</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8811,8 +8814,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">str</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">16</span>] <span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">str</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8829,23 +8832,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">next</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">next</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ipAddress</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">ipAddress</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ipMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td class="codetype"><span class="SCde">ipMask</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">context</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">context</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8860,7 +8863,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">InitializeSRWLock</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InitializeSRWLock</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8873,7 +8876,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">InvalidateRect</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InvalidateRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8886,7 +8889,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">IsClipboardFormatAvailable</span>(format: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsClipboardFormatAvailable</span>(format: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8899,7 +8902,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">IsDebuggerPresent</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsDebuggerPresent</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8912,7 +8915,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">IsWindowVisible</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsWindowVisible</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8925,7 +8928,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">LOWORD</span>(l: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LOWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8938,7 +8941,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">LoadCursorA</span>(hInstance: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorA</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8951,7 +8954,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">LoadCursorW</span>(hInstance: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorW</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8964,7 +8967,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">LocalFree</span>(hLocal: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LocalFree</span>(hLocal: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8977,7 +8980,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MAKEINTRESOURCEA</span>(val: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEA</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8990,7 +8993,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MAKEINTRESOURCEW</span>(val: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEW</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9003,7 +9006,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MAKELANGID</span>(p: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="SyntaxType">u16</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9018,28 +9021,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">ptReserved</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">ptReserved</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ptMaxSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">ptMaxSize</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ptMaxPosition</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">ptMaxPosition</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ptMinTrackSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">ptMinTrackSize</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ptMaxTrackSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">ptMaxTrackSize</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9056,23 +9059,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cbSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rcMonitor</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="codetype"><span class="SCde">rcMonitor</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rcWork</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="codetype"><span class="SCde">rcWork</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9089,38 +9092,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hwnd</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hwnd</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">message</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">message</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wParam</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">wParam</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lParam</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">lParam</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">time</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">time</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pt</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="codetype"><span class="SCde">pt</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lPrivate</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">lPrivate</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9135,7 +9138,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MapVirtualKeyA</span>(uCode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyA</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9148,7 +9151,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MapVirtualKeyW</span>(uCode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyW</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9161,7 +9164,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MessageBoxA</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9174,7 +9177,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MessageBoxW</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9187,7 +9190,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MonitorFromPoint</span>(pt: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9200,7 +9203,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MonitorFromWindow</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromWindow</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9213,7 +9216,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">MoveWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, nWidth: <span class="SyntaxType">s32</span>, nHeight: <span class="SyntaxType">s32</span>, bRepaint: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9228,78 +9231,78 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cbSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hWnd</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hWnd</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uID</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uID</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uCallbackMessage</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uCallbackMessage</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szTip</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">128</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szTip</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwState</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwState</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwStateMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwStateMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szInfo</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">256</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szInfo</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> <span class="SyntaxConstant">DUMMYUNIONNAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode">{uTimeout: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
+<td class="codetype"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szInfoTitle</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">64</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szInfoTitle</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwInfoFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwInfoFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">guidItem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_GUID">GUID</a></span></span></td>
+<td class="codetype"><span class="SCde">guidItem</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hBalloonIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hBalloonIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9316,78 +9319,78 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cbSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hWnd</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hWnd</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uID</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uID</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uCallbackMessage</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">uCallbackMessage</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szTip</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">128</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szTip</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwState</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwState</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwStateMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwStateMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szInfo</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">256</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szInfo</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> <span class="SyntaxConstant">DUMMYUNIONNAME</span></span></td>
-<td class="codetype"><span class="SyntaxCode">{uTimeout: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
+<td class="codetype"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szInfoTitle</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">64</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szInfoTitle</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwInfoFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwInfoFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">guidItem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_GUID">GUID</a></span></span></td>
+<td class="codetype"><span class="SCde">guidItem</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hBalloonIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hBalloonIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9402,7 +9405,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">OpenClipboard</span>(hWndNewOwner: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OpenClipboard</span>(hWndNewOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9415,7 +9418,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">OutputDebugStringA</span>(lpOutputString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringA</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9428,7 +9431,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">OutputDebugStringW</span>(lpOutputString: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringW</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9443,33 +9446,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hdc</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hdc</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fErase</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">fErase</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rcPaint</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="codetype"><span class="SCde">rcPaint</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fRestore</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">fRestore</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fIncUpdate</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">fIncUpdate</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rgbReserved</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="codetype"><span class="SCde">rgbReserved</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9486,13 +9489,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9509,23 +9512,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hProcess</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hProcess</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hThread</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hThread</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwProcessId</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwProcessId</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwThreadId</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwThreadId</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9540,7 +9543,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">PeekMessageA</span>(lpMsg: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9553,7 +9556,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">PeekMessageW</span>(lpMsg: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9566,7 +9569,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">PostMessageA</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9579,7 +9582,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">PostMessageW</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9592,7 +9595,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">PostQuitMessage</span>(nExitCode: <span class="SyntaxType">s32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostQuitMessage</span>(nExitCode: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9605,7 +9608,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9618,7 +9621,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9633,23 +9636,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">left</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">left</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">top</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">top</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">right</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">right</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bottom</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bottom</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9664,7 +9667,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReadFile</span>(hFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReadFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9677,7 +9680,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RegisterClassA</span>(lpWndClass: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ATOM">ATOM</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassA</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9690,7 +9693,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RegisterClassW</span>(lpWndClass: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_ATOM">ATOM</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassW</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9703,7 +9706,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RegisterClipboardFormatA</span>(name: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatA</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9716,7 +9719,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RegisterClipboardFormatW</span>(name: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatW</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9729,7 +9732,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">RegisterHotKey</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, id: <span class="SyntaxType">s32</span>, fsModifiers: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>, fsModifiers: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9742,7 +9745,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReleaseCapture</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseCapture</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9755,7 +9758,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReleaseDC</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9768,7 +9771,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReleaseMutex</span>(hMutex: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseMutex</span>(hMutex: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9781,7 +9784,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReleaseSRWLockExclusive</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9794,7 +9797,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ReleaseSRWLockShared</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9807,7 +9810,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ResetEvent</span>(hEvent: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9820,7 +9823,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ResumeThread</span>(hThread: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResumeThread</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9835,18 +9838,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">nLength</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nLength</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpSecurityDescriptor</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpSecurityDescriptor</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bInheritHandle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bInheritHandle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9863,28 +9866,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">iIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szDisplayName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szDisplayName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szTypeName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">80</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szTypeName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9901,28 +9904,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">iIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szDisplayName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szDisplayName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szTypeName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">80</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szTypeName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9937,7 +9940,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SHGetFileInfoA</span>(pszPath: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoA</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9950,7 +9953,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SHGetFileInfoW</span>(pszPath: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoW</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9963,7 +9966,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SHGetSpecialFolderPathA</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="SyntaxType">s32</span>, fCreate: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9976,7 +9979,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SHGetSpecialFolderPathW</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="SyntaxType">s32</span>, fCreate: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9989,7 +9992,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SHGetStockIconInfo</span>(siid: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetStockIconInfo</span>(siid: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10004,379 +10007,379 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DOCNOASSOC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DOCNOASSOC</span></span></td>
 <td>document (blank page) no associated program. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DOCASSOC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DOCASSOC</span></span></td>
 <td>document with an associated program. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_APPLICATION</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_APPLICATION</span></span></td>
 <td>generic application with no custom icon. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_FOLDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_FOLDER</span></span></td>
 <td>folder (closed). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_FOLDEROPEN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_FOLDEROPEN</span></span></td>
 <td>folder (open). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVE525</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVE525</span></span></td>
 <td>5.25" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVE35</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVE35</span></span></td>
 <td>3.5" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEREMOVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEREMOVE</span></span></td>
 <td>removable drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEFIXED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEFIXED</span></span></td>
 <td>fixed (hard disk) drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVENET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVENET</span></span></td>
 <td>network drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVENETDISABLED</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVENETDISABLED</span></span></td>
 <td>disconnected network drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVECD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVECD</span></span></td>
 <td>CD drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVERAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVERAM</span></span></td>
 <td>RAM disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_WORLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_WORLD</span></span></td>
 <td>entire network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SERVER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SERVER</span></span></td>
 <td>a computer on the network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_PRINTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_PRINTER</span></span></td>
 <td>printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MYNETWORK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MYNETWORK</span></span></td>
 <td>My network places. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_FIND</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_FIND</span></span></td>
 <td>Find. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_HELP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_HELP</span></span></td>
 <td>Help. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SHARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SHARE</span></span></td>
 <td>overlay for shared items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_LINK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_LINK</span></span></td>
 <td>overlay for shortcuts to items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SLOWFILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SLOWFILE</span></span></td>
 <td>overlay for slow items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_RECYCLER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_RECYCLER</span></span></td>
 <td>empty recycle bin. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_RECYCLERFULL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_RECYCLERFULL</span></span></td>
 <td>full recycle bin. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDAUDIO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDAUDIO</span></span></td>
 <td>Audio CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_LOCK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_LOCK</span></span></td>
 <td>Security lock. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_AUTOLIST</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_AUTOLIST</span></span></td>
 <td>AutoList. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_PRINTERNET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_PRINTERNET</span></span></td>
 <td>Network printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SERVERSHARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SERVERSHARE</span></span></td>
 <td>Server share. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_PRINTERFAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_PRINTERFAX</span></span></td>
 <td>Fax printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_PRINTERFAXNET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_PRINTERFAXNET</span></span></td>
 <td>Networked Fax Printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_PRINTERFILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_PRINTERFILE</span></span></td>
 <td>Print to File. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_STACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_STACK</span></span></td>
 <td>Stack. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIASVCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIASVCD</span></span></td>
 <td>SVCD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_STUFFEDFOLDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_STUFFEDFOLDER</span></span></td>
 <td>Folder containing other items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEUNKNOWN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEUNKNOWN</span></span></td>
 <td>Unknown drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEDVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEDVD</span></span></td>
 <td>DVD Drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVD</span></span></td>
 <td>DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDRAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDRAM</span></span></td>
 <td>DVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDRW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDRW</span></span></td>
 <td>DVD-RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDR</span></span></td>
 <td>DVD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDROM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDROM</span></span></td>
 <td>DVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDAUDIOPLUS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDAUDIOPLUS</span></span></td>
 <td>CD+ (Enhanced CD) Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDRW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDRW</span></span></td>
 <td>CD-RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDR</span></span></td>
 <td>CD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDBURN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDBURN</span></span></td>
 <td>Burning CD. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIABLANKCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIABLANKCD</span></span></td>
 <td>Blank CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACDROM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACDROM</span></span></td>
 <td>CD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_AUDIOFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_AUDIOFILES</span></span></td>
 <td>Audio files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_IMAGEFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_IMAGEFILES</span></span></td>
 <td>Image files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_VIDEOFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_VIDEOFILES</span></span></td>
 <td>Video files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MIXEDFILES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MIXEDFILES</span></span></td>
 <td>Mixed files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_FOLDERBACK</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_FOLDERBACK</span></span></td>
 <td>Folder back. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_FOLDERFRONT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_FOLDERFRONT</span></span></td>
 <td>Folder front. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SHIELD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SHIELD</span></span></td>
 <td>Security shield. Use for UAC prompts only. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_WARNING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_WARNING</span></span></td>
 <td>Warning. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_INFO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_INFO</span></span></td>
 <td>Informational. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_ERROR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_ERROR</span></span></td>
 <td>Error. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_KEY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_KEY</span></span></td>
 <td>Key / Secure. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SOFTWARE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SOFTWARE</span></span></td>
 <td>Software. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_RENAME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_RENAME</span></span></td>
 <td>Rename. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DELETE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DELETE</span></span></td>
 <td>Delete. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAAUDIODVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAAUDIODVD</span></span></td>
 <td>Audio DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAMOVIEDVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAMOVIEDVD</span></span></td>
 <td>Movie DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAENHANCEDCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAENHANCEDCD</span></span></td>
 <td>Enhanced CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAENHANCEDDVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAENHANCEDDVD</span></span></td>
 <td>Enhanced DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAHDDVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAHDDVD</span></span></td>
 <td>HD-DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIABLURAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIABLURAY</span></span></td>
 <td>BluRay Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAVCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAVCD</span></span></td>
 <td>VCD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDPLUSR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDPLUSR</span></span></td>
 <td>DVD+R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIADVDPLUSRW</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIADVDPLUSRW</span></span></td>
 <td>DVD+RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DESKTOPPC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DESKTOPPC</span></span></td>
 <td>desktop computer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MOBILEPC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MOBILEPC</span></span></td>
 <td>mobile computer (laptop/notebook). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_USERS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_USERS</span></span></td>
 <td>users. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIASMARTMEDIA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIASMARTMEDIA</span></span></td>
 <td>Smart Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIACOMPACTFLASH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIACOMPACTFLASH</span></span></td>
 <td>Compact Flash. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DEVICECELLPHONE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DEVICECELLPHONE</span></span></td>
 <td>Cell phone. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DEVICECAMERA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DEVICECAMERA</span></span></td>
 <td>Camera. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DEVICEVIDEOCAMERA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DEVICEVIDEOCAMERA</span></span></td>
 <td>Video camera. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DEVICEAUDIOPLAYER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DEVICEAUDIOPLAYER</span></span></td>
 <td>Audio player. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_NETWORKCONNECT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_NETWORKCONNECT</span></span></td>
 <td>Connect to network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_INTERNET</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_INTERNET</span></span></td>
 <td>Internet. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_ZIPFILE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_ZIPFILE</span></span></td>
 <td>ZIP file. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_SETTINGS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_SETTINGS</span></span></td>
 <td>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEHDDVD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEHDDVD</span></span></td>
 <td>HDDVD Drive (all types). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_DRIVEBD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_DRIVEBD</span></span></td>
 <td>BluRay Drive (all types). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAHDDVDROM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAHDDVDROM</span></span></td>
 <td>HDDVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAHDDVDR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAHDDVDR</span></span></td>
 <td>HDDVD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIAHDDVDRAM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIAHDDVDRAM</span></span></td>
 <td>HDDVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIABDROM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIABDROM</span></span></td>
 <td>BluRay ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIABDR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIABDR</span></span></td>
 <td>BluRay R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MEDIABDRE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MEDIABDRE</span></span></td>
 <td>BluRay RE Media (Rewriable and RAM). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_CLUSTEREDDRIVE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_CLUSTEREDDRIVE</span></span></td>
 <td>Clustered disk  160+ are for Windows 7 icons. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SIID_MAX_ICONS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SIID_MAX_ICONS</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10393,28 +10396,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cbSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iSysImageIndex</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">iSysImageIndex</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">iIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">iIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">szPath</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">szPath</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10431,23 +10434,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">left</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">left</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">top</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">top</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">right</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">right</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bottom</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">bottom</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10464,93 +10467,93 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cb</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cb</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpReserved</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpReserved</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpDesktop</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpDesktop</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpTitle</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpTitle</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwXSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwXSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwYSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwYSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwXCountChars</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwXCountChars</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwYCountChars</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwYCountChars</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFillAttribute</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFillAttribute</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wShowWindow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wShowWindow</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbReserved2</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">cbReserved2</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpReserved2</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="codetype"><span class="SCde">lpReserved2</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdInput</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdInput</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdOutput</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdOutput</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdError</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdError</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10567,93 +10570,93 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">cb</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">cb</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpReserved</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpReserved</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpDesktop</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpDesktop</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpTitle</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">lpTitle</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwXSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwXSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwYSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwYSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwXCountChars</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwXCountChars</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwYCountChars</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwYCountChars</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFillAttribute</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFillAttribute</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wShowWindow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wShowWindow</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbReserved2</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">cbReserved2</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpReserved2</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="codetype"><span class="SCde">lpReserved2</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdInput</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdInput</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdOutput</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdOutput</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hStdError</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hStdError</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10670,43 +10673,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">wYear</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wYear</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wMonth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wMonth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wDayOfWeek</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wDayOfWeek</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wDay</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wDay</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wHour</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wHour</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wMinute</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wMinute</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wSecond</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wSecond</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wMilliseconds</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wMilliseconds</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10723,53 +10726,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwOemId</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwOemId</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Must be updated to an union. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwPageSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwPageSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpMinimumApplicationAddress</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpMinimumApplicationAddress</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpMaximumApplicationAddress</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpMaximumApplicationAddress</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwActiveProcessorMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">dwActiveProcessorMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwNumberOfProcessors</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwNumberOfProcessors</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwProcessorType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwProcessorType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwAllocationGranularity</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwAllocationGranularity</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wProcessorLevel</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wProcessorLevel</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wProcessorRevision</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wProcessorRevision</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10784,7 +10787,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ScreenToClient</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ScreenToClient</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10797,7 +10800,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetActiveWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetActiveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10810,7 +10813,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetCapture</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCapture</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10823,7 +10826,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetClipboardData</span>(uFormat: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10836,7 +10839,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -10849,7 +10852,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetConsoleOutputCP</span>(codePage: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleOutputCP</span>(codePage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -10862,7 +10865,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WORD">WORD</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10875,7 +10878,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetCurrentDirectoryA</span>(lpPathName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10888,7 +10891,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetCurrentDirectoryW</span>(lpPathName: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10901,7 +10904,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetCursor</span>(hCursor: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursor</span>(hCursor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10914,7 +10917,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetCursorPos</span>(x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -10927,7 +10930,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetEvent</span>(hEvent: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10940,7 +10943,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetFilePointer</span>(hFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFilePointer</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10953,7 +10956,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetFileTime</span>(hFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFileTime</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10966,7 +10969,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetFocus</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFocus</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10979,7 +10982,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetLayeredWindowAttributes</span>(hwnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetLayeredWindowAttributes</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -10992,7 +10995,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetThreadPriority</span>(hThread: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="SyntaxType">s32</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetThreadPriority</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11005,7 +11008,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetWaitableTimer</span>(hTimer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="SyntaxType">void</span>, lpArgToCompletionRoutine: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="STpe">void</span>, lpArgToCompletionRoutine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11018,7 +11021,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetWindowLongPtrA</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="SyntaxType">s32</span>, dwNewLong: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11031,7 +11034,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetWindowLongPtrW</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="SyntaxType">s32</span>, dwNewLong: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11044,7 +11047,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SetWindowPos</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, cx: <span class="SyntaxType">s32</span>, cy: <span class="SyntaxType">s32</span>, uFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11057,7 +11060,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">Shell_NotifyIconA</span>(dwMessage: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconA</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11070,7 +11073,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">Shell_NotifyIconW</span>(dwMessage: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconW</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11083,7 +11086,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ShowCursor</span>(show: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowCursor</span>(show: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -11096,7 +11099,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ShowWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11109,7 +11112,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">Sleep</span>(dwMilliseconds: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -11122,7 +11125,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SleepEx</span>(dwMilliseconds: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SleepEx</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -11135,7 +11138,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SwitchToThread</span>()-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwitchToThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11148,7 +11151,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">SystemTimeToFileTime</span>(lpSystemTime: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SystemTimeToFileTime</span>(lpSystemTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11161,7 +11164,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">ToUnicode</span>(wVirtKey: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="SyntaxType">s32</span>, wFlags: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11174,7 +11177,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">TranslateMessage</span>(lpMsg: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TranslateMessage</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11187,7 +11190,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">TryAcquireSRWLockExclusive</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11200,7 +11203,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">TryAcquireSRWLockShared</span>(<span class="SyntaxConstant">SRWLock</span>: *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11213,7 +11216,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">UnregisterHotKey</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>, id: <span class="SyntaxType">s32</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UnregisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11226,7 +11229,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">UpdateWindow</span>(hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UpdateWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11241,33 +11244,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFileAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftCreationTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftCreationTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeHigh</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeLow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11284,68 +11287,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFileAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftCreationTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftCreationTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeHigh</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeLow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwReserved0</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwReserved0</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwReserved1</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwReserved1</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cFileName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">cFileName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAlternateFileName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">14</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">cAlternateFileName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFileType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFileType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwCreatorType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwCreatorType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wFinderFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wFinderFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11362,68 +11365,68 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFileAttributes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftCreationTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftCreationTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeHigh</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nFileSizeLow</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwReserved0</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwReserved0</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwReserved1</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwReserved1</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cFileName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">260</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">cFileName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cAlternateFileName</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">14</span>] <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="codetype"><span class="SCde">cAlternateFileName</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwFileType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwFileType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dwCreatorType</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">dwCreatorType</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">wFinderFlags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">wFinderFlags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11440,38 +11443,38 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hwnd</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hwnd</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hwndInsertAfter</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hwndInsertAfter</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cy</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cy</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">flags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11488,53 +11491,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">style</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">style</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpfnWndProc</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpfnWndProc</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbClsExtra</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cbClsExtra</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbWndExtra</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cbWndExtra</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hInstance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="codetype"><span class="SCde">hInstance</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hCursor</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hCursor</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hbrBackground</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hbrBackground</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszMenuName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lpszMenuName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszClassName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">lpszClassName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11551,53 +11554,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">style</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">style</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpfnWndProc</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">lpfnWndProc</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbClsExtra</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cbClsExtra</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cbWndExtra</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">cbWndExtra</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hInstance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="codetype"><span class="SCde">hInstance</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hIcon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hIcon</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hCursor</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hCursor</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hbrBackground</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hbrBackground</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszMenuName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">lpszMenuName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lpszClassName</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> ^<span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">lpszClassName</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -11612,7 +11615,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WaitForMultipleObjects</span>(nCount: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForMultipleObjects</span>(nCount: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11625,7 +11628,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WaitForSingleObject</span>(hHandle: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForSingleObject</span>(hHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11638,7 +11641,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WindowFromPoint</span>(pt: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WindowFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11651,7 +11654,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11664,7 +11667,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11677,7 +11680,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">WriteFile</span>(hFile: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant"><a href="#Win32_BOOL">BOOL</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -11691,7 +11694,7 @@
 </table>
 </p>
 <p>Fill the context error message. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setError</span>(errorMessageID: <span class="SyntaxType">u32</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 </div>
 </div>

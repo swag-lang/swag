@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -341,143 +344,143 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="FreeType_FT_LOAD_ADVANCE_ONLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_ADVANCE_ONLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_ADVANCE_ONLY" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_ADVANCE_ONLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_BITMAP_METRICS_ONLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_BITMAP_METRICS_ONLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_BITMAP_METRICS_ONLY" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_BITMAP_METRICS_ONLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_COLOR" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_COLOR</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_COLOR" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_COLOR</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_COMPUTE_METRICS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_COMPUTE_METRICS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_COMPUTE_METRICS" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_COMPUTE_METRICS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_CROP_BITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_CROP_BITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_CROP_BITMAP" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_CROP_BITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_DEFAULT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_DEFAULT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="FreeType_FT_LOAD_DEFAULT" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_DEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_FORCE_AUTOHINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_FORCE_AUTOHINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_FORCE_AUTOHINT" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_FORCE_AUTOHINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_IGNORE_TRANSFORM" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_IGNORE_TRANSFORM</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_IGNORE_TRANSFORM" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_IGNORE_TRANSFORM</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_LINEAR_DESIGN" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_LINEAR_DESIGN</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_LINEAR_DESIGN" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_LINEAR_DESIGN</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_MONOCHROME" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_MONOCHROME</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_MONOCHROME" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_MONOCHROME</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_AUTOHINT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_NO_AUTOHINT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_NO_AUTOHINT" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_NO_AUTOHINT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_BITMAP" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_NO_BITMAP</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_NO_BITMAP" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_NO_BITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_HINTING" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_NO_HINTING</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_NO_HINTING" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_NO_HINTING</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_RECURSE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_NO_RECURSE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_NO_RECURSE" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_NO_RECURSE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_NO_SCALE" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_NO_SCALE</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_NO_SCALE" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_NO_SCALE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_PEDANTIC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_PEDANTIC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_PEDANTIC" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_PEDANTIC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_RENDER" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_RENDER</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_RENDER" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_RENDER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_SBITS_ONLY" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_SBITS_ONLY</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_SBITS_ONLY" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_SBITS_ONLY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LCD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_TARGET_LCD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_TARGET_LCD" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_TARGET_LCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LCD_V" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_TARGET_LCD_V</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_TARGET_LCD_V" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_TARGET_LCD_V</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_LIGHT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_TARGET_LIGHT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_TARGET_LIGHT" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_TARGET_LIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_MONO" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_TARGET_MONO</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_TARGET_MONO" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_TARGET_MONO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_TARGET_NORMAL" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_TARGET_NORMAL</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_TARGET_NORMAL" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_TARGET_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_LOAD_VERTICAL_LAYOUT" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LOAD_VERTICAL_LAYOUT</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_LOAD_VERTICAL_LAYOUT" class="codetype"><span class="SCde"><span class="SCst">FT_LOAD_VERTICAL_LAYOUT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_MAX_MODULES" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_MAX_MODULES</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_MAX_MODULES" class="codetype"><span class="SCde"><span class="SCst">FT_MAX_MODULES</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_STYLE_FLAG_BOLD" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_STYLE_FLAG_BOLD</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_STYLE_FLAG_BOLD" class="codetype"><span class="SCde"><span class="SCst">FT_STYLE_FLAG_BOLD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_STYLE_FLAG_ITALIC" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_STYLE_FLAG_ITALIC</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_STYLE_FLAG_ITALIC" class="codetype"><span class="SCde"><span class="SCst">FT_STYLE_FLAG_ITALIC</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -494,143 +497,143 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="FreeType_FT_Byte" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Byte</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td id="FreeType_FT_Byte" class="codetype"><span class="SCde"><span class="SCst">FT_Byte</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_CharMap" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_CharMap</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_CharMapRec">FT_CharMapRec</a></span></span></td>
+<td id="FreeType_FT_CharMap" class="codetype"><span class="SCde"><span class="SCst">FT_CharMap</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_CharMapRec">FT_CharMapRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_DebugHook_Func" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_DebugHook_Func</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_DebugHook_Func" class="codetype"><span class="SCde"><span class="SCst">FT_DebugHook_Func</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Driver" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Driver</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Driver" class="codetype"><span class="SCde"><span class="SCst">FT_Driver</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Error" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Error</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Error" class="codetype"><span class="SCde"><span class="SCst">FT_Error</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Face" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Face</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
+<td id="FreeType_FT_Face" class="codetype"><span class="SCde"><span class="SCst">FT_Face</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Face_Internal" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Face_Internal</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Face_Internal" class="codetype"><span class="SCde"><span class="SCst">FT_Face_Internal</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Fixed" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Fixed</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Fixed" class="codetype"><span class="SCde"><span class="SCst">FT_Fixed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_GlyphSlot" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GlyphSlot</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
+<td id="FreeType_FT_GlyphSlot" class="codetype"><span class="SCde"><span class="SCst">FT_GlyphSlot</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Int" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Int</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Int" class="codetype"><span class="SCde"><span class="SCst">FT_Int</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Int32" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Int32</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Int32" class="codetype"><span class="SCde"><span class="SCst">FT_Int32</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Library" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Library</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_LibraryRec">FT_LibraryRec</a></span></span></td>
+<td id="FreeType_FT_Library" class="codetype"><span class="SCde"><span class="SCst">FT_Library</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_LibraryRec">FT_LibraryRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_ListNode" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_ListNode</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_ListNode" class="codetype"><span class="SCde"><span class="SCst">FT_ListNode</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Long" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Long</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Long" class="codetype"><span class="SCde"><span class="SCst">FT_Long</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Memory" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Memory</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Memory" class="codetype"><span class="SCde"><span class="SCst">FT_Memory</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Module" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Module</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Module" class="codetype"><span class="SCde"><span class="SCst">FT_Module</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Pos" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Pos</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="FreeType_FT_Pos" class="codetype"><span class="SCde"><span class="SCst">FT_Pos</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Renderer" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Renderer</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Renderer" class="codetype"><span class="SCde"><span class="SCst">FT_Renderer</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Short" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Short</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td id="FreeType_FT_Short" class="codetype"><span class="SCde"><span class="SCst">FT_Short</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Size" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Size</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_SizeRec">FT_SizeRec</a></span></span></td>
+<td id="FreeType_FT_Size" class="codetype"><span class="SCde"><span class="SCst">FT_Size</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_SizeRec">FT_SizeRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Size_Internal" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Size_Internal</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Size_Internal" class="codetype"><span class="SCde"><span class="SCst">FT_Size_Internal</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Slot_Internal" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Slot_Internal</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Slot_Internal" class="codetype"><span class="SCde"><span class="SCst">FT_Slot_Internal</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_Stream" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_Stream</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td id="FreeType_FT_Stream" class="codetype"><span class="SCde"><span class="SCst">FT_Stream</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_String" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_String</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td id="FreeType_FT_String" class="codetype"><span class="SCde"><span class="SCst">FT_String</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_SubGlyph" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_SubGlyph</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_SubGlyphRec">FT_SubGlyphRec</a></span></span></td>
+<td id="FreeType_FT_SubGlyph" class="codetype"><span class="SCde"><span class="SCst">FT_SubGlyph</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_SubGlyphRec">FT_SubGlyphRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_UInt" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_UInt</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="FreeType_FT_UInt" class="codetype"><span class="SCde"><span class="SCst">FT_UInt</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_ULong" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_ULong</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td id="FreeType_FT_ULong" class="codetype"><span class="SCde"><span class="SCst">FT_ULong</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="FreeType_FT_UShort" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_UShort</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td id="FreeType_FT_UShort" class="codetype"><span class="SCde"><span class="SCst">FT_UShort</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -647,23 +650,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">xMin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">xMin</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">yMin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">yMin</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">xMax</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">xMax</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">yMax</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">yMax</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -680,43 +683,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">rows</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">rows</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pitch</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">pitch</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">buffer</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">buffer</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_grays</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">num_grays</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pixel_mode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">pixel_mode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">palette_mode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">palette_mode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">palette</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">palette</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -733,28 +736,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">size</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">size</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">x_ppem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x_ppem</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y_ppem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y_ppem</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -771,23 +774,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">face</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
+<td class="codetype"><span class="SCde">face</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">encoding</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">encoding</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>FT_Encoding. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">platform_id</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">platform_id</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">encoding_id</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">encoding_id</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -802,7 +805,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Done_Face</span>(face: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Done_Face</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -815,7 +818,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Done_FreeType</span>(alibrary: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Done_FreeType</span>(alibrary: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -830,158 +833,158 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_faces</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">num_faces</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">face_index</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">face_index</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">face_flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">face_flags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">style_flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">style_flags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_glyphs</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">num_glyphs</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">family_name</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_String">FT_String</a></span></span></td>
+<td class="codetype"><span class="SCde">family_name</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_String">FT_String</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">style_name</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_String">FT_String</a></span></span></td>
+<td class="codetype"><span class="SCde">style_name</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_String">FT_String</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_fixed_sizes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">num_fixed_sizes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">available_sizes</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Bitmap_Size">FT_Bitmap_Size</a></span></span></td>
+<td class="codetype"><span class="SCde">available_sizes</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Bitmap_Size">FT_Bitmap_Size</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_charmaps</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">num_charmaps</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">charmaps</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_CharMap">FT_CharMap</a></span></span></td>
+<td class="codetype"><span class="SCde">charmaps</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_CharMap">FT_CharMap</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">generic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
+<td class="codetype"><span class="SCde">generic</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bbox</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_BBox">FT_BBox</a></span></span></td>
+<td class="codetype"><span class="SCde">bbox</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_BBox">FT_BBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">units_per_EM</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">units_per_EM</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ascender</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">ascender</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">descender</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">descender</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">max_advance_width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">max_advance_width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">max_advance_height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">max_advance_height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">underline_position</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">underline_position</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">underline_thickness</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">underline_thickness</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">glyph</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
+<td class="codetype"><span class="SCde">glyph</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">size</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_SizeRec">FT_SizeRec</a></span></span></td>
+<td class="codetype"><span class="SCde">size</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_SizeRec">FT_SizeRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">charmap</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_CharMapRec">FT_CharMapRec</a></span></span></td>
+<td class="codetype"><span class="SCde">charmap</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_CharMapRec">FT_CharMapRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">driver</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">driver</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">memory</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">memory</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stream</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">stream</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sizes_list</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_ListRec">FT_ListRec</a></span></span></td>
+<td class="codetype"><span class="SCde">sizes_list</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_ListRec">FT_ListRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">autohint</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
+<td class="codetype"><span class="SCde">autohint</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">extensions</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">extensions</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">finternal</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">finternal</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -998,13 +1001,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">data</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">data</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">finalizer</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">finalizer</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>FT_Generic_Finalizer. </td>
 </tr>
 </table>
@@ -1019,7 +1022,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Get_Char_Index</span>(face: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>, charcode: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_ULong">FT_ULong</a></span>)-&gt;<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_UInt">FT_UInt</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Get_Char_Index</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, charcode: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>)-&gt;<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1034,113 +1037,113 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">library</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_LibraryRec">FT_LibraryRec</a></span></span></td>
+<td class="codetype"><span class="SCde">library</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_LibraryRec">FT_LibraryRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">face</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
+<td class="codetype"><span class="SCde">face</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">next</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
+<td class="codetype"><span class="SCde">next</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_GlyphSlotRec">FT_GlyphSlotRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">glyph_index</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">glyph_index</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">generic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
+<td class="codetype"><span class="SCde">generic</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">metrics</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Glyph_Metrics">FT_Glyph_Metrics</a></span></span></td>
+<td class="codetype"><span class="SCde">metrics</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Glyph_Metrics">FT_Glyph_Metrics</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">linearHoriAdvance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">linearHoriAdvance</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">linearVertAdvance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">linearVertAdvance</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">advance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
+<td class="codetype"><span class="SCde">advance</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">format</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Glyph_Format">FT_Glyph_Format</a></span></span></td>
+<td class="codetype"><span class="SCde">format</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Glyph_Format">FT_Glyph_Format</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bitmap</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Bitmap">FT_Bitmap</a></span></span></td>
+<td class="codetype"><span class="SCde">bitmap</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Bitmap">FT_Bitmap</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bitmap_left</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bitmap_left</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bitmap_top</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">bitmap_top</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">outline</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span></span></td>
+<td class="codetype"><span class="SCde">outline</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_subglyphs</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">num_subglyphs</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">subglyphs</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_SubGlyphRec">FT_SubGlyphRec</a></span></span></td>
+<td class="codetype"><span class="SCde">subglyphs</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_SubGlyphRec">FT_SubGlyphRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">control_data</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">control_data</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">control_len</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">control_len</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lsb_delta</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lsb_delta</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">rsb_delta</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">rsb_delta</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">other</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">other</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">finternal</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">finternal</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1155,7 +1158,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_GlyphSlot_Oblique</span>(slot: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_GlyphSlot_Oblique</span>(slot: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1170,23 +1173,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GLYPH_FORMAT_NONE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_GLYPH_FORMAT_NONE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GLYPH_FORMAT_COMPOSITE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_GLYPH_FORMAT_COMPOSITE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GLYPH_FORMAT_BITMAP</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_GLYPH_FORMAT_BITMAP</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GLYPH_FORMAT_OUTLINE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_GLYPH_FORMAT_OUTLINE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_GLYPH_FORMAT_POLTTER</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_GLYPH_FORMAT_POLTTER</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1203,43 +1206,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">horiBearingX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">horiBearingX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">horiBearingY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">horiBearingY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">horiAdvance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">horiAdvance</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertBearingX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">vertBearingX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertBearingY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">vertBearingY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertAdvance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">vertAdvance</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1254,7 +1257,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_IMAGE_TAG</span>(x1: <span class="SyntaxType">u32</span>, x2: <span class="SyntaxType">u32</span>, x3: <span class="SyntaxType">u32</span>, x4: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">u32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_IMAGE_TAG</span>(x1: <span class="STpe">u32</span>, x2: <span class="STpe">u32</span>, x3: <span class="STpe">u32</span>, x4: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1267,7 +1270,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Init_FreeType</span>(alibrary: *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Init_FreeType</span>(alibrary: *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1280,7 +1283,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_LOAD_TARGET</span>(x: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Int32">FT_Int32</a></span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_LOAD_TARGET</span>(x: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1295,27 +1298,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_NONE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_NONE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_DEFAULT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_DEFAULT</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_LIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_LIGHT</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_LEGACY1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_LEGACY1</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_LEGACY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_LEGACY</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_LCD_FILTER_MAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_LCD_FILTER_MAX</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1332,63 +1335,63 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">memory</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">memory</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">version_major</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">version_major</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">version_minor</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">version_minor</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">version_patch</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">version_patch</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">num_modules</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">num_modules</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">modules</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">32</span>] <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Module">FT_Module</a></span></span></td>
+<td class="codetype"><span class="SCde">modules</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Module">FT_Module</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">renderers</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_ListRec">FT_ListRec</a></span></span></td>
+<td class="codetype"><span class="SCde">renderers</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_ListRec">FT_ListRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cur_renderer</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">cur_renderer</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">auto_hinter</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">auto_hinter</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">debug_hooks</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">4</span>] <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_DebugHook_Func">FT_DebugHook_Func</a></span></span></td>
+<td class="codetype"><span class="SCde">debug_hooks</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_DebugHook_Func">FT_DebugHook_Func</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lcd_geometry</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
+<td class="codetype"><span class="SCde">lcd_geometry</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">refcount</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">refcount</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1403,7 +1406,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Library_SetLcdFilter</span>(library: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Library">FT_Library</a></span>, filter: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Library_SetLcdFilter</span>(library: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, filter: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_LcdFilter">FT_LcdFilter</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1416,7 +1419,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Library_SetLcdFilterWeights</span>(library: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Library">FT_Library</a></span>, weights: <span class="SyntaxKeyword">const</span> *<span class="SyntaxType">u8</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Library_SetLcdFilterWeights</span>(library: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, weights: <span class="SKwd">const</span> *<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1431,13 +1434,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">head</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">head</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tail</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">tail</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1452,7 +1455,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Load_Char</span>(face: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>, char_code: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_ULong">FT_ULong</a></span>, load_flags: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Load_Char</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, char_code: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_ULong">FT_ULong</a></span>, load_flags: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1465,7 +1468,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Load_Glyph</span>(face: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>, glyph_index: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, load_flags: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Load_Glyph</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, glyph_index: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, load_flags: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Int32">FT_Int32</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1480,23 +1483,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">xx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">xx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">xy</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">xy</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">yx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">yx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">yy</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">yy</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1511,7 +1514,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_New_Memory_Face</span>(library: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Library">FT_Library</a></span>, file_base: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Byte">FT_Byte</a></span>, file_size: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Long">FT_Long</a></span>, face_index: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Long">FT_Long</a></span>, aface: *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_New_Memory_Face</span>(library: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Library">FT_Library</a></span>, file_base: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Byte">FT_Byte</a></span>, file_size: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, face_index: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Long">FT_Long</a></span>, aface: *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1526,33 +1529,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">n_contours</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">n_contours</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">n_points</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">n_points</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">points</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
+<td class="codetype"><span class="SCde">points</span></td>
+<td class="codetype"><span class="SCde">^<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Vector">FT_Vector</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">tags</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">tags</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">contours</span></td>
-<td class="codetype"><span class="SyntaxCode">^<span class="SyntaxType">s16</span></span></td>
+<td class="codetype"><span class="SCde">contours</span></td>
+<td class="codetype"><span class="SCde">^<span class="STpe">s16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">flags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1567,7 +1570,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Outline_Decompose</span>(outline: *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, func_interface: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline_Funcs">FT_Outline_Funcs</a></span>, user: *<span class="SyntaxType">void</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Decompose</span>(outline: *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, func_interface: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline_Funcs">FT_Outline_Funcs</a></span>, user: *<span class="STpe">void</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1580,7 +1583,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Outline_Embolden</span>(outline: *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, strength: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Pos">FT_Pos</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Embolden</span>(outline: *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, strength: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1595,33 +1598,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">move_to</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">move_to</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>FT_Outline_MoveToFunc. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">line_to</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">line_to</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>FT_Outline_LineToFunc. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">conic_to</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">conic_to</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>FT_Outline_ConicToFunc. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">cubic_to</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">cubic_to</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>FT_Outline_CubicToFunc. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shift</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">shift</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">delta</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">delta</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1636,7 +1639,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Outline_Transform</span>(outline: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, matrix: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Transform</span>(outline: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, matrix: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1649,7 +1652,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Outline_Translate</span>(outline: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Pos">FT_Pos</a></span>, yOffset: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Outline_Translate</span>(outline: <span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Outline">FT_Outline</a></span>, xOffset: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>, yOffset: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Pos">FT_Pos</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -1664,39 +1667,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_NONE</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_NONE</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_MONO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_MONO</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_GRAY</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_GRAY</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_GRAY2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_GRAY2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_GRAY4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_GRAY4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_LCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_LCD</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_LCD_V</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_LCD_V</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_BGRA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_BGRA</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_PIXEL_MODE_MAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_PIXEL_MODE_MAX</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1711,7 +1714,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Render_Glyph</span>(slot: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>, render_mode: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Render_Glyph</span>(slot: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_GlyphSlot">FT_GlyphSlot</a></span>, render_mode: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Render_Mode">FT_Render_Mode</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1726,27 +1729,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_NORMAL</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_NORMAL</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_LIGHT</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_LIGHT</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_MONO</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_MONO</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_LCD</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_LCD</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_LCD_V</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_LCD_V</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FT_RENDER_MODE_MAX</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FT_RENDER_MODE_MAX</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1761,7 +1764,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxConstant">FT_Set_Pixel_Sizes</span>(face: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, pixel_height: <span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FT_Set_Pixel_Sizes</span>(face: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Face">FT_Face</a></span>, pixel_width: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>, pixel_height: <span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_UInt">FT_UInt</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1776,23 +1779,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">face</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
+<td class="codetype"><span class="SCde">face</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">generic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
+<td class="codetype"><span class="SCde">generic</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Generic">FT_Generic</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">metrics</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Size_Metrics">FT_Size_Metrics</a></span></span></td>
+<td class="codetype"><span class="SCde">metrics</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Size_Metrics">FT_Size_Metrics</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sinternal</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">sinternal</span></td>
+<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1809,43 +1812,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">x_ppem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">x_ppem</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y_ppem</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">y_ppem</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">x_scale</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x_scale</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y_scale</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y_scale</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">ascender</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">ascender</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">descender</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">descender</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">max_advance</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">max_advance</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1862,28 +1865,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">index</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">index</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">flags</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">arg1</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">arg1</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">arg2</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">arg2</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">transform</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span></span></td>
+<td class="codetype"><span class="SCde">transform</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_Matrix">FT_Matrix</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1900,13 +1903,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>

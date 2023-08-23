@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -292,22 +295,22 @@
 <p>Under windows, it is based on the <code class="incode">xaudio2</code> library. </p>
 <h2>How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxConstant">Audio</span>.<span class="SyntaxFunction">createEngine</span>()
-<span class="SyntaxLogic">defer</span> <span class="SyntaxConstant">Audio</span>.<span class="SyntaxFunction">destroyEngine</span>() <span class="SyntaxComment">// Don't forget to destroy the engine when you are done</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
+<span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></code>
 </div>
 <p>You then have to load a sound file. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">let</span> soundFile = <span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant">SoundFile</span>.<span class="SyntaxConstant">Load</span>(<span class="SyntaxString">"mySound.wav"</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
 </div>
 <p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">let</span> soundFile = <span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant">SoundFile</span>.<span class="SyntaxConstant">Load</span>(<span class="SyntaxString">"mySound.wav"</span>, loadDatas = <span class="SyntaxKeyword">false</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxConstant">Voice</span>.<span class="SyntaxFunction">play</span>(soundFile)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></code>
 </div>
 <p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">let</span> voice = <span class="SyntaxConstant">Voice</span>.<span class="SyntaxFunction">create</span>(&soundFile)
-voice.<span class="SyntaxFunction">setVolume</span>(<span class="SyntaxNumber">0.5</span>)
-voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
+voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
+voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></code>
 </div>
 <h1>Content</h1>
 <p>
@@ -323,13 +326,13 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </p>
 <table class="enumeration">
 <tr>
-<td id="Audio_BusHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BusHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">XAudio2</span>.<span class="SyntaxConstant">IXAudio2SubmixVoice</span></span></td>
+<td id="Audio_BusHandle" class="codetype"><span class="SCde"><span class="SCst">BusHandle</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Audio_VoiceHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VoiceHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">XAudio2</span>.<span class="SyntaxConstant">IXAudio2SourceVoice</span></span></td>
+<td id="Audio_VoiceHandle" class="codetype"><span class="SCde"><span class="SCst">VoiceHandle</span></span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SourceVoice</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -347,8 +350,8 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>Represents a bus. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">handle</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">XAudio2</span>.<span class="SyntaxConstant">IXAudio2SubmixVoice</span></span></td>
+<td class="codetype"><span class="SCde">handle</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -356,27 +359,27 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Bus_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>()</spa</a></td>
+<td><a href="#Audio_Bus_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates an audio bus. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_destroy"><span class="SyntaxCode"><span class="SyntaxFunction">destroy</span>()</spa</a></td>
+<td><a href="#Audio_Bus_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
 <td>Destroy the bus (immediatly). </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolume"><span class="SyntaxCode"><span class="SyntaxFunction">getVolume</span>()</spa</a></td>
+<td><a href="#Audio_Bus_getVolume"><span class="SCde"><span class="SFct">getVolume</span>()</spa</a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolumeDB"><span class="SyntaxCode"><span class="SyntaxFunction">getVolumeDB</span>()</spa</a></td>
+<td><a href="#Audio_Bus_getVolumeDB"><span class="SCde"><span class="SFct">getVolumeDB</span>()</spa</a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolume"><span class="SyntaxCode"><span class="SyntaxFunction">setVolume</span>()</spa</a></td>
+<td><a href="#Audio_Bus_setVolume"><span class="SCde"><span class="SFct">setVolume</span>()</spa</a></td>
 <td>Set the playing bus volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolumeDB"><span class="SyntaxCode"><span class="SyntaxFunction">setVolumeDB</span>()</spa</a></td>
+<td><a href="#Audio_Bus_setVolumeDB"><span class="SCde"><span class="SFct">setVolumeDB</span>()</spa</a></td>
 <td>Set the playing bus volume in DB. </td>
 </tr>
 </table>
@@ -392,7 +395,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Creates an audio bus. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(numChannels: <span class="SyntaxType">u32</span>, parent: *<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span> = <span class="SyntaxKeyword">null</span>)-&gt;*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <code class="incode">parent</code>. </p>
 <p>
@@ -407,7 +410,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Destroy the bus (immediatly). </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">destroy</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -421,7 +424,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getVolume</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">f32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -435,7 +438,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getVolumeDB</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">f32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -449,7 +452,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the playing bus volume between [0..1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setVolume</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, volume: <span class="SyntaxType">f32</span>, batchID: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -463,7 +466,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the playing bus volume in DB. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setVolumeDB</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, volumeDB: <span class="SyntaxType">f32</span>, batchID: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -479,18 +482,18 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>Base struct for all codec instances. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">srcEncoding</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="codetype"><span class="SCde">srcEncoding</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The original encoding. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dstEncoding</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="codetype"><span class="SCde">dstEncoding</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The requested encoding. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">type</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Swag</span>.<span class="SyntaxConstant">TypeInfoStruct</span></span></td>
+<td class="codetype"><span class="SCde">type</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
 <td>The real type of the codec. </td>
 </tr>
 </table>
@@ -508,23 +511,23 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>Interface to describe a codec. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">canEncode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">canEncode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">canDecode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">canDecode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">init</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="SyntaxType">void</span>, <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxType">u64</span> <span class="SyntaxKeyword">throw</span></span></td>
+<td class="codetype"><span class="SCde">init</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">decode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="SyntaxType">void</span>, <span class="SyntaxType">u64</span>, ^<span class="SyntaxType">void</span>, <span class="SyntaxType">u64</span>)-&gt;{write: <span class="SyntaxType">u64</span>, read: <span class="SyntaxType">u64</span>} <span class="SyntaxKeyword">throw</span></span></td>
+<td class="codetype"><span class="SCde">decode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write: <span class="STpe">u64</span>, read: <span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -542,68 +545,68 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>Represents a sound file. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">fullname</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></td>
+<td class="codetype"><span class="SCde">fullname</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">datas</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">u8</span>)</span></td>
+<td class="codetype"><span class="SCde">datas</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sampleCount</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">sampleCount</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td>Total number of samples. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dataSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">dataSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td>Total size, in bytes, of datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dataSeek</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">dataSeek</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td>The position in the file where the datas are stored. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">encoding</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="codetype"><span class="SCde">encoding</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>Encoding type of the datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">validity</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
+<td class="codetype"><span class="SCde">validity</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
 <td>What informations in this struct are valid. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">frequency</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">frequency</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Sound frequency. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">channelCount</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">channelCount</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Number of channels (2 for stereo...). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">channelMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">channelMask</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Identifier of the channels. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bitsPerSample</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">bitsPerSample</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td>Number of bits per sample in the datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">duration</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">duration</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td>Duration, in seconds, of the sound. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">validBitsPerSample</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">validBitsPerSample</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
@@ -611,7 +614,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_SoundFile_load"><span class="SyntaxCode"><span class="SyntaxFunction">load</span>()</spa</a></td>
+<td><a href="#Audio_SoundFile_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
 <td>Load a <code class="incode">SoundFile</code> from disk. </td>
 </tr>
 </table>
@@ -627,7 +630,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Load a <code class="incode">SoundFile</code> from disk. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">load</span>(fullname: <span class="SyntaxType">string</span>, loadDatas = <span class="SyntaxKeyword">true</span>, loadMetaDatas = <span class="SyntaxKeyword">false</span>)-&gt;<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p> Will load the sound datas if <code class="incode">loadDatas</code> is true.  Will load the sound metadatas if <code class="incode">loadMetaData</code> is true. </p>
 <p>
@@ -644,27 +647,27 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>SoundFile internal format. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Unknown</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Unknown</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pcm8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pcm8</span></span></td>
 <td>Pcm, uncompressed, 8 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pcm16</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pcm16</span></span></td>
 <td>Pcm, uncompressed, 16 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pcm24</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pcm24</span></span></td>
 <td>Pcm, uncompressed, 24 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pcm32</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pcm32</span></span></td>
 <td>Pcm, uncompressed, 32 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Float32</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Float32</span></span></td>
 <td>Pcm, uncompressed, float 32 bits per sample. </td>
 </tr>
 </table>
@@ -682,47 +685,47 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Format</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Format</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Frequency</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Frequency</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ChannelCount</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ChannelCount</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ChannelMask</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ChannelMask</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BitsPerSample</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BitsPerSample</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Duration</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Duration</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SampleCount</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SampleCount</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ValidBitsPerSample</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ValidBitsPerSample</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Data</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Data</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MetaData</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MetaData</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -741,55 +744,55 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Audio_Voice_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>()</spa</a></td>
+<td><a href="#Audio_Voice_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates a new voice for a given sound file. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_destroy"><span class="SyntaxCode"><span class="SyntaxFunction">destroy</span>()</spa</a></td>
+<td><a href="#Audio_Voice_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
 <td>Destroy the voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolume"><span class="SyntaxCode"><span class="SyntaxFunction">getVolume</span>()</spa</a></td>
+<td><a href="#Audio_Voice_getVolume"><span class="SCde"><span class="SFct">getVolume</span>()</spa</a></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolumeDB"><span class="SyntaxCode"><span class="SyntaxFunction">getVolumeDB</span>()</spa</a></td>
+<td><a href="#Audio_Voice_getVolumeDB"><span class="SCde"><span class="SFct">getVolumeDB</span>()</spa</a></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_isPlaying"><span class="SyntaxCode"><span class="SyntaxFunction">isPlaying</span>()</spa</a></td>
+<td><a href="#Audio_Voice_isPlaying"><span class="SCde"><span class="SFct">isPlaying</span>()</spa</a></td>
 <td>Returns true if the voice is currently playing. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_pause"><span class="SyntaxCode"><span class="SyntaxFunction">pause</span>()</spa</a></td>
+<td><a href="#Audio_Voice_pause"><span class="SCde"><span class="SFct">pause</span>()</spa</a></td>
 <td>Pause the playing voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play"><span class="SyntaxCode"><span class="SyntaxFunction">play</span>(*<span class="SyntaxConstant">SoundFile</span>, <span class="SyntaxConstant">VoiceCreateFlags</span>, <span class="SyntaxConstant">VoicePlayFlags</span>)</span></a></td>
+<td><a href="#Audio_Voice_play"><span class="SCde"><span class="SFct">play</span>(*<span class="SCst">SoundFile</span>, <span class="SCst">VoiceCreateFlags</span>, <span class="SCst">VoicePlayFlags</span>)</span></a></td>
 <td>Creates a voice and plays it. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play"><span class="SyntaxCode"><span class="SyntaxFunction">play</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">VoicePlayFlags</span>)</span></a></td>
+<td><a href="#Audio_Voice_play"><span class="SCde"><span class="SFct">play</span>(<span class="SKwd">self</span>, <span class="SCst">VoicePlayFlags</span>)</span></a></td>
 <td>Plays a voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setFrequencyRatio"><span class="SyntaxCode"><span class="SyntaxFunction">setFrequencyRatio</span>()</spa</a></td>
+<td><a href="#Audio_Voice_setFrequencyRatio"><span class="SCde"><span class="SFct">setFrequencyRatio</span>()</spa</a></td>
 <td>Set the playing pitch. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setRooting"><span class="SyntaxCode"><span class="SyntaxFunction">setRooting</span>()</spa</a></td>
+<td><a href="#Audio_Voice_setRooting"><span class="SCde"><span class="SFct">setRooting</span>()</spa</a></td>
 <td>Root a voice to a given list of buses. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolume"><span class="SyntaxCode"><span class="SyntaxFunction">setVolume</span>()</spa</a></td>
+<td><a href="#Audio_Voice_setVolume"><span class="SCde"><span class="SFct">setVolume</span>()</spa</a></td>
 <td>Set the playing voice volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolumeDB"><span class="SyntaxCode"><span class="SyntaxFunction">setVolumeDB</span>()</spa</a></td>
+<td><a href="#Audio_Voice_setVolumeDB"><span class="SCde"><span class="SFct">setVolumeDB</span>()</spa</a></td>
 <td>Set the playing voice volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_stop"><span class="SyntaxCode"><span class="SyntaxFunction">stop</span>()</spa</a></td>
+<td><a href="#Audio_Voice_stop"><span class="SCde"><span class="SFct">stop</span>()</spa</a></td>
 <td>Stop the playing voice. </td>
 </tr>
 </table>
@@ -805,7 +808,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Creates a new voice for a given sound file. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(file: *<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SyntaxConstant">Default</span>)-&gt;*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p> A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
 <p>
@@ -820,7 +823,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Destroy the voice. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">destroy</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -834,7 +837,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getVolume</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">f32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -848,7 +851,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getVolumeDB</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">f32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -862,7 +865,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Returns true if the voice is currently playing. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isPlaying</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -876,7 +879,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Pause the playing voice. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pause</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -890,10 +893,10 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Creates a voice and plays it. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">play</span>(file: *<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SyntaxConstant"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SyntaxConstant">Default</span>, playFlags = <span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SyntaxConstant">Default</span>)-&gt;*<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_Voice">Voice</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>Plays a voice. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">play</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, playFlags = <span class="SyntaxConstant"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SyntaxConstant">Zero</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
 <p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">playFlags</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
@@ -909,7 +912,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the playing pitch. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setFrequencyRatio</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, ratio: <span class="SyntaxType">f32</span>, batchID: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> The voice should have been created with <code class="incode">VoiceCreateFlags.AcceptPitch</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
@@ -924,7 +927,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Root a voice to a given list of buses. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRooting</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buses: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_Bus">Bus</a></span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> You can also set <code class="incode">buses</code> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
@@ -939,7 +942,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the playing voice volume between [0..1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setVolume</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, volume: <span class="SyntaxType">f32</span>, batchID: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -953,7 +956,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the playing voice volume. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setVolumeDB</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, volumeDB: <span class="SyntaxType">f32</span>, batchID: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -967,7 +970,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Stop the playing voice. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">stop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -982,19 +985,19 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AcceptPitch</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">AcceptPitch</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AcceptFilters</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">AcceptFilters</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1011,19 +1014,19 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Loop</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Loop</span></span></td>
 <td>Play in loops. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DestroyOnStop</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DestroyOnStop</span></span></td>
 <td>Destroy the voice once the sound has been played. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1040,19 +1043,19 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PlayedOnce</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PlayedOnce</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Playing</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Playing</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PendingDestroy</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PendingDestroy</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1068,7 +1071,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Load a wav file. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">loadFile</span>(<span class="SyntaxKeyword">using</span> file: *<span class="SyntaxConstant">Audio</span>.<span class="SyntaxConstant"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">File</span>.<span class="SyntaxConstant">FileStream</span>, loadDatas = <span class="SyntaxKeyword">true</span>, loadMetaDatas = <span class="SyntaxKeyword">false</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadFile</span>(<span class="SKwd">using</span> file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileStream</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1082,7 +1085,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Register a codec. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxConstant">T</span>) <span class="SyntaxFunction">addCodec</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addCodec</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -1096,7 +1099,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Convert a DB value to a percent. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">convertDBToPercent</span>(dbVolume: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertDBToPercent</span>(dbVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1110,7 +1113,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Convert a percent value to DB. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">convertPercentToDB</span>(percentVolume: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxType">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertPercentToDB</span>(percentVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1124,7 +1127,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Creates the audio engine. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createEngine</span>() <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></code>
 </div>
 <p> Must be called once, before anything else. </p>
 <p>
@@ -1139,7 +1142,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Destroy the audio engine. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">destroyEngine</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></code>
 </div>
 <p> Must be called at the end, when engine is no more used. </p>
 <p>
@@ -1154,7 +1157,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Get the general output volume. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getOutputVolume</span>()-&gt;<span class="SyntaxType">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOutputVolume</span>()-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1168,7 +1171,7 @@ voice.<span class="SyntaxFunction">play</span>(<span class="SyntaxConstant">Loop
 </table>
 </p>
 <p>Set the general output volume. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setOutputVolume</span>(volume: <span class="SyntaxType">f32</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 </div>
 </div>

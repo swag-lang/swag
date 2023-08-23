@@ -64,12 +64,14 @@
                 margin:  10px;
             }
         }
+
             .container {
                 height:     100vh;
             }
             .right {
                 overflow-y: scroll;
             }
+
         body {
             margin:         0px;
             line-height:    1.3em;
@@ -185,18 +187,19 @@
             margin:             20px;
             white-space:        pre;
             overflow-x:         auto;
-        }    .SyntaxCode      { color: #7f7f7f; }
-    .SyntaxComment   { color: #71a35b; }
-    .SyntaxCompiler  { color: #7f7f7f; }
-    .SyntaxFunction  { color: #ff6a00; }
-    .SyntaxConstant  { color: #3173cd; }
-    .SyntaxIntrinsic { color: #b4b44a; }
-    .SyntaxType      { color: #3bc3a7; }
-    .SyntaxKeyword   { color: #3186cd; }
-    .SyntaxLogic     { color: #b040be; }
-    .SyntaxNumber    { color: #74a35b; }
-    .SyntaxString    { color: #bb6643; }
-    .SyntaxAttribute { color: #7f7f7f; }
+        }
+    .SCde { color: #7f7f7f; }
+    .SCmt { color: #71a35b; }
+    .SCmp { color: #7f7f7f; }
+    .SFct { color: #ff6a00; }
+    .SCst { color: #3173cd; }
+    .SItr { color: #b4b44a; }
+    .STpe { color: #3bc3a7; }
+    .SKwd { color: #3186cd; }
+    .SLgc { color: #b040be; }
+    .SNum { color: #74a35b; }
+    .SStr { color: #bb6643; }
+    .SAtr { color: #7f7f7f; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -720,58 +723,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Bmp_BI_BITFIELDS" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_BITFIELDS</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Pixel_Bmp_BI_BITFIELDS" class="codetype"><span class="SCde"><span class="SCst">BI_BITFIELDS</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RGB" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RGB</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RGB" class="codetype"><span class="SCde"><span class="SCst">BI_RGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE4" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RLE4</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RLE4" class="codetype"><span class="SCde"><span class="SCst">BI_RLE4</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE8" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BI_RLE8</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Pixel_Bmp_BI_RLE8" class="codetype"><span class="SCde"><span class="SCst">BI_RLE8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ClipperScaleCoords" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ClipperScaleCoords</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f64</span></span></td>
+<td id="Pixel_ClipperScaleCoords" class="codetype"><span class="SCde"><span class="SCst">ClipperScaleCoords</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">InvalidRenderTargetHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_InvalidRenderTargetHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidRenderTargetHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">InvalidRenderTargetSurfaceHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidRenderTargetSurfaceHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">InvalidShaderHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_InvalidShaderHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidShaderHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderParamHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">InvalidShaderParamHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td id="Pixel_InvalidShaderParamHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidShaderParamHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidTextureHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">InvalidTextureHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_InvalidTextureHandle" class="codetype"><span class="SCde"><span class="SCst">InvalidTextureHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_MaxAAEdge" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxAAEdge</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td id="Pixel_MaxAAEdge" class="codetype"><span class="SCde"><span class="SCst">MaxAAEdge</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -788,33 +791,33 @@
 </p>
 <table class="enumeration">
 <tr>
-<td id="Pixel_Clipper_CInt" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CInt</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td id="Pixel_Clipper_CInt" class="codetype"><span class="SCde"><span class="SCst">CInt</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RenderTargetHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_RenderTargetHandle" class="codetype"><span class="SCde"><span class="SCst">RenderTargetHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetSurfaceHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RenderTargetSurfaceHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_RenderTargetSurfaceHandle" class="codetype"><span class="SCde"><span class="SCst">RenderTargetSurfaceHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ShaderHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_ShaderHandle" class="codetype"><span class="SCde"><span class="SCst">ShaderHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderParamHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ShaderParamHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td id="Pixel_ShaderParamHandle" class="codetype"><span class="SCde"><span class="SCst">ShaderParamHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_TextureHandle" class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">TextureHandle</span></span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td id="Pixel_TextureHandle" class="codetype"><span class="SCde"><span class="SCst">TextureHandle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -831,567 +834,567 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AliceBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">AliceBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AntiqueWhite</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">AntiqueWhite</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Aqua</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Aqua</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Aquamarine</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Aquamarine</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Azure</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Azure</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Beige</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Beige</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bisque</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bisque</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Black</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Black</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BlanchedAlmond</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BlanchedAlmond</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Blue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BlueViolet</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BlueViolet</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Brown</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Brown</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BurlyWood</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BurlyWood</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CadetBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">CadetBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Chartreuse</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Chartreuse</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Chocolate</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Chocolate</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Coral</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Coral</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CornflowerBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">CornflowerBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Cornsilk</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Cornsilk</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Crimson</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Crimson</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Cyan</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Cyan</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkCyan</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkCyan</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkGoldenrod</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkGoldenrod</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkKhaki</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkKhaki</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkMagenta</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkMagenta</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkOliveGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkOliveGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkOrange</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkOrange</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkOrchid</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkOrchid</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkRed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkRed</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkSalmon</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkSalmon</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkSeaGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkSeaGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkSlateBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkSlateBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkSlateGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkSlateGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkTurquoise</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkTurquoise</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DarkViolet</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DarkViolet</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DeepPink</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DeepPink</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DeepSkyBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DeepSkyBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DimGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DimGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DodgerBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DodgerBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Firebrick</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Firebrick</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FloralWhite</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FloralWhite</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ForestGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ForestGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Fuchsia</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Fuchsia</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gainsboro</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gainsboro</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GhostWhite</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GhostWhite</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gold</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gold</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Goldenrod</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Goldenrod</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Green</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Green</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GreenYellow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GreenYellow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Honeydew</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Honeydew</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HotPink</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HotPink</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">IndianRed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">IndianRed</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Indigo</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Indigo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Ivory</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Ivory</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Khaki</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Khaki</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Lavender</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Lavender</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LavenderBlush</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LavenderBlush</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LawnGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LawnGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LemonChiffon</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LemonChiffon</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightCoral</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightCoral</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightCyan</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightCyan</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightGoldenrodYellow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightGoldenrodYellow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightPink</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightPink</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightSalmon</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightSalmon</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightSeaGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightSeaGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightSkyBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightSkyBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightSlateGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightSlateGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightSteelBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightSteelBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightYellow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightYellow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Lime</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Lime</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LimeGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LimeGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Linen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Linen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Magenta</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Magenta</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Maroon</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Maroon</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumAquamarine</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumAquamarine</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumOrchid</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumOrchid</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumPurple</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumPurple</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumSeaGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumSeaGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumSlateBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumSlateBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumSpringGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumSpringGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumTurquoise</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumTurquoise</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MediumVioletRed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MediumVioletRed</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MidnightBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MidnightBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MintCream</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MintCream</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MistyRose</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MistyRose</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Moccasin</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Moccasin</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NavajoWhite</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">NavajoWhite</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Navy</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Navy</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OldLace</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">OldLace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Olive</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Olive</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OliveDrab</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">OliveDrab</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Orange</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Orange</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OrangeRed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">OrangeRed</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Orchid</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Orchid</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PaleGoldenrod</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PaleGoldenrod</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PaleGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PaleGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PaleTurquoise</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PaleTurquoise</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PaleVioletRed</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PaleVioletRed</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PapayaWhip</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PapayaWhip</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PeachPuff</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PeachPuff</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Peru</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Peru</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pink</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pink</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Plum</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Plum</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PowderBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PowderBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Purple</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Purple</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Red</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Red</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RosyBrown</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RosyBrown</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RoyalBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RoyalBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SaddleBrown</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SaddleBrown</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Salmon</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Salmon</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SandyBrown</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SandyBrown</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SeaGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SeaGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SeaShell</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SeaShell</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Sienna</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Sienna</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Silver</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Silver</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SkyBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SkyBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SlateBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SlateBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SlateGray</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SlateGray</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Snow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Snow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SpringGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SpringGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SteelBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SteelBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Tan</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Tan</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Teal</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Teal</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Thistle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Thistle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Tomato</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Tomato</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Turquoise</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Turquoise</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Violet</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Violet</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Wheat</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Wheat</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">White</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">White</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WhiteSmoke</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">WhiteSmoke</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Yellow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Yellow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">YellowGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">YellowGreen</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1407,7 +1410,7 @@
 </table>
 </p>
 <p>Get the Argb value that matches <code class="incode">name</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromName</span>(name: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromName</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1422,31 +1425,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Copy</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Copy</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Alpha</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Add</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Add</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Sub</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Sub</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SubDst</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SubDst</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Min</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Min</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Max</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Max</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1472,7 +1475,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canDecode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canDecode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1485,7 +1488,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1509,7 +1512,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canEncode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canEncode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1522,7 +1525,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">encode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, result: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">ConcatBuffer</span>, image: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, options: <span class="SyntaxType">any</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, image: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, options: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1537,58 +1540,58 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">biSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biWidth</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biWidth</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biHeight</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">biHeight</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biPlanes</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">biPlanes</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biBitCount</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u16</span></span></td>
+<td class="codetype"><span class="SCde">biBitCount</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biCompression</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biCompression</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biSizeImage</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biSizeImage</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biXPelsPerMeter</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biXPelsPerMeter</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biYPelsPerMeter</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biYPelsPerMeter</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biClrUsed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biClrUsed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">biClrImportant</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">biClrImportant</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1605,11 +1608,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Inside</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Inside</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1626,52 +1629,52 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">color</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></td>
+<td class="codetype"><span class="SCde">color</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">type</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
+<td class="codetype"><span class="SCde">type</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hatch</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">hatch</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">texture</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="codetype"><span class="SCde">texture</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uvMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_UVMode">UVMode</a></span></span></td>
+<td class="codetype"><span class="SCde">uvMode</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uvRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">uvRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Brush_createHatch"><span class="SyntaxCode"><span class="SyntaxFunction">createHatch</span>()</spa</a></td>
+<td><a href="#Pixel_Brush_createHatch"><span class="SCde"><span class="SFct">createHatch</span>()</spa</a></td>
 <td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createSolid"><span class="SyntaxCode"><span class="SyntaxFunction">createSolid</span>()</spa</a></td>
+<td><a href="#Pixel_Brush_createSolid"><span class="SCde"><span class="SFct">createSolid</span>()</spa</a></td>
 <td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTexture"><span class="SyntaxCode"><span class="SyntaxFunction">createTexture</span>()</spa</a></td>
+<td><a href="#Pixel_Brush_createTexture"><span class="SCde"><span class="SFct">createTexture</span>()</spa</a></td>
 <td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTiled"><span class="SyntaxCode"><span class="SyntaxFunction">createTiled</span>()</spa</a></td>
+<td><a href="#Pixel_Brush_createTiled"><span class="SCde"><span class="SFct">createTiled</span>()</spa</a></td>
 <td>Returns a tiled texture brush. </td>
 </tr>
 </table>
@@ -1687,7 +1690,7 @@
 </table>
 </p>
 <p>Returns a hatch brush. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createHatch</span>(style: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1701,7 +1704,7 @@
 </table>
 </p>
 <p>Returns a solid color brush. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createSolid</span>(color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1715,7 +1718,7 @@
 </table>
 </p>
 <p>Returns a full texture brush. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createTexture</span>(texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTexture</span>(texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1729,7 +1732,7 @@
 </table>
 </p>
 <p>Returns a tiled texture brush. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createTiled</span>(texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTiled</span>(texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1744,15 +1747,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SolidColor</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SolidColor</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Texture</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Texture</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Hatch</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Hatch</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1769,19 +1772,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Intersection</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Intersection</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Union</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Union</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Difference</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Difference</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Xor</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Xor</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1798,15 +1801,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ReverseSolution</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ReverseSolution</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">StrictlySimple</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">StrictlySimple</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PreserveCollinear</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PreserveCollinear</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1823,20 +1826,20 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">x</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">x</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">y</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">y</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Clipper_IntPoint_opEquals"><span class="SyntaxCode"><span class="SyntaxFunction">opEquals</span>()</spa</a></td>
+<td><a href="#Pixel_Clipper_IntPoint_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -1851,7 +1854,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, other: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Clipper</span>.<span class="SyntaxConstant"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Pixel</span>.<span class="SCst">Clipper</span>.<span class="SCst"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -1866,15 +1869,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Square</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Round</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Miter</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Miter</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1891,19 +1894,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EvenOdd</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EvenOdd</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">NonZero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">NonZero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Positive</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Positive</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Negative</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Negative</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1920,11 +1923,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Subject</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Subject</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Clip</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Clip</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1952,11 +1955,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Set</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Set</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Clear</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Clear</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1973,162 +1976,162 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">a</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">a</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">r</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">r</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">g</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">g</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">b</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">b</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">argb</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">argb</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Color_fromAbgr"><span class="SyntaxCode"><span class="SyntaxFunction">fromAbgr</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromAbgr"><span class="SCde"><span class="SFct">fromAbgr</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SyntaxCode"><span class="SyntaxFunction">fromArgb</span>(<span class="SyntaxConstant">Argb</span>)</span></a></td>
+<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="SCst">Argb</span>)</span></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SyntaxCode"><span class="SyntaxFunction">fromArgb</span>(<span class="SyntaxType">u32</span>)</span></a></td>
+<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u32</span>)</span></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SyntaxCode"><span class="SyntaxFunction">fromArgb</span>(<span class="SyntaxType">u8</span>, <span class="SyntaxConstant">Argb</span>)</span></a></td>
+<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u8</span>, <span class="SCst">Argb</span>)</span></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SyntaxCode"><span class="SyntaxFunction">fromArgb</span>(<span class="SyntaxType">u8</span>, <span class="SyntaxType">u8</span>, <span class="SyntaxType">u8</span>, <span class="SyntaxType">u8</span>)</span></a></td>
+<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgbf"><span class="SyntaxCode"><span class="SyntaxFunction">fromArgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromArgbf"><span class="SCde"><span class="SFct">fromArgbf</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromHsl"><span class="SyntaxCode"><span class="SyntaxFunction">fromHsl</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromHsl"><span class="SCde"><span class="SFct">fromHsl</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgb"><span class="SyntaxCode"><span class="SyntaxFunction">fromRgb</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromRgb"><span class="SCde"><span class="SFct">fromRgb</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgbf"><span class="SyntaxCode"><span class="SyntaxFunction">fromRgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromRgbf"><span class="SCde"><span class="SFct">fromRgbf</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromVector4"><span class="SyntaxCode"><span class="SyntaxFunction">fromVector4</span>()</spa</a></td>
+<td><a href="#Pixel_Color_fromVector4"><span class="SCde"><span class="SFct">fromVector4</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlend"><span class="SyntaxCode"><span class="SyntaxFunction">getBlend</span>()</spa</a></td>
+<td><a href="#Pixel_Color_getBlend"><span class="SCde"><span class="SFct">getBlend</span>()</spa</a></td>
 <td>Blend two colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlendKeepAlpha"><span class="SyntaxCode"><span class="SyntaxFunction">getBlendKeepAlpha</span>()</spa</a></td>
+<td><a href="#Pixel_Color_getBlendKeepAlpha"><span class="SCde"><span class="SFct">getBlendKeepAlpha</span>()</spa</a></td>
 <td>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDarker"><span class="SyntaxCode"><span class="SyntaxFunction">getDarker</span>()</spa</a></td>
+<td><a href="#Pixel_Color_getDarker"><span class="SCde"><span class="SFct">getDarker</span>()</spa</a></td>
 <td>Returns a darker color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDistanceRgb"><span class="SyntaxCode"><span class="SyntaxFunction">getDistanceRgb</span>()</spa</a></td>
+<td><a href="#Pixel_Color_getDistanceRgb"><span class="SCde"><span class="SFct">getDistanceRgb</span>()</spa</a></td>
 <td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getLighter"><span class="SyntaxCode"><span class="SyntaxFunction">getLighter</span>()</spa</a></td>
+<td><a href="#Pixel_Color_getLighter"><span class="SCde"><span class="SFct">getLighter</span>()</spa</a></td>
 <td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_isOpaque"><span class="SyntaxCode"><span class="SyntaxFunction">isOpaque</span>()</spa</a></td>
+<td><a href="#Pixel_Color_isOpaque"><span class="SCde"><span class="SFct">isOpaque</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgb"><span class="SyntaxCode"><span class="SyntaxFunction">setArgb</span>()</spa</a></td>
+<td><a href="#Pixel_Color_setArgb"><span class="SCde"><span class="SFct">setArgb</span>()</spa</a></td>
 <td>Set all components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgbf"><span class="SyntaxCode"><span class="SyntaxFunction">setArgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_setArgbf"><span class="SCde"><span class="SFct">setArgbf</span>()</spa</a></td>
 <td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setHsl"><span class="SyntaxCode"><span class="SyntaxFunction">setHsl</span>()</spa</a></td>
+<td><a href="#Pixel_Color_setHsl"><span class="SCde"><span class="SFct">setHsl</span>()</spa</a></td>
 <td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb"><span class="SyntaxCode"><span class="SyntaxFunction">setRgb</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Color_setRgb"><span class="SCde"><span class="SFct">setRgb</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb"><span class="SyntaxCode"><span class="SyntaxFunction">setRgb</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">u8</span>, <span class="SyntaxType">u8</span>, <span class="SyntaxType">u8</span>)</span></a></td>
+<td><a href="#Pixel_Color_setRgb"><span class="SCde"><span class="SFct">setRgb</span>(<span class="SKwd">self</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></a></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgbf"><span class="SyntaxCode"><span class="SyntaxFunction">setRgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_setRgbf"><span class="SCde"><span class="SFct">setRgbf</span>()</spa</a></td>
 <td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toArgbf"><span class="SyntaxCode"><span class="SyntaxFunction">toArgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_toArgbf"><span class="SCde"><span class="SFct">toArgbf</span>()</spa</a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toHsl"><span class="SyntaxCode"><span class="SyntaxFunction">toHsl</span>()</spa</a></td>
+<td><a href="#Pixel_Color_toHsl"><span class="SCde"><span class="SFct">toHsl</span>()</spa</a></td>
 <td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toRgbf"><span class="SyntaxCode"><span class="SyntaxFunction">toRgbf</span>()</spa</a></td>
+<td><a href="#Pixel_Color_toRgbf"><span class="SCde"><span class="SFct">toRgbf</span>()</spa</a></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toVector4"><span class="SyntaxCode"><span class="SyntaxFunction">toVector4</span>()</spa</a></td>
+<td><a href="#Pixel_Color_toVector4"><span class="SCde"><span class="SFct">toVector4</span>()</spa</a></td>
 <td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SyntaxCode"><span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">Argb</span>)</span></a></td>
+<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SyntaxCode"><span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">string</span>)</span></a></td>
+<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SyntaxCode"><span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">u32</span>)</span></a></td>
+<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SyntaxCode"><span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">Argb</span>)</span></a></td>
+<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SyntaxCode"><span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SyntaxCode"><span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">u32</span>)</span></a></td>
+<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -2143,7 +2146,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">poke</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buf: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">string</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">poke</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2157,7 +2160,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromAbgr</span>(abgr: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromAbgr</span>(abgr: <span class="STpe">u32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2171,16 +2174,16 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromArgb</span>(argb: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromArgb</span>(argb: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromArgb</span>(alpha: <span class="SyntaxType">u8</span>, argb: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromArgb</span>(a: <span class="SyntaxType">u8</span>, r: <span class="SyntaxType">u8</span>, g: <span class="SyntaxType">u8</span>, b: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a: <span class="STpe">u8</span>, r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2194,7 +2197,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromArgbf</span>(a: <span class="SyntaxType">f32</span>, r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgbf</span>(a: <span class="STpe">f32</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2208,7 +2211,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromHsl</span>(h: <span class="SyntaxType">f32</span>, s: <span class="SyntaxType">f32</span>, l: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromHsl</span>(h: <span class="STpe">f32</span>, s: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2222,7 +2225,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromRgb</span>(r: <span class="SyntaxType">u8</span>, g: <span class="SyntaxType">u8</span>, b: <span class="SyntaxType">u8</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgb</span>(r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2236,7 +2239,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromRgbf</span>(r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgbf</span>(r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2250,7 +2253,7 @@
 </table>
 </p>
 <p>Create a new Color with specified values. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fromVector4</span>(vec: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector4</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector4</span>(vec: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2264,7 +2267,7 @@
 </table>
 </p>
 <p>Blend two colors. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getBlend</span>(col0: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, col1: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, factor: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlend</span>(col0: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, col1: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2278,7 +2281,7 @@
 </table>
 </p>
 <p>Blend two colors, keeping the alpha channel of <code class="incode">col0</code> untouched. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getBlendKeepAlpha</span>(col0: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, col1: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, factor: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, col1: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2292,7 +2295,7 @@
 </table>
 </p>
 <p>Returns a darker color. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getDarker</span>(col: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, factor: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDarker</span>(col: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2306,7 +2309,7 @@
 </table>
 </p>
 <p>Returns the distance between the other color. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getDistanceRgb</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, col: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SyntaxType">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDistanceRgb</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2320,7 +2323,7 @@
 </table>
 </p>
 <p>Returns a lighter color. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getLighter</span>(col: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, factor: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLighter</span>(col: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2333,7 +2336,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isOpaque</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpaque</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2346,9 +2349,9 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, argb: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, name: <span class="SyntaxType">string</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">self</span>, argb: <span class="SyntaxType">u32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">self</span>, argb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)
+<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">self</span>, name: <span class="STpe">string</span>)
+<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">self</span>, argb: <span class="STpe">u32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2361,9 +2364,9 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, argb: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SyntaxType">bool</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, other: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SyntaxType">bool</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">self</span>, argb: <span class="SyntaxType">u32</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">self</span>, argb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">self</span>, other: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">self</span>, argb: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2377,7 +2380,7 @@
 </table>
 </p>
 <p>Set all components. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setArgb</span>(<span class="SyntaxKeyword">self</span>, a: <span class="SyntaxType">u8</span>, r: <span class="SyntaxType">u8</span>, g: <span class="SyntaxType">u8</span>, b: <span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setArgb</span>(<span class="SKwd">self</span>, a: <span class="STpe">u8</span>, r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2391,7 +2394,7 @@
 </table>
 </p>
 <p>Set all components with floats in the range [0 1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setArgbf</span>(<span class="SyntaxKeyword">self</span>, a: <span class="SyntaxType">f32</span>, r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setArgbf</span>(<span class="SKwd">self</span>, a: <span class="STpe">f32</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2405,7 +2408,7 @@
 </table>
 </p>
 <p>Initialize color with hue, saturation, lightness. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setHsl</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, h: <span class="SyntaxType">f32</span>, s: <span class="SyntaxType">f32</span>, l: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setHsl</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, h: <span class="STpe">f32</span>, s: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2419,10 +2422,10 @@
 </table>
 </p>
 <p>Just set r, g and b components. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRgb</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rgb: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rgb: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>Just set r, g and b components. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRgb</span>(<span class="SyntaxKeyword">self</span>, r: <span class="SyntaxType">u8</span>, g: <span class="SyntaxType">u8</span>, b: <span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="SKwd">self</span>, r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>)</span></code>
 </div>
 <p> Alpha will be opaque. </p>
 <p> Alpha will be opaque. </p>
@@ -2438,7 +2441,7 @@
 </table>
 </p>
 <p>Set r,g,b with floats in the range [0 1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRgbf</span>(<span class="SyntaxKeyword">self</span>, r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgbf</span>(<span class="SKwd">self</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>)</span></code>
 </div>
 <p> Alpha will be opaque. </p>
 <p>
@@ -2453,7 +2456,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toArgbf</span>(<span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;{a: <span class="SyntaxType">f32</span>, r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toArgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{a: <span class="STpe">f32</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>}</span></code>
 </div>
 <p>
 <table class="item">
@@ -2467,7 +2470,7 @@
 </table>
 </p>
 <p>Returns hue, saturation, lightness. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toHsl</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;{h: <span class="SyntaxType">f32</span>, s: <span class="SyntaxType">f32</span>, l: <span class="SyntaxType">f32</span>}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHsl</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{h: <span class="STpe">f32</span>, s: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>}</span></code>
 </div>
 <p>
 <table class="item">
@@ -2481,7 +2484,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toRgbf</span>(<span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;{r: <span class="SyntaxType">f32</span>, g: <span class="SyntaxType">f32</span>, b: <span class="SyntaxType">f32</span>}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>}</span></code>
 </div>
 <p>
 <table class="item">
@@ -2495,7 +2498,7 @@
 </table>
 </p>
 <p>Get the color as a [Math.Vector4]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toVector4</span>(<span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector4</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toVector4</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2510,23 +2513,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">r</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">r</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">g</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">g</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">b</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">b</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">a</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">a</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2543,13 +2546,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">id</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
+<td class="codetype"><span class="SCde">id</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> params</span></td>
-<td class="codetype"><span class="SyntaxCode">{clear: {color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>}, drawTriangles: {start: <span class="SyntaxType">u32</span>, count: <span class="SyntaxType">u32</span>}, transform: {tr: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span>}, clippingRect: {rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>}, clippingRegion: {mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span>}, font: {fontRef: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>}, blendingMode: {mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span>}, textureFont: {font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>, atlasIndex: <span class="SyntaxType">s32</span>}, colorMask: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span>, renderTgt: {tgt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha: <span class="SyntaxType">bool</span>}, shader: {shader: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span>}, shaderParam: {param: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, type: <span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Swag</span>.<span class="SyntaxConstant">TypeInfo</span>, _f32: <span class="SyntaxType">f32</span>, _s32: <span class="SyntaxType">s32</span>}, texture0: {boundRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector4</span>, textureRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector4</span>, type: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span>, hatch: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, uvMode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_UVMode">UVMode</a></span>, interpolationMode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> params</span></td>
+<td class="codetype"><span class="SCde">{clear: {color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>}, drawTriangles: {start: <span class="STpe">u32</span>, count: <span class="STpe">u32</span>}, transform: {tr: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>}, clippingRect: {rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>}, clippingRegion: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>}, font: {fontRef: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>}, blendingMode: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>}, textureFont: {font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, atlasIndex: <span class="STpe">s32</span>}, colorMask: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>, renderTgt: {tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha: <span class="STpe">bool</span>}, shader: {shader: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>}, shaderParam: {param: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, _f32: <span class="STpe">f32</span>, _s32: <span class="STpe">s32</span>}, texture0: {boundRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, textureRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, type: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>, hatch: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, uvMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>, interpolationMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
 <td></td>
 </tr>
 </table>
@@ -2566,95 +2569,95 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Clear</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Clear</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ColorMask</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ColorMask</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Transform</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Transform</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DrawTriangles</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DrawTriangles</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BindTexture0</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BindTexture0</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ResetTexture0</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ResetTexture0</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BindTextureFont</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BindTextureFont</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ResetTextureFont</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ResetTextureFont</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SetClippingRect</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SetClippingRect</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ResetClippingRect</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ResetClippingRect</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">StartClippingRegion</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">StartClippingRegion</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EndClippingRegion</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EndClippingRegion</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ResetClippingRegion</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ResetClippingRegion</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SetClippingRegionMode</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SetClippingRegionMode</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">UpdateFont</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">UpdateFont</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">StartNoOverlap</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">StartNoOverlap</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">StopNoOverlap</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">StopNoOverlap</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SetBlendingMode</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SetBlendingMode</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BindRenderTarget</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BindRenderTarget</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">UnbindRenderTarget</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">UnbindRenderTarget</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ReleaseRenderTarget</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ReleaseRenderTarget</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SetShader</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SetShader</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SetShaderParam</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SetShaderParam</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2671,19 +2674,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Triangle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Triangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Round</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Square</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2700,23 +2703,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pattern</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pattern</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Dot</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Dot</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Dash</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Dash</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DashDot</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DashDot</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2733,8 +2736,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">decodePixels</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">decodePixels</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2751,11 +2754,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Blur</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Blur</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2772,11 +2775,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Separate</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Separate</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Merge</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Merge</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2793,23 +2796,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">type</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
+<td class="codetype"><span class="SCde">type</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">position</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">position</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">p1</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">p1</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">p2</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">p2</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2826,23 +2829,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Line</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Line</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Arc</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Arc</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bezier1</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bezier1</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bezier2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bezier2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Curve</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Curve</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -2859,92 +2862,92 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">ascent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">ascent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">descent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">descent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">underlinePos</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">underlinePos</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">underlineSize</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">underlineSize</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">forceBold</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">forceBold</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">forceItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">forceItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fullname</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></td>
+<td class="codetype"><span class="SCde">fullname</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">typeFace</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span></span></td>
+<td class="codetype"><span class="SCde">typeFace</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">size</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">size</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">atlases</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
+<td class="codetype"><span class="SCde">atlases</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">asciiRef</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">128</span>] <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
+<td class="codetype"><span class="SCde">asciiRef</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">unicodeRef</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">HashTable</span>'(<span class="SyntaxType">rune</span>, *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
+<td class="codetype"><span class="SCde">unicodeRef</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>, *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dirty</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">dirty</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Font_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>(*<span class="SyntaxConstant">TypeFace</span>, <span class="SyntaxType">u32</span>, <span class="SyntaxType">bool</span>, <span class="SyntaxType">bool</span>)</span></a></td>
+<td><a href="#Pixel_Font_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">TypeFace</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
 <td>Creates a new Font of the given typeface and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>(<span class="SyntaxType">string</span>, <span class="SyntaxType">u32</span>, <span class="SyntaxType">bool</span>, <span class="SyntaxType">bool</span>)</span></a></td>
+<td><a href="#Pixel_Font_create"><span class="SCde"><span class="SFct">create</span>(<span class="STpe">string</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
 <td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_getGlyphDesc"><span class="SyntaxCode"><span class="SyntaxFunction">getGlyphDesc</span>()</spa</a></td>
+<td><a href="#Pixel_Font_getGlyphDesc"><span class="SCde"><span class="SFct">getGlyphDesc</span>()</spa</a></td>
 <td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_release"><span class="SyntaxCode"><span class="SyntaxFunction">release</span>()</spa</a></td>
+<td><a href="#Pixel_Font_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
 <td>Release the given font. </td>
 </tr>
 </table>
@@ -2960,10 +2963,10 @@
 </table>
 </p>
 <p>Creates a new Font of the given typeface and size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(typeFace: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span>, size: <span class="SyntaxType">u32</span>, forceBold = <span class="SyntaxKeyword">false</span>, forceItalic = <span class="SyntaxKeyword">false</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(typeFace: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span>, size: <span class="STpe">u32</span>, forceBold = <span class="SKwd">false</span>, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></code>
 </div>
 <p>Creates a new Font with the given filename and size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(fullname: <span class="SyntaxType">string</span>, size: <span class="SyntaxType">u32</span>, forceBold = <span class="SyntaxKeyword">false</span>, forceItalic = <span class="SyntaxKeyword">false</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, size: <span class="STpe">u32</span>, forceBold = <span class="SKwd">false</span>, forceItalic = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2977,7 +2980,7 @@
 </table>
 </p>
 <p>Returns the glyph descriptor of a given rune. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getGlyphDesc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, c: <span class="SyntaxType">rune</span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphDesc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="STpe">rune</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -2991,7 +2994,7 @@
 </table>
 </p>
 <p>Release the given font. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">release</span>(font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3006,46 +3009,46 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">regular</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="codetype"><span class="SCde">regular</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bold</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="codetype"><span class="SCde">bold</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">italic</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="codetype"><span class="SCde">italic</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">boldItalic</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="codetype"><span class="SCde">boldItalic</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_FontFamily_createTypeFace"><span class="SyntaxCode"><span class="SyntaxFunction">createTypeFace</span>()</spa</a></td>
+<td><a href="#Pixel_FontFamily_createTypeFace"><span class="SCde"><span class="SFct">createTypeFace</span>()</spa</a></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_enumerateFromOs"><span class="SyntaxCode"><span class="SyntaxFunction">enumerateFromOs</span>()</spa</a></td>
+<td><a href="#Pixel_FontFamily_enumerateFromOs"><span class="SCde"><span class="SFct">enumerateFromOs</span>()</spa</a></td>
 <td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFont"><span class="SyntaxCode"><span class="SyntaxFunction">getFont</span>()</spa</a></td>
+<td><a href="#Pixel_FontFamily_getFont"><span class="SCde"><span class="SFct">getFont</span>()</spa</a></td>
 <td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFromOs"><span class="SyntaxCode"><span class="SyntaxFunction">getFromOs</span>()</spa</a></td>
+<td><a href="#Pixel_FontFamily_getFromOs"><span class="SCde"><span class="SFct">getFromOs</span>()</spa</a></td>
 <td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_setFont"><span class="SyntaxCode"><span class="SyntaxFunction">setFont</span>()</spa</a></td>
+<td><a href="#Pixel_FontFamily_setFont"><span class="SCde"><span class="SFct">setFont</span>()</spa</a></td>
 <td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
@@ -3061,7 +3064,7 @@
 </table>
 </p>
 <p>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createTypeFace</span>(enumerate: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>, style: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTypeFace</span>(enumerate: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>, style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3075,7 +3078,7 @@
 </table>
 </p>
 <p>Enumerate the font families available in the os. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">enumerateFromOs</span>()-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFromOs</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3089,7 +3092,7 @@
 </table>
 </p>
 <p>Get the font corresponding to the style. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getFont</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, style: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></code>
 </div>
 <p> If not evailable, get another one. </p>
 <p>
@@ -3104,7 +3107,7 @@
 </table>
 </p>
 <p>Get a FontFamilyEnumerate from a font family name. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getFromOs</span>(fontFamily: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFromOs</span>(fontFamily: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyEnumerate">FontFamilyEnumerate</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3118,7 +3121,7 @@
 </table>
 </p>
 <p>Set the font corresponding to a given style. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setFont</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fnt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>, style: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fnt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3133,13 +3136,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">name</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></td>
+<td class="codetype"><span class="SCde">name</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">faces</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">4</span>] <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
+<td class="codetype"><span class="SCde">faces</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3156,19 +3159,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Regular</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Regular</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bold</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bold</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Italic</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Italic</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BoldItalic</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BoldItalic</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3185,13 +3188,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">name</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></td>
+<td class="codetype"><span class="SCde">name</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">face</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant">LOGFONTW</span></span></td>
+<td class="codetype"><span class="SCde">face</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gdi32</span>.<span class="SCst">LOGFONTW</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3209,23 +3212,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getFrame"><span class="SyntaxCode"><span class="SyntaxFunction">getFrame</span>()</spa</a></td>
+<td><a href="#Pixel_Gif_Decoder_getFrame"><span class="SCde"><span class="SFct">getFrame</span>()</spa</a></td>
 <td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getNumFrames"><span class="SyntaxCode"><span class="SyntaxFunction">getNumFrames</span>()</spa</a></td>
+<td><a href="#Pixel_Gif_Decoder_getNumFrames"><span class="SCde"><span class="SFct">getNumFrames</span>()</spa</a></td>
 <td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_init"><span class="SyntaxCode"><span class="SyntaxFunction">init</span>()</spa</a></td>
+<td><a href="#Pixel_Gif_Decoder_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
 <td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_nextFrame"><span class="SyntaxCode"><span class="SyntaxFunction">nextFrame</span>()</spa</a></td>
+<td><a href="#Pixel_Gif_Decoder_nextFrame"><span class="SCde"><span class="SFct">nextFrame</span>()</spa</a></td>
 <td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_rewind"><span class="SyntaxCode"><span class="SyntaxFunction">rewind</span>()</spa</a></td>
+<td><a href="#Pixel_Gif_Decoder_rewind"><span class="SCde"><span class="SFct">rewind</span>()</spa</a></td>
 <td>Restart at frame 0. </td>
 </tr>
 </table>
@@ -3240,7 +3243,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canDecode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canDecode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3253,7 +3256,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3267,7 +3270,7 @@
 </table>
 </p>
 <p>Create an image for the current frame. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getFrame</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, image: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, decodePixels = <span class="SyntaxKeyword">true</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFrame</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, decodePixels = <span class="SKwd">true</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3281,7 +3284,7 @@
 </table>
 </p>
 <p>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getNumFrames</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">s32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNumFrames</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3295,7 +3298,7 @@
 </table>
 </p>
 <p>Initialize the decoder. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">init</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, decodePixels: <span class="SyntaxType">bool</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, decodePixels: <span class="STpe">bool</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3309,7 +3312,7 @@
 </table>
 </p>
 <p>Get the next frame. Returns false if we have reached the end. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">nextFrame</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, img: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="SyntaxType">bool</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextFrame</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, img: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3323,7 +3326,7 @@
 </table>
 </p>
 <p>Restart at frame 0. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rewind</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rewind</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3338,48 +3341,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">texture</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="codetype"><span class="SCde">texture</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bpp</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">bpp</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">datas</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">u8</span>)</span></td>
+<td class="codetype"><span class="SCde">datas</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dirty</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">dirty</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">curX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">curY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">nextY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">nextY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3396,43 +3399,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">uv</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">uv</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">atlasIndex</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">atlasIndex</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">advanceX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">advanceX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">advanceY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">advanceY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shiftX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">shiftX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shiftY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">shiftY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3449,147 +3452,147 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Dot</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Dot</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Horizontal</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Horizontal</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HorizontalLight</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HorizontalLight</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HorizontalNarrow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HorizontalNarrow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Vertical</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Vertical</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VerticalLight</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">VerticalLight</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VerticalNarrow</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">VerticalNarrow</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SolidDiamond</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SolidDiamond</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">OutlinedDiamond</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">OutlinedDiamond</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HorizontalDark</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HorizontalDark</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">VerticalDark</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">VerticalDark</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Grid</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Grid</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GridLarge</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GridLarge</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GridDotted</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GridDotted</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Cross</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Cross</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CrossLarge</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">CrossLarge</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent5</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent5</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent10</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent10</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent20</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent20</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent25</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent25</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent30</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent30</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent40</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent40</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent50</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent50</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent60</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent60</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent70</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent70</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent75</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent75</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent80</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent80</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Percent90</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Percent90</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CheckBoard</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">CheckBoard</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">CheckBoardLarge</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">CheckBoardLarge</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Weave</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Weave</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DiagonalForward</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DiagonalForward</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DiagonalForwardLight</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DiagonalForwardLight</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DiagonalBackward</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DiagonalBackward</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DiagonalBackwardLight</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DiagonalBackwardLight</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DiagonalCross</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DiagonalCross</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3607,13 +3610,13 @@
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">canDecode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">canDecode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">decode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></td>
+<td class="codetype"><span class="SCde">decode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3631,13 +3634,13 @@
 <p>Interface to decode a buffer. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">canEncode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">canEncode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">encode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">ConcatBuffer</span>, <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, <span class="SyntaxType">any</span>) <span class="SyntaxKeyword">throw</span></span></td>
+<td class="codetype"><span class="SCde">encode</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, <span class="STpe">any</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3655,286 +3658,286 @@
 <p>An image buffer, in various pixel formats. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">pixels</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">u8</span>)</span></td>
+<td class="codetype"><span class="SCde">pixels</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>All the pixels. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">size</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">size</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>The width of the image. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>The height of the image. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width8</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">width8</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td>The width, in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pf</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
+<td class="codetype"><span class="SCde">pf</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td>Format of one pixel. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bpp</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">bpp</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td>Bits per pixel. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bpp8</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">bpp8</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td>Bytes per pixel. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">workingBuffer</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></td>
+<td class="codetype"><span class="SCde">workingBuffer</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></td>
 <td>Temporary buffer for filters and transformations. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_addDecoder"><span class="SyntaxCode"><span class="SyntaxFunction">addDecoder</span>()</spa</a></td>
+<td><a href="#Pixel_Image_addDecoder"><span class="SCde"><span class="SFct">addDecoder</span>()</spa</a></td>
 <td>Register an image decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_addEncoder"><span class="SyntaxCode"><span class="SyntaxFunction">addEncoder</span>()</spa</a></td>
+<td><a href="#Pixel_Image_addEncoder"><span class="SCde"><span class="SFct">addEncoder</span>()</spa</a></td>
 <td>Register an image encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocPixels"><span class="SyntaxCode"><span class="SyntaxFunction">allocPixels</span>()</spa</a></td>
+<td><a href="#Pixel_Image_allocPixels"><span class="SCde"><span class="SFct">allocPixels</span>()</spa</a></td>
 <td>Allocate pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SyntaxCode"><span class="SyntaxFunction">allocWorkingBuffer</span>(<span class="SyntaxKeyword">self</span>)</span></a></td>
+<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SCde"><span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">self</span>)</span></a></td>
 <td>Allocate a computing buffer with current image size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SyntaxCode"><span class="SyntaxFunction">allocWorkingBuffer</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxConstant">PixelFormat</span>)</span></a></td>
+<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SCde"><span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">PixelFormat</span>)</span></a></td>
 <td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyKernel"><span class="SyntaxCode"><span class="SyntaxFunction">applyKernel</span>()</spa</a></td>
+<td><a href="#Pixel_Image_applyKernel"><span class="SCde"><span class="SFct">applyKernel</span>()</spa</a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyWorkingBuffer"><span class="SyntaxCode"><span class="SyntaxFunction">applyWorkingBuffer</span>()</spa</a></td>
+<td><a href="#Pixel_Image_applyWorkingBuffer"><span class="SCde"><span class="SFct">applyWorkingBuffer</span>()</spa</a></td>
 <td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canLoad"><span class="SyntaxCode"><span class="SyntaxFunction">canLoad</span>()</spa</a></td>
+<td><a href="#Pixel_Image_canLoad"><span class="SCde"><span class="SFct">canLoad</span>()</spa</a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canSave"><span class="SyntaxCode"><span class="SyntaxFunction">canSave</span>()</spa</a></td>
+<td><a href="#Pixel_Image_canSave"><span class="SCde"><span class="SFct">canSave</span>()</spa</a></td>
 <td>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_Image_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_colorize"><span class="SyntaxCode"><span class="SyntaxFunction">colorize</span>()</spa</a></td>
+<td><a href="#Pixel_Image_colorize"><span class="SCde"><span class="SFct">colorize</span>()</spa</a></td>
 <td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_contrast"><span class="SyntaxCode"><span class="SyntaxFunction">contrast</span>()</spa</a></td>
+<td><a href="#Pixel_Image_contrast"><span class="SCde"><span class="SFct">contrast</span>()</spa</a></td>
 <td>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_copyPixel"><span class="SyntaxCode"><span class="SyntaxFunction">copyPixel</span>()</spa</a></td>
+<td><a href="#Pixel_Image_copyPixel"><span class="SCde"><span class="SFct">copyPixel</span>()</spa</a></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>()</spa</a></td>
+<td><a href="#Pixel_Image_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates a new image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop"><span class="SyntaxCode"><span class="SyntaxFunction">crop</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>)</span></a></td>
+<td><a href="#Pixel_Image_crop"><span class="SCde"><span class="SFct">crop</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop"><span class="SyntaxCode"><span class="SyntaxFunction">crop</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>)</span></a></td>
+<td><a href="#Pixel_Image_crop"><span class="SCde"><span class="SFct">crop</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></a></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_decode"><span class="SyntaxCode"><span class="SyntaxFunction">decode</span>()</spa</a></td>
+<td><a href="#Pixel_Image_decode"><span class="SCde"><span class="SFct">decode</span>()</spa</a></td>
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fade"><span class="SyntaxCode"><span class="SyntaxFunction">fade</span>()</spa</a></td>
+<td><a href="#Pixel_Image_fade"><span class="SCde"><span class="SFct">fade</span>()</spa</a></td>
 <td>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fill"><span class="SyntaxCode"><span class="SyntaxFunction">fill</span>()</spa</a></td>
+<td><a href="#Pixel_Image_fill"><span class="SCde"><span class="SFct">fill</span>()</spa</a></td>
 <td>Fill image with <code class="incode">color</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient2"><span class="SyntaxCode"><span class="SyntaxFunction">fillGradient2</span>()</spa</a></td>
+<td><a href="#Pixel_Image_fillGradient2"><span class="SCde"><span class="SFct">fillGradient2</span>()</spa</a></td>
 <td>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient4"><span class="SyntaxCode"><span class="SyntaxFunction">fillGradient4</span>()</spa</a></td>
+<td><a href="#Pixel_Image_fillGradient4"><span class="SCde"><span class="SFct">fillGradient4</span>()</spa</a></td>
 <td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillHsl"><span class="SyntaxCode"><span class="SyntaxFunction">fillHsl</span>()</spa</a></td>
+<td><a href="#Pixel_Image_fillHsl"><span class="SCde"><span class="SFct">fillHsl</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_flip"><span class="SyntaxCode"><span class="SyntaxFunction">flip</span>()</spa</a></td>
+<td><a href="#Pixel_Image_flip"><span class="SCde"><span class="SFct">flip</span>()</spa</a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_freeWorkingBuffer"><span class="SyntaxCode"><span class="SyntaxFunction">freeWorkingBuffer</span>()</spa</a></td>
+<td><a href="#Pixel_Image_freeWorkingBuffer"><span class="SCde"><span class="SFct">freeWorkingBuffer</span>()</spa</a></td>
 <td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from"><span class="SyntaxCode"><span class="SyntaxFunction">from</span>(<span class="SyntaxConstant">HBITMAP</span>)</span></a></td>
+<td><a href="#Pixel_Image_from"><span class="SCde"><span class="SFct">from</span>(<span class="SCst">HBITMAP</span>)</span></a></td>
 <td>Creates an image from a windows HBITMAP. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from"><span class="SyntaxCode"><span class="SyntaxFunction">from</span>(<span class="SyntaxConstant">HICON</span>)</span></a></td>
+<td><a href="#Pixel_Image_from"><span class="SCde"><span class="SFct">from</span>(<span class="SCst">HICON</span>)</span></a></td>
 <td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_gamma"><span class="SyntaxCode"><span class="SyntaxFunction">gamma</span>()</spa</a></td>
+<td><a href="#Pixel_Image_gamma"><span class="SCde"><span class="SFct">gamma</span>()</spa</a></td>
 <td>Change the gamma. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_getPixelColor"><span class="SyntaxCode"><span class="SyntaxFunction">getPixelColor</span>()</spa</a></td>
+<td><a href="#Pixel_Image_getPixelColor"><span class="SCde"><span class="SFct">getPixelColor</span>()</spa</a></td>
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_grayScale"><span class="SyntaxCode"><span class="SyntaxFunction">grayScale</span>()</spa</a></td>
+<td><a href="#Pixel_Image_grayScale"><span class="SCde"><span class="SFct">grayScale</span>()</spa</a></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_halfSize"><span class="SyntaxCode"><span class="SyntaxFunction">halfSize</span>()</spa</a></td>
+<td><a href="#Pixel_Image_halfSize"><span class="SCde"><span class="SFct">halfSize</span>()</spa</a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_init"><span class="SyntaxCode"><span class="SyntaxFunction">init</span>()</spa</a></td>
+<td><a href="#Pixel_Image_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
 <td>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_invert"><span class="SyntaxCode"><span class="SyntaxFunction">invert</span>()</spa</a></td>
+<td><a href="#Pixel_Image_invert"><span class="SCde"><span class="SFct">invert</span>()</spa</a></td>
 <td>Invert colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_isValid"><span class="SyntaxCode"><span class="SyntaxFunction">isValid</span>()</spa</a></td>
+<td><a href="#Pixel_Image_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
 <td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_lightness"><span class="SyntaxCode"><span class="SyntaxFunction">lightness</span>()</spa</a></td>
+<td><a href="#Pixel_Image_lightness"><span class="SCde"><span class="SFct">lightness</span>()</spa</a></td>
 <td>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_load"><span class="SyntaxCode"><span class="SyntaxFunction">load</span>()</spa</a></td>
+<td><a href="#Pixel_Image_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
 <td>Load the given image file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mirror"><span class="SyntaxCode"><span class="SyntaxFunction">mirror</span>()</spa</a></td>
+<td><a href="#Pixel_Image_mirror"><span class="SCde"><span class="SFct">mirror</span>()</spa</a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mix"><span class="SyntaxCode"><span class="SyntaxFunction">mix</span>()</spa</a></td>
+<td><a href="#Pixel_Image_mix"><span class="SCde"><span class="SFct">mix</span>()</spa</a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_release"><span class="SyntaxCode"><span class="SyntaxFunction">release</span>()</spa</a></td>
+<td><a href="#Pixel_Image_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
 <td>Release the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_resize"><span class="SyntaxCode"><span class="SyntaxFunction">resize</span>()</spa</a></td>
+<td><a href="#Pixel_Image_resize"><span class="SCde"><span class="SFct">resize</span>()</spa</a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_save"><span class="SyntaxCode"><span class="SyntaxFunction">save</span>()</spa</a></td>
+<td><a href="#Pixel_Image_save"><span class="SCde"><span class="SFct">save</span>()</spa</a></td>
 <td>Save the image to a file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setAlpha"><span class="SyntaxCode"><span class="SyntaxFunction">setAlpha</span>()</spa</a></td>
+<td><a href="#Pixel_Image_setAlpha"><span class="SCde"><span class="SFct">setAlpha</span>()</spa</a></td>
 <td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setChannel"><span class="SyntaxCode"><span class="SyntaxFunction">setChannel</span>()</spa</a></td>
+<td><a href="#Pixel_Image_setChannel"><span class="SCde"><span class="SFct">setChannel</span>()</spa</a></td>
 <td>Change specified color channels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelFormat"><span class="SyntaxCode"><span class="SyntaxFunction">setPixelFormat</span>()</spa</a></td>
+<td><a href="#Pixel_Image_setPixelFormat"><span class="SCde"><span class="SFct">setPixelFormat</span>()</spa</a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelRGBA8"><span class="SyntaxCode"><span class="SyntaxFunction">setPixelRGBA8</span>()</spa</a></td>
+<td><a href="#Pixel_Image_setPixelRGBA8"><span class="SCde"><span class="SFct">setPixelRGBA8</span>()</spa</a></td>
 <td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toApplyKernel"><span class="SyntaxCode"><span class="SyntaxFunction">toApplyKernel</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toApplyKernel"><span class="SCde"><span class="SFct">toApplyKernel</span>()</spa</a></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop"><span class="SyntaxCode"><span class="SyntaxFunction">toCrop</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>)</span></a></td>
+<td><a href="#Pixel_Image_toCrop"><span class="SCde"><span class="SFct">toCrop</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop"><span class="SyntaxCode"><span class="SyntaxFunction">toCrop</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>)</span></a></td>
+<td><a href="#Pixel_Image_toCrop"><span class="SCde"><span class="SFct">toCrop</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></a></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toFlip"><span class="SyntaxCode"><span class="SyntaxFunction">toFlip</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toFlip"><span class="SCde"><span class="SFct">toFlip</span>()</spa</a></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHICON"><span class="SyntaxCode"><span class="SyntaxFunction">toHICON</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toHICON"><span class="SCde"><span class="SFct">toHICON</span>()</spa</a></td>
 <td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHalfSize"><span class="SyntaxCode"><span class="SyntaxFunction">toHalfSize</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toHalfSize"><span class="SCde"><span class="SFct">toHalfSize</span>()</spa</a></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMirror"><span class="SyntaxCode"><span class="SyntaxFunction">toMirror</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toMirror"><span class="SCde"><span class="SFct">toMirror</span>()</spa</a></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMix"><span class="SyntaxCode"><span class="SyntaxFunction">toMix</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toMix"><span class="SCde"><span class="SFct">toMix</span>()</spa</a></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toResize"><span class="SyntaxCode"><span class="SyntaxFunction">toResize</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toResize"><span class="SCde"><span class="SFct">toResize</span>()</spa</a></td>
 <td>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toSetPixelFormat"><span class="SyntaxCode"><span class="SyntaxFunction">toSetPixelFormat</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toSetPixelFormat"><span class="SCde"><span class="SFct">toSetPixelFormat</span>()</spa</a></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toTurn"><span class="SyntaxCode"><span class="SyntaxFunction">toTurn</span>()</spa</a></td>
+<td><a href="#Pixel_Image_toTurn"><span class="SCde"><span class="SFct">toTurn</span>()</spa</a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_turn"><span class="SyntaxCode"><span class="SyntaxFunction">turn</span>()</spa</a></td>
+<td><a href="#Pixel_Image_turn"><span class="SCde"><span class="SFct">turn</span>()</spa</a></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_visitPixels"><span class="SyntaxCode"><span class="SyntaxFunction">visitPixels</span>()</spa</a></td>
+<td><a href="#Pixel_Image_visitPixels"><span class="SCde"><span class="SFct">visitPixels</span>()</spa</a></td>
 <td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Image_opVisit"><span class="SyntaxCode"><span class="SyntaxFunction">opVisit</span>()</spa</a></td>
+<td><a href="#Pixel_Image_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -3951,27 +3954,27 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Red</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Red</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Green</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Green</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Blue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Blue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Alpha</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RGB</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RGBA</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RGBA</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -3988,23 +3991,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Color</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MinRGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MinRGB</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MaxRGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MaxRGB</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MeanRGB</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MeanRGB</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Alpha</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Alpha</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4021,51 +4024,51 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HueVert</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HueVert</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HueHorz</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HueHorz</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SaturationVert</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SaturationVert</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SaturationHorz</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SaturationHorz</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightnessVert</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightnessVert</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">LightnessHorz</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">LightnessHorz</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HueSaturation</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HueSaturation</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">HueLightness</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">HueLightness</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SaturationLightness</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SaturationLightness</span></span></td>
 <td>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GreenBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GreenBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RedBlue</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RedBlue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RedGreen</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RedGreen</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4083,99 +4086,99 @@
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GaussianBlur3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GaussianBlur3x3B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur3x3B</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">GaussianBlur5x5A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">GaussianBlur5x5A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BoxBlur3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BoxBlur3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BoxBlur5x5A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BoxBlur5x5A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Sharpen3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Sharpen3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Sharpen3x3B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Sharpen3x3B</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Soften3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Soften3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossLeft3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossLeft3x3B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3B</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossLeft3x3C</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossLeft3x3C</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossRight3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossRight3x3B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3B</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EmbossRight3x3C</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EmbossRight3x3C</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3B</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3B</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3C</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3C</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3D</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3D</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3E</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3E</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">EdgeDetect3x3F</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">EdgeDetect3x3F</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SobelHorizontal3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SobelHorizontal3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SobelVertical3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SobelVertical3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PrevitHorizontal3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PrevitHorizontal3x3A</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">PrevitVertical3x3A</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">PrevitVertical3x3A</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4192,11 +4195,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Copy</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Copy</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">AlphaBlend</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">AlphaBlend</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4213,35 +4216,35 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Raw</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Raw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bilinear</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bilinear</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bicubic</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bicubic</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Gaussian</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Gaussian</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Quadratic</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Quadratic</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Hermite</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Hermite</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Hamming</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Hamming</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Catrom</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Catrom</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4258,15 +4261,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">T90</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">T90</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">T180</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">T180</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">T270</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">T270</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -4282,7 +4285,7 @@
 </table>
 </p>
 <p>Register an image decoder. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxConstant">T</span>) <span class="SyntaxFunction">addDecoder</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addDecoder</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -4296,7 +4299,7 @@
 </table>
 </p>
 <p>Register an image encoder. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxConstant">T</span>) <span class="SyntaxFunction">addEncoder</span>()</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addEncoder</span>()</span></code>
 </div>
 <p>
 <table class="item">
@@ -4310,7 +4313,7 @@
 </table>
 </p>
 <p>Allocate pixels. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">allocPixels</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">allocPixels</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4324,10 +4327,10 @@
 </table>
 </p>
 <p>Allocate a computing buffer with current image size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">allocWorkingBuffer</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>Allocate a computing buffer with new sizes. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">allocWorkingBuffer</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, newWidth: <span class="SyntaxType">s32</span>, newHeight: <span class="SyntaxType">s32</span>, newPf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, newPf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4341,7 +4344,7 @@
 </table>
 </p>
 <p>Apply a kernel to the image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">applyKernel</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, kernel: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyKernel</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kernel: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_Kernel">Kernel</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4355,7 +4358,7 @@
 </table>
 </p>
 <p>Replace the current image content with the working buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">applyWorkingBuffer</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyWorkingBuffer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4369,7 +4372,7 @@
 </table>
 </p>
 <p>Returns <code class="incode">true</code> if the given filename has a corresponding decoder. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canLoad</span>(fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canLoad</span>(fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4383,7 +4386,7 @@
 </table>
 </p>
 <p>Returns <code class="incode">true</code> if the given filename has a corresponding encoder. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canSave</span>(fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canSave</span>(fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4397,7 +4400,7 @@
 </table>
 </p>
 <p>Clear the content of the image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4411,7 +4414,7 @@
 </table>
 </p>
 <p>Colorize the image by setting the hue and saturation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">colorize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, hue: <span class="SyntaxType">f32</span>, saturation: <span class="SyntaxType">f32</span>, strength = <span class="SyntaxNumber">1.0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">colorize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hue: <span class="STpe">f32</span>, saturation: <span class="STpe">f32</span>, strength = <span class="SNum">1.0</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4425,7 +4428,7 @@
 </table>
 </p>
 <p>Change the contrast. <code class="incode">factor</code> is [-1, 1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">contrast</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, factor: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contrast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4439,7 +4442,7 @@
 </table>
 </p>
 <p>Copy one pixel, depending on bpp. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxConstant">BPP</span>: <span class="SyntaxType">u8</span>) <span class="SyntaxFunction">copyPixel</span>(pixDst: ^<span class="SyntaxType">u8</span>, pixSrc: ^<span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">BPP</span>: <span class="STpe">u8</span>) <span class="SFct">copyPixel</span>(pixDst: ^<span class="STpe">u8</span>, pixSrc: ^<span class="STpe">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4453,7 +4456,7 @@
 </table>
 </p>
 <p>Creates a new image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(width: <span class="SyntaxType">s32</span>, height: <span class="SyntaxType">s32</span>, pf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span> = <span class="SyntaxKeyword">null</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4467,8 +4470,8 @@
 </table>
 </p>
 <p>Crop image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">crop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, cropRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">crop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, w: <span class="SyntaxType">s32</span>, h: <span class="SyntaxType">s32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">crop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cropRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)
+<span class="SKwd">func</span> <span class="SFct">crop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4482,7 +4485,7 @@
 </table>
 </p>
 <p>Decode the given image buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(fileName: <span class="SyntaxType">string</span>, bytes: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(fileName: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4496,7 +4499,7 @@
 </table>
 </p>
 <p>Fade to a given color. <code class="incode">factor</code> is [0, 1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fade</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, factor: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fade</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4510,7 +4513,7 @@
 </table>
 </p>
 <p>Fill image with <code class="incode">color</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fill</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4524,7 +4527,7 @@
 </table>
 </p>
 <p>Fill with an horizontal gradient from <code class="incode">color0</code> to <code class="incode">color1</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillGradient2</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, color0: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, color1: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillGradient2</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color0: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, color1: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4538,7 +4541,7 @@
 </table>
 </p>
 <p>Fill with a gradient with a different color at each corner. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillGradient4</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, topLeft: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, topRight: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, bottomLeft: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, bottomRight: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillGradient4</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, topLeft: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, topRight: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, bottomLeft: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, bottomRight: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4551,7 +4554,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillHsl</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fillType: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_FillHslType">FillHslType</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillHsl</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fillType: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_FillHslType">FillHslType</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4565,7 +4568,7 @@
 </table>
 </p>
 <p>Flip image vertically. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">flip</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">flip</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4579,7 +4582,7 @@
 </table>
 </p>
 <p>Free the working buffer if allocated. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">freeWorkingBuffer</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freeWorkingBuffer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4593,10 +4596,10 @@
 </table>
 </p>
 <p>Creates an image from a windows HBITMAP. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">from</span>(hbitmap: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HBITMAP</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hbitmap: <span class="SCst">Win32</span>.<span class="SCst">HBITMAP</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>Creates an image from a windows HICON. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">from</span>(hicon: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HICON</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(hicon: <span class="SCst">Win32</span>.<span class="SCst">HICON</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4610,7 +4613,7 @@
 </table>
 </p>
 <p>Change the gamma. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">gamma</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, level: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">2.2</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gamma</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, level: <span class="STpe">f32</span> = <span class="SNum">2.2</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4624,7 +4627,7 @@
 </table>
 </p>
 <p>Returns the color at the given coordinate. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getPixelColor</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pixX: <span class="SyntaxType">s32</span>, pixY: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPixelColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pixX: <span class="STpe">s32</span>, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4638,7 +4641,7 @@
 </table>
 </p>
 <p>Transform image to grayscale, with a given factor. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">grayScale</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, factor: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grayScale</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, factor: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4652,7 +4655,7 @@
 </table>
 </p>
 <p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">halfSize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">halfSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4666,7 +4669,7 @@
 </table>
 </p>
 <p>Initialize image informations  <code class="incode">pixels</code> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">init</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, width: <span class="SyntaxType">s32</span>, height: <span class="SyntaxType">s32</span>, pf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4680,7 +4683,7 @@
 </table>
 </p>
 <p>Invert colors. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">invert</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4694,7 +4697,7 @@
 </table>
 </p>
 <p>Returns true if the image is valid. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isValid</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4708,7 +4711,7 @@
 </table>
 </p>
 <p>Change the lightness. <code class="incode">factor</code> is [-1, 1]. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">lightness</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, factor: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lightness</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4722,7 +4725,7 @@
 </table>
 </p>
 <p>Load the given image file. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">load</span>(fileName: <span class="SyntaxType">string</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fileName: <span class="STpe">string</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span> = {})-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4736,7 +4739,7 @@
 </table>
 </p>
 <p>Flip image horizontally. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">mirror</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mirror</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4750,7 +4753,7 @@
 </table>
 </p>
 <p>Mix with another image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">mix</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, srcImage: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, mode = <span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SyntaxConstant">Copy</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, srcImage: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SCst">Copy</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4763,8 +4766,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxAttribute">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SyntaxKeyword">func</span>(ptr: <span class="SyntaxType">bool</span>) <span class="SyntaxFunction">opVisit</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, stmt: <span class="SyntaxType">code</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4778,7 +4781,7 @@
 </table>
 </p>
 <p>Release the content of the image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">release</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4792,7 +4795,7 @@
 </table>
 </p>
 <p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, newWidth: <span class="SyntaxType">s32</span>, newHeight: <span class="SyntaxType">s32</span>, mode = <span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SyntaxConstant">Raw</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4806,7 +4809,7 @@
 </table>
 </p>
 <p>Save the image to a file. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">save</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>, options: <span class="SyntaxType">any</span> = <span class="SyntaxKeyword">null</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">save</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>, options: <span class="STpe">any</span> = <span class="SKwd">null</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4820,7 +4823,7 @@
 </table>
 </p>
 <p>Change the alpha channel. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setAlpha</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">u8</span> = <span class="SyntaxNumber">0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAlpha</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">u8</span> = <span class="SNum">0</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4834,7 +4837,7 @@
 </table>
 </p>
 <p>Change specified color channels. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setChannel</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_ChannelMode">ChannelMode</a></span>, value: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_ChannelValueMode">ChannelValueMode</a></span>, color: <span class="SyntaxType">u8</span> = <span class="SyntaxNumber">0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setChannel</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_ChannelMode">ChannelMode</a></span>, value: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_ChannelValueMode">ChannelValueMode</a></span>, color: <span class="STpe">u8</span> = <span class="SNum">0</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4848,7 +4851,7 @@
 </table>
 </p>
 <p>Change image pixel format. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setPixelFormat</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, newPf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPixelFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newPf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4862,7 +4865,7 @@
 </table>
 </p>
 <p>Set pixel values depending on pixel format. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span>(<span class="SyntaxConstant">PF</span>: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>) <span class="SyntaxFunction">setPixelRGBA8</span>(pixDst: ^<span class="SyntaxType">u8</span>, r: <span class="SyntaxType">u8</span>, g: <span class="SyntaxType">u8</span>, b: <span class="SyntaxType">u8</span>, _a: <span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">PF</span>: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>) <span class="SFct">setPixelRGBA8</span>(pixDst: ^<span class="STpe">u8</span>, r: <span class="STpe">u8</span>, g: <span class="STpe">u8</span>, b: <span class="STpe">u8</span>, _a: <span class="STpe">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4876,7 +4879,7 @@
 </table>
 </p>
 <p>Apply a kernel to the image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toApplyKernel</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, kernel: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_Kernel">Kernel</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toApplyKernel</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kernel: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_Kernel">Kernel</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4890,8 +4893,8 @@
 </table>
 </p>
 <p>Crop image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toCrop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, cropRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toCrop</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, w: <span class="SyntaxType">s32</span>, h: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, cropRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>
+<span class="SKwd">func</span> <span class="SFct">toCrop</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4905,7 +4908,7 @@
 </table>
 </p>
 <p>Flip image vertically. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toFlip</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toFlip</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4919,7 +4922,7 @@
 </table>
 </p>
 <p>Transform an image to a windows icon. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toHICON</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HICON</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHICON</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HICON</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4933,7 +4936,7 @@
 </table>
 </p>
 <p>Divide image size by 2 with a bilinear 2x2 filter. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toHalfSize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHalfSize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4947,7 +4950,7 @@
 </table>
 </p>
 <p>Flip image horizontally. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toMirror</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMirror</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4961,7 +4964,7 @@
 </table>
 </p>
 <p>Mix with another image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toMix</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, srcImage: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, mode = <span class="SyntaxConstant"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SyntaxConstant">Copy</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMix</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, srcImage: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_MixMode">MixMode</a></span>.<span class="SCst">Copy</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4975,7 +4978,7 @@
 </table>
 </p>
 <p>Resize image  Put <code class="incode">newWidth</code> or <code class="incode">newHeight</code> to 0 to keep aspect ratio. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toResize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, newWidth: <span class="SyntaxType">s32</span>, newHeight: <span class="SyntaxType">s32</span>, mode = <span class="SyntaxConstant"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SyntaxConstant">Raw</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toResize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -4989,7 +4992,7 @@
 </table>
 </p>
 <p>Change image pixel format. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toSetPixelFormat</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, newPf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSetPixelFormat</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newPf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5003,7 +5006,7 @@
 </table>
 </p>
 <p>Turn image by a given predefined angle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">toTurn</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toTurn</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, angle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5017,7 +5020,7 @@
 </table>
 </p>
 <p>Turn image by a given predefined angle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">turn</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>.<span class="SyntaxConstant"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">turn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>.<span class="SCst"><a href="#Pixel_Image_TurnAngle">TurnAngle</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5031,8 +5034,8 @@
 </table>
 </p>
 <p>Macro to visit all pixels of the image in parallel chunks. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxAttribute">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">visitPixels</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>, userData: *<span class="SyntaxType">void</span> = <span class="SyntaxKeyword">null</span>, stride: <span class="SyntaxType">s32</span> = <span class="SyntaxNumber">1</span>, stmt: <span class="SyntaxType">code</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p style="white-space: break-spaces"> Exported variables:
  'pix'        address of the pixel
@@ -5054,11 +5057,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Linear</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Linear</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5075,23 +5078,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bevel</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bevel</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Round</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Miter</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Miter</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">MiterBevel</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">MiterBevel</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5117,7 +5120,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canDecode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canDecode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5130,7 +5133,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5145,8 +5148,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">quality</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u8</span></span></td>
+<td class="codetype"><span class="SCde">quality</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u8</span></span></td>
 <td>Encoding quality between 1 and 100. </td>
 </tr>
 </table>
@@ -5172,7 +5175,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canEncode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canEncode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5185,7 +5188,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">encode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, result: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">ConcatBuffer</span>, image: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, options: <span class="SyntaxType">any</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, image: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, options: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5200,31 +5203,31 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Triangle</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Triangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Round</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Round</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Square</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Square</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">ArrowAnchor</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">ArrowAnchor</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">SquareAnchor</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">SquareAnchor</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RoundAnchor</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RoundAnchor</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5241,142 +5244,142 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">elements</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Element">Element</a></span>)</span></td>
+<td class="codetype"><span class="SCde">elements</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">startPoint</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">startPoint</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">endPoint</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">endPoint</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isClosed</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isClosed</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isDirty</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isDirty</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">serial</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">serial</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">flattenQuality</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
+<td class="codetype"><span class="SCde">flattenQuality</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isPolyOnly</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isPolyOnly</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isFlatten</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isFlatten</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMin</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMax</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMax</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">endPosBuffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">endPosBuffer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">polygon</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Polygon">Polygon</a></span></span></td>
+<td class="codetype"><span class="SCde">polygon</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Polygon">Polygon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">points</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
+<td class="codetype"><span class="SCde">points</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">triangles</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
+<td class="codetype"><span class="SCde">triangles</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">edgeList</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="codetype"><span class="SCde">edgeList</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePath_arcTo"><span class="SyntaxCode"><span class="SyntaxFunction">arcTo</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_arcTo"><span class="SCde"><span class="SFct">arcTo</span>()</spa</a></td>
 <td>Add an arc from the previous point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo"><span class="SyntaxCode"><span class="SyntaxFunction">bezierTo</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_LinePath_bezierTo"><span class="SCde"><span class="SFct">bezierTo</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo"><span class="SyntaxCode"><span class="SyntaxFunction">bezierTo</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_LinePath_bezierTo"><span class="SCde"><span class="SFct">bezierTo</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_clearCache"><span class="SyntaxCode"><span class="SyntaxFunction">clearCache</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_clearCache"><span class="SCde"><span class="SFct">clearCache</span>()</spa</a></td>
 <td>Clear internal cache. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_close"><span class="SyntaxCode"><span class="SyntaxFunction">close</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_close"><span class="SCde"><span class="SFct">close</span>()</spa</a></td>
 <td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_curveTo"><span class="SyntaxCode"><span class="SyntaxFunction">curveTo</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_curveTo"><span class="SCde"><span class="SFct">curveTo</span>()</spa</a></td>
 <td>Add a curve from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_flatten"><span class="SyntaxCode"><span class="SyntaxFunction">flatten</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_flatten"><span class="SCde"><span class="SFct">flatten</span>()</spa</a></td>
 <td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_lineTo"><span class="SyntaxCode"><span class="SyntaxFunction">lineTo</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_lineTo"><span class="SCde"><span class="SFct">lineTo</span>()</spa</a></td>
 <td>Add a line from the previous point to <code class="incode">pt</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setArc"><span class="SyntaxCode"><span class="SyntaxFunction">setArc</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_setArc"><span class="SCde"><span class="SFct">setArc</span>()</spa</a></td>
 <td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setCircle"><span class="SyntaxCode"><span class="SyntaxFunction">setCircle</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_setCircle"><span class="SCde"><span class="SFct">setCircle</span>()</spa</a></td>
 <td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setEllipse"><span class="SyntaxCode"><span class="SyntaxFunction">setEllipse</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_setEllipse"><span class="SCde"><span class="SFct">setEllipse</span>()</spa</a></td>
 <td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRect"><span class="SyntaxCode"><span class="SyntaxFunction">setRect</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_setRect"><span class="SCde"><span class="SFct">setRect</span>()</spa</a></td>
 <td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">setRoundRect</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_setRoundRect"><span class="SCde"><span class="SFct">setRoundRect</span>()</spa</a></td>
 <td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_start"><span class="SyntaxCode"><span class="SyntaxFunction">start</span>()</spa</a></td>
+<td><a href="#Pixel_LinePath_start"><span class="SCde"><span class="SFct">start</span>()</spa</a></td>
 <td>Reset the path. </td>
 </tr>
 </table>
@@ -5392,7 +5395,7 @@
 </table>
 </p>
 <p>Add an arc from the previous point. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">arcTo</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, initAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, maxAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">arcTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, initAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, maxAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5406,10 +5409,10 @@
 </table>
 </p>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bezierTo</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, ctx: <span class="SyntaxType">f32</span>, cty: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bezierTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, ctx: <span class="STpe">f32</span>, cty: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bezierTo</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, ct1x: <span class="SyntaxType">f32</span>, ct1y: <span class="SyntaxType">f32</span>, ct2x: <span class="SyntaxType">f32</span>, ct2y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bezierTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, ct1x: <span class="STpe">f32</span>, ct1y: <span class="STpe">f32</span>, ct2x: <span class="STpe">f32</span>, ct2y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5423,7 +5426,7 @@
 </table>
 </p>
 <p>Clear internal cache. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clearCache</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearCache</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5437,7 +5440,7 @@
 </table>
 </p>
 <p>Close the figure  Will add a line or a curve to the first point if necessary. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">close</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5451,7 +5454,7 @@
 </table>
 </p>
 <p>Add a curve from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">curveTo</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curveTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5465,7 +5468,7 @@
 </table>
 </p>
 <p>Convert the path to a list of points. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">flatten</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, quality = <span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span>.<span class="SyntaxConstant">Normal</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">flatten</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, quality = <span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span>.<span class="SCst">Normal</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5479,7 +5482,7 @@
 </table>
 </p>
 <p>Add a line from the previous point to <code class="incode">pt</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">lineTo</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5493,7 +5496,7 @@
 </table>
 </p>
 <p>Initialize the path with an arc. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setArc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, startAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, endAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setArc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, startAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, endAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5507,7 +5510,7 @@
 </table>
 </p>
 <p>Initialize the path with a circle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setCircle</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCircle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5521,7 +5524,7 @@
 </table>
 </p>
 <p>Initialize the path with an ellipse. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setEllipse</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5535,7 +5538,7 @@
 </table>
 </p>
 <p>Initialize the path with a rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5549,7 +5552,7 @@
 </table>
 </p>
 <p>Initialize the path with a round rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5563,7 +5566,7 @@
 </table>
 </p>
 <p>Reset the path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">start</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, startX: <span class="SyntaxType">f32</span>, startY: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, startX: <span class="STpe">f32</span>, startY: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5578,49 +5581,49 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">paths</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
+<td class="codetype"><span class="SCde">paths</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMin</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMax</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMax</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_LinePathList_clean"><span class="SyntaxCode"><span class="SyntaxFunction">clean</span>()</spa</a></td>
+<td><a href="#Pixel_LinePathList_clean"><span class="SCde"><span class="SFct">clean</span>()</spa</a></td>
 <td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_LinePathList_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_count"><span class="SyntaxCode"><span class="SyntaxFunction">count</span>()</spa</a></td>
+<td><a href="#Pixel_LinePathList_count"><span class="SCde"><span class="SFct">count</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_flatten"><span class="SyntaxCode"><span class="SyntaxFunction">flatten</span>()</spa</a></td>
+<td><a href="#Pixel_LinePathList_flatten"><span class="SCde"><span class="SFct">flatten</span>()</spa</a></td>
 <td>Flatten all paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_newPath"><span class="SyntaxCode"><span class="SyntaxFunction">newPath</span>()</spa</a></td>
+<td><a href="#Pixel_LinePathList_newPath"><span class="SCde"><span class="SFct">newPath</span>()</spa</a></td>
 <td>Returns a new path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset"><span class="SyntaxCode"><span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_LinePathList_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Call fast offset on all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset"><span class="SyntaxCode"><span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxConstant">JoinStyle</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_LinePathList_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Call quality offset on all paths  They must before be flattened. </td>
 </tr>
 </table>
@@ -5636,7 +5639,7 @@
 </table>
 </p>
 <p>Clean all paths  They must before be flattened. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clean</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5650,7 +5653,7 @@
 </table>
 </p>
 <p>Remove all internal line paths. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5663,7 +5666,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">count</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5677,7 +5680,7 @@
 </table>
 </p>
 <p>Flatten all paths. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">flatten</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, quality: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">flatten</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, quality: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5691,7 +5694,7 @@
 </table>
 </p>
 <p>Returns a new path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">newPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5705,10 +5708,10 @@
 </table>
 </p>
 <p>Call fast offset on all paths  They must before be flattened. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>Call quality offset on all paths  They must before be flattened. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">f32</span>, joinStyle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5724,23 +5727,23 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SyntaxCode"><span class="SyntaxFunction">createContext</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">HDC</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxConstant">HGLRC</span>)</span></a></td>
+<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SCde"><span class="SFct">createContext</span>(<span class="SKwd">self</span>, <span class="SCst">HDC</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SyntaxCode"><span class="SyntaxFunction">createContext</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">HWND</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxType">s32</span>, <span class="SyntaxConstant">HGLRC</span>)</span></a></td>
+<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SCde"><span class="SFct">createContext</span>(<span class="SKwd">self</span>, <span class="SCst">HWND</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_dropContext"><span class="SyntaxCode"><span class="SyntaxFunction">dropContext</span>()</spa</a></td>
+<td><a href="#Pixel_NativeRenderOgl_dropContext"><span class="SCde"><span class="SFct">dropContext</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_setCurrentContext"><span class="SyntaxCode"><span class="SyntaxFunction">setCurrentContext</span>()</spa</a></td>
+<td><a href="#Pixel_NativeRenderOgl_setCurrentContext"><span class="SCde"><span class="SFct">setCurrentContext</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_swapBuffers"><span class="SyntaxCode"><span class="SyntaxFunction">swapBuffers</span>()</spa</a></td>
+<td><a href="#Pixel_NativeRenderOgl_swapBuffers"><span class="SCde"><span class="SFct">swapBuffers</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -5755,8 +5758,8 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createContext</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, hdc: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HDC</span>, width: <span class="SyntaxType">s32</span>, height: <span class="SyntaxType">s32</span>, mainRC: <span class="SyntaxConstant">Ogl</span>.<span class="SyntaxConstant">HGLRC</span> = <span class="SyntaxKeyword">null</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SyntaxKeyword">throw</span>
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createContext</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, hWnd: <span class="SyntaxConstant">Win32</span>.<span class="SyntaxConstant">HWND</span>, width: <span class="SyntaxType">s32</span>, height: <span class="SyntaxType">s32</span>, mainRC: <span class="SyntaxConstant">Ogl</span>.<span class="SyntaxConstant">HGLRC</span> = <span class="SyntaxKeyword">null</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">Ogl</span>.<span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span>
+<span class="SKwd">func</span> <span class="SFct">createContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst">HWND</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, mainRC: <span class="SCst">Ogl</span>.<span class="SCst">HGLRC</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -5769,7 +5772,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">dropContext</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rc: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dropContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rc: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5782,7 +5785,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setCurrentContext</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rc: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCurrentContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rc: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5795,7 +5798,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">swapBuffers</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rc: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swapBuffers</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rc: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -5810,15 +5813,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Zero</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Zero</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Antialiased</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Antialiased</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5835,11 +5838,11 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Draft</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Draft</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Normal</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Normal</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5856,48 +5859,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">paintParams</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
+<td class="codetype"><span class="SCde">paintParams</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">paintQuality</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
+<td class="codetype"><span class="SCde">paintQuality</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">transform</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span></span></td>
+<td class="codetype"><span class="SCde">transform</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">blendingMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
+<td class="codetype"><span class="SCde">blendingMode</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">interpolationMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span></span></td>
+<td class="codetype"><span class="SCde">interpolationMode</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">clippingRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">clippingRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackClipRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)</span></td>
+<td class="codetype"><span class="SCde">stackClipRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">clippingRectOn</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">clippingRectOn</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">colorMask</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span></span></td>
+<td class="codetype"><span class="SCde">colorMask</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5914,526 +5917,526 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">commandBuffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Command">Command</a></span>)</span></td>
+<td class="codetype"><span class="SCde">commandBuffer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertexBuffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
+<td class="codetype"><span class="SCde">vertexBuffer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">triangulateIdx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">s32</span>)</span></td>
+<td class="codetype"><span class="SCde">triangulateIdx</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fake</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">fake</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sharedSolidPen</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span></span></td>
+<td class="codetype"><span class="SCde">sharedSolidPen</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sharedSolidBrush</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="codetype"><span class="SCde">sharedSolidBrush</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sharedLinePath</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span></span></td>
+<td class="codetype"><span class="SCde">sharedLinePath</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sharedLinePathList</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span></span></td>
+<td class="codetype"><span class="SCde">sharedLinePathList</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">sharedRoundTmp</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'({factor: <span class="SyntaxType">f32</span>, pos: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span>})</span></td>
+<td class="codetype"><span class="SCde">sharedRoundTmp</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({factor: <span class="STpe">f32</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>})</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curState</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span></span></td>
+<td class="codetype"><span class="SCde">curState</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackState</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
+<td class="codetype"><span class="SCde">stackState</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackTransform</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span>)</span></td>
+<td class="codetype"><span class="SCde">stackTransform</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lastTexture0Type</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
+<td class="codetype"><span class="SCde">lastTexture0Type</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackRT</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="codetype"><span class="SCde">stackRT</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curRT</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
+<td class="codetype"><span class="SCde">curRT</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lastTexture0Handle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">lastTexture0Handle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hasTextureFont</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">hasTextureFont</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">drawingBegin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">drawingBegin</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">overlapMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">overlapMode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">canSetTexture0</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">canSetTexture0</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Painter_addParams"><span class="SyntaxCode"><span class="SyntaxFunction">addParams</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_addParams"><span class="SCde"><span class="SFct">addParams</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_begin"><span class="SyntaxCode"><span class="SyntaxFunction">begin</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_begin"><span class="SCde"><span class="SFct">begin</span>()</spa</a></td>
 <td>Call this before drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_bindRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">bindRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_bindRenderTarget"><span class="SCde"><span class="SFct">bindRenderTarget</span>()</spa</a></td>
 <td>Bind a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_capStyleExtent"><span class="SyntaxCode"><span class="SyntaxFunction">capStyleExtent</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_capStyleExtent"><span class="SCde"><span class="SFct">capStyleExtent</span>()</spa</a></td>
 <td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_computeLayout"><span class="SyntaxCode"><span class="SyntaxFunction">computeLayout</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
 <td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc"><span class="SyntaxCode"><span class="SyntaxFunction">drawArc</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawArc"><span class="SCde"><span class="SFct">drawArc</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw an arc between two angles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc"><span class="SyntaxCode"><span class="SyntaxFunction">drawArc</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawArc"><span class="SCde"><span class="SFct">drawArc</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle"><span class="SyntaxCode"><span class="SyntaxFunction">drawCircle</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawCircle"><span class="SCde"><span class="SFct">drawCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw an empty circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle"><span class="SyntaxCode"><span class="SyntaxFunction">drawCircle</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawCircle"><span class="SCde"><span class="SFct">drawCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse"><span class="SyntaxCode"><span class="SyntaxFunction">drawEllipse</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawEllipse"><span class="SCde"><span class="SFct">drawEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw an empty ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse"><span class="SyntaxCode"><span class="SyntaxFunction">drawEllipse</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawEllipse"><span class="SCde"><span class="SFct">drawEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SyntaxCode"><span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Vector2</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Vector2</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td>Draw a line. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SyntaxCode"><span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SyntaxCode"><span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SyntaxCode"><span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SyntaxCode"><span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td>Draw the line path with the given <code class="incode">pen</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SyntaxCode"><span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePathList</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxConstant">DrawPathListMode</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>, <span class="SCst">DrawPathListMode</span>)</span></a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SyntaxCode"><span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePathList</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>, <span class="SyntaxConstant">DrawPathListMode</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>, <span class="SCst">DrawPathListMode</span>)</span></a></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw an empty rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRichString"><span class="SyntaxCode"><span class="SyntaxFunction">drawRichString</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_drawRichString"><span class="SCde"><span class="SFct">drawRichString</span>()</spa</a></td>
 <td>Draw a rich string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw an empty round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Pen</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString"><span class="SyntaxCode"><span class="SyntaxFunction">drawString</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">string</span>, *<span class="SyntaxConstant">Font</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>, <span class="SyntaxConstant">UnderlineStyle</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawString"><span class="SCde"><span class="SFct">drawString</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString"><span class="SyntaxCode"><span class="SyntaxFunction">drawString</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">string</span>, *<span class="SyntaxConstant">Font</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>, <span class="SyntaxConstant">UnderlineStyle</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawString"><span class="SCde"><span class="SFct">drawString</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawStringCenter"><span class="SyntaxCode"><span class="SyntaxFunction">drawStringCenter</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_drawStringCenter"><span class="SCde"><span class="SFct">drawStringCenter</span>()</spa</a></td>
 <td>Draw a simple string (centered). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Draw a portion of an image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SyntaxCode"><span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Texture</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Draw a texture image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_end"><span class="SyntaxCode"><span class="SyntaxFunction">end</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
 <td>Call this after drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_endClippingRegion"><span class="SyntaxCode"><span class="SyntaxFunction">endClippingRegion</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_endClippingRegion"><span class="SCde"><span class="SFct">endClippingRegion</span>()</spa</a></td>
 <td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle"><span class="SyntaxCode"><span class="SyntaxFunction">fillCircle</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillCircle"><span class="SCde"><span class="SFct">fillCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Draw a solid circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle"><span class="SyntaxCode"><span class="SyntaxFunction">fillCircle</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillCircle"><span class="SCde"><span class="SFct">fillCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse"><span class="SyntaxCode"><span class="SyntaxFunction">fillEllipse</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillEllipse"><span class="SCde"><span class="SFct">fillEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Draw a solid ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse"><span class="SyntaxCode"><span class="SyntaxFunction">fillEllipse</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillEllipse"><span class="SCde"><span class="SFct">fillEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SyntaxCode"><span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Fill the line path with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SyntaxCode"><span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SyntaxCode"><span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePathList</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SyntaxCode"><span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePathList</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon"><span class="SyntaxCode"><span class="SyntaxFunction">fillPolygon</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPolygon"><span class="SCde"><span class="SFct">fillPolygon</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Fill the polygon with the given <code class="incode">brush</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon"><span class="SyntaxCode"><span class="SyntaxFunction">fillPolygon</span>(<span class="SyntaxKeyword">self</span>, *<span class="SyntaxConstant">LinePath</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillPolygon"><span class="SCde"><span class="SFct">fillPolygon</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td>Fill the polygon with the given color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Draw a filled rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Brush</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
 <td>Draw a filled round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SyntaxCode"><span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Color</span>)</span></a></td>
+<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">getClippingRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_getClippingRect"><span class="SCde"><span class="SFct">getClippingRect</span>()</spa</a></td>
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs"><span class="SyntaxCode"><span class="SyntaxFunction">getGlyphs</span>(<span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">rune</span>), *<span class="SyntaxConstant">Font</span>)</span></a></td>
+<td><a href="#Pixel_Painter_getGlyphs"><span class="SCde"><span class="SFct">getGlyphs</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">rune</span>), *<span class="SCst">Font</span>)</span></a></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs"><span class="SyntaxCode"><span class="SyntaxFunction">getGlyphs</span>(<span class="SyntaxType">string</span>, *<span class="SyntaxConstant">Font</span>)</span></a></td>
+<td><a href="#Pixel_Painter_getGlyphs"><span class="SCde"><span class="SFct">getGlyphs</span>(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></a></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getParams"><span class="SyntaxCode"><span class="SyntaxFunction">getParams</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_getParams"><span class="SCde"><span class="SFct">getParams</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getQuality"><span class="SyntaxCode"><span class="SyntaxFunction">getQuality</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_getQuality"><span class="SCde"><span class="SFct">getQuality</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getTransform"><span class="SyntaxCode"><span class="SyntaxFunction">getTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_getTransform"><span class="SCde"><span class="SFct">getTransform</span>()</spa</a></td>
 <td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_isEmptyClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">isEmptyClippingRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_isEmptyClippingRect"><span class="SCde"><span class="SFct">isEmptyClippingRect</span>()</spa</a></td>
 <td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureRune"><span class="SyntaxCode"><span class="SyntaxFunction">measureRune</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_measureRune"><span class="SCde"><span class="SFct">measureRune</span>()</spa</a></td>
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString"><span class="SyntaxCode"><span class="SyntaxFunction">measureString</span>(<span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Array</span>'(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">GlyphDesc</span>))</span></a></td>
+<td><a href="#Pixel_Painter_measureString"><span class="SCde"><span class="SFct">measureString</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">GlyphDesc</span>))</span></a></td>
 <td>Returns the bounding rectangle if a given text, at a given position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString"><span class="SyntaxCode"><span class="SyntaxFunction">measureString</span>(<span class="SyntaxType">string</span>, *<span class="SyntaxConstant">Font</span>)</span></a></td>
+<td><a href="#Pixel_Painter_measureString"><span class="SCde"><span class="SFct">measureString</span>(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></a></td>
 <td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">popClippingRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_popClippingRect"><span class="SCde"><span class="SFct">popClippingRect</span>()</spa</a></td>
 <td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popState"><span class="SyntaxCode"><span class="SyntaxFunction">popState</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_popState"><span class="SCde"><span class="SFct">popState</span>()</spa</a></td>
 <td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popTransform"><span class="SyntaxCode"><span class="SyntaxFunction">popTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_popTransform"><span class="SCde"><span class="SFct">popTransform</span>()</spa</a></td>
 <td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">pushClippingRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_pushClippingRect"><span class="SCde"><span class="SFct">pushClippingRect</span>()</spa</a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingSurfaceRect"><span class="SyntaxCode"><span class="SyntaxFunction">pushClippingSurfaceRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_pushClippingSurfaceRect"><span class="SCde"><span class="SFct">pushClippingSurfaceRect</span>()</spa</a></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushState"><span class="SyntaxCode"><span class="SyntaxFunction">pushState</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_pushState"><span class="SCde"><span class="SFct">pushState</span>()</spa</a></td>
 <td>Save the current paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushTransform"><span class="SyntaxCode"><span class="SyntaxFunction">pushTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_pushTransform"><span class="SCde"><span class="SFct">pushTransform</span>()</spa</a></td>
 <td>Push the current transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_releaseRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">releaseRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_releaseRenderTarget"><span class="SCde"><span class="SFct">releaseRenderTarget</span>()</spa</a></td>
 <td>Release the render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_removeParams"><span class="SyntaxCode"><span class="SyntaxFunction">removeParams</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_removeParams"><span class="SCde"><span class="SFct">removeParams</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">resetClippingRect</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_resetClippingRect"><span class="SCde"><span class="SFct">resetClippingRect</span>()</spa</a></td>
 <td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRegion"><span class="SyntaxCode"><span class="SyntaxFunction">resetClippingRegion</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_resetClippingRegion"><span class="SCde"><span class="SFct">resetClippingRegion</span>()</spa</a></td>
 <td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetState"><span class="SyntaxCode"><span class="SyntaxFunction">resetState</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_resetState"><span class="SCde"><span class="SFct">resetState</span>()</spa</a></td>
 <td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetTransform"><span class="SyntaxCode"><span class="SyntaxFunction">resetTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_resetTransform"><span class="SCde"><span class="SFct">resetTransform</span>()</spa</a></td>
 <td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>)</span></a></td>
+<td><a href="#Pixel_Painter_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransformInPlace"><span class="SyntaxCode"><span class="SyntaxFunction">rotateTransformInPlace</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_rotateTransformInPlace"><span class="SCde"><span class="SFct">rotateTransformInPlace</span>()</spa</a></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_scaleTransform"><span class="SyntaxCode"><span class="SyntaxFunction">scaleTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_scaleTransform"><span class="SCde"><span class="SFct">scaleTransform</span>()</spa</a></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setAntialiased"><span class="SyntaxCode"><span class="SyntaxFunction">setAntialiased</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setAntialiased"><span class="SCde"><span class="SFct">setAntialiased</span>()</spa</a></td>
 <td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setBlendingMode"><span class="SyntaxCode"><span class="SyntaxFunction">setBlendingMode</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setBlendingMode"><span class="SCde"><span class="SFct">setBlendingMode</span>()</spa</a></td>
 <td>Set the current blending mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">setClippingRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Rectangle</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setClippingRect"><span class="SCde"><span class="SFct">setClippingRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect"><span class="SyntaxCode"><span class="SyntaxFunction">setClippingRect</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setClippingRect"><span class="SCde"><span class="SFct">setClippingRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRegionMode"><span class="SyntaxCode"><span class="SyntaxFunction">setClippingRegionMode</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setClippingRegionMode"><span class="SCde"><span class="SFct">setClippingRegionMode</span>()</spa</a></td>
 <td>Set the clipping region mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask"><span class="SyntaxCode"><span class="SyntaxFunction">setColorMask</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">bool</span>, <span class="SyntaxType">bool</span>, <span class="SyntaxType">bool</span>, <span class="SyntaxType">bool</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setColorMask"><span class="SCde"><span class="SFct">setColorMask</span>(<span class="SKwd">self</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask"><span class="SyntaxCode"><span class="SyntaxFunction">setColorMask</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">ColorMask</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setColorMask"><span class="SCde"><span class="SFct">setColorMask</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ColorMask</span>)</span></a></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskAlpha"><span class="SyntaxCode"><span class="SyntaxFunction">setColorMaskAlpha</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setColorMaskAlpha"><span class="SCde"><span class="SFct">setColorMaskAlpha</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskColor"><span class="SyntaxCode"><span class="SyntaxFunction">setColorMaskColor</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setColorMaskColor"><span class="SCde"><span class="SFct">setColorMaskColor</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskFull"><span class="SyntaxCode"><span class="SyntaxFunction">setColorMaskFull</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setColorMaskFull"><span class="SCde"><span class="SFct">setColorMaskFull</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setInterpolationMode"><span class="SyntaxCode"><span class="SyntaxFunction">setInterpolationMode</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setInterpolationMode"><span class="SCde"><span class="SFct">setInterpolationMode</span>()</spa</a></td>
 <td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setParams"><span class="SyntaxCode"><span class="SyntaxFunction">setParams</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setParams"><span class="SCde"><span class="SFct">setParams</span>()</spa</a></td>
 <td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setQuality"><span class="SyntaxCode"><span class="SyntaxFunction">setQuality</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setQuality"><span class="SCde"><span class="SFct">setQuality</span>()</spa</a></td>
 <td>Set the paint quality. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShader"><span class="SyntaxCode"><span class="SyntaxFunction">setShader</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setShader"><span class="SCde"><span class="SFct">setShader</span>()</spa</a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam"><span class="SyntaxCode"><span class="SyntaxFunction">setShaderParam</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">ShaderParamHandle</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setShaderParam"><span class="SCde"><span class="SFct">setShaderParam</span>(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam"><span class="SyntaxCode"><span class="SyntaxFunction">setShaderParam</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxConstant">ShaderParamHandle</span>, <span class="SyntaxType">s32</span>)</span></a></td>
+<td><a href="#Pixel_Painter_setShaderParam"><span class="SCde"><span class="SFct">setShaderParam</span>(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">s32</span>)</span></a></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setState"><span class="SyntaxCode"><span class="SyntaxFunction">setState</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setState"><span class="SCde"><span class="SFct">setState</span>()</spa</a></td>
 <td>Set the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setTransform"><span class="SyntaxCode"><span class="SyntaxFunction">setTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_setTransform"><span class="SCde"><span class="SFct">setTransform</span>()</spa</a></td>
 <td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_startClippingRegion"><span class="SyntaxCode"><span class="SyntaxFunction">startClippingRegion</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_startClippingRegion"><span class="SCde"><span class="SFct">startClippingRegion</span>()</spa</a></td>
 <td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_translateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">translateTransform</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_translateTransform"><span class="SCde"><span class="SFct">translateTransform</span>()</spa</a></td>
 <td>Set the paint position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_unbindRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">unbindRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_Painter_unbindRenderTarget"><span class="SCde"><span class="SFct">unbindRenderTarget</span>()</spa</a></td>
 <td>Bind a render target. </td>
 </tr>
 </table>
@@ -6448,7 +6451,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">addParams</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, add: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6462,7 +6465,7 @@
 </table>
 </p>
 <p>Call this before drawing. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">begin</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">begin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6476,7 +6479,7 @@
 </table>
 </p>
 <p>Bind a render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bindRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, tgt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha = <span class="SyntaxKeyword">false</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bindRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6490,7 +6493,7 @@
 </table>
 </p>
 <p>Returns the extent in both directions of a given LineCapStyle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">capStyleExtent</span>(capStyle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span>, lineSize: <span class="SyntaxType">f32</span>, capScale: <span class="SyntaxType">f32</span>)-&gt;{w: <span class="SyntaxType">f32</span>, l: <span class="SyntaxType">f32</span>}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">capStyleExtent</span>(capStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span>, lineSize: <span class="STpe">f32</span>, capScale: <span class="STpe">f32</span>)-&gt;{w: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>}</span></code>
 </div>
 <ul>
 <li><code class="incode">lineSize</code> is the supposed line drawing size</li>
@@ -6509,7 +6512,7 @@
 </table>
 </p>
 <p>Clear the rendering surface. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6523,7 +6526,7 @@
 </table>
 </p>
 <p>Recompute the layout for a given rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">computeLayout</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pos: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, text: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, text: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6537,9 +6540,9 @@
 </table>
 </p>
 <p>Draw an arc between two angles. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawArc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, startAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, endAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawArc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, startAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, endAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawArc</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, startAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, endAngle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawArc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, startAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, endAngle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6553,9 +6556,9 @@
 </table>
 </p>
 <p>Draw an empty circle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawCircle</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawCircle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawCircle</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawCircle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6569,9 +6572,9 @@
 </table>
 </p>
 <p>Draw an empty ellipse. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawEllipse</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawEllipse</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6585,10 +6588,10 @@
 </table>
 </p>
 <p>Draw a line. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, start: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span>, end: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>, end: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, startX: <span class="SyntaxType">f32</span>, startY: <span class="SyntaxType">f32</span>, endX: <span class="SyntaxType">f32</span>, endY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawLine</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, startX: <span class="SyntaxType">f32</span>, startY: <span class="SyntaxType">f32</span>, endX: <span class="SyntaxType">f32</span>, endY: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, startX: <span class="STpe">f32</span>, startY: <span class="STpe">f32</span>, endX: <span class="STpe">f32</span>, endY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)
+<span class="SKwd">func</span> <span class="SFct">drawLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, startX: <span class="STpe">f32</span>, startY: <span class="STpe">f32</span>, endX: <span class="STpe">f32</span>, endY: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6602,16 +6605,16 @@
 </table>
 </p>
 <p>Draw the line path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>Draw the line path with the given <code class="incode">pen</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>Draw the line path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span> = .<span class="SyntaxConstant">Separate</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span> = .<span class="SCst">Separate</span>)</span></code>
 </div>
 <p>Draw the line path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span> = .<span class="SyntaxConstant">Separate</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DrawPathListMode">DrawPathListMode</a></span> = .<span class="SCst">Separate</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6625,11 +6628,11 @@
 </table>
 </p>
 <p>Draw an empty rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)
+<span class="SKwd">func</span> <span class="SFct">drawRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)
+<span class="SKwd">func</span> <span class="SFct">drawRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6643,7 +6646,7 @@
 </table>
 </p>
 <p>Draw a rich string. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRichString</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pos: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, text: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>, forceCompute = <span class="SyntaxKeyword">false</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRichString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, text: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>, forceCompute = <span class="SKwd">false</span>)</span></code>
 </div>
 <p> A rich string can be multiline, and accepts  The layout will be computed at the first call, and each time <code class="incode">pos</code> has changed </p>
 <p>
@@ -6658,11 +6661,11 @@
 </table>
 </p>
 <p>Draw an empty round rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)
+<span class="SKwd">func</span> <span class="SFct">drawRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)
+<span class="SKwd">func</span> <span class="SFct">drawRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span> = <span class="SNum">1</span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, pen: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6676,10 +6679,10 @@
 </table>
 </p>
 <p>Draw a simple string. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawString</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, text: <span class="SyntaxType">string</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>, under = <span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SyntaxConstant">None</span>, zoom = <span class="SyntaxNumber">1.0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, text: <span class="STpe">string</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>, under = <span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SCst">None</span>, zoom = <span class="SNum">1.0</span>)</span></code>
 </div>
 <p>Draw a simple string. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawString</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, text: <span class="SyntaxType">string</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, under = <span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SyntaxConstant">None</span>, zoom = <span class="SyntaxNumber">1.0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, text: <span class="STpe">string</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, under = <span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SCst">None</span>, zoom = <span class="SNum">1.0</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6693,7 +6696,7 @@
 </table>
 </p>
 <p>Draw a simple string (centered). </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawStringCenter</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, text: <span class="SyntaxType">string</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, under = <span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SyntaxConstant">None</span>, zoom = <span class="SyntaxNumber">1.0</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawStringCenter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, text: <span class="STpe">string</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, under = <span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span>.<span class="SCst">None</span>, zoom = <span class="SNum">1.0</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6707,14 +6710,14 @@
 </table>
 </p>
 <p>Draw a portion of an image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, dstRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, srcRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, srcRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, srcRect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dstRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, srcRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)
+<span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)
+<span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, srcRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)
+<span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)
+<span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, srcRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)</span></code>
 </div>
 <p>Draw a texture image. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">drawTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span> = <span class="SyntaxConstant"><a href="#Pixel_Argb">Argb</a></span>.<span class="SyntaxConstant">White</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span> = <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>.<span class="SCst">White</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6728,7 +6731,7 @@
 </table>
 </p>
 <p>Call this after drawing. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">end</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6742,7 +6745,7 @@
 </table>
 </p>
 <p>Stop painting in the clipping buffer. Back to normal. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">endClippingRegion</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endClippingRegion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6756,9 +6759,9 @@
 </table>
 </p>
 <p>Draw a solid circle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillCircle</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillCircle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillCircle</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radius: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillCircle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radius: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6772,9 +6775,9 @@
 </table>
 </p>
 <p>Draw a solid ellipse. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillEllipse</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillEllipse</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6788,16 +6791,16 @@
 </table>
 </p>
 <p>Fill the line path with the given <code class="incode">brush</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
 <p>Fill the line path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
 <p>Fill the line path. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPath</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6811,10 +6814,10 @@
 </table>
 </p>
 <p>Fill the polygon with the given <code class="incode">brush</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPolygon</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
 <p>Fill the polygon with the given color. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillPolygon</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, path: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6828,11 +6831,11 @@
 </table>
 </p>
 <p>Draw a filled rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6846,11 +6849,11 @@
 </table>
 </p>
 <p>Draw a filled round rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)
-<span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, brush: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">fillRoundRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, left: <span class="SyntaxType">f32</span>, top: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>, radiusX: <span class="SyntaxType">f32</span>, radiusY: <span class="SyntaxType">f32</span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillRoundRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, top: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6864,7 +6867,7 @@
 </table>
 </p>
 <p>Get the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6878,10 +6881,10 @@
 </table>
 </p>
 <p>Returns all the glyphs for a given string and font. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getGlyphs</span>(text: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">rune</span>), font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">rune</span>), font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></code>
 </div>
 <p>Returns all the glyphs for a given string and font. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getGlyphs</span>(text: <span class="SyntaxType">string</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGlyphs</span>(text: <span class="STpe">string</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6894,7 +6897,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getParams</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6907,7 +6910,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getQuality</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getQuality</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6921,7 +6924,7 @@
 </table>
 </p>
 <p>Returns the current tranformation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6935,7 +6938,7 @@
 </table>
 </p>
 <p>Returns true if the current clipping rectangle is empty (no drawing !). </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isEmptyClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6949,7 +6952,7 @@
 </table>
 </p>
 <p>Get a rune size for a given font. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">measureRune</span>(c: <span class="SyntaxType">rune</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureRune</span>(c: <span class="STpe">rune</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6963,10 +6966,10 @@
 </table>
 </p>
 <p>Returns the bounding rectangle if a given text, at a given position. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">measureString</span>(text: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>))-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></code>
 </div>
 <p>Returns the metrics of a given text. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">measureString</span>(text: <span class="SyntaxType">string</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">measureString</span>(text: <span class="STpe">string</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringMetrics">StringMetrics</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -6980,7 +6983,7 @@
 </table>
 </p>
 <p>Restore the original clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">popClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -6994,7 +6997,7 @@
 </table>
 </p>
 <p>Restore the last paint state. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">popState</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7008,7 +7011,7 @@
 </table>
 </p>
 <p>Restore the pushed transformation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">popTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7022,7 +7025,7 @@
 </table>
 </p>
 <p>Interface the given rectangle with the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pushClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, isSurfacePos = <span class="SyntaxKeyword">false</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, isSurfacePos = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7036,7 +7039,7 @@
 </table>
 </p>
 <p>Interface the given rectangle with the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pushClippingSurfaceRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushClippingSurfaceRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7050,7 +7053,7 @@
 </table>
 </p>
 <p>Save the current paint state. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pushState</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7064,7 +7067,7 @@
 </table>
 </p>
 <p>Push the current transformation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pushTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7078,7 +7081,7 @@
 </table>
 </p>
 <p>Release the render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">releaseRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, tgt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7091,7 +7094,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">removeParams</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, remove: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, remove: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7105,7 +7108,7 @@
 </table>
 </p>
 <p>Reset the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7119,7 +7122,7 @@
 </table>
 </p>
 <p>Reset clipping buffer to its default value (no more clipping). </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetClippingRegion</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetClippingRegion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7133,7 +7136,7 @@
 </table>
 </p>
 <p>Reset the current painting state. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetState</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7147,7 +7150,7 @@
 </table>
 </p>
 <p>Reset the paint position, rotation, scale. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7161,10 +7164,10 @@
 </table>
 </p>
 <p>Set the paint rotation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></code>
 </div>
 <p>Set the paint rotation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7178,7 +7181,7 @@
 </table>
 </p>
 <p>Set the paint rotation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rotateTransformInPlace</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransformInPlace</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></code>
 </div>
 <p> Will rotate around the current transformation position. </p>
 <p>
@@ -7193,7 +7196,7 @@
 </table>
 </p>
 <p>Set the paint scale. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">scaleTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7207,7 +7210,7 @@
 </table>
 </p>
 <p>Set antialiased mode on/off. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setAntialiased</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, aa = <span class="SyntaxKeyword">true</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAntialiased</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, aa = <span class="SKwd">true</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7221,7 +7224,7 @@
 </table>
 </p>
 <p>Set the current blending mode. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setBlendingMode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBlendingMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7235,10 +7238,10 @@
 </table>
 </p>
 <p>Set the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
 </div>
 <p>Set the current clipping rectangle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setClippingRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>, width: <span class="SyntaxType">f32</span>, height: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setClippingRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7252,7 +7255,7 @@
 </table>
 </p>
 <p>Set the clipping region mode. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setClippingRegionMode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setClippingRegionMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7266,10 +7269,10 @@
 </table>
 </p>
 <p>Set color mask. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setColorMask</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, r: <span class="SyntaxType">bool</span>, g: <span class="SyntaxType">bool</span>, b: <span class="SyntaxType">bool</span>, a: <span class="SyntaxType">bool</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColorMask</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, r: <span class="STpe">bool</span>, g: <span class="STpe">bool</span>, b: <span class="STpe">bool</span>, a: <span class="STpe">bool</span>)</span></code>
 </div>
 <p>Set color mask. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setColorMask</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, cm: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ColorMask">ColorMask</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColorMask</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cm: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7282,7 +7285,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setColorMaskAlpha</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColorMaskAlpha</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7295,7 +7298,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setColorMaskColor</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColorMaskColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7308,7 +7311,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setColorMaskFull</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColorMaskFull</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7322,7 +7325,7 @@
 </table>
 </p>
 <p>Set the texture interpolation mode. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setInterpolationMode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mode: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInterpolationMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7336,7 +7339,7 @@
 </table>
 </p>
 <p>Set the paint parameters. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setParams</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, add: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span>, remove: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintParams">PaintParams</a></span> = .<span class="SyntaxConstant">Zero</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setParams</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span>, remove: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span> = .<span class="SCst">Zero</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7350,7 +7353,7 @@
 </table>
 </p>
 <p>Set the paint quality. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setQuality</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, quality: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintQuality">PaintQuality</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setQuality</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, quality: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7364,7 +7367,7 @@
 </table>
 </p>
 <p>Set the current shader. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setShader</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, shader: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span> = <span class="SyntaxKeyword">null</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setShader</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, shader: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span> = <span class="SKwd">null</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7378,10 +7381,10 @@
 </table>
 </p>
 <p>Set a shader parameter. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setShaderParam</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, param: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, val: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setShaderParam</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, param: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, val: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>Set a shader parameter. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setShaderParam</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, param: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, val: <span class="SyntaxType">s32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setShaderParam</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, param: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, val: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7395,7 +7398,7 @@
 </table>
 </p>
 <p>Set the current painting state. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setState</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, state: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PaintState">PaintState</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, state: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7409,7 +7412,7 @@
 </table>
 </p>
 <p>Set the paint transformation. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, tr: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tr: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7423,7 +7426,7 @@
 </table>
 </p>
 <p>Start painting in the clipping buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">startClippingRegion</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mode = <span class="SyntaxConstant"><a href="#Pixel_ClippingMode">ClippingMode</a></span>.<span class="SyntaxConstant">Set</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startClippingRegion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode = <span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>.<span class="SCst">Set</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7437,7 +7440,7 @@
 </table>
 </p>
 <p>Set the paint position. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">translateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">translateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7451,7 +7454,7 @@
 </table>
 </p>
 <p>Bind a render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">unbindRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unbindRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7466,98 +7469,98 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">size</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">size</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">brush</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="codetype"><span class="SCde">brush</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pattern</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">f32</span>)</span></td>
+<td class="codetype"><span class="SCde">pattern</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dashBeginCapStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">dashBeginCapStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dashEndCapStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">dashEndCapStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">borderPos</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BorderPos">BorderPos</a></span></span></td>
+<td class="codetype"><span class="SCde">borderPos</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BorderPos">BorderPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">capStartScaleX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">capStartScaleX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">capStartScaleY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">capStartScaleY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">capEndScaleX</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">capEndScaleX</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">capEndScaleY</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">capEndScaleY</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">joinMiterLimit</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">joinMiterLimit</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">plotOffset</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">plotOffset</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dashStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DashStyle">DashStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">dashStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">beginCapStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">beginCapStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">endCapStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">endCapStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">joinStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">joinStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Pen_createDash"><span class="SyntaxCode"><span class="SyntaxFunction">createDash</span>()</spa</a></td>
+<td><a href="#Pixel_Pen_createDash"><span class="SCde"><span class="SFct">createDash</span>()</spa</a></td>
 <td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createHatch"><span class="SyntaxCode"><span class="SyntaxFunction">createHatch</span>()</spa</a></td>
+<td><a href="#Pixel_Pen_createHatch"><span class="SCde"><span class="SFct">createHatch</span>()</spa</a></td>
 <td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createSolid"><span class="SyntaxCode"><span class="SyntaxFunction">createSolid</span>()</spa</a></td>
+<td><a href="#Pixel_Pen_createSolid"><span class="SCde"><span class="SFct">createSolid</span>()</spa</a></td>
 <td>Returns a solid color pen. </td>
 </tr>
 </table>
@@ -7573,7 +7576,7 @@
 </table>
 </p>
 <p>Returns a dash pen. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createDash</span>(style: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DashStyle">DashStyle</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, size: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDash</span>(style: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7587,7 +7590,7 @@
 </table>
 </p>
 <p>Return a predefined hatch pen. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createHatch</span>(type: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, size: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createHatch</span>(type: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7601,7 +7604,7 @@
 </table>
 </p>
 <p>Returns a solid color pen. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createSolid</span>(color: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>, size: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">1</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Pen">Pen</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSolid</span>(color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, size: <span class="STpe">f32</span> = <span class="SNum">1</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7617,19 +7620,19 @@
 <p>Desribe the layout format of one image pixel. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BGR8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BGR8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">BGRA8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">BGRA8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RGB8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RGB8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">RGBA8</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">RGBA8</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7645,7 +7648,7 @@
 </table>
 </p>
 <p>Returns the bit depth of each channel. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bitDepth</span>(<span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bitDepth</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7659,7 +7662,7 @@
 </table>
 </p>
 <p>Returns the bpp (bits per pixel) of the given pixel format. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bpp</span>(<span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bpp</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7673,7 +7676,7 @@
 </table>
 </p>
 <p>Returns the number of image channels. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">channels</span>(<span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">u8</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">channels</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7687,7 +7690,7 @@
 </table>
 </p>
 <p>Returns true if the given pixel format has an alpha channel. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">hasAlpha</span>(<span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasAlpha</span>(<span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7711,7 +7714,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canDecode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canDecode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7724,7 +7727,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7739,13 +7742,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">compressionLevel</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Compress</span>.<span class="SyntaxConstant">Deflate</span>.<span class="SyntaxConstant">CompressionLevel</span></span></td>
+<td class="codetype"><span class="SCde">compressionLevel</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Compress</span>.<span class="SCst">Deflate</span>.<span class="SCst">CompressionLevel</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">filtering</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">filtering</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7771,7 +7774,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canEncode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canEncode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7784,7 +7787,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">encode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, result: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">ConcatBuffer</span>, image: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, options: <span class="SyntaxType">any</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, image: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, options: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7799,13 +7802,13 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">p</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="codetype"><span class="SCde">p</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">q</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="codetype"><span class="SCde">q</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7822,18 +7825,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> v</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> v</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">edgeList</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="codetype"><span class="SCde">edgeList</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">border</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">2</span>] *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
+<td class="codetype"><span class="SCde">border</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7851,27 +7854,27 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint"><span class="SyntaxCode"><span class="SyntaxFunction">addPoint</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint"><span class="SCde"><span class="SFct">addPoint</span>()</spa</a></td>
 <td>Register a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine"><span class="SyntaxCode"><span class="SyntaxFunction">endPolyLine</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine"><span class="SCde"><span class="SFct">endPolyLine</span>()</spa</a></td>
 <td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles"><span class="SyntaxCode"><span class="SyntaxFunction">getTriangles</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles"><span class="SCde"><span class="SFct">getTriangles</span>()</spa</a></td>
 <td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine"><span class="SyntaxCode"><span class="SyntaxFunction">startPolyLine</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine"><span class="SCde"><span class="SFct">startPolyLine</span>()</spa</a></td>
 <td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate"><span class="SyntaxCode"><span class="SyntaxFunction">triangulate</span>()</spa</a></td>
+<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate"><span class="SCde"><span class="SFct">triangulate</span>()</spa</a></td>
 <td>Triangulate. </td>
 </tr>
 </table>
@@ -7887,7 +7890,7 @@
 </table>
 </p>
 <p>Register a new point. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">addPoint</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7901,7 +7904,7 @@
 </table>
 </p>
 <p>Clear content. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7915,7 +7918,7 @@
 </table>
 </p>
 <p>To call to register the polyline. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">endPolyLine</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endPolyLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7929,7 +7932,7 @@
 </table>
 </p>
 <p>Returns the list of triangles. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getTriangles</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;[..] *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTriangles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -7943,7 +7946,7 @@
 </table>
 </p>
 <p>To call before adding a polyline. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">startPolyLine</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPolyLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7957,7 +7960,7 @@
 </table>
 </p>
 <p>Triangulate. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">triangulate</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">triangulate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7972,28 +7975,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">constrainedEdge</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] <span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">constrainedEdge</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">delaunayEdge</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] <span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">delaunayEdge</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">points</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="codetype"><span class="SCde">points</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">neighbors</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">3</span>] *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant">Poly2Tri</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
+<td class="codetype"><span class="SCde">neighbors</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">interior</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">interior</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8010,85 +8013,85 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">points</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span>)</span></td>
+<td class="codetype"><span class="SCde">points</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isClockwise</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isClockwise</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isConvex</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isConvex</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">area</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">area</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">totalLen</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">totalLen</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMin</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMin</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">bvMax</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">bvMax</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Polygon_add"><span class="SyntaxCode"><span class="SyntaxFunction">add</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_add"><span class="SCde"><span class="SFct">add</span>()</spa</a></td>
 <td>Add a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clean"><span class="SyntaxCode"><span class="SyntaxFunction">clean</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_clean"><span class="SCde"><span class="SFct">clean</span>()</spa</a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear all points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_compute"><span class="SyntaxCode"><span class="SyntaxFunction">compute</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getClean"><span class="SyntaxCode"><span class="SyntaxFunction">getClean</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_getClean"><span class="SCde"><span class="SFct">getClean</span>()</spa</a></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getOffset"><span class="SyntaxCode"><span class="SyntaxFunction">getOffset</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_getOffset"><span class="SCde"><span class="SFct">getOffset</span>()</spa</a></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint"><span class="SyntaxCode"><span class="SyntaxFunction">getPoint</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">u64</span>)</span></a></td>
+<td><a href="#Pixel_Polygon_getPoint"><span class="SCde"><span class="SFct">getPoint</span>(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></a></td>
 <td>Get the given point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint"><span class="SyntaxCode"><span class="SyntaxFunction">getPoint</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">u64</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Polygon_getPoint"><span class="SCde"><span class="SFct">getPoint</span>(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_normalizeDist"><span class="SyntaxCode"><span class="SyntaxFunction">normalizeDist</span>()</spa</a></td>
+<td><a href="#Pixel_Polygon_normalizeDist"><span class="SCde"><span class="SFct">normalizeDist</span>()</spa</a></td>
 <td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset"><span class="SyntaxCode"><span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Polygon_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Fast expand polygon by a given amount. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset"><span class="SyntaxCode"><span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxConstant">JoinStyle</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_Polygon_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 </table>
@@ -8104,7 +8107,7 @@
 </table>
 </p>
 <p>Add a new point. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">add</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, v: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, v: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8118,7 +8121,7 @@
 </table>
 </p>
 <p>Clean polygon by removing bad/unecessary points. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clean</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8132,7 +8135,7 @@
 </table>
 </p>
 <p>Clear all points. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8146,7 +8149,7 @@
 </table>
 </p>
 <p>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">compute</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8160,7 +8163,7 @@
 </table>
 </p>
 <p>Clean polygon by removing bad/unecessary points. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getClean</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClean</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8174,7 +8177,7 @@
 </table>
 </p>
 <p>Slow but quality offset with a joinStyle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getOffset</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">f32</span>, joinStyle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOffset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8188,10 +8191,10 @@
 </table>
 </p>
 <p>Get the given point. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getPoint</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, i: <span class="SyntaxType">u64</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, i: <span class="STpe">u64</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></code>
 </div>
 <p>Get the given point, with an optional offset. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getPoint</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, i: <span class="SyntaxType">u64</span>, offset: <span class="SyntaxType">f32</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, i: <span class="STpe">u64</span>, offset: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8205,7 +8208,7 @@
 </table>
 </p>
 <p>Divide by adding points if two points are too far away. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">normalizeDist</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, dist: <span class="SyntaxType">f32</span>, closed: <span class="SyntaxType">bool</span> = <span class="SyntaxKeyword">true</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeDist</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dist: <span class="STpe">f32</span>, closed: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8219,10 +8222,10 @@
 </table>
 </p>
 <p>Fast expand polygon by a given amount. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>Slow but quality offset with a joinStyle. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">offset</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, value: <span class="SyntaxType">f32</span>, joinStyle: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="SyntaxType">f32</span> = <span class="SyntaxNumber">0.5</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>, joinStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span>, toler: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8237,211 +8240,211 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> native</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertexbuffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">vertexbuffer</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shaderSimple</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span></span></td>
+<td class="codetype"><span class="SCde">shaderSimple</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shaderAA</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderAA">ShaderAA</a></span></span></td>
+<td class="codetype"><span class="SCde">shaderAA</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderAA">ShaderAA</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">shaderBlur</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span></span></td>
+<td class="codetype"><span class="SCde">shaderBlur</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">worldTransform</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Transform2</span></span></td>
+<td class="codetype"><span class="SCde">worldTransform</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">orthoMatrix</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Matrix4x4</span></span></td>
+<td class="codetype"><span class="SCde">orthoMatrix</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Matrix4x4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">modelMatrix</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Matrix4x4</span></span></td>
+<td class="codetype"><span class="SCde">modelMatrix</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Matrix4x4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">whiteTexture</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">whiteTexture</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hatchTextures</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">36</span>] <span class="SyntaxConstant">Ogl</span>.<span class="SyntaxConstant">GLuint</span></span></td>
+<td class="codetype"><span class="SCde">hatchTextures</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">36</span>] <span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">blendingMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
+<td class="codetype"><span class="SCde">blendingMode</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curRC</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span></span></td>
+<td class="codetype"><span class="SCde">curRC</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackReleasedRT</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="codetype"><span class="SCde">stackReleasedRT</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">stackRT</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
+<td class="codetype"><span class="SCde">stackRT</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curRT</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
+<td class="codetype"><span class="SCde">curRT</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">curShader</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="codetype"><span class="SCde">curShader</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">overlapMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">overlapMode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage"><span class="SyntaxCode"><span class="SyntaxFunction">addImage</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Image</span>)</span></a></td>
+<td><a href="#Pixel_RenderOgl_addImage"><span class="SCde"><span class="SFct">addImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></a></td>
 <td>Register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage"><span class="SyntaxCode"><span class="SyntaxFunction">addImage</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxType">string</span>)</span></a></td>
+<td><a href="#Pixel_RenderOgl_addImage"><span class="SCde"><span class="SFct">addImage</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
 <td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_begin"><span class="SyntaxCode"><span class="SyntaxFunction">begin</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_begin"><span class="SCde"><span class="SFct">begin</span>()</spa</a></td>
 <td>To be called before rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_bindRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">bindRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_bindRenderTarget"><span class="SCde"><span class="SFct">bindRenderTarget</span>()</spa</a></td>
 <td>Set the current render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_clear"><span class="SyntaxCode"><span class="SyntaxFunction">clear</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_computeMatrices"><span class="SyntaxCode"><span class="SyntaxFunction">computeMatrices</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_computeMatrices"><span class="SCde"><span class="SFct">computeMatrices</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">createRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_createRenderTarget"><span class="SCde"><span class="SFct">createRenderTarget</span>()</spa</a></td>
 <td>Create a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createShader"><span class="SyntaxCode"><span class="SyntaxFunction">createShader</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_createShader"><span class="SCde"><span class="SFct">createShader</span>()</spa</a></td>
 <td>Create the given shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_deleteRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">deleteRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_deleteRenderTarget"><span class="SCde"><span class="SFct">deleteRenderTarget</span>()</spa</a></td>
 <td>Delete a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_draw"><span class="SyntaxCode"><span class="SyntaxFunction">draw</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_draw"><span class="SCde"><span class="SFct">draw</span>()</spa</a></td>
 <td>Draw the given painter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_end"><span class="SyntaxCode"><span class="SyntaxFunction">end</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
 <td>To be called after rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">getRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_getRenderTarget"><span class="SCde"><span class="SFct">getRenderTarget</span>()</spa</a></td>
 <td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTargetSize"><span class="SyntaxCode"><span class="SyntaxFunction">getTargetSize</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_getTargetSize"><span class="SCde"><span class="SFct">getTargetSize</span>()</spa</a></td>
 <td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTexturePixels"><span class="SyntaxCode"><span class="SyntaxFunction">getTexturePixels</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_getTexturePixels"><span class="SCde"><span class="SFct">getTexturePixels</span>()</spa</a></td>
 <td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_init"><span class="SyntaxCode"><span class="SyntaxFunction">init</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
 <td>First init. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_pixelFormatToNative"><span class="SyntaxCode"><span class="SyntaxFunction">pixelFormatToNative</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_pixelFormatToNative"><span class="SCde"><span class="SFct">pixelFormatToNative</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_releaseRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">releaseRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_releaseRenderTarget"><span class="SCde"><span class="SFct">releaseRenderTarget</span>()</spa</a></td>
 <td>Release the given render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_removeTexture"><span class="SyntaxCode"><span class="SyntaxFunction">removeTexture</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_removeTexture"><span class="SCde"><span class="SFct">removeTexture</span>()</spa</a></td>
 <td>Unregister a texture created with <code class="incode">addImage</code>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetScissorRect"><span class="SyntaxCode"><span class="SyntaxFunction">resetScissorRect</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_resetScissorRect"><span class="SCde"><span class="SFct">resetScissorRect</span>()</spa</a></td>
 <td>Reset the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetTransform"><span class="SyntaxCode"><span class="SyntaxFunction">resetTransform</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_resetTransform"><span class="SCde"><span class="SFct">resetTransform</span>()</spa</a></td>
 <td>Reset the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>)</span></a></td>
+<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></a></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">self</span>, <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">ref</span> <span class="SyntaxConstant">Angle</span>, <span class="SyntaxType">f32</span>, <span class="SyntaxType">f32</span>)</span></a></td>
+<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_scaleTransform"><span class="SyntaxCode"><span class="SyntaxFunction">scaleTransform</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_scaleTransform"><span class="SCde"><span class="SFct">scaleTransform</span>()</spa</a></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setCurrentContext"><span class="SyntaxCode"><span class="SyntaxFunction">setCurrentContext</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_setCurrentContext"><span class="SCde"><span class="SFct">setCurrentContext</span>()</spa</a></td>
 <td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setScissorRect"><span class="SyntaxCode"><span class="SyntaxFunction">setScissorRect</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_setScissorRect"><span class="SCde"><span class="SFct">setScissorRect</span>()</spa</a></td>
 <td>Force the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setShader"><span class="SyntaxCode"><span class="SyntaxFunction">setShader</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_setShader"><span class="SCde"><span class="SFct">setShader</span>()</spa</a></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_translateTransform"><span class="SyntaxCode"><span class="SyntaxFunction">translateTransform</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_translateTransform"><span class="SCde"><span class="SFct">translateTransform</span>()</spa</a></td>
 <td>Translate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTarget"><span class="SyntaxCode"><span class="SyntaxFunction">unbindRenderTarget</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTarget"><span class="SCde"><span class="SFct">unbindRenderTarget</span>()</spa</a></td>
 <td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage"><span class="SyntaxCode"><span class="SyntaxFunction">unbindRenderTargetToImage</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage"><span class="SCde"><span class="SFct">unbindRenderTargetToImage</span>()</spa</a></td>
 <td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_updateTexture"><span class="SyntaxCode"><span class="SyntaxFunction">updateTexture</span>()</spa</a></td>
+<td><a href="#Pixel_RenderOgl_updateTexture"><span class="SCde"><span class="SFct">updateTexture</span>()</spa</a></td>
 <td>Update content of texture. </td>
 </tr>
 </table>
@@ -8457,10 +8460,10 @@
 </table>
 </p>
 <p>Register an image for rendering. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">addImage</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, image: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></code>
 </div>
 <p>Load and register an image for rendering. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">addImage</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fullName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8474,7 +8477,7 @@
 </table>
 </p>
 <p>To be called before rendering. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">begin</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rc: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">begin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rc: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8488,7 +8491,7 @@
 </table>
 </p>
 <p>Set the current render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">bindRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, vp: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span> = <span class="SyntaxKeyword">null</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bindRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, vp: *<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = <span class="SKwd">null</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8502,7 +8505,7 @@
 </table>
 </p>
 <p>Clear current render buffers. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">clear</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8515,7 +8518,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">computeMatrices</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, mvp: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, mdl: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeMatrices</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mvp: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, mdl: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8529,7 +8532,7 @@
 </table>
 </p>
 <p>Create a render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, w: <span class="SyntaxType">s32</span>, h: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8543,7 +8546,7 @@
 </table>
 </p>
 <p>Create the given shader. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createShader</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, base: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span>, vertex: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, pixel: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createShader</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, base: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>, vertex: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, pixel: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8557,7 +8560,7 @@
 </table>
 </p>
 <p>Delete a render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">deleteRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8571,7 +8574,7 @@
 </table>
 </p>
 <p>Draw the given painter. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">draw</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, dc: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dc: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Painter">Painter</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8585,7 +8588,7 @@
 </table>
 </p>
 <p>To be called after rendering. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">end</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8599,7 +8602,7 @@
 </table>
 </p>
 <p>Get a render target of the given size  releaseRenderTarget must be called to release it. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, w: <span class="SyntaxType">s32</span>, h: <span class="SyntaxType">s32</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8613,7 +8616,7 @@
 </table>
 </p>
 <p>Get the actual render target size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getTargetSize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;{width: <span class="SyntaxType">s32</span>, height: <span class="SyntaxType">s32</span>}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTargetSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>}</span></code>
 </div>
 <p>
 <table class="item">
@@ -8627,7 +8630,7 @@
 </table>
 </p>
 <p>Returns the pixels associated to a texture. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getTexturePixels</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, pf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTexturePixels</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8641,7 +8644,7 @@
 </table>
 </p>
 <p>First init. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">init</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8654,7 +8657,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">pixelFormatToNative</span>(pf: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SyntaxConstant">Ogl</span>.<span class="SyntaxConstant">GLenum</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pixelFormatToNative</span>(pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)-&gt;<span class="SCst">Ogl</span>.<span class="SCst">GLenum</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8668,7 +8671,7 @@
 </table>
 </p>
 <p>Release the given render target. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">releaseRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, tgt: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8682,7 +8685,7 @@
 </table>
 </p>
 <p>Unregister a texture created with <code class="incode">addImage</code>. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">removeTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, texture: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8696,7 +8699,7 @@
 </table>
 </p>
 <p>Reset the scissor. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetScissorRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetScissorRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8710,7 +8713,7 @@
 </table>
 </p>
 <p>Reset the world transform. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">resetTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resetTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8724,10 +8727,10 @@
 </table>
 </p>
 <p>Rotate the world transform. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>)</span></code>
 </div>
 <p>Rotate the world transform. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">rotateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, angle: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Angle</span>, centerX: <span class="SyntaxType">f32</span>, centerY: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Angle</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8741,7 +8744,7 @@
 </table>
 </p>
 <p>Scale the world transform. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">scaleTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8755,7 +8758,7 @@
 </table>
 </p>
 <p>Set the current rendering context. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setCurrentContext</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rc: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCurrentContext</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rc: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8769,7 +8772,7 @@
 </table>
 </p>
 <p>Force the scissor. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setScissorRect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScissorRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8783,7 +8786,7 @@
 </table>
 </p>
 <p>Set the current shader. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">setShader</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, shader: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span> = <span class="SyntaxKeyword">null</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setShader</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, shader: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span> = <span class="SKwd">null</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8797,7 +8800,7 @@
 </table>
 </p>
 <p>Translate the world transform. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">translateTransform</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">f32</span>, y: <span class="SyntaxType">f32</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">translateTransform</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8811,7 +8814,7 @@
 </table>
 </p>
 <p>Go back to the previous render target, or frame buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">unbindRenderTarget</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unbindRenderTarget</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8825,7 +8828,7 @@
 </table>
 </p>
 <p>Get current render target pixels. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">unbindRenderTargetToImage</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, x: <span class="SyntaxType">s32</span>, y: <span class="SyntaxType">s32</span>, w: <span class="SyntaxType">s32</span>, h: <span class="SyntaxType">s32</span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unbindRenderTargetToImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
 <table class="item">
@@ -8839,7 +8842,7 @@
 </table>
 </p>
 <p>Update content of texture. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">updateTexture</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, texture: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span>, pixels: <span class="SyntaxKeyword">const</span> *<span class="SyntaxType">u8</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>, pixels: <span class="SKwd">const</span> *<span class="STpe">u8</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -8854,28 +8857,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">handle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">handle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">colorBuffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Texture">Texture</a></span></span></td>
+<td class="codetype"><span class="SCde">colorBuffer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">depthStencil</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">depthStencil</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">paintAlpha</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">paintAlpha</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">paintAlphaIdx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">paintAlphaIdx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8892,23 +8895,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">hDC</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hDC</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hRC</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">const</span> *<span class="SyntaxType">void</span></span></td>
+<td class="codetype"><span class="SCde">hRC</span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8925,53 +8928,53 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">slice</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
+<td class="codetype"><span class="SCde">slice</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fontStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">fontStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">hasFontStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">hasFontStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isSpace</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isSpace</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">isEol</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">isEol</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">colorIdx</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">colorIdx</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">boundRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">boundRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pos</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="codetype"><span class="SCde">pos</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">font</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span></span></td>
+<td class="codetype"><span class="SCde">font</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">under</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">under</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8989,72 +8992,72 @@
 <p>Represents a string with embedded formats. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">raw</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></td>
+<td class="codetype"><span class="SCde">raw</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td>The string as passed by the user. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">chunks</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
+<td class="codetype"><span class="SCde">chunks</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
 <td>The corresponding list of chunks. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">layoutRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">layoutRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">boundRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span></span></td>
+<td class="codetype"><span class="SCde">boundRect</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">dirty</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">dirty</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td>If dirty, <code class="incode">Compute</code>. </td>
 </tr>
 </table>
 <p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
-<div class="precode"><code><span class="SyntaxCode">&lt;b&gt; this is bold&lt;b&gt;
- &lt;p1&gt; this will have special color <span class="SyntaxNumber">1</span>&lt;p1&gt;
+<div class="precode"><code><span class="SCde">&lt;b&gt; this is bold&lt;b&gt;
+ &lt;p1&gt; this will have special color <span class="SNum">1</span>&lt;p1&gt;
  ...</span></code>
 </div>
 <p> See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_compute"><span class="SyntaxCode"><span class="SyntaxFunction">compute</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Compute layout. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_getNaked"><span class="SyntaxCode"><span class="SyntaxFunction">getNaked</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_getNaked"><span class="SCde"><span class="SFct">getNaked</span>()</spa</a></td>
 <td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_invalidate"><span class="SyntaxCode"><span class="SyntaxFunction">invalidate</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_invalidate"><span class="SCde"><span class="SFct">invalidate</span>()</spa</a></td>
 <td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_isEmpty"><span class="SyntaxCode"><span class="SyntaxFunction">isEmpty</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_isEmpty"><span class="SCde"><span class="SFct">isEmpty</span>()</spa</a></td>
 <td>Returns <code class="incode">true</code> if the string is empty. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_set"><span class="SyntaxCode"><span class="SyntaxFunction">set</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_set"><span class="SCde"><span class="SFct">set</span>()</spa</a></td>
 <td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_RichString_opAffect"><span class="SyntaxCode"><span class="SyntaxFunction">opAffect</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opCount"><span class="SyntaxCode"><span class="SyntaxFunction">opCount</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_opCount"><span class="SCde"><span class="SFct">opCount</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opEquals"><span class="SyntaxCode"><span class="SyntaxFunction">opEquals</span>()</spa</a></td>
+<td><a href="#Pixel_RichString_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -9070,7 +9073,7 @@
 </table>
 </p>
 <p>Compute layout. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">compute</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, force = <span class="SyntaxKeyword">false</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, force = <span class="SKwd">false</span>)</span></code>
 </div>
 <p> This will transform the string in a serie of chunks, each chunk having its one style. The string  will only be recomputed if it's dirty (the text has changed) or if <code class="incode">force</code> is true. </p>
 <p>
@@ -9085,7 +9088,7 @@
 </table>
 </p>
 <p>Transform the given string to a naked one. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getNaked</span>(str: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">String</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNaked</span>(str: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
 </div>
 <p> Will return the string without the format markers. </p>
 <p>
@@ -9100,7 +9103,7 @@
 </table>
 </p>
 <p>Force the string to be repainted. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">invalidate</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9114,7 +9117,7 @@
 </table>
 </p>
 <p>Returns <code class="incode">true</code> if the string is empty. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isEmpty</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9127,7 +9130,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opAffect</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, str: <span class="SyntaxType">string</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9140,7 +9143,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opCount</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">u64</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9153,7 +9156,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">opEquals</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, other: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9167,7 +9170,7 @@
 </table>
 </p>
 <p>Associate a string. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">set</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, text: <span class="SyntaxType">string</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></code>
 </div>
 <p> The string can have multiple lines.  Accepted markers are: </p>
 <ul>
@@ -9178,7 +9181,7 @@
 <li><code class="incode">&lt;p2&gt;</code> =&gt; color palette 2</li>
 <li><code class="incode">&lt;p3&gt;</code> =&gt; color palette 3</li>
 </ul>
-<div class="precode"><code><span class="SyntaxCode">&lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;<span class="SyntaxLogic">and</span> this is italic&lt;/i&gt;</span></code>
+<div class="precode"><code><span class="SCde">&lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;<span class="SLgc">and</span> this is italic&lt;/i&gt;</span></code>
 </div>
 <p>
 <table class="item">
@@ -9193,43 +9196,43 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">font</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
+<td class="codetype"><span class="SCde">font</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fontStyle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
+<td class="codetype"><span class="SCde">fontStyle</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">palette</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">4</span>] <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span></span></td>
+<td class="codetype"><span class="SCde">palette</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">brush</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Brush">Brush</a></span></span></td>
+<td class="codetype"><span class="SCde">brush</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">horzAlignment</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span></span></td>
+<td class="codetype"><span class="SCde">horzAlignment</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">vertAlignment</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span></span></td>
+<td class="codetype"><span class="SCde">vertAlignment</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">lineGap</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">lineGap</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">flags</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span></span></td>
+<td class="codetype"><span class="SCde">flags</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9246,8 +9249,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9264,48 +9267,48 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">handle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">handle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">mvp</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">mvp</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">mdl</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">mdl</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">boundRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">boundRect</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">textureRect</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">textureRect</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uvMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">uvMode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">copyMode</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">copyMode</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">textureW</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">textureW</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">textureH</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">textureH</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9322,18 +9325,18 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">radius</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">radius</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">axis</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s64</span></span></td>
+<td class="codetype"><span class="SCde">axis</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9350,8 +9353,8 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxKeyword">using</span> base</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
+<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9368,19 +9371,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Default</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Default</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">WordWrap</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">WordWrap</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Clip</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Clip</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">DontAdaptSingleLineHeight</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">DontAdaptSingleLineHeight</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9397,19 +9400,19 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Center</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Left</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Left</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Right</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Right</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Justify</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Justify</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9426,23 +9429,23 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">ascent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">ascent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td>Maximum size above baseline. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">descent</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">descent</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td>Maximum size below baseline. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td>ascent + descent. </td>
 </tr>
 </table>
@@ -9459,40 +9462,40 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">str</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichString">RichString</a></span></span></td>
+<td class="codetype"><span class="SCde">str</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">fmt</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span></span></td>
+<td class="codetype"><span class="SCde">fmt</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_StringPainter_color"><span class="SyntaxCode"><span class="SyntaxFunction">color</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_color"><span class="SCde"><span class="SFct">color</span>()</spa</a></td>
 <td>Set text color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_draw"><span class="SyntaxCode"><span class="SyntaxFunction">draw</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_draw"><span class="SCde"><span class="SFct">draw</span>()</spa</a></td>
 <td>Draw string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_flags"><span class="SyntaxCode"><span class="SyntaxFunction">flags</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_flags"><span class="SCde"><span class="SFct">flags</span>()</spa</a></td>
 <td>Set drawing flags. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_font"><span class="SyntaxCode"><span class="SyntaxFunction">font</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_font"><span class="SCde"><span class="SFct">font</span>()</spa</a></td>
 <td>Set font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_horzAlign"><span class="SyntaxCode"><span class="SyntaxFunction">horzAlign</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_horzAlign"><span class="SCde"><span class="SFct">horzAlign</span>()</spa</a></td>
 <td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_vertAlign"><span class="SyntaxCode"><span class="SyntaxFunction">vertAlign</span>()</spa</a></td>
+<td><a href="#Pixel_StringPainter_vertAlign"><span class="SCde"><span class="SFct">vertAlign</span>()</spa</a></td>
 <td>Set vertical alignment. </td>
 </tr>
 </table>
@@ -9508,7 +9511,7 @@
 </table>
 </p>
 <p>Set text color. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">color</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, col: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Color">Color</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">color</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9522,7 +9525,7 @@
 </table>
 </p>
 <p>Draw string. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">draw</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, painter: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Painter">Painter</a></span>, rect: <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Rectangle</span>, what: <span class="SyntaxType">string</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Painter">Painter</a></span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, what: <span class="STpe">string</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9536,7 +9539,7 @@
 </table>
 </p>
 <p>Set drawing flags. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">flags</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, f: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">flags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9550,7 +9553,7 @@
 </table>
 </p>
 <p>Set font. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">font</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, font: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Font">Font</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">font</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9564,7 +9567,7 @@
 </table>
 </p>
 <p>Set horizontal alignment. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">horzAlign</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, align: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzAlign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, align: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9578,7 +9581,7 @@
 </table>
 </p>
 <p>Set vertical alignment. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">vertAlign</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, align: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertAlign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, align: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9593,15 +9596,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Center</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Center</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Top</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Top</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Bottom</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Bottom</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9618,39 +9621,39 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">handle</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u64</span></span></td>
+<td class="codetype"><span class="SCde">handle</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">pf</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
+<td class="codetype"><span class="SCde">pf</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">width</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">width</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">height</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">s32</span></span></td>
+<td class="codetype"><span class="SCde">height</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">valid</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">valid</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_Texture_getByteSize"><span class="SyntaxCode"><span class="SyntaxFunction">getByteSize</span>()</spa</a></td>
+<td><a href="#Pixel_Texture_getByteSize"><span class="SCde"><span class="SFct">getByteSize</span>()</spa</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Texture_isValid"><span class="SyntaxCode"><span class="SyntaxFunction">isValid</span>()</spa</a></td>
+<td><a href="#Pixel_Texture_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
@@ -9665,7 +9668,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getByteSize</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">s32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getByteSize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9678,7 +9681,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isValid</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9702,7 +9705,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canDecode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canDecode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9715,7 +9718,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">decode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, buffer: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>, options: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, options: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9739,7 +9742,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">canEncode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, fileName: <span class="SyntaxType">string</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canEncode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9752,7 +9755,7 @@
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">encode</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, result: *<span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">ConcatBuffer</span>, image: <span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_Image">Image</a></span>, options: <span class="SyntaxType">any</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">encode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, image: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, options: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9767,76 +9770,76 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">fullname</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">string</span></span></td>
+<td class="codetype"><span class="SCde">fullname</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">buffer</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Array</span>'(<span class="SyntaxType">u8</span>)</span></td>
+<td class="codetype"><span class="SCde">buffer</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">face</span></td>
-<td class="codetype"><span class="SyntaxCode">*<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant">FT_FaceRec</span></span></td>
+<td class="codetype"><span class="SCde">face</span></td>
+<td class="codetype"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst">FT_FaceRec</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">forceBoldDiv</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">forceBoldDiv</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">forceItalic</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">forceItalic</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">forceBold</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">bool</span></span></td>
+<td class="codetype"><span class="SCde">forceBold</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Pixel_TypeFace_create"><span class="SyntaxCode"><span class="SyntaxFunction">create</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_createFromHFONT"><span class="SyntaxCode"><span class="SyntaxFunction">createFromHFONT</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_createFromHFONT"><span class="SCde"><span class="SFct">createFromHFONT</span>()</spa</a></td>
 <td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getFamilyName"><span class="SyntaxCode"><span class="SyntaxFunction">getFamilyName</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_getFamilyName"><span class="SCde"><span class="SFct">getFamilyName</span>()</spa</a></td>
 <td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getRuneOutline"><span class="SyntaxCode"><span class="SyntaxFunction">getRuneOutline</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_getRuneOutline"><span class="SCde"><span class="SFct">getRuneOutline</span>()</spa</a></td>
 <td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getStringOutline"><span class="SyntaxCode"><span class="SyntaxFunction">getStringOutline</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_getStringOutline"><span class="SCde"><span class="SFct">getStringOutline</span>()</spa</a></td>
 <td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isBold"><span class="SyntaxCode"><span class="SyntaxFunction">isBold</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_isBold"><span class="SCde"><span class="SFct">isBold</span>()</spa</a></td>
 <td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isItalic"><span class="SyntaxCode"><span class="SyntaxFunction">isItalic</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_isItalic"><span class="SCde"><span class="SFct">isItalic</span>()</spa</a></td>
 <td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_load"><span class="SyntaxCode"><span class="SyntaxFunction">load</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
 <td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_release"><span class="SyntaxCode"><span class="SyntaxFunction">release</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
 <td>Release the given typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_renderGlyph"><span class="SyntaxCode"><span class="SyntaxFunction">renderGlyph</span>()</spa</a></td>
+<td><a href="#Pixel_TypeFace_renderGlyph"><span class="SCde"><span class="SFct">renderGlyph</span>()</spa</a></td>
 <td>Render one glyph. </td>
 </tr>
 </table>
@@ -9852,7 +9855,7 @@
 </table>
 </p>
 <p>Get or create a new typeface from a memory buffer. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">create</span>(fullname: <span class="SyntaxType">string</span>, bytes: <span class="SyntaxKeyword">const</span> [..] <span class="SyntaxType">u8</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(fullname: <span class="STpe">string</span>, bytes: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9866,7 +9869,7 @@
 </table>
 </p>
 <p>Create a new typeface from a HFONT. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">createFromHFONT</span>(fullname: <span class="SyntaxType">string</span>, hf: <span class="SyntaxConstant">Gdi32</span>.<span class="SyntaxConstant">HFONT</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createFromHFONT</span>(fullname: <span class="STpe">string</span>, hf: <span class="SCst">Gdi32</span>.<span class="SCst">HFONT</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9880,7 +9883,7 @@
 </table>
 </p>
 <p>Returns the underlying font family name. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getFamilyName</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">string</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFamilyName</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9894,7 +9897,7 @@
 </table>
 </p>
 <p>Convert a rune to its outline, at a given size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getRuneOutline</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, c: <span class="SyntaxType">rune</span>, size: <span class="SyntaxType">u32</span>, embolden: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>)-&gt;<span class="SyntaxType">f32</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRuneOutline</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, c: <span class="STpe">rune</span>, size: <span class="STpe">u32</span>, embolden: <span class="STpe">u32</span> = <span class="SNum">0</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9908,7 +9911,7 @@
 </table>
 </p>
 <p>Convert a string to its outline, at a given size. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">getStringOutline</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, pathList: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_LinePathList">LinePathList</a></span>, text: <span class="SyntaxType">string</span>, size: <span class="SyntaxType">u32</span>, embolden: <span class="SyntaxType">u32</span> = <span class="SyntaxNumber">0</span>) <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getStringOutline</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pathList: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span>, text: <span class="STpe">string</span>, size: <span class="STpe">u32</span>, embolden: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9922,7 +9925,7 @@
 </table>
 </p>
 <p>Returns true if the typeface is bold. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isBold</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isBold</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9936,7 +9939,7 @@
 </table>
 </p>
 <p>Returns true if the typeface is italic. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">isItalic</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">const</span> <span class="SyntaxKeyword">self</span>)-&gt;<span class="SyntaxType">bool</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isItalic</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9950,7 +9953,7 @@
 </table>
 </p>
 <p>Get or load a new typeface. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">load</span>(fullname: <span class="SyntaxType">string</span>)-&gt;*<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9964,7 +9967,7 @@
 </table>
 </p>
 <p>Release the given typeface. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">release</span>(typeface: *<span class="SyntaxConstant">Pixel</span>.<span class="SyntaxConstant"><a href="#Pixel_TypeFace">TypeFace</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(typeface: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -9978,7 +9981,7 @@
 </table>
 </p>
 <p>Render one glyph. </p>
-<div class="precode"><code><span class="SyntaxCode"><span class="SyntaxKeyword">func</span> <span class="SyntaxFunction">renderGlyph</span>(<span class="SyntaxKeyword">using</span> <span class="SyntaxKeyword">self</span>, c: <span class="SyntaxType">rune</span>, size: <span class="SyntaxType">u32</span>, forceBold = <span class="SyntaxKeyword">false</span>, forceItalic = <span class="SyntaxKeyword">false</span>)-&gt;<span class="SyntaxKeyword">const</span> *<span class="SyntaxConstant">FreeType</span>.<span class="SyntaxConstant">FT_Bitmap</span> <span class="SyntaxKeyword">throw</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">renderGlyph</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="STpe">rune</span>, size: <span class="STpe">u32</span>, forceBold = <span class="SKwd">false</span>, forceItalic = <span class="SKwd">false</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst">FreeType</span>.<span class="SCst">FT_Bitmap</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -9993,15 +9996,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Fill</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Fill</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">FillSubRect</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">FillSubRect</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Tile</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Tile</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10018,15 +10021,15 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">None</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">None</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Underline</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Underline</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Strikeout</span></span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Strikeout</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10043,28 +10046,28 @@
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SyntaxCode">pos</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">pos</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">uv</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector2</span></span></td>
+<td class="codetype"><span class="SCde">uv</span></td>
+<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">color</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">u32</span></span></td>
+<td class="codetype"><span class="SCde">color</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">aa</span></td>
-<td class="codetype"><span class="SyntaxCode">[<span class="SyntaxNumber">12</span>] <span class="SyntaxConstant">Core</span>.<span class="SyntaxConstant">Math</span>.<span class="SyntaxConstant">Vector4</span></span></td>
+<td class="codetype"><span class="SCde">aa</span></td>
+<td class="codetype"><span class="SCde">[<span class="SNum">12</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SyntaxCode">aanum</span></td>
-<td class="codetype"><span class="SyntaxCode"><span class="SyntaxType">f32</span></span></td>
+<td class="codetype"><span class="SCde">aanum</span></td>
+<td class="codetype"><span class="SCde"><span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 </table>

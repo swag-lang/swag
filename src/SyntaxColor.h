@@ -19,19 +19,19 @@ enum class SyntaxColor
     SyntaxDefault,
 };
 
-static const char* SYN_CODE      = "SyntaxCode";
-static const char* SYN_COMMENT   = "SyntaxComment";
-static const char* SYN_COMPILER  = "SyntaxCompiler";
-static const char* SYN_FUNCTION  = "SyntaxFunction";
-static const char* SYN_CONSTANT  = "SyntaxConstant";
-static const char* SYN_INTRINSIC = "SyntaxIntrinsic";
-static const char* SYN_TYPE      = "SyntaxType";
-static const char* SYN_KEYWORD   = "SyntaxKeyword";
-static const char* SYN_LOGIC     = "SyntaxLogic";
-static const char* SYN_NUMBER    = "SyntaxNumber";
-static const char* SYN_STRING    = "SyntaxString";
-static const char* SYN_ATTRIBUTE = "SyntaxAttribute";
-static const char* SYN_DEFAULT   = "SyntaxDefault";
+static const char* SYN_CODE      = "SCde";
+static const char* SYN_COMMENT   = "SCmt";
+static const char* SYN_COMPILER  = "SCmp";
+static const char* SYN_FUNCTION  = "SFct";
+static const char* SYN_CONSTANT  = "SCst";
+static const char* SYN_INTRINSIC = "SItr";
+static const char* SYN_TYPE      = "STpe";
+static const char* SYN_KEYWORD   = "SKwd";
+static const char* SYN_LOGIC     = "SLgc";
+static const char* SYN_NUMBER    = "SNum";
+static const char* SYN_STRING    = "SStr";
+static const char* SYN_ATTRIBUTE = "SAtr";
+static const char* SYN_DEFAULT   = "SDft";
 
 enum class SyntaxColorMode
 {
