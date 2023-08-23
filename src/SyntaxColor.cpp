@@ -167,40 +167,40 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
         case SyntaxColor::SyntaxDefault:
             return "</span>";
         case SyntaxColor::SyntaxCode:
-            colorName = "SyntaxCode";
+            colorName = SYN_CODE;
             break;
         case SyntaxColor::SyntaxComment:
-            colorName = "SyntaxComment";
+            colorName = SYN_COMMENT;
             break;
         case SyntaxColor::SyntaxCompiler:
-            colorName = "SyntaxCompiler";
+            colorName = SYN_COMPILER;
             break;
         case SyntaxColor::SyntaxFunction:
-            colorName = "SyntaxFunction";
+            colorName = SYN_FUNCTION;
             break;
         case SyntaxColor::SyntaxConstant:
-            colorName = "SyntaxConstant";
+            colorName = SYN_CONSTANT;
             break;
         case SyntaxColor::SyntaxIntrinsic:
-            colorName = "SyntaxIntrinsic";
+            colorName = SYN_INTRINSIC;
             break;
         case SyntaxColor::SyntaxType:
-            colorName = "SyntaxType";
+            colorName = SYN_TYPE;
             break;
         case SyntaxColor::SyntaxKeyword:
-            colorName = "SyntaxKeyword";
+            colorName = SYN_KEYWORD;
             break;
         case SyntaxColor::SyntaxLogic:
-            colorName = "SyntaxLogic";
+            colorName = SYN_LOGIC;
             break;
         case SyntaxColor::SyntaxNumber:
-            colorName = "SyntaxNumber";
+            colorName = SYN_NUMBER;
             break;
         case SyntaxColor::SyntaxString:
-            colorName = "SyntaxString";
+            colorName = SYN_STRING;
             break;
         case SyntaxColor::SyntaxAttribute:
-            colorName = "SyntaxAttribute";
+            colorName = SYN_ATTRIBUTE;
             break;
         }
 

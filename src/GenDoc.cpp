@@ -69,7 +69,7 @@ void GenDoc::outputStyles()
             .rightpage {\n\
                 margin:  10px;\n\
             }\n\
-        }";
+        }\n";
 
     // Layout
     if (docKind != DocKind::Pages)
@@ -80,7 +80,7 @@ void GenDoc::outputStyles()
             }\n\
             .right {\n\
                 overflow-y: scroll;\n\
-            }";
+            }\n";
     }
 
     helpOutput += "\n\
@@ -199,21 +199,21 @@ void GenDoc::outputStyles()
             margin:             20px;\n\
             white-space:        pre;\n\
             overflow-x:         auto;\n\
-        }";
+        }\n";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpOutput += Fmt("    .SyntaxCode      { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCode, lum));
-    helpOutput += Fmt("    .SyntaxComment   { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxComment, lum));
-    helpOutput += Fmt("    .SyntaxCompiler  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
-    helpOutput += Fmt("    .SyntaxFunction  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
-    helpOutput += Fmt("    .SyntaxConstant  { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
-    helpOutput += Fmt("    .SyntaxIntrinsic { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
-    helpOutput += Fmt("    .SyntaxType      { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxType, lum));
-    helpOutput += Fmt("    .SyntaxKeyword   { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
-    helpOutput += Fmt("    .SyntaxLogic     { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
-    helpOutput += Fmt("    .SyntaxNumber    { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
-    helpOutput += Fmt("    .SyntaxString    { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxString, lum));
-    helpOutput += Fmt("    .SyntaxAttribute { color: #%x; }\n", getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, getSyntaxColor(SyntaxColor::SyntaxCode, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColor::SyntaxComment, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColor::SyntaxType, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColor::SyntaxString, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
 
     helpOutput += "</style>\n";
 }
