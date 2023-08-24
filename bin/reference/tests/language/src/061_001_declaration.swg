@@ -1,5 +1,6 @@
 /**
-This is a `struct` declaration. `var` is not necessary for the fields.
+This is a 'struct' declaration.
+Note that 'var' is not necessary for the fields.
 */
 #test
 {
@@ -18,7 +19,7 @@ This is a `struct` declaration. `var` is not necessary for the fields.
 }
 
 /**
-Variables can also be separated with `;` or `,`. The last one is not mandatory.
+Variables can also be separated with ';' or ','. The last one is not mandatory.
 */
 #test
 {
@@ -120,7 +121,7 @@ A struct can be affected to a constant, as long as it can be evaluated at compil
 }
 
 /**
-A function can take an argument of type `struct`.
+A function can take an argument of type 'struct'.
 No copy is done (this is equivalent to a const reference in C++).
 */
 

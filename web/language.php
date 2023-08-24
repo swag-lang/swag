@@ -3327,7 +3327,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="060_struct">Struct</h2>
-<h3 id="061_001_declaration">Declaration</h3><p>This is a <code class="incode">struct</code> declaration. <code class="incode">var</code> is not necessary for the fields. </p>
+<h3 id="061_001_declaration">Declaration</h3><p>This is a <code class="incode">struct</code> declaration. Note that <code class="incode">var</code> is not necessary for the fields. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
@@ -4273,13 +4273,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>
     <span class="SKwd">var</span> pt3: <span class="SCst">Point3</span>
 
+    <span class="SCmt">// The scope where all functions are located has the same name as the interface.</span>
     pt2.<span class="SCst">IReset</span>.<span class="SFct">set</span>(<span class="SNum">10</span>)
     pt2.<span class="SCst">IReset</span>.<span class="SFct">reset</span>()
     pt3.<span class="SCst">IReset</span>.<span class="SFct">set</span>(<span class="SNum">10</span>)
     pt3.<span class="SCst">IReset</span>.<span class="SFct">reset</span>()
 }</span></code>
 </div>
-<p>An interface is a real type, with a size equivalent to 2 pointers. </p>
+<p>An interface is a real type, with a size equivalent to 2 pointers. A pointer to the <i>object</i> and a pointer to the <i>virtual table</i>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt2: <span class="SCst">Point2</span>

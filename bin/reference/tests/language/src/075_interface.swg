@@ -104,6 +104,7 @@ They are located in a dedicated scope.
     var pt2: Point2
     var pt3: Point3
 
+    // The scope where all functions are located has the same name as the interface.
     pt2.IReset.set(10)
     pt2.IReset.reset()
     pt3.IReset.set(10)
@@ -111,7 +112,7 @@ They are located in a dedicated scope.
 }
 
 /**
-An interface is a real type, with a size equivalent to 2 pointers.
+An interface is a real type, with a size equivalent to 2 pointers. A pointer to the *object* and a pointer to the *virtual table*.
 */
 #test
 {
