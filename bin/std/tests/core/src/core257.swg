@@ -35,7 +35,7 @@ struct Test2
     tw.registerFolder(&t1)
     tw.registerFolder(&t2)
 
-    const BUF = @"
+    const BUF = $"
         #comment
         /Test1
             coucous32  -666
@@ -55,7 +55,7 @@ struct Test2
             coucou7     "this" "is" "an" "array" "of" "strings"
             coucou8     1 2 3 4
             coucou9     StrGreen
-    "@
+    "$
 
     var arr = Tokenize.splitLines(BUF)
     assume tw.parse(arr)

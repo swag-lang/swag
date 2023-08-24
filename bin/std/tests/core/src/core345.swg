@@ -1,5 +1,5 @@
 using Core
-const C = @"
+const C = $"
 using Core
 const C = #include(#file)
 
@@ -18,7 +18,7 @@ const C = #include(#file)
 
     @assert(arr.count == res1.count)
     @print(@mkstring(res1.buffer, res1.count))
-}"@
+}"$
 
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]

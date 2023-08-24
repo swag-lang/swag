@@ -8,7 +8,7 @@ using Core.File
     var res = catch readAllLines(loc.fileName)
     @assert(@errmsg == null)
     @assert(res.count > 5)
-    @assert(res[0] == @""@)
+    @assert(res[0] == $""$)
 
     /*visit l: res.lines
     {

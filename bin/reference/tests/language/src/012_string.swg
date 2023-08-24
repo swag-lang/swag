@@ -191,13 +191,13 @@ A *raw string* does not transform the escape sequences inside it.
 */
 
 /**
-A raw string starts and ends with the character `@`.
+A raw string starts and ends with the character `$`.
 */
 #test
 {
-    const a = @"\u2F46"@
+    const a = $"\u2F46"$
     #assert a != "⽆"
-    #assert a == @"\u2F46"@
+    #assert a == $"\u2F46"$
 }
 
 /**
@@ -206,7 +206,7 @@ This are equivalent
 #test
 {
     const a = "\\hello \\world"
-    const b = @"\hello \world"@
+    const b = $"\hello \world"$
     #assert a == b
 }
 
@@ -215,10 +215,10 @@ A raw string can spawn on multiple lines because the line feed is now part of th
 */
 #test
 {
-    const a = @"this is
+    const a = $"this is
                 a
                 string
-                "@
+                "$
 }
 
 /**

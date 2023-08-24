@@ -1,9 +1,9 @@
-const A = @"\titi"@
-          @"\tata"@
+const A = $"\titi"$
+          $"\tata"$
           "toto"
           """tonton"""
 
 #test
 {
-    @assert(A == @"\titi\tatatototonton"@)
+    @assert(A == $"\titi\tatatototonton"$)
 }

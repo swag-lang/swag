@@ -322,14 +322,6 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            if (curBuffer[0] == '"')
-            {
-                printf("%s:%d\n", sourceFile->path.string().c_str(), location.line);
-                readChar();
-                SWAG_CHECK(doStringLiteral(token, true, true));
-                return true;
-            }
-
             doIdentifier(token);
             token.endLocation = location;
 
@@ -369,6 +361,13 @@ bool Tokenizer::nextToken(TokenParse& token)
 
         // String literal
         ///////////////////////////////////////////
+        if (c == '$' && curBuffer[0] == '"')
+        {
+            readChar();
+            SWAG_CHECK(doStringLiteral(token, '$', true));
+            return true;
+        }
+
         if (c == '"')
         {
             if (curBuffer[0] == '"' && curBuffer[1] == '"')

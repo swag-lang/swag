@@ -13,17 +13,17 @@ A
 const X3 = """ABC"""
 const X4 = """ABC("A")"""
 
-const X5 = @"\
+const X5 = $"\
   A
   B
   C
-  "@
+  "$
 
-const X6 = @"\
+const X6 = $"\
 A\
 B\
 C\
-"@
+"$
 
 const X7 = """this is
               a

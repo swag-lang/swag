@@ -12,11 +12,11 @@ struct Test
     var t1: Test
     tw.registerFolder(&t1)
 
-    const BUF = @"
+    const BUF = $"
     /Test
         color  127 0 0 255
         color1 Red
-    "@
+    "$
 
     var arr = Tokenize.splitLines(BUF)
     assume tw.parse(arr)

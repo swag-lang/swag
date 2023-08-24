@@ -385,8 +385,8 @@
     },
     "raw-strings": {
       "name": "string.quoted.double",
-      "begin": "@\"",
-      "end": "\"@",
+      "begin": "\\$\"",
+      "end": "\"\\$",
       "patterns": [
         {
           "name": "constant.character.escape",

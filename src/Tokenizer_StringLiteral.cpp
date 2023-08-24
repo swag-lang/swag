@@ -52,12 +52,12 @@ void Tokenizer::trimMultilineString(Utf8& text)
     text = copyText;
 }
 
-bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
+bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
 {
     unsigned offset;
     token.id = TokenId::LiteralString;
 
-    if (raw)
+    if (rawChar)
         token.literalType = LiteralType::TT_STRING_RAW;
     else if (multiline)
         token.literalType = LiteralType::TT_STRING_MULTILINE;
@@ -116,7 +116,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             }
 
             // Escape sequence
-            if (!raw && c == '\\')
+            if (!rawChar && c == '\\')
             {
                 token.literalType = multiline ? LiteralType::TT_STRING_MULTILINE_ESCAPE : LiteralType::TT_STRING_ESCAPE;
                 eatChar(c, offset);
@@ -130,7 +130,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
             // End marker
             if (c == '"')
             {
-                if (!raw && !multiline)
+                if (!rawChar && !multiline)
                 {
                     appendTokenName(token);
                     eatChar(c, offset);
@@ -147,7 +147,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
                     break;
                 }
 
-                if (raw && curBuffer[1] == '@')
+                if (rawChar && curBuffer[1] == rawChar)
                 {
                     appendTokenName(token);
                     curBuffer += 2;
@@ -174,7 +174,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
         // And if after the blanks we have another string, then do it again
         if (c == '"' && curBuffer[1] == '"' && curBuffer[2] == '"')
         {
-            raw            = false;
+            rawChar        = 0;
             multiline      = true;
             realAppendName = true;
             eatChar(c, offset);
@@ -185,16 +185,26 @@ bool Tokenizer::doStringLiteral(TokenParse& token, bool raw, bool multiline)
 
         if (c == '"')
         {
-            raw            = false;
+            rawChar        = 0;
             multiline      = false;
             realAppendName = true;
             eatChar(c, offset);
             continue;
         }
 
+        if (c == '$' && curBuffer[1] == '"')
+        {
+            rawChar        = '$';
+            multiline      = true;
+            realAppendName = true;
+            eatChar(c, offset);
+            eatChar(c, offset);
+            continue;
+        }
+
         if (c == '@' && curBuffer[1] == '"')
         {
-            raw            = true;
+            rawChar        = '@';
             multiline      = true;
             realAppendName = true;
             eatChar(c, offset);

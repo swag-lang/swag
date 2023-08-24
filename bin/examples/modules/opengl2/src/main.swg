@@ -11,7 +11,7 @@ const VertexBufferData: [] GLfloat = [
      0.0,  1.0, 0.0,
 ]
 
-const VertexShader = @"
+const VertexShader = $"
     #version 330 core
     layout(location = 0) in vec3 vertexPosition_modelspace;
     out vec3 vcolor;
@@ -21,9 +21,9 @@ const VertexShader = @"
         gl_Position.w = 1.0;
         vcolor = vec3(1,0,1);
     }
-"@
+"$
 
-const PixelShader = @"
+const PixelShader = $"
     #version 330 core
     in vec3 vcolor;
     out vec3 color;
@@ -31,7 +31,7 @@ const PixelShader = @"
     {
         color = vcolor;//vec3(1,0,0);
     }
-"@
+"$
 
 func display()
 {
