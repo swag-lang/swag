@@ -192,9 +192,9 @@
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
-    .SCst { color: #3173cd; }
+    .SCst { color: #3bc3a7; }
     .SItr { color: #b4b44a; }
-    .STpe { color: #3bc3a7; }
+    .STpe { color: #ed9a11; }
     .SKwd { color: #3186cd; }
     .SLgc { color: #b040be; }
     .SNum { color: #74a35b; }

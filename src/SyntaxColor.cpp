@@ -107,13 +107,13 @@ uint32_t getSyntaxColor(SyntaxColor color, float lum)
         rgb = {0xFF, 0x74, 0x11};
         break;
     case SyntaxColor::SyntaxConstant:
-        rgb = {0x56, 0x8c, 0xd6};
+        rgb = {0x4E, 0xC9, 0xB0};
         break;
     case SyntaxColor::SyntaxIntrinsic:
         rgb = {0xdc, 0xdc, 0xaa};
         break;
     case SyntaxColor::SyntaxType:
-        rgb = {0x4e, 0xc9, 0xb0};
+        rgb = {0xf6, 0xcc, 0x86};
         break;
     case SyntaxColor::SyntaxKeyword:
         rgb = {0x56, 0x9c, 0xd6};
