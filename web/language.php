@@ -4655,7 +4655,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
 }</span></code>
 </div>
-<p>This behaves like a function, so you can add parameters. </p>
+<p>This behaves like a function, so you can add parameters, some default values, you can return something... </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -4670,18 +4670,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>A mixin accepts parameters of type <code class="incode">code</code>. </p>
+<p>A mixin accepts a special parameter of type <code class="incode">code</code>. This represents a Swag <b>piece of code</b> defined at the caller site. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="STpe">code</span>)
     {
-        <span class="SCmt">// You can then insert the code with '#mixin'</span>
+        <span class="SCmt">// You can then insert the code with '#mixin'.</span>
+        <span class="SCmt">// So here, we insert it two times</span>
         <span class="SCmp">#mixin</span> what
         <span class="SCmp">#mixin</span> what
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
+
+    <span class="SCmt">// You can use '#code' to specify some code when calling the mixin function.</span>
     <span class="SFct">doItTwice</span>(<span class="SCmp">#code</span> {a += <span class="SNum">1</span>;})
     <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
 }</span></code>
@@ -4697,11 +4700,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SFct">doItTwice</span>(<span class="SNum">4</span>)
-    {
-        a += value
-    }
 
+    <span class="SCmt">// This form of passing a code to the mixing...</span>
+    <span class="SFct">doItTwice</span>(<span class="SNum">4</span>, <span class="SCmp">#code</span> { a += value; })
+
+    <span class="SCmt">// ...is equivalent to this other form, which is more simple and natural.</span>
+    <span class="SCmt">// You can also notice that 'value' is a parameter from the mixin itself</span>
     <span class="SFct">doItTwice</span>(<span class="SNum">2</span>)
     {
         a += value
@@ -7332,9 +7336,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
 <h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file is a chapter or a sub chapter. </p>
 <p>This documentation has been generated in that mode, with the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
-<p>Comments must start with <code class="incode">/**</code>, on their own line. </p>
-<div class="precode"><code><span class="SCde">*/</span></code>
-</div>
 
 <h3 id="231_003_Pages">Pages</h3><p>In <code class="incode">Swag.DocKind.Pages</code> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <code class="incode">Swag.DocKind.Examples</code> mode. </p>
 <p>Can be usefull to generate web pages for example. For <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>

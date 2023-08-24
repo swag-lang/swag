@@ -27,7 +27,7 @@ A mixin function is inserted in the scope of the caller.
 }
 
 /**
-This behaves like a function, so you can add parameters.
+This behaves like a function, so you can add parameters, some default values, you can return something...
 */
 #test
 {
@@ -44,19 +44,22 @@ This behaves like a function, so you can add parameters.
 }
 
 /**
-A mixin accepts parameters of type `code`.
+A mixin accepts a special parameter of type `code`. This represents a Swag **piece of code** defined at the caller site.
 */
 #test
 {
     #[Swag.Mixin]
     func doItTwice(what: code)
     {
-        // You can then insert the code with '#mixin'
+        // You can then insert the code with '#mixin'.
+        // So here, we insert it two times
         #mixin what
         #mixin what
     }
 
     var a = 0
+
+    // You can use '#code' to specify some code when calling the mixin function.
     doItTwice(#code {a += 1;})
     @assert(a == 2)
 }
@@ -74,11 +77,12 @@ When the last parameter of a mixin is of type `code`, the caller can declare tha
     }
 
     var a = 0
-    doItTwice(4)
-    {
-        a += value
-    }
 
+    // This form of passing a code to the mixing...
+    doItTwice(4, #code { a += value; })
+
+    // ...is equivalent to this other form, which is more simple and natural.
+    // You can also notice that 'value' is a parameter from the mixin itself
     doItTwice(2)
     {
         a += value
