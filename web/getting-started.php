@@ -201,7 +201,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
 <h3>Under windows 10/11 </h3>

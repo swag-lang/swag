@@ -324,6 +324,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             if (curBuffer[0] == '"')
             {
+                printf("%s:%d\n", sourceFile->path.string().c_str(), location.line);
                 readChar();
                 SWAG_CHECK(doStringLiteral(token, true, true));
                 return true;

@@ -317,7 +317,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Swag Language Reference</h1>
 
 <h2 id="000_introduction">Introduction</h2><p>The <code class="incode">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<code class="incode">Std</code>). This documentation has been generated directly from the source tree of that module. </p>

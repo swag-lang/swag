@@ -16,8 +16,8 @@
         cfg.docKind = .Api
         cfg.docOutputExtension = ".php"
         cfg.docCss = "css/style.css"
-        cfg.docStartHead = @"<?php include('common/start-head.php'); ?>"@
-        cfg.docEndHead   = @"<?php include('common/end-head.php'); ?>"@
-        cfg.docStartBody = @"<?php include('common/start-body.php'); ?>"@
+        cfg.docStartHead = "<?php include('common/start-head.php'); ?>"
+        cfg.docEndHead   = "<?php include('common/end-head.php'); ?>"
+        cfg.docStartBody = "<?php include('common/start-body.php'); ?>"
     }
 }

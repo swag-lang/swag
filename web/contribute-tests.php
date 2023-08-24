@@ -201,7 +201,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Contribute to the test suite </h1>
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3>Create a workspace and a test module </h3>

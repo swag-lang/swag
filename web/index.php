@@ -201,7 +201,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <p style="white-space: break-spaces"><div style="background-color:Black" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>

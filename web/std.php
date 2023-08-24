@@ -201,7 +201,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <table class="enumeration">
 <tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
 <tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> A 2D painting module</td></tr>

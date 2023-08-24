@@ -289,7 +289,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module audio</h1>
 <p><code class="incode">Std.Audio</code> is a module to decode and play sound files. </p>
 <p>Under windows, it is based on the <code class="incode">xaudio2</code> library. </p>

@@ -1527,7 +1527,7 @@
 <div class="right">
 <div class="rightpage">
 <blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.23.0)</blockquote>
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module win32</h1>
 <p>Wrappers for Microsoft Windows Sdk Libraries. </p>
 <p> 10.0.19041.0 </p>
