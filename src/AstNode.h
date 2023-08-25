@@ -327,6 +327,7 @@ struct AstNode
     void     addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
     void     addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
     uint32_t childParentIdx();
+    void     printLoc();
 
     struct NodeExtensionByteCode
     {

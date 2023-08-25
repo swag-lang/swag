@@ -1055,6 +1055,13 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
+void AstNode::printLoc()
+{
+    if (!sourceFile)
+        return;
+    printf("%s:%d\n", sourceFile->path.string().c_str(), token.startLocation.line);
+}
+
 uint32_t AstNode::childParentIdx()
 {
     SWAG_ASSERT(parent);

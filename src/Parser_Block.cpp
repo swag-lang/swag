@@ -307,64 +307,67 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     ScopedBreakable scopedBreakable(this, node);
 
     // loop can be empty for an infinit loop
-    if (token.id != TokenId::SymLeftCurly)
+    if (token.id == TokenId::SymLeftCurly)
     {
-        Utf8  name;
-        Token tokenName;
-        if (token.id == TokenId::SymLeftParen)
+        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+        return true;
+    }
+
+    Utf8  name;
+    Token tokenName;
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
+
+        tokenName = node->expression->token;
+        if (token.id == TokenId::SymColon)
         {
+            SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
+            SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
+            name = node->expression->childs.back()->token.text;
+            node->expression->release();
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0085)));
             SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }
         else
         {
-            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
+            Ast::addChildBack(node, node->expression);
 
-            tokenName = node->expression->token;
-            if (token.id == TokenId::SymColon)
+            // Missing ':' ?
+            if (node->expression->kind == AstNodeKind::IdentifierRef &&
+                node->expression->childs.size() == 1 &&
+                node->expression->childs.back()->kind == AstNodeKind::Identifier &&
+                token.id == TokenId::LiteralNumber)
             {
-                SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
-                SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
-                name = node->expression->childs.back()->token.text;
-                node->expression->release();
-                SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0085)));
-                SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
-            }
-            else
-            {
-                Ast::addChildBack(node, node->expression);
-
-                // Missing ':' ?
-                if (node->expression->kind == AstNodeKind::IdentifierRef &&
-                    node->expression->childs.size() == 1 &&
-                    node->expression->childs.back()->kind == AstNodeKind::Identifier &&
-                    token.id == TokenId::LiteralNumber)
-                {
-                    return error(token, Fmt(Err(Syn0051), node->expression->childs.back()->token.ctext()));
-                }
+                return error(token, Fmt(Err(Syn0051), node->expression->childs.back()->token.ctext()));
             }
         }
+    }
 
-        // Range
-        if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
-        {
-            SWAG_CHECK(doRange(node, node->expression, &node->expression));
-        }
+    // Range
+    if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
+    {
+        SWAG_CHECK(doRange(node, node->expression, &node->expression));
+    }
 
-        // Creates a variable if we have a named index
-        if (!name.empty())
-        {
-            auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
-            var->token = tokenName;
-            var->specFlags |= AstVarDecl::SPECFLAG_CONST_ASSIGN;
-            node->specificName = var;
+    // Creates a variable if we have a named index
+    if (!name.empty())
+    {
+        auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
+        var->token = tokenName;
+        var->specFlags |= AstVarDecl::SPECFLAG_CONST_ASSIGN;
+        node->specificName = var;
 
-            auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
-            identifer->semanticFct = SemanticJob::resolveIndex;
-            identifer->inheritTokenLocation(var);
+        auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
+        identifer->semanticFct = SemanticJob::resolveIndex;
+        identifer->inheritTokenLocation(var);
 
-            var->assignment = identifer;
-        }
+        var->assignment = identifer;
     }
 
     SWAG_CHECK(doEmbeddedStatement(node, &node->block));
