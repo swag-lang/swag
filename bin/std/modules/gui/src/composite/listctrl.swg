@@ -1213,9 +1213,9 @@ impl ListCtrl
         var cptIdx = 0'u32
         while tmp.count
         {
-            let to = tmp.popBack()
-            let idxInsert = idxLineToIdxList.find(to.index).value
-            visit l, i: to.lines
+            let toI = tmp.popBack()
+            let idxInsert = idxLineToIdxList.find(toI.index).value
+            visit l, i: toI.lines
             {
                 l.index = cptIdxLine
                 cptIdxLine += 1
@@ -1227,10 +1227,10 @@ impl ListCtrl
 
             // Update indexes after the insertion
             for var idx = idxInsert + 1; idx < cast(u32) lines.count; idx += 1
-                idxLineToIdxList.add(lines[idx].index, cast(u32) (idx + to.lines.count))
+                idxLineToIdxList.add(lines[idx].index, cast(u32) (idx + toI.lines.count))
 
             // Insert at the right position
-            lines.insertAt(cast(u64) (idxInsert + 1), to.lines.toSlice())
+            lines.insertAt(cast(u64) (idxInsert + 1), toI.lines.toSlice())
         }
 
         computeLayout()
@@ -1250,8 +1250,8 @@ impl ListCtrl
         var removeCount = 0'u32
         while tmp.count
         {
-            let to = tmp.popBack()
-            visit l: to.lines
+            let toI = tmp.popBack()
+            visit l: toI.lines
             {
                 removeCount += 1
                 if l.expanded

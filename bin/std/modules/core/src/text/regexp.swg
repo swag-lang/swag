@@ -320,8 +320,8 @@ impl RegExp
         var here = node.transitions.find(c)
         if !here
         {
-            var to: Array'(*NfaNode)
-            here = node.transitions.add(c, to)
+            var toT: Array'(*NfaNode)
+            here = node.transitions.add(c, toT)
         }
 
         here.value.add(toNode)

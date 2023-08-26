@@ -125,20 +125,20 @@ impl Vector3
     }
 
     // Returns the distance between two vectors
-    mtd const distance(to: Self)->f32
+    mtd const distance(dest: Self)->f32
     {
-        let xn = (x - to.x)
-        let yn = (y - to.y)
-        let zn = (z - to.z)
+        let xn = (x - dest.x)
+        let yn = (y - dest.y)
+        let zn = (z - dest.z)
         return sqrt((xn * xn) + (yn * yn) + (zn * zn))
     }
 
     // Returns the square distance between two vectors
-    mtd const distanceSquared(to: Self)->f32
+    mtd const distanceSquared(dest: Self)->f32
     {
-        let xn = (x - to.x)
-        let yn = (y - to.y)
-        let zn = (z - to.z)
+        let xn = (x - dest.x)
+        let yn = (y - dest.y)
+        let zn = (z - dest.z)
         return (xn * xn) + (yn * yn) + (zn * zn)
     }
 

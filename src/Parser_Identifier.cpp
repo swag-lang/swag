@@ -12,6 +12,8 @@ void Parser::relaxIdentifier(TokenParse& token)
     case TokenId::KwdAnd:
     case TokenId::KwdOr:
     case TokenId::KwdOrElse:
+    case TokenId::KwdTo:
+    case TokenId::KwdUntil:
         token.id = TokenId::Identifier;
         return;
     default:

@@ -5,9 +5,9 @@ struct Vector3
 
 #test
 {
-    func assign(to: ref Vector3, from: Vector3)
+    func assign(toI: ref Vector3, from: Vector3)
     {
-        to = from
+        toI = from
     }
 
     var a = Vector3{1, 2, 3}

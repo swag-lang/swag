@@ -161,6 +161,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("and", State.Control)
         mapWords.add("or", State.Control)
         mapWords.add("orelse", State.Control)
+        mapWords.add("to", State.Control)
+        mapWords.add("until", State.Control)
 
         mapWords.add("@defined", State.Intrinsic)
         mapWords.add("@location", State.Intrinsic)

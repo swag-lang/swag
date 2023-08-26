@@ -29,31 +29,31 @@ impl TypeFace
 {
     var lock: Sync.Mutex
 
-    func moveTo(to: const *FT_Vector, pathList: *LinePathList)->s32
+    func moveTo(toV: const *FT_Vector, pathList: *LinePathList)->s32
     {
         let path = pathList.newPath()
-        path.start(to.x / 64.0, -to.y / 64.0)
+        path.start(toV.x / 64.0, -toV.y / 64.0)
         return 0
     }
 
-    func lineTo(to: const *FT_Vector, pathList: *LinePathList)->s32
+    func lineTo(toV: const *FT_Vector, pathList: *LinePathList)->s32
     {
         let path = pathList.paths[pathList.paths.count - 1]
-        path.lineTo(to.x / 64.0, -to.y / 64.0)
+        path.lineTo(toV.x / 64.0, -toV.y / 64.0)
         return 0
     }
 
-    func conicTo(ctrl, to: const *FT_Vector, pathList: *LinePathList)->s32
+    func conicTo(ctrl, toV: const *FT_Vector, pathList: *LinePathList)->s32
     {
         let path = pathList.paths[pathList.paths.count - 1]
-        path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl.x / 64.0, -ctrl.y / 64.0)
+        path.bezierTo(toV.x / 64.0, -toV.y / 64.0, ctrl.x / 64.0, -ctrl.y / 64.0)
         return 0
     }
 
-    func bezierTo(ctrl1, ctrl2, to: const *FT_Vector, pathList: *LinePathList)->s32
+    func bezierTo(ctrl1, ctrl2, toV: const *FT_Vector, pathList: *LinePathList)->s32
     {
         let path = pathList.paths[pathList.paths.count - 1]
-        path.bezierTo(to.x / 64.0, -to.y / 64.0, ctrl1.x / 64.0, -ctrl1.y / 64.0, ctrl2.x / 64.0, -ctrl2.y / 64.0)
+        path.bezierTo(toV.x / 64.0, -toV.y / 64.0, ctrl1.x / 64.0, -ctrl1.y / 64.0, ctrl2.x / 64.0, -ctrl2.y / 64.0)
         return 0
     }
 }

@@ -81,34 +81,34 @@ internal impl TagBin
         freeSections.add(ptr)
     }
 
-    mtd canConvertType(to, from: typeinfo)->bool
+    mtd canConvertType(toType, fromType: typeinfo)->bool
     {
-        if to == from
+        if toType == fromType
             return true
 
         var fromStruct: const *Swag.TypeInfoStruct
         var toStruct:   const *Swag.TypeInfoStruct
 
-        if Reflection.isStruct(from)
-            fromStruct = cast(const *Swag.TypeInfoStruct) from
-        if Reflection.isStruct(to)
-            toStruct = cast(const *Swag.TypeInfoStruct) to
+        if Reflection.isStruct(fromType)
+            fromStruct = cast(const *Swag.TypeInfoStruct) fromType
+        if Reflection.isStruct(toType)
+            toStruct = cast(const *Swag.TypeInfoStruct) toType
 
         // s64/float/bool/rune to s64/float/bool/rune
-        if Reflection.isSimpleNative(to) and Reflection.isSimpleNative(from)
+        if Reflection.isSimpleNative(toType) and Reflection.isSimpleNative(fromType)
         {
-            convertNextNative = cast(const *Swag.TypeInfoNative) from
+            convertNextNative = cast(const *Swag.TypeInfoNative) fromType
             return true
         }
 
-        if Reflection.isArray(from)
+        if Reflection.isArray(fromType)
         {
-            let fromArr = cast(const *Swag.TypeInfoArray) from
+            let fromArr = cast(const *Swag.TypeInfoArray) fromType
 
             // Array to array, this is fine, we will deal with size change
-            if Reflection.isArray(to)
+            if Reflection.isArray(toType)
             {
-                let toArr = cast(const *Swag.TypeInfoArray) to
+                let toArr = cast(const *Swag.TypeInfoArray) toType
                 if canConvertType(toArr.pointedType, fromArr.pointedType)
                     return true
             }
@@ -123,7 +123,7 @@ internal impl TagBin
                 }
 
                 // Static array to single struct value
-                elif canConvertType(to, fromArr.pointedType)
+                elif canConvertType(toType, fromArr.pointedType)
                 {
                     convertArrayToVal = true
                     return true
@@ -131,7 +131,7 @@ internal impl TagBin
             }
 
             // Static array to single value
-            elif canConvertType(to, fromArr.pointedType)
+            elif canConvertType(toType, fromArr.pointedType)
             {
                 convertArrayToVal = true
                 return true
@@ -143,9 +143,9 @@ internal impl TagBin
             if fromStruct.fromGeneric == @typeof(Array)
             {
                 // Dynamic array to Static array
-                if Reflection.isArray(to)
+                if Reflection.isArray(toType)
                 {
-                    let toArr = cast(const *Swag.TypeInfoArray) to
+                    let toArr = cast(const *Swag.TypeInfoArray) toType
                     if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType)
                         return true
                 }
@@ -158,7 +158,7 @@ internal impl TagBin
                 }
 
                 // Dynamic array to single value
-                elif canConvertType(to, fromStruct.generics[0].pointedType)
+                elif canConvertType(toType, fromStruct.generics[0].pointedType)
                 {
                     convertArrayToVal = true
                     return true
@@ -166,12 +166,12 @@ internal impl TagBin
             }
         }
 
-        if Reflection.isArray(to)
+        if Reflection.isArray(toType)
         {
-            let toArr = cast(const *Swag.TypeInfoArray) to
+            let toArr = cast(const *Swag.TypeInfoArray) toType
 
             // Conversion from simple value to array
-            if canConvertType(from, toArr.pointedType)
+            if canConvertType(fromType, toArr.pointedType)
             {
                 convertValToArray = true
                 return true
@@ -183,7 +183,7 @@ internal impl TagBin
             if toStruct.fromGeneric == @typeof(Array)
             {
                 // Conversion from simple value to Core.Array
-                if (!fromStruct or fromStruct.fromGeneric != @typeof(Array)) and canConvertType(from, toStruct.generics[0].pointedType)
+                if (!fromStruct or fromStruct.fromGeneric != @typeof(Array)) and canConvertType(fromType, toStruct.generics[0].pointedType)
                 {
                     convertValToArray = true
                     return true
@@ -194,9 +194,9 @@ internal impl TagBin
             elif fromStruct and fromStruct.fromGeneric != @typeof(Array)
             {
                 // 2 pod structs with the same size
-                if Reflection.hasAttribute(to, Serialization.PodFinal) and
-                   Reflection.hasAttribute(from, Serialization.PodFinal) and
-                   to.sizeof == from.sizeof
+                if Reflection.hasAttribute(toType, Serialization.PodFinal) and
+                   Reflection.hasAttribute(fromType, Serialization.PodFinal) and
+                   toType.sizeof == fromType.sizeof
                 {
                     return true
                 }

@@ -364,6 +364,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("or", TokenId::KwdOr);
     keywords.add("orelse", TokenId::KwdOrElse);
     keywords.add("unreachable", TokenId::KwdUnreachable);
+    keywords.add("to", TokenId::KwdTo);
+    keywords.add("until", TokenId::KwdUntil);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);

@@ -58,8 +58,8 @@ struct CellInfo
 
 struct MoveInfo
 {
-    from: s8
-    to:   s8
+    fromP: s8
+    toP:   s8
 }
 
 struct GameInfo
@@ -76,10 +76,10 @@ var g_Board:     [96] Cell
 var g_BoardInfo: [96] CellInfo
 var g_Game:      GameInfo
 
-func moveIsPossible(from, to: s8)->bool
+func moveIsPossible(fromP, toP: s8)->bool
 {
     visit move: g_Game.possibleMoves
-        if move.from == from and move.to == to
+        if move.fromP == fromP and move.toP == toP
             return true
     return false
 }
@@ -236,43 +236,43 @@ func computeMoves()
         g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White": "Black")
 }
 
-func getPawnMoves(board: ^Cell, from: s8, moves: *Array's8)
+func getPawnMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    let isWhite = board[from].content == .White
+    let isWhite = board[fromP].content == .White
     let offset = isWhite ? 12's8 : -12's8
-    var target = getCellWithOffset(board, from, offset)
+    var target = getCellWithOffset(board, fromP, offset)
     if target != -1 and board[target].content == .Empty
         moves.add(target)
 
     // double move when pawn is in its original row
-    if from/12 == (isWhite ? 1 : 6)
+    if fromP/12 == (isWhite ? 1 : 6)
     {
-        target = getCellWithOffset(board, from, 2*offset)
+        target = getCellWithOffset(board, fromP, 2*offset)
         if target != -1 and board[target].content == .Empty
             moves.add(target)
     }
 }
 
-func getPawnAttacks(board: ^Cell, from: s8, moves: *Array's8)
+func getPawnAttacks(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    let isWhite = board[from].content == .White
+    let isWhite = board[fromP].content == .White
     let targetContent = isWhite ? ContentEnum.Black : ContentEnum.White
     let offset = isWhite ? 12's8 : -12's8
-    var target = getCellWithOffset(board, from, offset-1)
+    var target = getCellWithOffset(board, fromP, offset-1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)
         moves.add(target)
-    target = getCellWithOffset(board, from, offset + 1)
+    target = getCellWithOffset(board, fromP, offset + 1)
     if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target)
         moves.add(target)
 }
 
-func getPieceMove(board: ^Cell, from, offset: s8, moves: *Array's8)->bool
+func getPieceMove(board: ^Cell, fromP, offset: s8, moves: *Array's8)->bool
 {
-    let target = getCellWithOffset(board, from, offset)
+    let target = getCellWithOffset(board, fromP, offset)
     if target == -1
         return false
 
-    if board[from].content == board[target].content
+    if board[fromP].content == board[target].content
         return false
 
     moves.add(target)
@@ -280,92 +280,92 @@ func getPieceMove(board: ^Cell, from, offset: s8, moves: *Array's8)->bool
 }
 
 const KnightMovesDeltas = [10's8,23,25,14,-10,-23,-25,-14]
-func getKnightMoves(board: ^Cell, from: s8, moves: *Array's8)
+func getKnightMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
     visit delta: KnightMovesDeltas
-        discard getPieceMove(board, from, delta, moves)
+        discard getPieceMove(board, fromP, delta, moves)
 }
 
 const KingMovesDeltas = [11's8,12,13,1,-11,-12,-13,-1]
-func getKingMoves(board: ^Cell, from: s8, moves: *Array's8)
+func getKingMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
     visit delta: KingMovesDeltas
-        discard getPieceMove(board, from, delta, moves)
+        discard getPieceMove(board, fromP, delta, moves)
 }
 
 const BishopMovesDeltas = [11's8,13,-11,-13]
-func getBishopMoves(board: ^Cell, from: s8, moves: *Array's8)
+func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
     visit delta: BishopMovesDeltas
     {
         var offset = delta
-        while getPieceMove(board, from, offset, moves)
+        while getPieceMove(board, fromP, offset, moves)
             offset += delta
     }
 }
 
 const RookMovesDeltas = [12's8,1,-12,-1]
-func getRookMoves( board:^Cell, from: s8, moves: *Array's8)
+func getRookMoves( board:^Cell, fromP: s8, moves: *Array's8)
 {
     visit delta: RookMovesDeltas
     {
         var offset = delta
-        while getPieceMove(board, from, offset, moves)
+        while getPieceMove(board, fromP, offset, moves)
             offset += delta
     }
 }
 
-func doMove(from, to: s8)
+func doMove(fromP, toP: s8)
 {
-    let content = g_Board[from].content
+    let content = g_Board[fromP].content
     if content > ContentEnum.Black
         return
 
     // castle update and params
     let ki = content == .White ? 6's8 : 90's8
-    g_Game.castle[content, 0] = g_Game.castle[content, 0] and (from != ki) and (from != ki+3)
-    g_Game.castle[content, 1] = g_Game.castle[content, 1] and (from != ki) and (from != ki-4)
+    g_Game.castle[content, 0] = g_Game.castle[content, 0] and (fromP != ki) and (fromP != ki+3)
+    g_Game.castle[content, 1] = g_Game.castle[content, 1] and (fromP != ki) and (fromP != ki-4)
 
-    g_Board[to].piece     = g_Board[from].piece
-    g_Board[to].content   = g_Board[from].content
-    g_Board[from].piece   = .None
-    g_Board[from].content = .Empty
+    g_Board[toP].piece     = g_Board[fromP].piece
+    g_Board[toP].content   = g_Board[fromP].content
+    g_Board[fromP].piece   = .None
+    g_Board[fromP].content = .Empty
 
     // castle, king has moved, move rook
-    if from == ki and to == ki+2 and g_Board[ki+2].piece == .King
+    if fromP == ki and toP == ki+2 and g_Board[ki+2].piece == .King
         doMove(ki+3, ki+1)
-    if from == ki and to == ki-1 and g_Board[ki-2].piece == .King
+    if fromP == ki and toP == ki-1 and g_Board[ki-2].piece == .King
         doMove(ki-4, ki-1)
 
     // prise en passant
-    if to == g_Game.priseEnPassant
+    if toP == g_Game.priseEnPassant
     {
-        let otherTo = to - 12 * Math.sign(cast(s8) (to - from))
+        let otherTo = toP - 12 * Math.sign(cast(s8) (toP - fromP))
         g_Board[otherTo].piece = .None
         g_Board[otherTo].content = .Empty
     }
 
-    if g_Board[to].piece == .Pawn and Math.abs(cast(s8) (from - to)) == 24
-        g_Game.priseEnPassant = cast(s8) ((from +,up to) / 2)
+    if g_Board[toP].piece == .Pawn and Math.abs(cast(s8) (fromP - toP)) == 24
+        g_Game.priseEnPassant = cast(s8) ((fromP +,up toP) / 2)
     else
         g_Game.priseEnPassant = -1
 
     // promotion
-    if g_Board[to].piece == .Pawn and (to > 84 or to < 12)
-        g_Board[to].piece = .Queen
+    if g_Board[toP].piece == .Pawn and (toP > 84 or toP < 12)
+        g_Board[toP].piece = .Queen
 }
 
-func doMove(board:^Cell, from, to: s8)->[96] Cell
+func doMove(board:^Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell
 
     loop i: 96
         result[i] = board[i]
 
-    result[to].piece     = result[from].piece
-    result[to].content   = result[from].content
-    result[from].piece   = .None
-    result[from].content = .Empty
+    result[toP].piece     = result[fromP].piece
+    result[toP].content   = result[fromP].content
+    result[fromP].piece   = .None
+    result[fromP].content = .Empty
     return result
 }
 
@@ -439,9 +439,9 @@ func paintBoard(evt: *Event)
 
         visit move: g_Game.possibleMoves
         {
-            if move.from == g_Game.selectedCell
+            if move.fromP == g_Game.selectedCell
             {
-                cellInfo = g_BoardInfo[move.to]
+                cellInfo = g_BoardInfo[move.toP]
                 painter.drawRect(cellInfo.rect, ColorTargets, penSize: 3)
             }
         }

@@ -30,6 +30,8 @@ else
 elif
 and
 or
+to
+until
 switch
 case
 default

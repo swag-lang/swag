@@ -11,6 +11,6 @@ impl Toto
 
 #test
 {
-    let to = @typeof(Toto)
-    @assert(@countof(to.fields) == 1)
+    let toI = @typeof(Toto)
+    @assert(@countof(toI.fields) == 1)
 }
