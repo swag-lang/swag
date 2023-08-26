@@ -201,7 +201,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         unnamedTokens.push_back(token);
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Fmt(Err(Syn0112), token.ctext())));
+    if (token.id != TokenId::KwdConst)
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0112), token.ctext())));
     paramNode->token.text = token.text;
 
     // 'self'
@@ -682,7 +683,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         else
         {
             relaxIdentifier(token);
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0089), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0089), token.ctext())));
             funcNode->tokenName = token;
         }
 

@@ -1159,7 +1159,7 @@ void initErrors()
     SWAG_ERROR(Hnt0126, "this string is null or empty");
     SWAG_ERROR(Hnt0127, "this %s has '%s' access");
     SWAG_ERROR(Hnt0128, "this tuple is %s");
-    SWAG_ERROR(Hnt0129, nullptr);
+    SWAG_ERROR(Hnt0129, "the keyword '%s' cannot be used as an identifier");
     SWAG_ERROR(Hnt0130, nullptr);
 
     /////////////////////////////////////////////////////////////////////

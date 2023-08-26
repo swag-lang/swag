@@ -66,6 +66,15 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
     return true;
 }
 
+bool Parser::checkIsIdentifier(TokenParse& token, const char* msg)
+{
+    if (token.id == TokenId::Identifier)
+        return true;
+
+    Utf8 hint = Fmt(Hnt(Hnt0129), token.ctext());
+    return error(token, msg, nullptr, hint);
+}
+
 bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
     TokenParse scopeUpValue;

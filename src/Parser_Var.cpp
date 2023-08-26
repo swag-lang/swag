@@ -267,14 +267,16 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     {
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0184), token.ctext())));
+        if (token.id != TokenId::SymLeftParen)
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0184), token.ctext())));
     }
     else
     {
         isLet = token.id == TokenId::KwdLet;
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0069), token.ctext())));
+        if (token.id != TokenId::SymLeftParen)
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0069), token.ctext())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
