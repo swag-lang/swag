@@ -180,17 +180,22 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitBytes(stmt: code)
     {
-        #if back #error "visiting the String bytes in reverse order is not supported"
-
         if !length
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        var scan = buffer - 1
+        #if back
+            var scan = buffer + length
+        #else
+            var scan = buffer - 1
 
         loop length
         {
-            scan += 1
+            #if back
+                scan -= 1
+            #else
+                scan += 1
+
             #macro
             {
                 #if #up ptr
