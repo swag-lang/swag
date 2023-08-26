@@ -1157,7 +1157,7 @@ impl Capture
     {
         if !forms.count
             return Swag.U64.Max
-        loop i: forms.count-1..0
+        loop,back i: forms
         {
             let f = forms[i]
             let b = cast(*BaseForm) @dataof(f)
