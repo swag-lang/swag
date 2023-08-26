@@ -124,51 +124,31 @@ impl Array
         count += countof
     }
 
-    // Visit every elements of the array
+    // Visit every elements of the array.
+    // Visiting by address and in reverse order is supported.
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: code)
     {
         if !count
             return
 
-        // Little trick to avoid labels. That way a 'continue' in the user code will work
-        // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
-        var scan = buffer - 1
+        // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
+        #if back
+            var scan = buffer + count
+        #else
+            var scan = buffer - 1
 
         loop count
         {
-            scan += 1
+            #if back
+                scan -= 1
+            #else
+                scan += 1
+
             #macro
             {
                 #if #up ptr
                     var @alias0 = cast(*T) #up scan
-                #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) #up scan
-                #else
-                    var @alias0 = #up scan[0]
-                var @alias1 = @index
-                #mixin #up stmt
-            }
-        }
-    }
-
-    // Visit every elements of the array from end to start
-    #[Macro]
-    func(ptr: bool, back: bool) opVisitBack(using const self, stmt: code)
-    {
-        if !count return
-
-        // Little trick to avoid labels. That way a 'continue' in the user code will work
-        // correctly, that's why we decrement 'scan' before the use code.
-        var scan = buffer + count
-
-        loop count
-        {
-            scan -= 1
-            #macro
-            {
-                #if #up ptr
-                    var @alias0 = #up scan
                 #elif Reflection.isStruct(T)
                     var @alias0 = cast(ref T) #up scan
                 #else
