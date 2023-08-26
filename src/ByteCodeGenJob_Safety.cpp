@@ -37,11 +37,14 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         case SafetyMsg::NotZero:
             typedMsg[m][0][0] = Err(Saf0007);
             break;
-        case SafetyMsg::BadSlicingUp:
+        case SafetyMsg::BadSlicingDown:
             typedMsg[m][0][0] = Err(Saf0004);
             break;
-        case SafetyMsg::BadSlicingDown:
+        case SafetyMsg::BadSlicingUp:
             typedMsg[m][0][0] = Err(Saf0005);
+            break;
+        case SafetyMsg::BadRangeDown:
+            typedMsg[m][0][0] = Err(Saf0034);
             break;
         case SafetyMsg::IndexRange:
             typedMsg[m][0][0] = Err(Saf0008);
@@ -378,6 +381,25 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     freeRegisterRC(context, r1);
 }
 
+void ByteCodeGenJob::emitSafetyRange(ByteCodeGenContext* context, AstRange* node)
+{
+    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+
+    // Lower bound <= upper bound
+    auto re = reserveRegisterRC(context);
+    context->pushLocation(&node->expressionLow->token.startLocation);
+    if (node->expressionLow->typeInfo->isNativeIntegerSigned())
+        EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, node->expressionLow->resultRegisterRC, node->expressionUp->resultRegisterRC, re);
+    else
+        EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, node->expressionLow->resultRegisterRC, node->expressionUp->resultRegisterRC, re);
+    emitAssert(context, re, safetyMsg(SafetyMsg::BadRangeDown));
+    context->popLocation();
+    freeRegisterRC(context, re);
+}
+
 void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
@@ -411,7 +433,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->lowerBound->token.startLocation);
         EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
-        emitAssert(context, re, safetyMsg(SafetyMsg::BadSlicingUp));
+        emitAssert(context, re, safetyMsg(SafetyMsg::BadSlicingDown));
         context->popLocation();
         freeRegisterRC(context, re);
     }
@@ -422,7 +444,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
         EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
-        emitAssert(context, re, safetyMsg(SafetyMsg::BadSlicingDown));
+        emitAssert(context, re, safetyMsg(SafetyMsg::BadSlicingUp));
         context->popLocation();
         freeRegisterRC(context, re);
         if (freeMaxBoundReg)

@@ -81,6 +81,8 @@ void initErrors()
     SWAG_ERROR(Saf0031, "[safety 'overflow'] value '%g' does not fit in the type '%s'");
     SWAG_ERROR(Saf0032, "[safety 'overflow'] value '%I64d' is negative and does not fit in the unsigned type '%s'");
     SWAG_ERROR(Saf0033, "[safety 'overflow'] value '%I64u' does not fit in the type '%s'");
+    SWAG_ERROR(Saf0034, "[safety 'boundcheck'] invalid range, the lower bound is greater than the upper bound");
+    SWAG_ERROR(Saf0035, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

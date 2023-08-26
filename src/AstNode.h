@@ -652,19 +652,13 @@ struct AstBreakContinue : public AstNode
 const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
 const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
 const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
-const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
-const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
+const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000008;
 
 struct AstBreakable : public AstNode
 {
     bool needIndex()
     {
         return breakableFlags & BREAKABLE_NEED_INDEX;
-    }
-
-    bool needIndex1()
-    {
-        return breakableFlags & BREAKABLE_NEED_INDEX1;
     }
 
     void copyFrom(CloneContext& context, AstBreakable* from);
@@ -674,7 +668,6 @@ struct AstBreakable : public AstNode
     VectorNative<AstBreakContinue*> fallThroughList;
 
     uint32_t registerIndex;
-    uint32_t registerIndex1;
     uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
 
     int seekJumpBeforeContinue;

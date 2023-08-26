@@ -53,8 +53,9 @@ enum class SafetyMsg
     Neg,
     SwitchComplete,
     IndexRange,
-    BadSlicingUp,
     BadSlicingDown,
+    BadSlicingUp,
+    BadRangeDown,
     NotZero,
     InvalidBool,
     InvalidFloat,
@@ -425,6 +426,7 @@ struct ByteCodeGenJob : public Job
     static void        emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void        emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit);
     static void        emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode);
+    static void        emitSafetyRange(ByteCodeGenContext* context, AstRange* node);
     static void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
 
     static void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);

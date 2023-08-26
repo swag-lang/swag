@@ -404,8 +404,6 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
     freeRegisterRC(context, node);
     if (node->needIndex())
         freeRegisterRC(context, node->registerIndex);
-    if (node->needIndex1())
-        freeRegisterRC(context, node->registerIndex1);
 
     return true;
 }
@@ -529,32 +527,46 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         }
     }
 
-    // Dynamic range
-    loopNode->registerIndex1 = reserveRegisterRC(context);
-    loopNode->breakableFlags |= BREAKABLE_NEED_INDEX1;
+    SWAG_CHECK(emitCast(context, rangeNode->expressionLow, rangeNode->expressionLow->typeInfo, rangeNode->expressionLow->castedTypeInfo));
+    SWAG_ASSERT(context->result == ContextResult::Done);
+    SWAG_CHECK(emitCast(context, rangeNode->expressionUp, rangeNode->expressionUp->typeInfo, rangeNode->expressionUp->castedTypeInfo));
+    SWAG_ASSERT(context->result == ContextResult::Done);
 
-    // registerIndex1 contains the increment to the index (-1 or 1)
-    EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = 1;
-    EMIT_INST3(context, ByteCodeOp::JumpIfLowerEqS64, rangeNode->expressionLow->resultRegisterRC, 1, rangeNode->expressionUp->resultRegisterRC);
-    EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
+    emitSafetyRange(context, rangeNode);
 
-    if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
+    if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
     {
-        auto inst = EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, rangeNode->expressionUp->resultRegisterRC, loopNode->registerIndex1, rangeNode->expressionUp->resultRegisterRC);
-        inst->flags |= BCI_CAN_OVERFLOW;
+        EMIT_INST1(context, ByteCodeOp::DecrementRA64, rangeNode->expressionLow->resultRegisterRC[0]);
+
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionUp->resultRegisterRC[0]);
+        if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
+            EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
+        EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
+        loopNode->seekJumpExpression = context->bc->numInstructions;
+        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionLow->resultRegisterRC[0]);
+        return true;
     }
+    else
+    {
+        if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
+            EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRC[0]);
 
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC);
-    auto inst = EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
-    inst->flags |= BCI_CAN_OVERFLOW;
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC[0]);
+        EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
 
-    loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-    loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-    loopNode->seekJumpExpression       = context->bc->numInstructions;
-    EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC);
-    inst = EMIT_INST3(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
-    inst->flags |= BCI_CAN_OVERFLOW;
-    return true;
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+        loopNode->seekJumpExpression = context->bc->numInstructions;
+
+        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC[0]);
+        return true;
+    }
 }
 
 bool ByteCodeGenJob::emitLabelBeforeBlock(ByteCodeGenContext* context)

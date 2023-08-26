@@ -582,7 +582,6 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
     AstNode::copyFrom(context, from, false);
     breakableFlags = from->breakableFlags;
     registerIndex  = from->registerIndex;
-    registerIndex1 = from->registerIndex1;
 }
 
 AstNode* AstSubstBreakContinue::clone(CloneContext& context)

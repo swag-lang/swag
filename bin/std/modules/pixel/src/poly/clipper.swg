@@ -202,7 +202,7 @@ impl Transform
         rangeTest(pg.buffer[highI])
         initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
         initEdge(&edges[highI], &edges[0], &edges[highI-1], pg.buffer[highI])
-        loop i: highI-1 .. 1
+        loop i: 1 .. highI-1 #back
         {
             rangeTest(pg.buffer[i])
             initEdge(&edges[i], &edges[i+1], &edges[i-1], pg.buffer[i])

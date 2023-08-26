@@ -299,7 +299,6 @@ impl Decoder
         return cast(^s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
-    #[Swag.Safety("", false)]
     mtd loadNextRow() throw
     {
         var blockMcuX: [MaxComponents] s32
@@ -404,7 +403,6 @@ impl Decoder
         getBits2(16)
     }
 
-    #[Swag.Safety("", false)]
     mtd huffDecode(ph: *HuffTables)->s32
     {
         var symbol = ph.lookUp[(bitBuf >> 8) & 0xFF]
@@ -426,7 +424,6 @@ impl Decoder
         return symbol
     }
 
-    #[Swag.Safety("", false)]
     mtd decodeNextRow() throw
     {
         var rowBlock = 0
@@ -537,7 +534,6 @@ impl Decoder
         }
     }
 
-    #[Swag.Safety("", false)]
     func idct(data: ^s16, buf: ^u8)
     {
         var pdstPtr = buf
@@ -726,7 +722,7 @@ impl Decoder
         var psrcPtr = blockSeg[0]
         var pdstPtr = pSampleBuf
 
-        loop i: maxBlocksPerRow..1
+        loop maxBlocksPerRow-1
         {
             Memory.copy(tempBlock, psrcPtr, 64'u64 * @sizeof(s16))
             idct(tempBlock, pdstPtr)
@@ -805,13 +801,12 @@ impl Decoder
         return Okay
     }
 
-    #[Swag.Safety("", false)]
     mtd convertGrayscale()
     {
         let row = maxMcuSizeY - mcuLinesLeft
         var d = scanLine0.buffer
         var s = pSampleBuf + row * 8
-        loop i: maxMcusPerRow..1
+        loop i: 1..maxMcusPerRow #back
         {
             d[0] = s[0]
             d[1] = s[1]
@@ -827,13 +822,12 @@ impl Decoder
         }
     }
 
-    #[Swag.Safety("", false)]
     mtd convertH1V1()
     {
         let row = maxMcuSizeY - mcuLinesLeft
         var d = scanLine0.buffer
         var s = pSampleBuf + row * 8
-        loop i: maxMcusPerRow..1
+        loop i: 1..maxMcusPerRow #back
         {
             loop j: 8
             {
@@ -851,7 +845,6 @@ impl Decoder
         }
     }
 
-    #[Swag.Safety("", false)]
     mtd convertH1V2()
     {
         let row = maxMcuSizeY - mcuLinesLeft
@@ -865,7 +858,7 @@ impl Decoder
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
         var c = pSampleBuf + 64 * 2 + (row >> 1) * 8
-        loop i: maxMcusPerRow..1
+        loop i: 1..maxMcusPerRow #back
         {
             loop j: 8
             {
@@ -892,7 +885,6 @@ impl Decoder
         }
     }
 
-    #[Swag.Safety("", false)]
     mtd convertH2V1()
     {
         let row = maxMcuSizeY - mcuLinesLeft
@@ -900,7 +892,7 @@ impl Decoder
         var y = pSampleBuf + row * 8
         var c = pSampleBuf + 2 * 64 + row * 8
 
-        loop i: maxMcusPerRow..1
+        loop i: 1..maxMcusPerRow #back
         {
             loop l: 2
             {
@@ -935,7 +927,6 @@ impl Decoder
         }
     }
 
-    #[Swag.Safety("", false)]
     mtd convertH2V2()
     {
         let row = maxMcuSizeY - mcuLinesLeft
@@ -949,7 +940,7 @@ impl Decoder
             y = pSampleBuf + 64 * 2 + (row & 7) * 8
         var c = pSampleBuf + 64 * 4 + (row >> 1) * 8
 
-        loop i: maxMcusPerRow..1
+        loop i: 1..maxMcusPerRow #back
         {
             loop l: 2
             {
