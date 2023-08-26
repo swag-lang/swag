@@ -232,7 +232,11 @@ dref
 @typecmp
 @typeof
 ```
+*/
+
+/**
 # Modifiers
+Modifiers can be applied to some specific keywords or operators to change their behaviours.
 ```
 ,over
 ,nodrop
@@ -241,5 +245,6 @@ dref
 ,moveraw
 ,up
 ,unconst
+,back
 ```
 */

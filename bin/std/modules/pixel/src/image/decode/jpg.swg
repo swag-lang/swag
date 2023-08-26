@@ -539,7 +539,7 @@ impl Decoder
         var pdstPtr = buf
         var dataPtr = data
 
-        loop rowctr: 0..7 #back
+        loop,back rowctr: 0..7
         {
             // Original code:
             // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
@@ -620,7 +620,7 @@ impl Decoder
 
         dataPtr = data
 
-        loop rowctr: 0..7 #back
+        loop,back rowctr: 0..7
         {
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
@@ -806,7 +806,7 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d = scanLine0.buffer
         var s = pSampleBuf + row * 8
-        loop i: 1..maxMcusPerRow #back
+        loop,back i: 1..maxMcusPerRow
         {
             d[0] = s[0]
             d[1] = s[1]
@@ -827,7 +827,7 @@ impl Decoder
         let row = maxMcuSizeY - mcuLinesLeft
         var d = scanLine0.buffer
         var s = pSampleBuf + row * 8
-        loop i: 1..maxMcusPerRow #back
+        loop,back i: 1..maxMcusPerRow
         {
             loop j: 8
             {
@@ -858,7 +858,7 @@ impl Decoder
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
         var c = pSampleBuf + 64 * 2 + (row >> 1) * 8
-        loop i: 1..maxMcusPerRow #back
+        loop,back i: 1..maxMcusPerRow
         {
             loop j: 8
             {
@@ -892,7 +892,7 @@ impl Decoder
         var y = pSampleBuf + row * 8
         var c = pSampleBuf + 2 * 64 + row * 8
 
-        loop i: 1..maxMcusPerRow #back
+        loop,back i: 1..maxMcusPerRow
         {
             loop l: 2
             {
@@ -940,7 +940,7 @@ impl Decoder
             y = pSampleBuf + 64 * 2 + (row & 7) * 8
         var c = pSampleBuf + 64 * 4 + (row >> 1) * 8
 
-        loop i: 1..maxMcusPerRow #back
+        loop,back i: 1..maxMcusPerRow
         {
             loop l: 2
             {

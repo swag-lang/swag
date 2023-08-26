@@ -153,6 +153,7 @@ void LanguageSpec::setupNames()
     name_noerr   = "noerr";
     name_bit     = "bit";
     name_unconst = "unconst";
+    name_back    = "back";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
@@ -302,7 +303,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#type", TokenId::CompilerType);
     keywords.add("#scope", TokenId::CompilerScope);
     keywords.add("#up", TokenId::CompilerUp);
-    keywords.add("#back", TokenId::CompilerBack);
 
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);

@@ -75,14 +75,14 @@ But you can name that index if you want.
 }
 
 /**
-You can loop in reverse order by adding the special compiler keyword `#back` after the loop expression.
+You can loop in reverse order by adding the modifier `,back` just after the `loop`.
 */
 #test
 {
     var cpt = 0
 
     // Index will be 2, 1 and then 0.
-    loop 3 #back
+    loop,back 3
     {
         if   cpt == 0 @assert(@index == 2)
         elif cpt == 1 @assert(@index == 1)
@@ -167,22 +167,22 @@ You can exclude the last value with the `..<` syntax.
 }
 
 /**
-With a range, you can also loop in reverse order if you add the `#back` keyword.
+With a range, you can also loop in reverse order if you add the `back` modifier.
 */
 #test
 {
     // Loop from 5 to 0
-    loop 0..5 #back
+    loop,back 0..5
     {
     }
 
     // Loop from 1 to -1
-    loop -1..1 #back
+    loop,back -1..1
     {
     }
 
     // Loop from 1 to -2 because we exclude the upper limit.
-    loop -2 ..< 2 #back
+    loop,back -2 ..< 2
     {
     }
 }

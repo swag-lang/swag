@@ -3,7 +3,7 @@
 {
     var g = 0
     var cpt = 0
-    loop i: 6 ..< 8 #back
+    loop,back i: 6 ..< 8
     {
         if cpt == 0 @assert(i == 7)
         if cpt == 1 @assert(i == 6)

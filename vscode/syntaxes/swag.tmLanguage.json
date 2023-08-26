@@ -209,7 +209,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(up|back)"
+          "match": "(#)\\b(up)"
         }
       ]
     },
@@ -439,7 +439,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(over|nodrop|bit|move|moveraw|up|unconst)\\b"
+          "match": "\\,(over|nodrop|bit|move|moveraw|up|unconst|back)\\b"
         }
       ]
     }

@@ -313,6 +313,14 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         return true;
     }
 
+    // Reverse loop
+    uint32_t mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
+    if (mdfFlags & MODIFIER_BACK)
+    {
+        node->specFlags |= AstLoop::SPECFLAG_BACK;
+    }
+
     Utf8  name;
     Token tokenName;
     if (token.id == TokenId::SymLeftParen)
@@ -353,13 +361,6 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
         SWAG_CHECK(doRange(node, node->expression, &node->expression));
-    }
-
-    // Reverse loop
-    if (token.id == TokenId::CompilerBack)
-    {
-        node->specFlags |= AstLoop::SPECFLAG_BACK;
-        SWAG_CHECK(eatToken());
     }
 
     // Creates a variable if we have a named index

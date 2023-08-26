@@ -1539,7 +1539,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Loop:
     {
         auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
-        CONCAT_FIXED_STR(concat, "loop ");
+        CONCAT_FIXED_STR(concat, "loop");
+        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+            CONCAT_FIXED_STR(concat, ",back");
+        concat.addChar(' ');
+
         if (loopNode->specificName)
         {
             concat.addString(loopNode->specificName->token.text);

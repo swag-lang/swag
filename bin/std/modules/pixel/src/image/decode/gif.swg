@@ -379,7 +379,7 @@ impl Decoder
 
         if pf.hasAlpha()
         {
-            loop j: 0..fh-1 #back
+            loop,back j: 0..fh-1
             {
                 loop k: cast(u32) fw
                 {
@@ -397,7 +397,7 @@ impl Decoder
         }
         else
         {
-            loop j: 0..fh-1 #back
+            loop,back j: 0..fh-1
             {
                 loop k: fw
                 {

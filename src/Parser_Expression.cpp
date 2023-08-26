@@ -632,6 +632,22 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             continue;
         }
 
+        if (token.text == g_LangSpec->name_back)
+        {
+            switch (opId)
+            {
+            case TokenId::KwdLoop:
+                break;
+            default:
+                return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_BACK), error(token, Fmt(Err(Syn0125), token.ctext())));
+            mdfFlags |= MODIFIER_BACK;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
         if (token.text == g_LangSpec->name_bit)
         {
             switch (opId)

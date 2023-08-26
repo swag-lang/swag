@@ -35,7 +35,7 @@
     {
         var l = 0
         var c = 0
-        loop i: 0..4 #back
+        loop,back i: 0..4
         {
             l += i
             c += 1

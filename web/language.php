@@ -694,13 +694,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@typeof</span></span></code>
 </div>
 <h3>Modifiers </h3>
+<p>Modifiers can be applied to some specific keywords or operators to change their behaviours. </p>
 <div class="precode"><code><span class="SCde">,over
 ,nodrop
 ,bit
 ,move
 ,moveraw
 ,up
-,unconst</span></code>
+,unconst
+,back</span></code>
 </div>
 
 <h2 id="006_semicolon">Semicolon</h2><p>In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough. </p>
@@ -2778,13 +2780,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>You can loop in reverse order by adding the special compiler keyword <code class="incode">#back</code> after the loop expression. </p>
+<p>You can loop in reverse order by adding the modifier <code class="incode">,back</code> just after the <code class="incode">loop</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Index will be 2, 1 and then 0.</span>
-    <span class="SLgc">loop</span> <span class="SNum">3</span> <span class="SCmp">#back</span>
+    <span class="SLgc">loop</span>,back <span class="SNum">3</span>
     {
         <span class="SLgc">if</span>   cpt == <span class="SNum">0</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">2</span>)
         <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">1</span>)
@@ -2854,21 +2856,21 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>+<span class="SNum">2</span>)
 }</span></code>
 </div>
-<p>With a range, you can also loop in reverse order if you add the <code class="incode">#back</code> keyword. </p>
+<p>With a range, you can also loop in reverse order if you add the <code class="incode">back</code> modifier. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Loop from 5 to 0</span>
-    <span class="SLgc">loop</span> <span class="SNum">0.</span>.<span class="SNum">5</span> <span class="SCmp">#back</span>
+    <span class="SLgc">loop</span>,back <span class="SNum">0.</span>.<span class="SNum">5</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -1</span>
-    <span class="SLgc">loop</span> -<span class="SNum">1.</span>.<span class="SNum">1</span> <span class="SCmp">#back</span>
+    <span class="SLgc">loop</span>,back -<span class="SNum">1.</span>.<span class="SNum">1</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -2 because we exclude the upper limit.</span>
-    <span class="SLgc">loop</span> -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span> <span class="SCmp">#back</span>
+    <span class="SLgc">loop</span>,back -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span>
     {
     }
 }</span></code>
