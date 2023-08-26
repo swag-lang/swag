@@ -75,6 +75,24 @@ You can name that index if you want.
 }
 
 /**
+You can loop in reverse order by adding the special compiler keyword `#back` after the loop expression.
+*/
+#test
+{
+    var cpt = 0
+
+    // Index will be 2, 1 and then 0.
+    loop 3 #back
+    {
+        if   cpt == 0 @assert(@index == 2)
+        elif cpt == 1 @assert(@index == 1)
+        elif cpt == 2 @assert(@index == 0)
+
+        cpt += 1
+    }
+}
+
+/**
 # break, continue
 `break` and `continue` can be used inside a loop.
 */
@@ -149,7 +167,7 @@ You can exclude the last value with the `..<` syntax.
 }
 
 /**
-With a range, you can loop in reverse order, if you add `#back`.
+With a range, you can also loop in reverse order if you add `#back`.
 */
 #test
 {

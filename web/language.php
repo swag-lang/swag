@@ -1144,29 +1144,29 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3>Raw string </h3>
 <p>A <i>raw string</i> does not transform the escape sequences inside it. </p>
-<p>A raw string starts and ends with the character <code class="incode">@</code>. </p>
+<p>A raw string starts and ends with the character <code class="incode">$</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = <span class="SStr">@"\u2F46"@</span>
+    <span class="SKwd">const</span> a = $<span class="SStr">"\u2F46"</span>$
     <span class="SCmp">#assert</span> a != <span class="SStr">"⽆"</span>
-    <span class="SCmp">#assert</span> a == <span class="SStr">@"\u2F46"@</span>
+    <span class="SCmp">#assert</span> a == $<span class="SStr">"\u2F46"</span>$
 }</span></code>
 </div>
 <p>This are equivalent </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">"\\hello \\world"</span>
-    <span class="SKwd">const</span> b = <span class="SStr">@"\hello \world"@</span>
+    <span class="SKwd">const</span> b = $<span class="SStr">"\hello \world"</span>$
     <span class="SCmp">#assert</span> a == b
 }</span></code>
 </div>
 <p>A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = <span class="SStr">@"this is
+    <span class="SKwd">const</span> a = $<span class="SStr">"this is
                 a
                 string
-                "@</span>
+                "</span>$
 }</span></code>
 </div>
 <p>Every blanks <b>before</b> the ending mark <code class="incode">"@</code> will be removed from every other lines, so the string before is equivalent to : </p>
@@ -2778,6 +2778,22 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></code>
 </div>
+<p>You can loop in reverse order by adding the special compiler keyword <code class="incode">#back</code> after the loop expression. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+
+    <span class="SCmt">// Index will be 2, 1 and then 0.</span>
+    <span class="SLgc">loop</span> <span class="SNum">3</span> <span class="SCmp">#back</span>
+    {
+        <span class="SLgc">if</span>   cpt == <span class="SNum">0</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">2</span>)
+        <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">1</span>)
+        <span class="SLgc">elif</span> cpt == <span class="SNum">2</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">0</span>)
+
+        cpt += <span class="SNum">1</span>
+    }
+}</span></code>
+</div>
 <h3>break, continue </h3>
 <p><code class="incode">break</code> and <code class="incode">continue</code> can be used inside a loop. </p>
 <p>You can exit a loop with <code class="incode">break</code>. </p>
@@ -2810,7 +2826,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3>Ranges </h3>
 <p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
-<p>Syntax is <code class="incode">lower bound..upper bound</code> </p>
+<p>Syntax is <code class="incode">lower bound..upper bound</code>. The lower bound must always be lower or equal than the upper bound. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
@@ -2825,31 +2841,36 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>With a range, you can loop in reverse order. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// Loop from 5 to 0</span>
-    <span class="SLgc">loop</span> <span class="SNum">5.</span>.<span class="SNum">0</span>
-    {
-    }
-
-    <span class="SCmt">// Loop from 1 to -1</span>
-    <span class="SLgc">loop</span> <span class="SNum">1.</span>.-<span class="SNum">1</span>
-    {
-    }
-}</span></code>
-</div>
 <p>You can exclude the last value with the <code class="incode">..&lt;</code> syntax. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Will loop from 1 to 2 and **not** 1 to 3</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i: <span class="SNum">1.</span>.&lt;<span class="SNum">3</span>
+    <span class="SLgc">loop</span> i: <span class="SNum">1</span> ..&lt; <span class="SNum">3</span>
     {
         cpt += i
     }
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>+<span class="SNum">2</span>)
+}</span></code>
+</div>
+<p>With a range, you can also loop in reverse order if you add <code class="incode">#back</code>. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Loop from 5 to 0</span>
+    <span class="SLgc">loop</span> <span class="SNum">0.</span>.<span class="SNum">5</span> <span class="SCmp">#back</span>
+    {
+    }
+
+    <span class="SCmt">// Loop from 1 to -1</span>
+    <span class="SLgc">loop</span> -<span class="SNum">1.</span>.<span class="SNum">1</span> <span class="SCmp">#back</span>
+    {
+    }
+
+    <span class="SCmt">// Loop from 0 to -1</span>
+    <span class="SLgc">loop</span> -<span class="SNum">1.</span>.&lt;<span class="SNum">1</span> <span class="SCmp">#back</span>
+    {
+    }
 }</span></code>
 </div>
 <h3>Infinite loop </h3>

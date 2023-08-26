@@ -452,21 +452,47 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     // Normal loop
     if (loopNode->expression->kind != AstNodeKind::Range)
     {
-        EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
-
-        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
-        loopNode->seekJumpExpression = context->bc->numInstructions;
-
-        auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
-        if (loopNode->expression->hasComputedValue())
+        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
         {
-            inst->c.u64 = loopNode->expression->computedValue->reg.u64;
-            inst->flags |= BCI_IMM_C;
-        }
+            if (loopNode->expression->hasComputedValue())
+            {
+                auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+                inst->b.u64 = loopNode->expression->computedValue->reg.u64;
+            }
+            else
+            {
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, loopNode->expression->resultRegisterRC[0]);
+            }
 
-        return true;
+            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
+            loopNode->seekJumpExpression = context->bc->numInstructions;
+
+            auto inst   = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst->c.u64 = 0xFFFFFFFF'FFFFFFFF;
+            inst->flags |= BCI_IMM_C;
+
+            return true;
+        }
+        else
+        {
+            EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
+
+            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+            EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+            loopNode->seekJumpExpression = context->bc->numInstructions;
+
+            auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+            if (loopNode->expression->hasComputedValue())
+            {
+                inst->c.u64 = loopNode->expression->computedValue->reg.u64;
+                inst->flags |= BCI_IMM_C;
+            }
+
+            return true;
+        }
     }
 
     // Static range

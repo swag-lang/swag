@@ -5116,7 +5116,7 @@
 <span class="content" id="Pixel_Jpg_Decoder_IImageDecoder_canDecode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">canDecode</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\jpg.swg#L2053" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\jpg.swg#L2044" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5129,7 +5129,7 @@
 <span class="content" id="Pixel_Jpg_Decoder_IImageDecoder_decode"><span class="titletype">func</span> <span class="titlelight">IImageDecoder.</span><span class="titlestrong">decode</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\jpg.swg#L2059" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\decode\jpg.swg#L2050" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
