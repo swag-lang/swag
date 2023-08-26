@@ -718,6 +718,8 @@ struct AstFor : public AstBreakable
 
 struct AstLoop : public AstBreakable
 {
+    static const uint16_t SPECFLAG_BACK = 0x0001;
+
     ~AstLoop();
     AstNode* clone(CloneContext& context);
 

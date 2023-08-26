@@ -117,7 +117,7 @@ Loop can also be used to iterate on a **range** of signed values.
 */
 
 /**
-Syntax is `lower bound..upper bound`
+Syntax is `lower bound..upper bound`. The lower bound must always be lower or equal than the upper bound.
 */
 #test
 {
@@ -134,29 +134,13 @@ Syntax is `lower bound..upper bound`
 }
 
 /**
-With a range, you can loop in reverse order.
-*/
-#test
-{
-    // Loop from 5 to 0
-    loop 5..0
-    {
-    }
-
-    // Loop from 1 to -1
-    loop 1..-1
-    {
-    }
-}
-
-/**
 You can exclude the last value with the `..<` syntax.
 */
 #test
 {
     // Will loop from 1 to 2 and **not** 1 to 3
     var cpt = 0
-    loop i: 1..<3
+    loop i: 1 ..< 3
     {
         cpt += i
     }
@@ -164,6 +148,26 @@ You can exclude the last value with the `..<` syntax.
     @assert(cpt == 1+2)
 }
 
+/**
+With a range, you can loop in reverse order, if you add `#back`.
+*/
+#test
+{
+    // Loop from 5 to 0
+    loop 0..5 #back
+    {
+    }
+
+    // Loop from 1 to -1
+    loop -1..1 #back
+    {
+    }
+
+    // Loop from 0 to -1
+    loop -1..<1 #back
+    {
+    }
+}
 
 /**
 # Infinite loop

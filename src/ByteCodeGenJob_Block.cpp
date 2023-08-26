@@ -475,13 +475,41 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto rangeNode = CastAst<AstRange>(loopNode->expression, AstNodeKind::Range);
     if (rangeNode->expressionLow->hasComputedValue() && rangeNode->expressionUp->hasComputedValue())
     {
-        bool increment = false;
-        if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue->reg.s64 < rangeNode->expressionUp->computedValue->reg.s64)
-            increment = true;
-        else if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue->reg.u64 < rangeNode->expressionUp->computedValue->reg.u64)
-            increment = true;
+        if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue->reg.s64 > rangeNode->expressionUp->computedValue->reg.s64)
+        {
+            Diagnostic diag{rangeNode->expressionLow, Fmt(Err(Err0528), rangeNode->expressionLow->computedValue->reg.s64, rangeNode->expressionUp->computedValue->reg.s64)};
+            diag.hint = Hnt(Hnt0076);
+            diag.addRange(rangeNode->expressionUp, Hnt(Hnt0077));
+            return context->report(diag);
+        }
 
-        if (increment)
+        if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue->reg.u64 > rangeNode->expressionUp->computedValue->reg.u64)
+        {
+            Diagnostic diag{rangeNode->expressionLow, Fmt(Err(Err0529), rangeNode->expressionLow->computedValue->reg.u64, rangeNode->expressionUp->computedValue->reg.u64)};
+            diag.hint = Hnt(Hnt0076);
+            diag.addRange(rangeNode->expressionUp, Hnt(Hnt0077));
+            return context->report(diag);
+        }
+
+        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+        {
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+            inst->b.u64 = rangeNode->expressionUp->computedValue->reg.u64 + 1;
+            if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
+                inst->b.u64--;
+
+            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
+            loopNode->seekJumpExpression = context->bc->numInstructions;
+
+            inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+            inst->c.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
+            inst->flags |= BCI_IMM_C;
+            return true;
+        }
+        else
         {
             auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
             inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
@@ -496,24 +524,6 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
             inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
             if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->c.u64++;
-            inst->flags |= BCI_IMM_C;
-            return true;
-        }
-        else
-        {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-            inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 + 1;
-
-            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-
-            EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
-            loopNode->seekJumpExpression = context->bc->numInstructions;
-
-            inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
-            if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
-                inst->c.u64--;
             inst->flags |= BCI_IMM_C;
             return true;
         }

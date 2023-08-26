@@ -353,6 +353,12 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
         SWAG_CHECK(doRange(node, node->expression, &node->expression));
+
+        if (token.id == TokenId::CompilerBack)
+        {
+            node->specFlags |= AstLoop::SPECFLAG_BACK;
+            SWAG_CHECK(eatToken());
+        }
     }
 
     // Creates a variable if we have a named index

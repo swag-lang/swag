@@ -543,7 +543,7 @@ impl Decoder
         var pdstPtr = buf
         var dataPtr = data
 
-        loop rowctr: 7..0
+        loop rowctr: 0..7 #back
         {
             // Original code:
             // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
@@ -624,7 +624,7 @@ impl Decoder
 
         dataPtr = data
 
-        loop rowctr: 7..0
+        loop rowctr: 0..7 #back
         {
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {

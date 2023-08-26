@@ -302,6 +302,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#type", TokenId::CompilerType);
     keywords.add("#scope", TokenId::CompilerScope);
     keywords.add("#up", TokenId::CompilerUp);
+    keywords.add("#back", TokenId::CompilerBack);
 
     keywords.add("true", TokenId::KwdTrue);
     keywords.add("false", TokenId::KwdFalse);

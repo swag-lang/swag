@@ -560,7 +560,7 @@ impl Encoder
             dataFloat[i] = data[i]
 
         var dataptr = &dataFloat
-        loop ctr: 7..0
+        loop ctr: 0..7 #back
         {
             let tmp0 = dataptr[0] + dataptr[7]
             let tmp7 = dataptr[0] - dataptr[7]
@@ -605,7 +605,7 @@ impl Encoder
 
         dataptr = dataFloat
 
-        loop ctr: 7..0
+        loop ctr: 0..7 #back
         {
             let tmp0 = dataptr[0] + dataptr[56]
             let tmp7 = dataptr[0] - dataptr[56]
