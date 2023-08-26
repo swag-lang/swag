@@ -30,7 +30,7 @@ Use `cast(type)` to cast from one type to another.
 
 /**
 # bitcast
-Use `cast,bit` to convert a native type to another without converting the value. Works only if the two types are of the same size.
+Use the `bit` modifier to convert a native type to another without converting the value. Works only if the two types are of the same size.
 */
 #test
 {

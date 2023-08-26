@@ -12,10 +12,12 @@ struct LanguageSpec
     void setupKeywords();
     void setupNativeTypes();
     void setupAttributesFlags();
+    void setupModifiers();
 
     LangHashTable<TokenId, 4096>   keywords;
     LangHashTable<LiteralType, 64> nativeTypes;
     LangHashTable<uint64_t, 256>   attributesFlags;
+    LangHashTable<uint32_t, 64>    modifiers;
 
     Utf8 name_globalInit;
     Utf8 name_globalDrop;
@@ -169,11 +171,12 @@ struct LanguageSpec
     Utf8 name_nodrop;
     Utf8 name_move;
     Utf8 name_moveraw;
-    Utf8 name_err;
-    Utf8 name_noerr;
     Utf8 name_bit;
     Utf8 name_unconst;
     Utf8 name_back;
+
+    Utf8 name_err;
+    Utf8 name_noerr;
 
     Utf8 name_boundcheck;
     Utf8 name_overflow;

@@ -695,14 +695,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3>Modifiers </h3>
 <p>Modifiers can be applied to some specific keywords or operators to change their behaviours. </p>
-<div class="precode"><code><span class="SCde">,over
-,nodrop
-,bit
-,move
-,moveraw
-,up
-,unconst
-,back</span></code>
+<div class="precode"><code><span class="SCde"><span class="SItr">,up</span>
+<span class="SItr">,over</span>
+<span class="SItr">,nodrop</span>
+<span class="SItr">,move</span>
+<span class="SItr">,moveraw</span>
+<span class="SItr">,bit</span>
+<span class="SItr">,unconst</span>
+<span class="SItr">,back</span></span></code>
 </div>
 
 <h2 id="006_semicolon">Semicolon</h2><p>In Swag, there's no need to end a statement with <code class="incode">;</code> like in C/C++. Most of the time a <code class="incode">end of line</code> is enough. </p>
@@ -1570,8 +1570,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>This means that a 8/16 bits operation (like an addition) can more easily <b>overflow</b> if you do not take care. In that case, you can use the <code class="incode">,up</code> <b>modifier</b> on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> +,up <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
-    <span class="SCmp">#assert</span> <span class="SNum">255</span>'<span class="STpe">u8</span> +,up <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span> <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> +<span class="SItr">,up</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>
+    <span class="SCmp">#assert</span> <span class="SNum">255</span>'<span class="STpe">u8</span> +<span class="SItr">,up</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span> <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
 }</span></code>
 </div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
@@ -1635,10 +1635,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>,<span class="SFct">bit</span>(<span class="STpe">u32</span>) x
+    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span><span class="SItr">,bit</span>(<span class="STpe">u32</span>) x
     <span class="SItr">@assert</span>(y == <span class="SNum">0x3f800000</span>)
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>,<span class="SFct">bit</span>(<span class="STpe">u32</span>) <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
-    <span class="SCmp">#assert</span> <span class="SKwd">cast</span>,<span class="SFct">bit</span>(<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span><span class="SItr">,bit</span>(<span class="STpe">u32</span>) <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>
+    <span class="SCmp">#assert</span> <span class="SKwd">cast</span><span class="SItr">,bit</span>(<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>
 }</span></code>
 </div>
 <h3>Implicit casts </h3>
@@ -2786,7 +2786,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Index will be 2, 1 and then 0.</span>
-    <span class="SLgc">loop</span>,back <span class="SNum">3</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span>   cpt == <span class="SNum">0</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">2</span>)
         <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">1</span>)
@@ -2860,17 +2860,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Loop from 5 to 0</span>
-    <span class="SLgc">loop</span>,back <span class="SNum">0.</span>.<span class="SNum">5</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">0.</span>.<span class="SNum">5</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -1</span>
-    <span class="SLgc">loop</span>,back -<span class="SNum">1.</span>.<span class="SNum">1</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">1.</span>.<span class="SNum">1</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -2 because we exclude the upper limit.</span>
-    <span class="SLgc">loop</span>,back -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span>
     {
     }
 }</span></code>
@@ -3850,12 +3850,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">201</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">301</span>)
 
-    <span class="SCmt">// "move semantic" by adding the modifier ',move' just after '='.</span>
+    <span class="SCmt">// "move semantic" by adding the modifier 'move' just after '='.</span>
     <span class="SCmt">// 1. This will call 'opDrop' on 'a' if it exists</span>
     <span class="SCmt">// 2. This will raw copy 'b' to 'a'</span>
     <span class="SCmt">// 3. This will call 'opPostMove' on 'a' if it exists</span>
     <span class="SCmt">// 4. This will reinitialize 'b' to the default values if 'opDrop' exists</span>
-    a =,move b
+    a =<span class="SItr">,move</span> b
     <span class="SItr">@assert</span>(a.x == <span class="SNum">102</span>)     <span class="SCmt">// +2 because of the call to opPostMove</span>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">202</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">302</span>)
@@ -3868,14 +3868,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// Do it when you know the state of 'a' and do not want an extra unnecessary call</span>
     <span class="SCmt">// (for example if 'a' is in an undetermined state).</span>
 
-    a =,nodrop b            <span class="SCmt">// Copy b to a without dropping 'a' first</span>
-    a =,nodrop,move b       <span class="SCmt">// Move b to a without dropping 'a' first</span>
+    a =<span class="SItr">,nodrop</span> b            <span class="SCmt">// Copy b to a without dropping 'a' first</span>
+    a =<span class="SItr">,nodrop</span><span class="SItr">,move</span> b       <span class="SCmt">// Move b to a without dropping 'a' first</span>
 
-    <span class="SCmt">// For the 'move semantic', you can avoid the last reinitialization by using '=,moveraw'. Of course, do this at your own risk, if you know that 'b' will never by dropped by the compiler or if you reinitialize its state yourself.</span>
+    <span class="SCmt">// For the 'move semantic', you can avoid the last reinitialization by using 'moveraw'. Of course, do this at your own risk, if you know that 'b' will never by dropped by the compiler or if you reinitialize its state yourself.</span>
 
-    <span class="SCmt">// instead of '=,move'</span>
-    a =,moveraw b
-    a =,nodrop,moveraw b
+    <span class="SCmt">// instead of 'move'</span>
+    a =<span class="SItr">,moveraw</span> b
+    a =<span class="SItr">,nodrop</span><span class="SItr">,moveraw</span> b
 }</span></code>
 </div>
 <h4>moveref </h4>
@@ -3885,7 +3885,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(to: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
     {
-        to =,move from
+        to =<span class="SItr">,move</span> from
     }
 
     <span class="SCmt">// This is the normal 'copy' version. In this version, 'from' will not be changed, that's why it's constant (not a ref).</span>
@@ -6345,7 +6345,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
-    x +=,over <span class="SNum">1</span>     <span class="SCmt">// Overflow is expected, so this will wrap around</span>
+    x +=<span class="SItr">,over</span> <span class="SNum">1</span>     <span class="SCmt">// Overflow is expected, so this will wrap around</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
 }</span></code>
 </div>
@@ -6361,7 +6361,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>For 8 or 16 bits, you can promote an operation to 32 bits by using <code class="incode">,up</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> +,up <span class="SNum">1</span>
+    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> +<span class="SItr">,up</span> <span class="SNum">1</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(x) == <span class="STpe">u32</span>)
 }</span></code>
@@ -6374,13 +6374,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">//var y0 = cast(s8) x1     // This would lose information and panic, as 255 cannot be encoded in 's8'</span>
     <span class="SCmt">//@print(y0)</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>,<span class="SFct">over</span>(<span class="STpe">s8</span>) x1  <span class="SCmt">// But ',over' can be used on the cast operation too</span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span><span class="SItr">,over</span>(<span class="STpe">s8</span>) x1  <span class="SCmt">// But ',over' can be used on the cast operation too</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)
 
     <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>
     <span class="SCmt">//var y2 = cast(u8) x2     // This cast also is not possible, because 'x2' is negative and 'y' is 'u8'</span>
     <span class="SCmt">//@print(y)</span>
-    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>,<span class="SFct">over</span>(<span class="STpe">u8</span>) x2
+    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span><span class="SItr">,over</span>(<span class="STpe">u8</span>) x2
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)
 }</span></code>
 </div>

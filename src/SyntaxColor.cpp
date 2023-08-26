@@ -224,8 +224,6 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     pz           = Utf8::decodeUtf8(pz, c, offset);
     while (c)
     {
-        Utf8 identifier;
-
         // Attribute
         if (c == '#' && *pz == '[')
         {
@@ -392,9 +390,37 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             continue;
         }
 
+        // Modifier
+        if (c == ',')
+        {
+            Utf8     identifier;
+            uint32_t c1;
+            uint32_t offset1;
+            auto     pz1 = Utf8::decodeUtf8(pz, c1, offset1);
+            while (SWAG_IS_ALPHA(c1))
+            {
+                identifier += c1;
+                pz1 = Utf8::decodeUtf8(pz1, c1, offset1);
+            }
+
+            auto it = g_LangSpec->modifiers.find(identifier);
+            if (it)
+            {
+                result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                result += ',';
+                result += identifier;
+                pz     = pz1;
+                c      = c1;
+                offset = offset1;
+                result += getColor(mode, SyntaxColor::SyntaxDefault);
+                continue;
+            }
+        }
+
         // Word
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {
+            Utf8 identifier;
             identifier += c;
             pz = Utf8::decodeUtf8(pz, c, offset);
             while (SWAG_IS_ALPHA(c) || c == '_' || SWAG_IS_DIGIT(c))
@@ -527,7 +553,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
                 result += identifier;
                 result += getColor(mode, SyntaxColor::SyntaxDefault);
             }
-            else if (identifier == "self" || identifier == "Self")
+            else if (identifier == g_LangSpec->name_self || identifier == g_LangSpec->name_Self)
             {
                 result += getColor(mode, SyntaxColor::SyntaxKeyword);
                 result += identifier;

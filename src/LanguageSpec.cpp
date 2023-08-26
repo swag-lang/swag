@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LanguageSpec.h"
 #include "TypeManager.h"
+#include "Parser.h"
 
 LanguageSpec* g_LangSpec = nullptr;
 
@@ -534,10 +535,23 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("NoDoc", ATTRIBUTE_NO_DOC);
 }
 
+void LanguageSpec::setupModifiers()
+{
+    modifiers.add(name_up, MODIFIER_UP);
+    modifiers.add(name_over, MODIFIER_OVERFLOW);
+    modifiers.add(name_nodrop, MODIFIER_NO_LEFT_DROP);
+    modifiers.add(name_move, MODIFIER_MOVE);
+    modifiers.add(name_moveraw, MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP);
+    modifiers.add(name_bit, MODIFIER_BIT);
+    modifiers.add(name_unconst, MODIFIER_UNCONST);
+    modifiers.add(name_back, MODIFIER_BACK);
+}
+
 void LanguageSpec::setup()
 {
     setupNames();
     setupKeywords();
     setupNativeTypes();
     setupAttributesFlags();
+    setupModifiers();
 }

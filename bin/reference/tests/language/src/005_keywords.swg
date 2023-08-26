@@ -238,12 +238,12 @@ dref
 # Modifiers
 Modifiers can be applied to some specific keywords or operators to change their behaviours.
 ```
+,up
 ,over
 ,nodrop
-,bit
 ,move
 ,moveraw
-,up
+,bit
 ,unconst
 ,back
 ```
