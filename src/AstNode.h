@@ -724,6 +724,7 @@ struct AstLoop : public AstBreakable
 struct AstVisit : public AstNode
 {
     static const uint16_t SPECFLAG_WANT_POINTER = 0x0001;
+    static const uint16_t SPECFLAG_BACK         = 0x0002;
 
     AstNode* clone(CloneContext& context);
 

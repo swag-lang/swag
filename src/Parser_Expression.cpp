@@ -637,6 +637,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             switch (opId)
             {
             case TokenId::KwdLoop:
+            case TokenId::KwdVisit:
                 break;
             default:
                 return error(token, Fmt(Err(Syn0126), token.ctext(), forNode.ctext()));

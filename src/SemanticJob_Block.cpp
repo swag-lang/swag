@@ -686,6 +686,13 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     size_t   firstAliasVar = 0;
     int      id            = g_UniqueID.fetch_add(1);
 
+    Utf8 visitBack;
+    if (node->specFlags & AstVisit::SPECFLAG_BACK)
+    {
+        visitBack += ",";
+        visitBack += g_LangSpec->name_back;
+    }
+
     // Multi dimensional array
     if (typeInfo->isArray() && ((TypeInfoArray*) typeInfo)->pointedType->isArray())
     {
@@ -700,7 +707,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 2;
         content += "{ ";
         content += Fmt("var __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
-        content += Fmt("loop %u { ", typeArray->totalCount);
+        content += Fmt("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
@@ -738,7 +745,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 1;
         content += "{ ";
-        content += Fmt("loop %u { ", typeArray->totalCount);
+        content += Fmt("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
@@ -776,7 +783,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
-        content += Fmt("loop __tmp%u { ", id);
+        content += Fmt("loop%s __tmp%u { ", visitBack.c_str(), id);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
@@ -811,7 +818,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
-        content += Fmt("loop __tmp%u { ", id);
+        content += Fmt("loop%s __tmp%u { ", visitBack.c_str(), id);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
             content += "var ";
@@ -833,7 +840,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
         SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0627)}));
-        content += Fmt("{ loop %s { ", (const char*) concat.firstBucket->datas);
+        content += Fmt("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
         content += "var ";
         content += alias0Name;
@@ -849,7 +856,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0636)}));
         content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += Fmt("loop %d { ", typeEnum->values.size());
+        content += Fmt("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
         content += "var ";
         content += alias0Name;

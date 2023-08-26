@@ -232,6 +232,14 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     // Eat visit keyword
     SWAG_CHECK(eatToken());
 
+    // Reverse loop
+    uint32_t mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
+    if (mdfFlags & MODIFIER_BACK)
+    {
+        node->specFlags |= AstVisit::SPECFLAG_BACK;
+    }
+
     // Extra name on the special function
     if (token.id == TokenId::SymLeftParen)
     {
