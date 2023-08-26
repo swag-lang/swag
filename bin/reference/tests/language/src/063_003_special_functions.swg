@@ -102,8 +102,8 @@ impl Struct
     // This is the way to go for iterators
     #[Swag.Macro]
     {
-        func(ptr: bool) opVisit(using self, stmt: code) {}
-        func(ptr: bool) opVisitWhatever(using self, stmt: code) {}
-        func(ptr: bool) opVisitAnother(using self, stmt: code) {}
+        func(ptr: bool, back: bool) opVisit(using self, stmt: code) {}
+        func(ptr: bool, back: bool) opVisitWhatever(using self, stmt: code) {}
+        func(ptr: bool, back: bool) opVisitAnother(using self, stmt: code) {}
     }
 }

@@ -57,7 +57,7 @@ impl HashSet
     }
 
     #[Macro]
-    mtd(ptr: bool) const opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) const opVisit(stmt: code)
     {
         if !count
             return

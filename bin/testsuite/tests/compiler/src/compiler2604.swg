@@ -3,7 +3,7 @@
 namespace tt
 {
     #[Swag.Macro]
-    func(ptr: bool) opVisit(x: string, stmt: code)
+    func(ptr: bool, back: bool) opVisit(x: string, stmt: code)
     {
         loop x #mixin stmt
     }

@@ -936,7 +936,7 @@ void initErrors()
     SWAG_ERROR(Err0521, "the %s '%s' has not been used as a first argument to call function '%s'");
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
-    SWAG_ERROR(Err0544, nullptr);
+    SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
     SWAG_ERROR(Err0548, nullptr);
     SWAG_ERROR(Err0550, nullptr);
     SWAG_ERROR(Err0551, nullptr);

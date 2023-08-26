@@ -10,16 +10,23 @@ You can visit a struct variable if a macro `opVisit` has been defined. This is t
 */
 
 /**
-`opVisit` is a macro, so it should be marked with the `#[Swag.Macro]` attribute. `opVisit` is also a generic function which takes a constant generic parameter of type `bool`.
+`opVisit` is a macro, so it should be marked with the `#[Swag.Macro]` attribute.
+`opVisit` is also a generic function which takes two compile time generic parameters of type `bool`.
+* if 'ptr' is 'true', indicates that we should visit by address
+* if 'back' is 'true", indicated that we want to visit in reverse order (from back to front)
 */
 impl MyStruct
 {
     #[Swag.Macro]
-    func(ptr: bool) opVisit(self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(self, stmt: code)
     {
         // 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.
         // We do not use it in this example, so we check at compile time that it's not true.
         #if ptr #error "visiting myStruct by pointer is not supported"
+
+        // 'back' is a generic parameter that tells if we want to visit in reverse order.
+        // We do not use it in this example, so we check at compile time that it's not true.
+        #if ptr #error "visiting myStruct in reverse order is not supported"
 
         // Loop on the 3 fields
         loop idx: 3
@@ -82,7 +89,7 @@ You can have variants of `opVisit` by specifying an **additional name**.
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool) opVisitReverse(stmt: code)   // We add 'Reverse' in the name
+    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)   // We add 'Reverse' in the name
     {
         // Visit fields in reverse order (z, y then x)
         loop idx: 3

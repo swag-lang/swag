@@ -27,7 +27,7 @@ impl List
     // @alias1 is the node
     // @alias2 is the index
     #[Swag.Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         var n = head
         #scope Up
@@ -57,7 +57,7 @@ impl List
     // @alias1 is the node
     // @alias2 is the index
     #[Swag.Macro]
-    mtd(ptr: bool) opVisitBack(stmt: code)
+    mtd(ptr: bool, back: bool) opVisitBack(stmt: code)
     {
         var n = tail
         #scope Up

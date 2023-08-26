@@ -167,7 +167,7 @@ impl String
     // Visit the string runes
     // See Utf8.visitRunes for aliases
     #[Macro]
-    mtd(ptr: bool) opVisitRunes(stmt: code)
+    mtd(ptr: bool, back: bool) opVisitRunes(stmt: code)
     {
         #if ptr #error "visiting runes by pointer is not supported"
         Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice(), stmt)
@@ -177,7 +177,7 @@ impl String
     // @alias0 will contain the byte or the pointer to the byte
     // @alias1 will contain the byte index
     #[Macro]
-    mtd(ptr: bool) opVisitBytes(stmt: code)
+    mtd(ptr: bool, back: bool) opVisitBytes(stmt: code)
     {
         if !length
             return

@@ -79,7 +79,7 @@ impl SelModel
     }
 
     #[Swag.Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         #scope Up visit &r: selection
         {

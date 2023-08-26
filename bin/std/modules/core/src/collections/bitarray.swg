@@ -89,7 +89,7 @@ public impl BitArray
 
     // Visit all the booleans
     #[Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         #if ptr #error "pointer visit not supported for BitArray"
         if !count

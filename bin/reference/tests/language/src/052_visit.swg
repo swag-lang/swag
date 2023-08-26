@@ -54,6 +54,28 @@ Both names are optional. In that case, you can use `@alias0` and `@alias1`. `@al
 }
 
 /**
+You can visit in reverse order by adding the 'back' modifier.
+*/
+#test
+{
+    // Here we visit every bytes of the string.
+    // At each iteration, the byte will be stored in the variable 'value'
+    var cpt = 0
+    visit,back value: "ABC"
+    {
+        // '@index' is also available. It stores the loop index.
+        switch cpt
+        {
+        case 0: @assert(value == `C`); @assert(@index == 2)
+        case 1: @assert(value == `B`); @assert(@index == 1)
+        case 2: @assert(value == `A`); @assert(@index == 0)
+        }
+
+        cpt += 1
+    }
+}
+
+/**
 You can visit arrays or slices.
 */
 #test

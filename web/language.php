@@ -1631,7 +1631,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3>bitcast </h3>
-<p>Use <code class="incode">cast,bit</code> to convert a native type to another without converting the value. Works only if the two types are of the same size. </p>
+<p>Use the <code class="incode">bit</code> modifier to convert a native type to another without converting the value. Works only if the two types are of the same size. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
@@ -2936,6 +2936,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
+<p>You can visit in reverse order by adding the <code class="incode">back</code> modifier. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SCmt">// Here we visit every bytes of the string.</span>
+    <span class="SCmt">// At each iteration, the byte will be stored in the variable 'value'</span>
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+    <span class="SLgc">visit</span><span class="SItr">,back</span> value: <span class="SStr">"ABC"</span>
+    {
+        <span class="SCmt">// '@index' is also available. It stores the loop index.</span>
+        <span class="SLgc">switch</span> cpt
+        {
+        <span class="SLgc">case</span> <span class="SNum">0</span>: <span class="SItr">@assert</span>(value == <span class="SStr">`C`</span>); <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">2</span>)
+        <span class="SLgc">case</span> <span class="SNum">1</span>: <span class="SItr">@assert</span>(value == <span class="SStr">`B`</span>); <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">1</span>)
+        <span class="SLgc">case</span> <span class="SNum">2</span>: <span class="SItr">@assert</span>(value == <span class="SStr">`A`</span>); <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">0</span>)
+        }
+
+        cpt += <span class="SNum">1</span>
+    }
+}</span></code>
+</div>
 <p>You can visit arrays or slices. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3681,9 +3701,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// This is the way to go for iterators</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
     }
 }</span></code>
 </div>
@@ -3921,15 +3941,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>You can visit a struct variable if a macro <code class="incode">opVisit</code> has been defined. This is the equivalent of an <b>iterator</b>. </p>
-<p><code class="incode">opVisit</code> is a macro, so it should be marked with the <code class="incode">#<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a></code> attribute. <code class="incode">opVisit</code> is also a generic function which takes a constant generic parameter of type <code class="incode">bool</code>. </p>
+<p><code class="incode">opVisit</code> is a macro, so it should be marked with the <code class="incode">#<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a></code> attribute. <code class="incode">opVisit</code> is also a generic function which takes two compile time generic parameters of type <code class="incode">bool</code>. </p>
+<ul>
+<li>if <code class="incode">ptr</code> is <code class="incode">true</code>, indicates that we should visit by address</li>
+<li>if <code class="incode">back</code> is 'true", indicated that we want to visit in reverse order (from back to front)</li>
+</ul>
 <div class="precode"><code><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)
     {
         <span class="SCmt">// 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.</span>
         <span class="SCmt">// We do not use it in this example, so we check at compile time that it's not true.</span>
         <span class="SCmp">#if</span> ptr <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct by pointer is not supported"</span>
+
+        <span class="SCmt">// 'back' is a generic parameter that tells if we want to visit in reverse order.</span>
+        <span class="SCmt">// We do not use it in this example, so we check at compile time that it's not true.</span>
+        <span class="SCmp">#if</span> ptr <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct in reverse order is not supported"</span>
 
         <span class="SCmt">// Loop on the 3 fields</span>
         <span class="SLgc">loop</span> idx: <span class="SNum">3</span>
@@ -3988,7 +4016,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)   <span class="SCmt">// We add 'Reverse' in the name</span>
+    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)   <span class="SCmt">// We add 'Reverse' in the name</span>
     {
         <span class="SCmt">// Visit fields in reverse order (z, y then x)</span>
         <span class="SLgc">loop</span> idx: <span class="SNum">3</span>

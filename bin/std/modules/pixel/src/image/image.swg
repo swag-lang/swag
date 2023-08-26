@@ -47,7 +47,7 @@ impl Image
     }
 
     #[Swag.Macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
         var scan = pixels.buffer
         loop width * height

@@ -2640,7 +2640,7 @@
 </p>
 <p>Visit every elements of the array. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -2655,7 +2655,7 @@
 </p>
 <p>Visit every elements of the array from end to start. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3344,7 +3344,7 @@
 </p>
 <p>Visit all the booleans. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -4803,7 +4803,7 @@
 </p>
 <p>Visit all valid buckets. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7527,7 +7527,7 @@
 </table>
 </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -7874,7 +7874,7 @@
 </p>
 <p>alias0 is the key, and alias1 is the value. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -10609,7 +10609,7 @@
 </p>
 <p>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -10624,7 +10624,7 @@
 </p>
 <p>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -20646,7 +20646,7 @@
 </p>
 <p>Vist every elements of the array. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -20661,7 +20661,7 @@
 </p>
 <p>Vist every elements of the array from end to start. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -22382,7 +22382,7 @@
 </p>
 <p>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -22397,7 +22397,7 @@
 </p>
 <p>Visit the string runes  See Utf8.visitRunes for aliases. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
 <p>
 <table class="item">

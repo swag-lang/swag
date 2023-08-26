@@ -104,7 +104,7 @@ impl StaticArray
 
     // Vist every elements of the array
     #[Macro]
-    func(ptr: bool) opVisit(using const self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(using const self, stmt: code)
     {
         if !count
             return
@@ -132,7 +132,7 @@ impl StaticArray
 
     // Vist every elements of the array from end to start
     #[Macro]
-    func(ptr: bool) opVisitBack(using const self, stmt: code)
+    func(ptr: bool, back: bool) opVisitBack(using const self, stmt: code)
     {
         if !count
             return

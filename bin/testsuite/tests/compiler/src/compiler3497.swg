@@ -6,7 +6,7 @@ struct(T) A
 impl A
 {
     #[Swag.Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         @assert(x == 666)
         loop 4

@@ -6,7 +6,7 @@
 impl AA
 {
     #[Swag.Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
 
     }

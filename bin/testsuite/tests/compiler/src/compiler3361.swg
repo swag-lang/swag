@@ -26,7 +26,7 @@ impl A
     }
 
     #[Swag.Macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
         toto(|@alias0| titi())
         {

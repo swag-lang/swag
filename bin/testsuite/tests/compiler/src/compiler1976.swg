@@ -11,7 +11,7 @@ const TITI = 5
 impl AA1976
 {
     #[Macro, CalleeReturn]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
         var a = TITI
     }

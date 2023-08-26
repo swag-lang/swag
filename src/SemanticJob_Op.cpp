@@ -53,8 +53,8 @@ Utf8 SemanticJob::getSpecialOpSignature(AstFuncDecl* node)
         result += "'func(op: string) opAssign(self, value: WhateverType)'";
     else if (node->token.text == g_LangSpec->name_opIndexAssign)
         result += "'func(op: string) opIndexAssign(self, index: u64, value: WhateverType)'";
-    else if (node->token.text.find(g_LangSpec->name_opVisit) == 0)
-        result += "'func(ptr: bool) opVisit(self, stmt: code)'";
+    else if (node->token.text.startsWith(g_LangSpec->name_opVisit))
+        result += "'func(ptr: bool, back: bool) opVisit(self, stmt: code)'";
     else
         result = "";
 
@@ -186,9 +186,12 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else if (isOpVisit)
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report({node->genericParameters, Fmt(Err(Err0071), name.c_str())}));
-        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() >= 2, context->report({node->genericParameters, Fmt(Err(Err0544), name.c_str())}));
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 3, context->report({node->genericParameters, Fmt(Err(Err0071), name.c_str())}));
+        auto firstGen = node->genericParameters->childs[0];
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST), context->report({firstGen, Fmt(Err(Err0074), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        auto secondGen = node->genericParameters->childs[1];
+        SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST), context->report({secondGen, Fmt(Err(Err0074), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Err(Err0075)}));
     }
     else if (name == g_LangSpec->name_opCast)
