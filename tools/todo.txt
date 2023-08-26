@@ -16,9 +16,8 @@ impl AA
 var x: AA
 x(10) => x.opCall(10)
 -------------------------------------
-loop increment
-loop reverse
-visit(Reverse) for strings, arrays & co ?
+loop #step
+visit,back
 -------------------------------------
 is
 if a is < 2 and > 3
