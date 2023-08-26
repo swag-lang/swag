@@ -2725,7 +2725,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></code>
 </div>
-<p>The intrinsic <code class="incode">@index</code> returns the current index of the loop (starting at 0). </p>
+<p>The intrinsic <code class="incode">@index</code> returns the current index of the loop, starting at 0. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
@@ -2737,7 +2737,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></code>
 </div>
-<p>You can name that index if you want. </p>
+<p>But you can name that index if you want. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -2854,7 +2854,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">1</span>+<span class="SNum">2</span>)
 }</span></code>
 </div>
-<p>With a range, you can also loop in reverse order if you add <code class="incode">#back</code>. </p>
+<p>With a range, you can also loop in reverse order if you add the <code class="incode">#back</code> keyword. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Loop from 5 to 0</span>
@@ -2867,8 +2867,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     {
     }
 
-    <span class="SCmt">// Loop from 0 to -1</span>
-    <span class="SLgc">loop</span> -<span class="SNum">1.</span>.&lt;<span class="SNum">1</span> <span class="SCmp">#back</span>
+    <span class="SCmt">// Loop from 1 to -2 because we exclude the upper limit.</span>
+    <span class="SLgc">loop</span> -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span> <span class="SCmp">#back</span>
     {
     }
 }</span></code>

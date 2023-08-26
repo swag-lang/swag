@@ -14,7 +14,7 @@ The loop expression value is evaluated **once**, and must be a **positive value*
 }
 
 /**
-The intrinsic `@index` returns the current index of the loop (starting at 0).
+The intrinsic `@index` returns the current index of the loop, starting at 0.
 */
 #test
 {
@@ -28,7 +28,7 @@ The intrinsic `@index` returns the current index of the loop (starting at 0).
 }
 
 /**
-You can name that index if you want.
+But you can name that index if you want.
 */
 #test
 {
@@ -167,7 +167,7 @@ You can exclude the last value with the `..<` syntax.
 }
 
 /**
-With a range, you can also loop in reverse order if you add `#back`.
+With a range, you can also loop in reverse order if you add the `#back` keyword.
 */
 #test
 {
@@ -181,8 +181,8 @@ With a range, you can also loop in reverse order if you add `#back`.
     {
     }
 
-    // Loop from 0 to -1
-    loop -1..<1 #back
+    // Loop from 1 to -2 because we exclude the upper limit.
+    loop -2 ..< 2 #back
     {
     }
 }
