@@ -354,7 +354,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        for var i = startCount; i < capture.forms.count; i += 1
+        loop i: startCount ..< capture.forms.count
             capture.selection.add(i)
     }
 }
