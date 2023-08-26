@@ -579,7 +579,6 @@
 <li><a href="#Core_Array_opPostCopy">Array.opPostCopy</a></li>
 <li><a href="#Core_Array_opSlice">Array.opSlice</a></li>
 <li><a href="#Core_Array_opVisit">Array.opVisit</a></li>
-<li><a href="#Core_Array_opVisitBack">Array.opVisitBack</a></li>
 <li><a href="#Core_Array_popBack">Array.popBack</a></li>
 <li><a href="#Core_Array_realloc">Array.realloc</a></li>
 <li><a href="#Core_Array_remove">Array.remove</a></li>
@@ -669,7 +668,6 @@
 <li><a href="#Core_List_insertBefore">List.insertBefore</a></li>
 <li><a href="#Core_List_opDrop">List.opDrop</a></li>
 <li><a href="#Core_List_opVisit">List.opVisit</a></li>
-<li><a href="#Core_List_opVisitBack">List.opVisitBack</a></li>
 <li><a href="#Core_StaticArray_add">StaticArray.add</a></li>
 <li><a href="#Core_StaticArray_addOnce">StaticArray.addOnce</a></li>
 <li><a href="#Core_StaticArray_back">StaticArray.back</a></li>
@@ -694,7 +692,6 @@
 <li><a href="#Core_StaticArray_opIndexAssign">StaticArray.opIndexAssign</a></li>
 <li><a href="#Core_StaticArray_opSlice">StaticArray.opSlice</a></li>
 <li><a href="#Core_StaticArray_opVisit">StaticArray.opVisit</a></li>
-<li><a href="#Core_StaticArray_opVisitBack">StaticArray.opVisitBack</a></li>
 <li><a href="#Core_StaticArray_popBack">StaticArray.popBack</a></li>
 <li><a href="#Core_StaticArray_remove">StaticArray.remove</a></li>
 <li><a href="#Core_StaticArray_removeAt">StaticArray.removeAt</a></li>
@@ -2238,10 +2235,6 @@
 <td><a href="#Core_Array_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
 <td>Visit every elements of the array. </td>
 </tr>
-<tr>
-<td><a href="#Core_Array_opVisitBack"><span class="SCde"><span class="SFct">opVisitBack</span>()</spa</a></td>
-<td>Visit every elements of the array from end to start. </td>
-</tr>
 </table>
 <p>
 <table class="item">
@@ -2250,7 +2243,7 @@
 <span class="content" id="Core_Array_add"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">add</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L327" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L307" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2270,7 +2263,7 @@
 <span class="content" id="Core_Array_addOnce"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">addOnce</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L316" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L296" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2284,7 +2277,7 @@
 <span class="content" id="Core_Array_back"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">back</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L653" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L633" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2298,7 +2291,7 @@
 <span class="content" id="Core_Array_backPtr"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">backPtr</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L661" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L641" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2312,7 +2305,7 @@
 <span class="content" id="Core_Array_clear"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">clear</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L304" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L284" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2326,7 +2319,7 @@
 <span class="content" id="Core_Array_contains"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">contains</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L612" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L592" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2340,7 +2333,7 @@
 <span class="content" id="Core_Array_createBuffer"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">createBuffer</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2354,7 +2347,7 @@
 <span class="content" id="Core_Array_createTemp"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">createTemp</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L230" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L210" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2368,7 +2361,7 @@
 <span class="content" id="Core_Array_emplaceAddress"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">emplaceAddress</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L345" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L325" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2382,7 +2375,7 @@
 <span class="content" id="Core_Array_emplaceAt"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">emplaceAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L452" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L432" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2396,7 +2389,7 @@
 <span class="content" id="Core_Array_emplaceInitAddress"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">emplaceInitAddress</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L334" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2411,7 +2404,7 @@
 <span class="content" id="Core_Array_free"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">free</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L212" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2425,7 +2418,7 @@
 <span class="content" id="Core_Array_front"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">front</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L638" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L618" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2439,7 +2432,7 @@
 <span class="content" id="Core_Array_frontPtr"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">frontPtr</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L646" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L626" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2453,7 +2446,7 @@
 <span class="content" id="Core_Array_grow"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">grow</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L259" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2467,7 +2460,7 @@
 <span class="content" id="Core_Array_insertAt"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">insertAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L366" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2487,7 +2480,7 @@
 <span class="content" id="Core_Array_isEmpty"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">isEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L248" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2634,7 +2627,7 @@
 <span class="content" id="Core_Array_opVisit"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">opVisit</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2642,21 +2635,7 @@
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
-<span class="content" id="Core_Array_opVisitBack"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">opVisitBack</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L157" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Visit every elements of the array from end to start. </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
-</div>
+<p> Visiting by address and in reverse order is supported. </p>
 <p>
 <table class="item">
 <tr>
@@ -2664,7 +2643,7 @@
 <span class="content" id="Core_Array_popBack"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">popBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L668" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L648" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2678,7 +2657,7 @@
 <span class="content" id="Core_Array_realloc"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">realloc</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L162" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2691,7 +2670,7 @@
 <span class="content" id="Core_Array_remove"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">remove</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L595" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L575" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2708,7 +2687,7 @@
 <span class="content" id="Core_Array_removeAt"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">removeAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L550" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L530" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2723,7 +2702,7 @@
 <span class="content" id="Core_Array_removeAtOrdered"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">removeAtOrdered</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L562" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L542" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2738,7 +2717,7 @@
 <span class="content" id="Core_Array_removeBack"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">removeBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L678" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L658" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2752,7 +2731,7 @@
 <span class="content" id="Core_Array_removeOrdered"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">removeOrdered</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L604" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L584" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2766,7 +2745,7 @@
 <span class="content" id="Core_Array_reserve"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">reserve</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2780,7 +2759,7 @@
 <span class="content" id="Core_Array_resize"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">resize</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L266" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2794,7 +2773,7 @@
 <span class="content" id="Core_Array_sort"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">sort</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L619" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L599" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2811,7 +2790,7 @@
 <span class="content" id="Core_Array_sortReverse"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">sortReverse</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L625" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L605" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2825,7 +2804,7 @@
 <span class="content" id="Core_Array_swap"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">swap</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L518" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2839,7 +2818,7 @@
 <span class="content" id="Core_Array_toSlice"><span class="titletype">func</span> <span class="titlelight">Array.</span><span class="titlestrong">toSlice</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L252" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L232" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3212,7 +3191,7 @@
 <span class="content" id="Core_BitArray_and"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">and</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L192" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3227,7 +3206,7 @@
 <span class="content" id="Core_BitArray_get"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">get</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3241,7 +3220,7 @@
 <span class="content" id="Core_BitArray_invert"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">invert</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L177" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L179" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3255,7 +3234,7 @@
 <span class="content" id="Core_BitArray_not"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">not</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L223" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3353,7 +3332,7 @@
 <span class="content" id="Core_BitArray_or"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">or</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L203" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3368,7 +3347,7 @@
 <span class="content" id="Core_BitArray_reserve"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">reserve</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3385,7 +3364,7 @@
 <span class="content" id="Core_BitArray_set"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">set</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L156" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3399,7 +3378,7 @@
 <span class="content" id="Core_BitArray_setAll"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">setAll</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3413,7 +3392,7 @@
 <span class="content" id="Core_BitArray_xor"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">xor</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L216" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10496,11 +10475,7 @@
 </tr>
 <tr>
 <td><a href="#Core_List_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
-<td>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
-</tr>
-<tr>
-<td><a href="#Core_List_opVisitBack"><span class="SCde"><span class="SFct">opVisitBack</span>()</spa</a></td>
-<td>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </td>
+<td>Visit every elements of the list. </td>
 </tr>
 </table>
 <p>
@@ -10510,7 +10485,7 @@
 <span class="content" id="Core_List_addBack"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">addBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L144" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10527,7 +10502,7 @@
 <span class="content" id="Core_List_addFront"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">addFront</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10544,7 +10519,7 @@
 <span class="content" id="Core_List_clear"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">clear</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L86" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L63" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10558,7 +10533,7 @@
 <span class="content" id="Core_List_insertAfter"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">insertAfter</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10574,7 +10549,7 @@
 <span class="content" id="Core_List_insertBefore"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">insertBefore</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L186" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10603,29 +10578,20 @@
 <span class="content" id="Core_List_opVisit"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">opVisit</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit every elements of the list  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
+<p>Visit every elements of the list. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
-<span class="content" id="Core_List_opVisitBack"><span class="titletype">func</span> <span class="titlelight">List.</span><span class="titlestrong">opVisitBack</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L60" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Visit every elements of the list from tail to head  @alias0 is the value  @alias1 is the node  @alias2 is the index. </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
-</div>
+<ul>
+<li><code class="incode">@alias0</code> is the value</li>
+<li><code class="incode">@alias1</code> is the node</li>
+<li><code class="incode">@alias2</code> is the index</li>
+</ul>
+<p> Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="item">
 <tr>
@@ -20297,11 +20263,7 @@
 </tr>
 <tr>
 <td><a href="#Core_StaticArray_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
-<td>Vist every elements of the array. </td>
-</tr>
-<tr>
-<td><a href="#Core_StaticArray_opVisitBack"><span class="SCde"><span class="SFct">opVisitBack</span>()</spa</a></td>
-<td>Vist every elements of the array from end to start. </td>
+<td>Visit every elements of the array. </td>
 </tr>
 </table>
 <p>
@@ -20311,7 +20273,7 @@
 <span class="content" id="Core_StaticArray_add"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">add</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L229" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20331,7 +20293,7 @@
 <span class="content" id="Core_StaticArray_addOnce"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">addOnce</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20345,7 +20307,7 @@
 <span class="content" id="Core_StaticArray_back"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">back</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L540" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L518" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20359,7 +20321,7 @@
 <span class="content" id="Core_StaticArray_backPtr"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">backPtr</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L548" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L526" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20373,7 +20335,7 @@
 <span class="content" id="Core_StaticArray_clear"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">clear</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L206" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L184" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20387,7 +20349,7 @@
 <span class="content" id="Core_StaticArray_contains"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">contains</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L499" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20401,7 +20363,7 @@
 <span class="content" id="Core_StaticArray_emplaceAddress"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">emplaceAddress</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L247" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20415,7 +20377,7 @@
 <span class="content" id="Core_StaticArray_emplaceAt"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">emplaceAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L332" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20429,7 +20391,7 @@
 <span class="content" id="Core_StaticArray_emplaceInitAddress"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">emplaceInitAddress</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L256" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L234" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20444,7 +20406,7 @@
 <span class="content" id="Core_StaticArray_free"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">free</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L162" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20458,7 +20420,7 @@
 <span class="content" id="Core_StaticArray_front"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">front</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L525" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L503" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20472,7 +20434,7 @@
 <span class="content" id="Core_StaticArray_frontPtr"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">frontPtr</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L533" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L511" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20486,7 +20448,7 @@
 <span class="content" id="Core_StaticArray_insertAt"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">insertAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L268" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L246" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20506,7 +20468,7 @@
 <span class="content" id="Core_StaticArray_isEmpty"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">isEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L178" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L156" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20640,29 +20602,15 @@
 <span class="content" id="Core_StaticArray_opVisit"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">opVisit</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Vist every elements of the array. </p>
+<p>Visit every elements of the array. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
-<span class="content" id="Core_StaticArray_opVisitBack"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">opVisitBack</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L135" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Vist every elements of the array from end to start. </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBack</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
-</div>
+<p> Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="item">
 <tr>
@@ -20670,7 +20618,7 @@
 <span class="content" id="Core_StaticArray_popBack"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">popBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L555" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L533" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20684,7 +20632,7 @@
 <span class="content" id="Core_StaticArray_remove"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">remove</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L482" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L460" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20701,7 +20649,7 @@
 <span class="content" id="Core_StaticArray_removeAt"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">removeAt</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L437" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L415" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20716,7 +20664,7 @@
 <span class="content" id="Core_StaticArray_removeAtOrdered"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">removeAtOrdered</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L449" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L427" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20731,7 +20679,7 @@
 <span class="content" id="Core_StaticArray_removeBack"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">removeBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L565" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L543" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20745,7 +20693,7 @@
 <span class="content" id="Core_StaticArray_removeOrdered"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">removeOrdered</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L491" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L469" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20759,7 +20707,7 @@
 <span class="content" id="Core_StaticArray_resize"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">resize</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20773,7 +20721,7 @@
 <span class="content" id="Core_StaticArray_sort"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">sort</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L506" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L484" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20790,7 +20738,7 @@
 <span class="content" id="Core_StaticArray_sortReverse"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">sortReverse</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L512" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L490" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20804,7 +20752,7 @@
 <span class="content" id="Core_StaticArray_toSlice"><span class="titletype">func</span> <span class="titlelight">StaticArray.</span><span class="titlestrong">toSlice</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21985,11 +21933,11 @@
 </tr>
 <tr>
 <td><a href="#Core_String_opVisitBytes"><span class="SCde"><span class="SFct">opVisitBytes</span>()</spa</a></td>
-<td>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </td>
+<td>Visit the String utf8 bytes. </td>
 </tr>
 <tr>
 <td><a href="#Core_String_opVisitRunes"><span class="SCde"><span class="SFct">opVisitRunes</span>()</spa</a></td>
-<td>Visit the string runes  See Utf8.visitRunes for aliases. </td>
+<td>Visit the String runes  See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </td>
 </tr>
 </table>
 <p>
@@ -21999,7 +21947,7 @@
 <span class="content" id="Core_String_IHash32_compute"><span class="titletype">func</span> <span class="titlelight">IHash32.</span><span class="titlestrong">compute</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L569" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L571" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22012,7 +21960,7 @@
 <span class="content" id="Core_String_append"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">append</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L327" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L329" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22032,7 +21980,7 @@
 <span class="content" id="Core_String_appendFormat"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">appendFormat</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L311" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L313" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22046,7 +21994,7 @@
 <span class="content" id="Core_String_back"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">back</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L262" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L264" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22060,7 +22008,7 @@
 <span class="content" id="Core_String_clear"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">clear</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22074,7 +22022,7 @@
 <span class="content" id="Core_String_ensureNotNull"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">ensureNotNull</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L229" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22088,7 +22036,7 @@
 <span class="content" id="Core_String_from"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">from</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L476" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L478" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22102,7 +22050,7 @@
 <span class="content" id="Core_String_grow"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">grow</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L379" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L381" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22116,7 +22064,7 @@
 <span class="content" id="Core_String_insert"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">insert</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L291" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L293" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22130,7 +22078,7 @@
 <span class="content" id="Core_String_isEmpty"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L213" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22144,7 +22092,7 @@
 <span class="content" id="Core_String_isNull"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isNull</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22158,7 +22106,7 @@
 <span class="content" id="Core_String_isNullOrEmpty"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isNullOrEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L223" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22172,7 +22120,7 @@
 <span class="content" id="Core_String_join"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">join</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22186,7 +22134,7 @@
 <span class="content" id="Core_String_joinWith"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">joinWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L364" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L366" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22200,7 +22148,7 @@
 <span class="content" id="Core_String_makeLower"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">makeLower</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L516" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L518" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22214,7 +22162,7 @@
 <span class="content" id="Core_String_makeUpper"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">makeUpper</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L497" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L499" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22376,14 +22324,18 @@
 <span class="content" id="Core_String_opVisitBytes"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">opVisitBytes</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit the String utf8 bytes  @alias0 will contain the byte or the pointer to the byte  @alias1 will contain the byte index. </p>
+<p>Visit the String utf8 bytes. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
+<ul>
+<li><code class="incode">@alias0</code> will contain the byte or the pointer to the byte</li>
+<li><code class="incode">@alias1</code> will contain the byte index</li>
+</ul>
 <p>
 <table class="item">
 <tr>
@@ -22395,7 +22347,7 @@
 </tr>
 </table>
 </p>
-<p>Visit the string runes  See Utf8.visitRunes for aliases. </p>
+<p>Visit the String runes  See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
@@ -22406,7 +22358,7 @@
 <span class="content" id="Core_String_remove"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">remove</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L270" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L272" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22420,7 +22372,7 @@
 <span class="content" id="Core_String_removeBack"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">removeBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L281" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L283" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22434,7 +22386,7 @@
 <span class="content" id="Core_String_replace"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">replace</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L237" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22448,7 +22400,7 @@
 <span class="content" id="Core_String_reserve"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">reserve</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L388" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L390" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22462,7 +22414,7 @@
 <span class="content" id="Core_String_toCharArray"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toCharArray</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L470" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L472" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22476,7 +22428,7 @@
 <span class="content" id="Core_String_toLower"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toLower</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L551" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L553" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22493,7 +22445,7 @@
 <span class="content" id="Core_String_toSlice"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toSlice</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L491" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L493" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22507,7 +22459,7 @@
 <span class="content" id="Core_String_toString"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toString</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L484" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22521,7 +22473,7 @@
 <span class="content" id="Core_String_toUpper"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toUpper</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L535" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L537" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22538,7 +22490,7 @@
 <span class="content" id="Core_String_trim"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trim</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L463" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L465" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22552,7 +22504,7 @@
 <span class="content" id="Core_String_trimEnd"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trimEnd</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L445" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L447" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22566,7 +22518,7 @@
 <span class="content" id="Core_String_trimStart"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trimStart</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L424" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L426" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25339,7 +25291,7 @@
 <span class="content" id="Core_Utf8_isValid"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">isValid</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L742" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L739" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25418,7 +25370,7 @@
 <span class="content" id="Core_Utf8_visitRunes"><span class="titletype">func</span> <span class="titlelight">Utf8.</span><span class="titlestrong">visitRunes</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L708" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L705" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25426,9 +25378,11 @@
 <div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="STpe">code</span>)</span></code>
 </div>
-<p style="white-space: break-spaces"> '@alias0' will contain the character
- '@alias1' will contain the character index
- '@alias2' will contain the byte index of that character within the utf8 sequence</p>
+<ul>
+<li><code class="incode">@alias0</code> will contain the character</li>
+<li><code class="incode">@alias1</code> will contain the character index</li>
+<li><code class="incode">@alias2</code> will contain the byte index of that character within the utf8 sequence</li>
+</ul>
 <p>
 <table class="item">
 <tr>

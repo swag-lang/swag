@@ -23,13 +23,17 @@ impl List
     }
 
     // Visit every elements of the list
-    // @alias0 is the value
-    // @alias1 is the node
-    // @alias2 is the index
+    // * `@alias0` is the value
+    // * `@alias1` is the node
+    // * `@alias2` is the index
+    // Visiting by pointer and in reverse order is supported
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        var n = head
+        #if back
+            var n = tail
+        #else
+            var n = head
         #scope Up
         while n
         {
@@ -48,37 +52,10 @@ impl List
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
-            n = n.next
-        }
-    }
-
-    // Visit every elements of the list from tail to head
-    // @alias0 is the value
-    // @alias1 is the node
-    // @alias2 is the index
-    #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisitBack(stmt: code)
-    {
-        var n = tail
-        #scope Up
-        while n
-        {
-            #scope Down
-            #macro
-            {
-                #if #up ptr
-                    var @alias0 = cast(*T) & #up n.value
-                #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) & #up n.value
-                #else
-                    var @alias0 = #up n.value
-                var @alias1 = #up n
-                var @alias2 = @index
-
-                #mixin #up stmt { break = break Up; continue = break Down; }
-            }
-
-            n = n.prev
+            #if back
+                n = n.prev
+            #else
+                n = n.next
         }
     }
 

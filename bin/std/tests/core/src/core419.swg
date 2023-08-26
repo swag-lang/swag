@@ -28,7 +28,7 @@ using Core
     @assert(cpt == 5)
 
     cpt = 0
-    visit(Back) v: list
+    visit,back v: list
     {
         cpt += 1
         continue

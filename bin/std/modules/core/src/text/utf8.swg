@@ -697,13 +697,10 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
     return 0
 }
 
-// Macro to visit the unicode characters of the utf8 sequence
-//
-// ---
-// '@alias0' will contain the character
-// '@alias1' will contain the character index
-// '@alias2' will contain the byte index of that character within the utf8 sequence
-// ---
+// Macro to visit the unicode characters of the utf8 sequence.
+// * '@alias0' will contain the character
+// * '@alias1' will contain the character index
+// * '@alias2' will contain the byte index of that character within the utf8 sequence
 #[Swag.Macro]
 func visitRunes(buffer: const [..] u8, stmt: code)
 {

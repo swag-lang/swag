@@ -91,7 +91,10 @@ impl MyStruct
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)   // We add 'Reverse' in the name
     {
-        // Visit fields in reverse order (z, y then x)
+        // Visit fields in reverse order (z, y then x).
+        // Note that visiting in reverse order should be implemented in the normal 'opVisit'
+        // function by checking the 'back' generic parameter. But this is just to make the
+        // point of special dedicated visit versions.
         loop idx: 3
         {
             #macro

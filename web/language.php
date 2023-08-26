@@ -4018,7 +4018,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)   <span class="SCmt">// We add 'Reverse' in the name</span>
     {
-        <span class="SCmt">// Visit fields in reverse order (z, y then x)</span>
+        <span class="SCmt">// Visit fields in reverse order (z, y then x).</span>
+        <span class="SCmt">// Note that visiting in reverse order should be implemented in the normal 'opVisit'</span>
+        <span class="SCmt">// function by checking the 'back' generic parameter. But this is just to make the</span>
+        <span class="SCmt">// point of special dedicated visit versions.</span>
         <span class="SLgc">loop</span> idx: <span class="SNum">3</span>
         {
             <span class="SCmp">#macro</span>
