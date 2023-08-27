@@ -467,35 +467,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="005_keywords">Keywords</h2><p>This is the list of all keywords in the language. </p>
-<h3>Basic types </h3>
-<div class="precode"><code><span class="SCde"><span class="STpe">s8</span>
-<span class="STpe">s16</span>
-<span class="STpe">s32</span>
-<span class="STpe">s64</span>
-<span class="STpe">u8</span>
-<span class="STpe">u16</span>
-<span class="STpe">u32</span>
-<span class="STpe">u64</span>
-<span class="STpe">f32</span>
-<span class="STpe">f64</span>
-<span class="STpe">bool</span>
-<span class="STpe">string</span>
-<span class="STpe">rune</span>
-<span class="STpe">any</span>
-<span class="STpe">typeinfo</span>
-<span class="STpe">void</span>
-<span class="STpe">code</span>
-<span class="STpe">cstring</span>
-<span class="STpe">cvarargs</span></span></code>
-</div>
-<h3>Language keywords </h3>
+<h3>Reserved keywords </h3>
+<p>Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program. </p>
 <div class="precode"><code><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
 <span class="SLgc">elif</span>
-<span class="SLgc">and</span>
-<span class="SLgc">or</span>
-<span class="SLgc">to</span>
-<span class="SLgc">until</span>
 <span class="SLgc">switch</span>
 <span class="SLgc">case</span>
 <span class="SLgc">default</span>
@@ -545,7 +521,38 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">discard</span>
 <span class="SKwd">dref</span></span></code>
 </div>
+<h3>Contextual keywords </h3>
+<p>A contextual keyword is used to provide a specific meaning in the code, but it isn't a reserved word in Swag. </p>
+<div class="precode"><code><span class="SCde"><span class="SLgc">and</span>
+<span class="SLgc">or</span>
+<span class="SLgc">orelse</span>
+<span class="SLgc">to</span>
+<span class="SLgc">until</span></span></code>
+</div>
+<h3>Basic types </h3>
+<p>These are all the native types of the language. All are reserved keywords too. </p>
+<div class="precode"><code><span class="SCde"><span class="STpe">s8</span>
+<span class="STpe">s16</span>
+<span class="STpe">s32</span>
+<span class="STpe">s64</span>
+<span class="STpe">u8</span>
+<span class="STpe">u16</span>
+<span class="STpe">u32</span>
+<span class="STpe">u64</span>
+<span class="STpe">f32</span>
+<span class="STpe">f64</span>
+<span class="STpe">bool</span>
+<span class="STpe">string</span>
+<span class="STpe">rune</span>
+<span class="STpe">any</span>
+<span class="STpe">typeinfo</span>
+<span class="STpe">void</span>
+<span class="STpe">code</span>
+<span class="STpe">cstring</span>
+<span class="STpe">cvarargs</span></span></code>
+</div>
 <h3>Compiler keywords </h3>
+<p>Compiler keywords always start with <code class="incode">#</code>. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmp">#arch</span>
 <span class="SCmp">#backend</span>
 <span class="SCmp">#callerfunction</span>
@@ -562,7 +569,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#swagos</span>
 <span class="SCmp">#swagrevision</span>
 <span class="SCmp">#swagversion</span>
-<span class="STpe">#type</span>
 <span class="SCmp">#up</span>
 
 <span class="SCmp">#assert</span>
@@ -583,6 +589,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#warning</span>
 <span class="SCmp">#scope</span>
 
+<span class="STpe">#type</span>
+
 <span class="SFct">#ast</span>
 <span class="SFct">#drop</span>
 <span class="SFct">#init</span>
@@ -591,55 +599,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SFct">#premain</span>
 <span class="SFct">#run</span></span></code>
 </div>
-<h3>Intrinsics libc </h3>
-<div class="precode"><code><span class="SCde"><span class="SItr">@abs</span>
-<span class="SItr">@acos</span>
-<span class="SItr">@alloc</span>
-<span class="SItr">@asin</span>
-<span class="SItr">@atan</span>
-<span class="SItr">@atomadd</span>
-<span class="SItr">@atomand</span>
-<span class="SItr">@atomcmpxchg</span>
-<span class="SItr">@atomor</span>
-<span class="SItr">@atomxchg</span>
-<span class="SItr">@atomxor</span>
-<span class="SItr">@bitcountlz</span>
-<span class="SItr">@bitcountnz</span>
-<span class="SItr">@bitcounttz</span>
-<span class="SItr">@byteswap</span>
-<span class="SItr">@ceil</span>
-<span class="SItr">@cos</span>
-<span class="SItr">@cosh</span>
-<span class="SItr">@cvaarg</span>
-<span class="SItr">@cvaend</span>
-<span class="SItr">@cvastart</span>
-<span class="SItr">@exp</span>
-<span class="SItr">@exp2</span>
-<span class="SItr">@floor</span>
-<span class="SItr">@free</span>
-<span class="SItr">@log</span>
-<span class="SItr">@log10</span>
-<span class="SItr">@log2</span>
-<span class="SItr">@max</span>
-<span class="SItr">@memcmp</span>
-<span class="SItr">@memcpy</span>
-<span class="SItr">@memmove</span>
-<span class="SItr">@memset</span>
-<span class="SItr">@muladd</span>
-<span class="SItr">@min</span>
-<span class="SItr">@pow</span>
-<span class="SItr">@realloc</span>
-<span class="SItr">@round</span>
-<span class="SItr">@sin</span>
-<span class="SItr">@sinh</span>
-<span class="SItr">@sqrt</span>
-<span class="SItr">@strcmp</span>
-<span class="SItr">@strlen</span>
-<span class="SItr">@tan</span>
-<span class="SItr">@tanh</span>
-<span class="SItr">@trunc</span></span></code>
-</div>
-<h3>Other intrinsics </h3>
+<h3>Misc intrinsics </h3>
+<p>Intrisic keywords always start with <code class="incode">@</code>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
 <div class="precode"><code><span class="SCde"><span class="SItr">@index</span>
 <span class="SItr">@err</span>
 <span class="SItr">@errmsg</span>
@@ -694,6 +655,54 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@sysalloc</span>
 <span class="SItr">@typecmp</span>
 <span class="SItr">@typeof</span></span></code>
+</div>
+<h3>Intrinsics libc </h3>
+<div class="precode"><code><span class="SCde"><span class="SItr">@abs</span>
+<span class="SItr">@acos</span>
+<span class="SItr">@alloc</span>
+<span class="SItr">@asin</span>
+<span class="SItr">@atan</span>
+<span class="SItr">@atomadd</span>
+<span class="SItr">@atomand</span>
+<span class="SItr">@atomcmpxchg</span>
+<span class="SItr">@atomor</span>
+<span class="SItr">@atomxchg</span>
+<span class="SItr">@atomxor</span>
+<span class="SItr">@bitcountlz</span>
+<span class="SItr">@bitcountnz</span>
+<span class="SItr">@bitcounttz</span>
+<span class="SItr">@byteswap</span>
+<span class="SItr">@ceil</span>
+<span class="SItr">@cos</span>
+<span class="SItr">@cosh</span>
+<span class="SItr">@cvaarg</span>
+<span class="SItr">@cvaend</span>
+<span class="SItr">@cvastart</span>
+<span class="SItr">@exp</span>
+<span class="SItr">@exp2</span>
+<span class="SItr">@floor</span>
+<span class="SItr">@free</span>
+<span class="SItr">@log</span>
+<span class="SItr">@log10</span>
+<span class="SItr">@log2</span>
+<span class="SItr">@max</span>
+<span class="SItr">@memcmp</span>
+<span class="SItr">@memcpy</span>
+<span class="SItr">@memmove</span>
+<span class="SItr">@memset</span>
+<span class="SItr">@muladd</span>
+<span class="SItr">@min</span>
+<span class="SItr">@pow</span>
+<span class="SItr">@realloc</span>
+<span class="SItr">@round</span>
+<span class="SItr">@sin</span>
+<span class="SItr">@sinh</span>
+<span class="SItr">@sqrt</span>
+<span class="SItr">@strcmp</span>
+<span class="SItr">@strlen</span>
+<span class="SItr">@tan</span>
+<span class="SItr">@tanh</span>
+<span class="SItr">@trunc</span></span></code>
 </div>
 <h3>Modifiers </h3>
 <p>Modifiers can be applied to some specific keywords or operators to change their behaviours. </p>
@@ -2782,7 +2791,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>You can loop in reverse order by adding the modifier <code class="incode">,back</code> just after the <code class="incode">loop</code>. </p>
+<p>You can loop in reverse order by adding the modifier <code class="incode">back</code> just after the <code class="incode">loop</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>

@@ -1,37 +1,12 @@
 /**
 This is the list of all keywords in the language.
 
-# Basic types
-```
-s8
-s16
-s32
-s64
-u8
-u16
-u32
-u64
-f32
-f64
-bool
-string
-rune
-any
-typeinfo
-void
-code
-cstring
-cvarargs
-```
-# Language keywords
+# Reserved keywords
+Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program.
 ```
 if
 else
 elif
-and
-or
-to
-until
 switch
 case
 default
@@ -81,7 +56,40 @@ namealias
 discard
 dref
 ```
+# Contextual keywords
+A contextual keyword is used to provide a specific meaning in the code, but it isn't a reserved word in Swag.
+```
+and
+or
+orelse
+to
+until
+```
+# Basic types
+These are all the native types of the language. All are reserved keywords too.
+```
+s8
+s16
+s32
+s64
+u8
+u16
+u32
+u64
+f32
+f64
+bool
+string
+rune
+any
+typeinfo
+void
+code
+cstring
+cvarargs
+```
 # Compiler keywords
+Compiler keywords always start with '#'. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers.
 ```
 #arch
 #backend
@@ -99,7 +107,6 @@ dref
 #swagos
 #swagrevision
 #swagversion
-#type
 #up
 
 #assert
@@ -120,6 +127,8 @@ dref
 #warning
 #scope
 
+#type
+
 #ast
 #drop
 #init
@@ -128,56 +137,8 @@ dref
 #premain
 #run
 ```
-# Intrinsics libc
-```
-@abs
-@acos
-@alloc
-@asin
-@atan
-@atomadd
-@atomand
-@atomcmpxchg
-@atomor
-@atomxchg
-@atomxor
-@bitcountlz
-@bitcountnz
-@bitcounttz
-@byteswap
-@ceil
-@cos
-@cosh
-@cvaarg
-@cvaend
-@cvastart
-@exp
-@exp2
-@floor
-@free
-@log
-@log10
-@log2
-@max
-@memcmp
-@memcpy
-@memmove
-@memset
-@muladd
-@min
-@pow
-@realloc
-@round
-@sin
-@sinh
-@sqrt
-@strcmp
-@strlen
-@tan
-@tanh
-@trunc
-```
-# Other intrinsics
+# Misc intrinsics
+Intrisic keywords always start with '@'. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers.
 ```
 @index
 @err
@@ -233,6 +194,55 @@ dref
 @sysalloc
 @typecmp
 @typeof
+```
+# Intrinsics libc
+```
+@abs
+@acos
+@alloc
+@asin
+@atan
+@atomadd
+@atomand
+@atomcmpxchg
+@atomor
+@atomxchg
+@atomxor
+@bitcountlz
+@bitcountnz
+@bitcounttz
+@byteswap
+@ceil
+@cos
+@cosh
+@cvaarg
+@cvaend
+@cvastart
+@exp
+@exp2
+@floor
+@free
+@log
+@log10
+@log2
+@max
+@memcmp
+@memcpy
+@memmove
+@memset
+@muladd
+@min
+@pow
+@realloc
+@round
+@sin
+@sinh
+@sqrt
+@strcmp
+@strlen
+@tan
+@tanh
+@trunc
 ```
 */
 
