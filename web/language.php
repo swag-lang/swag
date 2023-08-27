@@ -210,107 +210,356 @@
 <h2>Table of Contents</h2>
 <ul>
 <li><a href="#000_introduction">Introduction</a></li>
+<ul>
+</ul>
 <li><a href="#001_hello_mad_world">Hello mad world</a></li>
+<ul>
+</ul>
 <li><a href="#002_source_code_organization">Source code organization</a></li>
+<ul>
+</ul>
 <li><a href="#003_comments">Comments</a></li>
+<ul>
+</ul>
 <li><a href="#004_identifiers">Identifiers</a></li>
+<ul>
+</ul>
 <li><a href="#005_keywords">Keywords</a></li>
+<ul>
+<li><a href="#Reserved_keywords">Reserved keywords</a></li>
+<li><a href="#Contextual_keywords">Contextual keywords</a></li>
+<li><a href="#Basic_types">Basic types</a></li>
+<li><a href="#Compiler_keywords">Compiler keywords</a></li>
+<li><a href="#Misc_intrinsics">Misc intrinsics</a></li>
+<li><a href="#Intrinsics_libc">Intrinsics libc</a></li>
+<li><a href="#Modifiers">Modifiers</a></li>
+</ul>
 <li><a href="#006_semicolon">Semicolon</a></li>
+<ul>
+</ul>
 <li><a href="#007_global_declaration_order">Global declaration order</a></li>
+<ul>
+</ul>
 <li><a href="#010_basic_types">Basic types</a></li>
+<ul>
+<li><a href="#Type_reflection">Type reflection</a></li>
+</ul>
 <li><a href="#011_number_literals">Number literals</a></li>
+<ul>
+<li><a href="#Postfix">Postfix</a></li>
+</ul>
 <li><a href="#012_string">String</a></li>
+<ul>
+<li><a href="#Character_literals">Character literals</a></li>
+<li><a href="#Escape_sequences">Escape sequences</a></li>
+<li><a href="#Raw_string">Raw string</a></li>
+<li><a href="#Multiline_string">Multiline string</a></li>
+<li><a href="#@stringof_and_@nameof">@stringof and @nameof</a></li>
+</ul>
 <li><a href="#013_variables">Variables</a></li>
+<ul>
+</ul>
 <li><a href="#014_const">Const</a></li>
+<ul>
+</ul>
 <li><a href="#015_operators">Operators</a></li>
+<ul>
+<li><a href="#Arithmetic_operators">Arithmetic operators</a></li>
+<li><a href="#Bitwise_operators">Bitwise operators</a></li>
+<li><a href="#Assignment_operators">Assignment operators</a></li>
+<li><a href="#Unary_operators">Unary operators</a></li>
+<li><a href="#Comparison_operators">Comparison operators</a></li>
+<li><a href="#Logical_operators">Logical operators</a></li>
+<li><a href="#Ternary_operator">Ternary operator</a></li>
+<li><a href="#Spaceshift_operator">Spaceshift operator</a></li>
+<li><a href="#Null-coalescing_operator">Null-coalescing operator</a></li>
+<li><a href="#Type_promotion">Type promotion</a></li>
+<li><a href="#Operator_precedence">Operator precedence</a></li>
+</ul>
 <li><a href="#016_cast">Cast</a></li>
+<ul>
+<li><a href="#Explicit_cast">Explicit cast</a></li>
+<li><a href="#acast">acast</a></li>
+<li><a href="#bitcast">bitcast</a></li>
+<li><a href="#Implicit_casts">Implicit casts</a></li>
+</ul>
 <li><a href="#020_array">Array</a></li>
+<ul>
+</ul>
 <li><a href="#021_slice">Slice</a></li>
+<ul>
+<li><a href="#The_slicing_operator">The slicing operator</a></li>
+</ul>
 <li><a href="#022_pointers">Pointers</a></li>
+<ul>
+<li><a href="#Single_value_pointers">Single value pointers</a></li>
+<li><a href="#Multiple_values_pointers">Multiple values pointers</a></li>
+</ul>
 <li><a href="#023_references">References</a></li>
+<ul>
+</ul>
 <li><a href="#024_any">Any</a></li>
+<ul>
+</ul>
 <li><a href="#025_tuple">Tuple</a></li>
+<ul>
+<li><a href="#Tuple_unpacking">Tuple unpacking</a></li>
+</ul>
 <li><a href="#030_enum">Enum</a></li>
+<ul>
+<li><a href="#Enum_as_flags">Enum as flags</a></li>
+<li><a href="#Enum_of_arrays">Enum of arrays</a></li>
+<li><a href="#Enum_of_slices">Enum of slices</a></li>
+<li><a href="#Enum_type_inference">Enum type inference</a></li>
+</ul>
 <li><a href="#031_impl">Impl</a></li>
+<ul>
+</ul>
 <li><a href="#035_namespace">Namespace</a></li>
+<ul>
+</ul>
 <li><a href="#050_if">If</a></li>
+<ul>
+</ul>
 <li><a href="#051_loop">Loop</a></li>
+<ul>
+<li><a href="#break,_continue">break, continue</a></li>
+<li><a href="#Ranges">Ranges</a></li>
+<li><a href="#Infinite_loop">Infinite loop</a></li>
+</ul>
 <li><a href="#052_visit">Visit</a></li>
+<ul>
+</ul>
 <li><a href="#053_for">For</a></li>
+<ul>
+</ul>
 <li><a href="#054_while">While</a></li>
+<ul>
+</ul>
 <li><a href="#055_switch">Switch</a></li>
+<ul>
+</ul>
 <li><a href="#056_break">Break</a></li>
+<ul>
+</ul>
 <li><a href="#060_struct">Struct</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#061_001_declaration">Declaration</a></li>
+<ul>
+</ul>
 <li><a href="#062_002_impl">Impl</a></li>
+<ul>
+</ul>
 <li><a href="#063_003_special_functions">Special functions</a></li>
+<ul>
+</ul>
 <li><a href="#064_004_affectation">Affectation</a></li>
+<ul>
+</ul>
 <li><a href="#064_005_count">Count</a></li>
+<ul>
+</ul>
 <li><a href="#064_006_post_copy_and_post_move">Post copy and post move</a></li>
+<ul>
+<li><a href="#moveref">moveref</a></li>
+</ul>
 <li><a href="#064_007_visit">Visit</a></li>
+<ul>
+</ul>
 <li><a href="#067_008_offset">Offset</a></li>
+<ul>
+</ul>
 <li><a href="#068_009_packing">Packing</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#070_union">Union</a></li>
+<ul>
+</ul>
 <li><a href="#075_interface">Interface</a></li>
+<ul>
+</ul>
 <li><a href="#100_function">Function</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#101_001_declaration">Declaration</a></li>
+<ul>
+<li><a href="#Multiple_return_values">Multiple return values</a></li>
+</ul>
 <li><a href="#102_002_lambda">Lambda</a></li>
+<ul>
+<li><a href="#Anonymous_functions">Anonymous functions</a></li>
+</ul>
 <li><a href="#103_003_closure">Closure</a></li>
+<ul>
+</ul>
 <li><a href="#104_004_mixin">Mixin</a></li>
+<ul>
+</ul>
 <li><a href="#105_005_macro">Macro</a></li>
+<ul>
+</ul>
 <li><a href="#105_006_variadic_parameters">Variadic parameters</a></li>
+<ul>
+</ul>
 <li><a href="#106_007_ufcs">Ufcs</a></li>
+<ul>
+</ul>
 <li><a href="#107_008_constexpr">Constexpr</a></li>
+<ul>
+</ul>
 <li><a href="#108_009_function_overloading">Function overloading</a></li>
+<ul>
+</ul>
 <li><a href="#109_010_discard">Discard</a></li>
+<ul>
+</ul>
 <li><a href="#110_011_retval">Retval</a></li>
+<ul>
+</ul>
 <li><a href="#111_012_foreign">Foreign</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#120_intrinsics">Intrinsics</a></li>
+<ul>
+<li><a href="#Base">Base</a></li>
+<li><a href="#Buildin">Buildin</a></li>
+<li><a href="#Memory_related">Memory related</a></li>
+<li><a href="#Atomic_operations">Atomic operations</a></li>
+<li><a href="#Math">Math</a></li>
+</ul>
 <li><a href="#121_init">Init</a></li>
+<ul>
+<li><a href="#@init">@init</a></li>
+<li><a href="#@drop">@drop</a></li>
+</ul>
 <li><a href="#130_generic">Generic</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#131_001_declaration">Declaration</a></li>
+<ul>
+</ul>
 <li><a href="#132_002_validif">Validif</a></li>
+<ul>
+<li><a href="#One_time_evaluation">One time evaluation</a></li>
+<li><a href="#Multiple_evaluations">Multiple evaluations</a></li>
+</ul>
 <li><a href="#133_003_constraint">Constraint</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#160_scoping">Scoping</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#161_001_defer">Defer</a></li>
+<ul>
+</ul>
 <li><a href="#162_002_using">Using</a></li>
+<ul>
+<li><a href="#For_a_function_parameter">For a function parameter</a></li>
+<li><a href="#For_a_field">For a field</a></li>
+</ul>
 <li><a href="#163_003_with">With</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#164_alias">Alias</a></li>
+<ul>
+<li><a href="#Type_alias">Type alias</a></li>
+<li><a href="#Name_alias">Name alias</a></li>
+</ul>
 <li><a href="#170_error_management">Error management</a></li>
+<ul>
+<li><a href="#defer">defer</a></li>
+</ul>
 <li><a href="#175_safety">Safety</a></li>
+<ul>
+<li><a href="#overflow">overflow</a></li>
+<li><a href="#any">any</a></li>
+<li><a href="#boundcheck">boundcheck</a></li>
+<li><a href="#math">math</a></li>
+<li><a href="#switch">switch</a></li>
+<li><a href="#bool">bool</a></li>
+<li><a href="#nan">nan</a></li>
+</ul>
 <li><a href="#180_compiler_declarations">Compiler declarations</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#181_001_compile_time_evaluation">Compile time evaluation</a></li>
+<ul>
+</ul>
 <li><a href="#182_002_special_functions">Special functions</a></li>
+<ul>
+<li><a href="##test">#test</a></li>
+<li><a href="##main">#main</a></li>
+<li><a href="##init">#init</a></li>
+<li><a href="##drop">#drop</a></li>
+<li><a href="##premain">#premain</a></li>
+</ul>
 <li><a href="#183_003_run">Run</a></li>
+<ul>
+</ul>
 <li><a href="#184_004_global">Global</a></li>
+<ul>
+</ul>
 <li><a href="#185_005_var">Var</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#190_attributes">Attributes</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#191_001_user_attributes">User attributes</a></li>
+<ul>
+</ul>
 <li><a href="#192_002_predefined_attributes">Predefined attributes</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#200_type_reflection">Type reflection</a></li>
+<ul>
+<li><a href="#@decltype">@decltype</a></li>
+</ul>
 <li><a href="#210_code_inspection">Code inspection</a></li>
+<ul>
+</ul>
 <li><a href="#220_meta_programmation">Meta programmation</a></li>
 <ul>
+</ul>
+<ul>
 <li><a href="#221_001_ast">Ast</a></li>
+<ul>
+<li><a href="#Struct_and_enums">Struct and enums</a></li>
+<li><a href="#For_example">For example</a></li>
+<li><a href="#At_global_scope">At global scope</a></li>
+</ul>
 <li><a href="#222_002_compiler_interface">Compiler interface</a></li>
+<ul>
+</ul>
 </ul>
 <li><a href="#230_documentation">Documentation</a></li>
 <ul>
+<li><a href="#Format_of_comments">Format of comments</a></li>
+<li><a href="#References">References</a></li>
+</ul>
+<ul>
 <li><a href="#231_001_Api">Api</a></li>
+<ul>
+</ul>
 <li><a href="#231_002_Examples">Examples</a></li>
+<ul>
+</ul>
 <li><a href="#231_003_Pages">Pages</a></li>
+<ul>
+</ul>
 </ul>
 </div>
 </div>
@@ -467,7 +716,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="005_keywords">Keywords</h2><p>This is the list of all keywords in the language. </p>
-<h3>Reserved keywords </h3>
+<h3 id="Reserved_keywords">Reserved keywords </h3>
 <p>Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program. </p>
 <div class="precode"><code><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
@@ -521,7 +770,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">discard</span>
 <span class="SKwd">dref</span></span></code>
 </div>
-<h3>Contextual keywords </h3>
+<h3 id="Contextual_keywords">Contextual keywords </h3>
 <p>A contextual keyword is used to provide a specific meaning in the code, but it isn't a reserved word in Swag. </p>
 <div class="precode"><code><span class="SCde"><span class="SLgc">and</span>
 <span class="SLgc">or</span>
@@ -529,7 +778,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SLgc">to</span>
 <span class="SLgc">until</span></span></code>
 </div>
-<h3>Basic types </h3>
+<h3 id="Basic_types">Basic types </h3>
 <p>These are all the native types of the language. All are reserved keywords too. </p>
 <div class="precode"><code><span class="SCde"><span class="STpe">s8</span>
 <span class="STpe">s16</span>
@@ -551,7 +800,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="STpe">cstring</span>
 <span class="STpe">cvarargs</span></span></code>
 </div>
-<h3>Compiler keywords </h3>
+<h3 id="Compiler_keywords">Compiler keywords </h3>
 <p>Compiler keywords always start with <code class="incode">#</code>. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmp">#arch</span>
 <span class="SCmp">#backend</span>
@@ -599,7 +848,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SFct">#premain</span>
 <span class="SFct">#run</span></span></code>
 </div>
-<h3>Misc intrinsics </h3>
+<h3 id="Misc_intrinsics">Misc intrinsics </h3>
 <p>Intrisic keywords always start with <code class="incode">@</code>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
 <div class="precode"><code><span class="SCde"><span class="SItr">@index</span>
 <span class="SItr">@err</span>
@@ -656,7 +905,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@typecmp</span>
 <span class="SItr">@typeof</span></span></code>
 </div>
-<h3>Intrinsics libc </h3>
+<h3 id="Intrinsics_libc">Intrinsics libc </h3>
 <div class="precode"><code><span class="SCde"><span class="SItr">@abs</span>
 <span class="SItr">@acos</span>
 <span class="SItr">@alloc</span>
@@ -704,7 +953,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@tanh</span>
 <span class="SItr">@trunc</span></span></code>
 </div>
-<h3>Modifiers </h3>
+<h3 id="Modifiers">Modifiers </h3>
 <p>Modifiers can be applied to some specific keywords or operators to change their behaviours. </p>
 <div class="precode"><code><span class="SCde"><span class="SItr">,up</span>
 <span class="SItr">,over</span>
@@ -865,7 +1114,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SItr">@sizeof</span>(a) == <span class="SNum">4</span>)
 }</span></code>
 </div>
-<h3>Type reflection </h3>
+<h3 id="Type_reflection">Type reflection </h3>
 <p>Swag has <b>type reflection</b> at <b>compile time</b> and at <b>runtime</b>. We will see that later in more details. </p>
 <p>You can use <code class="incode">@decltype</code> to create a type based on an expression. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -979,7 +1228,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) != <span class="STpe">f64</span>
 }</span></code>
 </div>
-<h3>Postfix </h3>
+<h3 id="Postfix">Postfix </h3>
 <p>You can also <b>postfix</b> a literal number by a type. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1067,7 +1316,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(a == <span class="SKwd">null</span>)
 }</span></code>
 </div>
-<h3>Character literals </h3>
+<h3 id="Character_literals">Character literals </h3>
 <p>A <i>character</i> is enclosed with <b>backticks</b>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1118,7 +1367,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(e) == <span class="STpe">rune</span>)
 }</span></code>
 </div>
-<h3>Escape sequences </h3>
+<h3 id="Escape_sequences">Escape sequences </h3>
 <p>A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
 <p>An escape sequence starts with a backslash <code class="incode">\</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -1155,7 +1404,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>Raw string </h3>
+<h3 id="Raw_string">Raw string </h3>
 <p>A <i>raw string</i> does not transform the escape sequences inside it. </p>
 <p>A raw string starts and ends with the character <code class="incode">$</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -1190,7 +1439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// string</span>
 }</span></code>
 </div>
-<h3>Multiline string </h3>
+<h3 id="Multiline_string">Multiline string </h3>
 <p>A multiline string starts and ends with <code class="incode">"""</code>. Unlike raw strings, they still evaluate escape sequences. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1220,7 +1469,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// string</span>
 }</span></code>
 </div>
-<h3>@stringof and @nameof </h3>
+<h3 id="@stringof_and_@nameof">@stringof and @nameof </h3>
 <p>You can use the instrinsic <code class="incode">@stringof</code> to return at compile time the result of a constant expression as a string. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1366,7 +1615,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>So the difference between <code class="incode">let</code> and <code class="incode">const</code> is that the value of a constant should be known at compile time, where the value of a <code class="incode">let</code> can be dynamic. Other than that, both must be assigned once and only once. </p>
 
 <h2 id="015_operators">Operators</h2><p>These are all the Swag operators that can be used to manipulate variables and values. </p>
-<h3>Arithmetic operators </h3>
+<h3 id="Arithmetic_operators">Arithmetic operators </h3>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x: <span class="STpe">s32</span> = <span class="SNum">10</span>
@@ -1387,7 +1636,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     x = x % <span class="SNum">2</span>
 }</span></code>
 </div>
-<h3>Bitwise operators </h3>
+<h3 id="Bitwise_operators">Bitwise operators </h3>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x: <span class="STpe">s32</span> = <span class="SNum">10</span>
@@ -1408,7 +1657,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     x = x &gt;&gt; <span class="SNum">1</span>
 }</span></code>
 </div>
-<h3>Assignment operators </h3>
+<h3 id="Assignment_operators">Assignment operators </h3>
 <p>All the arithmetic and bitwise operators have an <code class="incode">affect</code> version. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1426,7 +1675,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     x &gt;&gt;= <span class="SNum">1</span>
 }</span></code>
 </div>
-<h3>Unary operators </h3>
+<h3 id="Unary_operators">Unary operators </h3>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SKwd">true</span>
@@ -1447,7 +1696,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(y == <span class="SNum">0b1111_1110</span>)
 }</span></code>
 </div>
-<h3>Comparison operators </h3>
+<h3 id="Comparison_operators">Comparison operators </h3>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -1484,7 +1733,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>Logical operators </h3>
+<h3 id="Logical_operators">Logical operators </h3>
 <p>This is <b>not</b> <code class="incode">&&</code> and <code class="incode">||</code> like in C/C++, but <code class="incode">and</code> and <code class="incode">or</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1493,7 +1742,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     a = (<span class="SNum">1</span> &gt; <span class="SNum">10</span>) <span class="SLgc">or</span> (<span class="SNum">10</span> &lt; <span class="SNum">1</span>)
 }</span></code>
 </div>
-<h3>Ternary operator </h3>
+<h3 id="Ternary_operator">Ternary operator </h3>
 <p>The ternary operator will test an expression, and will return a value depending on the result of the test. <code class="incode">A = Expression ? B : C</code> will return <code class="incode">B</code> if the expression is true, and will return <code class="incode">C</code> if the expression is false. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1506,7 +1755,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(y == <span class="SNum">666</span>)
 }</span></code>
 </div>
-<h3>Spaceshift operator </h3>
+<h3 id="Spaceshift_operator">Spaceshift operator </h3>
 <p>Operator <code class="incode">&lt;=&gt;</code> will return -1, 0 or 1 if the expression on the left is <b>lower</b>, <b>equal</b> or <b>greater</b> than the expression on the right. The returned type is <code class="incode">s32</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SCst">A</span> &lt;=&gt; <span class="SCst">B</span> == -<span class="SNum">1</span> <span class="SLgc">if</span> <span class="SCst">A</span> &lt; <span class="SCst">B</span>
 <span class="SCst">A</span> &lt;=&gt; <span class="SCst">B</span> == <span class="SNum">0</span>  <span class="SLgc">if</span> <span class="SCst">A</span> == <span class="SCst">B</span>
@@ -1534,7 +1783,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>Null-coalescing operator </h3>
+<h3 id="Null-coalescing_operator">Null-coalescing operator </h3>
 <p>The operator <code class="incode">orelse</code> will return the left expression if it is not zero, otherwise it will return the right expression. </p>
 <p>Works with strings, pointers and structures with the <code class="incode">opData</code> special function (we'll see that later). </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -1560,7 +1809,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(c == b)
 }</span></code>
 </div>
-<h3>Type promotion </h3>
+<h3 id="Type_promotion">Type promotion </h3>
 <p>Unlike C, types are not promoted to 32 bits when dealing with 8 or 16 bits types. But types will be promoted if the two sides of an operation do not have the same type. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1586,7 +1835,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
-<h3>Operator precedence </h3>
+<h3 id="Operator_precedence">Operator precedence </h3>
 <div class="precode"><code><span class="SCde">~
 * / %
 + -
@@ -1617,7 +1866,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="016_cast">Cast</h2><h3>Explicit cast </h3>
+<h2 id="016_cast">Cast</h2><h3 id="Explicit_cast">Explicit cast </h3>
 <p>Sometimes it can be necessary to change the type of a value. Use <code class="incode">cast(type)</code> to cast from one type to another. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1631,7 +1880,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></code>
 </div>
-<h3>acast </h3>
+<h3 id="acast">acast </h3>
 <p><code class="incode">acast</code> stands for <code class="incode">automatic</code> cast. Use it to let the compiler automatically cast to the expression on the left. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1641,7 +1890,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(y == <span class="SNum">1</span>)
 }</span></code>
 </div>
-<h3>bitcast </h3>
+<h3 id="bitcast">bitcast </h3>
 <p>Use the <code class="incode">bit</code> modifier to convert a native type to another without converting the value. Works only if the two types are of the same size. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1652,7 +1901,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SKwd">cast</span><span class="SItr">,bit</span>(<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>
 }</span></code>
 </div>
-<h3>Implicit casts </h3>
+<h3 id="Implicit_casts">Implicit casts </h3>
 <p>Swag can sometimes cast from one type to another for you. This is an <i>implicit</i> cast. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1873,7 +2122,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(strSlice[<span class="SNum">1</span>] == <span class="SStr">`t`</span>)
 }</span></code>
 </div>
-<h3>The slicing operator </h3>
+<h3 id="The_slicing_operator">The slicing operator </h3>
 <p>Instead of <code class="incode">@mkslice</code>, you can slice something with the <code class="incode">..</code> operator. For example you can slice a string. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1951,7 +2200,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="022_pointers">Pointers</h2><h3>Single value pointers </h3>
+<h2 id="022_pointers">Pointers</h2><h3 id="Single_value_pointers">Single value pointers </h3>
 <p>A pointer to a <b>single element</b> is declared with <code class="incode"><i></code>.</i> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -1998,7 +2247,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">var</span> ptr2: <span class="SKwd">const</span> **<span class="STpe">u8</span>        <span class="SCmt">// Const pointer to a normal pointer</span>
 }</span></code>
 </div>
-<h3>Multiple values pointers </h3>
+<h3 id="Multiple_values_pointers">Multiple values pointers </h3>
 <p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <code class="incode">^</code> instead of <code class="incode"><i></code>.</i> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2256,7 +2505,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x) != <span class="SItr">@typeof</span>(y)
 }</span></code>
 </div>
-<h3>Tuple unpacking </h3>
+<h3 id="Tuple_unpacking">Tuple unpacking </h3>
 <p>You can unpack a tuple field by field. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2454,7 +2703,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SCst">Value</span>.<span class="SCst">C</span> == <span class="SNum">2</span>)
 }</span></code>
 </div>
-<h3>Enum as flags </h3>
+<h3 id="Enum_as_flags">Enum as flags </h3>
 <p>An enum can be a set of flags if you declare it with the <code class="incode">#<a href="swag.runtime.php#Swag_EnumFlags">Swag.EnumFlags</a></code> <b>attribute</b>. Its type should be <code class="incode">u8</code>, <code class="incode">u16</code>, <code class="incode">u32</code> or <code class="incode">u64</code>. </p>
 <p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -2479,7 +2728,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(value & <span class="SCst">MyFlags</span>.<span class="SCst">C</span> == <span class="SCst">MyFlags</span>.<span class="SCst">C</span>)
 }</span></code>
 </div>
-<h3>Enum of arrays </h3>
+<h3 id="Enum_of_arrays">Enum of arrays </h3>
 <p>You can have an enum of const static arrays. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2495,7 +2744,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span>.<span class="SCst">B</span>[<span class="SNum">1</span>] == <span class="SNum">20</span>
 }</span></code>
 </div>
-<h3>Enum of slices </h3>
+<h3 id="Enum_of_slices">Enum of slices </h3>
 <p>You can have an enum of const slices. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2516,7 +2765,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(y[<span class="SNum">1</span>] == <span class="SNum">20</span>)
 }</span></code>
 </div>
-<h3>Enum type inference </h3>
+<h3 id="Enum_type_inference">Enum type inference </h3>
 <p>The type of the enum is not necessary in the assignement expression when declaring a variable. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -2807,7 +3056,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>break, continue </h3>
+<h3 id="break,_continue">break, continue </h3>
 <p><code class="incode">break</code> and <code class="incode">continue</code> can be used inside a loop. </p>
 <p>You can exit a loop with <code class="incode">break</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -2837,7 +3086,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">9</span>)
 }</span></code>
 </div>
-<h3>Ranges </h3>
+<h3 id="Ranges">Ranges </h3>
 <p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
 <p>You can add <code class="incode">to</code> to loop from a given value <i>to</i> a given value. Note that the range should always have a first value lower or equal to the upper bound. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -2886,7 +3135,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>Infinite loop </h3>
+<h3 id="Infinite_loop">Infinite loop </h3>
 <p>A loop without an expression but with a block is infinite. This is equivalent to <code class="incode">while true {}</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3909,7 +4158,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     a =<span class="SItr">,nodrop</span><span class="SItr">,moveraw</span> b
 }</span></code>
 </div>
-<h4>moveref </h4>
+<h4 id="moveref">moveref </h4>
 <p><code class="incode">moveref</code> can be used instead of <code class="incode">ref</code> in a function parameter to declare a <b>move semantic</b> intention. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4440,7 +4689,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h4>Multiple return values </h4>
+<h4 id="Multiple_return_values">Multiple return values </h4>
 <p>An <b>anonymous struct</b> can be used to return multiple values in a function. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -4525,7 +4774,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SFct">toDo</span>(<span class="SNum">4</span>, &square) == <span class="SNum">16</span>)
 }</span></code>
 </div>
-<h4>Anonymous functions </h4>
+<h4 id="Anonymous_functions">Anonymous functions </h4>
 <p>You can also create <i>anonymous functions</i> (aka functions as literals). </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -5266,7 +5515,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <h2 id="120_intrinsics">Intrinsics</h2><p>This is the list of all intrinsics. All intrinsics start with <code class="incode">@</code>, which is reserved for them. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
 </div>
-<h3>Base </h3>
+<h3 id="Base">Base </h3>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@assert</span>(value: <span class="STpe">bool</span>);
 <span class="SKwd">func</span> <span class="SItr">@breakpoint</span>();
 <span class="SKwd">func</span> <span class="SItr">@getcontext</span>()-&gt;*<span class="SCst">Swag</span>.<span class="SCst">Context</span>;
@@ -5279,7 +5528,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@compilererror</span>()
 <span class="SItr">@compilerwarning</span>()</span></code>
 </div>
-<h3>Buildin </h3>
+<h3 id="Buildin">Buildin </h3>
 <div class="precode"><code><span class="SCde"><span class="SItr">@spread</span>()
 <span class="SItr">@init</span>()
 <span class="SItr">@drop</span>()
@@ -5305,7 +5554,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@index</span>
 <span class="SItr">@errmsg</span></span></code>
 </div>
-<h3>Memory related </h3>
+<h3 id="Memory_related">Memory related </h3>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
 <span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
 <span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: *<span class="STpe">void</span>);
@@ -5315,7 +5564,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span>;
 <span class="SKwd">func</span> <span class="SItr">@strlen</span>(value: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span>;</span></code>
 </div>
-<h3>Atomic operations </h3>
+<h3 id="Atomic_operations">Atomic operations </h3>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>;
@@ -5370,7 +5619,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u32</span>, compareTo, exchangeWith: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u64</span>, compareTo, exchangeWith: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;</span></code>
 </div>
-<h3>Math </h3>
+<h3 id="Math">Math </h3>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
 <span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;
 
@@ -5468,7 +5717,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;</span></code>
 </div>
 
-<h2 id="121_init">Init</h2><h3>@init </h3>
+<h2 id="121_init">Init</h2><h3 id="@init">@init </h3>
 <p><code class="incode">@init</code> can be used to reinitialize a variable/array to the default value. </p>
 <p>For a simple variable, the default value is 0. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -5540,7 +5789,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(rgb[<span class="SNum">3</span>].b == <span class="SNum">7</span>)
 }</span></code>
 </div>
-<h3>@drop </h3>
+<h3 id="@drop">@drop </h3>
 <p>For a struct, <code class="incode">@init</code> will <b>not</b> call <code class="incode">opDrop</code>, so this is mostly useful to initialize a plain old data. </p>
 <p>But there is also <code class="incode">@drop</code> intrinsic, which works the same, except that it will <code class="incode">drop</code> all the content by calling <code class="incode">opDrop</code> if it is defined. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -5694,7 +5943,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h3 id="132_002_validif">Validif</h3><h4>One time evaluation </h4>
+<h3 id="132_002_validif">Validif</h3><h4 id="One_time_evaluation">One time evaluation </h4>
 <p>On a function, you can use <code class="incode">#validif</code> to check if the usage of the function is correct. </p>
 <p>If the <code class="incode">#validif</code> expression returns false, then the function will not be considered for the call. If there's no other overload to match, then the compiler will raise an error. </p>
 <p>The <code class="incode">#validif</code> expression is evaluated <b>only once</b>, whatever the call, so it is typically used to check generic parameters. </p>
@@ -5797,7 +6046,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">//var v: Point's32</span>
 }</span></code>
 </div>
-<h4>Multiple evaluations </h4>
+<h4 id="Multiple_evaluations">Multiple evaluations </h4>
 <p>Instead of <code class="incode">#validif</code>, you can use <code class="incode">#validifx</code>. <code class="incode">#validifx</code> is evaluated for <b>each</b> call, so it can be used to check parameters, as long as they can be <b>evaluated at compile time</b>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6020,7 +6269,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)
 }</span></code>
 </div>
-<h4>For a function parameter </h4>
+<h4 id="For_a_function_parameter">For a function parameter </h4>
 <p><code class="incode">using</code> applied to a function parameter can be seen as the equivalent of the hidden <code class="incode">this</code> in C++. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6043,7 +6292,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">1</span>)
 }</span></code>
 </div>
-<h4>For a field </h4>
+<h4 id="For_a_field">For a field </h4>
 <p><code class="incode">using</code> can also be used with a field inside a struct. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6174,7 +6423,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="164_alias">Alias</h2><h3>Type alias </h3>
+<h2 id="164_alias">Alias</h2><h3 id="Type_alias">Type alias </h3>
 <p><code class="incode">typealias</code> is used to make a shortcut to another type. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6206,7 +6455,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">var</span> x: <span class="SCst">MyType</span> = <span class="SKwd">cast</span>(<span class="SCst">MyType</span>) <span class="SNum">0</span>
 }</span></code>
 </div>
-<h3>Name alias </h3>
+<h3 id="Name_alias">Name alias </h3>
 <p>You can alias a function name with <code class="incode">namealias</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6337,7 +6586,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SItr">@errmsg</span> == <span class="SStr">"error"</span>)
 }</span></code>
 </div>
-<h3>defer </h3>
+<h3 id="defer">defer </h3>
 <p><code class="incode">defer</code> can have parameters like <code class="incode">defer(err)</code> or <code class="incode">defer(noerr)</code> to control if it should be executed depending on the error status. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>
 
@@ -6372,7 +6621,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <blockquote>
 <p>Swag comes with four predefined configurations : <code class="incode">debug</code>, <code class="incode">fast-debug</code>, <code class="incode">fast-compile</code> and <code class="incode">release</code>. Safety checks are disabled in <code class="incode">fast-compile</code> and <code class="incode">release</code>. </p>
 </blockquote>
-<h3>overflow </h3>
+<h3 id="overflow">overflow </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("overflow", true)]</span></code>
 </div>
 <p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
@@ -6437,7 +6686,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(x == <span class="SNum">127</span>)
 }</span></code>
 </div>
-<h3>any </h3>
+<h3 id="any">any </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("any", true)]</span></code>
 </div>
 <p>Swag will panic if a bad cast from <code class="incode">any</code> is performed. </p>
@@ -6449,7 +6698,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">//@assert(z == 0)</span>
 }</span></code>
 </div>
-<h3>boundcheck </h3>
+<h3 id="boundcheck">boundcheck </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></code>
 </div>
 <p>Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string... </p>
@@ -6487,7 +6736,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">//@assert(slice[0] == `s`)</span>
 }</span></code>
 </div>
-<h3>math </h3>
+<h3 id="math">math </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("math", true)]</span></code>
 </div>
 <p>Swag will panic if some math operations are invalid. </p>
@@ -6513,15 +6762,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">//@acos(2'f32)</span>
 }</span></code>
 </div>
-<h3>switch </h3>
+<h3 id="switch">switch </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("switch", true)]</span></code>
 </div>
 <p>Swag will panic if a switch is marked with <code class="incode">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></code>, but the value is not covered by a <code class="incode">case</code>. </p>
-<h3>bool </h3>
+<h3 id="bool">bool </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("bool", true)]</span></code>
 </div>
 <p>Swag will panic if a boolean value is not <code class="incode">true</code> (1) or <code class="incode">false</code> (0). </p>
-<h3>nan </h3>
+<h3 id="nan">nan </h3>
 <div class="precode"><code><span class="SAtr">#[Swag.Safety("nan", true)]</span></code>
 </div>
 <p>Swag will panic if a floating point <code class="incode">NaN</code> is used in an operation. </p>
@@ -6592,13 +6841,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
 <h3 id="182_002_special_functions">Special functions</h3><div class="precode"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
 </div>
-<h4>#test </h4>
+<h4 id="#test">#test </h4>
 <p><code class="incode">#test</code> is a special function than can be used in the <code class="incode">tests/</code> folder of the workspace. All <code class="incode">#test</code> will be executed only if swag is running in test mode. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
 }</span></code>
 </div>
-<h4>#main </h4>
+<h4 id="#main">#main </h4>
 <p><code class="incode">#main</code> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#main</span>
 {
@@ -6615,19 +6864,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h4>#init </h4>
+<h4 id="#init">#init </h4>
 <p><code class="incode">#init</code> will be called at runtime, during the module initialization. You can have as many <code class="incode">#init</code> as you want, but the execution order in the same module is undefined. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#init</span>
 {
 }</span></code>
 </div>
-<h4>#drop </h4>
+<h4 id="#drop">#drop </h4>
 <p><code class="incode">#drop</code> will be called at runtime, when module is unloaded. You can have as many <code class="incode">#drop</code> as you want. The execution order in the same module is undefined, but is always the inverse order of <code class="incode">#init</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#drop</span>
 {
 }</span></code>
 </div>
-<h4>#premain </h4>
+<h4 id="#premain">#premain </h4>
 <p><code class="incode">#premain</code> will be called after all the modules have done their <code class="incode">#init</code> code, but before the <code class="incode">#main</code> function is called. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#premain</span>
 {
@@ -6901,7 +7150,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(ptr.sizeof == <span class="SItr">@sizeof</span>(<span class="STpe">f64</span>))
 }</span></code>
 </div>
-<h3>@decltype </h3>
+<h3 id="@decltype">@decltype </h3>
 <p><code class="incode">@decltype</code> can be used to transform a <code class="incode">typeinfo</code> to a real compiler type. This is the opposite of <code class="incode">@typeof</code> or <code class="incode">@kindof</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7006,7 +7255,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">7</span>)
 }</span></code>
 </div>
-<h4>Struct and enums </h4>
+<h4 id="Struct_and_enums">Struct and enums </h4>
 <p><code class="incode">#ast</code> can for example be used to generate the content of a <code class="incode">struct</code> or <code class="incode">enum</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7079,7 +7328,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(v.z == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<h4>For example </h4>
+<h4 id="For_example">For example </h4>
 <p>This is a real life example of an <code class="incode">#ast</code> usage from the <code class="incode">Std.Core</code> module. Here we generate a structure which contains all the fields of an original other structure, but where the types are forced to be <code class="incode">bool</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">IsSet</span>
 {
@@ -7102,7 +7351,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h4>At global scope </h4>
+<h4 id="At_global_scope">At global scope </h4>
 <p><code class="incode">#ast</code> can also be called at the global scope. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#ast</span>
 {
@@ -7235,7 +7484,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
 <tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of <code class="incode">Examples</code>)</td></tr>
 </table>
-<h3>Format of comments </h3>
+<h3 id="Format_of_comments">Format of comments </h3>
 <p>The first paragraph is considered to be the 'short description' which can appear on specific parts of the documentation. So make it short. </p>
 <p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
@@ -7344,7 +7593,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<h3>References </h3>
+<h3 id="References">References </h3>
 <p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {

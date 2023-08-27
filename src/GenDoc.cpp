@@ -220,6 +220,7 @@ void GenDoc::outputStyles()
 Utf8 GenDoc::toRef(Utf8 str)
 {
     str.replace(".", "_");
+    str.replace(" ", "_");
     return str;
 }
 
@@ -573,13 +574,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::Title1:
-        helpContent += Fmt("<h%d>", titleLevel + 1);
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, toRef(user.lines[0]).c_str());
         break;
     case UserBlockKind::Title2:
-        helpContent += Fmt("<h%d>", titleLevel + 2);
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 2, toRef(user.lines[0]).c_str());
         break;
     case UserBlockKind::Title3:
-        helpContent += Fmt("<h%d>", titleLevel + 3);
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 3, toRef(user.lines[0]).c_str());
         break;
     }
 
@@ -626,6 +627,12 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 helpContent += getFormattedText(user.lines[i]);
                 helpContent += " ";
             }
+        }
+        else if (user.kind == UserBlockKind::Title1 || user.kind == UserBlockKind::Title2 || user.kind == UserBlockKind::Title3)
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+            helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(user.lines[i]).c_str(), user.lines[i].c_str());
         }
         else
         {

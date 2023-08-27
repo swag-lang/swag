@@ -284,6 +284,7 @@
 <li><a href="#Audio_SoundFile_load">SoundFile.load</a></li>
 <li><a href="#Audio_Wav_loadFile">Wav.loadFile</a></li>
 </ul>
+<li><a href="#How_to_play_a_sound">How to play a sound</a></li>
 </div>
 </div>
 <div class="right">
@@ -293,7 +294,7 @@
 <h1>Module audio</h1>
 <p><code class="incode">Std.Audio</code> is a module to decode and play sound files. </p>
 <p>Under windows, it is based on the <code class="incode">xaudio2</code> library. </p>
-<h2>How to play a sound </h2>
+<h2 id="How_to_play_a_sound">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
 <div class="precode"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
 <span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></code>

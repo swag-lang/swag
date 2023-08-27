@@ -202,9 +202,9 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
-<h1>Your first install </h1>
+<h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
-<h3>Under windows 10/11 </h3>
+<h3 id="Under_windows_10/11">Under windows 10/11 </h3>
 <p>You should register the location of the swag compiler (<code class="incode">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
 <div class="precode"><code><span class="SCde"># <span class="SCst">You</span> must replace <span class="SStr">`f:\swag-lang\swag\bin`</span> <span class="SKwd">with</span> your location of <span class="SStr">`swag.exe`</span>
@@ -215,7 +215,7 @@
    <span class="SStr">"User"</span>
 )</span></code>
 </div>
-<h1>Your first project </h1>
+<h1 id="Your_first_project">Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
 <div class="precode"><code><span class="SCde">$ swag new -w:first
@@ -245,7 +245,7 @@
 <li><code class="incode">publish/</code> contains additional files to use that module (like an external C dll).</li>
 </ul>
 <p>A module always contains a special file named <code class="incode">module.swg</code>. This file is used to configure the module, and is <b>mandatory</b>. </p>
-<h3>To compile your workspace </h3>
+<h3 id="To_compile_your_workspace">To compile your workspace </h3>
 <div class="precode"><code><span class="SCde">$ swag build -w:first
             <span class="SCst">Workspace</span> first [fast-debug-windows-x86_64]
              <span class="SCst">Building</span> first
@@ -260,10 +260,10 @@
 <span class="SCst">Hello</span> world!
                  <span class="SCst">Done</span> <span class="SNum">0.093</span>s</span></code>
 </div>
-<h3>Note on Windows Defender realtime protection </h3>
+<h3 id="Note_on_Windows_Defender_realtime_protection">Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
-<h1>Content of the Swag folder </h1>
+<h1 id="Content_of_the_Swag_folder">Content of the Swag folder </h1>
 <p>The Swag folder contains the compiler <code class="incode">swag.exe</code>, but also a bunch of sub folders. </p>
 <ul>
 <li><code class="incode">reference/</code> is a workspace which contains an overview of the language, in the form of small tests.</li>
@@ -271,7 +271,7 @@
 <li><code class="incode">runtime/</code> contains the compiler runtime, which is included in all user modules.</li>
 <li><code class="incode">std/</code> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
 </ul>
-<h1>The Swag language </h1>
+<h1 id="The_Swag_language">The Swag language </h1>
 <p>You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
 <p>It's a good starting point to familiarize yourself with the language. </p>
 <p>And as this is a normal Swag workspace, you could also build and test it with <code class="incode">swag test -w:swag/reference</code>. </p>

@@ -111,10 +111,10 @@ bool GenDoc::generateExamples()
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel + 1);
 
-        // helpToc += "<ul>\n";
+        helpToc += "<ul>\n";
         if (!processFile(file->path, titleLevel + 1))
             return false;
-        // helpToc += "</ul>\n";
+        helpToc += "</ul>\n";
     }
 
     helpToc += "</ul>\n";
