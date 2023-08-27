@@ -213,6 +213,7 @@ void GenDoc::outputStyles()
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColor::SyntaxString, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColor::SyntaxInvalid, lum));
 
     helpOutput += "</style>\n";
 }

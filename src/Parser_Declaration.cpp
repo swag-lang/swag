@@ -1026,6 +1026,12 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::Identifier:
         SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
+        if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0198), token.ctext(), (*result)->token.ctext())};
+            auto       help = Diagnostic::help(Hlp(Hlp0054));
+            return context->report(diag, help);
+        }
         break;
 
     default:

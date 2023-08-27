@@ -297,7 +297,7 @@ void initErrors()
     SWAG_ERROR(Syn0195, "lambda type ambiguous parameters declaration");
     SWAG_ERROR(Syn0196, "'#type' should be followed by the type name (found '%s')");
     SWAG_ERROR(Syn0197, "unexpected start of a type declaration for a 'self' parameter");
-    SWAG_ERROR(Syn0198, nullptr);
+    SWAG_ERROR(Syn0198, "unexpected symbol '%s' after identifier '%s'");
     SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
     SWAG_ERROR(Syn0200, "syntax is ambiguous");
     SWAG_ERROR(Syn0201, nullptr);
@@ -1024,7 +1024,7 @@ void initErrors()
     SWAG_ERROR(Hlp0051, "if this is the start of a struct initialization block, considerer removing the blank(s) between '%s' and '{'");
     SWAG_ERROR(Hlp0052, "if this is the start of a new block, consider putting '{' on another line");
     SWAG_ERROR(Hlp0053, "use '{}' if ou really want an empty statement");
-    SWAG_ERROR(Hlp0054, nullptr);
+    SWAG_ERROR(Hlp0054, "did you miss 'var' or 'const' to declare a global variable or constant ?");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1039,14 +1039,12 @@ void initErrors()
     SWAG_ERROR(Hnt0070, "this %s has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Hnt0084, "this %s has type '%s'");
     SWAG_ERROR(Hnt0060, "this 'dref' is not possible");
-    SWAG_ERROR(Hnt0048, nullptr);
     SWAG_ERROR(Hnt0031, "this argument has a missing name");
     SWAG_ERROR(Hnt0030, "this argument is named");
     SWAG_ERROR(Hnt0023, "this call should be preceeded by 'discard' if you do not want to use the return value");
     SWAG_ERROR(Hnt0006, "this cannot be visited");
     SWAG_ERROR(Hnt0041, "this comment does not end");
     SWAG_ERROR(Hnt0074, "this copy of an array of struct is disabled");
-    SWAG_ERROR(Hnt0005, nullptr);
     SWAG_ERROR(Hnt0025, "this could be casted with 'cast(%s)'");
     SWAG_ERROR(Hnt0043, "this could be moved before '%s'");
     SWAG_ERROR(Hnt0046, "this could be preceeded by '#run' to force the call at compile time");
@@ -1084,7 +1082,7 @@ void initErrors()
     SWAG_ERROR(Hnt0072, "this is an empty array");
     SWAG_ERROR(Hnt0085, "this is an enum implementation block");
     SWAG_ERROR(Hnt0047, "this is an hidden call to '%s'");
-    SWAG_ERROR(Hnt0014, "this is invalid in global scope");
+    SWAG_ERROR(Hnt0014, "this is not expected in global scope");
     SWAG_ERROR(Hnt0053, "this is not 'const' but should be");
     SWAG_ERROR(Hnt0038, "this is not a constant");
     SWAG_ERROR(Hnt0061, "this is not allowed");
@@ -1160,6 +1158,8 @@ void initErrors()
     SWAG_ERROR(Hnt0127, "this %s has '%s' access");
     SWAG_ERROR(Hnt0128, "this tuple is %s");
     SWAG_ERROR(Hnt0129, "the keyword '%s' cannot be used as an identifier");
+    SWAG_ERROR(Hnt0048, nullptr);
+    SWAG_ERROR(Hnt0005, nullptr);
     SWAG_ERROR(Hnt0130, nullptr);
 
     /////////////////////////////////////////////////////////////////////

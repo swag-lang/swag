@@ -97,6 +97,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         break;
     case InvalidTokenError::LeftExpressionVar:
         msg += Err(Syn0068);
+        hint = Fmt(Hnt(Hnt0129), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:
         msg += Err(Syn0076);
@@ -109,23 +110,10 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         msg += Fmt(", found identifier '%s' ", token.ctext());
     else if (token.id == TokenId::NativeType)
         msg += Fmt(", found type '%s' ", token.ctext());
+    else if (Tokenizer::isKeyword(token.id))
+        msg += Fmt(", found keyword '%s' ", token.ctext());
     else
         msg += Fmt(", found '%s' ", token.ctext());
-
-    switch (token.id)
-    {
-    case TokenId::Identifier:
-        if (kind == InvalidTokenError::TopLevelInstruction)
-        {
-            TokenParse nextToken;
-            tokenizer.nextToken(nextToken);
-            if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColon)
-                msg += ") did you miss 'var', 'let' or 'const' to declare a global variable ?";
-        }
-        break;
-    default:
-        break;
-    }
 
     return error(token, msg, nullptr, hint);
 }
