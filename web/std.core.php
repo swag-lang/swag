@@ -12983,7 +12983,7 @@
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, to: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -12997,7 +12997,7 @@
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, to: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -13632,7 +13632,7 @@
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, to: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -13646,7 +13646,7 @@
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, to: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -21947,7 +21947,7 @@
 <span class="content" id="Core_String_IHash32_compute"><span class="titletype">func</span> <span class="titlelight">IHash32.</span><span class="titlestrong">compute</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L571" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L576" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21960,7 +21960,7 @@
 <span class="content" id="Core_String_append"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">append</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L329" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L334" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21980,7 +21980,7 @@
 <span class="content" id="Core_String_appendFormat"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">appendFormat</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L313" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L318" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21994,7 +21994,7 @@
 <span class="content" id="Core_String_back"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">back</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L264" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L269" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22008,7 +22008,7 @@
 <span class="content" id="Core_String_clear"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">clear</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22022,7 +22022,7 @@
 <span class="content" id="Core_String_ensureNotNull"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">ensureNotNull</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L231" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L236" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22036,7 +22036,7 @@
 <span class="content" id="Core_String_from"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">from</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L478" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L483" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22050,7 +22050,7 @@
 <span class="content" id="Core_String_grow"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">grow</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L381" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L386" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22064,7 +22064,7 @@
 <span class="content" id="Core_String_insert"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">insert</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L293" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L298" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22078,7 +22078,7 @@
 <span class="content" id="Core_String_isEmpty"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22092,7 +22092,7 @@
 <span class="content" id="Core_String_isNull"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isNull</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22106,7 +22106,7 @@
 <span class="content" id="Core_String_isNullOrEmpty"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">isNullOrEmpty</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L230" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22120,7 +22120,7 @@
 <span class="content" id="Core_String_join"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">join</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22134,7 +22134,7 @@
 <span class="content" id="Core_String_joinWith"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">joinWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L366" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L371" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22148,7 +22148,7 @@
 <span class="content" id="Core_String_makeLower"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">makeLower</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L518" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L523" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22162,7 +22162,7 @@
 <span class="content" id="Core_String_makeUpper"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">makeUpper</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L499" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L504" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22358,7 +22358,7 @@
 <span class="content" id="Core_String_remove"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">remove</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L272" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22372,7 +22372,7 @@
 <span class="content" id="Core_String_removeBack"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">removeBack</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L283" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L288" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22386,7 +22386,7 @@
 <span class="content" id="Core_String_replace"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">replace</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L244" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22400,7 +22400,7 @@
 <span class="content" id="Core_String_reserve"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">reserve</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L395" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22414,7 +22414,7 @@
 <span class="content" id="Core_String_toCharArray"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toCharArray</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L472" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22428,7 +22428,7 @@
 <span class="content" id="Core_String_toLower"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toLower</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L553" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L558" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22445,7 +22445,7 @@
 <span class="content" id="Core_String_toSlice"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toSlice</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L493" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22459,7 +22459,7 @@
 <span class="content" id="Core_String_toString"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toString</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L486" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L491" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22473,7 +22473,7 @@
 <span class="content" id="Core_String_toUpper"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">toUpper</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L537" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L542" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22490,7 +22490,7 @@
 <span class="content" id="Core_String_trim"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trim</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L465" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L470" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22504,7 +22504,7 @@
 <span class="content" id="Core_String_trimEnd"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trimEnd</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L447" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L452" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22518,7 +22518,7 @@
 <span class="content" id="Core_String_trimStart"><span class="titletype">func</span> <span class="titlelight">String.</span><span class="titlestrong">trimStart</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L426" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L431" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

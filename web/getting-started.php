@@ -221,7 +221,7 @@
 <div class="precode"><code><span class="SCde">$ swag new -w:first
 =&gt; workspace '<span class="SCst">F</span>:/<span class="SFct">first</span>' has been created
 =&gt; module '<span class="SFct">first</span>' has been created
-=&gt; type 'swag run -w:<span class="SCst">F</span>:\<span class="SFct">first</span>' to build <span class="SLgc">and</span> run that module</span></code>
+=&gt; type 'swag run -w:<span class="SCst">F</span>:\<span class="SFct">first</span>' <span class="SLgc">to</span> build <span class="SLgc">and</span> run that module</span></code>
 </div>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>

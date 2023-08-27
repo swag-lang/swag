@@ -206,7 +206,7 @@
 <p>Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
 <div class="precode"><code><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.<span class="SFct">swgs</span>' has been created
-=&gt; type 'swag script -f:myScript.<span class="SFct">swgs</span>' to run that script</span></code>
+=&gt; type 'swag script -f:myScript.<span class="SFct">swgs</span>' <span class="SLgc">to</span> run that script</span></code>
 </div>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>

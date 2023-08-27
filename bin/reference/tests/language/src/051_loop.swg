@@ -75,7 +75,7 @@ But you can name that index if you want.
 }
 
 /**
-You can loop in reverse order by adding the modifier `,back` just after the `loop`.
+You can loop in reverse order by adding the modifier `back` just after the `loop`.
 */
 #test
 {
@@ -135,7 +135,7 @@ Loop can also be used to iterate on a **range** of signed values.
 */
 
 /**
-You can add 'to' to loop from a given value to a given value.
+You can add 'to' to loop from a given value *to* a given value. Note that the range should always have a first value lower or equal to the upper bound.
 */
 #test
 {

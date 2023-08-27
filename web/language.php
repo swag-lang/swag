@@ -494,6 +494,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SLgc">elif</span>
 <span class="SLgc">and</span>
 <span class="SLgc">or</span>
+<span class="SLgc">to</span>
+<span class="SLgc">until</span>
 <span class="SLgc">switch</span>
 <span class="SLgc">case</span>
 <span class="SLgc">default</span>
@@ -2828,12 +2830,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3>Ranges </h3>
 <p>Loop can also be used to iterate on a <b>range</b> of signed values. </p>
-<p>Syntax is <code class="incode">lower bound..upper bound</code>. The lower bound must always be lower or equal than the upper bound. </p>
+<p>You can add <code class="incode">to</code> to loop from a given value <i>to</i> a given value. Note that the range should always have a first value lower or equal to the upper bound. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> count = <span class="SNum">0</span>
     <span class="SKwd">var</span> sum = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i: -<span class="SNum">1.</span>.<span class="SNum">1</span>   <span class="SCmt">// loop from -1 to 1, all included</span>
+    <span class="SLgc">loop</span> i: -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>   <span class="SCmt">// loop from -1 to 1, all included</span>
     {
         count += <span class="SNum">1</span>
         sum += i
@@ -2843,12 +2845,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(count == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>You can exclude the last value with the <code class="incode">..&lt;</code> syntax. </p>
+<p>You can exclude the last value with by using <code class="incode">until</code> instead of <code class="incode">to</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Will loop from 1 to 2 and **not** 1 to 3</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> i: <span class="SNum">1</span> ..&lt; <span class="SNum">3</span>
+    <span class="SLgc">loop</span> i: <span class="SNum">1</span> <span class="SLgc">until</span> <span class="SNum">3</span>
     {
         cpt += i
     }
@@ -2860,17 +2862,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Loop from 5 to 0</span>
-    <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">0.</span>.<span class="SNum">5</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -1</span>
-    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">1.</span>.<span class="SNum">1</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>
     {
     }
 
     <span class="SCmt">// Loop from 1 to -2 because we exclude the upper limit.</span>
-    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">2</span> ..&lt; <span class="SNum">2</span>
+    <span class="SLgc">loop</span><span class="SItr">,back</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>
     {
     }
 }</span></code>
@@ -3222,8 +3224,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
     <span class="SLgc">switch</span> x
     {
-    <span class="SLgc">case</span> <span class="SNum">0.</span>.<span class="SNum">5</span>:  <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> <span class="SNum">6.</span>.<span class="SNum">15</span>: success = <span class="SKwd">true</span>
+    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>:  <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">6</span> <span class="SLgc">to</span> <span class="SNum">15</span>: success = <span class="SKwd">true</span>
     }
 
     <span class="SItr">@assert</span>(success)
@@ -3236,8 +3238,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">let</span> x = <span class="SNum">6</span>
     <span class="SLgc">switch</span> x
     {
-    <span class="SLgc">case</span> <span class="SNum">0.</span>.<span class="SNum">10</span>:  success = <span class="SKwd">true</span>
-    <span class="SLgc">case</span> <span class="SNum">5.</span>.&lt;<span class="SNum">15</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">10</span>:    success = <span class="SKwd">true</span>
+    <span class="SLgc">case</span> <span class="SNum">5</span> <span class="SLgc">until</span> <span class="SNum">15</span>: <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 
     <span class="SItr">@assert</span>(success)
@@ -3903,15 +3905,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span>
-    <span class="SKwd">func</span> <span class="SFct">assign</span>(to: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
+    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
     {
-        to =<span class="SItr">,move</span> from
+        assignTo =<span class="SItr">,move</span> from
     }
 
     <span class="SCmt">// This is the normal 'copy' version. In this version, 'from' will not be changed, that's why it's constant (not a ref).</span>
-    <span class="SKwd">func</span> <span class="SFct">assign</span>(to: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
+    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
     {
-        to = from
+        assignTo = from
     }
 
     <span class="SKwd">var</span> a = <span class="SCst">Vector3</span>{<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}
