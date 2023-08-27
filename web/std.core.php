@@ -597,21 +597,20 @@
 <li><a href="#Core_ArrayPtr_deletePtr">ArrayPtr.deletePtr</a></li>
 <li><a href="#Core_ArrayPtr_newPtr">ArrayPtr.newPtr</a></li>
 <li><a href="#Core_ArrayPtr_opDrop">ArrayPtr.opDrop</a></li>
-<li><a href="#Core_BitArray_and">BitArray.and</a></li>
+<li><a href="#Core_BitArray_andWith">BitArray.andWith</a></li>
 <li><a href="#Core_BitArray_get">BitArray.get</a></li>
 <li><a href="#Core_BitArray_invert">BitArray.invert</a></li>
-<li><a href="#Core_BitArray_not">BitArray.not</a></li>
 <li><a href="#Core_BitArray_opAffect">BitArray.opAffect</a></li>
 <li><a href="#Core_BitArray_opCount">BitArray.opCount</a></li>
 <li><a href="#Core_BitArray_opEquals">BitArray.opEquals</a></li>
 <li><a href="#Core_BitArray_opIndex">BitArray.opIndex</a></li>
 <li><a href="#Core_BitArray_opIndexAffect">BitArray.opIndexAffect</a></li>
 <li><a href="#Core_BitArray_opVisit">BitArray.opVisit</a></li>
-<li><a href="#Core_BitArray_or">BitArray.or</a></li>
+<li><a href="#Core_BitArray_orWith">BitArray.orWith</a></li>
 <li><a href="#Core_BitArray_reserve">BitArray.reserve</a></li>
 <li><a href="#Core_BitArray_set">BitArray.set</a></li>
 <li><a href="#Core_BitArray_setAll">BitArray.setAll</a></li>
-<li><a href="#Core_BitArray_xor">BitArray.xor</a></li>
+<li><a href="#Core_BitArray_xorWith">BitArray.xorWith</a></li>
 <li><a href="#Core_ConcatBuffer_addBytes">ConcatBuffer.addBytes</a></li>
 <li><a href="#Core_ConcatBuffer_addNative">ConcatBuffer.addNative</a></li>
 <li><a href="#Core_ConcatBuffer_addStruct">ConcatBuffer.addStruct</a></li>
@@ -1586,12 +1585,12 @@
 <h4>thread</h4>
 <ul>
 <li><a href="#Core_Atomic_add">Atomic.add</a></li>
-<li><a href="#Core_Atomic_and">Atomic.and</a></li>
 <li><a href="#Core_Atomic_compareExchange">Atomic.compareExchange</a></li>
 <li><a href="#Core_Atomic_exchange">Atomic.exchange</a></li>
 <li><a href="#Core_Atomic_get">Atomic.get</a></li>
-<li><a href="#Core_Atomic_or">Atomic.or</a></li>
-<li><a href="#Core_Atomic_xor">Atomic.xor</a></li>
+<li><a href="#Core_Atomic_logicAnd">Atomic.logicAnd</a></li>
+<li><a href="#Core_Atomic_logicOr">Atomic.logicOr</a></li>
+<li><a href="#Core_Atomic_logicXor">Atomic.logicXor</a></li>
 <li><a href="#Core_Sync_Event_create">Event.create</a></li>
 <li><a href="#Core_Sync_Event_init">Event.init</a></li>
 <li><a href="#Core_Sync_Event_isValid">Event.isValid</a></li>
@@ -2963,26 +2962,6 @@
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_Atomic_and"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">and</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L16" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SLgc">and</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
-</div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
 <span class="content" id="Core_Atomic_compareExchange"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">compareExchange</span></span>
 </td>
 <td class="srcref">
@@ -3043,41 +3022,61 @@
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_Atomic_or"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">or</span></span>
+<span class="content" id="Core_Atomic_logicAnd"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">logicAnd</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L16" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">logicAnd</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
+</div>
+<p>
+<table class="item">
+<tr>
+<td class="item">
+<span class="content" id="Core_Atomic_logicOr"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">logicOr</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SLgc">or</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">logicOr</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_Atomic_xor"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">xor</span></span>
+<span class="content" id="Core_Atomic_logicXor"><span class="titletype">func</span> <span class="titlelight">Atomic.</span><span class="titlestrong">logicXor</span></span>
 </td>
 <td class="srcref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\atomic.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SFct">xor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">logicXor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
 <table class="item">
@@ -3116,7 +3115,7 @@
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
-<td><a href="#Core_BitArray_and"><span class="SCde"><span class="SLgc">and</span>()</spa</a></td>
+<td><a href="#Core_BitArray_andWith"><span class="SCde"><span class="SFct">andWith</span>()</spa</a></td>
 <td>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
@@ -3124,15 +3123,15 @@
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_invert"><span class="SCde"><span class="SFct">invert</span>()</spa</a></td>
-<td>Inverts the value of the bit at a specific position. </td>
-</tr>
-<tr>
-<td><a href="#Core_BitArray_not"><span class="SCde"><span class="SFct">not</span>()</spa</a></td>
+<td><a href="#Core_BitArray_invert"><span class="SCde"><span class="SFct">invert</span>(<span class="SKwd">self</span>)</span></a></td>
 <td>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_or"><span class="SCde"><span class="SLgc">or</span>()</spa</a></td>
+<td><a href="#Core_BitArray_invert"><span class="SCde"><span class="SFct">invert</span>(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></a></td>
+<td>Inverts the value of the bit at a specific position. </td>
+</tr>
+<tr>
+<td><a href="#Core_BitArray_orWith"><span class="SCde"><span class="SFct">orWith</span>()</spa</a></td>
 <td>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
@@ -3152,7 +3151,7 @@
 <td>Sets all bits to the specified value. </td>
 </tr>
 <tr>
-<td><a href="#Core_BitArray_xor"><span class="SCde"><span class="SFct">xor</span>()</spa</a></td>
+<td><a href="#Core_BitArray_xorWith"><span class="SCde"><span class="SFct">xorWith</span>()</spa</a></td>
 <td>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </td>
 </tr>
 </table>
@@ -3187,15 +3186,15 @@
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_BitArray_and"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">and</span></span>
+<span class="content" id="Core_BitArray_andWith"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">andWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L194" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Performs the bitwise AND operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SLgc">and</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
 </div>
 <p> The current <code class="incode">BitArray</code> will be modified to store the result of the bitwise AND operation. </p>
 <p>
@@ -3219,26 +3218,15 @@
 <span class="content" id="Core_BitArray_invert"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">invert</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L179" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Inverts the value of the bit at a specific position. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></code>
-</div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
-<span class="content" id="Core_BitArray_not"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">not</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Inverts all the bit values, so that elements set to <code class="incode">true</code> are changed to <code class="incode">false</code>, and elements set to <code class="incode">false</code> are changed to <code class="incode">true</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">not</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+</div>
+<p>Inverts the value of the bit at a specific position. </p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
 <table class="item">
@@ -3328,15 +3316,15 @@
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_BitArray_or"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">or</span></span>
+<span class="content" id="Core_BitArray_orWith"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">orWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L213" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Performs the bitwise OR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SLgc">or</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
 </div>
 <p> The current BitArray will be modified to store the result of the bitwise OR operation. </p>
 <p>
@@ -3388,15 +3376,15 @@
 <table class="item">
 <tr>
 <td class="item">
-<span class="content" id="Core_BitArray_xor"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">xor</span></span>
+<span class="content" id="Core_BitArray_xorWith"><span class="titletype">func</span> <span class="titlelight">BitArray.</span><span class="titlestrong">xorWith</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L216" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Performs the bitwise XOR operation between the elements of the current <code class="incode">BitArray</code> and the corresponding elements in the specified array. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></code>
 </div>
 <p> The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
 <p>

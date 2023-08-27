@@ -227,7 +227,6 @@
 <li><a href="#005_keywords">Keywords</a></li>
 <ul>
 <li><a href="#Reserved_keywords">Reserved keywords</a></li>
-<li><a href="#Contextual_keywords">Contextual keywords</a></li>
 <li><a href="#Basic_types">Basic types</a></li>
 <li><a href="#Compiler_keywords">Compiler keywords</a></li>
 <li><a href="#Misc_intrinsics">Misc intrinsics</a></li>
@@ -734,6 +733,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SLgc">visit</span>
 <span class="SLgc">return</span>
 <span class="SLgc">defer</span>
+<span class="SLgc">and</span>
+<span class="SLgc">or</span>
+<span class="SLgc">orelse</span>
+<span class="SLgc">to</span>
+<span class="SLgc">until</span>
 
 <span class="SKwd">false</span>
 <span class="SKwd">true</span>
@@ -769,14 +773,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">namealias</span>
 <span class="SKwd">discard</span>
 <span class="SKwd">dref</span></span></code>
-</div>
-<h3 id="Contextual_keywords">Contextual keywords </h3>
-<p>A contextual keyword is used to provide a specific meaning in the code. It still can be used as a user function name. </p>
-<div class="precode"><code><span class="SCde"><span class="SLgc">and</span>
-<span class="SLgc">or</span>
-<span class="SLgc">orelse</span>
-<span class="SLgc">to</span>
-<span class="SLgc">until</span></span></code>
 </div>
 <h3 id="Basic_types">Basic types </h3>
 <p>These are all the native types of the language. All are reserved keywords too. </p>

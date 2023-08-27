@@ -20,6 +20,11 @@ while
 visit
 return
 defer
+and
+or
+orelse
+to
+until
 
 false
 true
@@ -55,15 +60,6 @@ typealias
 namealias
 discard
 dref
-```
-# Contextual keywords
-A contextual keyword is used to provide a specific meaning in the code. It still can be used as a user function name.
-```
-and
-or
-orelse
-to
-until
 ```
 # Basic types
 These are all the native types of the language. All are reserved keywords too.
