@@ -245,7 +245,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module xinput</h1>
-<p>Wrapper for Microsoft DirectX Input. </p>
+<p> Wrapper for Microsoft DirectX Input. </p>
 <h1>Content</h1>
 <p>
 <table class="item">

@@ -74,16 +74,6 @@ static bool canCollectNode(AstNode* node)
     return true;
 }
 
-void GenDoc::computeUserComments(UserComment& result, const Utf8& txt)
-{
-    if (txt.empty())
-        return;
-
-    Vector<Utf8> lines;
-    Utf8::tokenize(txt, '\n', lines);
-    computeUserComments(result, lines);
-}
-
 Utf8 GenDoc::getDocComment(AstNode* node)
 {
     if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
@@ -513,12 +503,8 @@ void GenDoc::generateContent()
 {
     // Output module description
     UserComment moduleComment;
-    computeUserComments(moduleComment, module->docComment);
-    if (!moduleComment.shortDesc.lines.empty())
-    {
-        outputUserBlock(moduleComment.shortDesc);
-        outputUserComment(moduleComment);
-    }
+    computeUserComments(moduleComment, module->docComment, false);
+    outputUserComment(moduleComment);
 
     sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
          { 

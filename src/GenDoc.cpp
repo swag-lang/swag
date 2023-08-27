@@ -325,6 +325,16 @@ Utf8 GenDoc::findReference(const Utf8& name)
     return "";
 }
 
+void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc)
+{
+    if (txt.empty())
+        return;
+
+    Vector<Utf8> lines;
+    Utf8::tokenize(txt, '\n', lines);
+    computeUserComments(result, lines, shortDesc);
+}
+
 void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
 {
     for (auto& l : lines)
@@ -632,7 +642,10 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         {
             helpContent += getFormattedText(user.lines[i]);
             helpContent += " ";
-            helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(user.lines[i]).c_str(), user.lines[i].c_str());
+
+            // Update toc
+            if (docKind == DocKind::Examples)
+                helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(user.lines[i]).c_str(), user.lines[i].c_str());
         }
         else
         {

@@ -574,7 +574,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module libc</h1>
-<p>Wrapper for LibC library. </p>
+<p> Wrapper for LibC library. </p>
 <h1>Content</h1>
 <p>
 <table class="item">

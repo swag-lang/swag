@@ -43,6 +43,7 @@ struct GenDoc
     bool generate(Module* mdl, DocKind kind);
     void outputStyles();
     Utf8 findReference(const Utf8& name);
+    void computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
     void computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     Utf8 getFormattedText(const Utf8& user);
     void outputCode(const Utf8& code, uint32_t flags);
@@ -86,7 +87,6 @@ struct GenDoc
     bool generateApi();
     void collectNode(AstNode* node);
     void collectScopes(Scope* root);
-    void computeUserComments(UserComment& result, const Utf8& txt);
     Utf8 getDocComment(AstNode* node);
     Utf8 getOutputNode(AstNode* node);
     void outputType(AstNode* node);

@@ -347,7 +347,7 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module xaudio2</h1>
-<p>Wrapper for Microsoft XAudio2 library. </p>
+<p> Wrapper for Microsoft XAudio2 library. </p>
 <h1>Content</h1>
 <p>
 <table class="item">
