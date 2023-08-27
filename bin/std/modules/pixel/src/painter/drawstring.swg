@@ -408,7 +408,7 @@ impl Painter
             text.boundRect.x = Math.min(text.boundRect.x, x1)
             text.boundRect.width = Math.max(text.boundRect.width, l.measure.width)
 
-            loop idx: l.start..<l.end
+            loop idx: l.start until l.end
             {
                 let c = &text.chunks[idx]
                 c.pos.x = x1

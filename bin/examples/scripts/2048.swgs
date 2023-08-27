@@ -227,7 +227,7 @@ func keyboard(wnd: *Wnd)
             if c.val == 0
                 continue
 
-            loop i: 1..CellCount
+            loop i: 1 to CellCount
             {
                 if g_MoveDirX != 0
                 {

@@ -235,7 +235,7 @@ impl IForm for FormPolygon
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i: 1..paintPoints.count-1
+        loop i: 1 until paintPoints.count
             linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         linePath.close()
 

@@ -2,7 +2,7 @@
 func toto(x, y: s32)
 {
     var g = 0
-    loop x..<y
+    loop x until y
     {
         //@print(@index)
         @assert(@index == 1 or @index == 2)

@@ -165,8 +165,8 @@ A `switch` can also be used with a (constant) range of values.
     let x = 6
     switch x
     {
-    case 0..5:  @assert(false)
-    case 6..15: success = true
+    case 0 to 5:  @assert(false)
+    case 6 to 15: success = true
     }
 
     @assert(success)
@@ -181,8 +181,8 @@ If they overlap, the first valid range will be used.
     let x = 6
     switch x
     {
-    case 0..10:  success = true
-    case 5..<15: @assert(false)
+    case 0 to 10:    success = true
+    case 5 until 15: @assert(false)
     }
 
     @assert(success)

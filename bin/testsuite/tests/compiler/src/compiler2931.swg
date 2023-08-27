@@ -5,19 +5,19 @@ enum RGB { R; G; B; }
     let x = RGB.R
     switch x
     {
-    case R..G:  break
+    case R to G:  break
     default:    @assert(false)
     }
 
     switch x
     {
-    case B..R:  break
+    case B to R:  break
     default:    @assert(false)
     }
 
     switch x
     {
-    case R..R:  break
+    case R to R:  break
     default:    @assert(false)
     }
 }

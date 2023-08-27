@@ -1672,7 +1672,7 @@ bool Parser::doRange(AstNode* parent, AstNode* expression, AstNode** result)
     Ast::addChildBack(rangeNode, expression);
     rangeNode->expressionLow = expression;
 
-    if (token.id == TokenId::SymDotDotLess)
+    if (token.id == TokenId::KwdUntil)
         rangeNode->specFlags |= AstRange::SPECFLAG_EXCLUDE_UP;
     SWAG_CHECK(eatToken());
 

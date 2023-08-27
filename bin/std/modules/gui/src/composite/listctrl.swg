@@ -294,7 +294,7 @@ impl IWnd for ListView
                 startSelIdx = endSelIdx
             }
 
-            loop i: startSelIdx..endSelIdx
+            loop i: startSelIdx to endSelIdx
                 list.selectLine(i, true)
             list.focusIndex = endSelIdx
             list.ensureVisibleLine(list.focusIndex)
@@ -464,7 +464,7 @@ impl IWnd for ListView
             if shift and list.selectionMode == .Multi
             {
                 let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
-                loop i: startIdx..idx
+                loop i: startIdx to idx
                 {
                     let idxLine = list.isVirtual ? i : list.lines[i].index
                     list.selModel.select(idxLine, true)
@@ -517,7 +517,7 @@ impl IWnd for ListView
         if list.isVirtual
         {
             Debug.assert(list.sigVirtualFill != null)
-            loop i: firstIdx..lastIdx
+            loop i: firstIdx to lastIdx
             {
                 var line: ListLine
                 list.sigVirtualFill(&line, i)
@@ -530,7 +530,7 @@ impl IWnd for ListView
         }
         else
         {
-            loop i: firstIdx..lastIdx
+            loop i: firstIdx to lastIdx
             {
                 let line = list.lines[i]
                 paintLine(bc, i, line, rect)
@@ -544,7 +544,7 @@ impl IWnd for ListView
         if list.header and list.listFlags.has(.VertLines)
         {
             rect = getClientRectPadding()
-            loop idx: 1..list.header.items.count-1
+            loop idx: 1 until list.header.items.count
             {
                 var x = getXPos(list.header.items[idx].column)
                 x -= scrollPos.x
@@ -905,7 +905,7 @@ impl ListCtrl
         if selectionMode == .None or lineCount == 0
             return
 
-        loop i: start..end
+        loop i: start to end
         {
             let idxLine = isVirtual ? i : lines[i].index
             selModel.select(idxLine, select)

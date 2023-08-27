@@ -46,9 +46,9 @@ func fillGrid()
     {
         loop j: GridSize
         {
-            loop ii: -1..1
+            loop ii: -1 to 1
             {
-                loop jj: -1..1
+                loop jj: -1 to 1
                 {
                     let ti = i + ii
                     let tj = j + jj
@@ -78,9 +78,9 @@ func floodFill(x, y: s32)
         if g_Grid[pt.x, pt.y].score
             continue
 
-        loop ii: -1..1
+        loop ii: -1 to 1
         {
-            loop jj: -1..1
+            loop jj: -1 to 1
             {
                 let ti = pt.x + ii
                 let tj = pt.y + jj

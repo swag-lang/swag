@@ -16,14 +16,14 @@ impl AA
     var x: AA
     switch x
     {
-    case 10..5:  break
-    default:     @assert(false)
+    case 10 to 5:  break
+    default:       @assert(false)
     }
 
     switch x
     {
-    case 0..5:   @assert(false)
-    case 10..6:  break
-    default:     @assert(false)
+    case 0 to 5:   @assert(false)
+    case 10 to 6:  break
+    default:       @assert(false)
     }
 }

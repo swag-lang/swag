@@ -3,7 +3,7 @@
     let x = 3.14
     switch x
     {
-    case 3..3.2:    break
+    case 3 to 3.2:    break
     default:        @assert(false)
     }
 }
@@ -13,13 +13,13 @@
     let x = 3.14'f64
     switch x
     {
-    case 3..3.2:    break
+    case 3 to 3.2:    break
     default:        @assert(false)
     }
 
     switch x
     {
-    case 3..4:    break
+    case 3 to 4:    break
     default:      @assert(false)
     }
 }
@@ -29,7 +29,7 @@
     let x = 3.14'f64
     switch x
     {
-    case 1..2:    @assert(false)
+    case 1 to 2:    @assert(false)
     default:      break
     }
 }

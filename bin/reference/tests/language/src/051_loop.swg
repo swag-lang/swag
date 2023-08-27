@@ -135,13 +135,13 @@ Loop can also be used to iterate on a **range** of signed values.
 */
 
 /**
-Syntax is `lower bound..upper bound`. The lower bound must always be lower or equal than the upper bound.
+You can add 'to' to loop from a given value to a given value.
 */
 #test
 {
     var count = 0
     var sum = 0
-    loop i: -1..1   // loop from -1 to 1, all included
+    loop i: -1 to 1   // loop from -1 to 1, all included
     {
         count += 1
         sum += i
@@ -152,13 +152,13 @@ Syntax is `lower bound..upper bound`. The lower bound must always be lower or eq
 }
 
 /**
-You can exclude the last value with the `..<` syntax.
+You can exclude the last value with by using 'until' instead of 'to'.
 */
 #test
 {
     // Will loop from 1 to 2 and **not** 1 to 3
     var cpt = 0
-    loop i: 1 ..< 3
+    loop i: 1 until 3
     {
         cpt += i
     }
@@ -172,17 +172,17 @@ With a range, you can also loop in reverse order if you add the `back` modifier.
 #test
 {
     // Loop from 5 to 0
-    loop,back 0..5
+    loop,back 0 to 5
     {
     }
 
     // Loop from 1 to -1
-    loop,back -1..1
+    loop,back -1 to 1
     {
     }
 
     // Loop from 1 to -2 because we exclude the upper limit.
-    loop,back -2 ..< 2
+    loop,back -2 until 2
     {
     }
 }

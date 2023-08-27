@@ -306,7 +306,6 @@ var __logStackTraceInitDone = false
 func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
 {
     using __Win32RT
-    let nb = @countof(where)
 
     if !__logStackTraceInitDone
     {
@@ -328,7 +327,7 @@ func __logStackTrace(where: [..] *void, startAfter: *Swag.SourceCodeLocation = n
 
     var hasStarted = false
 
-    loop i: 0..nb-1
+    loop i: where
     {
         let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], &displacement, psym)
         let hasLine = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) where[i], acast &displacement, &line)

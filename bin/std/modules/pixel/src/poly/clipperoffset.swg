@@ -61,7 +61,7 @@ impl Offset
         newNode.contour.add(path.buffer[0])
 
         var j, k: s32
-        loop i: 1 .. highI
+        loop i: 1 to highI
         {
             if newNode.contour.buffer[j] != path.buffer[i]
             {

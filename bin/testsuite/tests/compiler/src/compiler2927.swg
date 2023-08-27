@@ -3,7 +3,7 @@
 public func toto2927()
 {
     var cpt = 0
-    loop 1..10
+    loop 1 to 10
     {
         cpt += 1
     }

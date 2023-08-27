@@ -194,7 +194,7 @@ impl IForm for FormDraw
             return Math.Vector2.polyContains(paintPoints, {pt.x, pt.y})
 
         var v = Math.Vector2{pt.x, pt.y}
-        loop i: 0..paintPoints.count-2
+        loop i: 0 until paintPoints.count-1
         {
             if v.distanceToSegment(paintPoints[i], paintPoints[i+1]) <= bSize
                 return true
@@ -211,7 +211,7 @@ impl IForm for FormDraw
 
         var pl: LinePath
         pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i: 1..paintPoints.count-1
+        loop i: 1 until paintPoints.count
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
 
         if subKind == .PixSel

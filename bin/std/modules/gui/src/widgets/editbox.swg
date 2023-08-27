@@ -650,7 +650,7 @@ internal impl EditBox
             let sizeX = Painter.measureString(text, fontR).width
             var lastWidth = 0'f32
             var diff = 0'f32
-            loop idx: 1..text.length-1
+            loop idx: 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
                 let met = Painter.measureString(str, fontR).width
@@ -674,7 +674,7 @@ internal impl EditBox
             x -= getTextMarginLeft()
             var lastWidth = 0'f32
             var diff = 0'f32
-            loop idx: 1..text.length-1
+            loop idx: 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
                 let met = Painter.measureString(str, fontR).width

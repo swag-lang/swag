@@ -1250,7 +1250,7 @@ func drawNumberAsSprite(number: s32)
     g_Painter.pushTransform()
 
     let str = Format.toString("%", number)
-    loop i: str.length-1..0
+    loop,back i: str
     {
         switch str[i]
         {

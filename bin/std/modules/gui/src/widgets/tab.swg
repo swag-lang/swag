@@ -207,7 +207,7 @@ impl IWnd for Tab
         if !views.isEmpty()
         {
             clientRect = getBarRectItems()
-            loop idx: firstVisibleIdx..cast(u32) views.count-1
+            loop idx: firstVisibleIdx until cast(u32) views.count
             {
                 if idx == selectedIdx
                     continue
@@ -314,7 +314,7 @@ internal impl Tab
             return Swag.U32.Max
 
         var rect = getBarRectItems()
-        loop idx: firstVisibleIdx..cast(u32) views.count - 1
+        loop idx: firstVisibleIdx until cast(u32) views.count
         {
             let v = views[idx]
             if v.pos + v.width > rect.right()
@@ -370,7 +370,7 @@ internal impl Tab
         }
 
         var x = rect.x
-        loop idx: firstVisibleIdx..cast(u32) views.count - 1
+        loop idx: firstVisibleIdx until cast(u32) views.count
         {
             let v = views[idx]
             v.pos = x

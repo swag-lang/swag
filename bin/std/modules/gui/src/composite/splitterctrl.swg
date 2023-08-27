@@ -304,7 +304,7 @@ internal impl SplitterCtrl
         var result: retval = getClientRectPadding()
 
         let barSize = getThemeMetrics().splitView_BarSize
-        loop i: 0..idx
+        loop i: 0 to idx
         {
             if isVertical()
             {

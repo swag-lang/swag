@@ -260,7 +260,7 @@ impl Painter
         }
 
         var v1 = startPos
-        loop i: 1..sharedRoundTmp.count-1
+        loop i: 1 until sharedRoundTmp.count
         {
             let v2 = sharedRoundTmp[i].pos
             let prim1 = pushTriangle(center, v1, v2, pen.brush.color)
@@ -634,7 +634,7 @@ impl Painter
         // (because of cap styles)
         if path.polygon.points.count > 2
         {
-            loop i: 1..path.polygon.points.count-2
+            loop i: 1 until path.polygon.points.count-1
             {
                 var p = path.polygon.getPoint(i, cxt.offsetPath)
                 drawLine(cxt, p)

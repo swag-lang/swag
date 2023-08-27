@@ -4,7 +4,7 @@
     {
         var cpt = 0
         var l = 0
-        loop x: -5..5
+        loop x: -5 to 5
         {
             cpt += x
             l += 1
@@ -16,7 +16,7 @@
 
     {
         var l = 0
-        loop i: 1..3
+        loop i: 1 to 3
         {
             l += i
         }
@@ -25,7 +25,7 @@
 
     {
         var l = 0
-        loop i: 1..1
+        loop i: 1 to 1
         {
             l += i
         }
@@ -35,7 +35,7 @@
     {
         var l = 0
         var c = 0
-        loop,back i: 0..4
+        loop,back i: 0 to 4
         {
             l += i
             c += 1

@@ -4,7 +4,7 @@ var G = 0
     let c = 0'u16
     switch c
     {
-    case 0'u16..9'u16:
+    case 0'u16 to 9'u16:
         G += 1
     }
 

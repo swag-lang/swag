@@ -325,7 +325,7 @@ impl Encoder
     {
         var codevalue = 0'u16
         var posInTable = 0
-        loop k: 1..16
+        loop k: 1 to 16
         {
             for var j = 1; j <= nrCodes[k]; j += 1
             {
@@ -356,16 +356,16 @@ impl Encoder
 
         var nrlower = 1
         var nrupper = 2
-        loop cat: 1..15
+        loop cat: 1 to 15
         {
-            loop nr: nrlower..nrupper-1
+            loop nr: nrlower until nrupper
             {
                 category[nr]       = cast(u8) cat
                 bitcode[nr].length = cast(u8) cat
                 bitcode[nr].value  = cast(u16) nr
             }
 
-            loop nr: -(nrupper - 1)..(-nrlower)
+            loop nr: -(nrupper - 1) to (-nrlower)
             {
                 let nof = cast,bit(u64) cast(s64) nr
                 category[nof] = cast(u8) cat
@@ -560,7 +560,7 @@ impl Encoder
             dataFloat[i] = data[i]
 
         var dataptr = &dataFloat
-        loop,back ctr: 0..7
+        loop,back ctr: 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[7]
             let tmp7 = dataptr[0] - dataptr[7]
@@ -605,7 +605,7 @@ impl Encoder
 
         dataptr = dataFloat
 
-        loop,back ctr: 0..7
+        loop,back ctr: 0 to 7
         {
             let tmp0 = dataptr[0] + dataptr[56]
             let tmp7 = dataptr[0] - dataptr[56]
@@ -695,7 +695,7 @@ impl Encoder
             var nrzeroes = i - startpos
             if nrzeroes >= 16
             {
-                loop nrmarker: 1..nrzeroes / 16
+                loop nrmarker: 1 to nrzeroes / 16
                     writeBits(m16Zeroes)
                 nrzeroes = nrzeroes % 16
             }

@@ -610,7 +610,7 @@ public impl RichEditCtrl
         {
             var sb = getBegSelection()
             var se = getEndSelection()
-            loop caretI: sb.lineIndex..se.lineIndex
+            loop caretI: sb.lineIndex to se.lineIndex
             {
                 var cp = se
                 cp.lineIndex = caretI

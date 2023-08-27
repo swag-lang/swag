@@ -93,14 +93,14 @@ impl HuffmanTable
             sizes[v] += 1
         sizes[0] = 0
 
-        loop i: 1..16
+        loop i: 1 to 16
         {
             if sizes[i] > (1 << i)
                 throw "bad huffman sizes"
         }
 
 	    var k, cde = 0'u16
-        loop i: 1..15
+        loop i: 1 to 15
         {
             nextCode[i]    = cde
             firstCode[i]   = cde

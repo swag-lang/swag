@@ -354,7 +354,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         capture.selection.clear()
-        loop i: startCount ..< capture.forms.count
+        loop i: startCount until capture.forms.count
             capture.selection.add(i)
     }
 }

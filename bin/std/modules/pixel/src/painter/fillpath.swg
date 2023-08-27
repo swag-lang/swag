@@ -236,7 +236,7 @@ public impl Painter
                 {
                     flush = p
                     t.startPolyLine()
-                    loop i: 0..p.polygon.points.count-2
+                    loop i: 0 until p.polygon.points.count-1
                     {
                         var pt = p.polygon.getPoint(i)
                         t.addPoint(pt.x, pt.y)

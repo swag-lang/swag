@@ -558,7 +558,7 @@ impl Tesselate
 
     mtd sweepPoints()
     {
-        loop i: 1..points.count-1
+        loop i: 1 until points.count
         {
             let point = points[i]
             let node = pointEvent(point)

@@ -1991,9 +1991,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Range:
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         if (node->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
-            CONCAT_FIXED_STR(concat, "..<");
+            CONCAT_FIXED_STR(concat, " until ");
         else
-            CONCAT_FIXED_STR(concat, "..");
+            CONCAT_FIXED_STR(concat, " to ");
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
         break;
 

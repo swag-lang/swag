@@ -83,7 +83,7 @@ impl SelModel
     {
         #scope Up visit &r: selection
         {
-            loop i: r.start..r.end
+            loop i: r.start to r.end
             {
                 #macro
                 {

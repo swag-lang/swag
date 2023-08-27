@@ -457,7 +457,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1..tmp.count-1
+        loop i: 1 until tmp.count
             flattenLine(tmp[i].pos)
     }
 
@@ -491,7 +491,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1..tmp.count-1
+        loop i: 1 until tmp.count
             flattenLine(tmp[i].pos)
     }
 
@@ -521,7 +521,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1..tmp.count-1
+        loop i: 1 until tmp.count
             flattenLine(tmp[i].pos)
     }
 
@@ -552,7 +552,7 @@ impl LinePath
             i -= 1
         }
 
-        loop i: 1..tmp.count-1
+        loop i: 1 until tmp.count
             flattenLine(tmp[i].pos)
     }
 
