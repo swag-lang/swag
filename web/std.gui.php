@@ -12554,7 +12554,7 @@
 <span class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_compute"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">compute</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12567,7 +12567,7 @@
 <span class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_insertRune"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">insertRune</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L383" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L391" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12580,7 +12580,7 @@
 <span class="content" id="Gui_RichEditLexerSwag_IRichEditLexer_setup"><span class="titletype">func</span> <span class="titlelight">IRichEditLexer.</span><span class="titlestrong">setup</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\richedit\richeditlexerswag.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19777,7 +19777,7 @@
 </table>
 </p>
 <p>Get the wnd position relative to a given parent. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRectIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, in: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRectIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
 </div>
 <p>
 <table class="item">

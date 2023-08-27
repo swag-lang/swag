@@ -5,12 +5,12 @@ struct A
 
 struct B
 {
-    in: A
+    inT: A
 }
 
 func toto()
 {
     var pt: B
-    using pt.in
+    using pt.inT
     a = 0
 }

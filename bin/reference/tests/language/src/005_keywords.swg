@@ -1,7 +1,7 @@
 /**
 This is the list of all keywords in the language.
 
-# Reserved keywords
+# Special keywords
 Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program.
 ```
 if
@@ -36,6 +36,7 @@ const
 var
 let
 ref
+moveref
 acast
 cast
 assume
@@ -60,6 +61,13 @@ typealias
 namealias
 discard
 dref
+```
+# Reserved keywords
+This keywords are reserved by the language, just in case...
+```
+is
+in
+not
 ```
 # Basic types
 These are all the native types of the language. All are reserved keywords too.

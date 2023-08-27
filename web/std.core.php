@@ -1335,8 +1335,8 @@
 <li><a href="#Core_CommandLine_parse">CommandLine.parse</a></li>
 <li><a href="#Core_CommandLine_splitArguments">CommandLine.splitArguments</a></li>
 <li><a href="#Core_add">Core.add</a></li>
+<li><a href="#Core_equals">Core.equals</a></li>
 <li><a href="#Core_has">Core.has</a></li>
-<li><a href="#Core_is">Core.is</a></li>
 <li><a href="#Core_remove">Core.remove</a></li>
 <li><a href="#Core_set">Core.set</a></li>
 <li><a href="#Core_Env_doSyncProcess">Env.doSyncProcess</a></li>
@@ -25387,6 +25387,19 @@
 <table class="item">
 <tr>
 <td class="item">
+<span class="content" id="Core_equals"><span class="titletype">func</span> <span class="titlelight">Core.</span><span class="titlestrong">equals</span></span>
+</td>
+<td class="srcref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\helpers.swg#L15" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">equals</span>(flags: <span class="SCst">T</span>, value: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></code>
+</div>
+<p>
+<table class="item">
+<tr>
+<td class="item">
 <span class="content" id="Core_has"><span class="titletype">func</span> <span class="titlelight">Core.</span><span class="titlestrong">has</span></span>
 </td>
 <td class="srcref">
@@ -25395,19 +25408,6 @@
 </table>
 </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">has</span>(flags: <span class="SCst">T</span>, value: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
-<p>
-<table class="item">
-<tr>
-<td class="item">
-<span class="content" id="Core_is"><span class="titletype">func</span> <span class="titlelight">Core.</span><span class="titlestrong">is</span></span>
-</td>
-<td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\helpers.swg#L15" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">is</span>(flags: <span class="SCst">T</span>, value: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
 <table class="item">

@@ -7,7 +7,7 @@ struct(K, V) A
 
 struct(K, V) B
 {
-    in: *A'(K, V)
+    inT: *A'(K, V)
 }
 
 #test

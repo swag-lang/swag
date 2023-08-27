@@ -628,11 +628,11 @@ impl Wnd
     }
 
     // Get the wnd position relative to a given parent
-    mtd getRectIn(in: *Wnd)->Math.Rectangle
+    mtd getRectIn(wnd: *Wnd)->Math.Rectangle
     {
         var result: retval = position
         var p = parent
-        while p and p != in
+        while p and p != wnd
         {
             result.x += p.position.x
             result.y += p.position.y

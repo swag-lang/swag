@@ -3,8 +3,8 @@ using Core
 
 struct CaseT
 {
-	cas:     s32
-	in, out: rune
+	cas:        s32
+	inT, outT:  rune
 }
 
 const UpperCase = 1
@@ -93,7 +93,7 @@ var caseTest: [] CaseT = [
 	{LowerCase, 0x13a8, 0xab78},
 	{TitleCase, 0x13a8, 0x13a8},
 
-	// Last block in the 5.1.0 table
+	// Last block inT the 5.1.0 table
 	// 10400;DESERET CAPITAL LETTER LONG I;Lu;0;L;;;;;N;;;;10428;
 	{UpperCase, 0x10400, 0x10400},
 	{LowerCase, 0x10400, 0x10428},
@@ -111,7 +111,7 @@ var caseTest: [] CaseT = [
 	{LowerCase, 0x1044F, 0x1044F},
 	{TitleCase, 0x1044F, 0x10427},
 
-	// First one not in the 5.1.0 table
+	// First one not inT the 5.1.0 table
 	// 10450;SHAVIAN LETTER PEEP;Lo;0;L;;;;;N;;;;;
 	{UpperCase, 0x10450, 0x10450},
 	{LowerCase, 0x10450, 0x10450},
@@ -129,11 +129,11 @@ var caseTest: [] CaseT = [
         switch c.cas
         {
             case LowerCase:
-                @assert(Unicode.toLower(c.in) == c.out)
+                @assert(Unicode.toLower(c.inT) == c.outT)
             case UpperCase:
-                @assert(Unicode.toUpper(c.in) == c.out)
+                @assert(Unicode.toUpper(c.inT) == c.outT)
             case TitleCase:
-                @assert(Unicode.toTitle(c.in) == c.out)
+                @assert(Unicode.toTitle(c.inT) == c.outT)
         }
     }
 }

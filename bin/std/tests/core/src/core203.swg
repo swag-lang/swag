@@ -3,8 +3,8 @@ using Core.Utf8
 
 struct RuneCountTest
 {
-	in:  string
-	out: u64
+	inT:  string
+	outT: u64
 }
 
 const runecounttests: [] RuneCountTest = [
@@ -20,6 +20,6 @@ const runecounttests: [] RuneCountTest = [
 {
     visit it: runecounttests
     {
-        @assert(countRunes(it.in) == it.out)
+        @assert(countRunes(it.inT) == it.outT)
     }
 }

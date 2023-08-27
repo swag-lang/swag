@@ -226,6 +226,7 @@
 </ul>
 <li><a href="#005_keywords">Keywords</a></li>
 <ul>
+<li><a href="#Special_keywords">Special keywords</a></li>
 <li><a href="#Reserved_keywords">Reserved keywords</a></li>
 <li><a href="#Basic_types">Basic types</a></li>
 <li><a href="#Compiler_keywords">Compiler keywords</a></li>
@@ -715,7 +716,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="005_keywords">Keywords</h2><p>This is the list of all keywords in the language. </p>
-<h3 id="Reserved_keywords">Reserved keywords </h3>
+<h3 id="Special_keywords">Special keywords </h3>
 <p>Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program. </p>
 <div class="precode"><code><span class="SCde"><span class="SLgc">if</span>
 <span class="SLgc">else</span>
@@ -749,6 +750,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">var</span>
 <span class="SKwd">let</span>
 <span class="SKwd">ref</span>
+<span class="SKwd">moveref</span>
 <span class="SKwd">acast</span>
 <span class="SKwd">cast</span>
 <span class="SKwd">assume</span>
@@ -773,6 +775,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">namealias</span>
 <span class="SKwd">discard</span>
 <span class="SKwd">dref</span></span></code>
+</div>
+<h3 id="Reserved_keywords">Reserved keywords </h3>
+<p>This keywords are reserved by the language, just in case... </p>
+<div class="precode"><code><span class="SCde"><span class="SInv">is</span>
+<span class="SInv">in</span>
+<span class="SInv">not</span></span></code>
 </div>
 <h3 id="Basic_types">Basic types </h3>
 <p>These are all the native types of the language. All are reserved keywords too. </p>

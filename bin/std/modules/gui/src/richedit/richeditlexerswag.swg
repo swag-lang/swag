@@ -20,6 +20,7 @@ struct RichEditLexerSwag
         String
         Character
         Numeric
+        Error
     }
 
     #[Swag.Incomplete]
@@ -51,6 +52,7 @@ struct RichEditLexerSwag
         NumericBin
         NumericFrac
         Attribute
+        Error
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -87,6 +89,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.NumericHex]         = Numeric
         mapStyles[State.NumericBin]         = Numeric
         mapStyles[State.Attribute]          = Preprocessor
+        mapStyles[State.Error]              = Error
 
         ed.styles[Comment].colFg      = 0xFF6A9955
         ed.styles[Keyword].colFg      = 0xFF569cd6
@@ -101,6 +104,7 @@ impl IRichEditLexer for RichEditLexerSwag
         ed.styles[String].colFg       = 0xFFCE9178
         ed.styles[Character].colFg    = 0xFFCE9178
         ed.styles[Numeric].colFg      = 0xFFB5CEA8
+        ed.styles[Error].colFg        = 0xFFF44747
 
         mapWords.add("true", State.Constant)
         mapWords.add("false", State.Constant)
@@ -119,6 +123,10 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("assume", State.Keyword)
         mapWords.add("throw", State.Keyword)
         mapWords.add("discard", State.Keyword)
+
+        mapWords.add("is", State.Error)
+        mapWords.add("in", State.Error)
+        mapWords.add("not", State.Error)
 
         mapWords.add("public", State.StorageModifier)
         mapWords.add("internal", State.StorageModifier)

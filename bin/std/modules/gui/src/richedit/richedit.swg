@@ -364,7 +364,7 @@ impl RichEditCtrl
         if c == `\r`
             c = `\n`
 
-        if c == `\n` and mdf.is(.Zero) and richEdFlags.has(.AutoLoseFocus)
+        if c == `\n` and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus)
             return
 
         if lexer and lexer.insertRune(self, c)

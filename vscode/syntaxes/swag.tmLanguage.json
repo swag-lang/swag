@@ -10,6 +10,7 @@
     { "include": "#operator-modifier" },
     { "include": "#op" },
     { "include": "#op-invalid" },
+    { "include": "#keywords-invalid" },
     { "include": "#keywords-defer" },
     { "include": "#keywords-control" },
     { "include": "#function-call" },
@@ -93,6 +94,14 @@
               "name": "constant.character.escape"
             }
           }
+        }
+      ]
+    },
+    "keywords-invalid": {
+      "patterns": [
+        {
+          "name": "invalid",
+          "match": "\\b(is|in|not)\\b"
         }
       ]
     },
@@ -417,15 +426,15 @@
       ]
     },
     "characters": {
-        "name": "string.quoted.single",
-        "begin": "`",
-        "end": "`",
-        "patterns": [
-          {
-            "name": "constant.character.escape",
-            "match": "\\\\."
-          }
-        ]
+      "name": "string.quoted.single",
+      "begin": "`",
+      "end": "`",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
     },
     "operator-character": {
       "patterns": [

@@ -10,7 +10,7 @@ using Core.Hash
 struct ValidTest
 {
 	out: u32
-	in:  string
+	inT: string
 }
 
 const validTests: [] ValidTest = [
@@ -63,7 +63,7 @@ const validTests: [] ValidTest = [
 {
     visit &it: validTests
     {
-        var res = Adler32.compute(it.in)
+        var res = Adler32.compute(it.inT)
         @assert(res == it.out)
     }
 }

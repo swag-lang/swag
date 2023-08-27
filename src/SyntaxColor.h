@@ -17,6 +17,7 @@ enum class SyntaxColor
     SyntaxString,
     SyntaxAttribute,
     SyntaxDefault,
+    SyntaxInvalid,
 };
 
 static const char* SYN_CODE      = "SCde";
@@ -32,6 +33,7 @@ static const char* SYN_NUMBER    = "SNum";
 static const char* SYN_STRING    = "SStr";
 static const char* SYN_ATTRIBUTE = "SAtr";
 static const char* SYN_DEFAULT   = "SDft";
+static const char* SYN_INVALID   = "SInv";
 
 enum class SyntaxColorMode
 {

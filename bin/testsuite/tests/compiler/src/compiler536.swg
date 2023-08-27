@@ -7,7 +7,7 @@ struct point1
 
 struct point
 {
-	in: point1
+	inT: point1
 	x: s32 = 10
 	y: s32 = 20
 }

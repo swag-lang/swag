@@ -12,7 +12,7 @@ func(T) has(flags, value: T)->bool
 }
 
 #[Inline]
-func(T) is(flags, value: T)->bool
+func(T) equals(flags, value: T)->bool
     #validif Reflection.isEnumFlags(T)
 {
     return flags == value

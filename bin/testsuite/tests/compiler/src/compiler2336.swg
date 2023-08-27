@@ -1,6 +1,6 @@
 struct ValidTest
 {
-	in:  string
+	inT:  string
 	out: bool
 }
 
@@ -26,5 +26,5 @@ const validTests: [] ValidTest = [
 //#[Swag.PrintBc]
 #test
 {
-    @assert(validTests[1].in == "a")
+    @assert(validTests[1].inT == "a")
 }

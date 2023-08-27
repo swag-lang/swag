@@ -130,6 +130,9 @@ uint32_t getSyntaxColor(SyntaxColor color, float lum)
     case SyntaxColor::SyntaxAttribute:
         rgb = {0xaa, 0xaa, 0xaa};
         break;
+    case SyntaxColor::SyntaxInvalid:
+        rgb = {0xFF, 0x47, 0x47};
+        break;
     default:
         rgb = {0x00, 0x00, 0x00};
         SWAG_ASSERT(false);
@@ -201,6 +204,9 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
             break;
         case SyntaxColor::SyntaxAttribute:
             colorName = SYN_ATTRIBUTE;
+            break;
+        case SyntaxColor::SyntaxInvalid:
+            colorName = SYN_INVALID;
             break;
         }
 
@@ -434,6 +440,12 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             {
                 switch (*it)
                 {
+                case TokenId::KwdReserved:
+                    result += getColor(mode, SyntaxColor::SyntaxInvalid);
+                    result += identifier;
+                    result += getColor(mode, SyntaxColor::SyntaxDefault);
+                    break;
+
                 case TokenId::KwdUsing:
                 case TokenId::KwdWith:
                 case TokenId::KwdCast:

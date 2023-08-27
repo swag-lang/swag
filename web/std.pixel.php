@@ -9018,7 +9018,7 @@
 </tr>
 </table>
 <p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
-<div class="precode"><code><span class="SCde">&lt;b&gt; this is bold&lt;b&gt;
+<div class="precode"><code><span class="SCde">&lt;b&gt; this <span class="SInv">is</span> bold&lt;b&gt;
  &lt;p1&gt; this will have special color <span class="SNum">1</span>&lt;p1&gt;
  ...</span></code>
 </div>
@@ -9181,7 +9181,7 @@
 <li><code class="incode">&lt;p2&gt;</code> =&gt; color palette 2</li>
 <li><code class="incode">&lt;p3&gt;</code> =&gt; color palette 3</li>
 </ul>
-<div class="precode"><code><span class="SCde">&lt;b&gt;this is bold&lt;b&gt; but this is normal &lt;i&gt;<span class="SLgc">and</span> this is italic&lt;/i&gt;</span></code>
+<div class="precode"><code><span class="SCde">&lt;b&gt;this <span class="SInv">is</span> bold&lt;b&gt; but this <span class="SInv">is</span> normal &lt;i&gt;<span class="SLgc">and</span> this <span class="SInv">is</span> italic&lt;/i&gt;</span></code>
 </div>
 <p>
 <table class="item">

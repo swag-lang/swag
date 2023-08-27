@@ -367,6 +367,10 @@ void LanguageSpec::setupKeywords()
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
 
+    keywords.add("is", TokenId::KwdReserved);
+    keywords.add("in", TokenId::KwdReserved);
+    keywords.add("not", TokenId::KwdReserved);
+
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);

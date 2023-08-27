@@ -3,7 +3,7 @@ using Core, StrConv
 
 struct atofTest
 {
-	in:     string
+	inT:    string
 	out:    string
 	error:  bool
 }
@@ -126,7 +126,7 @@ var atoftests: [] atofTest = [
     var cb: ConcatBuffer
     visit t: atoftests
     {
-        var v = catch Atod.parse(t.in)
+        var v = catch Atod.parse(t.inT)
         @assert(!@errmsg or t.error)
         @assert(!t.error or @errmsg != null or v.ovf)
         if v.ovf continue

@@ -545,18 +545,18 @@ impl RegExp
         }
     }
 
-    func dfaEClosure(in, out: *HashSet'(*NfaNode))
+    func dfaEClosure(inH, outH: *HashSet'(*NfaNode))
     {
-        out.clear()
+        outH.clear()
 
         var stack: Array'(*NfaNode)
-        visit n: dref in
+        visit n: dref inH
             stack.add(n)
 
         while stack.count
         {
             let state = stack.popBack()
-            out.add(state)
+            outH.add(state)
 
             let find = state.transitions.find(0'rune)
             if !find
@@ -564,7 +564,7 @@ impl RegExp
 
             visit t: find.value
             {
-                if !out.contains(t)
+                if !outH.contains(t)
                     stack.add(t)
             }
         }
@@ -586,10 +586,10 @@ impl RegExp
         }
     }
 
-    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, in: HashSet'(*NfaNode))
+    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, inH: HashSet'(*NfaNode))
     {
         out.clear()
-        visit state: in
+        visit state: inH
         {
             // The real terminal character
             let pfind = state.transitions.find(c)
@@ -1032,9 +1032,9 @@ impl RegExp
         return pz + 1
     }
 
-    mtd preprocess(in: string) throw
+    mtd preprocess(inStr: string) throw
     {
-        var in32 = Unicode.fromUtf8(in)
+        var in32 = Unicode.fromUtf8(inStr)
         in32.add(0'rune)
 
         var pz = cast(const ^rune) in32.buffer

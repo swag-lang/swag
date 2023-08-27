@@ -3,7 +3,7 @@ using Core, StrConv
 
 struct Test
 {
-	in:   s64
+	inT:  s64
 	base: s64
 	out:  string
 }
@@ -67,13 +67,13 @@ const tests: [] Test = [
         {
         case 2:
             var (value, eat, ovf) = assume parseB64(c.out)
-            @assert(value == c.in)
+            @assert(value == c.inT)
         case 10:
             var (value, eat, ovf) = assume parseS64(c.out)
-            @assert(value == c.in)
+            @assert(value == c.inT)
         case 16:
             var (value, eat, ovf) = assume parseX64(c.out)
-            @assert(value == c.in)
+            @assert(value == c.inT)
         }
     }
 
@@ -82,13 +82,13 @@ const tests: [] Test = [
         switch c.base
         {
         case 2:
-            var value = Format.toString("%{B}", c.in)
+            var value = Format.toString("%{B}", c.inT)
             @assert(value == c.out)
         case 10:
-            var value = Format.toString("%", c.in)
+            var value = Format.toString("%", c.inT)
             @assert(value == c.out)
         case 16:
-            var value = Format.toString("%{X}", c.in)
+            var value = Format.toString("%{X}", c.inT)
             @assert(value == c.out)
         }
     }

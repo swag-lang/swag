@@ -10,7 +10,7 @@ struct point1
 
 struct point
 {
-	in: point1
+	inT: point1
 	x: s32
 	y: s32
 }
@@ -19,6 +19,6 @@ struct point
 #test
 {
 	var pt: point
-	pt.in.x = 100
-	@assert(pt.in.x == 100)
+	pt.inT.x = 100
+	@assert(pt.inT.x == 100)
 }
