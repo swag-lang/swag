@@ -188,10 +188,18 @@ public impl BitArray
             buffer[val] |= shift
     }
 
+    // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
+    mtd invert()
+    {
+        if !count return
+        loop Math.max(count >> 5, 1)
+            buffer[@index] = ~buffer[@index]
+    }
+
     // Performs the bitwise AND operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
     //
     // The current `BitArray` will be modified to store the result of the bitwise AND operation.
-    mtd and(other: Self)
+    mtd andWith(other: Self)
     {
         Debug.assert(count == other.count)
         if !count return
@@ -202,7 +210,7 @@ public impl BitArray
     // Performs the bitwise OR operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
     //
     // The current BitArray will be modified to store the result of the bitwise OR operation.
-    mtd or(other: Self)
+    mtd orWith(other: Self)
     {
         Debug.assert(count == other.count)
         if !count return
@@ -213,19 +221,11 @@ public impl BitArray
     // Performs the bitwise XOR operation between the elements of the current `BitArray` and the corresponding elements in the specified array.
     //
     // The current BitArray will be modified to store the result of the bitwise XOR operation.
-    mtd xor(other: Self)
+    mtd xorWith(other: Self)
     {
         Debug.assert(count == other.count)
         if !count return
         loop Math.max(count >> 5, 1)
             buffer[@index] ^= other.buffer[@index]
-    }
-
-    // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
-    mtd not()
-    {
-        if !count return
-        loop Math.max(count >> 5, 1)
-            buffer[@index] = ~buffer[@index]
     }
 }

@@ -562,10 +562,10 @@ impl RegExp
             if !find
                 continue
 
-            visit to: find.value
+            visit t: find.value
             {
-                if !out.contains(to)
-                    stack.add(to)
+                if !out.contains(t)
+                    stack.add(t)
             }
         }
     }

@@ -682,7 +682,6 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         }
         else
         {
-            relaxIdentifier(token);
             SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0089), token.ctext())));
             funcNode->tokenName = token;
         }

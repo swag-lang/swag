@@ -5,20 +5,16 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 
-void Parser::relaxIdentifier(TokenParse& token)
+bool Parser::testIsSingleIdentifier(AstNode* node)
 {
-    switch (token.id)
+    if (node->kind != AstNodeKind::IdentifierRef ||
+        node->childs.size() > 1 ||
+        node->childs.back()->kind != AstNodeKind::Identifier)
     {
-    case TokenId::KwdAnd:
-    case TokenId::KwdOr:
-    case TokenId::KwdOrElse:
-    case TokenId::KwdTo:
-    case TokenId::KwdUntil:
-        token.id = TokenId::Identifier;
-        return;
-    default:
-        break;
+        return false;
     }
+
+    return true;
 }
 
 bool Parser::testIsValidUserName(AstNode* node)
@@ -47,18 +43,6 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
     return true;
 }
 
-bool Parser::testIsSingleIdentifier(AstNode* node)
-{
-    if (node->kind != AstNodeKind::IdentifierRef ||
-        node->childs.size() > 1 ||
-        node->childs.back()->kind != AstNodeKind::Identifier)
-    {
-        return false;
-    }
-
-    return true;
-}
-
 bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
     if (!testIsSingleIdentifier(node))
@@ -66,13 +50,12 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
     return true;
 }
 
-bool Parser::checkIsIdentifier(TokenParse& token, const char* msg)
+bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
 {
-    if (token.id == TokenId::Identifier)
+    if (tokenParse.id == TokenId::Identifier)
         return true;
-
-    Utf8 hint = Fmt(Hnt(Hnt0129), token.ctext());
-    return error(token, msg, nullptr, hint);
+    Utf8 hint = Fmt(Hnt(Hnt0129), tokenParse.ctext());
+    return error(tokenParse, msg, nullptr, hint);
 }
 
 bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
@@ -117,24 +100,21 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
         return error(token, Fmt(Err(Err0398), token.ctext()));
-    else if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
+    if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
         return error(token, Fmt(Err(Err0398), token.ctext()));
-    else if (Tokenizer::isLiteral(token.id))
+    if (Tokenizer::isLiteral(token.id))
         return error(token, Fmt(Err(Syn0079), token.ctext()));
-    else if (token.id == TokenId::EndOfFile)
+    if (token.id == TokenId::EndOfFile)
         return error(token, Err(Syn0077));
-    else
+
+    if (token.id != TokenId::Identifier &&
+        token.id != TokenId::NativeType &&
+        token.id != TokenId::SymQuestion &&
+        token.id != TokenId::CompilerSelf &&
+        !Tokenizer::isIntrinsicReturn(token.id) &&
+        !Tokenizer::isIntrinsicNoReturn(token.id))
     {
-        relaxIdentifier(token);
-        if (token.id != TokenId::Identifier &&
-            token.id != TokenId::NativeType &&
-            token.id != TokenId::SymQuestion &&
-            token.id != TokenId::CompilerSelf &&
-            !Tokenizer::isIntrinsicReturn(token.id) &&
-            !Tokenizer::isIntrinsicNoReturn(token.id))
-        {
-            return error(token, Fmt(Err(Syn0078), token.ctext()));
-        }
+        return error(token, Fmt(Err(Syn0078), token.ctext()));
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);

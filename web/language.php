@@ -771,7 +771,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">dref</span></span></code>
 </div>
 <h3 id="Contextual_keywords">Contextual keywords </h3>
-<p>A contextual keyword is used to provide a specific meaning in the code, but it isn't a reserved word in Swag. </p>
+<p>A contextual keyword is used to provide a specific meaning in the code. It still can be used as a user function name. </p>
 <div class="precode"><code><span class="SCde"><span class="SLgc">and</span>
 <span class="SLgc">or</span>
 <span class="SLgc">orelse</span>

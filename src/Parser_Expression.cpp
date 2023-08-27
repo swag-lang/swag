@@ -186,7 +186,6 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
 
 bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::CompilerCallerFunction:

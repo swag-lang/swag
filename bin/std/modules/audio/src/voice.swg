@@ -73,12 +73,12 @@ internal impl Voice
 
     mtd setState(st: VoiceState)
     {
-        Atomic.or(cast(*u32) &state, cast(u32) st)
+        Atomic.logicOr(cast(*u32) &state, cast(u32) st)
     }
 
     mtd resetState(st: VoiceState)
     {
-        Atomic.and(cast(*u32) &state, ~cast(u32) st)
+        Atomic.logicAnd(cast(*u32) &state, ~cast(u32) st)
     }
 }
 

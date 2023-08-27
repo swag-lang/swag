@@ -10,7 +10,7 @@ using Core
     @assert(x[1] == false)
     @assert(x[2] == true)
     @assert(x[3] == false)
-    x.or(y)
+    x.orWith(y)
     @assert(x[0] == true)
     @assert(x[1] == true)
     @assert(x[2] == true)

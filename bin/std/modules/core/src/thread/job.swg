@@ -114,8 +114,8 @@ func removeJobNoLock(job: *Job)
     job.clearState(JobState.InPending)
 }
 
-func clearState(job: *Job, state: JobState) = Atomic.and(cast(*u32) &job.state, cast(u32) ~state)
-func setState(job: *Job, state: JobState)   = Atomic.or(cast(*u32) &job.state, cast(u32) state)
+func clearState(job: *Job, state: JobState) = Atomic.logicAnd(cast(*u32) &job.state, cast(u32) ~state)
+func setState(job: *Job, state: JobState)   = Atomic.logicOr(cast(*u32) &job.state, cast(u32) state)
 func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized

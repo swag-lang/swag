@@ -57,7 +57,7 @@ discard
 dref
 ```
 # Contextual keywords
-A contextual keyword is used to provide a specific meaning in the code, but it isn't a reserved word in Swag.
+A contextual keyword is used to provide a specific meaning in the code. It still can be used as a user function name.
 ```
 and
 or

@@ -724,7 +724,6 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withN
 
 bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
-    relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::KwdReturn:
