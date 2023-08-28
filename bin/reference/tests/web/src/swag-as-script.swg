@@ -1,11 +1,4 @@
 /**
----
-<div align="center">
-    <div class="round-button">
-        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
-    </div>
-</div>
----
 # Script file
 Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time.
 No executable will be generated, the compiler will do all the job.
@@ -47,7 +40,15 @@ Hello world !
 ```
 
 You will find a bunch of small scripts in `swag/bin/examples/scripts`.
-To run one of them from the console, go to the folder and type for example `swag pendulum.swgs`.
+To run one of them from the console, go to the folder and type for example `swag flappy.swgs`.
+
+---
+<div align="center">
+    <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
+    </div>
+</div>
+---
 
 ## Dependencies
 
