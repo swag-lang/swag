@@ -212,21 +212,21 @@
     </div>
 </div>
 
-<div style="display:flex;flex-wrap:wrap;">
-    <div style="flex:1; padding-left:30px; padding-right:30px;">
+<div style="display:flex;flex-wrap:wrap;margin-bottom:30px;">
+    <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>A sophisticated toy</h2>
         <p>Swag is a system programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
         This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
     </div>
-    <div style="flex:1; padding-left:30px; padding-right:30px;">
+    <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Native or interpreted</h2>
         <p>The Swag compiler can generate fast <b>native</b> code, or act as an interpreter for a <b>scripting</b> language.</p>
         Imagine C++, but where everything could be <i>constexpr</i>.
     </div>
-    <div style="flex:1; padding-left:30px; padding-right:30px;">
+    <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
-        <p>Swag has type reflection at both runtime and compile time, meta programmation, generics, a powerful macro system...</p>
-        <b>Enjoy.</b>
+        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programmation</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
+        Enjoy.
     </div>
 </div>
 
@@ -238,7 +238,7 @@
         <a href="swag-as-script.php" class="no-decoration">Scripting</a>
     </div>
     <div class="round-button">
-        <a href="std.php">Core Modules</a>
+        <a href="std.php">Standard Modules</a>
     </div>
 </div></p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">public</span> <span class="SKwd">mtd</span> <span class="SFct">match</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
