@@ -206,15 +206,18 @@
 <p style="white-space: break-spaces"><div align="center">
     <img src="imgs/flappy.png">
 </div></p>
-<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
-<p>Instead of mainly explaining the game, the aim here is to describe the programming language. So, let's begin. </p>
+<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <code class="incode">bin/examples/scripts</code> folder, and type : </p>
+<div class="precode"><code><span class="SCde">$ swag flappy.swgs</span></code>
+</div>
+<p>Instead of mainly explaining the game, the aim here is to describe the language. Note also that this page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
+<p>So, let's begin. </p>
 <h1 id="Dependencies">Dependencies </h1>
 <p>Normally, you'd put the <code class="incode">#dependency</code> block in the <code class="incode">module.swg</code> file of a module. But if it's a script and there's no <code class="incode">module.swg</code> file, you just put it at the top of the script file. </p>
 <p>This special compiler block is used to specify : </p>
 <ul>
 <li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <code class="incode">gui</code> module.</li>
 <li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <code class="incode">#load</code> directive.</li>
-<li><b>Module configuration</b>. If present, a special <code class="incode">#run</code> block will be executed by the compiler at the very beginning of the compile stage. It gives the opportunity to change some build configurations.</li>
+<li><b>Module configuration</b>. If present, a special <code class="incode">#run</code> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
 </ul>
 <p>So in our case, we need to import the module <code class="incode">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="incode">core</code> and <code class="incode">pixel</code> (2D drawing). </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
@@ -243,14 +246,14 @@
     }
 }</span></code>
 </div>
-<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the <code class="incode">#dependency</code> block. </p>
+<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <code class="incode">using</code> statement immediately after the <code class="incode">#dependency</code> block. </p>
 <p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. So we bring all the three namespaces into the file scope. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
 <h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <code class="incode">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="incode">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
 <blockquote>
-<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="incode">onEvent</code> function before even defining it. </p>
+<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="incode">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </p>
 </blockquote>
 <div class="precode"><code><span class="SCde"><span class="SFct">#run</span>
 {
