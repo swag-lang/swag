@@ -286,6 +286,7 @@ struct BuildCfg
     SwagSlice docEndHead;
     SwagSlice docStartBody;
     SwagSlice docEndBody;
+    SwagSlice docMorePages;
     bool      docStyleSection   = true;
     float     docSyntaxColorLum = 0.5f;
 };

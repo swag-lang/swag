@@ -514,7 +514,7 @@ void initErrors()
     SWAG_ERROR(Err0715, "cannot instantiate the generic function '%s' because of missing generic arguments");
     SWAG_ERROR(Err0039, "cannot instantiate the generic struct '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0721, "cannot instantiate the generic struct '%s' because of missing generic arguments");
-    SWAG_ERROR(Err0018, nullptr);
+    SWAG_ERROR(Err0018, "cannot find the documentation additional page '%s'");
     SWAG_ERROR(Err0576, "cannot move '%d' scopes up");
     SWAG_ERROR(Err0832, "cannot negate number '%I64d' because '%I64u' is not in the range of 's64'");
     SWAG_ERROR(Err0830, "cannot negate number '%d' because '%u' is not in the range of 's16'");

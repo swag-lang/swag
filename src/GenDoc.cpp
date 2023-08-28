@@ -201,19 +201,19 @@ void GenDoc::outputStyles()
         }\n";
 
     float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, getSyntaxColor(SyntaxColor::SyntaxCode, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColor::SyntaxComment, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColor::SyntaxCompiler, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColor::SyntaxFunction, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColor::SyntaxConstant, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColor::SyntaxIntrinsic, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColor::SyntaxType, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColor::SyntaxKeyword, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColor::SyntaxLogic, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColor::SyntaxNumber, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColor::SyntaxString, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColor::SyntaxAttribute, lum));
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColor::SyntaxInvalid, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCode, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxConstant, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxType, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxLogic, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
 
     helpOutput += "</style>\n";
 }

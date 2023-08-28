@@ -1,8 +1,49 @@
+/**
+Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game.
+---
+<div align="center">
+    <img src="imgs/flappy.png">
+</div>
+---
+*/
+
+/**
+Let's start. The '#dependency' block should usually be placed in the 'module.swg' special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself.
+
+This special compiler block is used to specify :
+* **External dependencies**, i.e. other modules you depend on. For example for Flappy, we will use the 'gui' module.
+* **Module configuration**. If present, a special '#run' block will be executed by the compiler at the very beginning of the compile stage. It gives the opportunity to change some build configurations.
+
+So in our case, we need to import the module 'gui'. This module is used to create windows and widgets, and will bring other modules like 'core' and 'pixel' (2D drawing).
+*/
 #dependencies
 {
+    // The location "swag@std" tells swag that 'gui' is a 'standard' module that is located
+    // with the compiler.
     #import "gui" location="swag@std"
+
+    // The '#run' block executed by the compiler before actually compiling the script itself.
+    #run
+    {
+        // Get the compiler interface to communicatie with the compiler.
+        let itf = @compiler()
+
+        // Get the build configuration
+        let cfg = itf.getBuildCfg()
+
+        // Change something...
+        // Here, for example, we force all safety guards to be present in 'debug', and we remove all
+        // of them in 'debug'.
+        #if #cfg == "debug"
+            cfg.safetyGuards = .SafetyAll
+        #else
+            cfg.safetyGuards = .SafetyNone
+    }
 }
 
+/**
+Add some
+*/
 using Core, Pixel, Gui
 
 struct Bird

@@ -8,14 +8,42 @@
 
 bool GenDoc::generatePages()
 {
+    Vector<Path> files;
     for (auto file : module->files)
+        files.push_back(file->path);
+
+    // Import additional pages
+    Utf8         morePages(module->buildCfg.docMorePages);
+    Vector<Utf8> pages;
+    Utf8::tokenize(morePages, ';', pages);
+    for (auto& addPage : pages)
+    {
+        Path path = module->path;
+        path.append(addPage.c_str());
+
+        path = filesystem::absolute(path);
+        error_code err;
+        auto       path1 = filesystem::canonical(path, err);
+        if (!err)
+            path = path1;
+
+        if (!filesystem::exists(path, err))
+            Report::errorOS(Fmt(Err(Err0018), path.string().c_str()));
+        else
+            files.push_back(path);
+    }
+
+    // Process all files
+    for (const auto& path : files)
     {
         auto filePath = g_Workspace->targetPath;
-        filePath.append(file->name.c_str());
+        filePath.append(path.filename().string());
+
         Utf8 extName{module->buildCfg.docOutputExtension};
         if (extName.empty())
             extName = ".html";
         filePath.replace_extension(extName.c_str());
+
         fullFileName = filePath.string();
 
         // Write for output
@@ -28,7 +56,7 @@ bool GenDoc::generatePages()
 
         helpContent.clear();
         helpToc.clear();
-        if (!processFile(file->path, 0))
+        if (!processFile(path, 0))
             return false;
         constructPage();
 

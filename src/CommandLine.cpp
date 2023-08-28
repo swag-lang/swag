@@ -62,7 +62,7 @@ bool CommandLine::check()
     {
         cachePath = filesystem::absolute(cachePath);
         error_code err;
-        auto       cachePath1 = filesystem::canonical(cachePath);
+        auto       cachePath1 = filesystem::canonical(cachePath, err);
         if (!err)
             cachePath = cachePath1;
     }

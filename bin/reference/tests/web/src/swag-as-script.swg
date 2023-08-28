@@ -1,4 +1,11 @@
 /**
+---
+<div align="center">
+    <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
+    </div>
+</div>
+---
 # Script file
 Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time.
 No executable will be generated, the compiler will do all the job.

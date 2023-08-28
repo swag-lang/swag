@@ -238,6 +238,9 @@
         <a href="swag-as-script.php" class="no-decoration">Scripting</a>
     </div>
     <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
+    </div>
+    <div class="round-button">
         <a href="std.php">Standard Modules</a>
     </div>
 </div></p>

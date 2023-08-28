@@ -17,5 +17,7 @@
         cfg.docIcon = "favicon.ico"
         cfg.docStartHead = "<?php include('common/start-head.php'); ?>"
         cfg.docStartBody = "<?php include('common/start-body.php'); ?>"
+
+        cfg.docMorePages = "../../../examples/scripts/flappy.swgs"
     }
 }

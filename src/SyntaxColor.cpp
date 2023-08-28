@@ -89,7 +89,7 @@ static RGBColor hslToRgb(float h, float s, float l)
     return result;
 }
 
-uint32_t getSyntaxColor(SyntaxColor color, float lum)
+uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)
 {
     RGBColor rgb;
     switch (color)
@@ -157,7 +157,7 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
     {
         if (color == SyntaxColor::SyntaxDefault)
             color = SyntaxColor::SyntaxCode;
-        auto rgb = getSyntaxColor(color, g_CommandLine.errorSyntaxColorLum);
+        auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
         return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
     }
     break;

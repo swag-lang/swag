@@ -203,6 +203,11 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<p style="white-space: break-spaces"><div align="center">
+    <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
+    </div>
+</div></p>
 <h1 id="Script_file">Script file </h1>
 <p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
 <div class="precode"><code><span class="SCde">$ swag new -f:myScript

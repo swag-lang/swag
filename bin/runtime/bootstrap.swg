@@ -761,6 +761,7 @@ namespace Swag
         docEndHead:         string              // To insert at the end of the <head> section
         docStartBody:       string              // To insert add at the start of the <body> section
         docEndBody:         string              // To insert add at the end of the <body> section
+        docMorePages:       string              // Additional external file pages to process
         docStyleSection     = true              // Generate a default <style> section
         docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
     }
