@@ -363,14 +363,14 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 blk.kind = UserBlockKind::RawParagraph;
                 start++;
             }
-            else if (line.startsWith("```"))
-            {
-                blk.kind = UserBlockKind::Code;
-                start++;
-            }
             else if (line.startsWith("```raw"))
             {
                 blk.kind = UserBlockKind::CodeRaw;
+                start++;
+            }
+            else if (line.startsWith("```"))
+            {
+                blk.kind = UserBlockKind::Code;
                 start++;
             }
             else if (line.startsWith(">"))
