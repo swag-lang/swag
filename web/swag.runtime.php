@@ -87,19 +87,19 @@
             padding:            10px;
         }
         .container a {
-            text-decoration: none;
-            color:           DoggerBlue;
+            color:              DoggerBlue;
         }
         .precode a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
         }
         .codetype a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
+        }
+        .left a {
+            text-decoration:    none;
         }
         .container a:hover {
-            text-decoration: underline;
+            text-decoration:    underline;
         }
         table.item {
             border-collapse:    separate;
@@ -201,6 +201,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>

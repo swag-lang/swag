@@ -97,19 +97,19 @@ void GenDoc::outputStyles()
             padding:            10px;\n\
         }\n\
         .container a {\n\
-            text-decoration: none;\n\
-            color:           DoggerBlue;\n\
+            color:              DoggerBlue;\n\
         }\n\
         .precode a {\n\
-            text-decoration: revert;\n\
-            color:           inherit;\n\
+            color:              inherit;\n\
         }\n\
         .codetype a {\n\
-            text-decoration: revert;\n\
-            color:           inherit;\n\
+            color:              inherit;\n\
+        }\n\
+        .left a {\n\
+            text-decoration:    none;\n\
         }\n\
         .container a:hover {\n\
-            text-decoration: underline;\n\
+            text-decoration:    underline;\n\
         }\n\
         table.item {\n\
             border-collapse:    separate;\n\

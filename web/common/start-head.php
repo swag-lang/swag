@@ -23,5 +23,19 @@
         color:           revert;
         list-style-type: revert;
         border-spacing:  revert;
+        text-decoration: revert;
+    }
+
+    .round-button {
+        border-radius:   5px;
+        border:          1px solid Gray;
+        padding:         10px;
+        margin:          10px 5px;
+        text-align:      center;
+        text-decoration: none;
+        display:         inline-block;
+    }
+    .round-button a {
+        text-decoration: none;
     }
 </style>

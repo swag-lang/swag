@@ -1,15 +1,16 @@
 /**
 # Script file
-Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time.
+Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time.
 No executable will be generated, the compiler will do all the job.
 To create a new script file with the special extension 'swgs':
 
-```
+```raw
 $ swag new -f:myScript
 => script file 'myScript.swgs' has been created
 => type 'swag script -f:myScript.swgs' to run that script
 ```
 
+This will generate a simple file with a '#dependency' block and one '#run' compiler function.
 ```
 // Swag script file
 #dependencies
@@ -26,20 +27,20 @@ $ swag new -f:myScript
 
 You can then run your script with the 'script' command.
 
-```
+```raw
 $ swag script -f:myScript
 Hello world !
 ```
 
 You can also just specify the script file **with the extension** as a command.
 
-```
+```raw
 $ swag myScript.swgs
 Hello world !
 ```
 
 You will find a bunch of small scripts in `swag/bin/examples/scripts`.
-To run one of them from the console, go to the folder and type for example `swag pendulum.swgs`
+To run one of them from the console, go to the folder and type for example `swag pendulum.swgs`.
 
 ## Dependencies
 

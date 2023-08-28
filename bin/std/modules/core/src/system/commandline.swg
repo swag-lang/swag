@@ -3,6 +3,10 @@
 
 attr ArgParams(nameAlias: string = null)
 
+struct ParseOptions
+{
+}
+
 struct(T) IsSet
 {
     #ast
@@ -18,10 +22,6 @@ struct(T) IsSet
 struct(T) Result
 {
     isSet: IsSet
-}
-
-struct ParseOptions
-{
 }
 
 // Returns true if 'oneArg' is a valid option (starting with a delimiter)
@@ -56,7 +56,8 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
         {
             allArgs.add(split[0])
             let other = Tokenize.eatSpaces(split[1])
-            if @countof(other) allArgs.add(other)
+            if @countof(other)
+                allArgs.add(other)
         }
         else
         {

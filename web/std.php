@@ -80,19 +80,19 @@
             padding:            10px;
         }
         .container a {
-            text-decoration: none;
-            color:           DoggerBlue;
+            color:              DoggerBlue;
         }
         .precode a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
         }
         .codetype a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
+        }
+        .left a {
+            text-decoration:    none;
         }
         .container a:hover {
-            text-decoration: underline;
+            text-decoration:    underline;
         }
         table.item {
             border-collapse:    separate;
@@ -194,6 +194,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SInv { color: #ff0000; }
 </style>
 </head>
 <body>
@@ -202,17 +203,24 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<p>This is the list of all modules that come with the compiler. As they are always in sync, they are considered as <b>standard</b>. They are all part of the same workspace <b>std</b>. </p>
+<p>You can find that workspace locally in <code class="incode">bin/std</code>, or <a href="https://github.com/swag-lang/swag/tree/master/bin/std">here</a> on GitHub. </p>
+<h1 id="Modules">Modules </h1>
 <table class="enumeration">
 <tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
-<tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> A 2D painting module</td></tr>
+<tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> An image and a 2D painting module</td></tr>
 <tr><td> <a href="std.gui.php">std.gui</a>           </td><td> A user interface module (windows, widgets...)</td></tr>
-<tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>
+<tr><td> <a href="std.audio.php">std.audio</a>       </td><td> An audio module to decode and play sounds</td></tr>
 <tr><td> <a href="std.libc.php">std.libc</a>         </td><td> Libc wrapper</td></tr>
+</table>
+<h1 id="Wrappers">Wrappers </h1>
+<p>Those other modules are just wrappers to external libraries. </p>
+<table class="enumeration">
+<tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>
 <tr><td> <a href="std.freetype.php">std.freetype</a> </td><td> Freetype wrapper</td></tr>
-<tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Win32 wrapper</td></tr>
-<tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Gdi32 wrapper</td></tr>
-<tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> XInput wrapper</td></tr>
-<tr><td> <a href="std.audio.php">std.audio</a>       </td><td> Audio module to play sounds</td></tr>
+<tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Windows <code class="incode">win32</code> wrapper (kernel32, user32...)</td></tr>
+<tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Windows <code class="incode">gdi32</code> wrapper</td></tr>
+<tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> Windows 'direct X input' wrapper</td></tr>
 </table>
 </div>
 </div>

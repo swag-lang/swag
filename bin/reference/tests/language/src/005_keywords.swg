@@ -63,7 +63,7 @@ discard
 dref
 ```
 # Reserved keywords
-This keywords are reserved by the language, just in case...
+These keywords are reserved by the language, just in case...
 ```
 is
 in

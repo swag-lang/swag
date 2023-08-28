@@ -80,19 +80,19 @@
             padding:            10px;
         }
         .container a {
-            text-decoration: none;
-            color:           DoggerBlue;
+            color:              DoggerBlue;
         }
         .precode a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
         }
         .codetype a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
+        }
+        .left a {
+            text-decoration:    none;
         }
         .container a:hover {
-            text-decoration: underline;
+            text-decoration:    underline;
         }
         table.item {
             border-collapse:    separate;
@@ -194,6 +194,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SInv { color: #ff0000; }
 </style>
 </head>
 <body>
@@ -206,8 +207,8 @@
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
     <div style="margin-top:50px; padding-bottom:40px; color:White; font-size:20px;">
-        <p><a href="getting-started.php" style="color:#F7F900;">Getting Started</a></p>
-        <p><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900;">Download the Compiler</a> </p>
+        <p><a href="getting-started.php" style="color:#F7F900; text-decoration:none;">Getting Started</a></p>
+        <p><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900; text-decoration:none;">Download the Compiler</a> </p>
     </div>
 </div>
 
@@ -228,15 +229,69 @@
         <b>Enjoy.</b>
     </div>
 </div>
-<p align="center" style="padding:50px;"> <img src="imgs/syntax.png"> </p></p>
+
+<div align="center">
+    <div class="round-button">
+        <a href="language.php" class="no-decoration">Documentation</a>
+    </div>
+    <div class="round-button">
+        <a href="swag-as-script.php" class="no-decoration">Scripting</a>
+    </div>
+    <div class="round-button">
+        <a href="std.php">Core Modules</a>
+    </div>
+</div></p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">public</span> <span class="SKwd">mtd</span> <span class="SFct">match</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
+{
+    <span class="SLgc">if</span> dfaNodes.<span class="SFct">isEmpty</span>()
+        <span class="SLgc">return</span> <span class="SKwd">false</span>
+
+    <span class="SKwd">var</span> stack1, stack2: <span class="SCst">Array</span>'(*<span class="SCst">DfaNode</span>)
+    stack1.<span class="SFct">add</span>(dfaNodes[<span class="SNum">0</span>])
+
+    <span class="SKwd">var</span> pstack1 = &stack1
+    <span class="SKwd">var</span> pstack2 = &stack2
+
+    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
+    <span class="SKwd">var</span> srcPtr = <span class="SItr">@dataof</span>(str)
+    <span class="SKwd">let</span> srcLength = <span class="SItr">@countof</span>(str)
+
+    <span class="SLgc">while</span> cpt &lt; srcLength <span class="SLgc">and</span> !pstack1.<span class="SFct">isEmpty</span>()
+    {
+        <span class="SKwd">var</span> (c, eat) = <span class="SCst">Utf8</span>.<span class="SFct">decodeRune</span>(<span class="SItr">@mkslice</span>(srcPtr, srcLength - cpt))
+        <span class="SLgc">if</span> ignoreCase
+            c = <span class="SCst">Unicode</span>.<span class="SFct">toUpper</span>(c)
+
+        <span class="SKwd">var</span> ok = <span class="SKwd">false</span>
+        <span class="SLgc">while</span> !pstack1.<span class="SFct">isEmpty</span>()
+        {
+            <span class="SKwd">let</span> curState = pstack1.<span class="SFct">popBack</span>()
+            <span class="SLgc">if</span> <span class="SFct">dfaMatch</span>(pstack2, c, curState)
+                ok = <span class="SKwd">true</span>
+        }
+
+        <span class="SLgc">if</span> ok
+            cpt, srcPtr += eat
+
+        <span class="SFct">swap</span>(&pstack1, &pstack2)
+    }
+
+    <span class="SLgc">if</span> cpt != srcLength
+        <span class="SLgc">return</span> <span class="SKwd">false</span>
+
+    <span class="SLgc">while</span> !pstack1.<span class="SFct">isEmpty</span>()
+    {
+        <span class="SKwd">let</span> curState = pstack1.<span class="SFct">popBack</span>()
+        <span class="SLgc">if</span> curState.terminal
+            <span class="SLgc">return</span> <span class="SKwd">true</span>
+    }
+
+    <span class="SLgc">return</span> <span class="SKwd">false</span>
+}</span></code>
+</div>
 <blockquote>
 <p>There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </p>
 </blockquote>
-<ul>
-<li>To take a look at the language, this is <a href="language.php">here</a>.</li>
-<li>To take a look at the standard list of modules, this is <a href="std.php">here</a>.</li>
-<li>To use Swag as a scripting language, this is <a href="swag-as-script.php">here</a>.</li>
-</ul>
 </div>
 </div>
 </div>

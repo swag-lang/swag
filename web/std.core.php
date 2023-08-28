@@ -87,19 +87,19 @@
             padding:            10px;
         }
         .container a {
-            text-decoration: none;
-            color:           DoggerBlue;
+            color:              DoggerBlue;
         }
         .precode a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
         }
         .codetype a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
+        }
+        .left a {
+            text-decoration:    none;
         }
         .container a:hover {
-            text-decoration: underline;
+            text-decoration:    underline;
         }
         table.item {
             border-collapse:    separate;
@@ -201,6 +201,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SInv { color: #ff0000; }
 </style>
 <?php include('common/end-head.php'); ?></head>
 <body>
@@ -3804,7 +3805,7 @@
 <span class="content" id="Core_CommandLine_IsSet"><span class="titletype">struct</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">IsSet</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3817,7 +3818,7 @@
 <span class="content" id="Core_CommandLine_ParseOptions"><span class="titletype">struct</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">ParseOptions</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3828,7 +3829,7 @@
 <span class="content" id="Core_CommandLine_Result"><span class="titletype">struct</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">Result</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3848,7 +3849,7 @@
 <span class="content" id="Core_CommandLine_getField"><span class="titletype">func</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">getField</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3875,7 +3876,7 @@
 <span class="content" id="Core_CommandLine_parse"><span class="titletype">func</span> <span class="titlelight">CommandLine.</span><span class="titlestrong">parse</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3889,7 +3890,7 @@
 <span class="content" id="Core_CommandLine_parse_parse_checkNext"><span class="titletype">func</span> <span class="titlelight">parse.</span><span class="titlestrong">checkNext</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15194,7 +15195,7 @@
 <span class="content" id="Core_Parser_RegExp_grep"><span class="titletype">func</span> <span class="titlelight">RegExp.</span><span class="titlestrong">grep</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L203" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15208,7 +15209,7 @@
 <span class="content" id="Core_Parser_RegExp_grepAll"><span class="titletype">func</span> <span class="titlelight">RegExp.</span><span class="titlestrong">grepAll</span></span>
 </td>
 <td class="srcref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L184" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

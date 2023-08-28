@@ -127,9 +127,9 @@ impl RegExp
     {
         clear()
         self.ignoreCase = #self.ignoreCase
-        try preprocess(str)
-        try nfaBuild()
-        try dfaBuild()
+        preprocess(str)
+        nfaBuild()
+        dfaBuild()
     }
 
     // Returns true if 'str' matches the regexp
@@ -140,6 +140,7 @@ impl RegExp
 
         var stack1, stack2: Array'(*DfaNode)
         stack1.add(dfaNodes[0])
+
         var pstack1 = &stack1
         var pstack2 = &stack2
 

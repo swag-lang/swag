@@ -80,19 +80,19 @@
             padding:            10px;
         }
         .container a {
-            text-decoration: none;
-            color:           DoggerBlue;
+            color:              DoggerBlue;
         }
         .precode a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
         }
         .codetype a {
-            text-decoration: revert;
-            color:           inherit;
+            color:              inherit;
+        }
+        .left a {
+            text-decoration:    none;
         }
         .container a:hover {
-            text-decoration: underline;
+            text-decoration:    underline;
         }
         table.item {
             border-collapse:    separate;
@@ -194,6 +194,7 @@
     .SNum { color: #74a35b; }
     .SStr { color: #bb6643; }
     .SAtr { color: #7f7f7f; }
+    .SInv { color: #ff0000; }
 </style>
 </head>
 <body>
@@ -203,11 +204,12 @@
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1 id="Script_file">Script file </h1>
-<p>Instead of a workspace, Swag can also be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
+<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
 <div class="precode"><code><span class="SCde">$ swag new -f:myScript
-=&gt; script file 'myScript.<span class="SFct">swgs</span>' has been created
-=&gt; type 'swag script -f:myScript.<span class="SFct">swgs</span>' <span class="SLgc">to</span> run that script</span></code>
+=&gt; script file 'myScript.swgs' has been created
+=&gt; type 'swag script -f:myScript.swgs' to run that script</span></code>
 </div>
+<p>This will generate a simple file with a <code class="incode">#dependency</code> block and one <code class="incode">#run</code> compiler function. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
@@ -222,13 +224,13 @@
 </div>
 <p>You can then run your script with the <code class="incode">script</code> command. </p>
 <div class="precode"><code><span class="SCde">$ swag script -f:myScript
-<span class="SCst">Hello</span> world !</span></code>
+Hello world !</span></code>
 </div>
 <p>You can also just specify the script file <b>with the extension</b> as a command. </p>
 <div class="precode"><code><span class="SCde">$ swag myScript.swgs
-<span class="SCst">Hello</span> world !</span></code>
+Hello world !</span></code>
 </div>
-<p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag pendulum.swgs</code> </p>
+<p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag pendulum.swgs</code>. </p>
 <h2 id="Dependencies">Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
