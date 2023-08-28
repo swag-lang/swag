@@ -9,25 +9,28 @@
 /**
 Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. This page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
 
-More than explaining the game itself, the goal here is to describe the language.
-So let's start.
+Instead of mainly explaining the game, the aim here is to describe the programming language.
+So, let's begin.
 
-The '#dependency' block should usually be placed in the 'module.swg' special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself.
+# Dependencies
+
+Normally, you'd put the '#dependency' block in the 'module.swg' file of a module. But if it's a script and there's no 'module.swg' file, you just put it at the top of the script file.
 
 This special compiler block is used to specify :
 * **External dependencies**, i.e. other modules you depend on. For example for Flappy, we will use the 'gui' module.
+* **Additional files**. In case of scripts, you can add more files to compile with the '#load' directive.
 * **Module configuration**. If present, a special '#run' block will be executed by the compiler at the very beginning of the compile stage. It gives the opportunity to change some build configurations.
 
 So in our case, we need to import the module 'gui'. This module is used to create windows and widgets, and will bring other modules like 'core' and 'pixel' (2D drawing).
 */
 #dependencies
 {
-    // The location "swag@std" tells swag that 'gui' is a 'standard' module that is located
+    // The location "swag@std" tells swag that 'gui' is a standard module that is located
     // with the compiler.
     #import "gui" location="swag@std"
 
     // This is the optional '#run' block executed by the compiler before compiling the script itself.
-    // Here we define it just to make the point because Flappy does not really need one.
+    // We define it just to make the point because Flappy does not really need one.
     #run
     {
         // Get the compiler interface to communicate with the compiler.
@@ -47,14 +50,18 @@ So in our case, we need to import the module 'gui'. This module is used to creat
 }
 
 /**
-Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the #dependency block.
+Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the '#dependency' block.
 
 The 'gui' module depends on 'pixel' which depends on 'core'. So we bring all the three namespaces into the file scope.
 */
 using Core, Pixel, Gui
 
 /**
+# Entry point
+
 The compiler's '#run' function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple '#run' blocks, a single one is sufficient for the Flappy application.
+
+> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the 'onEvent' function before even defining it.
 */
 #run
 {
@@ -69,6 +76,7 @@ The compiler's '#run' function serves as the initial execution point for the scr
 }
 
 /**
+# Global definitions
 */
 
 // Defines the Bird
@@ -123,6 +131,8 @@ const GroundHeight = 40.0
 const SpeedHorz    = 100.0
 
 /**
+# The actual code
+
 This is the callback that will deal with all gui events.
 */
 

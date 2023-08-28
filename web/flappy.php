@@ -207,22 +207,24 @@
     <img src="imgs/flappy.png">
 </div></p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
-<p>More than explaining the game itself, the goal here is to describe the language. So let's start. </p>
-<p>The <code class="incode">#dependency</code> block should usually be placed in the <code class="incode">module.swg</code> special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself. </p>
+<p>Instead of mainly explaining the game, the aim here is to describe the programming language. So, let's begin. </p>
+<h1 id="Dependencies">Dependencies </h1>
+<p>Normally, you'd put the <code class="incode">#dependency</code> block in the <code class="incode">module.swg</code> file of a module. But if it's a script and there's no <code class="incode">module.swg</code> file, you just put it at the top of the script file. </p>
 <p>This special compiler block is used to specify : </p>
 <ul>
 <li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <code class="incode">gui</code> module.</li>
+<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <code class="incode">#load</code> directive.</li>
 <li><b>Module configuration</b>. If present, a special <code class="incode">#run</code> block will be executed by the compiler at the very beginning of the compile stage. It gives the opportunity to change some build configurations.</li>
 </ul>
 <p>So in our case, we need to import the module <code class="incode">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="incode">core</code> and <code class="incode">pixel</code> (2D drawing). </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
-    <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a 'standard' module that is located</span>
+    <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>
     <span class="SCmp">#import</span> <span class="SStr">"gui"</span> location=<span class="SStr">"swag@std"</span>
 
     <span class="SCmt">// This is the optional '#run' block executed by the compiler before compiling the script itself.</span>
-    <span class="SCmt">// Here we define it just to make the point because Flappy does not really need one.</span>
+    <span class="SCmt">// We define it just to make the point because Flappy does not really need one.</span>
     <span class="SFct">#run</span>
     {
         <span class="SCmt">// Get the compiler interface to communicate with the compiler.</span>
@@ -241,11 +243,15 @@
     }
 }</span></code>
 </div>
-<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the #dependency block. </p>
+<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the <code class="incode">#dependency</code> block. </p>
 <p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. So we bring all the three namespaces into the file scope. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
+<h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <code class="incode">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="incode">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
+<blockquote>
+<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="incode">onEvent</code> function before even defining it. </p>
+</blockquote>
 <div class="precode"><code><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
@@ -258,6 +264,7 @@
     <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
 }</span></code>
 </div>
+<h1 id="Global_definitions">Global definitions </h1>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
@@ -304,6 +311,7 @@
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
 </div>
+<h1 id="The_actual_code">The actual code </h1>
 <p>This is the callback that will deal with all gui events. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
 {
