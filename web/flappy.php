@@ -219,7 +219,7 @@
 <li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <code class="incode">#load</code> directive.</li>
 <li><b>Module configuration</b>. If present, a special <code class="incode">#run</code> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
 </ul>
-<p>So in our case, we need to import the module <code class="incode">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="incode">core</code> and <code class="incode">pixel</code> (2D drawing). </p>
+<p>So in our case, we need to import the module <code class="incode">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="incode">core</code> and <code class="incode">pixel</code> (2D painting). </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>

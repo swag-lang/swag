@@ -24,7 +24,7 @@ This special compiler block is used to specify :
 * **Additional files**. In case of scripts, you can add more files to compile with the '#load' directive.
 * **Module configuration**. If present, a special '#run' block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.
 
-So in our case, we need to import the module 'gui'. This module is used to create windows and widgets, and will bring other modules like 'core' and 'pixel' (2D drawing).
+So in our case, we need to import the module 'gui'. This module is used to create windows and widgets, and will bring other modules like 'core' and 'pixel' (2D painting).
 */
 #dependencies
 {
