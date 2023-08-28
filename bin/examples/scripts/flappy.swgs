@@ -1,5 +1,4 @@
 /**
-Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game.
 ---
 <div align="center">
     <img src="imgs/flappy.png">
@@ -8,7 +7,12 @@ Here is a very simple script that implements the [Flappy Bird](https://en.wikipe
 */
 
 /**
-Let's start. The '#dependency' block should usually be placed in the 'module.swg' special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself.
+Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. This page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
+
+More than explaining the game itself, the goal here is to describe the language.
+So let's start.
+
+The '#dependency' block should usually be placed in the 'module.swg' special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself.
 
 This special compiler block is used to specify :
 * **External dependencies**, i.e. other modules you depend on. For example for Flappy, we will use the 'gui' module.
@@ -22,10 +26,11 @@ So in our case, we need to import the module 'gui'. This module is used to creat
     // with the compiler.
     #import "gui" location="swag@std"
 
-    // The '#run' block executed by the compiler before actually compiling the script itself.
+    // This is the optional '#run' block executed by the compiler before compiling the script itself.
+    // Here we define it just to make the point because Flappy does not really need one.
     #run
     {
-        // Get the compiler interface to communicatie with the compiler.
+        // Get the compiler interface to communicate with the compiler.
         let itf = @compiler()
 
         // Get the build configuration
@@ -33,33 +38,59 @@ So in our case, we need to import the module 'gui'. This module is used to creat
 
         // Change something...
         // Here, for example, we force all safety guards to be present in 'debug', and we remove all
-        // of them in 'debug'.
+        // of them in 'release'.
         #if #cfg == "debug"
-            cfg.safetyGuards = .SafetyAll
+            cfg.safetyGuards = Swag.SafetyAll
         #else
-            cfg.safetyGuards = .SafetyNone
+            cfg.safetyGuards = Swag.SafetyNone
     }
 }
 
 /**
-Add some
+Each module has its own namespace. To avoid having to specify it each time we want to reference something, we add some global 'using' right after the '#dependency' block.
+
+The 'gui' module depends on 'pixel' which depends on 'core'. Their we bring all the three namespaces into the file scope.
 */
 using Core, Pixel, Gui
 
-struct Bird
+/**
+The compiler function '#run' is the **script entry point**. That kind of block is executed by the compiler during the compilation. You can have more than one '#run' block, but for Flappy one is enough.
+*/
+#run
 {
-    pos:        Math.Vector2
-    speed:      Math.Vector2
-    frame:      f32
+    // From the command line, if the script is run with '--arg:swag.test', then we force the application
+    // to exit after 100 frames. This is usefull for batch testing.
+    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+
+    // Creates and run one surface (i.e. window) at the given position and with the given size and title.
+    // 'hook' defines a lambda that will receive and treat all gui events
+    // 'init' defines a lambda that will be called for surface initialization
+    Application.runSurface(100, 100, 300, 512, title: "Flappy Bird", hook: &onEvent, init: &test)
 }
 
+/**
+*/
+
+// Defines the Bird
+struct Bird
+{
+    pos:        Math.Vector2    // Position of the bird
+    speed:      Math.Vector2    // Speed of the bird
+    frame:      f32             // Sprite frame
+}
+
+// Defines one Pipe
 struct Pipe
 {
-    rectUp:     Math.Rectangle
-    rectDown:   Math.Rectangle
-    distToNext: f32
-    scored:     bool
+    rectUp:     Math.Rectangle  // Position of the up part of the Pipe
+    rectDown:   Math.Rectangle  // Position of the down part of the Pipe
+    distToNext: f32             // Distance to the next Pipe
+    scored:     bool            // 'true' if the Bird has passed that Pipe
 }
+
+/**
+Global variables
+*/
 
 var g_Bird:      Bird
 var g_Dt:        f32
@@ -83,11 +114,47 @@ var g_DigitTexture: [10] Texture
 
 var g_Font: *Font
 
+/**
+Global constants
+*/
 const Gravity      = 2.5
 const BirdImpulseY = 350
-
 const GroundHeight = 40.0
 const SpeedHorz    = 100.0
+
+/**
+This is the callback that will deal with all gui events.
+*/
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Rect = wnd.getClientRect()
+        assume loadAssets(wnd)
+        start()
+
+    case Resize:
+        g_Rect = wnd.getClientRect()
+
+    case Paint:
+        let paintEvt = cast(*PaintEvent) evt
+        let painter = paintEvt.bc.painter
+        g_Dt     = wnd.getApp().getDt()
+
+        input(wnd)
+        paint(painter)
+        move()
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+/**
+*/
 
 func paint(painter: *Painter)
 {
@@ -163,6 +230,9 @@ func paint(painter: *Painter)
     }
 }
 
+/**
+*/
+
 func input(wnd: *Wnd)
 {
     let kb = wnd.getApp().getKeyboard()
@@ -183,6 +253,9 @@ func input(wnd: *Wnd)
     }
 }
 
+/**
+*/
+
 func birdInRect(rect: Math.Rectangle)->bool
 {
     var rectBird: Math.Rectangle
@@ -192,6 +265,9 @@ func birdInRect(rect: Math.Rectangle)->bool
     rectBird.height = g_BirdTexture[0].height
     return rect.intersectWith(rectBird)
 }
+
+/**
+*/
 
 func move()
 {
@@ -239,6 +315,9 @@ func move()
         g_GameOver = true
 }
 
+/**
+*/
+
 func createPipe()
 {
     var pipe: Pipe
@@ -263,6 +342,9 @@ func createPipe()
     g_Pipes.add(pipe)
 }
 
+/**
+*/
+
 func start()
 {
     @init(&g_Bird)
@@ -273,6 +355,9 @@ func start()
     g_GameOver = false
     g_Start = false
 }
+
+/**
+*/
 
 func loadAssets(wnd: *Wnd) throw
 {
@@ -296,37 +381,4 @@ func loadAssets(wnd: *Wnd) throw
     g_PipeTextureU = render.addImage(img)
 
     g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
-}
-
-func onEvent(wnd: *Wnd, evt: *Event)->bool
-{
-    switch evt.kind
-    {
-    case Create:
-        g_Rect = wnd.getClientRect()
-        assume loadAssets(wnd)
-        start()
-
-    case Resize:
-        g_Rect = wnd.getClientRect()
-
-    case Paint:
-        let paintEvt = cast(*PaintEvent) evt
-        let painter = paintEvt.bc.painter
-        g_Dt     = wnd.getApp().getDt()
-
-        input(wnd)
-        paint(painter)
-        move()
-
-        wnd.invalidate()
-    }
-
-    return false
-}
-
-#run
-{
-    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
-    Application.runSurface(100, 100, 300, 512, title: "Flappy Bird", hook: &onEvent, init: &test)
 }

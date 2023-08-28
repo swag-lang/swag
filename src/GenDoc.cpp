@@ -200,8 +200,9 @@ void GenDoc::outputStyles()
             overflow-x:         auto;\n\
         }\n";
 
-    float lum = module ? module->buildCfg.docSyntaxColorLum : 0.5f;
-    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCode, lum));
+    float    lum        = module->buildCfg.docSyntaxColorLum;
+    uint32_t defaultCol = module->buildCfg.docSyntaxDefaultColor;
+    helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));

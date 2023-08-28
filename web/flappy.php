@@ -182,7 +182,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #7f7f7f; }
+    .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -203,11 +203,12 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
-<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. </p>
 <p style="white-space: break-spaces"><div align="center">
     <img src="imgs/flappy.png">
 </div></p>
-<p>Let's start. The <code class="incode">#dependency</code> block should usually be placed in the <code class="incode">module.swg</code> special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself. </p>
+<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
+<p>More than explaining the game itself, the goal here is to describe the language. So let's start. </p>
+<p>The <code class="incode">#dependency</code> block should usually be placed in the <code class="incode">module.swg</code> special file of the corresponding module, but for a script, as that file does not exist, it is placed at the top of the script file itself. </p>
 <p>This special compiler block is used to specify : </p>
 <ul>
 <li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <code class="incode">gui</code> module.</li>
@@ -220,10 +221,11 @@
     <span class="SCmt">// with the compiler.</span>
     <span class="SCmp">#import</span> <span class="SStr">"gui"</span> location=<span class="SStr">"swag@std"</span>
 
-    <span class="SCmt">// The '#run' block executed by the compiler before actually compiling the script itself.</span>
+    <span class="SCmt">// This is the optional '#run' block executed by the compiler before compiling the script itself.</span>
+    <span class="SCmt">// Here we define it just to make the point because Flappy does not really need one.</span>
     <span class="SFct">#run</span>
     {
-        <span class="SCmt">// Get the compiler interface to communicatie with the compiler.</span>
+        <span class="SCmt">// Get the compiler interface to communicate with the compiler.</span>
         <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
 
         <span class="SCmt">// Get the build configuration</span>
@@ -231,33 +233,50 @@
 
         <span class="SCmt">// Change something...</span>
         <span class="SCmt">// Here, for example, we force all safety guards to be present in 'debug', and we remove all</span>
-        <span class="SCmt">// of them in 'debug'.</span>
+        <span class="SCmt">// of them in 'release'.</span>
         <span class="SCmp">#if</span> <span class="SCmp">#cfg</span> == <span class="SStr">"debug"</span>
-            cfg.safetyGuards = .<span class="SCst">SafetyAll</span>
+            cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyAll</span>
         <span class="SCmp">#else</span>
-            cfg.safetyGuards = .<span class="SCst">SafetyNone</span>
+            cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyNone</span>
     }
 }</span></code>
 </div>
-<p>Add some </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span>
+<p>Each module has its own namespace. To avoid having to specify it each time we want to reference something, we add some global <code class="incode">using</code> right after the <code class="incode">#dependency</code> block. </p>
+<p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. Their we bring all the three namespaces into the file scope. </p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
+</div>
+<p>The compiler function <code class="incode">#run</code> is the <b>script entry point</b>. That kind of block is executed by the compiler during the compilation. You can have more than one <code class="incode">#run</code> block, but for Flappy one is enough. </p>
+<div class="precode"><code><span class="SCde"><span class="SFct">#run</span>
+{
+    <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
+    <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) app.maxRunFrame = <span class="SNum">100</span>
 
+    <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
+    <span class="SCmt">// 'hook' defines a lambda that will receive and treat all gui events</span>
+    <span class="SCmt">// 'init' defines a lambda that will be called for surface initialization</span>
+    <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
-    pos:        <span class="SCst">Math</span>.<span class="SCst">Vector2</span>
-    speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>
-    frame:      <span class="STpe">f32</span>
+    pos:        <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Position of the bird</span>
+    speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Speed of the bird</span>
+    frame:      <span class="STpe">f32</span>             <span class="SCmt">// Sprite frame</span>
 }
 
+<span class="SCmt">// Defines one Pipe</span>
 <span class="SKwd">struct</span> <span class="SCst">Pipe</span>
 {
-    rectUp:     <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
-    rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
-    distToNext: <span class="STpe">f32</span>
-    scored:     <span class="STpe">bool</span>
-}
-
-<span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
+    rectUp:     <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the up part of the Pipe</span>
+    rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the down part of the Pipe</span>
+    distToNext: <span class="STpe">f32</span>             <span class="SCmt">// Distance to the next Pipe</span>
+    scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
+}</span></code>
+</div>
+<p>Global variables </p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
 <span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
@@ -277,15 +296,43 @@
 <span class="SKwd">var</span> g_MsgTexture:   <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>
 
-<span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span>
-
-<span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
+<span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></code>
+</div>
+<p>Global constants </p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
 <span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>
-
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
-<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
+<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
+</div>
+<p>This is the callback that will deal with all gui events. </p>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
+{
+    <span class="SLgc">switch</span> evt.kind
+    {
+    <span class="SLgc">case</span> <span class="SCst">Create</span>:
+        g_Rect = wnd.<span class="SFct">getClientRect</span>()
+        <span class="SKwd">assume</span> <span class="SFct">loadAssets</span>(wnd)
+        <span class="SFct">start</span>()
 
-<span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
+    <span class="SLgc">case</span> <span class="SCst">Resize</span>:
+        g_Rect = wnd.<span class="SFct">getClientRect</span>()
+
+    <span class="SLgc">case</span> <span class="SCst">Paint</span>:
+        <span class="SKwd">let</span> paintEvt = <span class="SKwd">cast</span>(*<span class="SCst">PaintEvent</span>) evt
+        <span class="SKwd">let</span> painter = paintEvt.bc.painter
+        g_Dt     = wnd.<span class="SFct">getApp</span>().<span class="SFct">getDt</span>()
+
+        <span class="SFct">input</span>(wnd)
+        <span class="SFct">paint</span>(painter)
+        <span class="SFct">move</span>()
+
+        wnd.<span class="SFct">invalidate</span>()
+    }
+
+    <span class="SLgc">return</span> <span class="SKwd">false</span>
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Math</span>.<span class="SCst">Point</span>
 
@@ -357,9 +404,9 @@
         pt.y = g_Rect.<span class="SFct">vertCenter</span>() - g_MsgTexture.height/<span class="SNum">2</span>
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_MsgTexture)
     }
-}
-
-<span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
 {
     <span class="SKwd">let</span> kb = wnd.<span class="SFct">getApp</span>().<span class="SFct">getKeyboard</span>()
 
@@ -377,9 +424,9 @@
         g_Start = <span class="SKwd">true</span>
         g_Bird.speed.y = -<span class="SCst">BirdImpulseY</span>
     }
-}
-
-<span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
     rectBird.x = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width/<span class="SNum">2</span>
@@ -387,9 +434,9 @@
     rectBird.width = g_BirdTexture[<span class="SNum">0</span>].width
     rectBird.height = g_BirdTexture[<span class="SNum">0</span>].height
     <span class="SLgc">return</span> rect.<span class="SFct">intersectWith</span>(rectBird)
-}
-
-<span class="SKwd">func</span> <span class="SFct">move</span>()
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
 {
     <span class="SLgc">if</span> g_GameOver
         <span class="SLgc">return</span>
@@ -433,9 +480,9 @@
 
     <span class="SLgc">if</span> g_Bird.pos.y + g_BirdTexture[<span class="SNum">0</span>].height &gt; g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>
         g_GameOver = <span class="SKwd">true</span>
-}
-
-<span class="SKwd">func</span> <span class="SFct">createPipe</span>()
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
 {
     <span class="SKwd">var</span> pipe: <span class="SCst">Pipe</span>
 
@@ -457,9 +504,9 @@
     pipe.distToNext = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">100</span>, <span class="SNum">200</span>)
 
     g_Pipes.<span class="SFct">add</span>(pipe)
-}
-
-<span class="SKwd">func</span> <span class="SFct">start</span>()
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
 {
     <span class="SItr">@init</span>(&g_Bird)
     g_Bird.pos.x = g_Rect.<span class="SFct">horzCenter</span>()
@@ -468,9 +515,9 @@
     g_Pipes.<span class="SFct">clear</span>()
     g_GameOver = <span class="SKwd">false</span>
     g_Start = <span class="SKwd">false</span>
-}
-
-<span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
+}</span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 
@@ -492,39 +539,6 @@
     g_PipeTextureU = render.<span class="SFct">addImage</span>(img)
 
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
-}
-
-<span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
-{
-    <span class="SLgc">switch</span> evt.kind
-    {
-    <span class="SLgc">case</span> <span class="SCst">Create</span>:
-        g_Rect = wnd.<span class="SFct">getClientRect</span>()
-        <span class="SKwd">assume</span> <span class="SFct">loadAssets</span>(wnd)
-        <span class="SFct">start</span>()
-
-    <span class="SLgc">case</span> <span class="SCst">Resize</span>:
-        g_Rect = wnd.<span class="SFct">getClientRect</span>()
-
-    <span class="SLgc">case</span> <span class="SCst">Paint</span>:
-        <span class="SKwd">let</span> paintEvt = <span class="SKwd">cast</span>(*<span class="SCst">PaintEvent</span>) evt
-        <span class="SKwd">let</span> painter = paintEvt.bc.painter
-        g_Dt     = wnd.<span class="SFct">getApp</span>().<span class="SFct">getDt</span>()
-
-        <span class="SFct">input</span>(wnd)
-        <span class="SFct">paint</span>(painter)
-        <span class="SFct">move</span>()
-
-        wnd.<span class="SFct">invalidate</span>()
-    }
-
-    <span class="SLgc">return</span> <span class="SKwd">false</span>
-}
-
-<span class="SFct">#run</span>
-{
-    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) app.maxRunFrame = <span class="SNum">100</span>
-    <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
 }</span></code>
 </div>
 </div>

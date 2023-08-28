@@ -287,8 +287,9 @@ struct BuildCfg
     SwagSlice docStartBody;
     SwagSlice docEndBody;
     SwagSlice docMorePages;
-    bool      docStyleSection   = true;
-    float     docSyntaxColorLum = 0.5f;
+    bool      docStyleSection       = true;
+    uint32_t  docSyntaxDefaultColor = 0x00222222;
+    float     docSyntaxColorLum     = 0.5f;
 };
 
 enum class TypeInfoKind : uint8_t

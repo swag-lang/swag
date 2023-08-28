@@ -189,7 +189,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #7f7f7f; }
+    .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }

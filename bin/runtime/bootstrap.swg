@@ -650,6 +650,7 @@ namespace Swag
     const SafetySanity      = 0x0080
     const SafetyUnreachable = 0x0100
     const SafetyNullCheck   = 0x0200
+    const SafetyNone        = 0x0000
     const SafetyAll         = 0xFFFF
 
     // 'LLVM' backend specific options
@@ -750,20 +751,21 @@ namespace Swag
 
         repoPath:       string                  // Repository access path to the module
 
-        docKind             = DocKind.None
-        docOutputName:      string              // The name of the output file (without extension)
-        docOutputExtension: string              // The output extension
-        docTitleToc:        string              // Title for the table of content
-        docTitleContent:    string              // Title for the main document content
-        docCss:             string              // The 'css' file to include in generated documentations
-        docIcon:            string              // The icon path of the page
-        docStartHead:       string              // To insert at the start of the <head> section
-        docEndHead:         string              // To insert at the end of the <head> section
-        docStartBody:       string              // To insert add at the start of the <body> section
-        docEndBody:         string              // To insert add at the end of the <body> section
-        docMorePages:       string              // Additional external file pages to process
-        docStyleSection     = true              // Generate a default <style> section
-        docSyntaxColorLum:  f32 = 0.5           // Code syntax color luminosity between 0 and 1
+        docKind                 = DocKind.None
+        docOutputName:          string             // The name of the output file (without extension)
+        docOutputExtension:     string             // The output extension
+        docTitleToc:            string             // Title for the table of content
+        docTitleContent:        string             // Title for the main document content
+        docCss:                 string             // The 'css' file to include in generated documentations
+        docIcon:                string             // The icon path of the page
+        docStartHead:           string             // To insert at the start of the <head> section
+        docEndHead:             string             // To insert at the end of the <head> section
+        docStartBody:           string             // To insert add at the start of the <body> section
+        docEndBody:             string             // To insert add at the end of the <body> section
+        docMorePages:           string             // Additional external file pages to process
+        docStyleSection         = true             // Generate a default <style> section
+        docSyntaxDefaultColor:  u32 = 0x00222222   // Code syntax default color (if not colorized)
+        docSyntaxColorLum:      f32 = 0.5          // Code syntax color luminosity in range ]0, 1]
     }
 
     // #########################################################
