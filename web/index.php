@@ -248,52 +248,28 @@
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div></p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">public</span> <span class="SKwd">mtd</span> <span class="SFct">match</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
+<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
-    <span class="SLgc">if</span> dfaNodes.<span class="SFct">isEmpty</span>()
-        <span class="SLgc">return</span> <span class="SKwd">false</span>
+    <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 
-    <span class="SKwd">var</span> stack1, stack2: <span class="SCst">Array</span>'(*<span class="SCst">DfaNode</span>)
-    stack1.<span class="SFct">add</span>(dfaNodes[<span class="SNum">0</span>])
+    <span class="SKwd">var</span> dataPath: <span class="SCst">String</span> = <span class="SCst">Path</span>.<span class="SFct">getDirectoryName</span>(<span class="SCmp">#location</span>.fileName)
+    dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"datas"</span>)
+    dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"flappy"</span>)
 
-    <span class="SKwd">var</span> pstack1 = &stack1
-    <span class="SKwd">var</span> pstack2 = &stack2
+    g_BirdTexture[<span class="SNum">0</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-upflap.png"</span>))
+    g_BirdTexture[<span class="SNum">1</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-midflap.png"</span>))
+    g_BirdTexture[<span class="SNum">2</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-downflap.png"</span>))
+    g_OverTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"gameover.png"</span>))
+    g_BaseTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"base.png"</span>))
+    g_BackTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"background-day.png"</span>))
+    g_MsgTexture     = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"message.png"</span>))
 
-    <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SKwd">var</span> srcPtr = <span class="SItr">@dataof</span>(str)
-    <span class="SKwd">let</span> srcLength = <span class="SItr">@countof</span>(str)
+    <span class="SKwd">var</span> img = <span class="SCst">Image</span>.<span class="SFct">load</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"pipe-green.png"</span>))
+    g_PipeTextureD = render.<span class="SFct">addImage</span>(img)
+    img.<span class="SFct">flip</span>()
+    g_PipeTextureU = render.<span class="SFct">addImage</span>(img)
 
-    <span class="SLgc">while</span> cpt &lt; srcLength <span class="SLgc">and</span> !pstack1.<span class="SFct">isEmpty</span>()
-    {
-        <span class="SKwd">var</span> (c, eat) = <span class="SCst">Utf8</span>.<span class="SFct">decodeRune</span>(<span class="SItr">@mkslice</span>(srcPtr, srcLength - cpt))
-        <span class="SLgc">if</span> ignoreCase
-            c = <span class="SCst">Unicode</span>.<span class="SFct">toUpper</span>(c)
-
-        <span class="SKwd">var</span> ok = <span class="SKwd">false</span>
-        <span class="SLgc">while</span> !pstack1.<span class="SFct">isEmpty</span>()
-        {
-            <span class="SKwd">let</span> curState = pstack1.<span class="SFct">popBack</span>()
-            <span class="SLgc">if</span> <span class="SFct">dfaMatch</span>(pstack2, c, curState)
-                ok = <span class="SKwd">true</span>
-        }
-
-        <span class="SLgc">if</span> ok
-            cpt, srcPtr += eat
-
-        <span class="SFct">swap</span>(&pstack1, &pstack2)
-    }
-
-    <span class="SLgc">if</span> cpt != srcLength
-        <span class="SLgc">return</span> <span class="SKwd">false</span>
-
-    <span class="SLgc">while</span> !pstack1.<span class="SFct">isEmpty</span>()
-    {
-        <span class="SKwd">let</span> curState = pstack1.<span class="SFct">popBack</span>()
-        <span class="SLgc">if</span> curState.terminal
-            <span class="SLgc">return</span> <span class="SKwd">true</span>
-    }
-
-    <span class="SLgc">return</span> <span class="SKwd">false</span>
+    g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
 <blockquote>

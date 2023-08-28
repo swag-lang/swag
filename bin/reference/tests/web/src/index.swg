@@ -48,52 +48,28 @@
 ---
 
 ```
-public mtd match(str: string)->bool
+func loadAssets(wnd: *Wnd) throw
 {
-    if dfaNodes.isEmpty()
-        return false
+    let render = &wnd.getApp().renderer
 
-    var stack1, stack2: Array'(*DfaNode)
-    stack1.add(dfaNodes[0])
+    var dataPath: String = Path.getDirectoryName(#location.fileName)
+    dataPath = Path.combine(dataPath, "datas")
+    dataPath = Path.combine(dataPath, "flappy")
 
-    var pstack1 = &stack1
-    var pstack2 = &stack2
+    g_BirdTexture[0] = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
+    g_BirdTexture[1] = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
+    g_BirdTexture[2] = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
+    g_OverTexture    = render.addImage(Path.combine(dataPath, "gameover.png"))
+    g_BaseTexture    = render.addImage(Path.combine(dataPath, "base.png"))
+    g_BackTexture    = render.addImage(Path.combine(dataPath, "background-day.png"))
+    g_MsgTexture     = render.addImage(Path.combine(dataPath, "message.png"))
 
-    var cpt = 0
-    var srcPtr = @dataof(str)
-    let srcLength = @countof(str)
+    var img = Image.load(Path.combine(dataPath, "pipe-green.png"))
+    g_PipeTextureD = render.addImage(img)
+    img.flip()
+    g_PipeTextureU = render.addImage(img)
 
-    while cpt < srcLength and !pstack1.isEmpty()
-    {
-        var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-        if ignoreCase
-            c = Unicode.toUpper(c)
-
-        var ok = false
-        while !pstack1.isEmpty()
-        {
-            let curState = pstack1.popBack()
-            if dfaMatch(pstack2, c, curState)
-                ok = true
-        }
-
-        if ok
-            cpt, srcPtr += eat
-
-        swap(&pstack1, &pstack2)
-    }
-
-    if cpt != srcLength
-        return false
-
-    while !pstack1.isEmpty()
-    {
-        let curState = pstack1.popBack()
-        if curState.terminal
-            return true
-    }
-
-    return false
+    g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
 }
 ```
 
