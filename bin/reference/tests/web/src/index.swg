@@ -35,10 +35,14 @@
         <a href="swag-as-script.php" class="no-decoration">Scripting</a>
     </div>
     <div class="round-button">
-        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
-    </div>
-    <div class="round-button">
         <a href="std.php">Standard Modules</a>
+    </div>
+</div>
+
+<div align="center">
+    <p>To take a look at an implementation of the Flappy Bird game in one single script file.</p>
+    <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div>
 ---
