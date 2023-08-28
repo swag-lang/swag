@@ -241,11 +241,11 @@
     }
 }</span></code>
 </div>
-<p>Each module has its own namespace. To avoid having to specify it each time we want to reference something, we add some global <code class="incode">using</code> right after the <code class="incode">#dependency</code> block. </p>
-<p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. Their we bring all the three namespaces into the file scope. </p>
+<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the #dependency block. </p>
+<p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. So we bring all the three namespaces into the file scope. </p>
 <div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
-<p>The compiler function <code class="incode">#run</code> is the <b>script entry point</b>. That kind of block is executed by the compiler during the compilation. You can have more than one <code class="incode">#run</code> block, but for Flappy one is enough. </p>
+<p>The compiler's <code class="incode">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="incode">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>

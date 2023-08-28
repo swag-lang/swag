@@ -47,14 +47,14 @@ So in our case, we need to import the module 'gui'. This module is used to creat
 }
 
 /**
-Each module has its own namespace. To avoid having to specify it each time we want to reference something, we add some global 'using' right after the '#dependency' block.
+Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global using statement immediately subsequent to the #dependency block.
 
-The 'gui' module depends on 'pixel' which depends on 'core'. Their we bring all the three namespaces into the file scope.
+The 'gui' module depends on 'pixel' which depends on 'core'. So we bring all the three namespaces into the file scope.
 */
 using Core, Pixel, Gui
 
 /**
-The compiler function '#run' is the **script entry point**. That kind of block is executed by the compiler during the compilation. You can have more than one '#run' block, but for Flappy one is enough.
+The compiler's '#run' function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple '#run' blocks, a single one is sufficient for the Flappy application.
 */
 #run
 {
