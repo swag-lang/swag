@@ -72,11 +72,13 @@
             font-family:    Segoe UI;
         }
         .container blockquote {
+            border-radius:      5px;
+            border:             1px solid Orange;
             background-color:   LightYellow;
             border-left:        6px solid Orange;
             margin:             20px;
-            margin-left:        50px;
-            margin-right:       50px;
+            margin-left:        20px;
+            margin-right:       20px;
             padding:            10px;
         }
         .container a {
@@ -176,6 +178,7 @@
         }
         .precode {
             background-color:   #eeeeee;
+            border-radius:      5px;
             border:             1px solid LightGrey;
             padding:            10px;
             margin:             20px;

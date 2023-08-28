@@ -89,11 +89,13 @@ void GenDoc::outputStyles()
             font-family:    Segoe UI;\n\
         }\n\
         .container blockquote {\n\
+            border-radius:      5px;\n\
+            border:             1px solid Orange;\n\
             background-color:   LightYellow;\n\
             border-left:        6px solid Orange;\n\
             margin:             20px;\n\
-            margin-left:        50px;\n\
-            margin-right:       50px;\n\
+            margin-left:        20px;\n\
+            margin-right:       20px;\n\
             padding:            10px;\n\
         }\n\
         .container a {\n\
@@ -193,6 +195,7 @@ void GenDoc::outputStyles()
         }\n\
         .precode {\n\
             background-color:   #eeeeee;\n\
+            border-radius:      5px;\n\
             border:             1px solid LightGrey;\n\
             padding:            10px;\n\
             margin:             20px;\n\

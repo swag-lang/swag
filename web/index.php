@@ -72,11 +72,13 @@
             font-family:    Segoe UI;
         }
         .container blockquote {
+            border-radius:      5px;
+            border:             1px solid Orange;
             background-color:   LightYellow;
             border-left:        6px solid Orange;
             margin:             20px;
-            margin-left:        50px;
-            margin-right:       50px;
+            margin-left:        20px;
+            margin-right:       20px;
             padding:            10px;
         }
         .container a {
@@ -176,6 +178,7 @@
         }
         .precode {
             background-color:   #eeeeee;
+            border-radius:      5px;
             border:             1px solid LightGrey;
             padding:            10px;
             margin:             20px;
@@ -203,12 +206,12 @@
 <div class="rightpage">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
-<p style="white-space: break-spaces"><div style="background-color:Black" align="center">
+<p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
-    <div style="margin-top:50px; padding-bottom:40px; color:White; font-size:20px;">
-        <p><a href="getting-started.php" style="color:#F7F900; text-decoration:none;">Getting Started</a></p>
-        <p><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900; text-decoration:none;">Download the Compiler</a> </p>
+    <div style="margin-top:50px; padding-bottom:20px; color:White; font-size:20px;">
+        <div class="round-button"><a href="getting-started.php" style="color:#F7F900; text-decoration:none;">Getting Started</a></div>
+        <div class="round-button"><a href="https://github.com/swag-lang/swag/releases" style="color:#F7F900; text-decoration:none;">Download the Compiler</a> </div>
     </div>
 </div>
 
