@@ -265,24 +265,13 @@
 }</span></code>
 </div>
 <h1 id="Global_definitions">Global definitions </h1>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
-<span class="SKwd">struct</span> <span class="SCst">Bird</span>
-{
-    pos:        <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Position of the bird</span>
-    speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Speed of the bird</span>
-    frame:      <span class="STpe">f32</span>             <span class="SCmt">// Sprite frame</span>
-}
-
-<span class="SCmt">// Defines one Pipe</span>
-<span class="SKwd">struct</span> <span class="SCst">Pipe</span>
-{
-    rectUp:     <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the up part of the Pipe</span>
-    rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the down part of the Pipe</span>
-    distToNext: <span class="STpe">f32</span>             <span class="SCmt">// Distance to the next Pipe</span>
-    scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
-}</span></code>
+<h2 id="Constants">Constants </h2>
+<div class="precode"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
+<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>
+<span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
+<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
 </div>
-<p>Global variables </p>
+<h2 id="Variables">Variables </h2>
 <div class="precode"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
 <span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
@@ -305,11 +294,23 @@
 
 <span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></code>
 </div>
-<p>Global constants </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
-<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>
-<span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
-<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
+<h2 id="Types">Types </h2>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
+<span class="SKwd">struct</span> <span class="SCst">Bird</span>
+{
+    pos:        <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Position of the bird</span>
+    speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Speed of the bird</span>
+    frame:      <span class="STpe">f32</span>             <span class="SCmt">// Sprite frame</span>
+}
+
+<span class="SCmt">// Defines one Pipe</span>
+<span class="SKwd">struct</span> <span class="SCst">Pipe</span>
+{
+    rectUp:     <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the up part of the Pipe</span>
+    rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the down part of the Pipe</span>
+    distToNext: <span class="STpe">f32</span>             <span class="SCmt">// Distance to the next Pipe</span>
+    scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
+}</span></code>
 </div>
 <h1 id="The_actual_code">The actual code </h1>
 <p>This is the callback that will deal with all gui events. </p>

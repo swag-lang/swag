@@ -77,27 +77,15 @@ The compiler's '#run' function serves as the initial execution point for the scr
 
 /**
 # Global definitions
+## Constants
 */
-
-// Defines the Bird
-struct Bird
-{
-    pos:        Math.Vector2    // Position of the bird
-    speed:      Math.Vector2    // Speed of the bird
-    frame:      f32             // Sprite frame
-}
-
-// Defines one Pipe
-struct Pipe
-{
-    rectUp:     Math.Rectangle  // Position of the up part of the Pipe
-    rectDown:   Math.Rectangle  // Position of the down part of the Pipe
-    distToNext: f32             // Distance to the next Pipe
-    scored:     bool            // 'true' if the Bird has passed that Pipe
-}
+const Gravity      = 2.5
+const BirdImpulseY = 350
+const GroundHeight = 40.0
+const SpeedHorz    = 100.0
 
 /**
-Global variables
+## Variables
 */
 
 var g_Bird:      Bird
@@ -123,12 +111,25 @@ var g_DigitTexture: [10] Texture
 var g_Font: *Font
 
 /**
-Global constants
+## Types
 */
-const Gravity      = 2.5
-const BirdImpulseY = 350
-const GroundHeight = 40.0
-const SpeedHorz    = 100.0
+
+// Defines the Bird
+struct Bird
+{
+    pos:        Math.Vector2    // Position of the bird
+    speed:      Math.Vector2    // Speed of the bird
+    frame:      f32             // Sprite frame
+}
+
+// Defines one Pipe
+struct Pipe
+{
+    rectUp:     Math.Rectangle  // Position of the up part of the Pipe
+    rectDown:   Math.Rectangle  // Position of the down part of the Pipe
+    distToNext: f32             // Distance to the next Pipe
+    scored:     bool            // 'true' if the Bird has passed that Pipe
+}
 
 /**
 # The actual code
