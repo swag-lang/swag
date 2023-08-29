@@ -7,6 +7,6 @@ struct ModuleGenDocJob : public Job
 {
     JobResult execute() override;
 
-    DocKind docKind;
-    GenDoc  genDoc;
+    BuildCfgDocKind docKind;
+    GenDoc          genDoc;
 };

@@ -218,7 +218,7 @@ enum class BuildCfgBackendOptim
     Oz,
 };
 
-enum class DocKind
+enum class BuildCfgDocKind
 {
     None,
     Api,
@@ -228,21 +228,21 @@ enum class DocKind
 
 struct BuildCfgGenDoc
 {
-    DocKind   kind = DocKind::None;
-    SwagSlice outputName;
-    SwagSlice outputExtension;
-    SwagSlice titleToc;
-    SwagSlice titleContent;
-    SwagSlice css;
-    SwagSlice icon;
-    SwagSlice startHead;
-    SwagSlice endHead;
-    SwagSlice startBody;
-    SwagSlice endBody;
-    SwagSlice morePages;
-    bool      styleSection       = true;
-    uint32_t  syntaxDefaultColor = 0x00222222;
-    float     syntaxColorLum     = 0.5f;
+    BuildCfgDocKind kind = BuildCfgDocKind::None;
+    SwagSlice       outputName;
+    SwagSlice       outputExtension;
+    SwagSlice       titleToc;
+    SwagSlice       titleContent;
+    SwagSlice       css;
+    SwagSlice       icon;
+    SwagSlice       startHead;
+    SwagSlice       endHead;
+    SwagSlice       startBody;
+    SwagSlice       endBody;
+    SwagSlice       morePages;
+    uint32_t        syntaxDefaultColor = 0x00222222;
+    float           syntaxColorLum     = 0.5f;
+    bool            hasStyleSection    = true;
 };
 
 struct BuildCfg

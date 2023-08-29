@@ -40,7 +40,7 @@ struct GenDoc
 
     void constructPage();
     Utf8 toRef(Utf8 str);
-    bool generate(Module* mdl, DocKind kind);
+    bool generate(Module* mdl, BuildCfgDocKind kind);
     void outputStyles();
     Utf8 findReference(const Utf8& name);
     void computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
@@ -50,15 +50,15 @@ struct GenDoc
     void outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
     void outputUserComment(const UserComment& user, int titleLevel = 1);
 
-    Module*       module = nullptr;
-    DocKind       docKind;
-    Concat        concat;
-    Utf8          helpOutput;
-    Utf8          helpToc;
-    Utf8          helpContent;
-    Utf8          helpCode;
-    Utf8          fullFileName;
-    MapUtf8<Utf8> collectInvert;
+    Module*         module = nullptr;
+    BuildCfgDocKind docKind;
+    Concat          concat;
+    Utf8            helpOutput;
+    Utf8            helpToc;
+    Utf8            helpContent;
+    Utf8            helpCode;
+    Utf8            fullFileName;
+    MapUtf8<Utf8>   collectInvert;
 
     // Pages
     ///////////////////////////////////

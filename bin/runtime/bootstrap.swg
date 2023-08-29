@@ -718,14 +718,14 @@ namespace Swag
         titleContent:        string                 // Title for the main document content
         css:                 string                 // The 'css' file to include in generated documentations
         icon:                string                 // The icon path of the page
-        startHead:           string                 // To insert at the start of the <head> section
-        endHead:             string                 // To insert at the end of the <head> section
-        startBody:           string                 // To insert add at the start of the <body> section
-        endBody:             string                 // To insert add at the end of the <body> section
-        morePages:           string                 // Additional external file pages to process
-        styleSection         = true                 // Generate a default <style> section
+        startHead:           string                 // Content to insert at the start of the <head> section
+        endHead:             string                 // Content to insert at the end of the <head> section
+        startBody:           string                 // Content to insert at the start of the <body> section
+        endBody:             string                 // Content to insert at the end of the <body> section
+        morePages:           string                 // Additional external file pages to process (separated with ';')
         syntaxDefaultColor:  u32 = 0x00222222       // Code syntax default color (if not colorized)
         syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
+        hasStyleSection      = true                 // Generate a default <style> section
     }
 
     // The current module build configuration.

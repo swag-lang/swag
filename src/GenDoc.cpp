@@ -71,7 +71,7 @@ void GenDoc::outputStyles()
         }\n";
 
     // Layout
-    if (docKind != DocKind::Pages)
+    if (docKind != BuildCfgDocKind::Pages)
     {
         helpOutput += "\n\
             .container {\n\
@@ -649,7 +649,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += " ";
 
             // Update toc
-            if (docKind == DocKind::Examples)
+            if (docKind == BuildCfgDocKind::Examples)
                 helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(user.lines[i]).c_str(), user.lines[i].c_str());
         }
         else
@@ -879,7 +879,7 @@ void GenDoc::constructPage()
         helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
     // Predefined <style> section
-    if (module->buildCfg.genDoc.styleSection)
+    if (module->buildCfg.genDoc.hasStyleSection)
         outputStyles();
 
     // User end of the <head> section
@@ -899,7 +899,7 @@ void GenDoc::constructPage()
 
     helpOutput += "<div class=\"container\">\n";
 
-    if (docKind != DocKind::Pages)
+    if (docKind != BuildCfgDocKind::Pages)
     {
         helpOutput += "<div class=\"left\">\n";
         helpOutput += "<div class=\"leftpage\">\n";
@@ -929,7 +929,7 @@ void GenDoc::constructPage()
     helpOutput += "</html>\n";
 }
 
-bool GenDoc::generate(Module* mdl, DocKind kind)
+bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 {
     module  = mdl;
     docKind = kind;
@@ -956,7 +956,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     if (titleContent.empty())
         titleContent = Fmt("Module %s", module->name.c_str());
 
-    if (docKind == DocKind::Pages)
+    if (docKind == BuildCfgDocKind::Pages)
     {
         if (!generatePages())
             return false;
@@ -999,11 +999,11 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
 
     switch (docKind)
     {
-    case DocKind::Api:
+    case BuildCfgDocKind::Api:
         if (!generateApi())
             return false;
         break;
-    case DocKind::Examples:
+    case BuildCfgDocKind::Examples:
         if (!generateExamples())
             return false;
         break;

@@ -2787,32 +2787,27 @@
 <tr>
 <td class="codetype"><span class="SCde">startHead</span></td>
 <td class="codetype"><span class="STpe">string</span></td>
-<td>To insert at the start of the &lt;head&gt; section. </td>
+<td>Content to insert at the start of the &lt;head&gt; section. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endHead</span></td>
 <td class="codetype"><span class="STpe">string</span></td>
-<td>To insert at the end of the &lt;head&gt; section. </td>
+<td>Content to insert at the end of the &lt;head&gt; section. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">startBody</span></td>
 <td class="codetype"><span class="STpe">string</span></td>
-<td>To insert add at the start of the &lt;body&gt; section. </td>
+<td>Content to insert at the start of the &lt;body&gt; section. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">endBody</span></td>
 <td class="codetype"><span class="STpe">string</span></td>
-<td>To insert add at the end of the &lt;body&gt; section. </td>
+<td>Content to insert at the end of the &lt;body&gt; section. </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">morePages</span></td>
 <td class="codetype"><span class="STpe">string</span></td>
-<td>Additional external file pages to process. </td>
-</tr>
-<tr>
-<td class="codetype"><span class="SCde">styleSection</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>Generate a default &lt;style&gt; section. </td>
+<td>Additional external file pages to process (separated with <code class="incode">;</code>). </td>
 </tr>
 <tr>
 <td class="codetype"><span class="SCde">syntaxDefaultColor</span></td>
@@ -2823,6 +2818,11 @@
 <td class="codetype"><span class="SCde">syntaxColorLum</span></td>
 <td class="codetype"><span class="STpe">f32</span></td>
 <td>Code syntax color luminosity in range ]0, 1]. </td>
+</tr>
+<tr>
+<td class="codetype"><span class="SCde">hasStyleSection</span></td>
+<td class="codetype"><span class="STpe">bool</span></td>
+<td>Generate a default &lt;style&gt; section. </td>
 </tr>
 </table>
 <p>

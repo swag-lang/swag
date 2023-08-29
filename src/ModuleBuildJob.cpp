@@ -771,12 +771,12 @@ JobResult ModuleBuildJob::execute()
                 auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
                 outputJob->module       = g_Workspace->runtimeModule;
                 outputJob->dependentJob = this;
-                outputJob->docKind      = DocKind::Api;
+                outputJob->docKind      = BuildCfgDocKind::Api;
                 jobsToAdd.push_back(outputJob);
             }
         }
 
-        if (module->buildCfg.genDoc.kind != DocKind::None)
+        if (module->buildCfg.genDoc.kind != BuildCfgDocKind::None)
         {
             module->logPass(ModuleBuildPass::GenerateDoc);
             auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
