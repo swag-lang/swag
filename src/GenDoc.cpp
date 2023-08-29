@@ -354,17 +354,18 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
         UserBlock blk;
 
         // Start of a block
-        // Zap blank lines
         for (; start < lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
+
+            // Zap blank lines
             if (line.empty())
                 continue;
 
             if (line.startsWith("---"))
             {
-                blk.kind = UserBlockKind::RawParagraph;
+                blk.kind = UserBlockKind::ParagraphRaw;
                 start++;
             }
             else if (line.startsWith("```swag"))
@@ -444,7 +445,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 start++;
                 break;
 
-            case UserBlockKind::RawParagraph:
+            case UserBlockKind::ParagraphRaw:
                 if (line.startsWith("---"))
                 {
                     mustEnd = true;
@@ -566,7 +567,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         return;
     }
 
-    case UserBlockKind::RawParagraph:
+    case UserBlockKind::ParagraphRaw:
         helpContent += "<p style=\"white-space: break-spaces\">";
         break;
 
@@ -624,7 +625,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += getFormattedText(line);
             helpContent += "</li>\n";
         }
-        else if (user.kind == UserBlockKind::RawParagraph)
+        else if (user.kind == UserBlockKind::ParagraphRaw)
         {
             helpContent += user.lines[i];
 
@@ -664,7 +665,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     switch (user.kind)
     {
-    case UserBlockKind::RawParagraph:
+    case UserBlockKind::ParagraphRaw:
         helpContent += "</p>\n";
         break;
     case UserBlockKind::Paragraph:

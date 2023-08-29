@@ -15,7 +15,7 @@ struct GenDoc
     enum class UserBlockKind
     {
         Paragraph,
-        RawParagraph,
+        ParagraphRaw,
         CodeSwag,
         CodeRaw,
         Blockquote,
