@@ -369,7 +369,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             }
             else if (line.startsWith("```swag"))
             {
-                blk.kind = UserBlockKind::Code;
+                blk.kind = UserBlockKind::CodeSwag;
                 start++;
             }
             else if (line.startsWith("```"))
@@ -454,7 +454,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                     blk.lines.push_back(lines[start]);
                 break;
 
-            case UserBlockKind::Code:
+            case UserBlockKind::CodeSwag:
             case UserBlockKind::CodeRaw:
                 if (line.startsWith("```"))
                 {
@@ -548,7 +548,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     switch (user.kind)
     {
-    case UserBlockKind::Code:
+    case UserBlockKind::CodeSwag:
     case UserBlockKind::CodeRaw:
     {
         Utf8 block;

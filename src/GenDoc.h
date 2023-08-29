@@ -16,7 +16,7 @@ struct GenDoc
     {
         Paragraph,
         RawParagraph,
-        Code,
+        CodeSwag,
         CodeRaw,
         Blockquote,
         Table,
