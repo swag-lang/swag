@@ -14,39 +14,56 @@ The main module documentation should be placed at the top of the corresponding `
 
 /**
 Other comments need to be placed just before a function, struct or enum.
+
+The first paragraph is considered to be the `short description` which can appear on specific parts
+of the documentation. So make it short.
+
+If the first line ends with a dot `.`, then this marks the end of the paragraph, i.e. the end of the short description.
 */
-#test
+
+// This first paragraph is the short description of function 'test1'
+//
+// This second paragraph should be the long description.
+func test1()
 {
-    // Everything between empty lines is considered to be a simple paragraph. Which
-    // means that if you put several comments on several lines like this, they all
-    // will be part of the same paragraph.
-    //
-    // This is another paragraph because there's an empty line before.
-    //
-    // This is yet another paragraph.
 }
 
+// This is the short description of 'test'.
+// As the previous first line ends with '.', this is another paragraph, so this should be
+// the long description. No need for an empty line before.
+func test()
+{
+}
 
 /**
 For constants or enum values, the document comment is the one declared at the end of the line.
 */
-#test
+const A = 0     // This is the documentation comment of constant 'A'
+enum Color
 {
-    const A = 0     // This is a documentation comment
-    enum Color
-    {
-        Red         // This is a documentation comment
-    }
+    Red         // This is the documentation comment of enum value 'Red'
 }
 
 /**
-The attribute `#[Swag.NoDoc]` can be used to avoid a given element to appear in the documentation.
+The attribute `#\[[Swag.NoDoc]\]` can be used to avoid a given element to appear in the documentation.
 */
-#test
+
+// The function 'one' will be ignored when generating documentation.
+#[Swag.NoDoc]
+func one()
 {
-    // This function will be ignored when generating documentation.
-    #[Swag.NoDoc]
-    func one()
-    {
-    }
+}
+
+/**
+You can create a **reference** to something in the current module with `[name]` or `[name1.name2 etc.]`
+*/
+
+// This is a function with a 'value' parameter.
+func one(value: s32)
+{
+}
+
+// This is a reference to [one]
+func two()
+{
 }

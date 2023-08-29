@@ -551,9 +551,16 @@
 </ul>
 <li><a href="#230_documentation">Documentation</a></li>
 <ul>
-<li><a href="#Markdown">Markdown</a></li>
+<li><a href="#Markdown_files">Markdown files</a></li>
 <li><a href="#Format_of_comments">Format of comments</a></li>
+<li><a href="#Paragraphs">Paragraphs</a></li>
+<li><a href="#Lists">Lists</a></li>
+<li><a href="#Quotes">Quotes</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Code">Code</a></li>
+<li><a href="#Titles">Titles</a></li>
 <li><a href="#References">References</a></li>
+<li><a href="#Markdown">Markdown</a></li>
 </ul>
 <ul>
 <li><a href="#231_001_Api">Api</a></li>
@@ -7493,135 +7500,105 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
 <tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of <code class="incode">Examples</code>)</td></tr>
 </table>
-<h3 id="Markdown">Markdown </h3>
+<h3 id="Markdown_files">Markdown files </h3>
 <p>If the module contains <b>markdown</b> files with the <code class="incode">.md</code> extension, they will be processed as if they were Swag comments. </p>
 <h3 id="Format_of_comments">Format of comments </h3>
-<p>The first paragraph is considered to be the 'short description' which can appear on specific parts of the documentation. So make it short. </p>
-<p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// This is the short description.</span>
-    <span class="SCmt">// As the previous first line ends with '.', this is another paragraph, so this should be</span>
-    <span class="SCmt">// the long description. No need for an empty line before.</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>()
-    {
-    }
-}</span></code>
+<h4 id="Paragraphs">Paragraphs </h4>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// Everything between empty lines is considered to be a simple paragraph. Which</span>
+<span class="SCmt">// means that if you put several comments on several lines like this, they all</span>
+<span class="SCmt">// will be part of the same paragraph.</span>
+<span class="SCmt">//</span>
+<span class="SCmt">// This is another paragraph because there's an empty line before.</span>
+<span class="SCmt">//</span>
+<span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
 <p>A paragraph that starts with <code class="incode">---</code> is a paragraph where every blanks and end of lines are respected. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// ---</span>
-    <span class="SCmt">// Even...</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// ...empty lines are preserved.</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// You end that kind of paragraph with another '---' alone on its line.</span>
-    <span class="SCmt">// ---</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>()
-    {
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ---</span>
+<span class="SCmt">// Even...</span>
+<span class="SCmt">//</span>
+<span class="SCmt">// ...empty lines are preserved.</span>
+<span class="SCmt">//</span>
+<span class="SCmt">// You end that kind of paragraph with another '---' alone on its line.</span>
+<span class="SCmt">// ---</span></span></code>
 </div>
+<h4 id="Lists">Lists </h4>
 <p> You can create a <b>list</b> of bullet points with <code class="incode"><i></code>.</i> </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
- {
-    <span class="SCmt">// * This is a bullet point</span>
-    <span class="SCmt">// * This is a bullet point</span>
-    <span class="SCmt">// * This is a bullet point</span>
-    <span class="SKwd">struct</span> <span class="SCst">RGB</span>
-    {
-        r, g, b: <span class="STpe">s32</span>
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// * This is a bullet point</span>
+<span class="SCmt">// * This is a bullet point</span>
+<span class="SCmt">// * This is a bullet point</span></span></code>
 </div>
+<ul>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+</ul>
+<h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <code class="incode">&gt;</code> </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// This is the short description.</span>
-    <span class="SCmt">// &gt; This is a block quote on multiple</span>
-    <span class="SCmt">// &gt; lines.</span>
-    <span class="SCmt">// &gt;</span>
-    <span class="SCmt">// &gt; End of the quote.</span>
-    <span class="SKwd">struct</span> <span class="SCst">RGB</span>
-    {
-        r, g, b: <span class="STpe">s32</span>
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// &gt; This is a block quote on multiple</span>
+<span class="SCmt">// &gt; lines.</span>
+<span class="SCmt">// &gt;</span>
+<span class="SCmt">// &gt; End of the quote.</span></span></code>
 </div>
+<blockquote>
+<p>This is a block quote on multiple lines. </p><p>End of the quote. </p>
+</blockquote>
+<h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <code class="incode">|</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// A table with 4 lines of 2 columns:</span>
-    <span class="SCmt">// | 'boundcheck'   | Check out of bound access</span>
-    <span class="SCmt">// | 'overflow'     | Check type conversion lost of bits or precision</span>
-    <span class="SCmt">// | 'math'         | Various math checks (like a negative '@sqrt')</span>
-    <span class="SCmt">// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch</span>
-    <span class="SKwd">func</span> <span class="SFct">myFunc</span>()
-    {
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
+<span class="SCmt">// | 'boundcheck'   | Check out of bound access</span>
+<span class="SCmt">// | 'overflow'     | Check type conversion lost of bits or precision</span>
+<span class="SCmt">// | 'math'         | Various math checks (like a negative '@sqrt')</span>
+<span class="SCmt">// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
 </div>
+<table class="enumeration">
+<tr><td> <code class="incode">boundcheck</code>   </td><td> Check out of bound access</td></tr>
+<tr><td> <code class="incode">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
+<tr><td> <code class="incode">math</code>         </td><td> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
+<tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
+</table>
+<h4 id="Code">Code </h4>
 <p>You can create a <b>code paragraph</b> with three backticks. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// For example:</span>
-    <span class="SCmt">// ```</span>
-    <span class="SCmt">// if a == true</span>
-    <span class="SCmt">//   @print("true")</span>
-    <span class="SCmt">// ```</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>()
-    {
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
+<span class="SCmt">// if a == true</span>
+<span class="SCmt">//   @print("true")</span>
+<span class="SCmt">// ```</span></span></code>
+</div>
+<div class="precode"><code><span class="SCde"><span class="SLgc">if</span> a == <span class="SKwd">true</span>
+  <span class="SItr">@print</span>(<span class="SStr">"true"</span>)</span></code>
 </div>
 <p>You can create a code paragraph <b>without</b> syntax coloration by adding <code class="incode">raw</code> after the three backticks. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// For example:</span>
-    <span class="SCmt">// ```raw</span>
-    <span class="SCmt">// if a == true</span>
-    <span class="SCmt">//   @print("true")</span>
-    <span class="SCmt">// ```</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>()
-    {
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ```raw</span>
+<span class="SCmt">// if a == true</span>
+<span class="SCmt">//   @print("true")</span>
+<span class="SCmt">// ```</span></span></code>
 </div>
+<div class="precode"><code><span class="SCde">if a == true
+  @print("true")</span></code>
+</div>
+<h4 id="Titles">Titles </h4>
 <p>You can define <b>titles</b> with <code class="incode">#</code>, <code class="incode">##</code>... The real level of the title will depend on the context and the generated documentation kind. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// # Title 1</span>
-    <span class="SCmt">// ## Title 2</span>
-    <span class="SCmt">// ### Title 3</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>()
-    {
-    }
-}</span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// # Title 1</span>
+<span class="SCmt">// ## Title 2</span>
+<span class="SCmt">// ### Title 3</span></span></code>
 </div>
-<p>Some other markers (or kind of) are also supported inside text. </p>
-<table class="enumeration">
-<tr><td> `this is code`   </td><td> &lt;code&gt;this is code&lt;/code&gt; </td><td> back ticks for inline code.</td></tr>
-<tr><td> 'word'           </td><td> &lt;code&gt;word&lt;/code&gt;         </td><td> simple ticks for inline code of one single word.</td></tr>
-<tr><td> **bold**       </td><td> &lt;b&gt;bold&lt;/b&gt;               </td><td> Bold text</td></tr>
-<tr><td> *italic*         </td><td> &lt;i&gt;italic&lt;/i&gt;             </td><td> Italic text</td></tr>
-<tr><td> \&lt;n&gt;              </td><td> escape character &lt;n&gt;      </td><td> &lt;n&gt; will be displayed whatever</td></tr>
-</table>
-<h3 id="References">References </h3>
-<p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SCmt">// This is a function with a 'value' parameter.</span>
-    <span class="SKwd">func</span> <span class="SFct">one</span>(value: <span class="STpe">s32</span>)
-    {
-    }
-
-    <span class="SCmt">// This is a reference to [one]</span>
-    <span class="SKwd">func</span> <span class="SFct">two</span>()
-    {
-    }
-}</span></code>
+<h4 id="References">References </h4>
+<p>You can create an external <b>reference</b> with <code class="incode">[name](link)</code>. </p>
+<div class="precode"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.</span></code>
 </div>
+<blockquote>
+<p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repo on GitHub. </p>
+</blockquote>
+<h4 id="Markdown">Markdown </h4>
+<p>Some other markers are also supported inside texts. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// This is `inline code` with back ticks.</span>
+<span class="SCmt">// This is inline 'code' with normal ticks, but just for a single word.</span>
+<span class="SCmt">// This is **bold**.</span>
+<span class="SCmt">// This is *italic*.</span>
+<span class="SCmt">// This character \n is escaped, and 'n' will be output as is.</span></span></code>
+</div>
+<blockquote>
+<p>This is <code class="incode">inline code</code> with back ticks. This is inline <code class="incode">code</code> with normal ticks, but just for a single word. This is <b>bold</b>. This is <i>italic</i>. This character n is escaped, and <code class="incode">n</code> will be output as is. </p>
+</blockquote>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. </p>
@@ -7631,43 +7608,53 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>Other comments need to be placed just before a function, struct or enum. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+<p>The first paragraph is considered to be the <code class="incode">short description</code> which can appear on specific parts of the documentation. So make it short. </p>
+<p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// This first paragraph is the short description of function 'test1'</span>
+<span class="SCmt">//</span>
+<span class="SCmt">// This second paragraph should be the long description.</span>
+<span class="SKwd">func</span> <span class="SFct">test1</span>()
 {
-    <span class="SCmt">// Everything between empty lines is considered to be a simple paragraph. Which</span>
-    <span class="SCmt">// means that if you put several comments on several lines like this, they all</span>
-    <span class="SCmt">// will be part of the same paragraph.</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// This is another paragraph because there's an empty line before.</span>
-    <span class="SCmt">//</span>
-    <span class="SCmt">// This is yet another paragraph.</span>
+}
+
+<span class="SCmt">// This is the short description of 'test'.</span>
+<span class="SCmt">// As the previous first line ends with '.', this is another paragraph, so this should be</span>
+<span class="SCmt">// the long description. No need for an empty line before.</span>
+<span class="SKwd">func</span> <span class="SFct">test</span>()
+{
 }</span></code>
 </div>
 <p>For constants or enum values, the document comment is the one declared at the end of the line. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+<div class="precode"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>     <span class="SCmt">// This is the documentation comment of constant 'A'</span>
+<span class="SKwd">enum</span> <span class="SCst">Color</span>
 {
-    <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>     <span class="SCmt">// This is a documentation comment</span>
-    <span class="SKwd">enum</span> <span class="SCst">Color</span>
-    {
-        <span class="SCst">Red</span>         <span class="SCmt">// This is a documentation comment</span>
-    }
+    <span class="SCst">Red</span>         <span class="SCmt">// This is the documentation comment of enum value 'Red'</span>
 }</span></code>
 </div>
-<p>The attribute <code class="incode">#<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a></code> can be used to avoid a given element to appear in the documentation. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
+<p>The attribute <code class="incode">#[<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a>]</code> can be used to avoid a given element to appear in the documentation. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating documentation.</span>
+<span class="SAtr">#[Swag.NoDoc]</span>
+<span class="SKwd">func</span> <span class="SFct">one</span>()
 {
-    <span class="SCmt">// This function will be ignored when generating documentation.</span>
-    <span class="SAtr">#[Swag.NoDoc]</span>
-    <span class="SKwd">func</span> <span class="SFct">one</span>()
-    {
-    }
+}</span></code>
+</div>
+<p>You can create a <b>reference</b> to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// This is a function with a 'value' parameter.</span>
+<span class="SKwd">func</span> <span class="SFct">one</span>(value: <span class="STpe">s32</span>)
+{
+}
+
+<span class="SCmt">// This is a reference to [one]</span>
+<span class="SKwd">func</span> <span class="SFct">two</span>()
+{
 }</span></code>
 </div>
 
 <h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file is a chapter or a sub chapter. </p>
-<p>This documentation has been generated in that mode, with the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
+<p>This documentation has been generated in that mode, from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
 
 <h3 id="231_003_Pages">Pages</h3><p>In <code class="incode">Swag.DocKind.Pages</code> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <code class="incode">Swag.DocKind.Examples</code> mode. </p>
-<p>Can be usefull to generate web pages for example. For <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
+<p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 </div>
 </div>
 </div>

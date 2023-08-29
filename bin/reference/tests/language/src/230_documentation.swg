@@ -23,156 +23,179 @@ Swag can generate documentations in various modes. That mode should be specified
 */
 
 /**
-# Markdown
+# Markdown files
 If the module contains **markdown** files with the '.md' extension, they will be processed as if they were Swag comments.
 */
 
 /**
 # Format of comments
-The first paragraph is considered to be the 'short description' which can appear on specific parts
-of the documentation. So make it short.
-
-If the first line ends with a dot `.`, then this marks the end of the paragraph, i.e. the end of the short description.
 */
-#test
-{
-    // This is the short description.
-    // As the previous first line ends with '.', this is another paragraph, so this should be
-    // the long description. No need for an empty line before.
-    func test()
-    {
-    }
-}
+
+/**
+## Paragraphs
+*/
+
+// Everything between empty lines is considered to be a simple paragraph. Which
+// means that if you put several comments on several lines like this, they all
+// will be part of the same paragraph.
+//
+// This is another paragraph because there's an empty line before.
+//
+// This is yet another paragraph.
 
 /**
 A paragraph that starts with `---` is a paragraph where every blanks and end of lines
 are respected.
 */
-#test
-{
-    // ---
-    // Even...
-    //
-    // ...empty lines are preserved.
-    //
-    // You end that kind of paragraph with another '---' alone on its line.
-    // ---
-    func test()
-    {
-    }
-}
+
+// ---
+// Even...
+//
+// ...empty lines are preserved.
+//
+// You end that kind of paragraph with another '---' alone on its line.
+// ---
+
+/**
+## Lists
+*/
 
 /**
  You can create a **list** of bullet points with `*`.
  */
- #test
- {
-    // * This is a bullet point
-    // * This is a bullet point
-    // * This is a bullet point
-    struct RGB
-    {
-        r, g, b: s32
-    }
-}
+
+// * This is a bullet point
+// * This is a bullet point
+// * This is a bullet point
+
+/**
+* This is a bullet point
+* This is a bullet point
+* This is a bullet point
+*/
+
+/**
+## Quotes
+*/
 
 /**
 You can create a **quote** with `>`
 */
-#test
-{
-    // This is the short description.
-    // > This is a block quote on multiple
-    // > lines.
-    // >
-    // > End of the quote.
-    struct RGB
-    {
-        r, g, b: s32
-    }
-}
+
+// > This is a block quote on multiple
+// > lines.
+// >
+// > End of the quote.
+
+/**
+> This is a block quote on multiple
+> lines.
+>
+> End of the quote.
+*/
+
+/**
+## Tables
+*/
 
 /**
 You can create a **table** with `|`.
 */
-#test
-{
-    // A table with 4 lines of 2 columns:
-    // | 'boundcheck'   | Check out of bound access
-    // | 'overflow'     | Check type conversion lost of bits or precision
-    // | 'math'         | Various math checks (like a negative '@sqrt')
-    // | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
-    func myFunc()
-    {
-    }
-}
+
+// A table with 4 lines of 2 columns:
+// | 'boundcheck'   | Check out of bound access
+// | 'overflow'     | Check type conversion lost of bits or precision
+// | 'math'         | Various math checks (like a negative '@sqrt')
+// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+
+/**
+| 'boundcheck'   | Check out of bound access
+| 'overflow'     | Check type conversion lost of bits or precision
+| 'math'         | Various math checks (like a negative '@sqrt')
+| 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+*/
+
+/**
+## Code
+*/
 
 /**
 You can create a **code paragraph** with three backticks.
 */
-#test
-{
-    // For example:
-    // ```
-    // if a == true
-    //   @print("true")
-    // ```
-    func test()
-    {
-    }
-}
+
+// ```
+// if a == true
+//   @print("true")
+// ```
+
+/**
+```
+if a == true
+  @print("true")
+```
+*/
 
 /**
 You can create a code paragraph **without** syntax coloration by adding 'raw' after the three backticks.
 */
-#test
-{
-    // For example:
-    // ```raw
-    // if a == true
-    //   @print("true")
-    // ```
-    func test()
-    {
-    }
-}
+
+// ```raw
+// if a == true
+//   @print("true")
+// ```
+
+/**
+```raw
+if a == true
+  @print("true")
+```
+*/
+
+/**
+## Titles
+*/
 
 /**
 You can define **titles** with '#', '##'...
 The real level of the title will depend on the context and the generated documentation kind.
 */
-#test
-{
-    // # Title 1
-    // ## Title 2
-    // ### Title 3
-    func test()
-    {
-    }
-}
+
+// # Title 1
+// ## Title 2
+// ### Title 3
 
 /**
-Some other markers (or kind of) are also supported inside text.
-| \`this is code\`   | <code>this is code</code> | back ticks for inline code.
-| \'word\'           | <code>word</code>         | simple ticks for inline code of one single word.
-| \*\*bold\*\*       | <b>bold</b>               | Bold text
-| \*italic\*         | <i>italic</i>             | Italic text
-| \\<n>              | escape character <n>      | <n> will be displayed whatever
+## References
 */
 
 /**
-# References
-You can create a reference to something in the current module with `[name]` or `[name1.name2 etc.]`
+You can create an external **reference** with `\[name\](link)`.
 */
-#test
-{
-    // This is a function with a 'value' parameter.
-    func one(value: s32)
-    {
-    }
 
-    // This is a reference to [one]
-    func two()
-    {
-    }
-}
+// This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.
+
+/**
+> This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.
+*/
+
+/**
+## Markdown
+*/
+
+/**
+Some other markers are also supported inside texts.
+*/
+
+// This is `inline code` with back ticks.
+// This is inline 'code' with normal ticks, but just for a single word.
+// This is **bold**.
+// This is *italic*.
+// This character \n is escaped, and 'n' will be output as is.
+
+/**
+> This is `inline code` with back ticks.
+> This is inline 'code' with normal ticks, but just for a single word.
+> This is **bold**.
+> This is *italic*.
+> This character \n is escaped, and 'n' will be output as is.
+*/
