@@ -107,7 +107,7 @@ void GenDoc::outputStyles()
         .codetype a {\n\
             color:              inherit;\n\
         }\n\
-        .left a {\n\
+        .left a, .enumeration a {\n\
             text-decoration:    none;\n\
         }\n\
         .container a:hover {\n\

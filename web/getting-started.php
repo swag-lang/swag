@@ -90,7 +90,7 @@
         .codetype a {
             color:              inherit;
         }
-        .left a {
+        .left a, .enumeration a {
             text-decoration:    none;
         }
         .container a:hover {
