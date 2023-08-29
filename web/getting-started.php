@@ -229,9 +229,9 @@
 </div>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
-<div class="precode"><code><span class="SCde">#main
+<div class="precode"><code><span class="SCde"><span class="SFct">#main</span>
 {
-    @print("Hello world!\n")
+    <span class="SItr">@print</span>(<span class="SStr">"Hello world!\n"</span>)
 }</span></code>
 </div>
 <p>A workspace contains a predefined number of sub folders: </p>
