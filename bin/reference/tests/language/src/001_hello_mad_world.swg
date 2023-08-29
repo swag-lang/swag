@@ -5,7 +5,7 @@ Let's start with the most simple version of the "hello world" example. This is a
 `@print` is an **intrinsic**, a special built-in function (that's why the name starts with `@`).
 
 All intrinsics are part of the [compiler runtime](std/swag.runtime.php) which comes with the compiler.
-```
+```swag
 #main
 {
     @print("Hello mad world !\n")
@@ -15,7 +15,7 @@ All intrinsics are part of the [compiler runtime](std/swag.runtime.php) which co
 
 /**
 Next, a version that this time uses the `Core.Console.print` function in the [Std.Core](std.core.html) module. The `Std.Core` module would have to be imported in order to be used, but let's keep it simple.
-```
+```swag
 #main
 {
     Core.Console.print("Hello mad world !", "\n")
@@ -27,7 +27,7 @@ Next, a version that this time uses the `Core.Console.print` function in the [St
 /**
 A `#run` block is executed at **compile time**, and can make Swag behaves like a kind of a **scripting language**.
 So in the following example, the famous message will be printed by the compiler during compilation.
-```
+```swag
 #run
 {
     const Msg = "Hello mad world !\n"   // Creates a compiler constant of type 'string'
@@ -38,7 +38,7 @@ So in the following example, the famous message will be printed by the compiler 
 
 /**
 A version that calls a **nested function** at compile time (only) to initialize the string constant to print.
-```
+```swag
 // Brings the 'Core' namespace into scope, to avoid repeating it again and again
 using Core
 
@@ -57,7 +57,7 @@ using Core
 
 /**
 Now a stupid version that generates the code to do the print thanks to **meta programming**.
-```
+```swag
 using Core
 
 #main
@@ -78,7 +78,7 @@ using Core
 
 /**
 And finally let's be more and more crazy.
-```
+```swag
 using Core
 
 #main
@@ -113,7 +113,7 @@ func mySillyFunction()->string
 
 /**
 This whole piece of code is equivalent to...
-```
+```swag
 #main
 {
     Core.Console.print("Hello mad world at runtime !")

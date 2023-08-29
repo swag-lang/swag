@@ -8,7 +8,7 @@ Safety checks can also be changed for a specific build configuration (`--cfg:<co
 
 /**
 # overflow
-```
+```swag
 #[Swag.Safety("overflow", true)]
 ```
 Swag will panic if some operators overflow and if we lose some bits during an integer conversion.
@@ -88,7 +88,7 @@ Rember that you can disable these safety checks with the corresponding attribute
 
 /**
 # any
-```
+```swag
 #[Swag.Safety("any", true)]
 ```
 Swag will panic if a bad cast from `any` is performed.
@@ -104,7 +104,7 @@ Swag will panic if a bad cast from `any` is performed.
 
 /**
 # boundcheck
-```
+```swag
 #[Swag.Safety("boundcheck", true)]
 ```
 Swag will panic if an index is out of range when dereferencing a sized value like an array, a slice, a string...
@@ -152,7 +152,7 @@ Safety when slicing a sized value.
 
 /**
 # math
-```
+```swag
 #[Swag.Safety("math", true)]
 ```
 Swag will panic if some math operations are invalid.
@@ -184,7 +184,7 @@ Swag will also check for invalid arguments on some math intrinsics.
 
 /**
 # switch
-```
+```swag
 #[Swag.Safety("switch", true)]
 ```
 Swag will panic if a switch is marked with `#[Swag.Complete]`, but the value is not covered by a 'case'.
@@ -192,7 +192,7 @@ Swag will panic if a switch is marked with `#[Swag.Complete]`, but the value is 
 
 /**
 # bool
-```
+```swag
 #[Swag.Safety("bool", true)]
 ```
 Swag will panic if a boolean value is not `true` (1) or `false` (0).
@@ -200,7 +200,7 @@ Swag will panic if a boolean value is not `true` (1) or `false` (0).
 
 /**
 # nan
-```
+```swag
 #[Swag.Safety("nan", true)]
 ```
 Swag will panic if a floating point `NaN` is used in an operation.

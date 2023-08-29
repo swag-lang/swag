@@ -1,10 +1,10 @@
 /**
 The Swag compiler can generate documentation for all the modules of a given workspace.
-```raw
+```
 swag doc -w:myWorkspaceFolder
 ```
 Swag can generate documentations in various modes. That mode should be specified in the 'module.swg' file, in the [Swag.BuildCfg] struct.
-```
+```swag
 #dependencies
 {
     #import "pixel"
@@ -123,13 +123,13 @@ You can create a **table** with `|`.
 You can create a **code paragraph** with three backticks.
 */
 
-// ```
+// ```swag
 // if a == true
 //   @print("true")
 // ```
 
 /**
-```
+```swag
 if a == true
   @print("true")
 ```
@@ -139,13 +139,13 @@ if a == true
 You can create a code paragraph **without** syntax coloration by adding 'raw' after the three backticks.
 */
 
-// ```raw
+// ```
 // if a == true
 //   @print("true")
 // ```
 
 /**
-```raw
+```
 if a == true
   @print("true")
 ```

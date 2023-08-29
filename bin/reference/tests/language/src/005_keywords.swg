@@ -3,7 +3,7 @@ This is the list of all keywords in the language.
 
 # Special keywords
 Keywords are predefined, reserved identifiers that have special meanings to the compiler. They can't be used as identifiers in your program.
-```
+```swag
 if
 else
 elif
@@ -64,14 +64,14 @@ dref
 ```
 # Reserved keywords
 These keywords are reserved by the language, just in case...
-```
+```swag
 is
 in
 not
 ```
 # Basic types
 These are all the native types of the language. All are reserved keywords too.
-```
+```swag
 s8
 s16
 s32
@@ -94,7 +94,7 @@ cvarargs
 ```
 # Compiler keywords
 Compiler keywords always start with '#'. As user identifiers cannot start the same way, compiler keywords will never collide with user identifiers.
-```
+```swag
 #arch
 #backend
 #callerfunction
@@ -143,7 +143,7 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 ```
 # Misc intrinsics
 Intrisic keywords always start with '@'. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers.
-```
+```swag
 @index
 @err
 @errmsg
@@ -200,7 +200,7 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @typeof
 ```
 # Intrinsics libc
-```
+```swag
 @abs
 @acos
 @alloc
@@ -253,7 +253,7 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 /**
 # Modifiers
 Modifiers can be applied to some specific keywords or operators to change their behaviours.
-```
+```swag
 ,up
 ,over
 ,nodrop

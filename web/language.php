@@ -7400,14 +7400,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>The following will be used to track the functions with that specific attribute. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">OneFunc</span>
+<div class="precode"><code><span class="SCde">struct OneFunc
 {
-    type: <span class="STpe">typeinfo</span>
-    name: <span class="STpe">string</span>
+    type: typeinfo
+    name: string
 }
 
-<span class="SAtr">#[Compiler]</span>
-<span class="SKwd">var</span> g_Functions: <span class="SCst">Array</span>'<span class="SCst">OneFunc</span></span></code>
+#[Compiler]
+var g_Functions: Array'OneFunc</span></code>
 </div>
 <p>This <code class="incode">#message</code> will be called for each function of the <code class="incode">Ogl</code> module. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">CompilerMsgMask</span>.<span class="SCst">SemFunctions</span>)
@@ -7558,7 +7558,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </table>
 <h4 id="Code">Code </h4>
 <p>You can create a <b>code paragraph</b> with three backticks. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ```swag</span>
 <span class="SCmt">// if a == true</span>
 <span class="SCmt">//   @print("true")</span>
 <span class="SCmt">// ```</span></span></code>
@@ -7567,7 +7567,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
   <span class="SItr">@print</span>(<span class="SStr">"true"</span>)</span></code>
 </div>
 <p>You can create a code paragraph <b>without</b> syntax coloration by adding <code class="incode">raw</code> after the three backticks. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// ```raw</span>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
 <span class="SCmt">// if a == true</span>
 <span class="SCmt">//   @print("true")</span>
 <span class="SCmt">// ```</span></span></code>

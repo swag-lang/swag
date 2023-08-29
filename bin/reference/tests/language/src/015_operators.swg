@@ -160,7 +160,7 @@ The ternary operator will test an expression, and will return a value depending 
 /**
 # Spaceshift operator
 Operator `<=>` will return -1, 0 or 1 if the expression on the left is **lower**, **equal** or **greater** than the expression on the right. The returned type is `s32`.
-```
+```swag
 A <=> B == -1 if A < B
 A <=> B == 0  if A == B
 A <=> B == 1  if A > B
@@ -257,7 +257,7 @@ We'll see later how Swag deals with that kind of overflow, and more generally, w
 
 /**
 # Operator precedence
-```
+```swag
 ~
 * / %
 + -

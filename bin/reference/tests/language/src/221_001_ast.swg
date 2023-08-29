@@ -109,7 +109,7 @@ It works with generics too, and can be mixed with static declarations.
 /**
 # For example
 This is a real life example of an `#ast` usage from the `Std.Core` module. Here we generate a structure which contains all the fields of an original other structure, but where the types are forced to be `bool`.
-```
+```swag
 struct(T) IsSet
 {
     #ast

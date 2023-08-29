@@ -4,7 +4,7 @@ In 'Swag.DocKind.Api' mode, swag will collect all **public definitions** to gene
 
 /**
 The main module documentation should be placed at the top of the corresponding `module.swg` file.
-```
+```swag
 // This is the main module documentation.
 #dependencies
 {

@@ -6,7 +6,7 @@ Here is a real life example from the `Std.Ogl` module (opengl wrapper), which us
 
 /**
 First we declare a new specific attribute, which can then be associated with a function.
-```
+```swag
 #[AttrUsage(AttributeUsage.Function)]
 attr Extension()
 
@@ -20,7 +20,7 @@ attr Extension()
     func glUniformMatrix4x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
     func glUniformMatrix4x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
 }
-```
+```swag
 The following will be used to track the functions with that specific attribute.
 ```
 struct OneFunc
@@ -33,7 +33,7 @@ struct OneFunc
 var g_Functions: Array'OneFunc
 ```
 This `#message` will be called for each function of the `Ogl` module.
-```
+```swag
 #message(CompilerMsgMask.SemFunctions)
 {
     let itf = @compiler()
@@ -48,11 +48,11 @@ This `#message` will be called for each function of the `Ogl` module.
 }
 ```
 We will generate a `glInitExtensions` global function, so we register it as a place holder.
-```
+```swag
 #placeholder glInitExtensions
 ```
 This is called once all functions of the module have been typed, and this is the main code generation.
-```
+```swag
 #message(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder

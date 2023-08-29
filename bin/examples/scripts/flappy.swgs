@@ -8,7 +8,7 @@
 
 /**
 Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. To have some fun and play, go to the `bin/examples/scripts` folder, and type :
-```raw
+```
 $ swag flappy.swgs
 ```
 Instead of mainly explaining the game, the aim here is to describe the language. Note also that this page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).

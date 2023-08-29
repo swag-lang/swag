@@ -130,7 +130,7 @@ namespace Swag
 
     // Enable/Disable one or more safety checks.
     // For example:
-    // ```
+    // ```swag
     // #[Swag.Safety("", false)]                    // Disable all
     // #[Swag.Safety("boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
     // ```
@@ -172,7 +172,7 @@ namespace Swag
 
     // Change the behavior of a given warning or list of warnings.
     // For example:
-    // ```
+    // ```swag
     // #[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
     // #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
     // #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]

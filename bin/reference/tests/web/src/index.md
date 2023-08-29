@@ -46,7 +46,7 @@
 </div>
 ---
 
-```
+```swag
 func loadAssets(wnd: *Wnd) throw
 {
     let render = &wnd.getApp().renderer
