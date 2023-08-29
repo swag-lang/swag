@@ -7557,7 +7557,19 @@ var g_Functions: Array'OneFunc</span></code>
 <tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
 </table>
 <h4 id="Code">Code </h4>
-<p>You can create a <b>code paragraph</b> with three backticks. </p>
+<p>You can create a simple <b>code paragraph</b> with three backticks before and after the code, or just by indenting the code with four blanks or one tabulation. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
+<span class="SCmt">// if a == true</span>
+<span class="SCmt">//   @print("true")</span>
+<span class="SCmt">// ```</span>
+
+<span class="SCmt">//    if a == true</span>
+<span class="SCmt">//        @print("true")</span></span></code>
+</div>
+<div class="precode"><code><span class="SCde">if a == true
+  @print("true")</span></code>
+</div>
+<p>You can create a code paragraph with <b>syntax coloration</b> by adding <code class="incode">swag</code> after the three backticks. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ```swag</span>
 <span class="SCmt">// if a == true</span>
 <span class="SCmt">//   @print("true")</span>
@@ -7565,15 +7577,6 @@ var g_Functions: Array'OneFunc</span></code>
 </div>
 <div class="precode"><code><span class="SCde"><span class="SLgc">if</span> a == <span class="SKwd">true</span>
   <span class="SItr">@print</span>(<span class="SStr">"true"</span>)</span></code>
-</div>
-<p>You can create a code paragraph <b>without</b> syntax coloration by adding <code class="incode">raw</code> after the three backticks. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
-<span class="SCmt">// if a == true</span>
-<span class="SCmt">//   @print("true")</span>
-<span class="SCmt">// ```</span></span></code>
-</div>
-<div class="precode"><code><span class="SCde">if a == true
-  @print("true")</span></code>
 </div>
 <h4 id="Titles">Titles </h4>
 <p>You can define <b>titles</b> with <code class="incode">#</code>, <code class="incode">##</code>... The real level of the title will depend on the context and the generated documentation kind. </p>

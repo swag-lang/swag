@@ -363,7 +363,11 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             if (line.empty())
                 continue;
 
-            if (line.startsWith("---"))
+            if (lines[start].startsWith("    ") || lines[start].startsWith("\t"))
+            {
+                blk.kind = UserBlockKind::CodeAuto;
+            }
+            else if (line.startsWith("---"))
             {
                 blk.kind = UserBlockKind::ParagraphRaw;
                 start++;
@@ -466,6 +470,25 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                     blk.lines.push_back(lines[start]);
                 break;
 
+            case UserBlockKind::CodeAuto:
+                if (lines[start].startsWith("    "))
+                {
+                    line = lines[start];
+                    line.remove(0, 4);
+                    blk.lines.push_back(line);
+                }
+                else if (lines[start].startsWith("\t"))
+                {
+                    line = lines[start];
+                    line.remove(0, 1);
+                    blk.lines.push_back(line);
+                }
+                else
+                {
+                    mustEnd = true;
+                }
+                break;
+
             case UserBlockKind::Paragraph:
                 if (line.empty())
                     mustEnd = true;
@@ -551,6 +574,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     {
     case UserBlockKind::CodeSwag:
     case UserBlockKind::CodeRaw:
+    case UserBlockKind::CodeAuto:
     {
         Utf8 block;
         for (auto& l : user.lines)
@@ -560,7 +584,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         }
 
         uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
-        if (user.kind == UserBlockKind::CodeRaw)
+        if (user.kind != UserBlockKind::CodeSwag)
             flags &= ~GENDOC_CODE_SYNTAX_COL;
 
         outputCode(block, flags);

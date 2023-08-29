@@ -18574,7 +18574,6 @@
 </tr>
 </table>
 </p>
-<p>Binary serializer with forward/backward compatibility. </p>
 <table class="enumeration">
 <tr>
 <td class="codetype"><span class="SCde">stream</span></td>
@@ -18612,27 +18611,27 @@
 <td></td>
 </tr>
 </table>
-<p>    Changes that are supported from V to V+1 are : </p>
-<ul>
-<li>Add a new field. The new field will stay at the default value.</li>
-<li>Remove a field. It will just be ignored.</li>
-<li>Reorder of fields, as long as their name/type are the same.</li>
-<li>Rename a field with <code class="incode">Serialization.Alias</code>.</li>
-</ul>
-<p>    Supported type changes are : </p>
-<ul>
-<li>Change the size of a static array.</li>
-<li>Convert a static array to a dynamic array, and vice versa.</li>
-<li>Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
-<li>Conversion from single value to array/Core.Array, and vice versa.</li>
-</ul>
-<p>    Supported attributes are : </p>
-<ul>
-<li><code class="incode">Serialisation.Version</code>. If version is specified, then loading will not have versioning if versions are the same</li>
-<li><code class="incode">Serialization.Alias</code>. To rename a field. Multiple aliases are supported.</li>
-<li><code class="incode">Serialization.Final</code>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
-<li><code class="incode">Serialization.PodFinal</code>. The struct will be loaded/saved in place without versioning</li>
-</ul>
+<div class="precode"><code><span class="SCde">Binary serializer with forward/backward compatibility.
+Changes that are supported from V to V+1 are :</span></code>
+</div>
+<div class="precode"><code><span class="SCde">* Add a new field. The new field will stay at the default value.
+* Remove a field. It will just be ignored.
+* Reorder of fields, as long as their name/type are the same.
+* Rename a field with 'Serialization.Alias'.</span></code>
+</div>
+<div class="precode"><code><span class="SCde">Supported type changes are :
+* Change the size of a static array.
+* Convert a static array to a dynamic array, and vice versa.
+* Conversion from integer/float/rune/bool to integer/float/rune/bool.
+* Conversion from single value to array/Core.Array, and vice versa.</span></code>
+</div>
+<div class="precode"><code><span class="SCde">Supported attributes are :</span></code>
+</div>
+<div class="precode"><code><span class="SCde">* 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
+* 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
+* 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
+* 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning</span></code>
+</div>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>

@@ -18,6 +18,7 @@ struct GenDoc
         ParagraphRaw,
         CodeSwag,
         CodeRaw,
+        CodeAuto,
         Blockquote,
         Table,
         List,

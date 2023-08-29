@@ -120,7 +120,26 @@ You can create a **table** with `|`.
 */
 
 /**
-You can create a **code paragraph** with three backticks.
+You can create a simple **code paragraph** with three backticks before and after the code, or just by indenting the code with four blanks or one tabulation.
+*/
+
+// ```
+// if a == true
+//   @print("true")
+// ```
+
+//    if a == true
+//        @print("true")
+
+/**
+```
+if a == true
+  @print("true")
+```
+*/
+
+/**
+You can create a code paragraph with **syntax coloration** by adding 'swag' after the three backticks.
 */
 
 // ```swag
@@ -130,22 +149,6 @@ You can create a **code paragraph** with three backticks.
 
 /**
 ```swag
-if a == true
-  @print("true")
-```
-*/
-
-/**
-You can create a code paragraph **without** syntax coloration by adding 'raw' after the three backticks.
-*/
-
-// ```
-// if a == true
-//   @print("true")
-// ```
-
-/**
-```
 if a == true
   @print("true")
 ```

@@ -212,11 +212,10 @@
 <p>You should register the location of the swag compiler (<code class="incode">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
 <div class="precode"><code><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
-
 [Environment]::SetEnvironmentVariable(
-   "Path",
-   [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
-   "User"
+    "Path",
+    [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
+    "User"
 )</span></code>
 </div>
 <h1 id="Your_first_project">Your first project </h1>
@@ -252,17 +251,17 @@
 <h3 id="To_compile_your_workspace">To compile your workspace </h3>
 <div class="precode"><code><span class="SCde">$ swag build -w:first
             Workspace first [fast-debug-windows-x86_64]
-             Building first
-                 Done 0.067s</span></code>
+            Building first
+                Done 0.067s</span></code>
 </div>
 <p>You can omit the workspace name (<code class="incode">-w:first</code> or <code class="incode">--workspace:first</code>) if you call the compiler directly from the workspace folder. This command will compile all modules in <code class="incode">modules/</code>. </p>
 <p>You can also build and run your workspace. </p>
 <div class="precode"><code><span class="SCde">$ swag run -w:first
             Workspace first [fast-debug-windows-x86_64]
-             Building first
-      Running backend first
+            Building first
+    Running backend first
 Hello world!
-                 Done 0.093s</span></code>
+            Done 0.093s</span></code>
 </div>
 <h3 id="Note_on_Windows_Defender_realtime_protection">Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
