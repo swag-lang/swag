@@ -330,6 +330,9 @@ JobResult ModuleBuildJob::execute()
             {
                 for (auto file : module->files)
                 {
+                    if (file->markDown)
+                        continue;
+
                     auto syntaxJob          = Allocator::alloc<SyntaxJob>();
                     syntaxJob->sourceFile   = file;
                     syntaxJob->module       = module;

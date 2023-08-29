@@ -60,4 +60,5 @@ struct SourceFile
     bool shouldHaveWarning = false;
     bool fromTests         = false;
     bool forceExport       = false;
+    bool markDown          = false;
 };

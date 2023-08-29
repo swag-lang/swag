@@ -91,7 +91,6 @@ llvm debug, pas à jour
 DOC
 ****************************************
 
-- support.md in projects
 - add ![]() for images
 - checks all markdowns implementations for ideas (center ?)
 - add table header + align options

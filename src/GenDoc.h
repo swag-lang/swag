@@ -70,7 +70,8 @@ struct GenDoc
 
     bool generateExamples();
     void addTitle(const Utf8& title, int level);
-    bool processFile(const Path& fileName, int titleLevel);
+    bool processMarkDownFile(const Path& fileName);
+    bool processSourceFile(const Path& fileName, int titleLevel);
 
     // Api
     ///////////////////////////////////

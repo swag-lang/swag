@@ -551,6 +551,7 @@
 </ul>
 <li><a href="#230_documentation">Documentation</a></li>
 <ul>
+<li><a href="#Markdown">Markdown</a></li>
 <li><a href="#Format_of_comments">Format of comments</a></li>
 <li><a href="#References">References</a></li>
 </ul>
@@ -7492,6 +7493,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
 <tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of <code class="incode">Examples</code>)</td></tr>
 </table>
+<h3 id="Markdown">Markdown </h3>
+<p>If the module contains <b>markdown</b> files with the <code class="incode">.md</code> extension, they will be processed as if they were Swag comments. </p>
 <h3 id="Format_of_comments">Format of comments </h3>
 <p>The first paragraph is considered to be the 'short description' which can appear on specific parts of the documentation. So make it short. </p>
 <p>If the first line ends with a dot <code class="incode">.</code>, then this marks the end of the paragraph, i.e. the end of the short description. </p>

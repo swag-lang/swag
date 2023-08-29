@@ -1,4 +1,3 @@
-/**
 # Contribute to the test suite
 
 You can help by writing small tests to debug the compiler (and the compiler alone).
@@ -29,4 +28,3 @@ To force the build, add `--rebuild`.
 * You can use `@print` temporary to see a result, but in the end tests should be silent. `@assert` is the way to go.
 * `swag\bin\testsuite` is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.
 * Note that if a test works as expected, **keep it**, and **write another one** ! This is useful for testing regression.
-*/

@@ -1,4 +1,3 @@
-/**
 # Your first install
 [Download](https://github.com/swag-lang/swag/releases) the latest release from github, and unzip it in a folder. Of course a *SSD* is better.
 
@@ -104,4 +103,3 @@ And as this is a normal Swag workspace, you could also build and test it with `s
 
 You will also find some small examples (mostly written for tests) in `swag/bin/examples/modules`.
 To build and run one of them from the console, go to the workspace folder (`/examples`) and type for example `swag run -m:wnd`.
-*/

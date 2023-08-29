@@ -10,12 +10,23 @@
 #include "Diagnostic.h"
 #include "Report.h"
 
-SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<SourceFile*>& allFiles, const Path& dirName, const Utf8& fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
+SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
+                                                Vector<SourceFile*>& allFiles,
+                                                const Path&          dirName,
+                                                const Utf8&          fileName,
+                                                uint64_t             writeTime,
+                                                SourceFile*          prePass,
+                                                Module*              imported,
+                                                bool                 markDown)
 {
     auto file       = Allocator::alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
     file->name      = fileName;
     file->imported  = imported;
+
+    file->markDown = markDown;
+    if (markDown)
+        file->buildPass = BuildPass::Syntax;
 
     if (prePass)
     {
@@ -48,12 +59,16 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, Vector<Source
         // If we do not have to rebuild a module, we will do some syntax jobs anyway, but this is fine as
         // they are done during "idle" time.
         theModule->addFile(file);
-        auto syntaxJob        = Allocator::alloc<SyntaxJob>();
-        syntaxJob->sourceFile = file;
-        syntaxJob->module     = theModule;
-        syntaxJob->flags |= JOB_IS_OPT;
-        syntaxJob->jobGroup = &theModule->syntaxGroup;
-        theModule->syntaxGroup.addJob(syntaxJob);
+
+        if (!markDown)
+        {
+            auto syntaxJob        = Allocator::alloc<SyntaxJob>();
+            syntaxJob->sourceFile = file;
+            syntaxJob->module     = theModule;
+            syntaxJob->flags |= JOB_IS_OPT;
+            syntaxJob->jobGroup = &theModule->syntaxGroup;
+            theModule->syntaxGroup.addJob(syntaxJob);
+        }
     }
 
     return file;
@@ -89,7 +104,7 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
 
         auto fileName  = filePath.filename().string();
         auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
-        addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime);
+        addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime, nullptr, nullptr, true);
     }
 
     // Sort files, and register them in a constant order
@@ -126,7 +141,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                 auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
-                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f);
+                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f, nullptr, false);
+                }
+                else if (pz && !_strcmpi(pz, ".md"))
+                {
+                    addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f, nullptr, true);
                 }
                 else
                 {
@@ -165,7 +184,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                                           auto pz = strrchr(cFileName, '.');
                                           if (pz && !_strcmpi(pz, ".swg"))
                                           {
-                                              addFileToModule(theModule, allFiles, tmp, cFileName, writeTime);
+                                              addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
+                                          }
+                                          else if (g_CommandLine.genDoc && pz && !_strcmpi(pz, ".md"))
+                                          {
+                                              addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, true);
                                           }
 
                                           // Even if this is not a .swg file, as this is in the src directory, the file time contribute
@@ -187,7 +210,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile);
         cfgFile.append(SWAG_CFG_FILE);
         auto writeTime  = OS::getFileWriteTime(cfgFile.string().c_str());
-        auto file       = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime);
+        auto file       = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
         file->isCfgFile = true;
     }
 
@@ -374,7 +397,7 @@ JobResult EnumerateModuleJob::execute()
             {
                 if (f->isCfgFile)
                     continue;
-                auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod);
+                auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
                 newFile->isEmbedded           = true;
                 newFile->globalUsingsEmbedded = mod->buildParameters.globalUsings;
             }

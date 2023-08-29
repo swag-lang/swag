@@ -1,4 +1,3 @@
-/**
 # How to build Swag
 
 ## LLVM
@@ -28,4 +27,3 @@ The Swag **runtime** contains a copy of some libraries from the SDK (`kernel32.l
 They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is".
 
 The standard modules (in `bin/std/modules`) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the `publish` folder of the corresponding modules.
-*/

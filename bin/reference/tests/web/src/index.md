@@ -1,4 +1,3 @@
-/**
 ---
 <div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
@@ -76,4 +75,3 @@ func loadAssets(wnd: *Wnd) throw
 > There's **no official** release yet.
 >
 > Everything (including this web site) is still under construction...
-*/

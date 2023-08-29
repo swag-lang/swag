@@ -23,6 +23,11 @@ Swag can generate documentations in various modes. That mode should be specified
 */
 
 /**
+# Markdown
+If the module contains **markdown** files with the '.md' extension, they will be processed as if they were Swag comments.
+*/
+
+/**
 # Format of comments
 The first paragraph is considered to be the 'short description' which can appear on specific parts
 of the documentation. So make it short.

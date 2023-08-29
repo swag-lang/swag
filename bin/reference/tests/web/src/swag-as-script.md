@@ -1,4 +1,3 @@
-/**
 # Script file
 Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time.
 No executable will be generated, the compiler will do all the job.
@@ -85,4 +84,3 @@ The compiler comes with a **bytecode debugger** that can be used to trace and de
 Add `@breakpoint()` in your code when you want the debugger to trigger.
 
 The debugger command set is inspired by [Pdb](https://docs.python.org/3/library/pdb.html), the python debugger.
-*/
