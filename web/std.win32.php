@@ -1680,7 +1680,7 @@
 <tr>
 <td id="Win32_CSIDL_ADMINTOOLS" class="codetype"><span class="SCst">CSIDL_ADMINTOOLS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Start Menu\Programs\Administrative Tools. </td>
+<td>&lt;user name&gt;/Start Menu/Programs/Administrative Tools. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_ALTSTARTUP" class="codetype"><span class="SCst">CSIDL_ALTSTARTUP</span></td>
@@ -1690,22 +1690,22 @@
 <tr>
 <td id="Win32_CSIDL_APPDATA" class="codetype"><span class="SCst">CSIDL_APPDATA</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Application Data. </td>
+<td>&lt;user name&gt;/Application Data. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_BITBUCKET" class="codetype"><span class="SCst">CSIDL_BITBUCKET</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;desktop&gt;\Recycle Bin. </td>
+<td>&lt;desktop&gt;/Recycle Bin. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_CDBURN_AREA" class="codetype"><span class="SCst">CSIDL_CDBURN_AREA</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>USERPROFILE\Local Settings\Application Data\Microsoft\CD Burning. </td>
+<td>USERPROFILE/Local Settings/Application Data/Microsoft/CD Burning. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="codetype"><span class="SCst">CSIDL_COMMON_ADMINTOOLS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Start Menu\Programs\Administrative Tools. </td>
+<td>All Users/Start Menu/Programs/Administrative Tools. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="codetype"><span class="SCst">CSIDL_COMMON_ALTSTARTUP</span></td>
@@ -1715,17 +1715,17 @@
 <tr>
 <td id="Win32_CSIDL_COMMON_APPDATA" class="codetype"><span class="SCst">CSIDL_COMMON_APPDATA</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Application Data. </td>
+<td>All Users/Application Data. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="codetype"><span class="SCst">CSIDL_COMMON_DESKTOPDIRECTORY</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Desktop. </td>
+<td>All Users/Desktop. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_DOCUMENTS" class="codetype"><span class="SCst">CSIDL_COMMON_DOCUMENTS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Documents. </td>
+<td>All Users/Documents. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_FAVORITES" class="codetype"><span class="SCst">CSIDL_COMMON_FAVORITES</span></td>
@@ -1735,7 +1735,7 @@
 <tr>
 <td id="Win32_CSIDL_COMMON_MUSIC" class="codetype"><span class="SCst">CSIDL_COMMON_MUSIC</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\My Music. </td>
+<td>All Users/My Music. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_OEM_LINKS" class="codetype"><span class="SCst">CSIDL_COMMON_OEM_LINKS</span></td>
@@ -1745,32 +1745,32 @@
 <tr>
 <td id="Win32_CSIDL_COMMON_PICTURES" class="codetype"><span class="SCst">CSIDL_COMMON_PICTURES</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\My Pictures. </td>
+<td>All Users/My Pictures. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_PROGRAMS" class="codetype"><span class="SCst">CSIDL_COMMON_PROGRAMS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Start Menu\Programs. </td>
+<td>All Users/Start Menu/Programs. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_STARTMENU" class="codetype"><span class="SCst">CSIDL_COMMON_STARTMENU</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Start Menu. </td>
+<td>All Users/Start Menu. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_STARTUP" class="codetype"><span class="SCst">CSIDL_COMMON_STARTUP</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Startup. </td>
+<td>All Users/Startup. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_TEMPLATES" class="codetype"><span class="SCst">CSIDL_COMMON_TEMPLATES</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\Templates. </td>
+<td>All Users/Templates. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMMON_VIDEO" class="codetype"><span class="SCst">CSIDL_COMMON_VIDEO</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>All Users\My Video. </td>
+<td>All Users/My Video. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COMPUTERSNEARME" class="codetype"><span class="SCst">CSIDL_COMPUTERSNEARME</span></td>
@@ -1785,7 +1785,7 @@
 <tr>
 <td id="Win32_CSIDL_CONTROLS" class="codetype"><span class="SCst">CSIDL_CONTROLS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>My Computer\Control Panel. </td>
+<td>My Computer/Control Panel. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_COOKIES" class="codetype"><span class="SCst">CSIDL_COOKIES</span></td>
@@ -1800,7 +1800,7 @@
 <tr>
 <td id="Win32_CSIDL_DESKTOPDIRECTORY" class="codetype"><span class="SCst">CSIDL_DESKTOPDIRECTORY</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Desktop. </td>
+<td>&lt;user name&gt;/Desktop. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_DRIVES" class="codetype"><span class="SCst">CSIDL_DRIVES</span></td>
@@ -1810,7 +1810,7 @@
 <tr>
 <td id="Win32_CSIDL_FAVORITES" class="codetype"><span class="SCst">CSIDL_FAVORITES</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Favorites. </td>
+<td>&lt;user name&gt;/Favorites. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_FLAG_CREATE" class="codetype"><span class="SCst">CSIDL_FLAG_CREATE</span></td>
@@ -1845,7 +1845,7 @@
 <tr>
 <td id="Win32_CSIDL_FONTS" class="codetype"><span class="SCst">CSIDL_FONTS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>windows\fonts. </td>
+<td>windows/fonts. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_HISTORY" class="codetype"><span class="SCst">CSIDL_HISTORY</span></td>
@@ -1865,7 +1865,7 @@
 <tr>
 <td id="Win32_CSIDL_LOCAL_APPDATA" class="codetype"><span class="SCst">CSIDL_LOCAL_APPDATA</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Local Settings\Applicaiton Data (non roaming). </td>
+<td>&lt;user name&gt;/Local Settings/Applicaiton Data (non roaming). </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_MYDOCUMENTS" class="codetype"><span class="SCst">CSIDL_MYDOCUMENTS</span></td>
@@ -1880,7 +1880,7 @@
 <tr>
 <td id="Win32_CSIDL_MYPICTURES" class="codetype"><span class="SCst">CSIDL_MYPICTURES</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>C:\Program Files\My Pictures. </td>
+<td>C:/Program Files/My Pictures. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_MYVIDEO" class="codetype"><span class="SCst">CSIDL_MYVIDEO</span></td>
@@ -1890,7 +1890,7 @@
 <tr>
 <td id="Win32_CSIDL_NETHOOD" class="codetype"><span class="SCst">CSIDL_NETHOOD</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\nethood. </td>
+<td>&lt;user name&gt;/nethood. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_NETWORK" class="codetype"><span class="SCst">CSIDL_NETWORK</span></td>
@@ -1905,12 +1905,12 @@
 <tr>
 <td id="Win32_CSIDL_PRINTERS" class="codetype"><span class="SCst">CSIDL_PRINTERS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>My Computer\Printers. </td>
+<td>My Computer/Printers. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PRINTHOOD" class="codetype"><span class="SCst">CSIDL_PRINTHOOD</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\PrintHood. </td>
+<td>&lt;user name&gt;/PrintHood. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PROFILE" class="codetype"><span class="SCst">CSIDL_PROFILE</span></td>
@@ -1920,32 +1920,32 @@
 <tr>
 <td id="Win32_CSIDL_PROGRAMS" class="codetype"><span class="SCst">CSIDL_PROGRAMS</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>Start Menu\Programs. </td>
+<td>Start Menu/Programs. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PROGRAM_FILES" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>C:\Program Files. </td>
+<td>C:/Program Files. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PROGRAM_FILESX86" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILESX86</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>x86 C:\Program Files on RISC. </td>
+<td>x86 C:/Program Files on RISC. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES_COMMON</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>C:\Program Files\Common. </td>
+<td>C:/Program Files/Common. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES_COMMONX86</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>x86 Program Files\Common on RISC. </td>
+<td>x86 Program Files/Common on RISC. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_RECENT" class="codetype"><span class="SCst">CSIDL_RECENT</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Recent. </td>
+<td>&lt;user name&gt;/Recent. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_RESOURCES" class="codetype"><span class="SCst">CSIDL_RESOURCES</span></td>
@@ -1960,17 +1960,17 @@
 <tr>
 <td id="Win32_CSIDL_SENDTO" class="codetype"><span class="SCst">CSIDL_SENDTO</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\SendTo. </td>
+<td>&lt;user name&gt;/SendTo. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_STARTMENU" class="codetype"><span class="SCst">CSIDL_STARTMENU</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>&lt;user name&gt;\Start Menu. </td>
+<td>&lt;user name&gt;/Start Menu. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_STARTUP" class="codetype"><span class="SCst">CSIDL_STARTUP</span></td>
 <td class="codetype"><span class="STpe">u32</span></td>
-<td>Start Menu\Programs\Startup. </td>
+<td>Start Menu/Programs/Startup. </td>
 </tr>
 <tr>
 <td id="Win32_CSIDL_SYSTEM" class="codetype"><span class="SCst">CSIDL_SYSTEM</span></td>

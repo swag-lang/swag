@@ -138,22 +138,27 @@ You can create a code paragraph **without** syntax coloration by adding 'raw' af
 }
 
 /**
-Some other markdown markers (or kind of) are also supported inside paragraphs.
+You can define **titles** with '#', '##'...
+The real level of the title will depend on the context and the generated documentation kind.
 */
 #test
 {
-    // `this is code` (backtick) for 'inline' code.
-    // 'single_word'  (tick) for 'inline' code.
-    // *italic*
-    // **bold**
-    // # Title
-    // ## Title
-    // ### Title
-    struct RGB
+    // # Title 1
+    // ## Title 2
+    // ### Title 3
+    func test()
     {
-        r, g, b: s32
     }
 }
+
+/**
+Some other markers (or kind of) are also supported inside text.
+| \`this is code\`   | <code>this is code</code> | back ticks for inline code.
+| \'word\'           | <code>word</code>         | simple ticks for inline code of one single word.
+| \*\*bold\*\*       | <b>bold</b>               | Bold text
+| \*italic\*         | <i>italic</i>             | Italic text
+| \\<n>              | escape character <n>      | <n> will be displayed whatever
+*/
 
 /**
 # References

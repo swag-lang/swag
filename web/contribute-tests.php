@@ -212,7 +212,7 @@
 <p>First create a workspace with the <code class="incode">--test</code> option. </p>
 <div class="precode"><code><span class="SCde">$ swag new -w:myWorkspace --test</span></code>
 </div>
-<p>This will also create a test module <code class="incode">myWorkspace</code> located in <code class="incode">myWorkspace\tests</code>. </p>
+<p>This will also create a test module <code class="incode">myWorkspace</code> located in <code class="incode">myWorkspacetests</code>. </p>
 <p>You can then compile and run the tests with the <code class="incode">test</code> command. </p>
 <div class="precode"><code><span class="SCde">$ swag test -w:myWorkspace</span></code>
 </div>
@@ -220,10 +220,10 @@
 <h3 id="Write_tests">Write tests </h3>
 <ul>
 <li>Tests should be small, located in different <b>small files</b>.</li>
-<li>Just write files like <code class="incode">test1.swg</code>, <code class="incode">test2.swg</code> and so on, in the <code class="incode">\src</code> sub folder of your module.</li>
+<li>Just write files like <code class="incode">test1.swg</code>, <code class="incode">test2.swg</code> and so on, in the <code class="incode">src</code> sub folder of your module.</li>
 <li>Here you are only testing the compiler, and not the standard libraries. So do not add dependencies to external modules.</li>
 <li>You can use <code class="incode">@print</code> temporary to see a result, but in the end tests should be silent. <code class="incode">@assert</code> is the way to go.</li>
-<li><code class="incode">swag\bin\testsuite</code> is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.</li>
+<li><code class="incode">swagbintestsuite</code> is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.</li>
 <li>Note that if a test works as expected, <b>keep it</b>, and <b>write another one</b> ! This is useful for testing regression.</li>
 </ul>
 </div>

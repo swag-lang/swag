@@ -96,7 +96,7 @@ DOC
 - add table header + align options
 - more than one blockquote with different colors
 - doc help, explain the genDoc struct field by field
-- ``` raw and not ```raw (to verify)
+- ```raw => ``` and ``` => ```swag
 
 
 

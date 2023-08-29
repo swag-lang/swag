@@ -1378,7 +1378,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3 id="Escape_sequences">Escape sequences </h3>
 <p>A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
-<p>An escape sequence starts with a backslash <code class="incode">\</code>. </p>
+<p>An escape sequence starts with a backslash <code class="incode">`.</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">"this is code ascii 0x00:   \0"</span>   <span class="SCmt">// null</span>
@@ -1464,7 +1464,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// string</span>
 }</span></code>
 </div>
-<p>In a multiline or a raw string, if you end a line with <code class="incode">\</code>, the following "eol" will <b>not</b> be part of the string. </p>
+<p>In a multiline or a raw string, if you end a line with <code class="incode">`, the following "eol" will <b>not</b> be part of the string.</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">""</span><span class="SStr">"\
@@ -7588,22 +7588,25 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>Some other markdown markers (or kind of) are also supported inside paragraphs. </p>
+<p>You can define <b>titles</b> with <code class="incode">#</code>, <code class="incode">##</code>... The real level of the title will depend on the context and the generated documentation kind. </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmt">// `this is code` (backtick) for 'inline' code.</span>
-    <span class="SCmt">// 'single_word'  (tick) for 'inline' code.</span>
-    <span class="SCmt">// *italic*</span>
-    <span class="SCmt">// **bold**</span>
-    <span class="SCmt">// # Title</span>
-    <span class="SCmt">// ## Title</span>
-    <span class="SCmt">// ### Title</span>
-    <span class="SKwd">struct</span> <span class="SCst">RGB</span>
+    <span class="SCmt">// # Title 1</span>
+    <span class="SCmt">// ## Title 2</span>
+    <span class="SCmt">// ### Title 3</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>()
     {
-        r, g, b: <span class="STpe">s32</span>
     }
 }</span></code>
 </div>
+<p>Some other markers (or kind of) are also supported inside text. </p>
+<table class="enumeration">
+<tr><td> `this is code`   </td><td> &lt;code&gt;this is code&lt;/code&gt; </td><td> back ticks for inline code.</td></tr>
+<tr><td> 'word'           </td><td> &lt;code&gt;word&lt;/code&gt;         </td><td> simple ticks for inline code of one single word.</td></tr>
+<tr><td> **bold**       </td><td> &lt;b&gt;bold&lt;/b&gt;               </td><td> Bold text</td></tr>
+<tr><td> *italic*         </td><td> &lt;i&gt;italic&lt;/i&gt;             </td><td> Italic text</td></tr>
+<tr><td> \&lt;n&gt;              </td><td> escape character &lt;n&gt;      </td><td> &lt;n&gt; will be displayed whatever</td></tr>
+</table>
 <h3 id="References">References </h3>
 <p>You can create a reference to something in the current module with <code class="incode">[name]</code> or <code class="incode">[name1.name2 etc.]</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SFct">#test</span>

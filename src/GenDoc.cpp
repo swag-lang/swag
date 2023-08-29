@@ -725,6 +725,13 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
+        if (*pz == '\\')
+        {
+            pz++;
+            result += *pz++;
+            continue;
+        }
+
         // [reference] to create an html link to the current document
         if (*pz == '[' && (SWAG_IS_ALPHA(pz[1]) || pz[1] == '#' || pz[1] == '@'))
         {
