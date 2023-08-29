@@ -40,6 +40,7 @@ struct GenDoc
 
     void constructPage();
     Utf8 toRef(Utf8 str);
+    void addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
     bool generate(Module* mdl, BuildCfgDocKind kind);
     void outputStyles();
     Utf8 findReference(const Utf8& name);
@@ -59,6 +60,7 @@ struct GenDoc
     Utf8            helpCode;
     Utf8            fullFileName;
     MapUtf8<Utf8>   collectInvert;
+    int             tocLastTitleLevel = 0;
 
     // Pages
     ///////////////////////////////////

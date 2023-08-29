@@ -553,6 +553,7 @@
 <ul>
 <li><a href="#Markdown_files">Markdown files</a></li>
 <li><a href="#Format_of_comments">Format of comments</a></li>
+<ul>
 <li><a href="#Paragraphs">Paragraphs</a></li>
 <li><a href="#Lists">Lists</a></li>
 <li><a href="#Quotes">Quotes</a></li>
@@ -562,7 +563,6 @@
 <li><a href="#References">References</a></li>
 <li><a href="#Markdown">Markdown</a></li>
 </ul>
-<ul>
 <li><a href="#231_001_Api">Api</a></li>
 <ul>
 </ul>

@@ -95,7 +95,7 @@ bool GenDoc::generateExamples()
     helpToc += "<ul>\n";
 
     // Parse all files
-    int lastTitleLevel = 1;
+    tocLastTitleLevel = 1;
     for (auto file : module->files)
     {
         if (file->markDown)
@@ -121,19 +121,7 @@ bool GenDoc::generateExamples()
         title.buffer[0] = (char) toupper(title.buffer[0]);
         title.replace("_", " ");
 
-        while (lastTitleLevel < titleLevel)
-        {
-            helpToc += "<ul>\n";
-            lastTitleLevel++;
-        }
-
-        while (lastTitleLevel > titleLevel)
-        {
-            helpToc += "</ul>\n";
-            lastTitleLevel--;
-        }
-
-        helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", name.c_str(), title.c_str());
+        addTocTitle(name, title, titleLevel);
 
         helpContent += "\n";
         helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, name.c_str());

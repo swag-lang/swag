@@ -650,7 +650,10 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             // Update toc
             if (docKind == BuildCfgDocKind::Examples)
-                helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(user.lines[i]).c_str(), user.lines[i].c_str());
+            {
+                int myTitleLevel = (int) user.kind - (int) UserBlockKind::Title1;
+                addTocTitle(toRef(user.lines[i]), user.lines[i], titleLevel + myTitleLevel - 1);
+            }
         }
         else
         {
@@ -934,6 +937,23 @@ void GenDoc::constructPage()
 
     helpOutput += "</body>\n";
     helpOutput += "</html>\n";
+}
+
+void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
+{
+    while (tocLastTitleLevel < titleLevel)
+    {
+        helpToc += "<ul>\n";
+        tocLastTitleLevel++;
+    }
+
+    while (tocLastTitleLevel > titleLevel)
+    {
+        helpToc += "</ul>\n";
+        tocLastTitleLevel--;
+    }
+
+    helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", name.c_str(), title.c_str());
 }
 
 bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
