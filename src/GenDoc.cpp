@@ -203,8 +203,8 @@ void GenDoc::outputStyles()
             overflow-x:         auto;\n\
         }\n";
 
-    float    lum        = module->buildCfg.docSyntaxColorLum;
-    uint32_t defaultCol = module->buildCfg.docSyntaxDefaultColor;
+    float    lum        = module->buildCfg.genDoc.syntaxColorLum;
+    uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
@@ -861,7 +861,7 @@ void GenDoc::constructPage()
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
     // User start of the <head> section
-    Utf8 startHead = Utf8{module->buildCfg.docStartHead};
+    Utf8 startHead = Utf8{module->buildCfg.genDoc.startHead};
     helpOutput += startHead;
 
     // Page title
@@ -869,21 +869,21 @@ void GenDoc::constructPage()
         helpOutput += Fmt("<title>%s</title>\n", titleContent.c_str());
 
     // User icon
-    Utf8 icon = Utf8{module->buildCfg.docIcon};
+    Utf8 icon = Utf8{module->buildCfg.genDoc.icon};
     if (!icon.empty())
         helpOutput += Fmt("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
 
     // User css ref
-    Utf8 css{module->buildCfg.docCss};
+    Utf8 css{module->buildCfg.genDoc.css};
     if (!css.empty())
         helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
     // Predefined <style> section
-    if (module->buildCfg.docStyleSection)
+    if (module->buildCfg.genDoc.styleSection)
         outputStyles();
 
     // User end of the <head> section
-    Utf8 endHead = Utf8{module->buildCfg.docEndHead};
+    Utf8 endHead = Utf8{module->buildCfg.genDoc.endHead};
     helpOutput += endHead;
 
     helpOutput += "</head>\n";
@@ -894,7 +894,7 @@ void GenDoc::constructPage()
     helpOutput += "<body>\n";
 
     // User start of the <body> section
-    Utf8 startBody = Utf8{module->buildCfg.docStartBody};
+    Utf8 startBody = Utf8{module->buildCfg.genDoc.startBody};
     helpOutput += startBody;
 
     helpOutput += "<div class=\"container\">\n";
@@ -922,7 +922,7 @@ void GenDoc::constructPage()
     helpOutput += "</div>\n";
 
     // User end of the <body> section
-    Utf8 endBody = Utf8{module->buildCfg.docEndBody};
+    Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};
     helpOutput += endBody;
 
     helpOutput += "</body>\n";
@@ -938,21 +938,21 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
     // Setup runtime module documentation
     if (module == g_Workspace->runtimeModule)
     {
-        setSlice(module->buildCfg.docOutputName, "swag.runtime");
-        setSlice(module->buildCfg.docOutputExtension, ".php");
-        setSlice(module->buildCfg.docTitleContent, "Swag Runtime");
-        setSlice(module->buildCfg.docCss, "css/style.css");
-        setSlice(module->buildCfg.docIcon, "favicon.ico");
+        setSlice(module->buildCfg.genDoc.outputName, "swag.runtime");
+        setSlice(module->buildCfg.genDoc.outputExtension, ".php");
+        setSlice(module->buildCfg.genDoc.titleContent, "Swag Runtime");
+        setSlice(module->buildCfg.genDoc.css, "css/style.css");
+        setSlice(module->buildCfg.genDoc.icon, "favicon.ico");
+        setSlice(module->buildCfg.genDoc.startHead, "<?php include('common/start-head.php'); ?>");
+        setSlice(module->buildCfg.genDoc.endHead, "<?php include('common/end-head.php'); ?>");
+        setSlice(module->buildCfg.genDoc.startBody, "<?php include('common/start-body.php'); ?>");
         setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
-        setSlice(module->buildCfg.docStartHead, "<?php include('common/start-head.php'); ?>");
-        setSlice(module->buildCfg.docEndHead, "<?php include('common/end-head.php'); ?>");
-        setSlice(module->buildCfg.docStartBody, "<?php include('common/start-body.php'); ?>");
     }
 
-    titleToc = Utf8{module->buildCfg.docTitleToc};
+    titleToc = Utf8{module->buildCfg.genDoc.titleToc};
     if (titleToc.empty())
         titleToc = "Table of Contents";
-    titleContent = Utf8{module->buildCfg.docTitleContent};
+    titleContent = Utf8{module->buildCfg.genDoc.titleContent};
     if (titleContent.empty())
         titleContent = Fmt("Module %s", module->name.c_str());
 
@@ -965,7 +965,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
 
     // Output filename
     auto filePath = g_Workspace->targetPath;
-    Utf8 fileName{module->buildCfg.docOutputName};
+    Utf8 fileName{module->buildCfg.genDoc.outputName};
     if (fileName.empty())
     {
         filePath.append(g_Workspace->workspacePath.filename().string().c_str());
@@ -977,7 +977,7 @@ bool GenDoc::generate(Module* mdl, DocKind kind)
         filePath.append(fileName.c_str());
     }
 
-    Utf8 extName{module->buildCfg.docOutputExtension};
+    Utf8 extName{module->buildCfg.genDoc.outputExtension};
     if (extName.empty())
         extName = ".html";
     filePath += extName.c_str();

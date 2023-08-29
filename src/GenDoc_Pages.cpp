@@ -13,7 +13,7 @@ bool GenDoc::generatePages()
         files.push_back(file->path);
 
     // Import additional pages
-    Utf8         morePages(module->buildCfg.docMorePages);
+    Utf8         morePages(module->buildCfg.genDoc.morePages);
     Vector<Utf8> pages;
     Utf8::tokenize(morePages, ';', pages);
     for (auto& addPage : pages)
@@ -39,7 +39,7 @@ bool GenDoc::generatePages()
         auto filePath = g_Workspace->targetPath;
         filePath.append(path.filename().string());
 
-        Utf8 extName{module->buildCfg.docOutputExtension};
+        Utf8 extName{module->buildCfg.genDoc.outputExtension};
         if (extName.empty())
             extName = ".html";
         filePath.replace_extension(extName.c_str());

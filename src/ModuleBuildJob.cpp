@@ -776,13 +776,13 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        if (module->buildCfg.docKind != DocKind::None)
+        if (module->buildCfg.genDoc.kind != DocKind::None)
         {
             module->logPass(ModuleBuildPass::GenerateDoc);
             auto outputJob          = Allocator::alloc<ModuleGenDocJob>();
             outputJob->module       = module;
             outputJob->dependentJob = this;
-            outputJob->docKind      = module->buildCfg.docKind;
+            outputJob->docKind      = module->buildCfg.genDoc.kind;
             jobsToAdd.push_back(outputJob);
         }
 

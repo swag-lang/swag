@@ -14,11 +14,11 @@
         cfg.backendKind = .Export
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32"
 
-        cfg.docKind = .Api
-        cfg.docOutputExtension = ".php"
-        cfg.docCss = "css/style.css"
-        cfg.docStartHead = "<?php include('common/start-head.php'); ?>"
-        cfg.docEndHead   = "<?php include('common/end-head.php'); ?>"
-        cfg.docStartBody = "<?php include('common/start-body.php'); ?>"
+        cfg.genDoc.kind = .Api
+        cfg.genDoc.outputExtension = ".php"
+        cfg.genDoc.css = "css/style.css"
+        cfg.genDoc.startHead = "<?php include('common/start-head.php'); ?>"
+        cfg.genDoc.endHead   = "<?php include('common/end-head.php'); ?>"
+        cfg.genDoc.startBody = "<?php include('common/start-body.php'); ?>"
     }
 }

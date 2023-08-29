@@ -13,7 +13,7 @@ Swag can generate documentations in various modes. That mode should be specified
     {
         let itf = @compiler()
         let cfg = itf.getBuildCfg()
-        cfg.docKind = .Api // Specify the documentation generation mode
+        cfg.genDoc.kind = .Api // Specify the documentation generation mode
     }
 }
 ```

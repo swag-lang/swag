@@ -226,6 +226,25 @@ enum class DocKind
     Pages,
 };
 
+struct BuildCfgGenDoc
+{
+    DocKind   kind = DocKind::None;
+    SwagSlice outputName;
+    SwagSlice outputExtension;
+    SwagSlice titleToc;
+    SwagSlice titleContent;
+    SwagSlice css;
+    SwagSlice icon;
+    SwagSlice startHead;
+    SwagSlice endHead;
+    SwagSlice startBody;
+    SwagSlice endBody;
+    SwagSlice morePages;
+    bool      styleSection       = true;
+    uint32_t  syntaxDefaultColor = 0x00222222;
+    float     syntaxColorLum     = 0.5f;
+};
+
 struct BuildCfg
 {
     // Module informations
@@ -275,21 +294,7 @@ struct BuildCfg
     SwagSlice repoPath;
 
     // Documentation
-    DocKind   docKind = DocKind::None;
-    SwagSlice docOutputName;
-    SwagSlice docOutputExtension;
-    SwagSlice docTitleToc;
-    SwagSlice docTitleContent;
-    SwagSlice docCss;
-    SwagSlice docIcon;
-    SwagSlice docStartHead;
-    SwagSlice docEndHead;
-    SwagSlice docStartBody;
-    SwagSlice docEndBody;
-    SwagSlice docMorePages;
-    bool      docStyleSection       = true;
-    uint32_t  docSyntaxDefaultColor = 0x00222222;
-    float     docSyntaxColorLum     = 0.5f;
+    BuildCfgGenDoc genDoc;
 };
 
 enum class TypeInfoKind : uint8_t

@@ -701,12 +701,31 @@ namespace Swag
         Oz  // Optim for size level 2
     }
 
-    enum DocKind
+    enum BuildCfgDocKind
     {
         None        // Do not generate documentation for that module
         Api         // Generate 'api like' documentation
         Examples    // Generate 'examples like' documentation
         Pages       // Generate one page per file
+    }
+
+    struct BuildCfgGenDoc
+    {
+        kind                 = BuildCfgDocKind.None // The kind of documentation to generate
+        outputName:          string                 // The name of the output file (without extension)
+        outputExtension:     string                 // The output extension
+        titleToc:            string                 // Title for the table of content
+        titleContent:        string                 // Title for the main document content
+        css:                 string                 // The 'css' file to include in generated documentations
+        icon:                string                 // The icon path of the page
+        startHead:           string                 // To insert at the start of the <head> section
+        endHead:             string                 // To insert at the end of the <head> section
+        startBody:           string                 // To insert add at the start of the <body> section
+        endBody:             string                 // To insert add at the end of the <body> section
+        morePages:           string                 // Additional external file pages to process
+        styleSection         = true                 // Generate a default <style> section
+        syntaxDefaultColor:  u32 = 0x00222222       // Code syntax default color (if not colorized)
+        syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
     }
 
     // The current module build configuration.
@@ -751,21 +770,7 @@ namespace Swag
 
         repoPath:       string                  // Repository access path to the module
 
-        docKind                 = DocKind.None
-        docOutputName:          string             // The name of the output file (without extension)
-        docOutputExtension:     string             // The output extension
-        docTitleToc:            string             // Title for the table of content
-        docTitleContent:        string             // Title for the main document content
-        docCss:                 string             // The 'css' file to include in generated documentations
-        docIcon:                string             // The icon path of the page
-        docStartHead:           string             // To insert at the start of the <head> section
-        docEndHead:             string             // To insert at the end of the <head> section
-        docStartBody:           string             // To insert add at the start of the <body> section
-        docEndBody:             string             // To insert add at the end of the <body> section
-        docMorePages:           string             // Additional external file pages to process
-        docStyleSection         = true             // Generate a default <style> section
-        docSyntaxDefaultColor:  u32 = 0x00222222   // Code syntax default color (if not colorized)
-        docSyntaxColorLum:      f32 = 0.5          // Code syntax color luminosity in range ]0, 1]
+        genDoc:         BuildCfgGenDoc          // Parameters for document generation
     }
 
     // #########################################################

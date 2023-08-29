@@ -9,15 +9,15 @@
         cfg.moduleBuildNum = 0
         cfg.backendKind    = .Executable
 
-        cfg.docKind = .Pages
-        cfg.docOutputExtension = ".php"
+        cfg.genDoc.kind = .Pages
+        cfg.genDoc.outputExtension = ".php"
 
-        cfg.docTitleContent = "Swag"
-        cfg.docCss = "css/style.css"
-        cfg.docIcon = "favicon.ico"
-        cfg.docStartHead = "<?php include('common/start-head.php'); ?>"
-        cfg.docStartBody = "<?php include('common/start-body.php'); ?>"
+        cfg.genDoc.titleContent = "Swag"
+        cfg.genDoc.css = "css/style.css"
+        cfg.genDoc.icon = "favicon.ico"
+        cfg.genDoc.startHead = "<?php include('common/start-head.php'); ?>"
+        cfg.genDoc.startBody = "<?php include('common/start-body.php'); ?>"
 
-        cfg.docMorePages = "../../../examples/scripts/flappy.swgs"
+        cfg.genDoc.morePages = "../../../examples/scripts/flappy.swgs"
     }
 }

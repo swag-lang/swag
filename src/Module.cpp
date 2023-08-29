@@ -127,8 +127,8 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 
     if (!g_CommandLine.docCss.empty())
     {
-        buildCfg.docCss.buffer = g_CommandLine.docCss.buffer;
-        buildCfg.docCss.count  = g_CommandLine.docCss.count;
+        buildCfg.genDoc.css.buffer = g_CommandLine.docCss.buffer;
+        buildCfg.genDoc.css.count  = g_CommandLine.docCss.count;
     }
 
     computePublicPath();

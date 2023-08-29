@@ -7483,7 +7483,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     {
         <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
         <span class="SKwd">let</span> cfg = itf.<span class="SFct">getBuildCfg</span>()
-        cfg.docKind = .<span class="SCst">Api</span> <span class="SCmt">// Specify the documentation generation mode</span>
+        cfg.genDoc.kind = .<span class="SCst">Api</span> <span class="SCmt">// Specify the documentation generation mode</span>
     }
 }</span></code>
 </div>

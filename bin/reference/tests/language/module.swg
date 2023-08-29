@@ -11,15 +11,15 @@
         cfg.warnDefaultDisabled = true
         cfg.warnAsWarning = "Wrn0009"
 
-        cfg.docTitleContent = "Swag Language Reference"
-        cfg.docCss = "css/style.css"
-        cfg.docIcon = "favicon.ico"
-        cfg.docKind = .Examples
-        cfg.docOutputName = "language"
-        cfg.docOutputExtension = ".php"
+        cfg.genDoc.titleContent = "Swag Language Reference"
+        cfg.genDoc.css = "css/style.css"
+        cfg.genDoc.icon = "favicon.ico"
+        cfg.genDoc.kind = .Examples
+        cfg.genDoc.outputName = "language"
+        cfg.genDoc.outputExtension = ".php"
 
-        cfg.docStartHead = "<?php include('common/start-head.php'); ?>"
-        cfg.docEndHead   = "<?php include('common/end-head.php'); ?>"
-        cfg.docStartBody = "<?php include('common/start-body.php'); ?>"
+        cfg.genDoc.startHead = "<?php include('common/start-head.php'); ?>"
+        cfg.genDoc.endHead   = "<?php include('common/end-head.php'); ?>"
+        cfg.genDoc.startBody = "<?php include('common/start-body.php'); ?>"
     }
 }
