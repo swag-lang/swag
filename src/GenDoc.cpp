@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
+#pragma optimize("", off)
 
 void GenDoc::outputStyles()
 {
@@ -356,18 +357,9 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
     }
 }
 
-void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc)
+void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc)
 {
-    if (txt.empty())
-        return;
-
-    Vector<Utf8> lines;
-    Utf8::tokenize(txt, '\n', lines);
-    computeUserComments(result, lines, shortDesc);
-}
-
-void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
-{
+    // Remove trailing '\r'
     for (auto& l : lines)
     {
         if (l.length() && l.back() == '\r')
@@ -377,7 +369,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
     int start = 0;
     while (start < lines.size())
     {
-        UserBlock blk;
+        UserBlock* blk = new UserBlock;
 
         // Start of a block
         for (; start < lines.size(); start++)
@@ -391,72 +383,72 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
 
             if (lines[start].startsWith("    ") || lines[start].startsWith("\t"))
             {
-                blk.kind = UserBlockKind::CodeAuto;
+                blk->kind = UserBlockKind::CodeAuto;
             }
             else if (line.startsWith("---"))
             {
-                blk.kind = UserBlockKind::ParagraphRaw;
+                blk->kind = UserBlockKind::ParagraphRaw;
                 start++;
             }
             else if (line.startsWith("```swag"))
             {
-                blk.kind = UserBlockKind::CodeSwag;
+                blk->kind = UserBlockKind::CodeSwag;
                 start++;
             }
             else if (line.startsWith("```"))
             {
-                blk.kind = UserBlockKind::CodeRaw;
+                blk->kind = UserBlockKind::CodeRaw;
                 start++;
             }
             else if (line.startsWith(">"))
             {
-                blk.kind = UserBlockKind::Blockquote;
+                blk->kind = UserBlockKind::Blockquote;
             }
             else if (line.startsWith("|"))
             {
-                blk.kind = UserBlockKind::Table;
+                blk->kind = UserBlockKind::Table;
             }
             else if (line.startsWith("* "))
             {
-                blk.kind = UserBlockKind::List;
+                blk->kind = UserBlockKind::List;
             }
             else if (line.startsWith("# "))
             {
-                blk.kind = UserBlockKind::Title1;
+                blk->kind = UserBlockKind::Title1;
             }
             else if (line.startsWith("## "))
             {
-                blk.kind = UserBlockKind::Title2;
+                blk->kind = UserBlockKind::Title2;
             }
             else if (line.startsWith("### "))
             {
-                blk.kind = UserBlockKind::Title3;
+                blk->kind = UserBlockKind::Title3;
             }
             else if (line.startsWith("#### "))
             {
-                blk.kind = UserBlockKind::Title4;
+                blk->kind = UserBlockKind::Title4;
             }
             else if (line.startsWith("##### "))
             {
-                blk.kind = UserBlockKind::Title5;
+                blk->kind = UserBlockKind::Title5;
             }
             else if (line.startsWith("###### "))
             {
-                blk.kind = UserBlockKind::Title6;
+                blk->kind = UserBlockKind::Title6;
             }
             else
             {
-                blk.kind = UserBlockKind::Paragraph;
-                blk.lines.push_back(lines[start++]);
+                blk->kind = UserBlockKind::Paragraph;
+                blk->lines.push_back(lines[start++]);
             }
 
             break;
         }
 
         // The short description (first line) can end with '.'.
-        if (shortDesc && !blk.lines.empty() && result.blocks.empty() && !blk.lines[0].empty() && blk.lines[0].back() == '.')
+        if (shortDesc && !blk->lines.empty() && blocks.empty() && !blk->lines[0].empty() && blk->lines[0].back() == '.')
         {
-            result.blocks.emplace_back(std::move(blk));
+            blocks.push_back(blk);
             continue;
         }
 
@@ -466,7 +458,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             line.trim();
 
             bool mustEnd = false;
-            switch (blk.kind)
+            switch (blk->kind)
             {
             case UserBlockKind::Title1:
             case UserBlockKind::Title2:
@@ -474,8 +466,8 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             case UserBlockKind::Title4:
             case UserBlockKind::Title5:
             case UserBlockKind::Title6:
-                line.remove(0, 2 + ((int) blk.kind - (int) UserBlockKind::Title1)); // #<blank>
-                blk.lines.push_back(line);
+                line.remove(0, 2 + ((int) blk->kind - (int) UserBlockKind::Title1)); // #<blank>
+                blk->lines.push_back(line);
                 mustEnd = true;
                 start++;
                 break;
@@ -487,7 +479,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                     start++;
                 }
                 else
-                    blk.lines.push_back(lines[start]);
+                    blk->lines.push_back(lines[start]);
                 break;
 
             case UserBlockKind::CodeSwag:
@@ -498,7 +490,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                     start++;
                 }
                 else
-                    blk.lines.push_back(lines[start]);
+                    blk->lines.push_back(lines[start]);
                 break;
 
             case UserBlockKind::CodeAuto:
@@ -506,13 +498,13 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 {
                     line = lines[start];
                     line.remove(0, 4);
-                    blk.lines.push_back(line);
+                    blk->lines.push_back(line);
                 }
                 else if (lines[start].startsWith("\t"))
                 {
                     line = lines[start];
                     line.remove(0, 1);
-                    blk.lines.push_back(line);
+                    blk->lines.push_back(line);
                 }
                 else
                 {
@@ -540,14 +532,14 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 else if (line.startsWith("### "))
                     mustEnd = true;
                 else
-                    blk.lines.push_back(lines[start]);
+                    blk->lines.push_back(lines[start]);
                 break;
 
             case UserBlockKind::Table:
                 if (!line.startsWith("|"))
                     mustEnd = true;
                 else
-                    blk.lines.push_back(lines[start]);
+                    blk->lines.push_back(lines[start]);
                 break;
 
             case UserBlockKind::List:
@@ -557,7 +549,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 {
                     line.remove(0, 2); // *<blank>
                     line.trim();
-                    blk.lines.push_back(line);
+                    blk->lines.push_back(line);
                 }
                 break;
 
@@ -568,7 +560,7 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 {
                     line.remove(0, 1);
                     line.trim();
-                    blk.lines.push_back(line);
+                    blk->lines.push_back(line);
                 }
                 break;
 
@@ -581,14 +573,31 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
                 break;
         }
 
-        if (!blk.lines.empty())
-            result.blocks.emplace_back(std::move(blk));
+        if (!blk->lines.empty())
+            blocks.push_back(blk);
+        else
+            delete blk;
     }
+}
+
+void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc)
+{
+    if (txt.empty())
+        return;
+
+    Vector<Utf8> lines;
+    Utf8::tokenize(txt, '\n', lines);
+    computeUserComments(result, lines, shortDesc);
+}
+
+void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
+{
+    computeUserBlocks(result.blocks, lines, shortDesc);
 
     // First block is the "short description"
-    if (shortDesc && !result.blocks.empty() && result.blocks[0].kind == UserBlockKind::Paragraph)
+    if (shortDesc && !result.blocks.empty() && result.blocks[0]->kind == UserBlockKind::Paragraph)
     {
-        result.shortDesc = std::move(result.blocks[0]);
+        result.shortDesc = std::move(*result.blocks[0]);
         result.blocks.erase(result.blocks.begin());
         result.shortDesc.lines[0].trim();
         if (result.shortDesc.lines.back().back() != '.')
@@ -647,10 +656,10 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             Utf8 name;
             Utf8 link;
             auto ppz = tokenizeReference(pz + 1, name, link);
-            if (ppz && !name.empty() && !link.empty())
+            if (ppz && !link.empty())
             {
-                pz = ppz;
                 result += Fmt("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
+                pz = ppz;
                 continue;
             }
 
@@ -670,6 +679,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 {
                     result += Fmt("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
                     pz = ppz;
+                    continue;
                 }
                 else if (!name.empty())
                 {
@@ -925,7 +935,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
 {
     for (auto& b : user.blocks)
-        outputUserBlock(b, titleLevel);
+        outputUserBlock(*b, titleLevel);
 }
 
 void GenDoc::constructPage()
