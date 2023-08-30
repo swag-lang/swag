@@ -71,7 +71,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -210,8 +210,8 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <code class="inline-code">bin/examples/scripts</code> folder, and type : </p>
 <div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
@@ -259,9 +259,8 @@
 </div>
 <h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <code class="inline-code">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="inline-code">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
-<blockquote>
-<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="inline-code">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </p>
-</blockquote>
+<div class="blockquote-default">
+You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="inline-code">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>

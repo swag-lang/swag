@@ -77,7 +77,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -354,8 +354,8 @@
 </div>
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module xaudio2</h1>
 <p> Wrapper for Microsoft XAudio2 library. </p>
 <h1>Content</h1>

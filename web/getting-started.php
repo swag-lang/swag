@@ -71,7 +71,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -210,8 +210,8 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
 <h3 id="Under_windows_10/11">Under windows 10/11 </h3>

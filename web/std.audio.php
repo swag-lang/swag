@@ -77,7 +77,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -298,8 +298,8 @@
 </div>
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module audio</h1>
 <p><code class="inline-code">Std.Audio</code> is a module to decode and play sound files. Under windows, it is based on the <code class="inline-code">xaudio2</code> library. </p>
 <h2 id="How_to_play_a_sound">How to play a sound </h2>

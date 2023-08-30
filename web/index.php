@@ -71,7 +71,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -210,8 +210,8 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
@@ -281,9 +281,8 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
-<blockquote>
-<p>There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </p>
-</blockquote>
+<div class="blockquote-default">
+There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </div>
 </div>
 </div>
 </div>

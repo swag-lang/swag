@@ -78,7 +78,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -1704,8 +1704,8 @@
 </div>
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Swag Std.Core</h1>
 <p> The <code class="inline-code">Std.core</code> module contains basic types and algorithms.  It is the base of all other modules of the standard <code class="inline-code">Std</code> workspace. </p>
 <p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>

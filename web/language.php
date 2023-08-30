@@ -78,7 +78,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -584,8 +584,8 @@
 </div>
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Swag Language Reference</h1>
 
 <h2 id="000_introduction">Introduction</h2><p>The <code class="inline-code">swag-lang/swag/bin/reference/language</code> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<code class="inline-code">Std</code>). This documentation has been generated directly from the source tree of that module. </p>
@@ -3050,9 +3050,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>+<span class="SNum">20</span>+<span class="SNum">30</span>+<span class="SNum">40</span>)
 }</span></code>
 </div>
-<blockquote>
-<p><b>Warning !</b> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code class="inline-code">Std.Core</code> module. </p>
-</blockquote>
+<div class="blockquote-default">
+<b>Warning !</b> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the <code class="inline-code">Std.Core</code> module. </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -6498,14 +6497,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. It will probably be changed/improved at some point. </p>
-<blockquote>
-<p><p>These are <b>not</b> exceptions ! </p>
-</p>
-</blockquote>
+<div class="blockquote-default">
+<p>These are <b>not</b> exceptions ! </p>
+</div>
 <p>A function that can return an error must be marked with <code class="inline-code">throw</code>. It can then raise an error with the <code class="inline-code">throw</code> keyword, passing an error message. </p>
-<blockquote>
-<p>When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type. </p>
-</blockquote>
+<div class="blockquote-default">
+When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type. </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
@@ -6546,10 +6543,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>The caller can also panic if an error is raised, with <code class="inline-code">assume</code>. </p>
-<blockquote>
-<p><p>This can be disabled in release builds (in that case the behaviour is undefined). </p>
-</p>
-</blockquote>
+<div class="blockquote-default">
+<p>This can be disabled in release builds (in that case the behaviour is undefined). </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>()
 {
     <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error</span>
@@ -6643,9 +6639,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
 <h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <code class="inline-code">#<a href="swag.runtime.php#Swag_Safety">Swag.Safety</a></code> attribute. </p>
 <p>Safety checks can also be changed for a specific build configuration (<code class="inline-code">--cfg:&lt;config&gt;</code>) with <code class="inline-code">buildCfg.safetyGuards</code>. </p>
-<blockquote>
-<p>Swag comes with four predefined configurations : <code class="inline-code">debug</code>, <code class="inline-code">fast-debug</code>, <code class="inline-code">fast-compile</code> and <code class="inline-code">release</code>. Safety checks are disabled in <code class="inline-code">fast-compile</code> and <code class="inline-code">release</code>. </p>
-</blockquote>
+<div class="blockquote-default">
+Swag comes with four predefined configurations : <code class="inline-code">debug</code>, <code class="inline-code">fast-debug</code>, <code class="inline-code">fast-compile</code> and <code class="inline-code">release</code>. Safety checks are disabled in <code class="inline-code">fast-compile</code> and <code class="inline-code">release</code>. </div>
 <h3 id="overflow">overflow </h3>
 <div class="code-block"><code><span class="SAtr">#[Swag.Safety("overflow", true)]</span></code>
 </div>
@@ -7521,21 +7516,19 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">//</span>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
-<blockquote>
-<p><p>Everything between empty lines is considered to be a simple paragraph. Which means that if you put several comments on several lines like this, they all will be part of the same paragraph. </p>
+<div class="blockquote-default">
+<p>Everything between empty lines is considered to be a simple paragraph. Which means that if you put several comments on several lines like this, they all will be part of the same paragraph. </p>
 <p>This is another paragraph because there's an empty line before. </p>
 <p>This is yet another paragraph. </p>
-</p>
-</blockquote>
+</div>
 <p>Inside a paragraph, you can end of line with <code class="inline-code">\</code> to force a break without creating a new paragraph. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// First line.</span>
 <span class="SCmt">// Second line is on first line.\</span>
 <span class="SCmt">// But third line has a break before.</span></span></code>
 </div>
-<blockquote>
-<p><p>First line. Second line is on first line.<br/> But third line has a break before. </p>
-</p>
-</blockquote>
+<div class="blockquote-default">
+<p>First line. Second line is on first line.<br/> But third line has a break before. </p>
+</div>
 <p>A paragraph that starts with <code class="inline-code">---</code> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <code class="inline-code">as is</code> without any markdown change. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// ---</span>
 <span class="SCmt">// Even...</span>
@@ -7546,15 +7539,14 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// Note that **everything** is not bold, put printed 'as it is'.</span>
 <span class="SCmt">// ---</span></span></code>
 </div>
-<blockquote>
-<p><p style="white-space: break-spaces">Even...
+<div class="blockquote-default">
+<p style="white-space: break-spaces">Even...
 
 ...empty lines are preserved.
 
 You end that kind of paragraph with another '---' alone on its line.
 Note that **everything** is not bold, put printed 'as it is'.</p>
-</p>
-</blockquote>
+</div>
 <p style="white-space: break-spaces">Even...
 
 ...empty lines are preserved.
@@ -7567,14 +7559,13 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span></span></code>
 </div>
-<blockquote>
-<p><ul>
+<div class="blockquote-default">
+<ul>
 <li>This is a bullet point</li>
 <li>This is a bullet point</li>
 <li>This is a bullet point</li>
 </ul>
-</p>
-</blockquote>
+</div>
 <h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <code class="inline-code">&gt;</code> </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; This is a block quote on multiple</span>
@@ -7582,11 +7573,10 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// &gt;</span>
 <span class="SCmt">// &gt; End of the quote.</span></span></code>
 </div>
-<blockquote>
-<p><p>This is a block quote on multiple lines. </p>
+<div class="blockquote-default">
+<p>This is a block quote on multiple lines. </p>
 <p>End of the quote. </p>
-</p>
-</blockquote>
+</div>
 <h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <code class="inline-code">|</code>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
@@ -7595,15 +7585,14 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// | math         | Various math checks (like a negative '@sqrt')</span>
 <span class="SCmt">// | switch       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
 </div>
-<blockquote>
-<p><table class="table-enumeration">
+<div class="blockquote-default">
+<table class="table-enumeration">
 <tr><td> boundcheck   </td><td> Check out of bound access</td></tr>
 <tr><td> overflow     </td><td> Check type conversion lost of bits or precision</td></tr>
 <tr><td> math         </td><td> Various math checks (like a negative <code class="inline-code">@sqrt</code>)</td></tr>
 <tr><td> switch       </td><td> Check an invalid case in a <code class="inline-code">#[Swag.Complete]</code> switch</td></tr>
 </table>
-</p>
-</blockquote>
+</div>
 <h4 id="Code">Code </h4>
 <p>You can create a simple <b>code paragraph</b> with three backticks before and after the code. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// ```</span>
@@ -7643,10 +7632,9 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <p>You can create an external <b>reference</b> with <code class="inline-code">[name](link)</code>. </p>
 <div class="code-block"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.</span></code>
 </div>
-<blockquote>
-<p><p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
-</p>
-</blockquote>
+<div class="blockquote-default">
+<p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+</div>
 <h4 id="Images">Images </h4>
 <p>You can insert an external <b>image</b> with <code class="inline-code">![name](link)</code>. </p>
 <div class="code-block"><code><span class="SCmt">// This is an image ![image](https://swag-lang/imgs/swag_icon.png).</span></code>
@@ -7659,9 +7647,8 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// This is *italic*.\</span>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.\</span></span></code>
 </div>
-<blockquote>
-<p>This is <code class="inline-code">inline code</code> with back ticks.<br/> This is inline <code class="inline-code">code</code> with normal ticks, but just for a single word.<br/> This is <b>bold</b>.<br/> This is <i>italic</i>.<br/> This character n is escaped, and <code class="inline-code">n</code> will be output as is.<br/> </p>
-</blockquote>
+<div class="blockquote-default">
+This is <code class="inline-code">inline code</code> with back ticks.<br/> This is inline <code class="inline-code">code</code> with normal ticks, but just for a single word.<br/> This is <b>bold</b>.<br/> This is <i>italic</i>.<br/> This character n is escaped, and <code class="inline-code">n</code> will be output as is.<br/> </div>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="inline-code">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="inline-code">module.swg</code> file. </p>

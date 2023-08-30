@@ -71,7 +71,7 @@
             line-height:    1.3em;
             font-family:    Segoe UI;
         }
-        .container blockquote {
+        .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
             background-color:   LightYellow;
@@ -210,8 +210,8 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
+<div class="blockquote-default">
+<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="How_to_build_Swag">How to build Swag </h1>
 <h2 id="LLVM">LLVM </h2>
 <p>Swag has two backends, a <code class="inline-code">x86_64</code> custom backend written for fast compile, but with far from optimal generated code, and <code class="inline-code">llvm</code> for optimized builds. </p>

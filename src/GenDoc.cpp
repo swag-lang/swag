@@ -89,7 +89,7 @@ void GenDoc::outputStyles()
             line-height:    1.3em;\n\
             font-family:    Segoe UI;\n\
         }\n\
-        .container blockquote {\n\
+        .blockquote-default {\n\
             border-radius:      5px;\n\
             border:             1px solid Orange;\n\
             background-color:   LightYellow;\n\
@@ -815,8 +815,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::Blockquote:
-        helpContent += "<blockquote>\n";
-        helpContent += "<p>";
+        helpContent += "<div class=\"blockquote-default\">\n";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
@@ -920,8 +919,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             helpContent += "</p>\n";
         break;
     case UserBlockKind::Blockquote:
-        helpContent += "</p>\n";
-        helpContent += "</blockquote>\n";
+        helpContent += "</div>\n";
         break;
     case UserBlockKind::List:
         helpContent += "</ul>\n";
@@ -1013,9 +1011,9 @@ void GenDoc::constructPage()
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"right-page\">\n";
 
-    helpOutput += "<blockquote>\n";
+    helpOutput += "<div class=\"blockquote-default\">\n";
     helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    helpOutput += "</blockquote>\n";
+    helpOutput += "</div>\n";
     helpOutput += helpContent;
 
     helpOutput += "</div>\n";
