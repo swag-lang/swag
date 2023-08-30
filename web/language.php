@@ -6493,7 +6493,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
 <h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. It will probably be changed/improved at some point. </p>
 <blockquote>
-<p>These are <b>not</b> exceptions ! </p>
+<p><p>These are <b>not</b> exceptions ! </p>
+</p>
 </blockquote>
 <p>A function that can return an error must be marked with <code class="incode">throw</code>. It can then raise an error with the <code class="incode">throw</code> keyword, passing an error message. </p>
 <blockquote>
@@ -6540,7 +6541,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <p>The caller can also panic if an error is raised, with <code class="incode">assume</code>. </p>
 <blockquote>
-<p>This can be disabled in release builds (in that case the behaviour is undefined). </p>
+<p><p>This can be disabled in release builds (in that case the behaviour is undefined). </p>
+</p>
 </blockquote>
 <div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>()
 {
@@ -7514,7 +7516,10 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
 <blockquote>
-<p>Everything between empty lines is considered to be a simple paragraph. Which means that if you put several comments on several lines like this, they all will be part of the same paragraph. </p><p>This is another paragraph because there's an empty line before. </p><p>This is yet another paragraph. </p>
+<p><p>Everything between empty lines is considered to be a simple paragraph. Which means that if you put several comments on several lines like this, they all will be part of the same paragraph. </p>
+<p>This is another paragraph because there's an empty line before. </p>
+<p>This is yet another paragraph. </p>
+</p>
 </blockquote>
 <p>Inside a paragraph, you can end of line with <code class="incode">\</code> to force a break without creating a new paragraph. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// First line.</span>
@@ -7522,7 +7527,8 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// But third line has a break before.</span></span></code>
 </div>
 <blockquote>
-<p>First line. Second line is on first line.<br/> But third line has a break before. </p>
+<p><p>First line. Second line is on first line.<br/> But third line has a break before. </p>
+</p>
 </blockquote>
 <p>A paragraph that starts with <code class="incode">---</code> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <code class="incode">as is</code> without any markdown change. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ---</span>
@@ -7534,6 +7540,15 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// Note that **everything** is not bold, put printed 'as it is'.</span>
 <span class="SCmt">// ---</span></span></code>
 </div>
+<blockquote>
+<p><p style="white-space: break-spaces">Even...
+
+...empty lines are preserved.
+
+You end that kind of paragraph with another '---' alone on its line.
+Note that **everything** is not bold, put printed 'as it is'.</p>
+</p>
+</blockquote>
 <p style="white-space: break-spaces">Even...
 
 ...empty lines are preserved.
@@ -7547,7 +7562,12 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// * This is a bullet point</span></span></code>
 </div>
 <blockquote>
-<p>* This is a bullet point * This is a bullet point * This is a bullet point </p>
+<p><ul>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+<li>This is a bullet point</li>
+</ul>
+</p>
 </blockquote>
 <h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <code class="incode">&gt;</code> </p>
@@ -7557,22 +7577,27 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// &gt; End of the quote.</span></span></code>
 </div>
 <blockquote>
-<p>This is a block quote on multiple lines. </p><p>End of the quote. </p>
+<p><p>This is a block quote on multiple lines. </p>
+<p>End of the quote. </p>
+</p>
 </blockquote>
 <h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <code class="incode">|</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
-<span class="SCmt">// | 'boundcheck'   | Check out of bound access</span>
-<span class="SCmt">// | 'overflow'     | Check type conversion lost of bits or precision</span>
-<span class="SCmt">// | 'math'         | Various math checks (like a negative '@sqrt')</span>
-<span class="SCmt">// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
+<span class="SCmt">// | boundcheck   | Check out of bound access</span>
+<span class="SCmt">// | overflow     | Check type conversion lost of bits or precision</span>
+<span class="SCmt">// | math         | Various math checks (like a negative '@sqrt')</span>
+<span class="SCmt">// | switch       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
 </div>
-<table class="enumeration">
-<tr><td> <code class="incode">boundcheck</code>   </td><td> Check out of bound access</td></tr>
-<tr><td> <code class="incode">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
-<tr><td> <code class="incode">math</code>         </td><td> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
-<tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
+<blockquote>
+<p><table class="enumeration">
+<tr><td> boundcheck   </td><td> Check out of bound access</td></tr>
+<tr><td> overflow     </td><td> Check type conversion lost of bits or precision</td></tr>
+<tr><td> math         </td><td> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
+<tr><td> switch       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
 </table>
+</p>
+</blockquote>
 <h4 id="Code">Code </h4>
 <p>You can create a simple <b>code paragraph</b> with three backticks before and after the code. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
@@ -7613,7 +7638,8 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <div class="precode"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.</span></code>
 </div>
 <blockquote>
-<p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+<p><p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+</p>
 </blockquote>
 <h4 id="Images">Images </h4>
 <p>You can insert an external <b>image</b> with <code class="incode">![name](link)</code>. </p>

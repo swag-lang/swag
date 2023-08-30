@@ -74,6 +74,15 @@ are respected. The paragraph will be generated `as is` without any markdown chan
 // ---
 ```
 
+> ---
+> Even...
+>
+> ...empty lines are preserved.
+>
+> You end that kind of paragraph with another '---' alone on its line.
+> Note that **everything** is not bold, put printed 'as it is'.
+> ---
+
 ---
 Even...
 
@@ -119,16 +128,16 @@ You can create a **table** with `|`.
 
 ```swag
 // A table with 4 lines of 2 columns:
-// | 'boundcheck'   | Check out of bound access
-// | 'overflow'     | Check type conversion lost of bits or precision
-// | 'math'         | Various math checks (like a negative '@sqrt')
-// | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+// | boundcheck   | Check out of bound access
+// | overflow     | Check type conversion lost of bits or precision
+// | math         | Various math checks (like a negative '@sqrt')
+// | switch       | Check an invalid case in a '#[Swag.Complete]' switch
 ```
 
-| 'boundcheck'   | Check out of bound access
-| 'overflow'     | Check type conversion lost of bits or precision
-| 'math'         | Various math checks (like a negative '@sqrt')
-| 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
+> | boundcheck   | Check out of bound access
+> | overflow     | Check type conversion lost of bits or precision
+> | math         | Various math checks (like a negative '@sqrt')
+> | switch       | Check an invalid case in a '#[Swag.Complete]' switch
 
 ## Code
 

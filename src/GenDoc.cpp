@@ -555,7 +555,11 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
 
             case UserBlockKind::Blockquote:
                 if (!line.startsWith(">"))
+                {
                     mustEnd = true;
+                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                    blk->lines.clear();
+                }
                 else
                 {
                     line.remove(0, 1);
@@ -573,7 +577,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 break;
         }
 
-        if (!blk->lines.empty())
+        if (!blk->lines.empty() || !blk->subBlocks.empty())
             blocks.push_back(blk);
         else
             delete blk;
@@ -775,9 +779,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
 
 void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDescTd)
 {
-    for (auto sub : user.subBlocks)
-        outputUserBlock(*sub, titleLevel, shortDescTd);
-    if (user.lines.empty())
+    if (user.lines.empty() && user.subBlocks.empty())
         return;
 
     switch (user.kind)
@@ -808,6 +810,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::Blockquote:
         helpContent += "<blockquote>\n";
         helpContent += "<p>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
 
     case UserBlockKind::Paragraph:
