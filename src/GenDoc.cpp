@@ -26,14 +26,14 @@ void GenDoc::outputStyles()
             overflow-y: scroll;\n\
             width:      500px;\n\
         }\n\
-        .leftpage {\n\
+        .left-page {\n\
             margin:     10px;\n\
         }\n\
         .right {\n\
             display:    block;\n\
             width:      100%;\n\
         }\n\
-        .rightpage {\n\
+        .right-page {\n\
             max-width:  1024px;\n\
             margin:     10px auto;\n\
         }\n\
@@ -66,7 +66,7 @@ void GenDoc::outputStyles()
             .left {\n\
                 display: none;\n\
             }\n\
-            .rightpage {\n\
+            .right-page {\n\
                 margin:  10px;\n\
             }\n\
         }\n";
@@ -102,10 +102,7 @@ void GenDoc::outputStyles()
         .container a {\n\
             color:              DoggerBlue;\n\
         }\n\
-        .precode a {\n\
-            color:              inherit;\n\
-        }\n\
-        .codetype a {\n\
+        .code-type a {\n\
             color:              inherit;\n\
         }\n\
         .left a, .enumeration a {\n\
@@ -114,7 +111,7 @@ void GenDoc::outputStyles()
         .container a:hover {\n\
             text-decoration:    underline;\n\
         }\n\
-        table.item {\n\
+        table.api-item {\n\
             border-collapse:    separate;\n\
             background-color:   Black;\n\
             color:              White;\n\
@@ -123,9 +120,23 @@ void GenDoc::outputStyles()
             margin-right:       0px;\n\
             font-size:          110%;\n\
         }\n\
-        .item td:first-child {\n\
+        .api-item td:first-child {\n\
             width:              33%;\n\
             white-space:        nowrap;\n\
+        }\n\
+        .api-item-title-src-ref {\n\
+            text-align:         right;\n\
+        }\n\
+        .api-item-title-kind {\n\
+            font-weight:        normal;\n\
+            font-size:          80%;\n\
+        }\n\
+        .api-item-title-light {\n\
+            font-weight:        normal;\n\
+        }\n\
+        .api-item-title-strong {\n\
+            font-weight:        bold;\n\
+            font-size:          100%;\n\
         }\n\
         table.enumeration {\n\
             border:             1px solid LightGrey;\n\
@@ -143,7 +154,7 @@ void GenDoc::outputStyles()
             background-color:   #f8f8f8;\n\
             white-space:        nowrap;\n\
         }\n\
-        .codetype {\n\
+        .code-type {\n\
             background-color:   #eeeeee;\n\
         }\n\
         .container td:last-child {\n\
@@ -152,17 +163,6 @@ void GenDoc::outputStyles()
         .left ul {\n\
             list-style-type:    none;\n\
             margin-left:        -20px;\n\
-        }\n\
-        .titletype {\n\
-            font-weight:        normal;\n\
-            font-size:          80%;\n\
-        }\n\
-        .titlelight {\n\
-            font-weight:        normal;\n\
-        }\n\
-        .titlestrong {\n\
-            font-weight:        bold;\n\
-            font-size:          100%;\n\
         }\n\
         .left h3 {\n\
             background-color:   Black;\n\
@@ -176,15 +176,12 @@ void GenDoc::outputStyles()
         .right h2 {\n\
             margin-top:         35px;\n\
         }\n\
-        .srcref {\n\
-            text-align:         right;\n\
-        }\n\
-        .incode {\n\
+        .inline-code {\n\
             background-color:   #eeeeee;\n\
             padding:            2px;\n\
             border: 1px dotted  #cccccc;\n\
         }\n\
-        .tdname .incode {\n\
+        .tdname .inline-code {\n\
             background-color:   revert;\n\
             padding:            2px;\n\
             border:             revert;\n\
@@ -194,7 +191,7 @@ void GenDoc::outputStyles()
             white-space:        break-spaces;\n\
             overflow-wrap:      break-word;\n\
         }\n\
-        .precode {\n\
+        .code-block {\n\
             background-color:   #eeeeee;\n\
             border-radius:      5px;\n\
             border:             1px solid LightGrey;\n\
@@ -202,7 +199,11 @@ void GenDoc::outputStyles()
             margin:             20px;\n\
             white-space:        pre;\n\
             overflow-x:         auto;\n\
-        }\n";
+        }\n\
+        .code-block a {\n\
+            color:  inherit; \n\
+        }\n\
+        ";
 
     float    lum        = module->buildCfg.genDoc.syntaxColorLum;
     uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
@@ -298,7 +299,7 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 
     if (flags & GENDOC_CODE_BLOCK)
     {
-        helpContent += "<div class=\"precode\">";
+        helpContent += "<div class=\"code-block\">";
         helpContent += "<code>";
     }
 
@@ -739,7 +740,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 pz1++;
             if (*pz1 == '\'')
             {
-                result += "<code class=\"incode\">";
+                result += "<code class=\"inline-code\">";
                 pz++;
                 while (pz != pz1)
                     result += *pz++;
@@ -756,7 +757,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
-                result += "<code class=\"incode\">";
+                result += "<code class=\"inline-code\">";
             else
                 result += "</code>";
             pz++;
@@ -997,14 +998,14 @@ void GenDoc::constructPage()
     if (docKind != BuildCfgDocKind::Pages)
     {
         helpOutput += "<div class=\"left\">\n";
-        helpOutput += "<div class=\"leftpage\">\n";
+        helpOutput += "<div class=\"left-page\">\n";
         helpOutput += helpToc;
         helpOutput += "</div>\n";
         helpOutput += "</div>\n";
     }
 
     helpOutput += "<div class=\"right\">\n";
-    helpOutput += "<div class=\"rightpage\">\n";
+    helpOutput += "<div class=\"right-page\">\n";
 
     helpOutput += "<blockquote>\n";
     helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);

@@ -20,14 +20,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -60,7 +60,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -90,10 +90,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -102,7 +99,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -111,9 +108,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -131,7 +142,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -140,17 +151,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -164,15 +164,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -182,7 +179,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -191,7 +188,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -209,7 +209,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
-<div class="leftpage">
+<div class="left-page">
 <h2>Table of Contents</h2>
 <h3>Structs</h3>
 <h4></h4>
@@ -291,61 +291,61 @@
 </div>
 </div>
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module audio</h1>
-<p><code class="incode">Std.Audio</code> is a module to decode and play sound files. Under windows, it is based on the <code class="incode">xaudio2</code> library. </p>
+<p><code class="inline-code">Std.Audio</code> is a module to decode and play sound files. Under windows, it is based on the <code class="inline-code">xaudio2</code> library. </p>
 <h2 id="How_to_play_a_sound">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
-<div class="precode"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
+<div class="code-block"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
 <span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></code>
 </div>
 <p>You then have to load a sound file. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
 </div>
-<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="incode">loadDatas</code> to false. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
+<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="inline-code">loadDatas</code> to false. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
-<div class="precode"><code><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></code>
 </div>
 <p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
+<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
 voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
 voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></code>
 </div>
 <h1>Content</h1>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_BusHandle"><span class="titletype">type alias</span> <span class="titlelight">Audio.</span><span class="titlestrong">Type Aliases</span></span>
+<td class="api-item">
+<span id="Audio_BusHandle"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L323" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Audio_BusHandle" class="codetype"><span class="SCst">BusHandle</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
+<td id="Audio_BusHandle" class="code-type"><span class="SCst">BusHandle</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Audio_VoiceHandle" class="codetype"><span class="SCst">VoiceHandle</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SourceVoice</span></span></td>
+<td id="Audio_VoiceHandle" class="code-type"><span class="SCst">VoiceHandle</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SourceVoice</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Bus</span></span>
+<td class="api-item">
+<span id="Audio_Bus"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Bus</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
@@ -353,8 +353,8 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Represents a bus. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">handle</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
+<td class="code-type"><span class="SCde">handle</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -387,97 +387,97 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_create"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">create</span></span>
+<td class="api-item">
+<span id="Audio_Bus_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">create</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates an audio bus. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <code class="incode">parent</code>. </p>
+<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <code class="inline-code">parent</code>. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_destroy"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">destroy</span></span>
+<td class="api-item">
+<span id="Audio_Bus_destroy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">destroy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Destroy the bus (immediatly). </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_getVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolume</span></span>
+<td class="api-item">
+<span id="Audio_Bus_getVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">getVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L372" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">getVolumeDB</span></span>
+<td class="api-item">
+<span id="Audio_Bus_getVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">getVolumeDB</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_setVolume"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolume</span></span>
+<td class="api-item">
+<span id="Audio_Bus_setVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">setVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the playing bus volume between [0..1]. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Bus_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Bus.</span><span class="titlestrong">setVolumeDB</span></span>
+<td class="api-item">
+<span id="Audio_Bus_setVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">setVolumeDB</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\bus.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the playing bus volume in DB. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Codec"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Codec</span></span>
+<td class="api-item">
+<span id="Audio_Codec"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Codec</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
@@ -485,28 +485,28 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Base struct for all codec instances. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">srcEncoding</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde">srcEncoding</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The original encoding. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dstEncoding</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde">dstEncoding</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>The requested encoding. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">type</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
+<td class="code-type"><span class="SCde">type</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoStruct</span></span></td>
 <td>The real type of the codec. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_ICodec"><span class="titletype">interface</span> <span class="titlelight">Audio.</span><span class="titlestrong">ICodec</span></span>
+<td class="api-item">
+<span id="Audio_ICodec"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">ICodec</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
@@ -514,33 +514,33 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Interface to describe a codec. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">canEncode</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">canEncode</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">canDecode</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde">canDecode</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">init</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde">init</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">decode</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write: <span class="STpe">u64</span>, read: <span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde">decode</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write: <span class="STpe">u64</span>, read: <span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_SoundFile"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFile</span></span>
+<td class="api-item">
+<span id="Audio_SoundFile"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">SoundFile</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
@@ -548,101 +548,101 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Represents a sound file. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">fullname</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
+<td class="code-type"><span class="SCde">fullname</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">datas</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde">datas</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>Prefetched datas (in encoding format). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sampleCount</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">sampleCount</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Total number of samples. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dataSize</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">dataSize</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Total size, in bytes, of datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dataSeek</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">dataSeek</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>The position in the file where the datas are stored. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">encoding</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde">encoding</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
 <td>Encoding type of the datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">validity</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
+<td class="code-type"><span class="SCde">validity</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileValidityMask">SoundFileValidityMask</a></span></span></td>
 <td>What informations in this struct are valid. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">frequency</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">frequency</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Sound frequency. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">channelCount</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">channelCount</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Number of channels (2 for stereo...). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">channelMask</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">channelMask</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Identifier of the channels. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bitsPerSample</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">bitsPerSample</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Number of bits per sample in the datas. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">duration</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td class="code-type"><span class="SCde">duration</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td>Duration, in seconds, of the sound. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">validBitsPerSample</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">validBitsPerSample</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
-<p> The <code class="incode">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
+<p> The <code class="inline-code">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
 <table class="enumeration">
 <tr>
 <td><a href="#Audio_SoundFile_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
-<td>Load a <code class="incode">SoundFile</code> from disk. </td>
+<td>Load a <code class="inline-code">SoundFile</code> from disk. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_SoundFile_load"><span class="titletype">func</span> <span class="titlelight">SoundFile.</span><span class="titlestrong">load</span></span>
+<td class="api-item">
+<span id="Audio_SoundFile_load"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">SoundFile.</span><span class="api-item-title-strong">load</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Load a <code class="incode">SoundFile</code> from disk. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
+<p>Load a <code class="inline-code">SoundFile</code> from disk. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> Will load the sound datas if <code class="incode">loadDatas</code> is true.  Will load the sound metadatas if <code class="incode">loadMetaData</code> is true. </p>
+<p> Will load the sound datas if <code class="inline-code">loadDatas</code> is true.  Will load the sound metadatas if <code class="inline-code">loadMetaData</code> is true. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_SoundFileEncoding"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileEncoding</span></span>
+<td class="api-item">
+<span id="Audio_SoundFileEncoding"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">SoundFileEncoding</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
@@ -650,37 +650,37 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>SoundFile internal format. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Unknown</span></td>
+<td class="code-type"><span class="SCst">Unknown</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pcm8</span></td>
+<td class="code-type"><span class="SCst">Pcm8</span></td>
 <td>Pcm, uncompressed, 8 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pcm16</span></td>
+<td class="code-type"><span class="SCst">Pcm16</span></td>
 <td>Pcm, uncompressed, 16 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pcm24</span></td>
+<td class="code-type"><span class="SCst">Pcm24</span></td>
 <td>Pcm, uncompressed, 24 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pcm32</span></td>
+<td class="code-type"><span class="SCst">Pcm32</span></td>
 <td>Pcm, uncompressed, 32 bits per sample. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Float32</span></td>
+<td class="code-type"><span class="SCst">Float32</span></td>
 <td>Pcm, uncompressed, float 32 bits per sample. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_SoundFileValidityMask"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">SoundFileValidityMask</span></span>
+<td class="api-item">
+<span id="Audio_SoundFileValidityMask"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">SoundFileValidityMask</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\soundfile.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
@@ -688,57 +688,57 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Format</span></td>
+<td class="code-type"><span class="SCst">Format</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Frequency</span></td>
+<td class="code-type"><span class="SCst">Frequency</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">ChannelCount</span></td>
+<td class="code-type"><span class="SCst">ChannelCount</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">ChannelMask</span></td>
+<td class="code-type"><span class="SCst">ChannelMask</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">BitsPerSample</span></td>
+<td class="code-type"><span class="SCst">BitsPerSample</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Duration</span></td>
+<td class="code-type"><span class="SCst">Duration</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SampleCount</span></td>
+<td class="code-type"><span class="SCst">SampleCount</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">ValidBitsPerSample</span></td>
+<td class="code-type"><span class="SCst">ValidBitsPerSample</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Data</span></td>
+<td class="code-type"><span class="SCst">Data</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">MetaData</span></td>
+<td class="code-type"><span class="SCst">MetaData</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice"><span class="titletype">struct</span> <span class="titlelight">Audio.</span><span class="titlestrong">Voice</span></span>
+<td class="api-item">
+<span id="Audio_Voice"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Voice</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
@@ -800,381 +800,381 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_create"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">create</span></span>
+<td class="api-item">
+<span id="Audio_Voice_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">create</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates a new voice for a given sound file. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p> A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_destroy"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">destroy</span></span>
+<td class="api-item">
+<span id="Audio_Voice_destroy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">destroy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Destroy the voice. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_getVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolume</span></span>
+<td class="api-item">
+<span id="Audio_Voice_getVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">getVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_getVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">getVolumeDB</span></span>
+<td class="api-item">
+<span id="Audio_Voice_getVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">getVolumeDB</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L177" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_isPlaying"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">isPlaying</span></span>
+<td class="api-item">
+<span id="Audio_Voice_isPlaying"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">isPlaying</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns true if the voice is currently playing. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_pause"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">pause</span></span>
+<td class="api-item">
+<span id="Audio_Voice_pause"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">pause</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Pause the playing voice. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_play"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">play</span></span>
+<td class="api-item">
+<span id="Audio_Voice_play"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">play</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates a voice and plays it. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>Plays a voice. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
-<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="incode">DestroyOnStop</code> flag in <code class="incode">playFlags</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="inline-code">DestroyOnStop</code> flag in <code class="inline-code">playFlags</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_setFrequencyRatio"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setFrequencyRatio</span></span>
+<td class="api-item">
+<span id="Audio_Voice_setFrequencyRatio"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setFrequencyRatio</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the playing pitch. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> The voice should have been created with <code class="incode">VoiceCreateFlags.AcceptPitch</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> The voice should have been created with <code class="inline-code">VoiceCreateFlags.AcceptPitch</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_setRooting"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setRooting</span></span>
+<td class="api-item">
+<span id="Audio_Voice_setRooting"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setRooting</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L289" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Root a voice to a given list of buses. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can also set <code class="incode">buses</code> to null if you want to root the voice only to the  main bus (which is the default). </p>
+<p> You can also set <code class="inline-code">buses</code> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_setVolume"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolume</span></span>
+<td class="api-item">
+<span id="Audio_Voice_setVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L254" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the playing voice volume between [0..1]. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_setVolumeDB"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">setVolumeDB</span></span>
+<td class="api-item">
+<span id="Audio_Voice_setVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setVolumeDB</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the playing voice volume. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Voice_stop"><span class="titletype">func</span> <span class="titlelight">Voice.</span><span class="titlestrong">stop</span></span>
+<td class="api-item">
+<span id="Audio_Voice_stop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">stop</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Stop the playing voice. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_VoiceCreateFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceCreateFlags</span></span>
+<td class="api-item">
+<span id="Audio_VoiceCreateFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">VoiceCreateFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">AcceptPitch</span></td>
+<td class="code-type"><span class="SCst">AcceptPitch</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">AcceptFilters</span></td>
+<td class="code-type"><span class="SCst">AcceptFilters</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Default</span></td>
+<td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_VoicePlayFlags"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoicePlayFlags</span></span>
+<td class="api-item">
+<span id="Audio_VoicePlayFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">VoicePlayFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Loop</span></td>
+<td class="code-type"><span class="SCst">Loop</span></td>
 <td>Play in loops. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">DestroyOnStop</span></td>
+<td class="code-type"><span class="SCst">DestroyOnStop</span></td>
 <td>Destroy the voice once the sound has been played. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Default</span></td>
+<td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_VoiceState"><span class="titletype">enum</span> <span class="titlelight">Audio.</span><span class="titlestrong">VoiceState</span></span>
+<td class="api-item">
+<span id="Audio_VoiceState"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">VoiceState</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PlayedOnce</span></td>
+<td class="code-type"><span class="SCst">PlayedOnce</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Playing</span></td>
+<td class="code-type"><span class="SCst">Playing</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PendingDestroy</span></td>
+<td class="code-type"><span class="SCst">PendingDestroy</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_Wav_loadFile"><span class="titletype">func</span> <span class="titlelight">Wav.</span><span class="titlestrong">loadFile</span></span>
+<td class="api-item">
+<span id="Audio_Wav_loadFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wav.</span><span class="api-item-title-strong">loadFile</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\file\wav.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Load a wav file. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadFile</span>(<span class="SKwd">using</span> file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileStream</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadFile</span>(<span class="SKwd">using</span> file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileStream</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_addCodec"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">addCodec</span></span>
+<td class="api-item">
+<span id="Audio_addCodec"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">addCodec</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\codec\codec.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Register a codec. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addCodec</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addCodec</span>()</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_convertDBToPercent"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertDBToPercent</span></span>
+<td class="api-item">
+<span id="Audio_convertDBToPercent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">convertDBToPercent</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert a DB value to a percent. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertDBToPercent</span>(dbVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertDBToPercent</span>(dbVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_convertPercentToDB"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">convertPercentToDB</span></span>
+<td class="api-item">
+<span id="Audio_convertPercentToDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">convertPercentToDB</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\helpers.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert a percent value to DB. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertPercentToDB</span>(percentVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertPercentToDB</span>(percentVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_createEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">createEngine</span></span>
+<td class="api-item">
+<span id="Audio_createEngine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">createEngine</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates the audio engine. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></code>
 </div>
 <p> Must be called once, before anything else. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_destroyEngine"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">destroyEngine</span></span>
+<td class="api-item">
+<span id="Audio_destroyEngine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">destroyEngine</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Destroy the audio engine. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></code>
 </div>
 <p> Must be called at the end, when engine is no more used. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_getOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">getOutputVolume</span></span>
+<td class="api-item">
+<span id="Audio_getOutputVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">getOutputVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get the general output volume. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOutputVolume</span>()-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOutputVolume</span>()-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Audio_setOutputVolume"><span class="titletype">func</span> <span class="titlelight">Audio.</span><span class="titlestrong">setOutputVolume</span></span>
+<td class="api-item">
+<span id="Audio_setOutputVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">setOutputVolume</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\audio.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the general output volume. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 </div>
 </div>

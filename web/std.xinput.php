@@ -20,14 +20,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -60,7 +60,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -90,10 +90,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -102,7 +99,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -111,9 +108,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -131,7 +142,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -140,17 +151,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -164,15 +164,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -182,7 +179,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -191,7 +188,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -209,7 +209,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
-<div class="leftpage">
+<div class="left-page">
 <h2>Table of Contents</h2>
 <h3>Structs</h3>
 <h4></h4>
@@ -245,214 +245,214 @@
 </div>
 </div>
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module xinput</h1>
 <p> Wrapper for Microsoft DirectX Input. </p>
 <h1>Content</h1>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XINPUT_GAMEPAD_A"><span class="titletype">const</span> <span class="titlelight">XInput.</span><span class="titlestrong">Constants</span></span>
+<td class="api-item">
+<span id="XInput_XINPUT_GAMEPAD_A"><span class="api-item-title-kind">const</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">Constants</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_A" class="codetype"><span class="SCst">XINPUT_GAMEPAD_A</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_A" class="code-type"><span class="SCst">XINPUT_GAMEPAD_A</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_B" class="codetype"><span class="SCst">XINPUT_GAMEPAD_B</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_B" class="code-type"><span class="SCst">XINPUT_GAMEPAD_B</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_BACK" class="codetype"><span class="SCst">XINPUT_GAMEPAD_BACK</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_BACK" class="code-type"><span class="SCst">XINPUT_GAMEPAD_BACK</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_DOWN</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN" class="code-type"><span class="SCst">XINPUT_GAMEPAD_DPAD_DOWN</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_LEFT</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT" class="code-type"><span class="SCst">XINPUT_GAMEPAD_DPAD_LEFT</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT" class="code-type"><span class="SCst">XINPUT_GAMEPAD_DPAD_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="codetype"><span class="SCst">XINPUT_GAMEPAD_DPAD_UP</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_DPAD_UP" class="code-type"><span class="SCst">XINPUT_GAMEPAD_DPAD_UP</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCst">XINPUT_GAMEPAD_LEFT_SHOULDER</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER" class="code-type"><span class="SCst">XINPUT_GAMEPAD_LEFT_SHOULDER</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="codetype"><span class="SCst">XINPUT_GAMEPAD_LEFT_THUMB</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB" class="code-type"><span class="SCst">XINPUT_GAMEPAD_LEFT_THUMB</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCst">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER" class="code-type"><span class="SCst">XINPUT_GAMEPAD_RIGHT_SHOULDER</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="codetype"><span class="SCst">XINPUT_GAMEPAD_RIGHT_THUMB</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB" class="code-type"><span class="SCst">XINPUT_GAMEPAD_RIGHT_THUMB</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_START" class="codetype"><span class="SCst">XINPUT_GAMEPAD_START</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_START" class="code-type"><span class="SCst">XINPUT_GAMEPAD_START</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_X" class="codetype"><span class="SCst">XINPUT_GAMEPAD_X</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_X" class="code-type"><span class="SCst">XINPUT_GAMEPAD_X</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="XInput_XINPUT_GAMEPAD_Y" class="codetype"><span class="SCst">XINPUT_GAMEPAD_Y</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="XInput_XINPUT_GAMEPAD_Y" class="code-type"><span class="SCst">XINPUT_GAMEPAD_Y</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XINPUT_GAMEPAD"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_GAMEPAD</span></span>
+<td class="api-item">
+<span id="XInput_XINPUT_GAMEPAD"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">XINPUT_GAMEPAD</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">wButtons</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wButtons</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bLeftTrigger</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde">bLeftTrigger</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bRightTrigger</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td class="code-type"><span class="SCde">bRightTrigger</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sThumbLX</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde">sThumbLX</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sThumbLY</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde">sThumbLY</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sThumbRX</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde">sThumbRX</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sThumbRY</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td class="code-type"><span class="SCde">sThumbRY</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XINPUT_STATE"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_STATE</span></span>
+<td class="api-item">
+<span id="XInput_XINPUT_STATE"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">XINPUT_STATE</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwPacketNumber</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwPacketNumber</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Gamepad</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
+<td class="code-type"><span class="SCst">Gamepad</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XINPUT_VIBRATION"><span class="titletype">struct</span> <span class="titlelight">XInput.</span><span class="titlestrong">XINPUT_VIBRATION</span></span>
+<td class="api-item">
+<span id="XInput_XINPUT_VIBRATION"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">XINPUT_VIBRATION</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">wLeftMotorSpeed</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wLeftMotorSpeed</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wRightMotorSpeed</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wRightMotorSpeed</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XInputGetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputGetState</span></span>
+<td class="api-item">
+<span id="XInput_XInputGetState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">XInputGetState</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pState: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pState: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="XInput_XInputSetState"><span class="titletype">func</span> <span class="titlelight">XInput.</span><span class="titlestrong">XInputSetState</span></span>
+<td class="api-item">
+<span id="XInput_XInputSetState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">XInput.</span><span class="api-item-title-strong">XInputSetState</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/xinput\src\xinput.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pVibration: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pVibration: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></code>
 </div>
 </div>
 </div>

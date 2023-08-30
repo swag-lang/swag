@@ -20,14 +20,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -60,7 +60,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -90,10 +90,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -102,7 +99,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -111,9 +108,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -131,7 +142,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -140,17 +151,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -164,15 +164,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -182,7 +179,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -191,7 +188,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -209,7 +209,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
-<div class="leftpage">
+<div class="left-page">
 <h2>Table of Contents</h2>
 <h3>Structs</h3>
 <h4></h4>
@@ -1529,10175 +1529,10175 @@
 </div>
 </div>
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module win32</h1>
 <p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
 <h1>Content</h1>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_BACKGROUND_BLUE"><span class="titletype">const</span> <span class="titlelight">Win32.</span><span class="titlestrong">Constants</span></span>
+<td class="api-item">
+<span id="Win32_BACKGROUND_BLUE"><span class="api-item-title-kind">const</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Constants</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Win32_BACKGROUND_BLUE" class="codetype"><span class="SCst">BACKGROUND_BLUE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_BACKGROUND_BLUE" class="code-type"><span class="SCst">BACKGROUND_BLUE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_GREEN" class="codetype"><span class="SCst">BACKGROUND_GREEN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_BACKGROUND_GREEN" class="code-type"><span class="SCst">BACKGROUND_GREEN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_INTENSITY" class="codetype"><span class="SCst">BACKGROUND_INTENSITY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_BACKGROUND_INTENSITY" class="code-type"><span class="SCst">BACKGROUND_INTENSITY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_MASK" class="codetype"><span class="SCst">BACKGROUND_MASK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_BACKGROUND_MASK" class="code-type"><span class="SCst">BACKGROUND_MASK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BACKGROUND_RED" class="codetype"><span class="SCst">BACKGROUND_RED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_BACKGROUND_RED" class="code-type"><span class="SCst">BACKGROUND_RED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_BITMAP" class="codetype"><span class="SCst">CF_BITMAP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_BITMAP" class="code-type"><span class="SCst">CF_BITMAP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIB" class="codetype"><span class="SCst">CF_DIB</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_DIB" class="code-type"><span class="SCst">CF_DIB</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIBV5" class="codetype"><span class="SCst">CF_DIBV5</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_DIBV5" class="code-type"><span class="SCst">CF_DIBV5</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_DIF" class="codetype"><span class="SCst">CF_DIF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_DIF" class="code-type"><span class="SCst">CF_DIF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_ENHMETAFILE" class="codetype"><span class="SCst">CF_ENHMETAFILE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_ENHMETAFILE" class="code-type"><span class="SCst">CF_ENHMETAFILE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_HDROP" class="codetype"><span class="SCst">CF_HDROP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_HDROP" class="code-type"><span class="SCst">CF_HDROP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_LOCALE" class="codetype"><span class="SCst">CF_LOCALE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_LOCALE" class="code-type"><span class="SCst">CF_LOCALE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_METAFILEPICT" class="codetype"><span class="SCst">CF_METAFILEPICT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_METAFILEPICT" class="code-type"><span class="SCst">CF_METAFILEPICT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_OEMTEXT" class="codetype"><span class="SCst">CF_OEMTEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_OEMTEXT" class="code-type"><span class="SCst">CF_OEMTEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PALETTE" class="codetype"><span class="SCst">CF_PALETTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_PALETTE" class="code-type"><span class="SCst">CF_PALETTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_PENDATA" class="codetype"><span class="SCst">CF_PENDATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_PENDATA" class="code-type"><span class="SCst">CF_PENDATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_RIFF" class="codetype"><span class="SCst">CF_RIFF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_RIFF" class="code-type"><span class="SCst">CF_RIFF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_SYLK" class="codetype"><span class="SCst">CF_SYLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_SYLK" class="code-type"><span class="SCst">CF_SYLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_TEXT" class="codetype"><span class="SCst">CF_TEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_TEXT" class="code-type"><span class="SCst">CF_TEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_TIFF" class="codetype"><span class="SCst">CF_TIFF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_TIFF" class="code-type"><span class="SCst">CF_TIFF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_UNICODETEXT" class="codetype"><span class="SCst">CF_UNICODETEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_UNICODETEXT" class="code-type"><span class="SCst">CF_UNICODETEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CF_WAVE" class="codetype"><span class="SCst">CF_WAVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CF_WAVE" class="code-type"><span class="SCst">CF_WAVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CONSOLE_TEXTMODE_BUFFER" class="codetype"><span class="SCst">CONSOLE_TEXTMODE_BUFFER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CONSOLE_TEXTMODE_BUFFER" class="code-type"><span class="SCst">CONSOLE_TEXTMODE_BUFFER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_ALWAYS" class="codetype"><span class="SCst">CREATE_ALWAYS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CREATE_ALWAYS" class="code-type"><span class="SCst">CREATE_ALWAYS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_NEW" class="codetype"><span class="SCst">CREATE_NEW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CREATE_NEW" class="code-type"><span class="SCst">CREATE_NEW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CREATE_SUSPENDED" class="codetype"><span class="SCst">CREATE_SUSPENDED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CREATE_SUSPENDED" class="code-type"><span class="SCst">CREATE_SUSPENDED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_ADMINTOOLS" class="codetype"><span class="SCst">CSIDL_ADMINTOOLS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_ADMINTOOLS" class="code-type"><span class="SCst">CSIDL_ADMINTOOLS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Start Menu/Programs/Administrative Tools. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_ALTSTARTUP" class="codetype"><span class="SCst">CSIDL_ALTSTARTUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_ALTSTARTUP" class="code-type"><span class="SCst">CSIDL_ALTSTARTUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>non localized startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_APPDATA" class="codetype"><span class="SCst">CSIDL_APPDATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_APPDATA" class="code-type"><span class="SCst">CSIDL_APPDATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Application Data. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_BITBUCKET" class="codetype"><span class="SCst">CSIDL_BITBUCKET</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_BITBUCKET" class="code-type"><span class="SCst">CSIDL_BITBUCKET</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;desktop&gt;/Recycle Bin. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CDBURN_AREA" class="codetype"><span class="SCst">CSIDL_CDBURN_AREA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_CDBURN_AREA" class="code-type"><span class="SCst">CSIDL_CDBURN_AREA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>USERPROFILE/Local Settings/Application Data/Microsoft/CD Burning. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="codetype"><span class="SCst">CSIDL_COMMON_ADMINTOOLS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_ADMINTOOLS" class="code-type"><span class="SCst">CSIDL_COMMON_ADMINTOOLS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Start Menu/Programs/Administrative Tools. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="codetype"><span class="SCst">CSIDL_COMMON_ALTSTARTUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_ALTSTARTUP" class="code-type"><span class="SCst">CSIDL_COMMON_ALTSTARTUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>non localized common startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_APPDATA" class="codetype"><span class="SCst">CSIDL_COMMON_APPDATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_APPDATA" class="code-type"><span class="SCst">CSIDL_COMMON_APPDATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Application Data. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="codetype"><span class="SCst">CSIDL_COMMON_DESKTOPDIRECTORY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_DESKTOPDIRECTORY" class="code-type"><span class="SCst">CSIDL_COMMON_DESKTOPDIRECTORY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Desktop. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_DOCUMENTS" class="codetype"><span class="SCst">CSIDL_COMMON_DOCUMENTS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_DOCUMENTS" class="code-type"><span class="SCst">CSIDL_COMMON_DOCUMENTS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_FAVORITES" class="codetype"><span class="SCst">CSIDL_COMMON_FAVORITES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_FAVORITES" class="code-type"><span class="SCst">CSIDL_COMMON_FAVORITES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_MUSIC" class="codetype"><span class="SCst">CSIDL_COMMON_MUSIC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_MUSIC" class="code-type"><span class="SCst">CSIDL_COMMON_MUSIC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/My Music. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_OEM_LINKS" class="codetype"><span class="SCst">CSIDL_COMMON_OEM_LINKS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_OEM_LINKS" class="code-type"><span class="SCst">CSIDL_COMMON_OEM_LINKS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Links to All Users OEM specific apps. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_PICTURES" class="codetype"><span class="SCst">CSIDL_COMMON_PICTURES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_PICTURES" class="code-type"><span class="SCst">CSIDL_COMMON_PICTURES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/My Pictures. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_PROGRAMS" class="codetype"><span class="SCst">CSIDL_COMMON_PROGRAMS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_PROGRAMS" class="code-type"><span class="SCst">CSIDL_COMMON_PROGRAMS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Start Menu/Programs. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_STARTMENU" class="codetype"><span class="SCst">CSIDL_COMMON_STARTMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_STARTMENU" class="code-type"><span class="SCst">CSIDL_COMMON_STARTMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Start Menu. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_STARTUP" class="codetype"><span class="SCst">CSIDL_COMMON_STARTUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_STARTUP" class="code-type"><span class="SCst">CSIDL_COMMON_STARTUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_TEMPLATES" class="codetype"><span class="SCst">CSIDL_COMMON_TEMPLATES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_TEMPLATES" class="code-type"><span class="SCst">CSIDL_COMMON_TEMPLATES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/Templates. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMMON_VIDEO" class="codetype"><span class="SCst">CSIDL_COMMON_VIDEO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMMON_VIDEO" class="code-type"><span class="SCst">CSIDL_COMMON_VIDEO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>All Users/My Video. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COMPUTERSNEARME" class="codetype"><span class="SCst">CSIDL_COMPUTERSNEARME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COMPUTERSNEARME" class="code-type"><span class="SCst">CSIDL_COMPUTERSNEARME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Computers Near Me (computered from Workgroup membership). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CONNECTIONS" class="codetype"><span class="SCst">CSIDL_CONNECTIONS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_CONNECTIONS" class="code-type"><span class="SCst">CSIDL_CONNECTIONS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Network and Dial-up Connections. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_CONTROLS" class="codetype"><span class="SCst">CSIDL_CONTROLS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_CONTROLS" class="code-type"><span class="SCst">CSIDL_CONTROLS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>My Computer/Control Panel. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_COOKIES" class="codetype"><span class="SCst">CSIDL_COOKIES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_COOKIES" class="code-type"><span class="SCst">CSIDL_COOKIES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DESKTOP" class="codetype"><span class="SCst">CSIDL_DESKTOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_DESKTOP" class="code-type"><span class="SCst">CSIDL_DESKTOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;desktop&gt;. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DESKTOPDIRECTORY" class="codetype"><span class="SCst">CSIDL_DESKTOPDIRECTORY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_DESKTOPDIRECTORY" class="code-type"><span class="SCst">CSIDL_DESKTOPDIRECTORY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Desktop. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_DRIVES" class="codetype"><span class="SCst">CSIDL_DRIVES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_DRIVES" class="code-type"><span class="SCst">CSIDL_DRIVES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>My Computer. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FAVORITES" class="codetype"><span class="SCst">CSIDL_FAVORITES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FAVORITES" class="code-type"><span class="SCst">CSIDL_FAVORITES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Favorites. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_CREATE" class="codetype"><span class="SCst">CSIDL_FLAG_CREATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_CREATE" class="code-type"><span class="SCst">CSIDL_FLAG_CREATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>combine with CSIDL_ value to force folder creation in SHGetFolderPath(). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND" class="codetype"><span class="SCst">CSIDL_FLAG_DONT_UNEXPAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_DONT_UNEXPAND" class="code-type"><span class="SCst">CSIDL_FLAG_DONT_UNEXPAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>combine with CSIDL_ value to avoid unexpanding environment variables. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_DONT_VERIFY" class="codetype"><span class="SCst">CSIDL_FLAG_DONT_VERIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_DONT_VERIFY" class="code-type"><span class="SCst">CSIDL_FLAG_DONT_VERIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>combine with CSIDL_ value to return an unverified folder path. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_MASK" class="codetype"><span class="SCst">CSIDL_FLAG_MASK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_MASK" class="code-type"><span class="SCst">CSIDL_FLAG_MASK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>mask for all possible flag values. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_NO_ALIAS" class="codetype"><span class="SCst">CSIDL_FLAG_NO_ALIAS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_NO_ALIAS" class="code-type"><span class="SCst">CSIDL_FLAG_NO_ALIAS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>combine with CSIDL_ value to insure non-typealias versions of the pidl. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FLAG_PER_USER_INIT" class="codetype"><span class="SCst">CSIDL_FLAG_PER_USER_INIT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FLAG_PER_USER_INIT" class="code-type"><span class="SCst">CSIDL_FLAG_PER_USER_INIT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>combine with CSIDL_ value to indicate per-user init (eg. upgrade). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_FONTS" class="codetype"><span class="SCst">CSIDL_FONTS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_FONTS" class="code-type"><span class="SCst">CSIDL_FONTS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>windows/fonts. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_HISTORY" class="codetype"><span class="SCst">CSIDL_HISTORY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_HISTORY" class="code-type"><span class="SCst">CSIDL_HISTORY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_INTERNET" class="codetype"><span class="SCst">CSIDL_INTERNET</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_INTERNET" class="code-type"><span class="SCst">CSIDL_INTERNET</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Internet Explorer (icon on desktop). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_INTERNET_CACHE" class="codetype"><span class="SCst">CSIDL_INTERNET_CACHE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_INTERNET_CACHE" class="code-type"><span class="SCst">CSIDL_INTERNET_CACHE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_LOCAL_APPDATA" class="codetype"><span class="SCst">CSIDL_LOCAL_APPDATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_LOCAL_APPDATA" class="code-type"><span class="SCst">CSIDL_LOCAL_APPDATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Local Settings/Applicaiton Data (non roaming). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYDOCUMENTS" class="codetype"><span class="SCst">CSIDL_MYDOCUMENTS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_MYDOCUMENTS" class="code-type"><span class="SCst">CSIDL_MYDOCUMENTS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Personal was just a silly name for My Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYMUSIC" class="codetype"><span class="SCst">CSIDL_MYMUSIC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_MYMUSIC" class="code-type"><span class="SCst">CSIDL_MYMUSIC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>"My Music" folder. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYPICTURES" class="codetype"><span class="SCst">CSIDL_MYPICTURES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_MYPICTURES" class="code-type"><span class="SCst">CSIDL_MYPICTURES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>C:/Program Files/My Pictures. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_MYVIDEO" class="codetype"><span class="SCst">CSIDL_MYVIDEO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_MYVIDEO" class="code-type"><span class="SCst">CSIDL_MYVIDEO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>"My Videos" folder. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_NETHOOD" class="codetype"><span class="SCst">CSIDL_NETHOOD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_NETHOOD" class="code-type"><span class="SCst">CSIDL_NETHOOD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/nethood. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_NETWORK" class="codetype"><span class="SCst">CSIDL_NETWORK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_NETWORK" class="code-type"><span class="SCst">CSIDL_NETWORK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Network Neighborhood (My Network Places). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PERSONAL" class="codetype"><span class="SCst">CSIDL_PERSONAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PERSONAL" class="code-type"><span class="SCst">CSIDL_PERSONAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>My Documents. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PRINTERS" class="codetype"><span class="SCst">CSIDL_PRINTERS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PRINTERS" class="code-type"><span class="SCst">CSIDL_PRINTERS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>My Computer/Printers. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PRINTHOOD" class="codetype"><span class="SCst">CSIDL_PRINTHOOD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PRINTHOOD" class="code-type"><span class="SCst">CSIDL_PRINTHOOD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/PrintHood. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROFILE" class="codetype"><span class="SCst">CSIDL_PROFILE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROFILE" class="code-type"><span class="SCst">CSIDL_PROFILE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>USERPROFILE. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAMS" class="codetype"><span class="SCst">CSIDL_PROGRAMS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROGRAMS" class="code-type"><span class="SCst">CSIDL_PROGRAMS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Start Menu/Programs. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES" class="code-type"><span class="SCst">CSIDL_PROGRAM_FILES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>C:/Program Files. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILESX86" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILESX86</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROGRAM_FILESX86" class="code-type"><span class="SCst">CSIDL_PROGRAM_FILESX86</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>x86 C:/Program Files on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES_COMMON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMON" class="code-type"><span class="SCst">CSIDL_PROGRAM_FILES_COMMON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>C:/Program Files/Common. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="codetype"><span class="SCst">CSIDL_PROGRAM_FILES_COMMONX86</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_PROGRAM_FILES_COMMONX86" class="code-type"><span class="SCst">CSIDL_PROGRAM_FILES_COMMONX86</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>x86 Program Files/Common on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RECENT" class="codetype"><span class="SCst">CSIDL_RECENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_RECENT" class="code-type"><span class="SCst">CSIDL_RECENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Recent. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RESOURCES" class="codetype"><span class="SCst">CSIDL_RESOURCES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_RESOURCES" class="code-type"><span class="SCst">CSIDL_RESOURCES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Resource Direcotry. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_RESOURCES_LOCALIZED" class="codetype"><span class="SCst">CSIDL_RESOURCES_LOCALIZED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_RESOURCES_LOCALIZED" class="code-type"><span class="SCst">CSIDL_RESOURCES_LOCALIZED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Localized Resource Direcotry. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SENDTO" class="codetype"><span class="SCst">CSIDL_SENDTO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_SENDTO" class="code-type"><span class="SCst">CSIDL_SENDTO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/SendTo. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_STARTMENU" class="codetype"><span class="SCst">CSIDL_STARTMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_STARTMENU" class="code-type"><span class="SCst">CSIDL_STARTMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>&lt;user name&gt;/Start Menu. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_STARTUP" class="codetype"><span class="SCst">CSIDL_STARTUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_STARTUP" class="code-type"><span class="SCst">CSIDL_STARTUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Start Menu/Programs/Startup. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SYSTEM" class="codetype"><span class="SCst">CSIDL_SYSTEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_SYSTEM" class="code-type"><span class="SCst">CSIDL_SYSTEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>GetSystemDirectory(). </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_SYSTEMX86" class="codetype"><span class="SCst">CSIDL_SYSTEMX86</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_SYSTEMX86" class="code-type"><span class="SCst">CSIDL_SYSTEMX86</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>x86 system directory on RISC. </td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_TEMPLATES" class="codetype"><span class="SCst">CSIDL_TEMPLATES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_TEMPLATES" class="code-type"><span class="SCst">CSIDL_TEMPLATES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CSIDL_WINDOWS" class="codetype"><span class="SCst">CSIDL_WINDOWS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CSIDL_WINDOWS" class="code-type"><span class="SCst">CSIDL_WINDOWS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>GetWindowsDirectory(). </td>
 </tr>
 <tr>
-<td id="Win32_CS_BYTEALIGNCLIENT" class="codetype"><span class="SCst">CS_BYTEALIGNCLIENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_BYTEALIGNCLIENT" class="code-type"><span class="SCst">CS_BYTEALIGNCLIENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_BYTEALIGNWINDOW" class="codetype"><span class="SCst">CS_BYTEALIGNWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_BYTEALIGNWINDOW" class="code-type"><span class="SCst">CS_BYTEALIGNWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_CLASSDC" class="codetype"><span class="SCst">CS_CLASSDC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_CLASSDC" class="code-type"><span class="SCst">CS_CLASSDC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_DBLCLKS" class="codetype"><span class="SCst">CS_DBLCLKS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_DBLCLKS" class="code-type"><span class="SCst">CS_DBLCLKS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_DROPSHADOW" class="codetype"><span class="SCst">CS_DROPSHADOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_DROPSHADOW" class="code-type"><span class="SCst">CS_DROPSHADOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_GLOBALCLASS" class="codetype"><span class="SCst">CS_GLOBALCLASS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_GLOBALCLASS" class="code-type"><span class="SCst">CS_GLOBALCLASS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_HREDRAW" class="codetype"><span class="SCst">CS_HREDRAW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_HREDRAW" class="code-type"><span class="SCst">CS_HREDRAW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_IME" class="codetype"><span class="SCst">CS_IME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_IME" class="code-type"><span class="SCst">CS_IME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_NOCLOSE" class="codetype"><span class="SCst">CS_NOCLOSE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_NOCLOSE" class="code-type"><span class="SCst">CS_NOCLOSE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_OWNDC" class="codetype"><span class="SCst">CS_OWNDC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_OWNDC" class="code-type"><span class="SCst">CS_OWNDC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_PARENTDC" class="codetype"><span class="SCst">CS_PARENTDC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_PARENTDC" class="code-type"><span class="SCst">CS_PARENTDC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_SAVEBITS" class="codetype"><span class="SCst">CS_SAVEBITS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_SAVEBITS" class="code-type"><span class="SCst">CS_SAVEBITS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CS_VREDRAW" class="codetype"><span class="SCst">CS_VREDRAW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CS_VREDRAW" class="code-type"><span class="SCst">CS_VREDRAW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_ALL" class="codetype"><span class="SCst">CWP_ALL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CWP_ALL" class="code-type"><span class="SCst">CWP_ALL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPDISABLED" class="codetype"><span class="SCst">CWP_SKIPDISABLED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CWP_SKIPDISABLED" class="code-type"><span class="SCst">CWP_SKIPDISABLED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPINVISIBLE" class="codetype"><span class="SCst">CWP_SKIPINVISIBLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CWP_SKIPINVISIBLE" class="code-type"><span class="SCst">CWP_SKIPINVISIBLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CWP_SKIPTRANSPARENT" class="codetype"><span class="SCst">CWP_SKIPTRANSPARENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_CWP_SKIPTRANSPARENT" class="code-type"><span class="SCst">CWP_SKIPTRANSPARENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CW_USEDEFAULT" class="codetype"><span class="SCst">CW_USEDEFAULT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_CW_USEDEFAULT" class="code-type"><span class="SCst">CW_USEDEFAULT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DEFAULT_MINIMUM_ENTITIES" class="codetype"><span class="SCst">DEFAULT_MINIMUM_ENTITIES</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_DEFAULT_MINIMUM_ENTITIES" class="code-type"><span class="SCst">DEFAULT_MINIMUM_ENTITIES</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DM_POINTERHITTEST" class="codetype"><span class="SCst">DM_POINTERHITTEST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_DM_POINTERHITTEST" class="code-type"><span class="SCst">DM_POINTERHITTEST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_DEVICE_NOT_CONNECTED" class="codetype"><span class="SCst">ERROR_DEVICE_NOT_CONNECTED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_ERROR_DEVICE_NOT_CONNECTED" class="code-type"><span class="SCst">ERROR_DEVICE_NOT_CONNECTED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_FILE_NOT_FOUND" class="codetype"><span class="SCst">ERROR_FILE_NOT_FOUND</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_ERROR_FILE_NOT_FOUND" class="code-type"><span class="SCst">ERROR_FILE_NOT_FOUND</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_IO_PENDING" class="codetype"><span class="SCst">ERROR_IO_PENDING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_ERROR_IO_PENDING" class="code-type"><span class="SCst">ERROR_IO_PENDING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_NO_MORE_FILES" class="codetype"><span class="SCst">ERROR_NO_MORE_FILES</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_ERROR_NO_MORE_FILES" class="code-type"><span class="SCst">ERROR_NO_MORE_FILES</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ERROR_SUCCESS" class="codetype"><span class="SCst">ERROR_SUCCESS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_ERROR_SUCCESS" class="code-type"><span class="SCst">ERROR_SUCCESS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FALSE" class="codetype"><span class="SCst">FALSE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_FALSE" class="code-type"><span class="SCst">FALSE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_ARCHIVE" class="codetype"><span class="SCst">FILE_ATTRIBUTE_ARCHIVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_ARCHIVE" class="code-type"><span class="SCst">FILE_ATTRIBUTE_ARCHIVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_COMPRESSED" class="codetype"><span class="SCst">FILE_ATTRIBUTE_COMPRESSED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_COMPRESSED" class="code-type"><span class="SCst">FILE_ATTRIBUTE_COMPRESSED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_DEVICE" class="codetype"><span class="SCst">FILE_ATTRIBUTE_DEVICE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_DEVICE" class="code-type"><span class="SCst">FILE_ATTRIBUTE_DEVICE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_DIRECTORY" class="codetype"><span class="SCst">FILE_ATTRIBUTE_DIRECTORY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_DIRECTORY" class="code-type"><span class="SCst">FILE_ATTRIBUTE_DIRECTORY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_EA" class="codetype"><span class="SCst">FILE_ATTRIBUTE_EA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_EA" class="code-type"><span class="SCst">FILE_ATTRIBUTE_EA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED" class="codetype"><span class="SCst">FILE_ATTRIBUTE_ENCRYPTED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_ENCRYPTED" class="code-type"><span class="SCst">FILE_ATTRIBUTE_ENCRYPTED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_HIDDEN" class="codetype"><span class="SCst">FILE_ATTRIBUTE_HIDDEN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_HIDDEN" class="code-type"><span class="SCst">FILE_ATTRIBUTE_HIDDEN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM" class="codetype"><span class="SCst">FILE_ATTRIBUTE_INTEGRITY_STREAM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_INTEGRITY_STREAM" class="code-type"><span class="SCst">FILE_ATTRIBUTE_INTEGRITY_STREAM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NORMAL" class="codetype"><span class="SCst">FILE_ATTRIBUTE_NORMAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_NORMAL" class="code-type"><span class="SCst">FILE_ATTRIBUTE_NORMAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED" class="codetype"><span class="SCst">FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_NOT_CONTENT_INDEXED" class="code-type"><span class="SCst">FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA" class="codetype"><span class="SCst">FILE_ATTRIBUTE_NO_SCRUB_DATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_NO_SCRUB_DATA" class="code-type"><span class="SCst">FILE_ATTRIBUTE_NO_SCRUB_DATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_OFFLINE" class="codetype"><span class="SCst">FILE_ATTRIBUTE_OFFLINE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_OFFLINE" class="code-type"><span class="SCst">FILE_ATTRIBUTE_OFFLINE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_PINNED" class="codetype"><span class="SCst">FILE_ATTRIBUTE_PINNED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_PINNED" class="code-type"><span class="SCst">FILE_ATTRIBUTE_PINNED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_READONLY" class="codetype"><span class="SCst">FILE_ATTRIBUTE_READONLY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_READONLY" class="code-type"><span class="SCst">FILE_ATTRIBUTE_READONLY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS" class="codetype"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS" class="code-type"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN" class="codetype"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_OPEN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_RECALL_ON_OPEN" class="code-type"><span class="SCst">FILE_ATTRIBUTE_RECALL_ON_OPEN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT" class="codetype"><span class="SCst">FILE_ATTRIBUTE_REPARSE_POINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_REPARSE_POINT" class="code-type"><span class="SCst">FILE_ATTRIBUTE_REPARSE_POINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE" class="codetype"><span class="SCst">FILE_ATTRIBUTE_SPARSE_FILE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_SPARSE_FILE" class="code-type"><span class="SCst">FILE_ATTRIBUTE_SPARSE_FILE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_SYSTEM" class="codetype"><span class="SCst">FILE_ATTRIBUTE_SYSTEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_SYSTEM" class="code-type"><span class="SCst">FILE_ATTRIBUTE_SYSTEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_TEMPORARY" class="codetype"><span class="SCst">FILE_ATTRIBUTE_TEMPORARY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_TEMPORARY" class="code-type"><span class="SCst">FILE_ATTRIBUTE_TEMPORARY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_UNPINNED" class="codetype"><span class="SCst">FILE_ATTRIBUTE_UNPINNED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_UNPINNED" class="code-type"><span class="SCst">FILE_ATTRIBUTE_UNPINNED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_ATTRIBUTE_VIRTUAL" class="codetype"><span class="SCst">FILE_ATTRIBUTE_VIRTUAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_ATTRIBUTE_VIRTUAL" class="code-type"><span class="SCst">FILE_ATTRIBUTE_VIRTUAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_BEGIN" class="codetype"><span class="SCst">FILE_BEGIN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_BEGIN" class="code-type"><span class="SCst">FILE_BEGIN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_CURRENT" class="codetype"><span class="SCst">FILE_CURRENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_CURRENT" class="code-type"><span class="SCst">FILE_CURRENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_END" class="codetype"><span class="SCst">FILE_END</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_END" class="code-type"><span class="SCst">FILE_END</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_READ_ATTRIBUTES" class="codetype"><span class="SCst">FILE_READ_ATTRIBUTES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_READ_ATTRIBUTES" class="code-type"><span class="SCst">FILE_READ_ATTRIBUTES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_DELETE" class="codetype"><span class="SCst">FILE_SHARE_DELETE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_SHARE_DELETE" class="code-type"><span class="SCst">FILE_SHARE_DELETE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_READ" class="codetype"><span class="SCst">FILE_SHARE_READ</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_SHARE_READ" class="code-type"><span class="SCst">FILE_SHARE_READ</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_SHARE_WRITE" class="codetype"><span class="SCst">FILE_SHARE_WRITE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_SHARE_WRITE" class="code-type"><span class="SCst">FILE_SHARE_WRITE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FILE_WRITE_ATTRIBUTES" class="codetype"><span class="SCst">FILE_WRITE_ATTRIBUTES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FILE_WRITE_ATTRIBUTES" class="code-type"><span class="SCst">FILE_WRITE_ATTRIBUTES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_BLUE" class="codetype"><span class="SCst">FOREGROUND_BLUE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FOREGROUND_BLUE" class="code-type"><span class="SCst">FOREGROUND_BLUE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_GREEN" class="codetype"><span class="SCst">FOREGROUND_GREEN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FOREGROUND_GREEN" class="code-type"><span class="SCst">FOREGROUND_GREEN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_INTENSITY" class="codetype"><span class="SCst">FOREGROUND_INTENSITY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FOREGROUND_INTENSITY" class="code-type"><span class="SCst">FOREGROUND_INTENSITY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_MASK" class="codetype"><span class="SCst">FOREGROUND_MASK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FOREGROUND_MASK" class="code-type"><span class="SCst">FOREGROUND_MASK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FOREGROUND_RED" class="codetype"><span class="SCst">FOREGROUND_RED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FOREGROUND_RED" class="code-type"><span class="SCst">FOREGROUND_RED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER" class="codetype"><span class="SCst">FORMAT_MESSAGE_ALLOCATE_BUFFER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_ALLOCATE_BUFFER" class="code-type"><span class="SCst">FORMAT_MESSAGE_ALLOCATE_BUFFER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY" class="codetype"><span class="SCst">FORMAT_MESSAGE_ARGUMENT_ARRAY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_ARGUMENT_ARRAY" class="code-type"><span class="SCst">FORMAT_MESSAGE_ARGUMENT_ARRAY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE" class="codetype"><span class="SCst">FORMAT_MESSAGE_FROM_HMODULE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_HMODULE" class="code-type"><span class="SCst">FORMAT_MESSAGE_FROM_HMODULE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_STRING" class="codetype"><span class="SCst">FORMAT_MESSAGE_FROM_STRING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_STRING" class="code-type"><span class="SCst">FORMAT_MESSAGE_FROM_STRING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM" class="codetype"><span class="SCst">FORMAT_MESSAGE_FROM_SYSTEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_FROM_SYSTEM" class="code-type"><span class="SCst">FORMAT_MESSAGE_FROM_SYSTEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS" class="codetype"><span class="SCst">FORMAT_MESSAGE_IGNORE_INSERTS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_IGNORE_INSERTS" class="code-type"><span class="SCst">FORMAT_MESSAGE_IGNORE_INSERTS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK" class="codetype"><span class="SCst">FORMAT_MESSAGE_MAX_WIDTH_MASK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_FORMAT_MESSAGE_MAX_WIDTH_MASK" class="code-type"><span class="SCst">FORMAT_MESSAGE_MAX_WIDTH_MASK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_ALL" class="codetype"><span class="SCst">GENERIC_ALL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GENERIC_ALL" class="code-type"><span class="SCst">GENERIC_ALL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_EXECUTE" class="codetype"><span class="SCst">GENERIC_EXECUTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GENERIC_EXECUTE" class="code-type"><span class="SCst">GENERIC_EXECUTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_READ" class="codetype"><span class="SCst">GENERIC_READ</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GENERIC_READ" class="code-type"><span class="SCst">GENERIC_READ</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GENERIC_WRITE" class="codetype"><span class="SCst">GENERIC_WRITE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GENERIC_WRITE" class="code-type"><span class="SCst">GENERIC_WRITE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_DDESHARE" class="codetype"><span class="SCst">GMEM_DDESHARE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_DDESHARE" class="code-type"><span class="SCst">GMEM_DDESHARE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_DISCARDABLE" class="codetype"><span class="SCst">GMEM_DISCARDABLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_DISCARDABLE" class="code-type"><span class="SCst">GMEM_DISCARDABLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_FIXED" class="codetype"><span class="SCst">GMEM_FIXED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_FIXED" class="code-type"><span class="SCst">GMEM_FIXED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_INVALID_HANDLE" class="codetype"><span class="SCst">GMEM_INVALID_HANDLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_INVALID_HANDLE" class="code-type"><span class="SCst">GMEM_INVALID_HANDLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_LOWER" class="codetype"><span class="SCst">GMEM_LOWER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_LOWER" class="code-type"><span class="SCst">GMEM_LOWER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_MODIFY" class="codetype"><span class="SCst">GMEM_MODIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_MODIFY" class="code-type"><span class="SCst">GMEM_MODIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_MOVEABLE" class="codetype"><span class="SCst">GMEM_MOVEABLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_MOVEABLE" class="code-type"><span class="SCst">GMEM_MOVEABLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOCOMPACT" class="codetype"><span class="SCst">GMEM_NOCOMPACT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_NOCOMPACT" class="code-type"><span class="SCst">GMEM_NOCOMPACT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NODISCARD" class="codetype"><span class="SCst">GMEM_NODISCARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_NODISCARD" class="code-type"><span class="SCst">GMEM_NODISCARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOTIFY" class="codetype"><span class="SCst">GMEM_NOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_NOTIFY" class="code-type"><span class="SCst">GMEM_NOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_NOT_BANKED" class="codetype"><span class="SCst">GMEM_NOT_BANKED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_NOT_BANKED" class="code-type"><span class="SCst">GMEM_NOT_BANKED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_SHARE" class="codetype"><span class="SCst">GMEM_SHARE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_SHARE" class="code-type"><span class="SCst">GMEM_SHARE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_VALID_FLAGS" class="codetype"><span class="SCst">GMEM_VALID_FLAGS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_VALID_FLAGS" class="code-type"><span class="SCst">GMEM_VALID_FLAGS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GMEM_ZEROINIT" class="codetype"><span class="SCst">GMEM_ZEROINIT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GMEM_ZEROINIT" class="code-type"><span class="SCst">GMEM_ZEROINIT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_HINSTANCE" class="codetype"><span class="SCst">GWLP_HINSTANCE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_GWLP_HINSTANCE" class="code-type"><span class="SCst">GWLP_HINSTANCE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_HWNDPARENT" class="codetype"><span class="SCst">GWLP_HWNDPARENT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_GWLP_HWNDPARENT" class="code-type"><span class="SCst">GWLP_HWNDPARENT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_ID" class="codetype"><span class="SCst">GWLP_ID</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_GWLP_ID" class="code-type"><span class="SCst">GWLP_ID</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_USERDATA" class="codetype"><span class="SCst">GWLP_USERDATA</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_GWLP_USERDATA" class="code-type"><span class="SCst">GWLP_USERDATA</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GWLP_WNDPROC" class="codetype"><span class="SCst">GWLP_WNDPROC</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_GWLP_WNDPROC" class="code-type"><span class="SCst">GWLP_WNDPROC</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_CHILD" class="codetype"><span class="SCst">GW_CHILD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_CHILD" class="code-type"><span class="SCst">GW_CHILD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_ENABLEDPOPUP" class="codetype"><span class="SCst">GW_ENABLEDPOPUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_ENABLEDPOPUP" class="code-type"><span class="SCst">GW_ENABLEDPOPUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDFIRST" class="codetype"><span class="SCst">GW_HWNDFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_HWNDFIRST" class="code-type"><span class="SCst">GW_HWNDFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDLAST" class="codetype"><span class="SCst">GW_HWNDLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_HWNDLAST" class="code-type"><span class="SCst">GW_HWNDLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDNEXT" class="codetype"><span class="SCst">GW_HWNDNEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_HWNDNEXT" class="code-type"><span class="SCst">GW_HWNDNEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_HWNDPREV" class="codetype"><span class="SCst">GW_HWNDPREV</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_HWNDPREV" class="code-type"><span class="SCst">GW_HWNDPREV</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_MAX" class="codetype"><span class="SCst">GW_MAX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_MAX" class="code-type"><span class="SCst">GW_MAX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_GW_OWNER" class="codetype"><span class="SCst">GW_OWNER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_GW_OWNER" class="code-type"><span class="SCst">GW_OWNER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_BOTTOM" class="codetype"><span class="SCst">HWND_BOTTOM</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HWND_BOTTOM" class="code-type"><span class="SCst">HWND_BOTTOM</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_NOTOPMOST" class="codetype"><span class="SCst">HWND_NOTOPMOST</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HWND_NOTOPMOST" class="code-type"><span class="SCst">HWND_NOTOPMOST</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_TOP" class="codetype"><span class="SCst">HWND_TOP</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HWND_TOP" class="code-type"><span class="SCst">HWND_TOP</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND_TOPMOST" class="codetype"><span class="SCst">HWND_TOPMOST</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HWND_TOPMOST" class="code-type"><span class="SCst">HWND_TOPMOST</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDABORT" class="codetype"><span class="SCst">IDABORT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDABORT" class="code-type"><span class="SCst">IDABORT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCANCEL" class="codetype"><span class="SCst">IDCANCEL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDCANCEL" class="code-type"><span class="SCst">IDCANCEL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCLOSE" class="codetype"><span class="SCst">IDCLOSE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDCLOSE" class="code-type"><span class="SCst">IDCLOSE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDCONTINUE" class="codetype"><span class="SCst">IDCONTINUE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDCONTINUE" class="code-type"><span class="SCst">IDCONTINUE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_APPSTARTING" class="codetype"><span class="SCst">IDC_APPSTARTING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_APPSTARTING" class="code-type"><span class="SCst">IDC_APPSTARTING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_ARROW" class="codetype"><span class="SCst">IDC_ARROW</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_ARROW" class="code-type"><span class="SCst">IDC_ARROW</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_CROSS" class="codetype"><span class="SCst">IDC_CROSS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_CROSS" class="code-type"><span class="SCst">IDC_CROSS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_HAND" class="codetype"><span class="SCst">IDC_HAND</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_HAND" class="code-type"><span class="SCst">IDC_HAND</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_HELP" class="codetype"><span class="SCst">IDC_HELP</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_HELP" class="code-type"><span class="SCst">IDC_HELP</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_IBEAM" class="codetype"><span class="SCst">IDC_IBEAM</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_IBEAM" class="code-type"><span class="SCst">IDC_IBEAM</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_ICON" class="codetype"><span class="SCst">IDC_ICON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_ICON" class="code-type"><span class="SCst">IDC_ICON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_NO" class="codetype"><span class="SCst">IDC_NO</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_NO" class="code-type"><span class="SCst">IDC_NO</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_PERSON" class="codetype"><span class="SCst">IDC_PERSON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_PERSON" class="code-type"><span class="SCst">IDC_PERSON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_PIN" class="codetype"><span class="SCst">IDC_PIN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_PIN" class="code-type"><span class="SCst">IDC_PIN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZE" class="codetype"><span class="SCst">IDC_SIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZE" class="code-type"><span class="SCst">IDC_SIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZEALL" class="codetype"><span class="SCst">IDC_SIZEALL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZEALL" class="code-type"><span class="SCst">IDC_SIZEALL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENESW" class="codetype"><span class="SCst">IDC_SIZENESW</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZENESW" class="code-type"><span class="SCst">IDC_SIZENESW</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENS" class="codetype"><span class="SCst">IDC_SIZENS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZENS" class="code-type"><span class="SCst">IDC_SIZENS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZENWSE" class="codetype"><span class="SCst">IDC_SIZENWSE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZENWSE" class="code-type"><span class="SCst">IDC_SIZENWSE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_SIZEWE" class="codetype"><span class="SCst">IDC_SIZEWE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_SIZEWE" class="code-type"><span class="SCst">IDC_SIZEWE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_UPARROW" class="codetype"><span class="SCst">IDC_UPARROW</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_UPARROW" class="code-type"><span class="SCst">IDC_UPARROW</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDC_WAIT" class="codetype"><span class="SCst">IDC_WAIT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDC_WAIT" class="code-type"><span class="SCst">IDC_WAIT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDHELP" class="codetype"><span class="SCst">IDHELP</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDHELP" class="code-type"><span class="SCst">IDHELP</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDIGNORE" class="codetype"><span class="SCst">IDIGNORE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDIGNORE" class="code-type"><span class="SCst">IDIGNORE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDNO" class="codetype"><span class="SCst">IDNO</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDNO" class="code-type"><span class="SCst">IDNO</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDOK" class="codetype"><span class="SCst">IDOK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDOK" class="code-type"><span class="SCst">IDOK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDRETRY" class="codetype"><span class="SCst">IDRETRY</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDRETRY" class="code-type"><span class="SCst">IDRETRY</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDTIMEOUT" class="codetype"><span class="SCst">IDTIMEOUT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDTIMEOUT" class="code-type"><span class="SCst">IDTIMEOUT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDTRYAGAIN" class="codetype"><span class="SCst">IDTRYAGAIN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDTRYAGAIN" class="code-type"><span class="SCst">IDTRYAGAIN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IDYES" class="codetype"><span class="SCst">IDYES</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_IDYES" class="code-type"><span class="SCst">IDYES</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INFINITE" class="codetype"><span class="SCst">INFINITE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_INFINITE" class="code-type"><span class="SCst">INFINITE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_FILE_ATTRIBUTES" class="codetype"><span class="SCst">INVALID_FILE_ATTRIBUTES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_INVALID_FILE_ATTRIBUTES" class="code-type"><span class="SCst">INVALID_FILE_ATTRIBUTES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_FILE_SIZE" class="codetype"><span class="SCst">INVALID_FILE_SIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_INVALID_FILE_SIZE" class="code-type"><span class="SCst">INVALID_FILE_SIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_HANDLE_VALUE" class="codetype"><span class="SCst">INVALID_HANDLE_VALUE</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td id="Win32_INVALID_HANDLE_VALUE" class="code-type"><span class="SCst">INVALID_HANDLE_VALUE</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_INVALID_SET_FILE_POINTER" class="codetype"><span class="SCst">INVALID_SET_FILE_POINTER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_INVALID_SET_FILE_POINTER" class="code-type"><span class="SCst">INVALID_SET_FILE_POINTER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LANG_ENGLISH" class="codetype"><span class="SCst">LANG_ENGLISH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_LANG_ENGLISH" class="code-type"><span class="SCst">LANG_ENGLISH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LWA_ALPHA" class="codetype"><span class="SCst">LWA_ALPHA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_LWA_ALPHA" class="code-type"><span class="SCst">LWA_ALPHA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LWA_COLORKEY" class="codetype"><span class="SCst">LWA_COLORKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_LWA_COLORKEY" class="code-type"><span class="SCst">LWA_COLORKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_CHAR" class="codetype"><span class="SCst">MAPVK_VK_TO_CHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAPVK_VK_TO_CHAR" class="code-type"><span class="SCst">MAPVK_VK_TO_CHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_VSC" class="codetype"><span class="SCst">MAPVK_VK_TO_VSC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAPVK_VK_TO_VSC" class="code-type"><span class="SCst">MAPVK_VK_TO_VSC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VK_TO_VSC_EX" class="codetype"><span class="SCst">MAPVK_VK_TO_VSC_EX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAPVK_VK_TO_VSC_EX" class="code-type"><span class="SCst">MAPVK_VK_TO_VSC_EX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VSC_TO_VK" class="codetype"><span class="SCst">MAPVK_VSC_TO_VK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAPVK_VSC_TO_VK" class="code-type"><span class="SCst">MAPVK_VSC_TO_VK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAPVK_VSC_TO_VK_EX" class="codetype"><span class="SCst">MAPVK_VSC_TO_VK_EX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAPVK_VSC_TO_VK_EX" class="code-type"><span class="SCst">MAPVK_VSC_TO_VK_EX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAXIMUM_WAIT_OBJECTS" class="codetype"><span class="SCst">MAXIMUM_WAIT_OBJECTS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MAXIMUM_WAIT_OBJECTS" class="code-type"><span class="SCst">MAXIMUM_WAIT_OBJECTS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH" class="codetype"><span class="SCst">MAX_ADAPTER_ADDRESS_LENGTH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_ADAPTER_ADDRESS_LENGTH" class="code-type"><span class="SCst">MAX_ADAPTER_ADDRESS_LENGTH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH" class="codetype"><span class="SCst">MAX_ADAPTER_DESCRIPTION_LENGTH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_ADAPTER_DESCRIPTION_LENGTH" class="code-type"><span class="SCst">MAX_ADAPTER_DESCRIPTION_LENGTH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_ADAPTER_NAME_LENGTH" class="codetype"><span class="SCst">MAX_ADAPTER_NAME_LENGTH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_ADAPTER_NAME_LENGTH" class="code-type"><span class="SCst">MAX_ADAPTER_NAME_LENGTH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DHCPV6_DUID_LENGTH" class="codetype"><span class="SCst">MAX_DHCPV6_DUID_LENGTH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_DHCPV6_DUID_LENGTH" class="code-type"><span class="SCst">MAX_DHCPV6_DUID_LENGTH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH" class="codetype"><span class="SCst">MAX_DNS_SUFFIX_STRING_LENGTH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_DNS_SUFFIX_STRING_LENGTH" class="code-type"><span class="SCst">MAX_DNS_SUFFIX_STRING_LENGTH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_DOMAIN_NAME_LEN" class="codetype"><span class="SCst">MAX_DOMAIN_NAME_LEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_DOMAIN_NAME_LEN" class="code-type"><span class="SCst">MAX_DOMAIN_NAME_LEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_HOSTNAME_LEN" class="codetype"><span class="SCst">MAX_HOSTNAME_LEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_HOSTNAME_LEN" class="code-type"><span class="SCst">MAX_HOSTNAME_LEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_PATH" class="codetype"><span class="SCst">MAX_PATH</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_PATH" class="code-type"><span class="SCst">MAX_PATH</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MAX_SCOPE_ID_LEN" class="codetype"><span class="SCst">MAX_SCOPE_ID_LEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_MAX_SCOPE_ID_LEN" class="code-type"><span class="SCst">MAX_SCOPE_ID_LEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ABORTRETRYIGNORE" class="codetype"><span class="SCst">MB_ABORTRETRYIGNORE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ABORTRETRYIGNORE" class="code-type"><span class="SCst">MB_ABORTRETRYIGNORE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_APPLMODAL" class="codetype"><span class="SCst">MB_APPLMODAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_APPLMODAL" class="code-type"><span class="SCst">MB_APPLMODAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_CANCELTRYCONTINUE" class="codetype"><span class="SCst">MB_CANCELTRYCONTINUE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_CANCELTRYCONTINUE" class="code-type"><span class="SCst">MB_CANCELTRYCONTINUE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFAULT_DESKTOP_ONLY" class="codetype"><span class="SCst">MB_DEFAULT_DESKTOP_ONLY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_DEFAULT_DESKTOP_ONLY" class="code-type"><span class="SCst">MB_DEFAULT_DESKTOP_ONLY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON1" class="codetype"><span class="SCst">MB_DEFBUTTON1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_DEFBUTTON1" class="code-type"><span class="SCst">MB_DEFBUTTON1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON2" class="codetype"><span class="SCst">MB_DEFBUTTON2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_DEFBUTTON2" class="code-type"><span class="SCst">MB_DEFBUTTON2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON3" class="codetype"><span class="SCst">MB_DEFBUTTON3</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_DEFBUTTON3" class="code-type"><span class="SCst">MB_DEFBUTTON3</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_DEFBUTTON4" class="codetype"><span class="SCst">MB_DEFBUTTON4</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_DEFBUTTON4" class="code-type"><span class="SCst">MB_DEFBUTTON4</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_HELP" class="codetype"><span class="SCst">MB_HELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_HELP" class="code-type"><span class="SCst">MB_HELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONASTERISK" class="codetype"><span class="SCst">MB_ICONASTERISK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONASTERISK" class="code-type"><span class="SCst">MB_ICONASTERISK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONERROR" class="codetype"><span class="SCst">MB_ICONERROR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONERROR" class="code-type"><span class="SCst">MB_ICONERROR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONEXCLAMATION" class="codetype"><span class="SCst">MB_ICONEXCLAMATION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONEXCLAMATION" class="code-type"><span class="SCst">MB_ICONEXCLAMATION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONHAND" class="codetype"><span class="SCst">MB_ICONHAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONHAND" class="code-type"><span class="SCst">MB_ICONHAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONINFORMATION" class="codetype"><span class="SCst">MB_ICONINFORMATION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONINFORMATION" class="code-type"><span class="SCst">MB_ICONINFORMATION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONQUESTION" class="codetype"><span class="SCst">MB_ICONQUESTION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONQUESTION" class="code-type"><span class="SCst">MB_ICONQUESTION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONSTOP" class="codetype"><span class="SCst">MB_ICONSTOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONSTOP" class="code-type"><span class="SCst">MB_ICONSTOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_ICONWARNING" class="codetype"><span class="SCst">MB_ICONWARNING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_ICONWARNING" class="code-type"><span class="SCst">MB_ICONWARNING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_NOFOCUS" class="codetype"><span class="SCst">MB_NOFOCUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_NOFOCUS" class="code-type"><span class="SCst">MB_NOFOCUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_OK" class="codetype"><span class="SCst">MB_OK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_OK" class="code-type"><span class="SCst">MB_OK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_OKCANCEL" class="codetype"><span class="SCst">MB_OKCANCEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_OKCANCEL" class="code-type"><span class="SCst">MB_OKCANCEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RETRYCANCEL" class="codetype"><span class="SCst">MB_RETRYCANCEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_RETRYCANCEL" class="code-type"><span class="SCst">MB_RETRYCANCEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RIGHT" class="codetype"><span class="SCst">MB_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_RIGHT" class="code-type"><span class="SCst">MB_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_RTLREADING" class="codetype"><span class="SCst">MB_RTLREADING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_RTLREADING" class="code-type"><span class="SCst">MB_RTLREADING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_SETFOREGROUND" class="codetype"><span class="SCst">MB_SETFOREGROUND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_SETFOREGROUND" class="code-type"><span class="SCst">MB_SETFOREGROUND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_SYSTEMMODAL" class="codetype"><span class="SCst">MB_SYSTEMMODAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_SYSTEMMODAL" class="code-type"><span class="SCst">MB_SYSTEMMODAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_TASKMODAL" class="codetype"><span class="SCst">MB_TASKMODAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_TASKMODAL" class="code-type"><span class="SCst">MB_TASKMODAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_TOPMOST" class="codetype"><span class="SCst">MB_TOPMOST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_TOPMOST" class="code-type"><span class="SCst">MB_TOPMOST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_USERICON" class="codetype"><span class="SCst">MB_USERICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_USERICON" class="code-type"><span class="SCst">MB_USERICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_YESNO" class="codetype"><span class="SCst">MB_YESNO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_YESNO" class="code-type"><span class="SCst">MB_YESNO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MB_YESNOCANCEL" class="codetype"><span class="SCst">MB_YESNOCANCEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MB_YESNOCANCEL" class="code-type"><span class="SCst">MB_YESNOCANCEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MN_GETHMENU" class="codetype"><span class="SCst">MN_GETHMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MN_GETHMENU" class="code-type"><span class="SCst">MN_GETHMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_ALT" class="codetype"><span class="SCst">MOD_ALT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MOD_ALT" class="code-type"><span class="SCst">MOD_ALT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_CONTROL" class="codetype"><span class="SCst">MOD_CONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MOD_CONTROL" class="code-type"><span class="SCst">MOD_CONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_NOREPEAT" class="codetype"><span class="SCst">MOD_NOREPEAT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MOD_NOREPEAT" class="code-type"><span class="SCst">MOD_NOREPEAT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_SHIFT" class="codetype"><span class="SCst">MOD_SHIFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MOD_SHIFT" class="code-type"><span class="SCst">MOD_SHIFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MOD_WIN" class="codetype"><span class="SCst">MOD_WIN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MOD_WIN" class="code-type"><span class="SCst">MOD_WIN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTONEAREST" class="codetype"><span class="SCst">MONITOR_DEFAULTTONEAREST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MONITOR_DEFAULTTONEAREST" class="code-type"><span class="SCst">MONITOR_DEFAULTTONEAREST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTONULL" class="codetype"><span class="SCst">MONITOR_DEFAULTTONULL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MONITOR_DEFAULTTONULL" class="code-type"><span class="SCst">MONITOR_DEFAULTTONULL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_MONITOR_DEFAULTTOPRIMARY" class="codetype"><span class="SCst">MONITOR_DEFAULTTOPRIMARY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_MONITOR_DEFAULTTOPRIMARY" class="code-type"><span class="SCst">MONITOR_DEFAULTTOPRIMARY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_GUID" class="codetype"><span class="SCst">NIF_GUID</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_GUID" class="code-type"><span class="SCst">NIF_GUID</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_ICON" class="codetype"><span class="SCst">NIF_ICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_ICON" class="code-type"><span class="SCst">NIF_ICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_INFO" class="codetype"><span class="SCst">NIF_INFO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_INFO" class="code-type"><span class="SCst">NIF_INFO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_MESSAGE" class="codetype"><span class="SCst">NIF_MESSAGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_MESSAGE" class="code-type"><span class="SCst">NIF_MESSAGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_REALTIME" class="codetype"><span class="SCst">NIF_REALTIME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_REALTIME" class="code-type"><span class="SCst">NIF_REALTIME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_SHOWTIP" class="codetype"><span class="SCst">NIF_SHOWTIP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_SHOWTIP" class="code-type"><span class="SCst">NIF_SHOWTIP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_STATE" class="codetype"><span class="SCst">NIF_STATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_STATE" class="code-type"><span class="SCst">NIF_STATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIF_TIP" class="codetype"><span class="SCst">NIF_TIP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIF_TIP" class="code-type"><span class="SCst">NIF_TIP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_ADD" class="codetype"><span class="SCst">NIM_ADD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIM_ADD" class="code-type"><span class="SCst">NIM_ADD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_DELETE" class="codetype"><span class="SCst">NIM_DELETE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIM_DELETE" class="code-type"><span class="SCst">NIM_DELETE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_MODIFY" class="codetype"><span class="SCst">NIM_MODIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIM_MODIFY" class="code-type"><span class="SCst">NIM_MODIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_SETFOCUS" class="codetype"><span class="SCst">NIM_SETFOCUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIM_SETFOCUS" class="code-type"><span class="SCst">NIM_SETFOCUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_NIM_SETVERSION" class="codetype"><span class="SCst">NIM_SETVERSION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_NIM_SETVERSION" class="code-type"><span class="SCst">NIM_SETVERSION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_OPEN_ALWAYS" class="codetype"><span class="SCst">OPEN_ALWAYS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_OPEN_ALWAYS" class="code-type"><span class="SCst">OPEN_ALWAYS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_OPEN_EXISTING" class="codetype"><span class="SCst">OPEN_EXISTING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_OPEN_EXISTING" class="code-type"><span class="SCst">OPEN_EXISTING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_NOREMOVE" class="codetype"><span class="SCst">PM_NOREMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_PM_NOREMOVE" class="code-type"><span class="SCst">PM_NOREMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_NOYIELD" class="codetype"><span class="SCst">PM_NOYIELD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_PM_NOYIELD" class="code-type"><span class="SCst">PM_NOYIELD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PM_REMOVE" class="codetype"><span class="SCst">PM_REMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_PM_REMOVE" class="code-type"><span class="SCst">PM_REMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_ARRANGE" class="codetype"><span class="SCst">SC_ARRANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_ARRANGE" class="code-type"><span class="SCst">SC_ARRANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_CLOSE" class="codetype"><span class="SCst">SC_CLOSE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_CLOSE" class="code-type"><span class="SCst">SC_CLOSE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_CONTEXTHELP" class="codetype"><span class="SCst">SC_CONTEXTHELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_CONTEXTHELP" class="code-type"><span class="SCst">SC_CONTEXTHELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_DEFAULT" class="codetype"><span class="SCst">SC_DEFAULT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_DEFAULT" class="code-type"><span class="SCst">SC_DEFAULT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_HOTKEY" class="codetype"><span class="SCst">SC_HOTKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_HOTKEY" class="code-type"><span class="SCst">SC_HOTKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_HSCROLL" class="codetype"><span class="SCst">SC_HSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_HSCROLL" class="code-type"><span class="SCst">SC_HSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_KEYMENU" class="codetype"><span class="SCst">SC_KEYMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_KEYMENU" class="code-type"><span class="SCst">SC_KEYMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MAXIMIZE" class="codetype"><span class="SCst">SC_MAXIMIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_MAXIMIZE" class="code-type"><span class="SCst">SC_MAXIMIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MINIMIZE" class="codetype"><span class="SCst">SC_MINIMIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_MINIMIZE" class="code-type"><span class="SCst">SC_MINIMIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MONITORPOWER" class="codetype"><span class="SCst">SC_MONITORPOWER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_MONITORPOWER" class="code-type"><span class="SCst">SC_MONITORPOWER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MOUSEMENU" class="codetype"><span class="SCst">SC_MOUSEMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_MOUSEMENU" class="code-type"><span class="SCst">SC_MOUSEMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_MOVE" class="codetype"><span class="SCst">SC_MOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_MOVE" class="code-type"><span class="SCst">SC_MOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_NEXTWINDOW" class="codetype"><span class="SCst">SC_NEXTWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_NEXTWINDOW" class="code-type"><span class="SCst">SC_NEXTWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_PREVWINDOW" class="codetype"><span class="SCst">SC_PREVWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_PREVWINDOW" class="code-type"><span class="SCst">SC_PREVWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_RESTORE" class="codetype"><span class="SCst">SC_RESTORE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_RESTORE" class="code-type"><span class="SCst">SC_RESTORE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SCREENSAVE" class="codetype"><span class="SCst">SC_SCREENSAVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_SCREENSAVE" class="code-type"><span class="SCst">SC_SCREENSAVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SEPARATOR" class="codetype"><span class="SCst">SC_SEPARATOR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_SEPARATOR" class="code-type"><span class="SCst">SC_SEPARATOR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_SIZE" class="codetype"><span class="SCst">SC_SIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_SIZE" class="code-type"><span class="SCst">SC_SIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_TASKLIST" class="codetype"><span class="SCst">SC_TASKLIST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_TASKLIST" class="code-type"><span class="SCst">SC_TASKLIST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SC_VSCROLL" class="codetype"><span class="SCst">SC_VSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SC_VSCROLL" class="code-type"><span class="SCst">SC_VSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ADDOVERLAYS" class="codetype"><span class="SCst">SHGFI_ADDOVERLAYS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_ADDOVERLAYS" class="code-type"><span class="SCst">SHGFI_ADDOVERLAYS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>apply the appropriate overlays. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ATTRIBUTES" class="codetype"><span class="SCst">SHGFI_ATTRIBUTES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_ATTRIBUTES" class="code-type"><span class="SCst">SHGFI_ATTRIBUTES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get attributes. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ATTR_SPECIFIED" class="codetype"><span class="SCst">SHGFI_ATTR_SPECIFIED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_ATTR_SPECIFIED" class="code-type"><span class="SCst">SHGFI_ATTR_SPECIFIED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get only specified attributes. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_DISPLAYNAME" class="codetype"><span class="SCst">SHGFI_DISPLAYNAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_DISPLAYNAME" class="code-type"><span class="SCst">SHGFI_DISPLAYNAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get display name. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_EXETYPE" class="codetype"><span class="SCst">SHGFI_EXETYPE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_EXETYPE" class="code-type"><span class="SCst">SHGFI_EXETYPE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>return exe type. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ICON" class="codetype"><span class="SCst">SHGFI_ICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_ICON" class="code-type"><span class="SCst">SHGFI_ICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_ICONLOCATION" class="codetype"><span class="SCst">SHGFI_ICONLOCATION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_ICONLOCATION" class="code-type"><span class="SCst">SHGFI_ICONLOCATION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get icon location. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_LARGEICON" class="codetype"><span class="SCst">SHGFI_LARGEICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_LARGEICON" class="code-type"><span class="SCst">SHGFI_LARGEICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get large icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_LINKOVERLAY" class="codetype"><span class="SCst">SHGFI_LINKOVERLAY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_LINKOVERLAY" class="code-type"><span class="SCst">SHGFI_LINKOVERLAY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>put a link overlay on icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_OPENICON" class="codetype"><span class="SCst">SHGFI_OPENICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_OPENICON" class="code-type"><span class="SCst">SHGFI_OPENICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get open icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_OVERLAYINDEX" class="codetype"><span class="SCst">SHGFI_OVERLAYINDEX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_OVERLAYINDEX" class="code-type"><span class="SCst">SHGFI_OVERLAYINDEX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Get the index of the overlay. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_PIDL" class="codetype"><span class="SCst">SHGFI_PIDL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_PIDL" class="code-type"><span class="SCst">SHGFI_PIDL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>pszPath is a pidl. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SELECTED" class="codetype"><span class="SCst">SHGFI_SELECTED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_SELECTED" class="code-type"><span class="SCst">SHGFI_SELECTED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>show icon in selected state. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SHELLICONSIZE" class="codetype"><span class="SCst">SHGFI_SHELLICONSIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_SHELLICONSIZE" class="code-type"><span class="SCst">SHGFI_SHELLICONSIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get shell size icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SMALLICON" class="codetype"><span class="SCst">SHGFI_SMALLICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_SMALLICON" class="code-type"><span class="SCst">SHGFI_SMALLICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get small icon. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_SYSICONINDEX" class="codetype"><span class="SCst">SHGFI_SYSICONINDEX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_SYSICONINDEX" class="code-type"><span class="SCst">SHGFI_SYSICONINDEX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get system icon index. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_TYPENAME" class="codetype"><span class="SCst">SHGFI_TYPENAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_TYPENAME" class="code-type"><span class="SCst">SHGFI_TYPENAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>get type name. </td>
 </tr>
 <tr>
-<td id="Win32_SHGFI_USEFILEATTRIBUTES" class="codetype"><span class="SCst">SHGFI_USEFILEATTRIBUTES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGFI_USEFILEATTRIBUTES" class="code-type"><span class="SCst">SHGFI_USEFILEATTRIBUTES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>use passed dwFileAttribute. </td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_ICON" class="codetype"><span class="SCst">SHGSI_ICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_ICON" class="code-type"><span class="SCst">SHGSI_ICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_ICONLOCATION" class="codetype"><span class="SCst">SHGSI_ICONLOCATION</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SHGSI_ICONLOCATION" class="code-type"><span class="SCst">SHGSI_ICONLOCATION</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td>you always get the icon location. </td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_LARGEICON" class="codetype"><span class="SCst">SHGSI_LARGEICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_LARGEICON" class="code-type"><span class="SCst">SHGSI_LARGEICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_LINKOVERLAY" class="codetype"><span class="SCst">SHGSI_LINKOVERLAY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_LINKOVERLAY" class="code-type"><span class="SCst">SHGSI_LINKOVERLAY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SELECTED" class="codetype"><span class="SCst">SHGSI_SELECTED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_SELECTED" class="code-type"><span class="SCst">SHGSI_SELECTED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SHELLICONSIZE" class="codetype"><span class="SCst">SHGSI_SHELLICONSIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_SHELLICONSIZE" class="code-type"><span class="SCst">SHGSI_SHELLICONSIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SMALLICON" class="codetype"><span class="SCst">SHGSI_SMALLICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_SMALLICON" class="code-type"><span class="SCst">SHGSI_SMALLICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHGSI_SYSICONINDEX" class="codetype"><span class="SCst">SHGSI_SYSICONINDEX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SHGSI_SYSICONINDEX" class="code-type"><span class="SCst">SHGSI_SYSICONINDEX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_ARRANGE" class="codetype"><span class="SCst">SM_ARRANGE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_ARRANGE" class="code-type"><span class="SCst">SM_ARRANGE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CARETBLINKINGENABLED" class="codetype"><span class="SCst">SM_CARETBLINKINGENABLED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_CARETBLINKINGENABLED" class="code-type"><span class="SCst">SM_CARETBLINKINGENABLED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CLEANBOOT" class="codetype"><span class="SCst">SM_CLEANBOOT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CLEANBOOT" class="code-type"><span class="SCst">SM_CLEANBOOT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMETRICS" class="codetype"><span class="SCst">SM_CMETRICS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CMETRICS" class="code-type"><span class="SCst">SM_CMETRICS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMONITORS" class="codetype"><span class="SCst">SM_CMONITORS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CMONITORS" class="code-type"><span class="SCst">SM_CMONITORS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CMOUSEBUTTONS" class="codetype"><span class="SCst">SM_CMOUSEBUTTONS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CMOUSEBUTTONS" class="code-type"><span class="SCst">SM_CMOUSEBUTTONS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CONVERTIBLESLATEMODE" class="codetype"><span class="SCst">SM_CONVERTIBLESLATEMODE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_CONVERTIBLESLATEMODE" class="code-type"><span class="SCst">SM_CONVERTIBLESLATEMODE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXBORDER" class="codetype"><span class="SCst">SM_CXBORDER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXBORDER" class="code-type"><span class="SCst">SM_CXBORDER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXCURSOR" class="codetype"><span class="SCst">SM_CXCURSOR</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXCURSOR" class="code-type"><span class="SCst">SM_CXCURSOR</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDLGFRAME" class="codetype"><span class="SCst">SM_CXDLGFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXDLGFRAME" class="code-type"><span class="SCst">SM_CXDLGFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDOUBLECLK" class="codetype"><span class="SCst">SM_CXDOUBLECLK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXDOUBLECLK" class="code-type"><span class="SCst">SM_CXDOUBLECLK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXDRAG" class="codetype"><span class="SCst">SM_CXDRAG</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXDRAG" class="code-type"><span class="SCst">SM_CXDRAG</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXEDGE" class="codetype"><span class="SCst">SM_CXEDGE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXEDGE" class="code-type"><span class="SCst">SM_CXEDGE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFIXEDFRAME" class="codetype"><span class="SCst">SM_CXFIXEDFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXFIXEDFRAME" class="code-type"><span class="SCst">SM_CXFIXEDFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFOCUSBORDER" class="codetype"><span class="SCst">SM_CXFOCUSBORDER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXFOCUSBORDER" class="code-type"><span class="SCst">SM_CXFOCUSBORDER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFRAME" class="codetype"><span class="SCst">SM_CXFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXFRAME" class="code-type"><span class="SCst">SM_CXFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXFULLSCREEN" class="codetype"><span class="SCst">SM_CXFULLSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXFULLSCREEN" class="code-type"><span class="SCst">SM_CXFULLSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXHSCROLL" class="codetype"><span class="SCst">SM_CXHSCROLL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXHSCROLL" class="code-type"><span class="SCst">SM_CXHSCROLL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXHTHUMB" class="codetype"><span class="SCst">SM_CXHTHUMB</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXHTHUMB" class="code-type"><span class="SCst">SM_CXHTHUMB</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXICON" class="codetype"><span class="SCst">SM_CXICON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXICON" class="code-type"><span class="SCst">SM_CXICON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXICONSPACING" class="codetype"><span class="SCst">SM_CXICONSPACING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXICONSPACING" class="code-type"><span class="SCst">SM_CXICONSPACING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMAXIMIZED" class="codetype"><span class="SCst">SM_CXMAXIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMAXIMIZED" class="code-type"><span class="SCst">SM_CXMAXIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMAXTRACK" class="codetype"><span class="SCst">SM_CXMAXTRACK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMAXTRACK" class="code-type"><span class="SCst">SM_CXMAXTRACK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMENUCHECK" class="codetype"><span class="SCst">SM_CXMENUCHECK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMENUCHECK" class="code-type"><span class="SCst">SM_CXMENUCHECK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMENUSIZE" class="codetype"><span class="SCst">SM_CXMENUSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMENUSIZE" class="code-type"><span class="SCst">SM_CXMENUSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMIN" class="codetype"><span class="SCst">SM_CXMIN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMIN" class="code-type"><span class="SCst">SM_CXMIN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINIMIZED" class="codetype"><span class="SCst">SM_CXMINIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMINIMIZED" class="code-type"><span class="SCst">SM_CXMINIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINSPACING" class="codetype"><span class="SCst">SM_CXMINSPACING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMINSPACING" class="code-type"><span class="SCst">SM_CXMINSPACING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXMINTRACK" class="codetype"><span class="SCst">SM_CXMINTRACK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXMINTRACK" class="code-type"><span class="SCst">SM_CXMINTRACK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXPADDEDBORDER" class="codetype"><span class="SCst">SM_CXPADDEDBORDER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXPADDEDBORDER" class="code-type"><span class="SCst">SM_CXPADDEDBORDER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSCREEN" class="codetype"><span class="SCst">SM_CXSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXSCREEN" class="code-type"><span class="SCst">SM_CXSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSIZE" class="codetype"><span class="SCst">SM_CXSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXSIZE" class="code-type"><span class="SCst">SM_CXSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSIZEFRAME" class="codetype"><span class="SCst">SM_CXSIZEFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXSIZEFRAME" class="code-type"><span class="SCst">SM_CXSIZEFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSMICON" class="codetype"><span class="SCst">SM_CXSMICON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXSMICON" class="code-type"><span class="SCst">SM_CXSMICON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXSMSIZE" class="codetype"><span class="SCst">SM_CXSMSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXSMSIZE" class="code-type"><span class="SCst">SM_CXSMSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXVIRTUALSCREEN" class="codetype"><span class="SCst">SM_CXVIRTUALSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXVIRTUALSCREEN" class="code-type"><span class="SCst">SM_CXVIRTUALSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CXVSCROLL" class="codetype"><span class="SCst">SM_CXVSCROLL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CXVSCROLL" class="code-type"><span class="SCst">SM_CXVSCROLL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYBORDER" class="codetype"><span class="SCst">SM_CYBORDER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYBORDER" class="code-type"><span class="SCst">SM_CYBORDER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYCAPTION" class="codetype"><span class="SCst">SM_CYCAPTION</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYCAPTION" class="code-type"><span class="SCst">SM_CYCAPTION</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYCURSOR" class="codetype"><span class="SCst">SM_CYCURSOR</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYCURSOR" class="code-type"><span class="SCst">SM_CYCURSOR</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDLGFRAME" class="codetype"><span class="SCst">SM_CYDLGFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYDLGFRAME" class="code-type"><span class="SCst">SM_CYDLGFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDOUBLECLK" class="codetype"><span class="SCst">SM_CYDOUBLECLK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYDOUBLECLK" class="code-type"><span class="SCst">SM_CYDOUBLECLK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYDRAG" class="codetype"><span class="SCst">SM_CYDRAG</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYDRAG" class="code-type"><span class="SCst">SM_CYDRAG</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYEDGE" class="codetype"><span class="SCst">SM_CYEDGE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYEDGE" class="code-type"><span class="SCst">SM_CYEDGE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFIXEDFRAME" class="codetype"><span class="SCst">SM_CYFIXEDFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYFIXEDFRAME" class="code-type"><span class="SCst">SM_CYFIXEDFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFOCUSBORDER" class="codetype"><span class="SCst">SM_CYFOCUSBORDER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYFOCUSBORDER" class="code-type"><span class="SCst">SM_CYFOCUSBORDER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFRAME" class="codetype"><span class="SCst">SM_CYFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYFRAME" class="code-type"><span class="SCst">SM_CYFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYFULLSCREEN" class="codetype"><span class="SCst">SM_CYFULLSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYFULLSCREEN" class="code-type"><span class="SCst">SM_CYFULLSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYHSCROLL" class="codetype"><span class="SCst">SM_CYHSCROLL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYHSCROLL" class="code-type"><span class="SCst">SM_CYHSCROLL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYICON" class="codetype"><span class="SCst">SM_CYICON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYICON" class="code-type"><span class="SCst">SM_CYICON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYICONSPACING" class="codetype"><span class="SCst">SM_CYICONSPACING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYICONSPACING" class="code-type"><span class="SCst">SM_CYICONSPACING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYKANJIWINDOW" class="codetype"><span class="SCst">SM_CYKANJIWINDOW</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYKANJIWINDOW" class="code-type"><span class="SCst">SM_CYKANJIWINDOW</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMAXIMIZED" class="codetype"><span class="SCst">SM_CYMAXIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMAXIMIZED" class="code-type"><span class="SCst">SM_CYMAXIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMAXTRACK" class="codetype"><span class="SCst">SM_CYMAXTRACK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMAXTRACK" class="code-type"><span class="SCst">SM_CYMAXTRACK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENU" class="codetype"><span class="SCst">SM_CYMENU</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMENU" class="code-type"><span class="SCst">SM_CYMENU</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENUCHECK" class="codetype"><span class="SCst">SM_CYMENUCHECK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMENUCHECK" class="code-type"><span class="SCst">SM_CYMENUCHECK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMENUSIZE" class="codetype"><span class="SCst">SM_CYMENUSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMENUSIZE" class="code-type"><span class="SCst">SM_CYMENUSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMIN" class="codetype"><span class="SCst">SM_CYMIN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMIN" class="code-type"><span class="SCst">SM_CYMIN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINIMIZED" class="codetype"><span class="SCst">SM_CYMINIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMINIMIZED" class="code-type"><span class="SCst">SM_CYMINIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINSPACING" class="codetype"><span class="SCst">SM_CYMINSPACING</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMINSPACING" class="code-type"><span class="SCst">SM_CYMINSPACING</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYMINTRACK" class="codetype"><span class="SCst">SM_CYMINTRACK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYMINTRACK" class="code-type"><span class="SCst">SM_CYMINTRACK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSCREEN" class="codetype"><span class="SCst">SM_CYSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSCREEN" class="code-type"><span class="SCst">SM_CYSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSIZE" class="codetype"><span class="SCst">SM_CYSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSIZE" class="code-type"><span class="SCst">SM_CYSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSIZEFRAME" class="codetype"><span class="SCst">SM_CYSIZEFRAME</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSIZEFRAME" class="code-type"><span class="SCst">SM_CYSIZEFRAME</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMCAPTION" class="codetype"><span class="SCst">SM_CYSMCAPTION</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSMCAPTION" class="code-type"><span class="SCst">SM_CYSMCAPTION</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMICON" class="codetype"><span class="SCst">SM_CYSMICON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSMICON" class="code-type"><span class="SCst">SM_CYSMICON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYSMSIZE" class="codetype"><span class="SCst">SM_CYSMSIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYSMSIZE" class="code-type"><span class="SCst">SM_CYSMSIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVIRTUALSCREEN" class="codetype"><span class="SCst">SM_CYVIRTUALSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYVIRTUALSCREEN" class="code-type"><span class="SCst">SM_CYVIRTUALSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVSCROLL" class="codetype"><span class="SCst">SM_CYVSCROLL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYVSCROLL" class="code-type"><span class="SCst">SM_CYVSCROLL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_CYVTHUMB" class="codetype"><span class="SCst">SM_CYVTHUMB</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_CYVTHUMB" class="code-type"><span class="SCst">SM_CYVTHUMB</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DBCSENABLED" class="codetype"><span class="SCst">SM_DBCSENABLED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_DBCSENABLED" class="code-type"><span class="SCst">SM_DBCSENABLED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DEBUG" class="codetype"><span class="SCst">SM_DEBUG</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_DEBUG" class="code-type"><span class="SCst">SM_DEBUG</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_DIGITIZER" class="codetype"><span class="SCst">SM_DIGITIZER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_DIGITIZER" class="code-type"><span class="SCst">SM_DIGITIZER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_IMMENABLED" class="codetype"><span class="SCst">SM_IMMENABLED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_IMMENABLED" class="code-type"><span class="SCst">SM_IMMENABLED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MAXIMUMTOUCHES" class="codetype"><span class="SCst">SM_MAXIMUMTOUCHES</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MAXIMUMTOUCHES" class="code-type"><span class="SCst">SM_MAXIMUMTOUCHES</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MEDIACENTER" class="codetype"><span class="SCst">SM_MEDIACENTER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MEDIACENTER" class="code-type"><span class="SCst">SM_MEDIACENTER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MENUDROPALIGNMENT" class="codetype"><span class="SCst">SM_MENUDROPALIGNMENT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MENUDROPALIGNMENT" class="code-type"><span class="SCst">SM_MENUDROPALIGNMENT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MIDEASTENABLED" class="codetype"><span class="SCst">SM_MIDEASTENABLED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MIDEASTENABLED" class="code-type"><span class="SCst">SM_MIDEASTENABLED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT" class="codetype"><span class="SCst">SM_MOUSEHORIZONTALWHEELPRESENT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MOUSEHORIZONTALWHEELPRESENT" class="code-type"><span class="SCst">SM_MOUSEHORIZONTALWHEELPRESENT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEPRESENT" class="codetype"><span class="SCst">SM_MOUSEPRESENT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MOUSEPRESENT" class="code-type"><span class="SCst">SM_MOUSEPRESENT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_MOUSEWHEELPRESENT" class="codetype"><span class="SCst">SM_MOUSEWHEELPRESENT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_MOUSEWHEELPRESENT" class="code-type"><span class="SCst">SM_MOUSEWHEELPRESENT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_NETWORK" class="codetype"><span class="SCst">SM_NETWORK</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_NETWORK" class="code-type"><span class="SCst">SM_NETWORK</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_PENWINDOWS" class="codetype"><span class="SCst">SM_PENWINDOWS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_PENWINDOWS" class="code-type"><span class="SCst">SM_PENWINDOWS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_REMOTECONTROL" class="codetype"><span class="SCst">SM_REMOTECONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_REMOTECONTROL" class="code-type"><span class="SCst">SM_REMOTECONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_REMOTESESSION" class="codetype"><span class="SCst">SM_REMOTESESSION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_REMOTESESSION" class="code-type"><span class="SCst">SM_REMOTESESSION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED1" class="codetype"><span class="SCst">SM_RESERVED1</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_RESERVED1" class="code-type"><span class="SCst">SM_RESERVED1</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED2" class="codetype"><span class="SCst">SM_RESERVED2</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_RESERVED2" class="code-type"><span class="SCst">SM_RESERVED2</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED3" class="codetype"><span class="SCst">SM_RESERVED3</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_RESERVED3" class="code-type"><span class="SCst">SM_RESERVED3</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_RESERVED4" class="codetype"><span class="SCst">SM_RESERVED4</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_RESERVED4" class="code-type"><span class="SCst">SM_RESERVED4</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SAMEDISPLAYFORMAT" class="codetype"><span class="SCst">SM_SAMEDISPLAYFORMAT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SAMEDISPLAYFORMAT" class="code-type"><span class="SCst">SM_SAMEDISPLAYFORMAT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SECURE" class="codetype"><span class="SCst">SM_SECURE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SECURE" class="code-type"><span class="SCst">SM_SECURE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SERVERR2" class="codetype"><span class="SCst">SM_SERVERR2</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SERVERR2" class="code-type"><span class="SCst">SM_SERVERR2</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SHOWSOUNDS" class="codetype"><span class="SCst">SM_SHOWSOUNDS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SHOWSOUNDS" class="code-type"><span class="SCst">SM_SHOWSOUNDS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SHUTTINGDOWN" class="codetype"><span class="SCst">SM_SHUTTINGDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_SHUTTINGDOWN" class="code-type"><span class="SCst">SM_SHUTTINGDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SLOWMACHINE" class="codetype"><span class="SCst">SM_SLOWMACHINE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SLOWMACHINE" class="code-type"><span class="SCst">SM_SLOWMACHINE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_STARTER" class="codetype"><span class="SCst">SM_STARTER</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_STARTER" class="code-type"><span class="SCst">SM_STARTER</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SWAPBUTTON" class="codetype"><span class="SCst">SM_SWAPBUTTON</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_SWAPBUTTON" class="code-type"><span class="SCst">SM_SWAPBUTTON</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_SYSTEMDOCKED" class="codetype"><span class="SCst">SM_SYSTEMDOCKED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SM_SYSTEMDOCKED" class="code-type"><span class="SCst">SM_SYSTEMDOCKED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_TABLETPC" class="codetype"><span class="SCst">SM_TABLETPC</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_TABLETPC" class="code-type"><span class="SCst">SM_TABLETPC</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_XVIRTUALSCREEN" class="codetype"><span class="SCst">SM_XVIRTUALSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_XVIRTUALSCREEN" class="code-type"><span class="SCst">SM_XVIRTUALSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SM_YVIRTUALSCREEN" class="codetype"><span class="SCst">SM_YVIRTUALSCREEN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SM_YVIRTUALSCREEN" class="code-type"><span class="SCst">SM_YVIRTUALSCREEN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SRWLOCK_INIT" class="codetype"><span class="SCst">SRWLOCK_INIT</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td id="Win32_SRWLOCK_INIT" class="code-type"><span class="SCst">SRWLOCK_INIT</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_STD_INPUT_HANDLE" class="codetype"><span class="SCst">STD_INPUT_HANDLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_STD_INPUT_HANDLE" class="code-type"><span class="SCst">STD_INPUT_HANDLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_STD_OUTPUT_HANDLE" class="codetype"><span class="SCst">STD_OUTPUT_HANDLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_STD_OUTPUT_HANDLE" class="code-type"><span class="SCst">STD_OUTPUT_HANDLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SUBLANG_DEFAULT" class="codetype"><span class="SCst">SUBLANG_DEFAULT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SUBLANG_DEFAULT" class="code-type"><span class="SCst">SUBLANG_DEFAULT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_ASYNCWINDOWPOS" class="codetype"><span class="SCst">SWP_ASYNCWINDOWPOS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_ASYNCWINDOWPOS" class="code-type"><span class="SCst">SWP_ASYNCWINDOWPOS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_DEFERERASE" class="codetype"><span class="SCst">SWP_DEFERERASE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_DEFERERASE" class="code-type"><span class="SCst">SWP_DEFERERASE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_DRAWFRAME" class="codetype"><span class="SCst">SWP_DRAWFRAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_DRAWFRAME" class="code-type"><span class="SCst">SWP_DRAWFRAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_FRAMECHANGED" class="codetype"><span class="SCst">SWP_FRAMECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_FRAMECHANGED" class="code-type"><span class="SCst">SWP_FRAMECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_HIDEWINDOW" class="codetype"><span class="SCst">SWP_HIDEWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_HIDEWINDOW" class="code-type"><span class="SCst">SWP_HIDEWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOACTIVATE" class="codetype"><span class="SCst">SWP_NOACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOACTIVATE" class="code-type"><span class="SCst">SWP_NOACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOCOPYBITS" class="codetype"><span class="SCst">SWP_NOCOPYBITS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOCOPYBITS" class="code-type"><span class="SCst">SWP_NOCOPYBITS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOMOVE" class="codetype"><span class="SCst">SWP_NOMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOMOVE" class="code-type"><span class="SCst">SWP_NOMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOOWNERZORDER" class="codetype"><span class="SCst">SWP_NOOWNERZORDER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOOWNERZORDER" class="code-type"><span class="SCst">SWP_NOOWNERZORDER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOREDRAW" class="codetype"><span class="SCst">SWP_NOREDRAW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOREDRAW" class="code-type"><span class="SCst">SWP_NOREDRAW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOREPOSITION" class="codetype"><span class="SCst">SWP_NOREPOSITION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOREPOSITION" class="code-type"><span class="SCst">SWP_NOREPOSITION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOSENDCHANGING" class="codetype"><span class="SCst">SWP_NOSENDCHANGING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOSENDCHANGING" class="code-type"><span class="SCst">SWP_NOSENDCHANGING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOSIZE" class="codetype"><span class="SCst">SWP_NOSIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOSIZE" class="code-type"><span class="SCst">SWP_NOSIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_NOZORDER" class="codetype"><span class="SCst">SWP_NOZORDER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_NOZORDER" class="code-type"><span class="SCst">SWP_NOZORDER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SWP_SHOWWINDOW" class="codetype"><span class="SCst">SWP_SHOWWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_SWP_SHOWWINDOW" class="code-type"><span class="SCst">SWP_SHOWWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_FORCEMINIMIZE" class="codetype"><span class="SCst">SW_FORCEMINIMIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_FORCEMINIMIZE" class="code-type"><span class="SCst">SW_FORCEMINIMIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_HIDE" class="codetype"><span class="SCst">SW_HIDE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_HIDE" class="code-type"><span class="SCst">SW_HIDE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MAX" class="codetype"><span class="SCst">SW_MAX</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_MAX" class="code-type"><span class="SCst">SW_MAX</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MAXIMIZE" class="codetype"><span class="SCst">SW_MAXIMIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_MAXIMIZE" class="code-type"><span class="SCst">SW_MAXIMIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_MINIMIZE" class="codetype"><span class="SCst">SW_MINIMIZE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_MINIMIZE" class="code-type"><span class="SCst">SW_MINIMIZE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_NORMAL" class="codetype"><span class="SCst">SW_NORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_NORMAL" class="code-type"><span class="SCst">SW_NORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_RESTORE" class="codetype"><span class="SCst">SW_RESTORE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_RESTORE" class="code-type"><span class="SCst">SW_RESTORE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOW" class="codetype"><span class="SCst">SW_SHOW</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOW" class="code-type"><span class="SCst">SW_SHOW</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWDEFAULT" class="codetype"><span class="SCst">SW_SHOWDEFAULT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWDEFAULT" class="code-type"><span class="SCst">SW_SHOWDEFAULT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMAXIMIZED" class="codetype"><span class="SCst">SW_SHOWMAXIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWMAXIMIZED" class="code-type"><span class="SCst">SW_SHOWMAXIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMINIMIZED" class="codetype"><span class="SCst">SW_SHOWMINIMIZED</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWMINIMIZED" class="code-type"><span class="SCst">SW_SHOWMINIMIZED</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWMINNOACTIVE" class="codetype"><span class="SCst">SW_SHOWMINNOACTIVE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWMINNOACTIVE" class="code-type"><span class="SCst">SW_SHOWMINNOACTIVE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNA" class="codetype"><span class="SCst">SW_SHOWNA</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWNA" class="code-type"><span class="SCst">SW_SHOWNA</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNOACTIVATE" class="codetype"><span class="SCst">SW_SHOWNOACTIVATE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWNOACTIVATE" class="code-type"><span class="SCst">SW_SHOWNOACTIVATE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SW_SHOWNORMAL" class="codetype"><span class="SCst">SW_SHOWNORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_SW_SHOWNORMAL" class="code-type"><span class="SCst">SW_SHOWNORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_S_OK" class="codetype"><span class="SCst">S_OK</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td id="Win32_S_OK" class="code-type"><span class="SCst">S_OK</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL" class="codetype"><span class="SCst">THREAD_PRIORITY_ABOVE_NORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_THREAD_PRIORITY_ABOVE_NORMAL" class="code-type"><span class="SCst">THREAD_PRIORITY_ABOVE_NORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL" class="codetype"><span class="SCst">THREAD_PRIORITY_BELOW_NORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_THREAD_PRIORITY_BELOW_NORMAL" class="code-type"><span class="SCst">THREAD_PRIORITY_BELOW_NORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_HIGHEST" class="codetype"><span class="SCst">THREAD_PRIORITY_HIGHEST</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_THREAD_PRIORITY_HIGHEST" class="code-type"><span class="SCst">THREAD_PRIORITY_HIGHEST</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_LOWEST" class="codetype"><span class="SCst">THREAD_PRIORITY_LOWEST</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_THREAD_PRIORITY_LOWEST" class="code-type"><span class="SCst">THREAD_PRIORITY_LOWEST</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_THREAD_PRIORITY_NORMAL" class="codetype"><span class="SCst">THREAD_PRIORITY_NORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_THREAD_PRIORITY_NORMAL" class="code-type"><span class="SCst">THREAD_PRIORITY_NORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_TRUE" class="codetype"><span class="SCst">TRUE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_TRUE" class="code-type"><span class="SCst">TRUE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_TRUNCATE_EXISTING" class="codetype"><span class="SCst">TRUNCATE_EXISTING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_TRUNCATE_EXISTING" class="code-type"><span class="SCst">TRUNCATE_EXISTING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ACCEPT" class="codetype"><span class="SCst">VK_ACCEPT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ACCEPT" class="code-type"><span class="SCst">VK_ACCEPT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ADD" class="codetype"><span class="SCst">VK_ADD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ADD" class="code-type"><span class="SCst">VK_ADD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_APPS" class="codetype"><span class="SCst">VK_APPS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_APPS" class="code-type"><span class="SCst">VK_APPS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ATTN" class="codetype"><span class="SCst">VK_ATTN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ATTN" class="code-type"><span class="SCst">VK_ATTN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BACK" class="codetype"><span class="SCst">VK_BACK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BACK" class="code-type"><span class="SCst">VK_BACK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_BACK" class="codetype"><span class="SCst">VK_BROWSER_BACK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_BACK" class="code-type"><span class="SCst">VK_BROWSER_BACK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_FAVORITES" class="codetype"><span class="SCst">VK_BROWSER_FAVORITES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_FAVORITES" class="code-type"><span class="SCst">VK_BROWSER_FAVORITES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_FORWARD" class="codetype"><span class="SCst">VK_BROWSER_FORWARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_FORWARD" class="code-type"><span class="SCst">VK_BROWSER_FORWARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_HOME" class="codetype"><span class="SCst">VK_BROWSER_HOME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_HOME" class="code-type"><span class="SCst">VK_BROWSER_HOME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_REFRESH" class="codetype"><span class="SCst">VK_BROWSER_REFRESH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_REFRESH" class="code-type"><span class="SCst">VK_BROWSER_REFRESH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_SEARCH" class="codetype"><span class="SCst">VK_BROWSER_SEARCH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_SEARCH" class="code-type"><span class="SCst">VK_BROWSER_SEARCH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_BROWSER_STOP" class="codetype"><span class="SCst">VK_BROWSER_STOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_BROWSER_STOP" class="code-type"><span class="SCst">VK_BROWSER_STOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CANCEL" class="codetype"><span class="SCst">VK_CANCEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CANCEL" class="code-type"><span class="SCst">VK_CANCEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CAPITAL" class="codetype"><span class="SCst">VK_CAPITAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CAPITAL" class="code-type"><span class="SCst">VK_CAPITAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CLEAR" class="codetype"><span class="SCst">VK_CLEAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CLEAR" class="code-type"><span class="SCst">VK_CLEAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CONTROL" class="codetype"><span class="SCst">VK_CONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CONTROL" class="code-type"><span class="SCst">VK_CONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CONVERT" class="codetype"><span class="SCst">VK_CONVERT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CONVERT" class="code-type"><span class="SCst">VK_CONVERT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_CRSEL" class="codetype"><span class="SCst">VK_CRSEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_CRSEL" class="code-type"><span class="SCst">VK_CRSEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DECIMAL" class="codetype"><span class="SCst">VK_DECIMAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_DECIMAL" class="code-type"><span class="SCst">VK_DECIMAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DELETE" class="codetype"><span class="SCst">VK_DELETE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_DELETE" class="code-type"><span class="SCst">VK_DELETE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DIVIDE" class="codetype"><span class="SCst">VK_DIVIDE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_DIVIDE" class="code-type"><span class="SCst">VK_DIVIDE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_DOWN" class="codetype"><span class="SCst">VK_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_DOWN" class="code-type"><span class="SCst">VK_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_END" class="codetype"><span class="SCst">VK_END</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_END" class="code-type"><span class="SCst">VK_END</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EREOF" class="codetype"><span class="SCst">VK_EREOF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_EREOF" class="code-type"><span class="SCst">VK_EREOF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ESCAPE" class="codetype"><span class="SCst">VK_ESCAPE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ESCAPE" class="code-type"><span class="SCst">VK_ESCAPE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EXECUTE" class="codetype"><span class="SCst">VK_EXECUTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_EXECUTE" class="code-type"><span class="SCst">VK_EXECUTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_EXSEL" class="codetype"><span class="SCst">VK_EXSEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_EXSEL" class="code-type"><span class="SCst">VK_EXSEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F1" class="codetype"><span class="SCst">VK_F1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F1" class="code-type"><span class="SCst">VK_F1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F10" class="codetype"><span class="SCst">VK_F10</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F10" class="code-type"><span class="SCst">VK_F10</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F11" class="codetype"><span class="SCst">VK_F11</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F11" class="code-type"><span class="SCst">VK_F11</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F12" class="codetype"><span class="SCst">VK_F12</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F12" class="code-type"><span class="SCst">VK_F12</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F13" class="codetype"><span class="SCst">VK_F13</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F13" class="code-type"><span class="SCst">VK_F13</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F14" class="codetype"><span class="SCst">VK_F14</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F14" class="code-type"><span class="SCst">VK_F14</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F15" class="codetype"><span class="SCst">VK_F15</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F15" class="code-type"><span class="SCst">VK_F15</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F16" class="codetype"><span class="SCst">VK_F16</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F16" class="code-type"><span class="SCst">VK_F16</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F17" class="codetype"><span class="SCst">VK_F17</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F17" class="code-type"><span class="SCst">VK_F17</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F18" class="codetype"><span class="SCst">VK_F18</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F18" class="code-type"><span class="SCst">VK_F18</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F19" class="codetype"><span class="SCst">VK_F19</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F19" class="code-type"><span class="SCst">VK_F19</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F2" class="codetype"><span class="SCst">VK_F2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F2" class="code-type"><span class="SCst">VK_F2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F20" class="codetype"><span class="SCst">VK_F20</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F20" class="code-type"><span class="SCst">VK_F20</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F21" class="codetype"><span class="SCst">VK_F21</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F21" class="code-type"><span class="SCst">VK_F21</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F22" class="codetype"><span class="SCst">VK_F22</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F22" class="code-type"><span class="SCst">VK_F22</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F23" class="codetype"><span class="SCst">VK_F23</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F23" class="code-type"><span class="SCst">VK_F23</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F24" class="codetype"><span class="SCst">VK_F24</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F24" class="code-type"><span class="SCst">VK_F24</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F3" class="codetype"><span class="SCst">VK_F3</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F3" class="code-type"><span class="SCst">VK_F3</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F4" class="codetype"><span class="SCst">VK_F4</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F4" class="code-type"><span class="SCst">VK_F4</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F5" class="codetype"><span class="SCst">VK_F5</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F5" class="code-type"><span class="SCst">VK_F5</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F6" class="codetype"><span class="SCst">VK_F6</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F6" class="code-type"><span class="SCst">VK_F6</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F7" class="codetype"><span class="SCst">VK_F7</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F7" class="code-type"><span class="SCst">VK_F7</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F8" class="codetype"><span class="SCst">VK_F8</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F8" class="code-type"><span class="SCst">VK_F8</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_F9" class="codetype"><span class="SCst">VK_F9</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_F9" class="code-type"><span class="SCst">VK_F9</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_FINAL" class="codetype"><span class="SCst">VK_FINAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_FINAL" class="code-type"><span class="SCst">VK_FINAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_A" class="codetype"><span class="SCst">VK_GAMEPAD_A</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_A" class="code-type"><span class="SCst">VK_GAMEPAD_A</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_B" class="codetype"><span class="SCst">VK_GAMEPAD_B</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_B" class="code-type"><span class="SCst">VK_GAMEPAD_B</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_DOWN" class="codetype"><span class="SCst">VK_GAMEPAD_DPAD_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_DOWN" class="code-type"><span class="SCst">VK_GAMEPAD_DPAD_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_LEFT" class="codetype"><span class="SCst">VK_GAMEPAD_DPAD_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_LEFT" class="code-type"><span class="SCst">VK_GAMEPAD_DPAD_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_RIGHT" class="codetype"><span class="SCst">VK_GAMEPAD_DPAD_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_RIGHT" class="code-type"><span class="SCst">VK_GAMEPAD_DPAD_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_DPAD_UP" class="codetype"><span class="SCst">VK_GAMEPAD_DPAD_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_DPAD_UP" class="code-type"><span class="SCst">VK_GAMEPAD_DPAD_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_SHOULDER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_SHOULDER" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_SHOULDER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_DOWN" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_LEFT" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_THUMBSTICK_UP" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_THUMBSTICK_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER" class="codetype"><span class="SCst">VK_GAMEPAD_LEFT_TRIGGER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_LEFT_TRIGGER" class="code-type"><span class="SCst">VK_GAMEPAD_LEFT_TRIGGER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_MENU" class="codetype"><span class="SCst">VK_GAMEPAD_MENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_MENU" class="code-type"><span class="SCst">VK_GAMEPAD_MENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_SHOULDER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_SHOULDER" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_SHOULDER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_THUMBSTICK_UP" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_THUMBSTICK_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER" class="codetype"><span class="SCst">VK_GAMEPAD_RIGHT_TRIGGER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_RIGHT_TRIGGER" class="code-type"><span class="SCst">VK_GAMEPAD_RIGHT_TRIGGER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_VIEW" class="codetype"><span class="SCst">VK_GAMEPAD_VIEW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_VIEW" class="code-type"><span class="SCst">VK_GAMEPAD_VIEW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_X" class="codetype"><span class="SCst">VK_GAMEPAD_X</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_X" class="code-type"><span class="SCst">VK_GAMEPAD_X</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_GAMEPAD_Y" class="codetype"><span class="SCst">VK_GAMEPAD_Y</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_GAMEPAD_Y" class="code-type"><span class="SCst">VK_GAMEPAD_Y</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANGEUL" class="codetype"><span class="SCst">VK_HANGEUL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_HANGEUL" class="code-type"><span class="SCst">VK_HANGEUL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANGUL" class="codetype"><span class="SCst">VK_HANGUL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_HANGUL" class="code-type"><span class="SCst">VK_HANGUL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HANJA" class="codetype"><span class="SCst">VK_HANJA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_HANJA" class="code-type"><span class="SCst">VK_HANJA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HELP" class="codetype"><span class="SCst">VK_HELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_HELP" class="code-type"><span class="SCst">VK_HELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_HOME" class="codetype"><span class="SCst">VK_HOME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_HOME" class="code-type"><span class="SCst">VK_HOME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_00" class="codetype"><span class="SCst">VK_ICO_00</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ICO_00" class="code-type"><span class="SCst">VK_ICO_00</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_CLEAR" class="codetype"><span class="SCst">VK_ICO_CLEAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ICO_CLEAR" class="code-type"><span class="SCst">VK_ICO_CLEAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ICO_HELP" class="codetype"><span class="SCst">VK_ICO_HELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ICO_HELP" class="code-type"><span class="SCst">VK_ICO_HELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_INSERT" class="codetype"><span class="SCst">VK_INSERT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_INSERT" class="code-type"><span class="SCst">VK_INSERT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_JUNJA" class="codetype"><span class="SCst">VK_JUNJA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_JUNJA" class="code-type"><span class="SCst">VK_JUNJA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_KANA" class="codetype"><span class="SCst">VK_KANA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_KANA" class="code-type"><span class="SCst">VK_KANA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_KANJI" class="codetype"><span class="SCst">VK_KANJI</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_KANJI" class="code-type"><span class="SCst">VK_KANJI</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_APP1" class="codetype"><span class="SCst">VK_LAUNCH_APP1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LAUNCH_APP1" class="code-type"><span class="SCst">VK_LAUNCH_APP1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_APP2" class="codetype"><span class="SCst">VK_LAUNCH_APP2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LAUNCH_APP2" class="code-type"><span class="SCst">VK_LAUNCH_APP2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_MAIL" class="codetype"><span class="SCst">VK_LAUNCH_MAIL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LAUNCH_MAIL" class="code-type"><span class="SCst">VK_LAUNCH_MAIL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LAUNCH_MEDIA_SELECT" class="codetype"><span class="SCst">VK_LAUNCH_MEDIA_SELECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LAUNCH_MEDIA_SELECT" class="code-type"><span class="SCst">VK_LAUNCH_MEDIA_SELECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LBUTTON" class="codetype"><span class="SCst">VK_LBUTTON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LBUTTON" class="code-type"><span class="SCst">VK_LBUTTON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LCONTROL" class="codetype"><span class="SCst">VK_LCONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LCONTROL" class="code-type"><span class="SCst">VK_LCONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LEFT" class="codetype"><span class="SCst">VK_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LEFT" class="code-type"><span class="SCst">VK_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LMENU" class="codetype"><span class="SCst">VK_LMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LMENU" class="code-type"><span class="SCst">VK_LMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LSHIFT" class="codetype"><span class="SCst">VK_LSHIFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LSHIFT" class="code-type"><span class="SCst">VK_LSHIFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_LWIN" class="codetype"><span class="SCst">VK_LWIN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_LWIN" class="code-type"><span class="SCst">VK_LWIN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MBUTTON" class="codetype"><span class="SCst">VK_MBUTTON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MBUTTON" class="code-type"><span class="SCst">VK_MBUTTON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_NEXT_TRACK" class="codetype"><span class="SCst">VK_MEDIA_NEXT_TRACK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MEDIA_NEXT_TRACK" class="code-type"><span class="SCst">VK_MEDIA_NEXT_TRACK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_PLAY_PAUSE" class="codetype"><span class="SCst">VK_MEDIA_PLAY_PAUSE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MEDIA_PLAY_PAUSE" class="code-type"><span class="SCst">VK_MEDIA_PLAY_PAUSE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_PREV_TRACK" class="codetype"><span class="SCst">VK_MEDIA_PREV_TRACK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MEDIA_PREV_TRACK" class="code-type"><span class="SCst">VK_MEDIA_PREV_TRACK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MEDIA_STOP" class="codetype"><span class="SCst">VK_MEDIA_STOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MEDIA_STOP" class="code-type"><span class="SCst">VK_MEDIA_STOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MENU" class="codetype"><span class="SCst">VK_MENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MENU" class="code-type"><span class="SCst">VK_MENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MODECHANGE" class="codetype"><span class="SCst">VK_MODECHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MODECHANGE" class="code-type"><span class="SCst">VK_MODECHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_MULTIPLY" class="codetype"><span class="SCst">VK_MULTIPLY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_MULTIPLY" class="code-type"><span class="SCst">VK_MULTIPLY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_ACCEPT" class="codetype"><span class="SCst">VK_NAVIGATION_ACCEPT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_ACCEPT" class="code-type"><span class="SCst">VK_NAVIGATION_ACCEPT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_CANCEL" class="codetype"><span class="SCst">VK_NAVIGATION_CANCEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_CANCEL" class="code-type"><span class="SCst">VK_NAVIGATION_CANCEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_DOWN" class="codetype"><span class="SCst">VK_NAVIGATION_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_DOWN" class="code-type"><span class="SCst">VK_NAVIGATION_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_LEFT" class="codetype"><span class="SCst">VK_NAVIGATION_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_LEFT" class="code-type"><span class="SCst">VK_NAVIGATION_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_MENU" class="codetype"><span class="SCst">VK_NAVIGATION_MENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_MENU" class="code-type"><span class="SCst">VK_NAVIGATION_MENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_RIGHT" class="codetype"><span class="SCst">VK_NAVIGATION_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_RIGHT" class="code-type"><span class="SCst">VK_NAVIGATION_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_UP" class="codetype"><span class="SCst">VK_NAVIGATION_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_UP" class="code-type"><span class="SCst">VK_NAVIGATION_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NAVIGATION_VIEW" class="codetype"><span class="SCst">VK_NAVIGATION_VIEW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NAVIGATION_VIEW" class="code-type"><span class="SCst">VK_NAVIGATION_VIEW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NEXT" class="codetype"><span class="SCst">VK_NEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NEXT" class="code-type"><span class="SCst">VK_NEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NONAME" class="codetype"><span class="SCst">VK_NONAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NONAME" class="code-type"><span class="SCst">VK_NONAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NONCONVERT" class="codetype"><span class="SCst">VK_NONCONVERT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NONCONVERT" class="code-type"><span class="SCst">VK_NONCONVERT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMLOCK" class="codetype"><span class="SCst">VK_NUMLOCK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMLOCK" class="code-type"><span class="SCst">VK_NUMLOCK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD0" class="codetype"><span class="SCst">VK_NUMPAD0</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD0" class="code-type"><span class="SCst">VK_NUMPAD0</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD1" class="codetype"><span class="SCst">VK_NUMPAD1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD1" class="code-type"><span class="SCst">VK_NUMPAD1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD2" class="codetype"><span class="SCst">VK_NUMPAD2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD2" class="code-type"><span class="SCst">VK_NUMPAD2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD3" class="codetype"><span class="SCst">VK_NUMPAD3</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD3" class="code-type"><span class="SCst">VK_NUMPAD3</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD4" class="codetype"><span class="SCst">VK_NUMPAD4</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD4" class="code-type"><span class="SCst">VK_NUMPAD4</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD5" class="codetype"><span class="SCst">VK_NUMPAD5</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD5" class="code-type"><span class="SCst">VK_NUMPAD5</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD6" class="codetype"><span class="SCst">VK_NUMPAD6</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD6" class="code-type"><span class="SCst">VK_NUMPAD6</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD7" class="codetype"><span class="SCst">VK_NUMPAD7</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD7" class="code-type"><span class="SCst">VK_NUMPAD7</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD8" class="codetype"><span class="SCst">VK_NUMPAD8</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD8" class="code-type"><span class="SCst">VK_NUMPAD8</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_NUMPAD9" class="codetype"><span class="SCst">VK_NUMPAD9</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_NUMPAD9" class="code-type"><span class="SCst">VK_NUMPAD9</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_1" class="codetype"><span class="SCst">VK_OEM_1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_1" class="code-type"><span class="SCst">VK_OEM_1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_102" class="codetype"><span class="SCst">VK_OEM_102</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_102" class="code-type"><span class="SCst">VK_OEM_102</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_2" class="codetype"><span class="SCst">VK_OEM_2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_2" class="code-type"><span class="SCst">VK_OEM_2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_3" class="codetype"><span class="SCst">VK_OEM_3</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_3" class="code-type"><span class="SCst">VK_OEM_3</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_4" class="codetype"><span class="SCst">VK_OEM_4</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_4" class="code-type"><span class="SCst">VK_OEM_4</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_5" class="codetype"><span class="SCst">VK_OEM_5</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_5" class="code-type"><span class="SCst">VK_OEM_5</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_6" class="codetype"><span class="SCst">VK_OEM_6</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_6" class="code-type"><span class="SCst">VK_OEM_6</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_7" class="codetype"><span class="SCst">VK_OEM_7</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_7" class="code-type"><span class="SCst">VK_OEM_7</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_8" class="codetype"><span class="SCst">VK_OEM_8</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_8" class="code-type"><span class="SCst">VK_OEM_8</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_ATTN" class="codetype"><span class="SCst">VK_OEM_ATTN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_ATTN" class="code-type"><span class="SCst">VK_OEM_ATTN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_AUTO" class="codetype"><span class="SCst">VK_OEM_AUTO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_AUTO" class="code-type"><span class="SCst">VK_OEM_AUTO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_AX" class="codetype"><span class="SCst">VK_OEM_AX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_AX" class="code-type"><span class="SCst">VK_OEM_AX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_BACKTAB" class="codetype"><span class="SCst">VK_OEM_BACKTAB</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_BACKTAB" class="code-type"><span class="SCst">VK_OEM_BACKTAB</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_CLEAR" class="codetype"><span class="SCst">VK_OEM_CLEAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_CLEAR" class="code-type"><span class="SCst">VK_OEM_CLEAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_COMMA" class="codetype"><span class="SCst">VK_OEM_COMMA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_COMMA" class="code-type"><span class="SCst">VK_OEM_COMMA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_COPY" class="codetype"><span class="SCst">VK_OEM_COPY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_COPY" class="code-type"><span class="SCst">VK_OEM_COPY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_CUSEL" class="codetype"><span class="SCst">VK_OEM_CUSEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_CUSEL" class="code-type"><span class="SCst">VK_OEM_CUSEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_ENLW" class="codetype"><span class="SCst">VK_OEM_ENLW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_ENLW" class="code-type"><span class="SCst">VK_OEM_ENLW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FINISH" class="codetype"><span class="SCst">VK_OEM_FINISH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FINISH" class="code-type"><span class="SCst">VK_OEM_FINISH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_JISHO" class="codetype"><span class="SCst">VK_OEM_FJ_JISHO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FJ_JISHO" class="code-type"><span class="SCst">VK_OEM_FJ_JISHO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_LOYA" class="codetype"><span class="SCst">VK_OEM_FJ_LOYA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FJ_LOYA" class="code-type"><span class="SCst">VK_OEM_FJ_LOYA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_MASSHOU" class="codetype"><span class="SCst">VK_OEM_FJ_MASSHOU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FJ_MASSHOU" class="code-type"><span class="SCst">VK_OEM_FJ_MASSHOU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_ROYA" class="codetype"><span class="SCst">VK_OEM_FJ_ROYA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FJ_ROYA" class="code-type"><span class="SCst">VK_OEM_FJ_ROYA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_FJ_TOUROKU" class="codetype"><span class="SCst">VK_OEM_FJ_TOUROKU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_FJ_TOUROKU" class="code-type"><span class="SCst">VK_OEM_FJ_TOUROKU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_JUMP" class="codetype"><span class="SCst">VK_OEM_JUMP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_JUMP" class="code-type"><span class="SCst">VK_OEM_JUMP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_MINUS" class="codetype"><span class="SCst">VK_OEM_MINUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_MINUS" class="code-type"><span class="SCst">VK_OEM_MINUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_NEC_EQUAL" class="codetype"><span class="SCst">VK_OEM_NEC_EQUAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_NEC_EQUAL" class="code-type"><span class="SCst">VK_OEM_NEC_EQUAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA1" class="codetype"><span class="SCst">VK_OEM_PA1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_PA1" class="code-type"><span class="SCst">VK_OEM_PA1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA2" class="codetype"><span class="SCst">VK_OEM_PA2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_PA2" class="code-type"><span class="SCst">VK_OEM_PA2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PA3" class="codetype"><span class="SCst">VK_OEM_PA3</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_PA3" class="code-type"><span class="SCst">VK_OEM_PA3</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PERIOD" class="codetype"><span class="SCst">VK_OEM_PERIOD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_PERIOD" class="code-type"><span class="SCst">VK_OEM_PERIOD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_PLUS" class="codetype"><span class="SCst">VK_OEM_PLUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_PLUS" class="code-type"><span class="SCst">VK_OEM_PLUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_RESET" class="codetype"><span class="SCst">VK_OEM_RESET</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_RESET" class="code-type"><span class="SCst">VK_OEM_RESET</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_OEM_WSCTRL" class="codetype"><span class="SCst">VK_OEM_WSCTRL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_OEM_WSCTRL" class="code-type"><span class="SCst">VK_OEM_WSCTRL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PA1" class="codetype"><span class="SCst">VK_PA1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PA1" class="code-type"><span class="SCst">VK_PA1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PACKET" class="codetype"><span class="SCst">VK_PACKET</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PACKET" class="code-type"><span class="SCst">VK_PACKET</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PAUSE" class="codetype"><span class="SCst">VK_PAUSE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PAUSE" class="code-type"><span class="SCst">VK_PAUSE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PLAY" class="codetype"><span class="SCst">VK_PLAY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PLAY" class="code-type"><span class="SCst">VK_PLAY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PRINT" class="codetype"><span class="SCst">VK_PRINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PRINT" class="code-type"><span class="SCst">VK_PRINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PRIOR" class="codetype"><span class="SCst">VK_PRIOR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PRIOR" class="code-type"><span class="SCst">VK_PRIOR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_PROCESSKEY" class="codetype"><span class="SCst">VK_PROCESSKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_PROCESSKEY" class="code-type"><span class="SCst">VK_PROCESSKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RBUTTON" class="codetype"><span class="SCst">VK_RBUTTON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RBUTTON" class="code-type"><span class="SCst">VK_RBUTTON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RCONTROL" class="codetype"><span class="SCst">VK_RCONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RCONTROL" class="code-type"><span class="SCst">VK_RCONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RETURN" class="codetype"><span class="SCst">VK_RETURN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RETURN" class="code-type"><span class="SCst">VK_RETURN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RIGHT" class="codetype"><span class="SCst">VK_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RIGHT" class="code-type"><span class="SCst">VK_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RMENU" class="codetype"><span class="SCst">VK_RMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RMENU" class="code-type"><span class="SCst">VK_RMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RSHIFT" class="codetype"><span class="SCst">VK_RSHIFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RSHIFT" class="code-type"><span class="SCst">VK_RSHIFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_RWIN" class="codetype"><span class="SCst">VK_RWIN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_RWIN" class="code-type"><span class="SCst">VK_RWIN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SCROLL" class="codetype"><span class="SCst">VK_SCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SCROLL" class="code-type"><span class="SCst">VK_SCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SELECT" class="codetype"><span class="SCst">VK_SELECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SELECT" class="code-type"><span class="SCst">VK_SELECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SEPARATOR" class="codetype"><span class="SCst">VK_SEPARATOR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SEPARATOR" class="code-type"><span class="SCst">VK_SEPARATOR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SHIFT" class="codetype"><span class="SCst">VK_SHIFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SHIFT" class="code-type"><span class="SCst">VK_SHIFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SLEEP" class="codetype"><span class="SCst">VK_SLEEP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SLEEP" class="code-type"><span class="SCst">VK_SLEEP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SNAPSHOT" class="codetype"><span class="SCst">VK_SNAPSHOT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SNAPSHOT" class="code-type"><span class="SCst">VK_SNAPSHOT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SPACE" class="codetype"><span class="SCst">VK_SPACE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SPACE" class="code-type"><span class="SCst">VK_SPACE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_SUBTRACT" class="codetype"><span class="SCst">VK_SUBTRACT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_SUBTRACT" class="code-type"><span class="SCst">VK_SUBTRACT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_TAB" class="codetype"><span class="SCst">VK_TAB</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_TAB" class="code-type"><span class="SCst">VK_TAB</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_UP" class="codetype"><span class="SCst">VK_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_UP" class="code-type"><span class="SCst">VK_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_DOWN" class="codetype"><span class="SCst">VK_VOLUME_DOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_VOLUME_DOWN" class="code-type"><span class="SCst">VK_VOLUME_DOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_MUTE" class="codetype"><span class="SCst">VK_VOLUME_MUTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_VOLUME_MUTE" class="code-type"><span class="SCst">VK_VOLUME_MUTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_VOLUME_UP" class="codetype"><span class="SCst">VK_VOLUME_UP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_VOLUME_UP" class="code-type"><span class="SCst">VK_VOLUME_UP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_XBUTTON1" class="codetype"><span class="SCst">VK_XBUTTON1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_XBUTTON1" class="code-type"><span class="SCst">VK_XBUTTON1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_XBUTTON2" class="codetype"><span class="SCst">VK_XBUTTON2</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_XBUTTON2" class="code-type"><span class="SCst">VK_XBUTTON2</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_VK_ZOOM" class="codetype"><span class="SCst">VK_ZOOM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_VK_ZOOM" class="code-type"><span class="SCst">VK_ZOOM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_ABANDONED" class="codetype"><span class="SCst">WAIT_ABANDONED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WAIT_ABANDONED" class="code-type"><span class="SCst">WAIT_ABANDONED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_FAILED" class="codetype"><span class="SCst">WAIT_FAILED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WAIT_FAILED" class="code-type"><span class="SCst">WAIT_FAILED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_OBJECT_0" class="codetype"><span class="SCst">WAIT_OBJECT_0</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WAIT_OBJECT_0" class="code-type"><span class="SCst">WAIT_OBJECT_0</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAIT_TIMEOUT" class="codetype"><span class="SCst">WAIT_TIMEOUT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WAIT_TIMEOUT" class="code-type"><span class="SCst">WAIT_TIMEOUT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_ACTIVE" class="codetype"><span class="SCst">WA_ACTIVE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_WA_ACTIVE" class="code-type"><span class="SCst">WA_ACTIVE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_CLICKACTIVE" class="codetype"><span class="SCst">WA_CLICKACTIVE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_WA_CLICKACTIVE" class="code-type"><span class="SCst">WA_CLICKACTIVE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WA_INACTIVE" class="codetype"><span class="SCst">WA_INACTIVE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_WA_INACTIVE" class="code-type"><span class="SCst">WA_INACTIVE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WHEEL_DELTA" class="codetype"><span class="SCst">WHEEL_DELTA</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_WHEEL_DELTA" class="code-type"><span class="SCst">WHEEL_DELTA</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ACTIVATE" class="codetype"><span class="SCst">WM_ACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ACTIVATE" class="code-type"><span class="SCst">WM_ACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ACTIVATEAPP" class="codetype"><span class="SCst">WM_ACTIVATEAPP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ACTIVATEAPP" class="code-type"><span class="SCst">WM_ACTIVATEAPP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_AFXFIRST" class="codetype"><span class="SCst">WM_AFXFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_AFXFIRST" class="code-type"><span class="SCst">WM_AFXFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_AFXLAST" class="codetype"><span class="SCst">WM_AFXLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_AFXLAST" class="code-type"><span class="SCst">WM_AFXLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_APP" class="codetype"><span class="SCst">WM_APP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_APP" class="code-type"><span class="SCst">WM_APP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_APPCOMMAND" class="codetype"><span class="SCst">WM_APPCOMMAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_APPCOMMAND" class="code-type"><span class="SCst">WM_APPCOMMAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ASKCBFORMATNAME" class="codetype"><span class="SCst">WM_ASKCBFORMATNAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ASKCBFORMATNAME" class="code-type"><span class="SCst">WM_ASKCBFORMATNAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CANCELJOURNAL" class="codetype"><span class="SCst">WM_CANCELJOURNAL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CANCELJOURNAL" class="code-type"><span class="SCst">WM_CANCELJOURNAL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CANCELMODE" class="codetype"><span class="SCst">WM_CANCELMODE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CANCELMODE" class="code-type"><span class="SCst">WM_CANCELMODE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CAPTURECHANGED" class="codetype"><span class="SCst">WM_CAPTURECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CAPTURECHANGED" class="code-type"><span class="SCst">WM_CAPTURECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHANGECBCHAIN" class="codetype"><span class="SCst">WM_CHANGECBCHAIN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CHANGECBCHAIN" class="code-type"><span class="SCst">WM_CHANGECBCHAIN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHANGEUISTATE" class="codetype"><span class="SCst">WM_CHANGEUISTATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CHANGEUISTATE" class="code-type"><span class="SCst">WM_CHANGEUISTATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHAR" class="codetype"><span class="SCst">WM_CHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CHAR" class="code-type"><span class="SCst">WM_CHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHARTOITEM" class="codetype"><span class="SCst">WM_CHARTOITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CHARTOITEM" class="code-type"><span class="SCst">WM_CHARTOITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CHILDACTIVATE" class="codetype"><span class="SCst">WM_CHILDACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CHILDACTIVATE" class="code-type"><span class="SCst">WM_CHILDACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLEAR" class="codetype"><span class="SCst">WM_CLEAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CLEAR" class="code-type"><span class="SCst">WM_CLEAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLIPBOARDUPDATE" class="codetype"><span class="SCst">WM_CLIPBOARDUPDATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CLIPBOARDUPDATE" class="code-type"><span class="SCst">WM_CLIPBOARDUPDATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CLOSE" class="codetype"><span class="SCst">WM_CLOSE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CLOSE" class="code-type"><span class="SCst">WM_CLOSE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMMAND" class="codetype"><span class="SCst">WM_COMMAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COMMAND" class="code-type"><span class="SCst">WM_COMMAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMMNOTIFY" class="codetype"><span class="SCst">WM_COMMNOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COMMNOTIFY" class="code-type"><span class="SCst">WM_COMMNOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMPACTING" class="codetype"><span class="SCst">WM_COMPACTING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COMPACTING" class="code-type"><span class="SCst">WM_COMPACTING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COMPAREITEM" class="codetype"><span class="SCst">WM_COMPAREITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COMPAREITEM" class="code-type"><span class="SCst">WM_COMPAREITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CONTEXTMENU" class="codetype"><span class="SCst">WM_CONTEXTMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CONTEXTMENU" class="code-type"><span class="SCst">WM_CONTEXTMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COPY" class="codetype"><span class="SCst">WM_COPY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COPY" class="code-type"><span class="SCst">WM_COPY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_COPYDATA" class="codetype"><span class="SCst">WM_COPYDATA</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_COPYDATA" class="code-type"><span class="SCst">WM_COPYDATA</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CREATE" class="codetype"><span class="SCst">WM_CREATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CREATE" class="code-type"><span class="SCst">WM_CREATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORBTN" class="codetype"><span class="SCst">WM_CTLCOLORBTN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORBTN" class="code-type"><span class="SCst">WM_CTLCOLORBTN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORDLG" class="codetype"><span class="SCst">WM_CTLCOLORDLG</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORDLG" class="code-type"><span class="SCst">WM_CTLCOLORDLG</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLOREDIT" class="codetype"><span class="SCst">WM_CTLCOLOREDIT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLOREDIT" class="code-type"><span class="SCst">WM_CTLCOLOREDIT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORLISTBOX" class="codetype"><span class="SCst">WM_CTLCOLORLISTBOX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORLISTBOX" class="code-type"><span class="SCst">WM_CTLCOLORLISTBOX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORMSGBOX" class="codetype"><span class="SCst">WM_CTLCOLORMSGBOX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORMSGBOX" class="code-type"><span class="SCst">WM_CTLCOLORMSGBOX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORSCROLLBAR" class="codetype"><span class="SCst">WM_CTLCOLORSCROLLBAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORSCROLLBAR" class="code-type"><span class="SCst">WM_CTLCOLORSCROLLBAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CTLCOLORSTATIC" class="codetype"><span class="SCst">WM_CTLCOLORSTATIC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CTLCOLORSTATIC" class="code-type"><span class="SCst">WM_CTLCOLORSTATIC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_CUT" class="codetype"><span class="SCst">WM_CUT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_CUT" class="code-type"><span class="SCst">WM_CUT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEADCHAR" class="codetype"><span class="SCst">WM_DEADCHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DEADCHAR" class="code-type"><span class="SCst">WM_DEADCHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DELETEITEM" class="codetype"><span class="SCst">WM_DELETEITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DELETEITEM" class="code-type"><span class="SCst">WM_DELETEITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DESTROY" class="codetype"><span class="SCst">WM_DESTROY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DESTROY" class="code-type"><span class="SCst">WM_DESTROY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DESTROYCLIPBOARD" class="codetype"><span class="SCst">WM_DESTROYCLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DESTROYCLIPBOARD" class="code-type"><span class="SCst">WM_DESTROYCLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEVICECHANGE" class="codetype"><span class="SCst">WM_DEVICECHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DEVICECHANGE" class="code-type"><span class="SCst">WM_DEVICECHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DEVMODECHANGE" class="codetype"><span class="SCst">WM_DEVMODECHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DEVMODECHANGE" class="code-type"><span class="SCst">WM_DEVMODECHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DISPLAYCHANGE" class="codetype"><span class="SCst">WM_DISPLAYCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DISPLAYCHANGE" class="code-type"><span class="SCst">WM_DISPLAYCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED" class="codetype"><span class="SCst">WM_DPICHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DPICHANGED" class="code-type"><span class="SCst">WM_DPICHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED_AFTERPARENT" class="codetype"><span class="SCst">WM_DPICHANGED_AFTERPARENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DPICHANGED_AFTERPARENT" class="code-type"><span class="SCst">WM_DPICHANGED_AFTERPARENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DPICHANGED_BEFOREPARENT" class="codetype"><span class="SCst">WM_DPICHANGED_BEFOREPARENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DPICHANGED_BEFOREPARENT" class="code-type"><span class="SCst">WM_DPICHANGED_BEFOREPARENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DRAWCLIPBOARD" class="codetype"><span class="SCst">WM_DRAWCLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DRAWCLIPBOARD" class="code-type"><span class="SCst">WM_DRAWCLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DRAWITEM" class="codetype"><span class="SCst">WM_DRAWITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DRAWITEM" class="code-type"><span class="SCst">WM_DRAWITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DROPFILES" class="codetype"><span class="SCst">WM_DROPFILES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DROPFILES" class="code-type"><span class="SCst">WM_DROPFILES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED" class="codetype"><span class="SCst">WM_DWMCOLORIZATIONCOLORCHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMCOLORIZATIONCOLORCHANGED" class="code-type"><span class="SCst">WM_DWMCOLORIZATIONCOLORCHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMCOMPOSITIONCHANGED" class="codetype"><span class="SCst">WM_DWMCOMPOSITIONCHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMCOMPOSITIONCHANGED" class="code-type"><span class="SCst">WM_DWMCOMPOSITIONCHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMNCRENDERINGCHANGED" class="codetype"><span class="SCst">WM_DWMNCRENDERINGCHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMNCRENDERINGCHANGED" class="code-type"><span class="SCst">WM_DWMNCRENDERINGCHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP" class="codetype"><span class="SCst">WM_DWMSENDICONICLIVEPREVIEWBITMAP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMSENDICONICLIVEPREVIEWBITMAP" class="code-type"><span class="SCst">WM_DWMSENDICONICLIVEPREVIEWBITMAP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMSENDICONICTHUMBNAIL" class="codetype"><span class="SCst">WM_DWMSENDICONICTHUMBNAIL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMSENDICONICTHUMBNAIL" class="code-type"><span class="SCst">WM_DWMSENDICONICTHUMBNAIL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE" class="codetype"><span class="SCst">WM_DWMWINDOWMAXIMIZEDCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_DWMWINDOWMAXIMIZEDCHANGE" class="code-type"><span class="SCst">WM_DWMWINDOWMAXIMIZEDCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENABLE" class="codetype"><span class="SCst">WM_ENABLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ENABLE" class="code-type"><span class="SCst">WM_ENABLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERIDLE" class="codetype"><span class="SCst">WM_ENTERIDLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ENTERIDLE" class="code-type"><span class="SCst">WM_ENTERIDLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERMENULOOP" class="codetype"><span class="SCst">WM_ENTERMENULOOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ENTERMENULOOP" class="code-type"><span class="SCst">WM_ENTERMENULOOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ENTERSIZEMOVE" class="codetype"><span class="SCst">WM_ENTERSIZEMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ENTERSIZEMOVE" class="code-type"><span class="SCst">WM_ENTERSIZEMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ERASEBKGND" class="codetype"><span class="SCst">WM_ERASEBKGND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ERASEBKGND" class="code-type"><span class="SCst">WM_ERASEBKGND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_EXITMENULOOP" class="codetype"><span class="SCst">WM_EXITMENULOOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_EXITMENULOOP" class="code-type"><span class="SCst">WM_EXITMENULOOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_EXITSIZEMOVE" class="codetype"><span class="SCst">WM_EXITSIZEMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_EXITSIZEMOVE" class="code-type"><span class="SCst">WM_EXITSIZEMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_FONTCHANGE" class="codetype"><span class="SCst">WM_FONTCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_FONTCHANGE" class="code-type"><span class="SCst">WM_FONTCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GESTURE" class="codetype"><span class="SCst">WM_GESTURE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GESTURE" class="code-type"><span class="SCst">WM_GESTURE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GESTURENOTIFY" class="codetype"><span class="SCst">WM_GESTURENOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GESTURENOTIFY" class="code-type"><span class="SCst">WM_GESTURENOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETDLGCODE" class="codetype"><span class="SCst">WM_GETDLGCODE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETDLGCODE" class="code-type"><span class="SCst">WM_GETDLGCODE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETDPISCALEDSIZE" class="codetype"><span class="SCst">WM_GETDPISCALEDSIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETDPISCALEDSIZE" class="code-type"><span class="SCst">WM_GETDPISCALEDSIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETFONT" class="codetype"><span class="SCst">WM_GETFONT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETFONT" class="code-type"><span class="SCst">WM_GETFONT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETHOTKEY" class="codetype"><span class="SCst">WM_GETHOTKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETHOTKEY" class="code-type"><span class="SCst">WM_GETHOTKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETICON" class="codetype"><span class="SCst">WM_GETICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETICON" class="code-type"><span class="SCst">WM_GETICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETMINMAXINFO" class="codetype"><span class="SCst">WM_GETMINMAXINFO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETMINMAXINFO" class="code-type"><span class="SCst">WM_GETMINMAXINFO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETOBJECT" class="codetype"><span class="SCst">WM_GETOBJECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETOBJECT" class="code-type"><span class="SCst">WM_GETOBJECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTEXT" class="codetype"><span class="SCst">WM_GETTEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETTEXT" class="code-type"><span class="SCst">WM_GETTEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTEXTLENGTH" class="codetype"><span class="SCst">WM_GETTEXTLENGTH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETTEXTLENGTH" class="code-type"><span class="SCst">WM_GETTEXTLENGTH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_GETTITLEBARINFOEX" class="codetype"><span class="SCst">WM_GETTITLEBARINFOEX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_GETTITLEBARINFOEX" class="code-type"><span class="SCst">WM_GETTITLEBARINFOEX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HANDHELDFIRST" class="codetype"><span class="SCst">WM_HANDHELDFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HANDHELDFIRST" class="code-type"><span class="SCst">WM_HANDHELDFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HANDHELDLAST" class="codetype"><span class="SCst">WM_HANDHELDLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HANDHELDLAST" class="code-type"><span class="SCst">WM_HANDHELDLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HELP" class="codetype"><span class="SCst">WM_HELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HELP" class="code-type"><span class="SCst">WM_HELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HOTKEY" class="codetype"><span class="SCst">WM_HOTKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HOTKEY" class="code-type"><span class="SCst">WM_HOTKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HSCROLL" class="codetype"><span class="SCst">WM_HSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HSCROLL" class="code-type"><span class="SCst">WM_HSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_HSCROLLCLIPBOARD" class="codetype"><span class="SCst">WM_HSCROLLCLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_HSCROLLCLIPBOARD" class="code-type"><span class="SCst">WM_HSCROLLCLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_ICONERASEBKGND" class="codetype"><span class="SCst">WM_ICONERASEBKGND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_ICONERASEBKGND" class="code-type"><span class="SCst">WM_ICONERASEBKGND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_CHAR" class="codetype"><span class="SCst">WM_IME_CHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_CHAR" class="code-type"><span class="SCst">WM_IME_CHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_COMPOSITION" class="codetype"><span class="SCst">WM_IME_COMPOSITION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_COMPOSITION" class="code-type"><span class="SCst">WM_IME_COMPOSITION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_COMPOSITIONFULL" class="codetype"><span class="SCst">WM_IME_COMPOSITIONFULL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_COMPOSITIONFULL" class="code-type"><span class="SCst">WM_IME_COMPOSITIONFULL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_CONTROL" class="codetype"><span class="SCst">WM_IME_CONTROL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_CONTROL" class="code-type"><span class="SCst">WM_IME_CONTROL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_ENDCOMPOSITION" class="codetype"><span class="SCst">WM_IME_ENDCOMPOSITION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_ENDCOMPOSITION" class="code-type"><span class="SCst">WM_IME_ENDCOMPOSITION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYDOWN" class="codetype"><span class="SCst">WM_IME_KEYDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_KEYDOWN" class="code-type"><span class="SCst">WM_IME_KEYDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYLAST" class="codetype"><span class="SCst">WM_IME_KEYLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_KEYLAST" class="code-type"><span class="SCst">WM_IME_KEYLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_KEYUP" class="codetype"><span class="SCst">WM_IME_KEYUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_KEYUP" class="code-type"><span class="SCst">WM_IME_KEYUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_NOTIFY" class="codetype"><span class="SCst">WM_IME_NOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_NOTIFY" class="code-type"><span class="SCst">WM_IME_NOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_REQUEST" class="codetype"><span class="SCst">WM_IME_REQUEST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_REQUEST" class="code-type"><span class="SCst">WM_IME_REQUEST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_SELECT" class="codetype"><span class="SCst">WM_IME_SELECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_SELECT" class="code-type"><span class="SCst">WM_IME_SELECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_SETCONTEXT" class="codetype"><span class="SCst">WM_IME_SETCONTEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_SETCONTEXT" class="code-type"><span class="SCst">WM_IME_SETCONTEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_IME_STARTCOMPOSITION" class="codetype"><span class="SCst">WM_IME_STARTCOMPOSITION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_IME_STARTCOMPOSITION" class="code-type"><span class="SCst">WM_IME_STARTCOMPOSITION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITDIALOG" class="codetype"><span class="SCst">WM_INITDIALOG</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INITDIALOG" class="code-type"><span class="SCst">WM_INITDIALOG</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITMENU" class="codetype"><span class="SCst">WM_INITMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INITMENU" class="code-type"><span class="SCst">WM_INITMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INITMENUPOPUP" class="codetype"><span class="SCst">WM_INITMENUPOPUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INITMENUPOPUP" class="code-type"><span class="SCst">WM_INITMENUPOPUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUT" class="codetype"><span class="SCst">WM_INPUT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INPUT" class="code-type"><span class="SCst">WM_INPUT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUTLANGCHANGE" class="codetype"><span class="SCst">WM_INPUTLANGCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INPUTLANGCHANGE" class="code-type"><span class="SCst">WM_INPUTLANGCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUTLANGCHANGEREQUEST" class="codetype"><span class="SCst">WM_INPUTLANGCHANGEREQUEST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INPUTLANGCHANGEREQUEST" class="code-type"><span class="SCst">WM_INPUTLANGCHANGEREQUEST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_INPUT_DEVICE_CHANGE" class="codetype"><span class="SCst">WM_INPUT_DEVICE_CHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_INPUT_DEVICE_CHANGE" class="code-type"><span class="SCst">WM_INPUT_DEVICE_CHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYDOWN" class="codetype"><span class="SCst">WM_KEYDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_KEYDOWN" class="code-type"><span class="SCst">WM_KEYDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYFIRST" class="codetype"><span class="SCst">WM_KEYFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_KEYFIRST" class="code-type"><span class="SCst">WM_KEYFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYLAST" class="codetype"><span class="SCst">WM_KEYLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_KEYLAST" class="code-type"><span class="SCst">WM_KEYLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KEYUP" class="codetype"><span class="SCst">WM_KEYUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_KEYUP" class="code-type"><span class="SCst">WM_KEYUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_KILLFOCUS" class="codetype"><span class="SCst">WM_KILLFOCUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_KILLFOCUS" class="code-type"><span class="SCst">WM_KILLFOCUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONDBLCLK" class="codetype"><span class="SCst">WM_LBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_LBUTTONDBLCLK" class="code-type"><span class="SCst">WM_LBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONDOWN" class="codetype"><span class="SCst">WM_LBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_LBUTTONDOWN" class="code-type"><span class="SCst">WM_LBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_LBUTTONUP" class="codetype"><span class="SCst">WM_LBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_LBUTTONUP" class="code-type"><span class="SCst">WM_LBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONDBLCLK" class="codetype"><span class="SCst">WM_MBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MBUTTONDBLCLK" class="code-type"><span class="SCst">WM_MBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONDOWN" class="codetype"><span class="SCst">WM_MBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MBUTTONDOWN" class="code-type"><span class="SCst">WM_MBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MBUTTONUP" class="codetype"><span class="SCst">WM_MBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MBUTTONUP" class="code-type"><span class="SCst">WM_MBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIACTIVATE" class="codetype"><span class="SCst">WM_MDIACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIACTIVATE" class="code-type"><span class="SCst">WM_MDIACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDICASCADE" class="codetype"><span class="SCst">WM_MDICASCADE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDICASCADE" class="code-type"><span class="SCst">WM_MDICASCADE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDICREATE" class="codetype"><span class="SCst">WM_MDICREATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDICREATE" class="code-type"><span class="SCst">WM_MDICREATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIDESTROY" class="codetype"><span class="SCst">WM_MDIDESTROY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIDESTROY" class="code-type"><span class="SCst">WM_MDIDESTROY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIGETACTIVE" class="codetype"><span class="SCst">WM_MDIGETACTIVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIGETACTIVE" class="code-type"><span class="SCst">WM_MDIGETACTIVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIICONARRANGE" class="codetype"><span class="SCst">WM_MDIICONARRANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIICONARRANGE" class="code-type"><span class="SCst">WM_MDIICONARRANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIMAXIMIZE" class="codetype"><span class="SCst">WM_MDIMAXIMIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIMAXIMIZE" class="code-type"><span class="SCst">WM_MDIMAXIMIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDINEXT" class="codetype"><span class="SCst">WM_MDINEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDINEXT" class="code-type"><span class="SCst">WM_MDINEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIREFRESHMENU" class="codetype"><span class="SCst">WM_MDIREFRESHMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIREFRESHMENU" class="code-type"><span class="SCst">WM_MDIREFRESHMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDIRESTORE" class="codetype"><span class="SCst">WM_MDIRESTORE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDIRESTORE" class="code-type"><span class="SCst">WM_MDIRESTORE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDISETMENU" class="codetype"><span class="SCst">WM_MDISETMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDISETMENU" class="code-type"><span class="SCst">WM_MDISETMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MDITILE" class="codetype"><span class="SCst">WM_MDITILE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MDITILE" class="code-type"><span class="SCst">WM_MDITILE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MEASUREITEM" class="codetype"><span class="SCst">WM_MEASUREITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MEASUREITEM" class="code-type"><span class="SCst">WM_MEASUREITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUCHAR" class="codetype"><span class="SCst">WM_MENUCHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENUCHAR" class="code-type"><span class="SCst">WM_MENUCHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUCOMMAND" class="codetype"><span class="SCst">WM_MENUCOMMAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENUCOMMAND" class="code-type"><span class="SCst">WM_MENUCOMMAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUDRAG" class="codetype"><span class="SCst">WM_MENUDRAG</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENUDRAG" class="code-type"><span class="SCst">WM_MENUDRAG</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUGETOBJECT" class="codetype"><span class="SCst">WM_MENUGETOBJECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENUGETOBJECT" class="code-type"><span class="SCst">WM_MENUGETOBJECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENURBUTTONUP" class="codetype"><span class="SCst">WM_MENURBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENURBUTTONUP" class="code-type"><span class="SCst">WM_MENURBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MENUSELECT" class="codetype"><span class="SCst">WM_MENUSELECT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MENUSELECT" class="code-type"><span class="SCst">WM_MENUSELECT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEACTIVATE" class="codetype"><span class="SCst">WM_MOUSEACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEACTIVATE" class="code-type"><span class="SCst">WM_MOUSEACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEFIRST" class="codetype"><span class="SCst">WM_MOUSEFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEFIRST" class="code-type"><span class="SCst">WM_MOUSEFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEHOVER" class="codetype"><span class="SCst">WM_MOUSEHOVER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEHOVER" class="code-type"><span class="SCst">WM_MOUSEHOVER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEHWHEEL" class="codetype"><span class="SCst">WM_MOUSEHWHEEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEHWHEEL" class="code-type"><span class="SCst">WM_MOUSEHWHEEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSELAST" class="codetype"><span class="SCst">WM_MOUSELAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSELAST" class="code-type"><span class="SCst">WM_MOUSELAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSELEAVE" class="codetype"><span class="SCst">WM_MOUSELEAVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSELEAVE" class="code-type"><span class="SCst">WM_MOUSELEAVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEMOVE" class="codetype"><span class="SCst">WM_MOUSEMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEMOVE" class="code-type"><span class="SCst">WM_MOUSEMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOUSEWHEEL" class="codetype"><span class="SCst">WM_MOUSEWHEEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOUSEWHEEL" class="code-type"><span class="SCst">WM_MOUSEWHEEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOVE" class="codetype"><span class="SCst">WM_MOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOVE" class="code-type"><span class="SCst">WM_MOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_MOVING" class="codetype"><span class="SCst">WM_MOVING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_MOVING" class="code-type"><span class="SCst">WM_MOVING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCACTIVATE" class="codetype"><span class="SCst">WM_NCACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCACTIVATE" class="code-type"><span class="SCst">WM_NCACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCCALCSIZE" class="codetype"><span class="SCst">WM_NCCALCSIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCCALCSIZE" class="code-type"><span class="SCst">WM_NCCALCSIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCCREATE" class="codetype"><span class="SCst">WM_NCCREATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCCREATE" class="code-type"><span class="SCst">WM_NCCREATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCDESTROY" class="codetype"><span class="SCst">WM_NCDESTROY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCDESTROY" class="code-type"><span class="SCst">WM_NCDESTROY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCHITTEST" class="codetype"><span class="SCst">WM_NCHITTEST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCHITTEST" class="code-type"><span class="SCst">WM_NCHITTEST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONDBLCLK" class="codetype"><span class="SCst">WM_NCLBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCLBUTTONDBLCLK" class="code-type"><span class="SCst">WM_NCLBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONDOWN" class="codetype"><span class="SCst">WM_NCLBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCLBUTTONDOWN" class="code-type"><span class="SCst">WM_NCLBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCLBUTTONUP" class="codetype"><span class="SCst">WM_NCLBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCLBUTTONUP" class="code-type"><span class="SCst">WM_NCLBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONDBLCLK" class="codetype"><span class="SCst">WM_NCMBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMBUTTONDBLCLK" class="code-type"><span class="SCst">WM_NCMBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONDOWN" class="codetype"><span class="SCst">WM_NCMBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMBUTTONDOWN" class="code-type"><span class="SCst">WM_NCMBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMBUTTONUP" class="codetype"><span class="SCst">WM_NCMBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMBUTTONUP" class="code-type"><span class="SCst">WM_NCMBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSEHOVER" class="codetype"><span class="SCst">WM_NCMOUSEHOVER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMOUSEHOVER" class="code-type"><span class="SCst">WM_NCMOUSEHOVER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSELEAVE" class="codetype"><span class="SCst">WM_NCMOUSELEAVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMOUSELEAVE" class="code-type"><span class="SCst">WM_NCMOUSELEAVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCMOUSEMOVE" class="codetype"><span class="SCst">WM_NCMOUSEMOVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCMOUSEMOVE" class="code-type"><span class="SCst">WM_NCMOUSEMOVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPAINT" class="codetype"><span class="SCst">WM_NCPAINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCPAINT" class="code-type"><span class="SCst">WM_NCPAINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERDOWN" class="codetype"><span class="SCst">WM_NCPOINTERDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCPOINTERDOWN" class="code-type"><span class="SCst">WM_NCPOINTERDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERUP" class="codetype"><span class="SCst">WM_NCPOINTERUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCPOINTERUP" class="code-type"><span class="SCst">WM_NCPOINTERUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCPOINTERUPDATE" class="codetype"><span class="SCst">WM_NCPOINTERUPDATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCPOINTERUPDATE" class="code-type"><span class="SCst">WM_NCPOINTERUPDATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONDBLCLK" class="codetype"><span class="SCst">WM_NCRBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCRBUTTONDBLCLK" class="code-type"><span class="SCst">WM_NCRBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONDOWN" class="codetype"><span class="SCst">WM_NCRBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCRBUTTONDOWN" class="code-type"><span class="SCst">WM_NCRBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCRBUTTONUP" class="codetype"><span class="SCst">WM_NCRBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCRBUTTONUP" class="code-type"><span class="SCst">WM_NCRBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONDBLCLK" class="codetype"><span class="SCst">WM_NCXBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCXBUTTONDBLCLK" class="code-type"><span class="SCst">WM_NCXBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONDOWN" class="codetype"><span class="SCst">WM_NCXBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCXBUTTONDOWN" class="code-type"><span class="SCst">WM_NCXBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NCXBUTTONUP" class="codetype"><span class="SCst">WM_NCXBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NCXBUTTONUP" class="code-type"><span class="SCst">WM_NCXBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NEXTDLGCTL" class="codetype"><span class="SCst">WM_NEXTDLGCTL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NEXTDLGCTL" class="code-type"><span class="SCst">WM_NEXTDLGCTL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NEXTMENU" class="codetype"><span class="SCst">WM_NEXTMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NEXTMENU" class="code-type"><span class="SCst">WM_NEXTMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NOTIFY" class="codetype"><span class="SCst">WM_NOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NOTIFY" class="code-type"><span class="SCst">WM_NOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_NOTIFYFORMAT" class="codetype"><span class="SCst">WM_NOTIFYFORMAT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_NOTIFYFORMAT" class="code-type"><span class="SCst">WM_NOTIFYFORMAT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINT" class="codetype"><span class="SCst">WM_PAINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PAINT" class="code-type"><span class="SCst">WM_PAINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINTCLIPBOARD" class="codetype"><span class="SCst">WM_PAINTCLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PAINTCLIPBOARD" class="code-type"><span class="SCst">WM_PAINTCLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PAINTICON" class="codetype"><span class="SCst">WM_PAINTICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PAINTICON" class="code-type"><span class="SCst">WM_PAINTICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PALETTECHANGED" class="codetype"><span class="SCst">WM_PALETTECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PALETTECHANGED" class="code-type"><span class="SCst">WM_PALETTECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PALETTEISCHANGING" class="codetype"><span class="SCst">WM_PALETTEISCHANGING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PALETTEISCHANGING" class="code-type"><span class="SCst">WM_PALETTEISCHANGING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PARENTNOTIFY" class="codetype"><span class="SCst">WM_PARENTNOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PARENTNOTIFY" class="code-type"><span class="SCst">WM_PARENTNOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PASTE" class="codetype"><span class="SCst">WM_PASTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PASTE" class="code-type"><span class="SCst">WM_PASTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PENWINFIRST" class="codetype"><span class="SCst">WM_PENWINFIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PENWINFIRST" class="code-type"><span class="SCst">WM_PENWINFIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PENWINLAST" class="codetype"><span class="SCst">WM_PENWINLAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PENWINLAST" class="code-type"><span class="SCst">WM_PENWINLAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERACTIVATE" class="codetype"><span class="SCst">WM_POINTERACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERACTIVATE" class="code-type"><span class="SCst">WM_POINTERACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERCAPTURECHANGED" class="codetype"><span class="SCst">WM_POINTERCAPTURECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERCAPTURECHANGED" class="code-type"><span class="SCst">WM_POINTERCAPTURECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICECHANGE" class="codetype"><span class="SCst">WM_POINTERDEVICECHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERDEVICECHANGE" class="code-type"><span class="SCst">WM_POINTERDEVICECHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICEINRANGE" class="codetype"><span class="SCst">WM_POINTERDEVICEINRANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERDEVICEINRANGE" class="code-type"><span class="SCst">WM_POINTERDEVICEINRANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDEVICEOUTOFRANGE" class="codetype"><span class="SCst">WM_POINTERDEVICEOUTOFRANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERDEVICEOUTOFRANGE" class="code-type"><span class="SCst">WM_POINTERDEVICEOUTOFRANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERDOWN" class="codetype"><span class="SCst">WM_POINTERDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERDOWN" class="code-type"><span class="SCst">WM_POINTERDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERENTER" class="codetype"><span class="SCst">WM_POINTERENTER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERENTER" class="code-type"><span class="SCst">WM_POINTERENTER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERHWHEEL" class="codetype"><span class="SCst">WM_POINTERHWHEEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERHWHEEL" class="code-type"><span class="SCst">WM_POINTERHWHEEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERLEAVE" class="codetype"><span class="SCst">WM_POINTERLEAVE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERLEAVE" class="code-type"><span class="SCst">WM_POINTERLEAVE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDAWAY" class="codetype"><span class="SCst">WM_POINTERROUTEDAWAY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERROUTEDAWAY" class="code-type"><span class="SCst">WM_POINTERROUTEDAWAY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDRELEASED" class="codetype"><span class="SCst">WM_POINTERROUTEDRELEASED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERROUTEDRELEASED" class="code-type"><span class="SCst">WM_POINTERROUTEDRELEASED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERROUTEDTO" class="codetype"><span class="SCst">WM_POINTERROUTEDTO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERROUTEDTO" class="code-type"><span class="SCst">WM_POINTERROUTEDTO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERUP" class="codetype"><span class="SCst">WM_POINTERUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERUP" class="code-type"><span class="SCst">WM_POINTERUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERUPDATE" class="codetype"><span class="SCst">WM_POINTERUPDATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERUPDATE" class="code-type"><span class="SCst">WM_POINTERUPDATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POINTERWHEEL" class="codetype"><span class="SCst">WM_POINTERWHEEL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POINTERWHEEL" class="code-type"><span class="SCst">WM_POINTERWHEEL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POWER" class="codetype"><span class="SCst">WM_POWER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POWER" class="code-type"><span class="SCst">WM_POWER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_POWERBROADCAST" class="codetype"><span class="SCst">WM_POWERBROADCAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_POWERBROADCAST" class="code-type"><span class="SCst">WM_POWERBROADCAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PRINT" class="codetype"><span class="SCst">WM_PRINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PRINT" class="code-type"><span class="SCst">WM_PRINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_PRINTCLIENT" class="codetype"><span class="SCst">WM_PRINTCLIENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_PRINTCLIENT" class="code-type"><span class="SCst">WM_PRINTCLIENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYDRAGICON" class="codetype"><span class="SCst">WM_QUERYDRAGICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_QUERYDRAGICON" class="code-type"><span class="SCst">WM_QUERYDRAGICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYNEWPALETTE" class="codetype"><span class="SCst">WM_QUERYNEWPALETTE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_QUERYNEWPALETTE" class="code-type"><span class="SCst">WM_QUERYNEWPALETTE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUERYUISTATE" class="codetype"><span class="SCst">WM_QUERYUISTATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_QUERYUISTATE" class="code-type"><span class="SCst">WM_QUERYUISTATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUEUESYNC" class="codetype"><span class="SCst">WM_QUEUESYNC</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_QUEUESYNC" class="code-type"><span class="SCst">WM_QUEUESYNC</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_QUIT" class="codetype"><span class="SCst">WM_QUIT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_QUIT" class="code-type"><span class="SCst">WM_QUIT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONDBLCLK" class="codetype"><span class="SCst">WM_RBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_RBUTTONDBLCLK" class="code-type"><span class="SCst">WM_RBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONDOWN" class="codetype"><span class="SCst">WM_RBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_RBUTTONDOWN" class="code-type"><span class="SCst">WM_RBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RBUTTONUP" class="codetype"><span class="SCst">WM_RBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_RBUTTONUP" class="code-type"><span class="SCst">WM_RBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RENDERALLFORMATS" class="codetype"><span class="SCst">WM_RENDERALLFORMATS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_RENDERALLFORMATS" class="code-type"><span class="SCst">WM_RENDERALLFORMATS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_RENDERFORMAT" class="codetype"><span class="SCst">WM_RENDERFORMAT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_RENDERFORMAT" class="code-type"><span class="SCst">WM_RENDERFORMAT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETCURSOR" class="codetype"><span class="SCst">WM_SETCURSOR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETCURSOR" class="code-type"><span class="SCst">WM_SETCURSOR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETFOCUS" class="codetype"><span class="SCst">WM_SETFOCUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETFOCUS" class="code-type"><span class="SCst">WM_SETFOCUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETFONT" class="codetype"><span class="SCst">WM_SETFONT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETFONT" class="code-type"><span class="SCst">WM_SETFONT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETHOTKEY" class="codetype"><span class="SCst">WM_SETHOTKEY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETHOTKEY" class="code-type"><span class="SCst">WM_SETHOTKEY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETICON" class="codetype"><span class="SCst">WM_SETICON</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETICON" class="code-type"><span class="SCst">WM_SETICON</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETREDRAW" class="codetype"><span class="SCst">WM_SETREDRAW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETREDRAW" class="code-type"><span class="SCst">WM_SETREDRAW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETTEXT" class="codetype"><span class="SCst">WM_SETTEXT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETTEXT" class="code-type"><span class="SCst">WM_SETTEXT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SETTINGCHANGE" class="codetype"><span class="SCst">WM_SETTINGCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SETTINGCHANGE" class="code-type"><span class="SCst">WM_SETTINGCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SHOWWINDOW" class="codetype"><span class="SCst">WM_SHOWWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SHOWWINDOW" class="code-type"><span class="SCst">WM_SHOWWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZE" class="codetype"><span class="SCst">WM_SIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SIZE" class="code-type"><span class="SCst">WM_SIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZECLIPBOARD" class="codetype"><span class="SCst">WM_SIZECLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SIZECLIPBOARD" class="code-type"><span class="SCst">WM_SIZECLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SIZING" class="codetype"><span class="SCst">WM_SIZING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SIZING" class="code-type"><span class="SCst">WM_SIZING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SPOOLERSTATUS" class="codetype"><span class="SCst">WM_SPOOLERSTATUS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SPOOLERSTATUS" class="code-type"><span class="SCst">WM_SPOOLERSTATUS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_STYLECHANGED" class="codetype"><span class="SCst">WM_STYLECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_STYLECHANGED" class="code-type"><span class="SCst">WM_STYLECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_STYLECHANGING" class="codetype"><span class="SCst">WM_STYLECHANGING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_STYLECHANGING" class="code-type"><span class="SCst">WM_STYLECHANGING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYNCPAINT" class="codetype"><span class="SCst">WM_SYNCPAINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYNCPAINT" class="code-type"><span class="SCst">WM_SYNCPAINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCHAR" class="codetype"><span class="SCst">WM_SYSCHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSCHAR" class="code-type"><span class="SCst">WM_SYSCHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCOLORCHANGE" class="codetype"><span class="SCst">WM_SYSCOLORCHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSCOLORCHANGE" class="code-type"><span class="SCst">WM_SYSCOLORCHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSCOMMAND" class="codetype"><span class="SCst">WM_SYSCOMMAND</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSCOMMAND" class="code-type"><span class="SCst">WM_SYSCOMMAND</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSDEADCHAR" class="codetype"><span class="SCst">WM_SYSDEADCHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSDEADCHAR" class="code-type"><span class="SCst">WM_SYSDEADCHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSKEYDOWN" class="codetype"><span class="SCst">WM_SYSKEYDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSKEYDOWN" class="code-type"><span class="SCst">WM_SYSKEYDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_SYSKEYUP" class="codetype"><span class="SCst">WM_SYSKEYUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_SYSKEYUP" class="code-type"><span class="SCst">WM_SYSKEYUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TABLET_FIRST" class="codetype"><span class="SCst">WM_TABLET_FIRST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TABLET_FIRST" class="code-type"><span class="SCst">WM_TABLET_FIRST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TABLET_LAST" class="codetype"><span class="SCst">WM_TABLET_LAST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TABLET_LAST" class="code-type"><span class="SCst">WM_TABLET_LAST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TCARD" class="codetype"><span class="SCst">WM_TCARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TCARD" class="code-type"><span class="SCst">WM_TCARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_THEMECHANGED" class="codetype"><span class="SCst">WM_THEMECHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_THEMECHANGED" class="code-type"><span class="SCst">WM_THEMECHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TIMECHANGE" class="codetype"><span class="SCst">WM_TIMECHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TIMECHANGE" class="code-type"><span class="SCst">WM_TIMECHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TIMER" class="codetype"><span class="SCst">WM_TIMER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TIMER" class="code-type"><span class="SCst">WM_TIMER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TOUCH" class="codetype"><span class="SCst">WM_TOUCH</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TOUCH" class="code-type"><span class="SCst">WM_TOUCH</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_TOUCHHITTESTING" class="codetype"><span class="SCst">WM_TOUCHHITTESTING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_TOUCHHITTESTING" class="code-type"><span class="SCst">WM_TOUCHHITTESTING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNDO" class="codetype"><span class="SCst">WM_UNDO</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_UNDO" class="code-type"><span class="SCst">WM_UNDO</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNICHAR" class="codetype"><span class="SCst">WM_UNICHAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_UNICHAR" class="code-type"><span class="SCst">WM_UNICHAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UNINITMENUPOPUP" class="codetype"><span class="SCst">WM_UNINITMENUPOPUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_UNINITMENUPOPUP" class="code-type"><span class="SCst">WM_UNINITMENUPOPUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_UPDATEUISTATE" class="codetype"><span class="SCst">WM_UPDATEUISTATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_UPDATEUISTATE" class="code-type"><span class="SCst">WM_UPDATEUISTATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_USER" class="codetype"><span class="SCst">WM_USER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_USER" class="code-type"><span class="SCst">WM_USER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_USERCHANGED" class="codetype"><span class="SCst">WM_USERCHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_USERCHANGED" class="code-type"><span class="SCst">WM_USERCHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VKEYTOITEM" class="codetype"><span class="SCst">WM_VKEYTOITEM</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_VKEYTOITEM" class="code-type"><span class="SCst">WM_VKEYTOITEM</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VSCROLL" class="codetype"><span class="SCst">WM_VSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_VSCROLL" class="code-type"><span class="SCst">WM_VSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_VSCROLLCLIPBOARD" class="codetype"><span class="SCst">WM_VSCROLLCLIPBOARD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_VSCROLLCLIPBOARD" class="code-type"><span class="SCst">WM_VSCROLLCLIPBOARD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WINDOWPOSCHANGED" class="codetype"><span class="SCst">WM_WINDOWPOSCHANGED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_WINDOWPOSCHANGED" class="code-type"><span class="SCst">WM_WINDOWPOSCHANGED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WINDOWPOSCHANGING" class="codetype"><span class="SCst">WM_WINDOWPOSCHANGING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_WINDOWPOSCHANGING" class="code-type"><span class="SCst">WM_WINDOWPOSCHANGING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WININICHANGE" class="codetype"><span class="SCst">WM_WININICHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_WININICHANGE" class="code-type"><span class="SCst">WM_WININICHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_WTSSESSION_CHANGE" class="codetype"><span class="SCst">WM_WTSSESSION_CHANGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_WTSSESSION_CHANGE" class="code-type"><span class="SCst">WM_WTSSESSION_CHANGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONDBLCLK" class="codetype"><span class="SCst">WM_XBUTTONDBLCLK</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_XBUTTONDBLCLK" class="code-type"><span class="SCst">WM_XBUTTONDBLCLK</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONDOWN" class="codetype"><span class="SCst">WM_XBUTTONDOWN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_XBUTTONDOWN" class="code-type"><span class="SCst">WM_XBUTTONDOWN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WM_XBUTTONUP" class="codetype"><span class="SCst">WM_XBUTTONUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WM_XBUTTONUP" class="code-type"><span class="SCst">WM_XBUTTONUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_BORDER" class="codetype"><span class="SCst">WS_BORDER</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_BORDER" class="code-type"><span class="SCst">WS_BORDER</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CAPTION" class="codetype"><span class="SCst">WS_CAPTION</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_CAPTION" class="code-type"><span class="SCst">WS_CAPTION</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CHILD" class="codetype"><span class="SCst">WS_CHILD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_CHILD" class="code-type"><span class="SCst">WS_CHILD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CLIPCHILDREN" class="codetype"><span class="SCst">WS_CLIPCHILDREN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_CLIPCHILDREN" class="code-type"><span class="SCst">WS_CLIPCHILDREN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_CLIPSIBLINGS" class="codetype"><span class="SCst">WS_CLIPSIBLINGS</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_CLIPSIBLINGS" class="code-type"><span class="SCst">WS_CLIPSIBLINGS</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_DISABLED" class="codetype"><span class="SCst">WS_DISABLED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_DISABLED" class="code-type"><span class="SCst">WS_DISABLED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_DLGFRAME" class="codetype"><span class="SCst">WS_DLGFRAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_DLGFRAME" class="code-type"><span class="SCst">WS_DLGFRAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_ACCEPTFILES" class="codetype"><span class="SCst">WS_EX_ACCEPTFILES</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_ACCEPTFILES" class="code-type"><span class="SCst">WS_EX_ACCEPTFILES</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_APPWINDOW" class="codetype"><span class="SCst">WS_EX_APPWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_APPWINDOW" class="code-type"><span class="SCst">WS_EX_APPWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CLIENTEDGE" class="codetype"><span class="SCst">WS_EX_CLIENTEDGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_CLIENTEDGE" class="code-type"><span class="SCst">WS_EX_CLIENTEDGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_COMPOSITED" class="codetype"><span class="SCst">WS_EX_COMPOSITED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_COMPOSITED" class="code-type"><span class="SCst">WS_EX_COMPOSITED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CONTEXTHELP" class="codetype"><span class="SCst">WS_EX_CONTEXTHELP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_CONTEXTHELP" class="code-type"><span class="SCst">WS_EX_CONTEXTHELP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_CONTROLPARENT" class="codetype"><span class="SCst">WS_EX_CONTROLPARENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_CONTROLPARENT" class="code-type"><span class="SCst">WS_EX_CONTROLPARENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_DLGMODALFRAME" class="codetype"><span class="SCst">WS_EX_DLGMODALFRAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_DLGMODALFRAME" class="code-type"><span class="SCst">WS_EX_DLGMODALFRAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LAYERED" class="codetype"><span class="SCst">WS_EX_LAYERED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_LAYERED" class="code-type"><span class="SCst">WS_EX_LAYERED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LAYOUTRTL" class="codetype"><span class="SCst">WS_EX_LAYOUTRTL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_LAYOUTRTL" class="code-type"><span class="SCst">WS_EX_LAYOUTRTL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LEFT" class="codetype"><span class="SCst">WS_EX_LEFT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_LEFT" class="code-type"><span class="SCst">WS_EX_LEFT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LEFTSCROLLBAR" class="codetype"><span class="SCst">WS_EX_LEFTSCROLLBAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_LEFTSCROLLBAR" class="code-type"><span class="SCst">WS_EX_LEFTSCROLLBAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_LTRREADING" class="codetype"><span class="SCst">WS_EX_LTRREADING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_LTRREADING" class="code-type"><span class="SCst">WS_EX_LTRREADING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_MDICHILD" class="codetype"><span class="SCst">WS_EX_MDICHILD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_MDICHILD" class="code-type"><span class="SCst">WS_EX_MDICHILD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOACTIVATE" class="codetype"><span class="SCst">WS_EX_NOACTIVATE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_NOACTIVATE" class="code-type"><span class="SCst">WS_EX_NOACTIVATE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOINHERITLAYOUT" class="codetype"><span class="SCst">WS_EX_NOINHERITLAYOUT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_NOINHERITLAYOUT" class="code-type"><span class="SCst">WS_EX_NOINHERITLAYOUT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOPARENTNOTIFY" class="codetype"><span class="SCst">WS_EX_NOPARENTNOTIFY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_NOPARENTNOTIFY" class="code-type"><span class="SCst">WS_EX_NOPARENTNOTIFY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_NOREDIRECTIONBITMAP" class="codetype"><span class="SCst">WS_EX_NOREDIRECTIONBITMAP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_NOREDIRECTIONBITMAP" class="code-type"><span class="SCst">WS_EX_NOREDIRECTIONBITMAP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_OVERLAPPEDWINDOW" class="codetype"><span class="SCst">WS_EX_OVERLAPPEDWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_OVERLAPPEDWINDOW" class="code-type"><span class="SCst">WS_EX_OVERLAPPEDWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_PALETTEWINDOW" class="codetype"><span class="SCst">WS_EX_PALETTEWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_PALETTEWINDOW" class="code-type"><span class="SCst">WS_EX_PALETTEWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RIGHT" class="codetype"><span class="SCst">WS_EX_RIGHT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_RIGHT" class="code-type"><span class="SCst">WS_EX_RIGHT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RIGHTSCROLLBAR" class="codetype"><span class="SCst">WS_EX_RIGHTSCROLLBAR</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_RIGHTSCROLLBAR" class="code-type"><span class="SCst">WS_EX_RIGHTSCROLLBAR</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_RTLREADING" class="codetype"><span class="SCst">WS_EX_RTLREADING</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_RTLREADING" class="code-type"><span class="SCst">WS_EX_RTLREADING</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_STATICEDGE" class="codetype"><span class="SCst">WS_EX_STATICEDGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_STATICEDGE" class="code-type"><span class="SCst">WS_EX_STATICEDGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TOOLWINDOW" class="codetype"><span class="SCst">WS_EX_TOOLWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_TOOLWINDOW" class="code-type"><span class="SCst">WS_EX_TOOLWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TOPMOST" class="codetype"><span class="SCst">WS_EX_TOPMOST</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_TOPMOST" class="code-type"><span class="SCst">WS_EX_TOPMOST</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_TRANSPARENT" class="codetype"><span class="SCst">WS_EX_TRANSPARENT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_TRANSPARENT" class="code-type"><span class="SCst">WS_EX_TRANSPARENT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_EX_WINDOWEDGE" class="codetype"><span class="SCst">WS_EX_WINDOWEDGE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_EX_WINDOWEDGE" class="code-type"><span class="SCst">WS_EX_WINDOWEDGE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_GROUP" class="codetype"><span class="SCst">WS_GROUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_GROUP" class="code-type"><span class="SCst">WS_GROUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_HSCROLL" class="codetype"><span class="SCst">WS_HSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_HSCROLL" class="code-type"><span class="SCst">WS_HSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MAXIMIZE" class="codetype"><span class="SCst">WS_MAXIMIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_MAXIMIZE" class="code-type"><span class="SCst">WS_MAXIMIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MAXIMIZEBOX" class="codetype"><span class="SCst">WS_MAXIMIZEBOX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_MAXIMIZEBOX" class="code-type"><span class="SCst">WS_MAXIMIZEBOX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MINIMIZE" class="codetype"><span class="SCst">WS_MINIMIZE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_MINIMIZE" class="code-type"><span class="SCst">WS_MINIMIZE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_MINIMIZEBOX" class="codetype"><span class="SCst">WS_MINIMIZEBOX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_MINIMIZEBOX" class="code-type"><span class="SCst">WS_MINIMIZEBOX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_OVERLAPPED" class="codetype"><span class="SCst">WS_OVERLAPPED</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_OVERLAPPED" class="code-type"><span class="SCst">WS_OVERLAPPED</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_OVERLAPPEDWINDOW" class="codetype"><span class="SCst">WS_OVERLAPPEDWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_OVERLAPPEDWINDOW" class="code-type"><span class="SCst">WS_OVERLAPPEDWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_POPUP" class="codetype"><span class="SCst">WS_POPUP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_POPUP" class="code-type"><span class="SCst">WS_POPUP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_POPUPWINDOW" class="codetype"><span class="SCst">WS_POPUPWINDOW</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_POPUPWINDOW" class="code-type"><span class="SCst">WS_POPUPWINDOW</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_SYSMENU" class="codetype"><span class="SCst">WS_SYSMENU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_SYSMENU" class="code-type"><span class="SCst">WS_SYSMENU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_TABSTOP" class="codetype"><span class="SCst">WS_TABSTOP</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_TABSTOP" class="code-type"><span class="SCst">WS_TABSTOP</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_THICKFRAME" class="codetype"><span class="SCst">WS_THICKFRAME</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_THICKFRAME" class="code-type"><span class="SCst">WS_THICKFRAME</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_VISIBLE" class="codetype"><span class="SCst">WS_VISIBLE</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_VISIBLE" class="code-type"><span class="SCst">WS_VISIBLE</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WS_VSCROLL" class="codetype"><span class="SCst">WS_VSCROLL</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_WS_VSCROLL" class="code-type"><span class="SCst">WS_VSCROLL</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ATOM"><span class="titletype">type alias</span> <span class="titlelight">Win32.</span><span class="titlestrong">Type Aliases</span></span>
+<td class="api-item">
+<span id="Win32_ATOM"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Win32_ATOM" class="codetype"><span class="SCst">ATOM</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td id="Win32_ATOM" class="code-type"><span class="SCst">ATOM</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BOOL" class="codetype"><span class="SCst">BOOL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_BOOL" class="code-type"><span class="SCst">BOOL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_BYTE" class="codetype"><span class="SCst">BYTE</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Win32_BYTE" class="code-type"><span class="SCst">BYTE</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_CHAR" class="codetype"><span class="SCst">CHAR</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Win32_CHAR" class="code-type"><span class="SCst">CHAR</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_COLORREF" class="codetype"><span class="SCst">COLORREF</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_COLORREF" class="code-type"><span class="SCst">COLORREF</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD" class="codetype"><span class="SCst">DWORD</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_DWORD" class="code-type"><span class="SCst">DWORD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD64" class="codetype"><span class="SCst">DWORD64</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_DWORD64" class="code-type"><span class="SCst">DWORD64</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_DWORD_PTR" class="codetype"><span class="SCst">DWORD_PTR</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_DWORD_PTR" class="code-type"><span class="SCst">DWORD_PTR</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HANDLE" class="codetype"><span class="SCst">HANDLE</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td id="Win32_HANDLE" class="code-type"><span class="SCst">HANDLE</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HBITMAP" class="codetype"><span class="SCst">HBITMAP</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HBITMAP" class="code-type"><span class="SCst">HBITMAP</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HBRUSH" class="codetype"><span class="SCst">HBRUSH</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HBRUSH" class="code-type"><span class="SCst">HBRUSH</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HCURSOR" class="codetype"><span class="SCst">HCURSOR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HCURSOR" class="code-type"><span class="SCst">HCURSOR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HDC" class="codetype"><span class="SCst">HDC</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HDC" class="code-type"><span class="SCst">HDC</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HGLOBAL" class="codetype"><span class="SCst">HGLOBAL</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HGLOBAL" class="code-type"><span class="SCst">HGLOBAL</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HICON" class="codetype"><span class="SCst">HICON</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HICON" class="code-type"><span class="SCst">HICON</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HINSTANCE" class="codetype"><span class="SCst">HINSTANCE</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HINSTANCE" class="code-type"><span class="SCst">HINSTANCE</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HLOCAL" class="codetype"><span class="SCst">HLOCAL</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HLOCAL" class="code-type"><span class="SCst">HLOCAL</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMENU" class="codetype"><span class="SCst">HMENU</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HMENU" class="code-type"><span class="SCst">HMENU</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMODULE" class="codetype"><span class="SCst">HMODULE</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td id="Win32_HMODULE" class="code-type"><span class="SCst">HMODULE</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HMONITOR" class="codetype"><span class="SCst">HMONITOR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HMONITOR" class="code-type"><span class="SCst">HMONITOR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HRESULT" class="codetype"><span class="SCst">HRESULT</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td id="Win32_HRESULT" class="code-type"><span class="SCst">HRESULT</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_HWND" class="codetype"><span class="SCst">HWND</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td id="Win32_HWND" class="code-type"><span class="SCst">HWND</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_IP_MASK_STRING" class="codetype"><span class="SCst">IP_MASK_STRING</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td id="Win32_IP_MASK_STRING" class="code-type"><span class="SCst">IP_MASK_STRING</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LARGE_INTEGER" class="codetype"><span class="SCst">LARGE_INTEGER</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Win32_LARGE_INTEGER" class="code-type"><span class="SCst">LARGE_INTEGER</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LONG" class="codetype"><span class="SCst">LONG</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Win32_LONG" class="code-type"><span class="SCst">LONG</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPARAM" class="codetype"><span class="SCst">LPARAM</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_LPARAM" class="code-type"><span class="SCst">LPARAM</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPBYTE" class="codetype"><span class="SCst">LPBYTE</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td id="Win32_LPBYTE" class="code-type"><span class="SCst">LPBYTE</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCH" class="codetype"><span class="SCst">LPCH</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td id="Win32_LPCH" class="code-type"><span class="SCst">LPCH</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCSTR" class="codetype"><span class="SCst">LPCSTR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td id="Win32_LPCSTR" class="code-type"><span class="SCst">LPCSTR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCTSTR" class="codetype"><span class="SCst">LPCTSTR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td id="Win32_LPCTSTR" class="code-type"><span class="SCst">LPCTSTR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCVOID" class="codetype"><span class="SCst">LPCVOID</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td id="Win32_LPCVOID" class="code-type"><span class="SCst">LPCVOID</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPCWSTR" class="codetype"><span class="SCst">LPCWSTR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td id="Win32_LPCWSTR" class="code-type"><span class="SCst">LPCWSTR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPDWORD" class="codetype"><span class="SCst">LPDWORD</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPDWORD" class="code-type"><span class="SCst">LPDWORD</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPOVERLAPPED" class="codetype"><span class="SCst">LPOVERLAPPED</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPOVERLAPPED" class="code-type"><span class="SCst">LPOVERLAPPED</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPSTR" class="codetype"><span class="SCst">LPSTR</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td id="Win32_LPSTR" class="code-type"><span class="SCst">LPSTR</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPTHREAD_START_ROUTINE" class="codetype"><span class="SCst">LPTHREAD_START_ROUTINE</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
+<td id="Win32_LPTHREAD_START_ROUTINE" class="code-type"><span class="SCst">LPTHREAD_START_ROUTINE</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPVOID" class="codetype"><span class="SCst">LPVOID</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td id="Win32_LPVOID" class="code-type"><span class="SCst">LPVOID</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPWCH" class="codetype"><span class="SCst">LPWCH</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td id="Win32_LPWCH" class="code-type"><span class="SCst">LPWCH</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LPWSTR" class="codetype"><span class="SCst">LPWSTR</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td id="Win32_LPWSTR" class="code-type"><span class="SCst">LPWSTR</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_LRESULT" class="codetype"><span class="SCst">LRESULT</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Win32_LRESULT" class="code-type"><span class="SCst">LRESULT</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PCSTR" class="codetype"><span class="SCst">PCSTR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td id="Win32_PCSTR" class="code-type"><span class="SCst">PCSTR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PCWSTR" class="codetype"><span class="SCst">PCWSTR</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td id="Win32_PCWSTR" class="code-type"><span class="SCst">PCWSTR</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_PLONG" class="codetype"><span class="SCst">PLONG</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></td>
+<td id="Win32_PLONG" class="code-type"><span class="SCst">PLONG</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHORT" class="codetype"><span class="SCst">SHORT</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Win32_SHORT" class="code-type"><span class="SCst">SHORT</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SHSTDAPI" class="codetype"><span class="SCst">SHSTDAPI</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td id="Win32_SHSTDAPI" class="code-type"><span class="SCst">SHSTDAPI</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SIZE_T" class="codetype"><span class="SCst">SIZE_T</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_SIZE_T" class="code-type"><span class="SCst">SIZE_T</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_SRWLOCK" class="codetype"><span class="SCst">SRWLOCK</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td id="Win32_SRWLOCK" class="code-type"><span class="SCst">SRWLOCK</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_UINT" class="codetype"><span class="SCst">UINT</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_UINT" class="code-type"><span class="SCst">UINT</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ULONG" class="codetype"><span class="SCst">ULONG</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Win32_ULONG" class="code-type"><span class="SCst">ULONG</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_ULONG64" class="codetype"><span class="SCst">ULONG64</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_ULONG64" class="code-type"><span class="SCst">ULONG64</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_USHORT" class="codetype"><span class="SCst">USHORT</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Win32_USHORT" class="code-type"><span class="SCst">USHORT</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WAITORTIMERCALLBACK" class="codetype"><span class="SCst">WAITORTIMERCALLBACK</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
+<td id="Win32_WAITORTIMERCALLBACK" class="code-type"><span class="SCst">WAITORTIMERCALLBACK</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WCHAR" class="codetype"><span class="SCst">WCHAR</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Win32_WCHAR" class="code-type"><span class="SCst">WCHAR</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WORD" class="codetype"><span class="SCst">WORD</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Win32_WORD" class="code-type"><span class="SCst">WORD</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_WPARAM" class="codetype"><span class="SCst">WPARAM</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_WPARAM" class="code-type"><span class="SCst">WPARAM</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_time_t" class="codetype"><span class="SCde">time_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Win32_time_t" class="code-type"><span class="SCde">time_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Win32_va_list" class="codetype"><span class="SCde">va_list</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td id="Win32_va_list" class="code-type"><span class="SCde">va_list</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_AcquireSRWLockExclusive"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">AcquireSRWLockExclusive</span></span>
+<td class="api-item">
+<span id="Win32_AcquireSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">AcquireSRWLockExclusive</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L384" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_AcquireSRWLockShared"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">AcquireSRWLockShared</span></span>
+<td class="api-item">
+<span id="Win32_AcquireSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">AcquireSRWLockShared</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L385" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_BeginPaint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">BeginPaint</span></span>
+<td class="api-item">
+<span id="Win32_BeginPaint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">BeginPaint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1033" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BeginPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BeginPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_BringWindowToTop"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">BringWindowToTop</span></span>
+<td class="api-item">
+<span id="Win32_BringWindowToTop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">BringWindowToTop</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1040" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BringWindowToTop</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BringWindowToTop</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CONSOLE_SCREEN_BUFFER_INFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">CONSOLE_SCREEN_BUFFER_INFO</span></span>
+<td class="api-item">
+<span id="Win32_CONSOLE_SCREEN_BUFFER_INFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CONSOLE_SCREEN_BUFFER_INFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L189" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwSize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="code-type"><span class="SCde">dwSize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwCursorPosition</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="code-type"><span class="SCde">dwCursorPosition</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wAttributes</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wAttributes</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">srWindow</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SMALL_RECT">SMALL_RECT</a></span></span></td>
+<td class="code-type"><span class="SCde">srWindow</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SMALL_RECT">SMALL_RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwMaximumWindowSize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
+<td class="code-type"><span class="SCde">dwMaximumWindowSize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COORD">COORD</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_COORD"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">COORD</span></span>
+<td class="api-item">
+<span id="Win32_COORD"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">COORD</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">x</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">y</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CREATESTRUCTA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">CREATESTRUCTA</span></span>
+<td class="api-item">
+<span id="Win32_CREATESTRUCTA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CREATESTRUCTA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">lpCreateParams</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpCreateParams</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hInstance</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="code-type"><span class="SCde">hInstance</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hMenu</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hMenu</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hwndParent</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hwndParent</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cy</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cy</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cx</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cx</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">y</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">x</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">style</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">style</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">lpszName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszClass</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">lpszClass</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwExStyle</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwExStyle</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CREATESTRUCTW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">CREATESTRUCTW</span></span>
+<td class="api-item">
+<span id="Win32_CREATESTRUCTW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CREATESTRUCTW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">lpCreateParams</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpCreateParams</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hInstance</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="code-type"><span class="SCde">hInstance</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hMenu</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hMenu</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hwndParent</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hwndParent</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cy</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cy</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cx</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cx</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">y</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">x</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">style</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">style</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde">lpszName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszClass</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde">lpszClass</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwExStyle</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwExStyle</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CancelWaitableTimer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CancelWaitableTimer</span></span>
+<td class="api-item">
+<span id="Win32_CancelWaitableTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CancelWaitableTimer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L394" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CancelWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CancelWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ChildWindowFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ChildWindowFromPoint</span></span>
+<td class="api-item">
+<span id="Win32_ChildWindowFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ChildWindowFromPoint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L982" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPoint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPoint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ChildWindowFromPointEx"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ChildWindowFromPointEx</span></span>
+<td class="api-item">
+<span id="Win32_ChildWindowFromPointEx"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ChildWindowFromPointEx</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L983" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPointEx</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPointEx</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ClientToScreen"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ClientToScreen</span></span>
+<td class="api-item">
+<span id="Win32_ClientToScreen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ClientToScreen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1039" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ClientToScreen</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ClientToScreen</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CloseClipboard"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CloseClipboard</span></span>
+<td class="api-item">
+<span id="Win32_CloseClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CloseClipboard</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1001" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CloseHandle"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CloseHandle</span></span>
+<td class="api-item">
+<span id="Win32_CloseHandle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CloseHandle</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L398" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseHandle</span>(handle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseHandle</span>(handle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CoInitializeEx"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CoInitializeEx</span></span>
+<td class="api-item">
+<span id="Win32_CoInitializeEx"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CoInitializeEx</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\ole32.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoInitializeEx</span>(pvReserved: *<span class="STpe">void</span>, dwCoInit: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HRESULT">HRESULT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoInitializeEx</span>(pvReserved: *<span class="STpe">void</span>, dwCoInit: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HRESULT">HRESULT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CoUninitialize"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CoUninitialize</span></span>
+<td class="api-item">
+<span id="Win32_CoUninitialize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CoUninitialize</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\ole32.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoUninitialize</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoUninitialize</span>()</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateConsoleScreenBuffer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateConsoleScreenBuffer</span></span>
+<td class="api-item">
+<span id="Win32_CreateConsoleScreenBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateConsoleScreenBuffer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L360" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateDirectoryA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateDirectoryA</span></span>
+<td class="api-item">
+<span id="Win32_CreateDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L833" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateDirectoryW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateDirectoryW</span></span>
+<td class="api-item">
+<span id="Win32_CreateDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateDirectoryW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L840" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateEventA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateEventA</span></span>
+<td class="api-item">
+<span id="Win32_CreateEventA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateEventA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L552" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventA</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventA</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateEventW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateEventW</span></span>
+<td class="api-item">
+<span id="Win32_CreateEventW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateEventW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L560" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventW</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventW</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateFileA</span></span>
+<td class="api-item">
+<span id="Win32_CreateFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L694" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateFileW</span></span>
+<td class="api-item">
+<span id="Win32_CreateFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateFileW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L702" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateIconIndirect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateIconIndirect</span></span>
+<td class="api-item">
+<span id="Win32_CreateIconIndirect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateIconIndirect</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateIconIndirect</span>(piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateIconIndirect</span>(piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateMutexA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateMutexA</span></span>
+<td class="api-item">
+<span id="Win32_CreateMutexA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateMutexA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L568" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexA</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexA</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateMutexW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateMutexW</span></span>
+<td class="api-item">
+<span id="Win32_CreateMutexW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateMutexW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L576" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexW</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexW</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateProcessA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateProcessA</span></span>
+<td class="api-item">
+<span id="Win32_CreateProcessA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateProcessA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L540" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessA</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessA</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateProcessW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateProcessW</span></span>
+<td class="api-item">
+<span id="Win32_CreateProcessW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateProcessW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L546" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessW</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessW</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateThread"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateThread</span></span>
+<td class="api-item">
+<span id="Win32_CreateThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateThread</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L481" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateThread</span>(lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="STpe">void</span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateThread</span>(lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="STpe">void</span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateTimerQueueTimer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateTimerQueueTimer</span></span>
+<td class="api-item">
+<span id="Win32_CreateTimerQueueTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateTimerQueueTimer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L584" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="STpe">void</span>, dueTime: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="STpe">void</span>, dueTime: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateWaitableTimerA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWaitableTimerA</span></span>
+<td class="api-item">
+<span id="Win32_CreateWaitableTimerA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWaitableTimerA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L392" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateWaitableTimerW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWaitableTimerW</span></span>
+<td class="api-item">
+<span id="Win32_CreateWaitableTimerW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWaitableTimerW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L393" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateWindowExA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWindowExA</span></span>
+<td class="api-item">
+<span id="Win32_CreateWindowExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWindowExA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L969" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExA</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExA</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_CreateWindowExW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">CreateWindowExW</span></span>
+<td class="api-item">
+<span id="Win32_CreateWindowExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">CreateWindowExW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L970" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExW</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExW</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DebugActiveProcess"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DebugActiveProcess</span></span>
+<td class="api-item">
+<span id="Win32_DebugActiveProcess"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DebugActiveProcess</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugActiveProcess</span>(procId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugActiveProcess</span>(procId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DebugBreak"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DebugBreak</span></span>
+<td class="api-item">
+<span id="Win32_DebugBreak"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DebugBreak</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L349" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugBreak</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugBreak</span>()</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DefWindowProcA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DefWindowProcA</span></span>
+<td class="api-item">
+<span id="Win32_DefWindowProcA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DefWindowProcA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L971" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DefWindowProcW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DefWindowProcW</span></span>
+<td class="api-item">
+<span id="Win32_DefWindowProcW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DefWindowProcW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L972" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DeleteFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DeleteFileA</span></span>
+<td class="api-item">
+<span id="Win32_DeleteFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L626" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DeleteFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DeleteFileW</span></span>
+<td class="api-item">
+<span id="Win32_DeleteFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteFileW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L632" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DeleteTimerQueueTimer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DeleteTimerQueueTimer</span></span>
+<td class="api-item">
+<span id="Win32_DeleteTimerQueueTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DeleteTimerQueueTimer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L590" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteTimerQueueTimer</span>(timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteTimerQueueTimer</span>(timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DestroyIcon"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DestroyIcon</span></span>
+<td class="api-item">
+<span id="Win32_DestroyIcon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DestroyIcon</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyIcon</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyIcon</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DestroyWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DestroyWindow</span></span>
+<td class="api-item">
+<span id="Win32_DestroyWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DestroyWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DispatchMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DispatchMessageA</span></span>
+<td class="api-item">
+<span id="Win32_DispatchMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DispatchMessageA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1043" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageA</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageA</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_DispatchMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">DispatchMessageW</span></span>
+<td class="api-item">
+<span id="Win32_DispatchMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">DispatchMessageW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1044" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageW</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageW</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_EmptyClipboard"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EmptyClipboard</span></span>
+<td class="api-item">
+<span id="Win32_EmptyClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EmptyClipboard</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1002" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EmptyClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EmptyClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_EnableWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EnableWindow</span></span>
+<td class="api-item">
+<span id="Win32_EnableWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnableWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1024" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnableWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnableWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_EndPaint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EndPaint</span></span>
+<td class="api-item">
+<span id="Win32_EndPaint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EndPaint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1034" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EndPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EndPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_EnumDisplayMonitors"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EnumDisplayMonitors</span></span>
+<td class="api-item">
+<span id="Win32_EnumDisplayMonitors"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnumDisplayMonitors</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1049" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumDisplayMonitors</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SKwd">const</span> *<span class="STpe">void</span>, dwData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumDisplayMonitors</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SKwd">const</span> *<span class="STpe">void</span>, dwData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_EnumWindows"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">EnumWindows</span></span>
+<td class="api-item">
+<span id="Win32_EnumWindows"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">EnumWindows</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1050" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumWindows</span>(lpEnumFunc: <span class="SKwd">const</span> *<span class="STpe">void</span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumWindows</span>(lpEnumFunc: <span class="SKwd">const</span> *<span class="STpe">void</span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ExitProcess"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ExitProcess</span></span>
+<td class="api-item">
+<span id="Win32_ExitProcess"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ExitProcess</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L380" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ExtractIconExA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ExtractIconExA</span></span>
+<td class="api-item">
+<span id="Win32_ExtractIconExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ExtractIconExA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L334" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExA</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExA</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ExtractIconExW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ExtractIconExW</span></span>
+<td class="api-item">
+<span id="Win32_ExtractIconExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ExtractIconExW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExW</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExW</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FILETIME"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">FILETIME</span></span>
+<td class="api-item">
+<span id="Win32_FILETIME"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FILETIME</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwLowDateTime</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwLowDateTime</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwHighDateTime</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwHighDateTime</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FileTimeToLocalFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FileTimeToLocalFileTime</span></span>
+<td class="api-item">
+<span id="Win32_FileTimeToLocalFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FileTimeToLocalFileTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L399" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FileTimeToSystemTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FileTimeToSystemTime</span></span>
+<td class="api-item">
+<span id="Win32_FileTimeToSystemTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FileTimeToSystemTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L608" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToSystemTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToSystemTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FillRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FillRect</span></span>
+<td class="api-item">
+<span id="Win32_FillRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FillRect</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1017" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FillRect</span>(hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FillRect</span>(hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindClose"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindClose</span></span>
+<td class="api-item">
+<span id="Win32_FindClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindClose</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L742" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindClose</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindClose</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindFirstFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstFileA</span></span>
+<td class="api-item">
+<span id="Win32_FindFirstFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L710" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindFirstFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstFileW</span></span>
+<td class="api-item">
+<span id="Win32_FindFirstFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstFileW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L718" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindFirstVolumeA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstVolumeA</span></span>
+<td class="api-item">
+<span id="Win32_FindFirstVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L748" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindFirstVolumeW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindFirstVolumeW</span></span>
+<td class="api-item">
+<span id="Win32_FindFirstVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindFirstVolumeW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L756" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindNextFileA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextFileA</span></span>
+<td class="api-item">
+<span id="Win32_FindNextFileA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L726" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileA</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileA</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindNextFileW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextFileW</span></span>
+<td class="api-item">
+<span id="Win32_FindNextFileW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextFileW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L734" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileW</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileW</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindNextVolumeA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextVolumeA</span></span>
+<td class="api-item">
+<span id="Win32_FindNextVolumeA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L764" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeA</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeA</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindNextVolumeW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindNextVolumeW</span></span>
+<td class="api-item">
+<span id="Win32_FindNextVolumeW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindNextVolumeW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L772" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeW</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeW</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindVolumeClose"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindVolumeClose</span></span>
+<td class="api-item">
+<span id="Win32_FindVolumeClose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindVolumeClose</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L780" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindVolumeClose</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindVolumeClose</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindWindowA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindWindowA</span></span>
+<td class="api-item">
+<span id="Win32_FindWindowA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindWindowA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L984" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowA</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowA</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FindWindowW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FindWindowW</span></span>
+<td class="api-item">
+<span id="Win32_FindWindowW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FindWindowW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L985" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowW</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowW</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_FormatMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">FormatMessageA</span></span>
+<td class="api-item">
+<span id="Win32_FormatMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">FormatMessageA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L347" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FormatMessageA</span>(dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">Arguments</span>: *<span class="SCst">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FormatMessageA</span>(dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">Arguments</span>: *<span class="SCst">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GET_FILEEX_INFO_LEVELS"><span class="titletype">enum</span> <span class="titlelight">Win32.</span><span class="titlestrong">GET_FILEEX_INFO_LEVELS</span></span>
+<td class="api-item">
+<span id="Win32_GET_FILEEX_INFO_LEVELS"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GET_FILEEX_INFO_LEVELS</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L281" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">GetFileExInfoStandard</span></td>
+<td class="code-type"><span class="SCst">GetFileExInfoStandard</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">GetFileExMaxInfoLevel</span></td>
+<td class="code-type"><span class="SCst">GetFileExMaxInfoLevel</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GET_WHEEL_DELTA_WPARAM"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GET_WHEEL_DELTA_WPARAM</span></span>
+<td class="api-item">
+<span id="Win32_GET_WHEEL_DELTA_WPARAM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GET_WHEEL_DELTA_WPARAM</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L418" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GET_X_LPARAM"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GET_X_LPARAM</span></span>
+<td class="api-item">
+<span id="Win32_GET_X_LPARAM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GET_X_LPARAM</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L957" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_X_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_X_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GET_Y_LPARAM"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GET_Y_LPARAM</span></span>
+<td class="api-item">
+<span id="Win32_GET_Y_LPARAM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GET_Y_LPARAM</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L958" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_Y_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_Y_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GUID"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">GUID</span></span>
+<td class="api-item">
+<span id="Win32_GUID"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GUID</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L230" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Data1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCst">Data1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Data2</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCst">Data2</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Data3</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCst">Data3</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Data4</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCst">Data4</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetActiveWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetActiveWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetActiveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetActiveWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L988" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetActiveWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetActiveWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetAdaptersInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetAdaptersInfo</span></span>
+<td class="api-item">
+<span id="Win32_GetAdaptersInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetAdaptersInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAdaptersInfo</span>(adapterInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAdaptersInfo</span>(adapterInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetAsyncKeyState"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetAsyncKeyState</span></span>
+<td class="api-item">
+<span id="Win32_GetAsyncKeyState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetAsyncKeyState</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L962" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAsyncKeyState</span>(vKey: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHORT">SHORT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAsyncKeyState</span>(vKey: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHORT">SHORT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetClientRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetClientRect</span></span>
+<td class="api-item">
+<span id="Win32_GetClientRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetClientRect</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1018" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClientRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClientRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetClipboardData"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetClipboardData</span></span>
+<td class="api-item">
+<span id="Win32_GetClipboardData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetClipboardData</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1004" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetConsoleScreenBufferInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetConsoleScreenBufferInfo</span></span>
+<td class="api-item">
+<span id="Win32_GetConsoleScreenBufferInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetConsoleScreenBufferInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L475" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentDirectoryA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentDirectoryA</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L666" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryA</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryA</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentDirectoryW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentDirectoryW</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentDirectoryW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L674" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryW</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryW</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentProcess"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentProcess</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentProcess"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentProcess</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcess</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcess</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentProcessId"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentProcessId</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentProcessId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentProcessId</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcessId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcessId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentThread"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentThread</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentThread</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L382" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCurrentThreadId"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCurrentThreadId</span></span>
+<td class="api-item">
+<span id="Win32_GetCurrentThreadId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCurrentThreadId</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L381" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThreadId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThreadId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetCursorPos"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetCursorPos</span></span>
+<td class="api-item">
+<span id="Win32_GetCursorPos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetCursorPos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1015" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCursorPos</span>(lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCursorPos</span>(lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetDC"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetDC</span></span>
+<td class="api-item">
+<span id="Win32_GetDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetDC</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L994" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetDesktopWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetDesktopWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetDesktopWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetDesktopWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L986" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDesktopWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDesktopWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFileAttributesA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesA</span></span>
+<td class="api-item">
+<span id="Win32_GetFileAttributesA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L638" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFileAttributesExA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesExA</span></span>
+<td class="api-item">
+<span id="Win32_GetFileAttributesExA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L654" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFileAttributesExW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesExW</span></span>
+<td class="api-item">
+<span id="Win32_GetFileAttributesExW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesExW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L660" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFileAttributesW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileAttributesW</span></span>
+<td class="api-item">
+<span id="Win32_GetFileAttributesW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileAttributesW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L646" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFileSize"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFileSize</span></span>
+<td class="api-item">
+<span id="Win32_GetFileSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFileSize</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L807" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileSize</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileSize</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetForegroundWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetForegroundWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetForegroundWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetForegroundWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L989" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetForegroundWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetForegroundWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFullPathNameA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFullPathNameA</span></span>
+<td class="api-item">
+<span id="Win32_GetFullPathNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L816" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetFullPathNameW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetFullPathNameW</span></span>
+<td class="api-item">
+<span id="Win32_GetFullPathNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetFullPathNameW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L825" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetIconInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetIconInfo</span></span>
+<td class="api-item">
+<span id="Win32_GetIconInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetIconInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetIconInfo</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetIconInfo</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetKeyboardState"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetKeyboardState</span></span>
+<td class="api-item">
+<span id="Win32_GetKeyboardState"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetKeyboardState</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L963" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetKeyboardState</span>(lpKeystate: *<span class="STpe">u8</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetKeyboardState</span>(lpKeystate: *<span class="STpe">u8</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetLastError"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetLastError</span></span>
+<td class="api-item">
+<span id="Win32_GetLastError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetLastError</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLastError</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLastError</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetLocalTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetLocalTime</span></span>
+<td class="api-item">
+<span id="Win32_GetLocalTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetLocalTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L375" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLocalTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLocalTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMessageA</span></span>
+<td class="api-item">
+<span id="Win32_GetMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMessageA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L973" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMessageW</span></span>
+<td class="api-item">
+<span id="Win32_GetMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMessageW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L974" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetModuleHandleA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetModuleHandleA</span></span>
+<td class="api-item">
+<span id="Win32_GetModuleHandleA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetModuleHandleA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L357" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleA</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleA</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetModuleHandleW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetModuleHandleW</span></span>
+<td class="api-item">
+<span id="Win32_GetModuleHandleW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetModuleHandleW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L358" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleW</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleW</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetMonitorInfoA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMonitorInfoA</span></span>
+<td class="api-item">
+<span id="Win32_GetMonitorInfoA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMonitorInfoA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoA</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoA</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetMonitorInfoW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetMonitorInfoW</span></span>
+<td class="api-item">
+<span id="Win32_GetMonitorInfoW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetMonitorInfoW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoW</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoW</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetNextWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetNextWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetNextWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetNextWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L991" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetNextWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetNextWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetProcAddress"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetProcAddress</span></span>
+<td class="api-item">
+<span id="Win32_GetProcAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetProcAddress</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L354" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetProcAddress</span>(hModule: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetProcAddress</span>(hModule: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetStdHandle"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetStdHandle</span></span>
+<td class="api-item">
+<span id="Win32_GetStdHandle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetStdHandle</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L359" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStdHandle</span>(nStdHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStdHandle</span>(nStdHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetSystemInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemInfo</span></span>
+<td class="api-item">
+<span id="Win32_GetSystemInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L366" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemInfo</span>(lpSystemInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemInfo</span>(lpSystemInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetSystemMetrics"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemMetrics</span></span>
+<td class="api-item">
+<span id="Win32_GetSystemMetrics"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemMetrics</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1010" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemMetrics</span>(nIndex: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemMetrics</span>(nIndex: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetSystemTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetSystemTime</span></span>
+<td class="api-item">
+<span id="Win32_GetSystemTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetSystemTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L376" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetTopWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetTopWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetTopWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetTopWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L987" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetTopWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetTopWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetVolumePathNamesForVolumeNameA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetVolumePathNamesForVolumeNameA</span></span>
+<td class="api-item">
+<span id="Win32_GetVolumePathNamesForVolumeNameA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L786" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetVolumePathNamesForVolumeNameW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetVolumePathNamesForVolumeNameW</span></span>
+<td class="api-item">
+<span id="Win32_GetVolumePathNamesForVolumeNameW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetVolumePathNamesForVolumeNameW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L792" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindow</span></span>
+<td class="api-item">
+<span id="Win32_GetWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L990" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindowLongPtrA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowLongPtrA</span></span>
+<td class="api-item">
+<span id="Win32_GetWindowLongPtrA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowLongPtrA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L979" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindowLongPtrW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowLongPtrW</span></span>
+<td class="api-item">
+<span id="Win32_GetWindowLongPtrW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowLongPtrW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L980" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindowRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowRect</span></span>
+<td class="api-item">
+<span id="Win32_GetWindowRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowRect</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1019" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindowTextA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowTextA</span></span>
+<td class="api-item">
+<span id="Win32_GetWindowTextA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowTextA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1020" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GetWindowTextW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GetWindowTextW</span></span>
+<td class="api-item">
+<span id="Win32_GetWindowTextW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GetWindowTextW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1021" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GlobalAlloc"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GlobalAlloc</span></span>
+<td class="api-item">
+<span id="Win32_GlobalAlloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalAlloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L367" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalAlloc</span>(uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalAlloc</span>(uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GlobalLock"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GlobalLock</span></span>
+<td class="api-item">
+<span id="Win32_GlobalLock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalLock</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L369" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalLock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalLock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GlobalSize"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GlobalSize</span></span>
+<td class="api-item">
+<span id="Win32_GlobalSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalSize</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L371" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalSize</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalSize</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_GlobalUnlock"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">GlobalUnlock</span></span>
+<td class="api-item">
+<span id="Win32_GlobalUnlock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">GlobalUnlock</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L370" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalUnlock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalUnlock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_HIWORD"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">HIWORD</span></span>
+<td class="api-item">
+<span id="Win32_HIWORD"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">HIWORD</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">HIWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">HIWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ICONINFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">ICONINFO</span></span>
+<td class="api-item">
+<span id="Win32_ICONINFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ICONINFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L948" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">fIcon</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">fIcon</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">xHotspot</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">xHotspot</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">yHotspot</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">yHotspot</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hbmMask</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hbmMask</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hbmColor</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hbmColor</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IP_ADAPTER_INFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">IP_ADAPTER_INFO</span></span>
+<td class="api-item">
+<span id="Win32_IP_ADAPTER_INFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IP_ADAPTER_INFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">next</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span></span></td>
+<td class="code-type"><span class="SCde">next</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">comboIndex</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">comboIndex</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">adapterName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">adapterName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">description</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">132</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">description</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">132</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">addressLength</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">addressLength</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">address</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">8</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">address</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">index</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">index</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">type</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">type</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dhcpEnabled</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dhcpEnabled</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">currentIpAddress</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">currentIpAddress</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ipAddressList</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">ipAddressList</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">gatewayList</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">gatewayList</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dhcpServer</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">dhcpServer</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">haveWins</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">haveWins</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">primaryWinsServer</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">primaryWinsServer</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">secondaryWinsServer</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">secondaryWinsServer</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">leaseObtained</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">leaseObtained</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">leaseExpires</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">leaseExpires</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IP_ADDRESS_STRING"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">IP_ADDRESS_STRING</span></span>
+<td class="api-item">
+<span id="Win32_IP_ADDRESS_STRING"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IP_ADDRESS_STRING</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">str</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">str</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IP_ADDR_STRING"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">IP_ADDR_STRING</span></span>
+<td class="api-item">
+<span id="Win32_IP_ADDR_STRING"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IP_ADDR_STRING</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\iphlpapi.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">next</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">next</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDR_STRING">IP_ADDR_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ipAddress</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">ipAddress</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ipMask</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
+<td class="code-type"><span class="SCde">ipMask</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADDRESS_STRING">IP_ADDRESS_STRING</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">context</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">context</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_InitializeSRWLock"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">InitializeSRWLock</span></span>
+<td class="api-item">
+<span id="Win32_InitializeSRWLock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">InitializeSRWLock</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L386" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InitializeSRWLock</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InitializeSRWLock</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_InvalidateRect"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">InvalidateRect</span></span>
+<td class="api-item">
+<span id="Win32_InvalidateRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">InvalidateRect</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1036" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InvalidateRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InvalidateRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IsClipboardFormatAvailable"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">IsClipboardFormatAvailable</span></span>
+<td class="api-item">
+<span id="Win32_IsClipboardFormatAvailable"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IsClipboardFormatAvailable</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1003" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsClipboardFormatAvailable</span>(format: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsClipboardFormatAvailable</span>(format: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IsDebuggerPresent"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">IsDebuggerPresent</span></span>
+<td class="api-item">
+<span id="Win32_IsDebuggerPresent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IsDebuggerPresent</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L348" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsDebuggerPresent</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsDebuggerPresent</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_IsWindowVisible"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">IsWindowVisible</span></span>
+<td class="api-item">
+<span id="Win32_IsWindowVisible"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">IsWindowVisible</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L992" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsWindowVisible</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsWindowVisible</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_LOWORD"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">LOWORD</span></span>
+<td class="api-item">
+<span id="Win32_LOWORD"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">LOWORD</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LOWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LOWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_LoadCursorA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">LoadCursorA</span></span>
+<td class="api-item">
+<span id="Win32_LoadCursorA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">LoadCursorA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L966" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorA</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorA</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_LoadCursorW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">LoadCursorW</span></span>
+<td class="api-item">
+<span id="Win32_LoadCursorW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">LoadCursorW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L967" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorW</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorW</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_LocalFree"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">LocalFree</span></span>
+<td class="api-item">
+<span id="Win32_LocalFree"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">LocalFree</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L368" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LocalFree</span>(hLocal: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LocalFree</span>(hLocal: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MAKEINTRESOURCEA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MAKEINTRESOURCEA</span></span>
+<td class="api-item">
+<span id="Win32_MAKEINTRESOURCEA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MAKEINTRESOURCEA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L414" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEA</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEA</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MAKEINTRESOURCEW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MAKEINTRESOURCEW</span></span>
+<td class="api-item">
+<span id="Win32_MAKEINTRESOURCEW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MAKEINTRESOURCEW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L415" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEW</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEW</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MAKELANGID"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MAKELANGID</span></span>
+<td class="api-item">
+<span id="Win32_MAKELANGID"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MAKELANGID</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MINMAXINFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">MINMAXINFO</span></span>
+<td class="api-item">
+<span id="Win32_MINMAXINFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MINMAXINFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L335" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">ptReserved</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">ptReserved</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ptMaxSize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">ptMaxSize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ptMaxPosition</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">ptMaxPosition</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ptMinTrackSize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">ptMinTrackSize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ptMaxTrackSize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">ptMaxTrackSize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MONITORINFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">MONITORINFO</span></span>
+<td class="api-item">
+<span id="Win32_MONITORINFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MONITORINFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L821" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cbSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cbSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rcMonitor</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="code-type"><span class="SCde">rcMonitor</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rcWork</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="code-type"><span class="SCde">rcWork</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MSG"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">MSG</span></span>
+<td class="api-item">
+<span id="Win32_MSG"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MSG</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L439" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hwnd</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hwnd</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">message</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">message</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wParam</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">wParam</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lParam</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">lParam</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">time</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">time</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pt</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
+<td class="code-type"><span class="SCde">pt</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lPrivate</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">lPrivate</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MapVirtualKeyA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MapVirtualKeyA</span></span>
+<td class="api-item">
+<span id="Win32_MapVirtualKeyA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MapVirtualKeyA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L996" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyA</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyA</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MapVirtualKeyW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MapVirtualKeyW</span></span>
+<td class="api-item">
+<span id="Win32_MapVirtualKeyW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MapVirtualKeyW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L997" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyW</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyW</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MessageBoxA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MessageBoxA</span></span>
+<td class="api-item">
+<span id="Win32_MessageBoxA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MessageBoxA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1025" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MessageBoxW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MessageBoxW</span></span>
+<td class="api-item">
+<span id="Win32_MessageBoxW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MessageBoxW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1026" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MonitorFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MonitorFromPoint</span></span>
+<td class="api-item">
+<span id="Win32_MonitorFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MonitorFromPoint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1007" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MonitorFromWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MonitorFromWindow</span></span>
+<td class="api-item">
+<span id="Win32_MonitorFromWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MonitorFromWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1008" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromWindow</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromWindow</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_MoveWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">MoveWindow</span></span>
+<td class="api-item">
+<span id="Win32_MoveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">MoveWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_NOTIFYICONDATAA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">NOTIFYICONDATAA</span></span>
+<td class="api-item">
+<span id="Win32_NOTIFYICONDATAA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">NOTIFYICONDATAA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cbSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cbSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hWnd</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hWnd</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uID</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uID</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uCallbackMessage</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uCallbackMessage</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szTip</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szTip</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwState</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwState</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwStateMask</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwStateMask</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szInfo</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szInfo</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
-<td class="codetype"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
+<td class="code-type"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szInfoTitle</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szInfoTitle</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwInfoFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwInfoFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">guidItem</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
+<td class="code-type"><span class="SCde">guidItem</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hBalloonIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hBalloonIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_NOTIFYICONDATAW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">NOTIFYICONDATAW</span></span>
+<td class="api-item">
+<span id="Win32_NOTIFYICONDATAW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">NOTIFYICONDATAW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L276" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cbSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cbSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hWnd</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hWnd</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uID</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uID</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">uCallbackMessage</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">uCallbackMessage</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szTip</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szTip</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwState</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwState</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwStateMask</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwStateMask</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szInfo</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szInfo</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
-<td class="codetype"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">DUMMYUNIONNAME</span></span></td>
+<td class="code-type"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szInfoTitle</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szInfoTitle</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwInfoFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwInfoFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">guidItem</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
+<td class="code-type"><span class="SCde">guidItem</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GUID">GUID</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hBalloonIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hBalloonIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_OpenClipboard"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">OpenClipboard</span></span>
+<td class="api-item">
+<span id="Win32_OpenClipboard"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">OpenClipboard</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1000" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OpenClipboard</span>(hWndNewOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OpenClipboard</span>(hWndNewOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_OutputDebugStringA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">OutputDebugStringA</span></span>
+<td class="api-item">
+<span id="Win32_OutputDebugStringA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">OutputDebugStringA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringA</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringA</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_OutputDebugStringW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">OutputDebugStringW</span></span>
+<td class="api-item">
+<span id="Win32_OutputDebugStringW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">OutputDebugStringW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringW</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringW</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PAINTSTRUCT"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">PAINTSTRUCT</span></span>
+<td class="api-item">
+<span id="Win32_PAINTSTRUCT"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PAINTSTRUCT</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L807" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hdc</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hdc</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fErase</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">fErase</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rcPaint</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
+<td class="code-type"><span class="SCde">rcPaint</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fRestore</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">fRestore</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fIncUpdate</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">fIncUpdate</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rgbReserved</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">rgbReserved</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_POINT"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">POINT</span></span>
+<td class="api-item">
+<span id="Win32_POINT"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">POINT</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">x</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">y</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PROCESS_INFORMATION"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">PROCESS_INFORMATION</span></span>
+<td class="api-item">
+<span id="Win32_PROCESS_INFORMATION"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PROCESS_INFORMATION</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L331" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hProcess</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hProcess</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hThread</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hThread</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwProcessId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwProcessId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwThreadId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwThreadId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PeekMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PeekMessageA</span></span>
+<td class="api-item">
+<span id="Win32_PeekMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PeekMessageA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L975" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PeekMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PeekMessageW</span></span>
+<td class="api-item">
+<span id="Win32_PeekMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PeekMessageW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L976" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PostMessageA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PostMessageA</span></span>
+<td class="api-item">
+<span id="Win32_PostMessageA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PostMessageA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1098" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PostMessageW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PostMessageW</span></span>
+<td class="api-item">
+<span id="Win32_PostMessageW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PostMessageW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_PostQuitMessage"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">PostQuitMessage</span></span>
+<td class="api-item">
+<span id="Win32_PostQuitMessage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">PostQuitMessage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L977" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostQuitMessage</span>(nExitCode: <span class="STpe">s32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostQuitMessage</span>(nExitCode: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_QueryPerformanceCounter"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">QueryPerformanceCounter</span></span>
+<td class="api-item">
+<span id="Win32_QueryPerformanceCounter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">QueryPerformanceCounter</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L373" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_QueryPerformanceFrequency"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">QueryPerformanceFrequency</span></span>
+<td class="api-item">
+<span id="Win32_QueryPerformanceFrequency"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">QueryPerformanceFrequency</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RECT"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">RECT</span></span>
+<td class="api-item">
+<span id="Win32_RECT"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RECT</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L799" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">left</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">left</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">top</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">top</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">right</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">right</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bottom</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">bottom</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReadFile"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReadFile</span></span>
+<td class="api-item">
+<span id="Win32_ReadFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReadFile</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L397" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReadFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReadFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RegisterClassA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClassA</span></span>
+<td class="api-item">
+<span id="Win32_RegisterClassA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClassA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassA</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassA</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RegisterClassW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClassW</span></span>
+<td class="api-item">
+<span id="Win32_RegisterClassW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClassW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassW</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassW</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RegisterClipboardFormatA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClipboardFormatA</span></span>
+<td class="api-item">
+<span id="Win32_RegisterClipboardFormatA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClipboardFormatA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1172" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatA</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatA</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RegisterClipboardFormatW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterClipboardFormatW</span></span>
+<td class="api-item">
+<span id="Win32_RegisterClipboardFormatW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterClipboardFormatW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatW</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatW</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_RegisterHotKey"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">RegisterHotKey</span></span>
+<td class="api-item">
+<span id="Win32_RegisterHotKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">RegisterHotKey</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1086" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>, fsModifiers: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>, fsModifiers: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReleaseCapture"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReleaseCapture</span></span>
+<td class="api-item">
+<span id="Win32_ReleaseCapture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseCapture</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1028" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseCapture</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseCapture</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReleaseDC"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReleaseDC</span></span>
+<td class="api-item">
+<span id="Win32_ReleaseDC"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseDC</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1035" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReleaseMutex"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReleaseMutex</span></span>
+<td class="api-item">
+<span id="Win32_ReleaseMutex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseMutex</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L522" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseMutex</span>(hMutex: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseMutex</span>(hMutex: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReleaseSRWLockExclusive"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReleaseSRWLockExclusive</span></span>
+<td class="api-item">
+<span id="Win32_ReleaseSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseSRWLockExclusive</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L387" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ReleaseSRWLockShared"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ReleaseSRWLockShared</span></span>
+<td class="api-item">
+<span id="Win32_ReleaseSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ReleaseSRWLockShared</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L388" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ResetEvent"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ResetEvent</span></span>
+<td class="api-item">
+<span id="Win32_ResetEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ResetEvent</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L528" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ResumeThread"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ResumeThread</span></span>
+<td class="api-item">
+<span id="Win32_ResumeThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ResumeThread</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L490" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResumeThread</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResumeThread</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SECURITY_ATTRIBUTES"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SECURITY_ATTRIBUTES</span></span>
+<td class="api-item">
+<span id="Win32_SECURITY_ATTRIBUTES"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SECURITY_ATTRIBUTES</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">nLength</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nLength</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpSecurityDescriptor</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpSecurityDescriptor</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bInheritHandle</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">bInheritHandle</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHFILEINFOA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHFILEINFOA</span></span>
+<td class="api-item">
+<span id="Win32_SHFILEINFOA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHFILEINFOA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">iIcon</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">iIcon</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwAttributes</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwAttributes</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szDisplayName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szDisplayName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szTypeName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szTypeName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHFILEINFOW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHFILEINFOW</span></span>
+<td class="api-item">
+<span id="Win32_SHFILEINFOW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHFILEINFOW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">iIcon</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">iIcon</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwAttributes</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwAttributes</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szDisplayName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szDisplayName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szTypeName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szTypeName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">80</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHGetFileInfoA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetFileInfoA</span></span>
+<td class="api-item">
+<span id="Win32_SHGetFileInfoA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHGetFileInfoA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L315" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoA</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoA</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHGetFileInfoW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetFileInfoW</span></span>
+<td class="api-item">
+<span id="Win32_SHGetFileInfoW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHGetFileInfoW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L316" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoW</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoW</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHGetSpecialFolderPathA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetSpecialFolderPathA</span></span>
+<td class="api-item">
+<span id="Win32_SHGetSpecialFolderPathA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHGetSpecialFolderPathA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L321" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHGetSpecialFolderPathW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetSpecialFolderPathW</span></span>
+<td class="api-item">
+<span id="Win32_SHGetSpecialFolderPathW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHGetSpecialFolderPathW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L327" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHGetStockIconInfo"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHGetStockIconInfo</span></span>
+<td class="api-item">
+<span id="Win32_SHGetStockIconInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHGetStockIconInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetStockIconInfo</span>(siid: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetStockIconInfo</span>(siid: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHSTOCKICONID"><span class="titletype">enum</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHSTOCKICONID</span></span>
+<td class="api-item">
+<span id="Win32_SHSTOCKICONID"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHSTOCKICONID</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">SIID_DOCNOASSOC</span></td>
+<td class="code-type"><span class="SCst">SIID_DOCNOASSOC</span></td>
 <td>document (blank page) no associated program. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DOCASSOC</span></td>
+<td class="code-type"><span class="SCst">SIID_DOCASSOC</span></td>
 <td>document with an associated program. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_APPLICATION</span></td>
+<td class="code-type"><span class="SCst">SIID_APPLICATION</span></td>
 <td>generic application with no custom icon. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_FOLDER</span></td>
+<td class="code-type"><span class="SCst">SIID_FOLDER</span></td>
 <td>folder (closed). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_FOLDEROPEN</span></td>
+<td class="code-type"><span class="SCst">SIID_FOLDEROPEN</span></td>
 <td>folder (open). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVE525</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVE525</span></td>
 <td>5.25" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVE35</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVE35</span></td>
 <td>3.5" floppy disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEREMOVE</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEREMOVE</span></td>
 <td>removable drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEFIXED</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEFIXED</span></td>
 <td>fixed (hard disk) drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVENET</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVENET</span></td>
 <td>network drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVENETDISABLED</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVENETDISABLED</span></td>
 <td>disconnected network drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVECD</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVECD</span></td>
 <td>CD drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVERAM</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVERAM</span></td>
 <td>RAM disk drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_WORLD</span></td>
+<td class="code-type"><span class="SCst">SIID_WORLD</span></td>
 <td>entire network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SERVER</span></td>
+<td class="code-type"><span class="SCst">SIID_SERVER</span></td>
 <td>a computer on the network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_PRINTER</span></td>
+<td class="code-type"><span class="SCst">SIID_PRINTER</span></td>
 <td>printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MYNETWORK</span></td>
+<td class="code-type"><span class="SCst">SIID_MYNETWORK</span></td>
 <td>My network places. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_FIND</span></td>
+<td class="code-type"><span class="SCst">SIID_FIND</span></td>
 <td>Find. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_HELP</span></td>
+<td class="code-type"><span class="SCst">SIID_HELP</span></td>
 <td>Help. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SHARE</span></td>
+<td class="code-type"><span class="SCst">SIID_SHARE</span></td>
 <td>overlay for shared items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_LINK</span></td>
+<td class="code-type"><span class="SCst">SIID_LINK</span></td>
 <td>overlay for shortcuts to items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SLOWFILE</span></td>
+<td class="code-type"><span class="SCst">SIID_SLOWFILE</span></td>
 <td>overlay for slow items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_RECYCLER</span></td>
+<td class="code-type"><span class="SCst">SIID_RECYCLER</span></td>
 <td>empty recycle bin. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_RECYCLERFULL</span></td>
+<td class="code-type"><span class="SCst">SIID_RECYCLERFULL</span></td>
 <td>full recycle bin. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDAUDIO</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDAUDIO</span></td>
 <td>Audio CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_LOCK</span></td>
+<td class="code-type"><span class="SCst">SIID_LOCK</span></td>
 <td>Security lock. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_AUTOLIST</span></td>
+<td class="code-type"><span class="SCst">SIID_AUTOLIST</span></td>
 <td>AutoList. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_PRINTERNET</span></td>
+<td class="code-type"><span class="SCst">SIID_PRINTERNET</span></td>
 <td>Network printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SERVERSHARE</span></td>
+<td class="code-type"><span class="SCst">SIID_SERVERSHARE</span></td>
 <td>Server share. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_PRINTERFAX</span></td>
+<td class="code-type"><span class="SCst">SIID_PRINTERFAX</span></td>
 <td>Fax printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_PRINTERFAXNET</span></td>
+<td class="code-type"><span class="SCst">SIID_PRINTERFAXNET</span></td>
 <td>Networked Fax Printer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_PRINTERFILE</span></td>
+<td class="code-type"><span class="SCst">SIID_PRINTERFILE</span></td>
 <td>Print to File. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_STACK</span></td>
+<td class="code-type"><span class="SCst">SIID_STACK</span></td>
 <td>Stack. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIASVCD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIASVCD</span></td>
 <td>SVCD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_STUFFEDFOLDER</span></td>
+<td class="code-type"><span class="SCst">SIID_STUFFEDFOLDER</span></td>
 <td>Folder containing other items. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEUNKNOWN</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEUNKNOWN</span></td>
 <td>Unknown drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEDVD</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEDVD</span></td>
 <td>DVD Drive. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVD</span></td>
 <td>DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDRAM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDRAM</span></td>
 <td>DVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDRW</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDRW</span></td>
 <td>DVD-RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDR</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDR</span></td>
 <td>DVD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDROM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDROM</span></td>
 <td>DVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDAUDIOPLUS</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDAUDIOPLUS</span></td>
 <td>CD+ (Enhanced CD) Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDRW</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDRW</span></td>
 <td>CD-RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDR</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDR</span></td>
 <td>CD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDBURN</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDBURN</span></td>
 <td>Burning CD. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIABLANKCD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIABLANKCD</span></td>
 <td>Blank CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACDROM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACDROM</span></td>
 <td>CD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_AUDIOFILES</span></td>
+<td class="code-type"><span class="SCst">SIID_AUDIOFILES</span></td>
 <td>Audio files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_IMAGEFILES</span></td>
+<td class="code-type"><span class="SCst">SIID_IMAGEFILES</span></td>
 <td>Image files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_VIDEOFILES</span></td>
+<td class="code-type"><span class="SCst">SIID_VIDEOFILES</span></td>
 <td>Video files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MIXEDFILES</span></td>
+<td class="code-type"><span class="SCst">SIID_MIXEDFILES</span></td>
 <td>Mixed files. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_FOLDERBACK</span></td>
+<td class="code-type"><span class="SCst">SIID_FOLDERBACK</span></td>
 <td>Folder back. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_FOLDERFRONT</span></td>
+<td class="code-type"><span class="SCst">SIID_FOLDERFRONT</span></td>
 <td>Folder front. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SHIELD</span></td>
+<td class="code-type"><span class="SCst">SIID_SHIELD</span></td>
 <td>Security shield. Use for UAC prompts only. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_WARNING</span></td>
+<td class="code-type"><span class="SCst">SIID_WARNING</span></td>
 <td>Warning. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_INFO</span></td>
+<td class="code-type"><span class="SCst">SIID_INFO</span></td>
 <td>Informational. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_ERROR</span></td>
+<td class="code-type"><span class="SCst">SIID_ERROR</span></td>
 <td>Error. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_KEY</span></td>
+<td class="code-type"><span class="SCst">SIID_KEY</span></td>
 <td>Key / Secure. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SOFTWARE</span></td>
+<td class="code-type"><span class="SCst">SIID_SOFTWARE</span></td>
 <td>Software. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_RENAME</span></td>
+<td class="code-type"><span class="SCst">SIID_RENAME</span></td>
 <td>Rename. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DELETE</span></td>
+<td class="code-type"><span class="SCst">SIID_DELETE</span></td>
 <td>Delete. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAAUDIODVD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAAUDIODVD</span></td>
 <td>Audio DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAMOVIEDVD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAMOVIEDVD</span></td>
 <td>Movie DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAENHANCEDCD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAENHANCEDCD</span></td>
 <td>Enhanced CD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAENHANCEDDVD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAENHANCEDDVD</span></td>
 <td>Enhanced DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAHDDVD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAHDDVD</span></td>
 <td>HD-DVD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIABLURAY</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIABLURAY</span></td>
 <td>BluRay Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAVCD</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAVCD</span></td>
 <td>VCD Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDPLUSR</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDPLUSR</span></td>
 <td>DVD+R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIADVDPLUSRW</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIADVDPLUSRW</span></td>
 <td>DVD+RW Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DESKTOPPC</span></td>
+<td class="code-type"><span class="SCst">SIID_DESKTOPPC</span></td>
 <td>desktop computer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MOBILEPC</span></td>
+<td class="code-type"><span class="SCst">SIID_MOBILEPC</span></td>
 <td>mobile computer (laptop/notebook). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_USERS</span></td>
+<td class="code-type"><span class="SCst">SIID_USERS</span></td>
 <td>users. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIASMARTMEDIA</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIASMARTMEDIA</span></td>
 <td>Smart Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIACOMPACTFLASH</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIACOMPACTFLASH</span></td>
 <td>Compact Flash. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DEVICECELLPHONE</span></td>
+<td class="code-type"><span class="SCst">SIID_DEVICECELLPHONE</span></td>
 <td>Cell phone. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DEVICECAMERA</span></td>
+<td class="code-type"><span class="SCst">SIID_DEVICECAMERA</span></td>
 <td>Camera. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DEVICEVIDEOCAMERA</span></td>
+<td class="code-type"><span class="SCst">SIID_DEVICEVIDEOCAMERA</span></td>
 <td>Video camera. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DEVICEAUDIOPLAYER</span></td>
+<td class="code-type"><span class="SCst">SIID_DEVICEAUDIOPLAYER</span></td>
 <td>Audio player. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_NETWORKCONNECT</span></td>
+<td class="code-type"><span class="SCst">SIID_NETWORKCONNECT</span></td>
 <td>Connect to network. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_INTERNET</span></td>
+<td class="code-type"><span class="SCst">SIID_INTERNET</span></td>
 <td>Internet. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_ZIPFILE</span></td>
+<td class="code-type"><span class="SCst">SIID_ZIPFILE</span></td>
 <td>ZIP file. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_SETTINGS</span></td>
+<td class="code-type"><span class="SCst">SIID_SETTINGS</span></td>
 <td>Settings  107-131 are internal Vista RTM icons  132-159 for SP1 icons. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEHDDVD</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEHDDVD</span></td>
 <td>HDDVD Drive (all types). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_DRIVEBD</span></td>
+<td class="code-type"><span class="SCst">SIID_DRIVEBD</span></td>
 <td>BluRay Drive (all types). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAHDDVDROM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAHDDVDROM</span></td>
 <td>HDDVD-ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAHDDVDR</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAHDDVDR</span></td>
 <td>HDDVD-R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIAHDDVDRAM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIAHDDVDRAM</span></td>
 <td>HDDVD-RAM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIABDROM</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIABDROM</span></td>
 <td>BluRay ROM Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIABDR</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIABDR</span></td>
 <td>BluRay R Media. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MEDIABDRE</span></td>
+<td class="code-type"><span class="SCst">SIID_MEDIABDRE</span></td>
 <td>BluRay RE Media (Rewriable and RAM). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_CLUSTEREDDRIVE</span></td>
+<td class="code-type"><span class="SCst">SIID_CLUSTEREDDRIVE</span></td>
 <td>Clustered disk  160+ are for Windows 7 icons. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SIID_MAX_ICONS</span></td>
+<td class="code-type"><span class="SCst">SIID_MAX_ICONS</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SHSTOCKICONINFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SHSTOCKICONINFO</span></span>
+<td class="api-item">
+<span id="Win32_SHSTOCKICONINFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SHSTOCKICONINFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cbSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cbSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">iSysImageIndex</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">iSysImageIndex</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">iIcon</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">iIcon</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">szPath</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">szPath</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SMALL_RECT"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SMALL_RECT</span></span>
+<td class="api-item">
+<span id="Win32_SMALL_RECT"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SMALL_RECT</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">left</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">left</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">top</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">top</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">right</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">right</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">bottom</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">bottom</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_STARTUPINFOA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">STARTUPINFOA</span></span>
+<td class="api-item">
+<span id="Win32_STARTUPINFOA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">STARTUPINFOA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L287" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cb</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cb</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpReserved</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpReserved</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpDesktop</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpDesktop</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpTitle</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpTitle</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwXSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwXSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwYSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwYSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwXCountChars</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwXCountChars</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwYCountChars</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwYCountChars</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFillAttribute</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFillAttribute</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wShowWindow</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wShowWindow</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbReserved2</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">cbReserved2</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpReserved2</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">lpReserved2</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdInput</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdInput</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdOutput</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdOutput</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdError</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdError</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_STARTUPINFOW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">STARTUPINFOW</span></span>
+<td class="api-item">
+<span id="Win32_STARTUPINFOW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">STARTUPINFOW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L309" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">cb</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">cb</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpReserved</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpReserved</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpDesktop</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpDesktop</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpTitle</span></td>
-<td class="codetype"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">lpTitle</span></td>
+<td class="code-type"><span class="SCde">^<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwY</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwY</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwXSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwXSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwYSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwYSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwXCountChars</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwXCountChars</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwYCountChars</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwYCountChars</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFillAttribute</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFillAttribute</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFlags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFlags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wShowWindow</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wShowWindow</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbReserved2</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">cbReserved2</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpReserved2</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
+<td class="code-type"><span class="SCde">lpReserved2</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdInput</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdInput</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdOutput</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdOutput</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hStdError</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hStdError</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SYSTEMTIME"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SYSTEMTIME</span></span>
+<td class="api-item">
+<span id="Win32_SYSTEMTIME"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SYSTEMTIME</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">wYear</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wYear</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wMonth</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wMonth</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wDayOfWeek</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wDayOfWeek</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wDay</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wDay</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wHour</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wHour</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wMinute</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wMinute</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wSecond</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wSecond</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wMilliseconds</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wMilliseconds</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SYSTEM_INFO"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">SYSTEM_INFO</span></span>
+<td class="api-item">
+<span id="Win32_SYSTEM_INFO"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SYSTEM_INFO</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwOemId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwOemId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Must be updated to an union. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwPageSize</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwPageSize</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpMinimumApplicationAddress</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpMinimumApplicationAddress</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpMaximumApplicationAddress</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpMaximumApplicationAddress</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwActiveProcessorMask</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">dwActiveProcessorMask</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwNumberOfProcessors</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwNumberOfProcessors</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwProcessorType</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwProcessorType</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwAllocationGranularity</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwAllocationGranularity</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wProcessorLevel</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wProcessorLevel</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wProcessorRevision</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wProcessorRevision</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ScreenToClient"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ScreenToClient</span></span>
+<td class="api-item">
+<span id="Win32_ScreenToClient"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ScreenToClient</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1038" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ScreenToClient</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ScreenToClient</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetActiveWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetActiveWindow</span></span>
+<td class="api-item">
+<span id="Win32_SetActiveWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetActiveWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1031" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetActiveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetActiveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetCapture"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetCapture</span></span>
+<td class="api-item">
+<span id="Win32_SetCapture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCapture</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1027" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCapture</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCapture</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetClipboardData"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetClipboardData</span></span>
+<td class="api-item">
+<span id="Win32_SetClipboardData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetClipboardData</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1005" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetConsoleActiveScreenBuffer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetConsoleActiveScreenBuffer</span></span>
+<td class="api-item">
+<span id="Win32_SetConsoleActiveScreenBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleActiveScreenBuffer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetConsoleOutputCP"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetConsoleOutputCP</span></span>
+<td class="api-item">
+<span id="Win32_SetConsoleOutputCP"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleOutputCP</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L364" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleOutputCP</span>(codePage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleOutputCP</span>(codePage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetConsoleTextAttribute"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetConsoleTextAttribute</span></span>
+<td class="api-item">
+<span id="Win32_SetConsoleTextAttribute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetConsoleTextAttribute</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L469" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetCurrentDirectoryA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetCurrentDirectoryA</span></span>
+<td class="api-item">
+<span id="Win32_SetCurrentDirectoryA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L682" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetCurrentDirectoryW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetCurrentDirectoryW</span></span>
+<td class="api-item">
+<span id="Win32_SetCurrentDirectoryW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCurrentDirectoryW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L688" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetCursor"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetCursor</span></span>
+<td class="api-item">
+<span id="Win32_SetCursor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCursor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1029" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursor</span>(hCursor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursor</span>(hCursor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetCursorPos"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetCursorPos</span></span>
+<td class="api-item">
+<span id="Win32_SetCursorPos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetCursorPos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L964" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetEvent"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetEvent</span></span>
+<td class="api-item">
+<span id="Win32_SetEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetEvent</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L534" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetFilePointer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetFilePointer</span></span>
+<td class="api-item">
+<span id="Win32_SetFilePointer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFilePointer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L799" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFilePointer</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFilePointer</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetFileTime</span></span>
+<td class="api-item">
+<span id="Win32_SetFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFileTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L620" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFileTime</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFileTime</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetFocus"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetFocus</span></span>
+<td class="api-item">
+<span id="Win32_SetFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetFocus</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1030" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFocus</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFocus</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetLayeredWindowAttributes"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetLayeredWindowAttributes</span></span>
+<td class="api-item">
+<span id="Win32_SetLayeredWindowAttributes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetLayeredWindowAttributes</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetLayeredWindowAttributes</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetLayeredWindowAttributes</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetThreadPriority"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetThreadPriority</span></span>
+<td class="api-item">
+<span id="Win32_SetThreadPriority"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetThreadPriority</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetThreadPriority</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetThreadPriority</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetWaitableTimer"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetWaitableTimer</span></span>
+<td class="api-item">
+<span id="Win32_SetWaitableTimer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWaitableTimer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L395" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="STpe">void</span>, lpArgToCompletionRoutine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="STpe">void</span>, lpArgToCompletionRoutine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetWindowLongPtrA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetWindowLongPtrA</span></span>
+<td class="api-item">
+<span id="Win32_SetWindowLongPtrA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowLongPtrA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1046" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetWindowLongPtrW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetWindowLongPtrW</span></span>
+<td class="api-item">
+<span id="Win32_SetWindowLongPtrW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowLongPtrW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1047" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SetWindowPos"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SetWindowPos</span></span>
+<td class="api-item">
+<span id="Win32_SetWindowPos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SetWindowPos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1146" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_Shell_NotifyIconA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">Shell_NotifyIconA</span></span>
+<td class="api-item">
+<span id="Win32_Shell_NotifyIconA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Shell_NotifyIconA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L357" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconA</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconA</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_Shell_NotifyIconW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">Shell_NotifyIconW</span></span>
+<td class="api-item">
+<span id="Win32_Shell_NotifyIconW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Shell_NotifyIconW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\shell32.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconW</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconW</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ShowCursor"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ShowCursor</span></span>
+<td class="api-item">
+<span id="Win32_ShowCursor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ShowCursor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L965" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowCursor</span>(show: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowCursor</span>(show: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ShowWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ShowWindow</span></span>
+<td class="api-item">
+<span id="Win32_ShowWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ShowWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1023" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_Sleep"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">Sleep</span></span>
+<td class="api-item">
+<span id="Win32_Sleep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">Sleep</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L378" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SleepEx"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SleepEx</span></span>
+<td class="api-item">
+<span id="Win32_SleepEx"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SleepEx</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L379" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SleepEx</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SleepEx</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SwitchToThread"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SwitchToThread</span></span>
+<td class="api-item">
+<span id="Win32_SwitchToThread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SwitchToThread</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L341" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwitchToThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwitchToThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_SystemTimeToFileTime"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">SystemTimeToFileTime</span></span>
+<td class="api-item">
+<span id="Win32_SystemTimeToFileTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">SystemTimeToFileTime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L614" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SystemTimeToFileTime</span>(lpSystemTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SystemTimeToFileTime</span>(lpSystemTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_ToUnicode"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">ToUnicode</span></span>
+<td class="api-item">
+<span id="Win32_ToUnicode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">ToUnicode</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L998" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_TranslateMessage"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">TranslateMessage</span></span>
+<td class="api-item">
+<span id="Win32_TranslateMessage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TranslateMessage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1042" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TranslateMessage</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TranslateMessage</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_TryAcquireSRWLockExclusive"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">TryAcquireSRWLockExclusive</span></span>
+<td class="api-item">
+<span id="Win32_TryAcquireSRWLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TryAcquireSRWLockExclusive</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_TryAcquireSRWLockShared"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">TryAcquireSRWLockShared</span></span>
+<td class="api-item">
+<span id="Win32_TryAcquireSRWLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">TryAcquireSRWLockShared</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L390" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_UnregisterHotKey"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">UnregisterHotKey</span></span>
+<td class="api-item">
+<span id="Win32_UnregisterHotKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">UnregisterHotKey</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1092" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UnregisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UnregisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_UpdateWindow"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">UpdateWindow</span></span>
+<td class="api-item">
+<span id="Win32_UpdateWindow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">UpdateWindow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L1128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UpdateWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UpdateWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WIN32_FILE_ATTRIBUTE_DATA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WIN32_FILE_ATTRIBUTE_DATA</span></span>
+<td class="api-item">
+<span id="Win32_WIN32_FILE_ATTRIBUTE_DATA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WIN32_FILE_ATTRIBUTE_DATA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L237" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFileAttributes</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftCreationTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftCreationTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastAccessTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastWriteTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeHigh</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeLow</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WIN32_FIND_DATAA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WIN32_FIND_DATAA</span></span>
+<td class="api-item">
+<span id="Win32_WIN32_FIND_DATAA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WIN32_FIND_DATAA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFileAttributes</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftCreationTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftCreationTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastAccessTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastWriteTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeHigh</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeLow</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwReserved0</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwReserved0</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwReserved1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwReserved1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cFileName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">cFileName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cAlternateFileName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">cAlternateFileName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CHAR">CHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFileType</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFileType</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwCreatorType</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwCreatorType</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wFinderFlags</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wFinderFlags</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WIN32_FIND_DATAW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WIN32_FIND_DATAW</span></span>
+<td class="api-item">
+<span id="Win32_WIN32_FIND_DATAW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WIN32_FIND_DATAW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L264" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">dwFileAttributes</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFileAttributes</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftCreationTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftCreationTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastAccessTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastAccessTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">ftLastWriteTime</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
+<td class="code-type"><span class="SCde">ftLastWriteTime</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeHigh</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeHigh</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nFileSizeLow</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nFileSizeLow</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwReserved0</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwReserved0</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwReserved1</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwReserved1</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cFileName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">cFileName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">260</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cAlternateFileName</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
+<td class="code-type"><span class="SCde">cAlternateFileName</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">14</span>] <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WCHAR">WCHAR</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwFileType</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwFileType</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">dwCreatorType</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">dwCreatorType</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">wFinderFlags</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">wFinderFlags</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WINDOWPOS"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WINDOWPOS</span></span>
+<td class="api-item">
+<span id="Win32_WINDOWPOS"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WINDOWPOS</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L324" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">hwnd</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hwnd</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hwndInsertAfter</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hwndInsertAfter</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">x</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">x</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">y</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">y</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cx</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cx</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cy</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cy</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">flags</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">flags</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WNDCLASSA"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WNDCLASSA</span></span>
+<td class="api-item">
+<span id="Win32_WNDCLASSA"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WNDCLASSA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L264" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">style</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">style</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpfnWndProc</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpfnWndProc</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbClsExtra</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cbClsExtra</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbWndExtra</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cbWndExtra</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hInstance</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="code-type"><span class="SCde">hInstance</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hCursor</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hCursor</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hbrBackground</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hbrBackground</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszMenuName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">lpszMenuName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszClassName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">lpszClassName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WNDCLASSW"><span class="titletype">struct</span> <span class="titlelight">Win32.</span><span class="titlestrong">WNDCLASSW</span></span>
+<td class="api-item">
+<span id="Win32_WNDCLASSW"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WNDCLASSW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L278" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">style</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">style</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpfnWndProc</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">lpfnWndProc</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbClsExtra</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cbClsExtra</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">cbWndExtra</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">cbWndExtra</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hInstance</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
+<td class="code-type"><span class="SCde">hInstance</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hIcon</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hIcon</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hCursor</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hCursor</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hbrBackground</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">hbrBackground</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszMenuName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde">lpszMenuName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lpszClassName</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
+<td class="code-type"><span class="SCde">lpszClassName</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WaitForMultipleObjects"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WaitForMultipleObjects</span></span>
+<td class="api-item">
+<span id="Win32_WaitForMultipleObjects"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WaitForMultipleObjects</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L514" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForMultipleObjects</span>(nCount: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForMultipleObjects</span>(nCount: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WaitForSingleObject"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WaitForSingleObject</span></span>
+<td class="api-item">
+<span id="Win32_WaitForSingleObject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WaitForSingleObject</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L505" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForSingleObject</span>(hHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForSingleObject</span>(hHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WindowFromPoint"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WindowFromPoint</span></span>
+<td class="api-item">
+<span id="Win32_WindowFromPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WindowFromPoint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\user32.swg#L981" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WindowFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WindowFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WriteConsoleOutputCharacterA"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WriteConsoleOutputCharacterA</span></span>
+<td class="api-item">
+<span id="Win32_WriteConsoleOutputCharacterA"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteConsoleOutputCharacterA</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L362" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WriteConsoleOutputCharacterW"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WriteConsoleOutputCharacterW</span></span>
+<td class="api-item">
+<span id="Win32_WriteConsoleOutputCharacterW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteConsoleOutputCharacterW</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_WriteFile"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">WriteFile</span></span>
+<td class="api-item">
+<span id="Win32_WriteFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">WriteFile</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\kernel32.swg#L600" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Win32_setError"><span class="titletype">func</span> <span class="titlelight">Win32.</span><span class="titlestrong">setError</span></span>
+<td class="api-item">
+<span id="Win32_setError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">setError</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\win32.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Fill the context error message. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></code>
 </div>
 </div>
 </div>

@@ -21,14 +21,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -61,7 +61,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -84,10 +84,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -96,7 +93,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -105,9 +102,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -125,7 +136,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -134,17 +145,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -158,15 +158,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -176,7 +173,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -185,7 +182,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -203,7 +203,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
@@ -251,7 +251,7 @@
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div></p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 

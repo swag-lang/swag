@@ -21,14 +21,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -61,7 +61,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -84,10 +84,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -96,7 +93,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -105,9 +102,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -125,7 +136,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -134,17 +145,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -158,15 +158,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -176,7 +173,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -185,7 +182,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -203,25 +203,25 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <p><img src="imgs/flappy.png" alt=""> </p>
-<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <code class="incode">bin/examples/scripts</code> folder, and type : </p>
-<div class="precode"><code><span class="SCde">$ swag flappy.swgs</span></code>
+<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <code class="inline-code">bin/examples/scripts</code> folder, and type : </p>
+<div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
 </div>
 <p>Instead of mainly explaining the game, the aim here is to describe the language. Note also that this page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
 <p>So, let's begin. </p>
 <h1 id="Dependencies">Dependencies </h1>
-<p>Normally, you'd put the <code class="incode">#dependency</code> block in the <code class="incode">module.swg</code> file of a module. But if it's a script and there's no <code class="incode">module.swg</code> file, you just put it at the top of the script file. </p>
+<p>Normally, you'd put the <code class="inline-code">#dependency</code> block in the <code class="inline-code">module.swg</code> file of a module. But if it's a script and there's no <code class="inline-code">module.swg</code> file, you just put it at the top of the script file. </p>
 <p>This special compiler block is used to specify : </p>
 <ul>
-<li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <code class="incode">gui</code> module.</li>
-<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <code class="incode">#load</code> directive.</li>
-<li><b>Module configuration</b>. If present, a special <code class="incode">#run</code> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
+<li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <code class="inline-code">gui</code> module.</li>
+<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <code class="inline-code">#load</code> directive.</li>
+<li><b>Module configuration</b>. If present, a special <code class="inline-code">#run</code> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
 </ul>
-<p>So in our case, we need to import the module <code class="incode">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="incode">core</code> and <code class="incode">pixel</code> (2D painting). </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<p>So in our case, we need to import the module <code class="inline-code">gui</code>. This module is used to create windows and widgets, and will bring other modules like <code class="inline-code">core</code> and <code class="inline-code">pixel</code> (2D painting). </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>
@@ -247,16 +247,16 @@
     }
 }</span></code>
 </div>
-<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <code class="incode">using</code> statement immediately after the <code class="incode">#dependency</code> block. </p>
-<p>The <code class="incode">gui</code> module depends on <code class="incode">pixel</code> which depends on <code class="incode">core</code>. So we bring all the three namespaces into the file scope. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
+<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <code class="inline-code">using</code> statement immediately after the <code class="inline-code">#dependency</code> block. </p>
+<p>The <code class="inline-code">gui</code> module depends on <code class="inline-code">pixel</code> which depends on <code class="inline-code">core</code>. So we bring all the three namespaces into the file scope. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
 <h1 id="Entry_point">Entry point </h1>
-<p>The compiler's <code class="incode">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="incode">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
+<p>The compiler's <code class="inline-code">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="inline-code">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
 <blockquote>
-<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="incode">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </p>
+<p>You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="inline-code">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </p>
 </blockquote>
-<div class="precode"><code><span class="SCde"><span class="SFct">#run</span>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
     <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
@@ -270,13 +270,13 @@
 </div>
 <h1 id="Global_definitions">Global definitions </h1>
 <h2 id="Constants">Constants </h2>
-<div class="precode"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
 <span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
 </div>
 <h2 id="Variables">Variables </h2>
-<div class="precode"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
 <span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
@@ -299,7 +299,7 @@
 <span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></code>
 </div>
 <h2 id="Types">Types </h2>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
     pos:        <span class="SCst">Math</span>.<span class="SCst">Vector2</span>    <span class="SCmt">// Position of the bird</span>
@@ -318,7 +318,7 @@
 </div>
 <h1 id="The_actual_code">The actual code </h1>
 <p>This is the callback that will deal with all gui events. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SLgc">switch</span> evt.kind
     {
@@ -345,7 +345,7 @@
     <span class="SLgc">return</span> <span class="SKwd">false</span>
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Math</span>.<span class="SCst">Point</span>
 
@@ -419,7 +419,7 @@
     }
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
 {
     <span class="SKwd">let</span> kb = wnd.<span class="SFct">getApp</span>().<span class="SFct">getKeyboard</span>()
 
@@ -439,7 +439,7 @@
     }
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
     rectBird.x = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width/<span class="SNum">2</span>
@@ -449,7 +449,7 @@
     <span class="SLgc">return</span> rect.<span class="SFct">intersectWith</span>(rectBird)
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
 {
     <span class="SLgc">if</span> g_GameOver
         <span class="SLgc">return</span>
@@ -495,7 +495,7 @@
         g_GameOver = <span class="SKwd">true</span>
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
 {
     <span class="SKwd">var</span> pipe: <span class="SCst">Pipe</span>
 
@@ -519,7 +519,7 @@
     g_Pipes.<span class="SFct">add</span>(pipe)
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
 {
     <span class="SItr">@init</span>(&g_Bird)
     g_Bird.pos.x = g_Rect.<span class="SFct">horzCenter</span>()
@@ -530,7 +530,7 @@
     g_Start = <span class="SKwd">false</span>
 }</span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 

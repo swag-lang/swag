@@ -21,14 +21,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -61,7 +61,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -84,10 +84,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -96,7 +93,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -105,9 +102,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -125,7 +136,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -134,17 +145,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -158,15 +158,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -176,7 +173,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -185,7 +182,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -203,15 +203,15 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
 <h3 id="Under_windows_10/11">Under windows 10/11 </h3>
-<p>You should register the location of the swag compiler (<code class="incode">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
+<p>You should register the location of the swag compiler (<code class="inline-code">swag.exe</code>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
-<div class="precode"><code><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
+<div class="code-block"><code><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
 [Environment]::SetEnvironmentVariable(
     "Path",
     [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
@@ -221,42 +221,42 @@
 <h1 id="Your_first_project">Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
-<div class="precode"><code><span class="SCde">$ swag new -w:first
+<div class="code-block"><code><span class="SCde">$ swag new -w:first
 =&gt; workspace 'F:/first' has been created
 =&gt; module 'first' has been created
 =&gt; type 'swag run -w:F:\first' to build and run that module</span></code>
 </div>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#main</span>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
 {
     <span class="SItr">@print</span>(<span class="SStr">"Hello world!\n"</span>)
 }</span></code>
 </div>
 <p>A workspace contains a predefined number of sub folders: </p>
 <ul>
-<li><code class="incode">modules/</code> contains all the modules (sub folders) of that workspace.</li>
-<li><code class="incode">output/</code> (generated) contains the result of the build (this is where the executable will be located).</li>
-<li><code class="incode">tests/</code> (optional) contains a list of test modules.</li>
-<li><code class="incode">dependencies/</code> (generated) contains a list of external modules needed to compile the workspace.</li>
+<li><code class="inline-code">modules/</code> contains all the modules (sub folders) of that workspace.</li>
+<li><code class="inline-code">output/</code> (generated) contains the result of the build (this is where the executable will be located).</li>
+<li><code class="inline-code">tests/</code> (optional) contains a list of test modules.</li>
+<li><code class="inline-code">dependencies/</code> (generated) contains a list of external modules needed to compile the workspace.</li>
 </ul>
 <p>A module is also organized in a predefined way: </p>
 <ul>
-<li><code class="incode">moduleName/</code> the folder name of the module is used to create output files.</li>
-<li><code class="incode">src/</code> contains the source code.</li>
-<li><code class="incode">public/</code> (generated) will contain all the exports needed by other modules to use that one (in case of a dynamic library).</li>
-<li><code class="incode">publish/</code> contains additional files to use that module (like an external C dll).</li>
+<li><code class="inline-code">moduleName/</code> the folder name of the module is used to create output files.</li>
+<li><code class="inline-code">src/</code> contains the source code.</li>
+<li><code class="inline-code">public/</code> (generated) will contain all the exports needed by other modules to use that one (in case of a dynamic library).</li>
+<li><code class="inline-code">publish/</code> contains additional files to use that module (like an external C dll).</li>
 </ul>
-<p>A module always contains a special file named <code class="incode">module.swg</code>. This file is used to configure the module, and is <b>mandatory</b>. </p>
+<p>A module always contains a special file named <code class="inline-code">module.swg</code>. This file is used to configure the module, and is <b>mandatory</b>. </p>
 <h3 id="To_compile_your_workspace">To compile your workspace </h3>
-<div class="precode"><code><span class="SCde">$ swag build -w:first
+<div class="code-block"><code><span class="SCde">$ swag build -w:first
             Workspace first [fast-debug-windows-x86_64]
             Building first
                 Done 0.067s</span></code>
 </div>
-<p>You can omit the workspace name (<code class="incode">-w:first</code> or <code class="incode">--workspace:first</code>) if you call the compiler directly from the workspace folder. This command will compile all modules in <code class="incode">modules/</code>. </p>
+<p>You can omit the workspace name (<code class="inline-code">-w:first</code> or <code class="inline-code">--workspace:first</code>) if you call the compiler directly from the workspace folder. This command will compile all modules in <code class="inline-code">modules/</code>. </p>
 <p>You can also build and run your workspace. </p>
-<div class="precode"><code><span class="SCde">$ swag run -w:first
+<div class="code-block"><code><span class="SCde">$ swag run -w:first
             Workspace first [fast-debug-windows-x86_64]
             Building first
     Running backend first
@@ -267,18 +267,18 @@ Hello world!
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
 <h1 id="Content_of_the_Swag_folder">Content of the Swag folder </h1>
-<p>The Swag folder contains the compiler <code class="incode">swag.exe</code>, but also a bunch of sub folders. </p>
+<p>The Swag folder contains the compiler <code class="inline-code">swag.exe</code>, but also a bunch of sub folders. </p>
 <ul>
-<li><code class="incode">reference/</code> is a workspace which contains an overview of the language, in the form of small tests.</li>
-<li><code class="incode">testsuite/</code> is a workspace which contains all the tests to debug the compiler.</li>
-<li><code class="incode">runtime/</code> contains the compiler runtime, which is included in all user modules.</li>
-<li><code class="incode">std/</code> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
+<li><code class="inline-code">reference/</code> is a workspace which contains an overview of the language, in the form of small tests.</li>
+<li><code class="inline-code">testsuite/</code> is a workspace which contains all the tests to debug the compiler.</li>
+<li><code class="inline-code">runtime/</code> contains the compiler runtime, which is included in all user modules.</li>
+<li><code class="inline-code">std/</code> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
 </ul>
 <h1 id="The_Swag_language">The Swag language </h1>
-<p>You should take a look at the <code class="incode">reference/</code> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
+<p>You should take a look at the <code class="inline-code">reference/</code> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
 <p>It's a good starting point to familiarize yourself with the language. </p>
-<p>And as this is a normal Swag workspace, you could also build and test it with <code class="incode">swag test -w:swag/reference</code>. </p>
-<p>You will also find some small examples (mostly written for tests) in <code class="incode">swag/bin/examples/modules</code>. To build and run one of them from the console, go to the workspace folder (<code class="incode">/examples</code>) and type for example <code class="incode">swag run -m:wnd</code>. </p>
+<p>And as this is a normal Swag workspace, you could also build and test it with <code class="inline-code">swag test -w:swag/reference</code>. </p>
+<p>You will also find some small examples (mostly written for tests) in <code class="inline-code">swag/bin/examples/modules</code>. To build and run one of them from the console, go to the workspace folder (<code class="inline-code">/examples</code>) and type for example <code class="inline-code">swag run -m:wnd</code>. </p>
 </div>
 </div>
 </div>

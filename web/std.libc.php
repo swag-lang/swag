@@ -20,14 +20,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -60,7 +60,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -90,10 +90,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -102,7 +99,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -111,9 +108,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -131,7 +142,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -140,17 +151,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -164,15 +164,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -182,7 +179,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -191,7 +188,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -209,7 +209,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
-<div class="leftpage">
+<div class="left-page">
 <h2>Table of Contents</h2>
 <h3>Structs</h3>
 <h4></h4>
@@ -574,3939 +574,3939 @@
 </div>
 </div>
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Module libc</h1>
 <p> Wrapper for LibC library. </p>
 <h1>Content</h1>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_BUFSIZ"><span class="titletype">const</span> <span class="titlelight">Libc.</span><span class="titlestrong">Constants</span></span>
+<td class="api-item">
+<span id="Libc_BUFSIZ"><span class="api-item-title-kind">const</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">Constants</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Libc_BUFSIZ" class="codetype"><span class="SCst">BUFSIZ</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_BUFSIZ" class="code-type"><span class="SCst">BUFSIZ</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_CLOCKS_PER_SEC" class="codetype"><span class="SCst">CLOCKS_PER_SEC</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_CLOCKS_PER_SEC" class="code-type"><span class="SCst">CLOCKS_PER_SEC</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EOF" class="codetype"><span class="SCst">EOF</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_EOF" class="code-type"><span class="SCst">EOF</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_FAILURE" class="codetype"><span class="SCst">EXIT_FAILURE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_EXIT_FAILURE" class="code-type"><span class="SCst">EXIT_FAILURE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_SUCCESS" class="codetype"><span class="SCst">EXIT_SUCCESS</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_EXIT_SUCCESS" class="code-type"><span class="SCst">EXIT_SUCCESS</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FILENAME_MAX" class="codetype"><span class="SCst">FILENAME_MAX</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FILENAME_MAX" class="code-type"><span class="SCst">FILENAME_MAX</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FOPEN_MAX" class="codetype"><span class="SCst">FOPEN_MAX</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FOPEN_MAX" class="code-type"><span class="SCst">FOPEN_MAX</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGB0" class="codetype"><span class="SCst">FP_ILOGB0</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_ILOGB0" class="code-type"><span class="SCst">FP_ILOGB0</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGBNAN" class="codetype"><span class="SCst">FP_ILOGBNAN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_ILOGBNAN" class="code-type"><span class="SCst">FP_ILOGBNAN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_INFINITE" class="codetype"><span class="SCst">FP_INFINITE</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_INFINITE" class="code-type"><span class="SCst">FP_INFINITE</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NAN" class="codetype"><span class="SCst">FP_NAN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_NAN" class="code-type"><span class="SCst">FP_NAN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NORMAL" class="codetype"><span class="SCst">FP_NORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_NORMAL" class="code-type"><span class="SCst">FP_NORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_SUBNORMAL" class="codetype"><span class="SCst">FP_SUBNORMAL</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_SUBNORMAL" class="code-type"><span class="SCst">FP_SUBNORMAL</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ZERO" class="codetype"><span class="SCst">FP_ZERO</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_FP_ZERO" class="code-type"><span class="SCst">FP_ZERO</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ForeignLib" class="codetype"><span class="SCst">ForeignLib</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td id="Libc_ForeignLib" class="code-type"><span class="SCst">ForeignLib</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VAL" class="codetype"><span class="SCst">HUGE_VAL</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Libc_HUGE_VAL" class="code-type"><span class="SCst">HUGE_VAL</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VALF" class="codetype"><span class="SCst">HUGE_VALF</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Libc_HUGE_VALF" class="code-type"><span class="SCst">HUGE_VALF</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INFINITY" class="codetype"><span class="SCst">INFINITY</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Libc_INFINITY" class="code-type"><span class="SCst">INFINITY</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MAX" class="codetype"><span class="SCst">INT16_MAX</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Libc_INT16_MAX" class="code-type"><span class="SCst">INT16_MAX</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MIN" class="codetype"><span class="SCst">INT16_MIN</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Libc_INT16_MIN" class="code-type"><span class="SCst">INT16_MIN</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MAX" class="codetype"><span class="SCst">INT32_MAX</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_INT32_MAX" class="code-type"><span class="SCst">INT32_MAX</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MIN" class="codetype"><span class="SCst">INT32_MIN</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_INT32_MIN" class="code-type"><span class="SCst">INT32_MIN</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MAX" class="codetype"><span class="SCst">INT64_MAX</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_INT64_MAX" class="code-type"><span class="SCst">INT64_MAX</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MIN" class="codetype"><span class="SCst">INT64_MIN</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_INT64_MIN" class="code-type"><span class="SCst">INT64_MIN</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MAX" class="codetype"><span class="SCst">INT8_MAX</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Libc_INT8_MAX" class="code-type"><span class="SCst">INT8_MAX</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MIN" class="codetype"><span class="SCst">INT8_MIN</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Libc_INT8_MIN" class="code-type"><span class="SCst">INT8_MIN</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_L_tmpnam" class="codetype"><span class="SCst">L_tmpnam</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_L_tmpnam" class="code-type"><span class="SCst">L_tmpnam</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERREXCEPT" class="codetype"><span class="SCst">MATH_ERREXCEPT</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_MATH_ERREXCEPT" class="code-type"><span class="SCst">MATH_ERREXCEPT</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERRNO" class="codetype"><span class="SCst">MATH_ERRNO</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_MATH_ERRNO" class="code-type"><span class="SCst">MATH_ERRNO</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_NAN" class="codetype"><span class="SCst">NAN</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Libc_NAN" class="code-type"><span class="SCst">NAN</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MAX" class="codetype"><span class="SCst">PTRDIFF_MAX</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_PTRDIFF_MAX" class="code-type"><span class="SCst">PTRDIFF_MAX</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MIN" class="codetype"><span class="SCst">PTRDIFF_MIN</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_PTRDIFF_MIN" class="code-type"><span class="SCst">PTRDIFF_MIN</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_CUR" class="codetype"><span class="SCst">SEEK_CUR</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_SEEK_CUR" class="code-type"><span class="SCst">SEEK_CUR</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_END" class="codetype"><span class="SCst">SEEK_END</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_SEEK_END" class="code-type"><span class="SCst">SEEK_END</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_SET" class="codetype"><span class="SCst">SEEK_SET</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_SEEK_SET" class="code-type"><span class="SCst">SEEK_SET</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SIZE_MAX" class="codetype"><span class="SCst">SIZE_MAX</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_SIZE_MAX" class="code-type"><span class="SCst">SIZE_MAX</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TIME_UTC" class="codetype"><span class="SCst">TIME_UTC</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_TIME_UTC" class="code-type"><span class="SCst">TIME_UTC</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TMP_MAX" class="codetype"><span class="SCst">TMP_MAX</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_TMP_MAX" class="code-type"><span class="SCst">TMP_MAX</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT16_MAX" class="codetype"><span class="SCst">UINT16_MAX</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Libc_UINT16_MAX" class="code-type"><span class="SCst">UINT16_MAX</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT32_MAX" class="codetype"><span class="SCst">UINT32_MAX</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc_UINT32_MAX" class="code-type"><span class="SCst">UINT32_MAX</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT64_MAX" class="codetype"><span class="SCst">UINT64_MAX</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_UINT64_MAX" class="code-type"><span class="SCst">UINT64_MAX</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT8_MAX" class="codetype"><span class="SCst">UINT8_MAX</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Libc_UINT8_MAX" class="code-type"><span class="SCst">UINT8_MAX</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOFBF" class="codetype"><span class="SCde">_IOFBF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc__IOFBF" class="code-type"><span class="SCde">_IOFBF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOLBF" class="codetype"><span class="SCde">_IOLBF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc__IOLBF" class="code-type"><span class="SCde">_IOLBF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IONBF" class="codetype"><span class="SCde">_IONBF</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc__IONBF" class="code-type"><span class="SCde">_IONBF</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_clock_t"><span class="titletype">type alias</span> <span class="titlelight">Libc.</span><span class="titlestrong">Type Aliases</span></span>
+<td class="api-item">
+<span id="Libc_clock_t"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Libc_clock_t" class="codetype"><span class="SCde">clock_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_clock_t" class="code-type"><span class="SCde">clock_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_double_t" class="codetype"><span class="SCde">double_t</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Libc_double_t" class="code-type"><span class="SCde">double_t</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_float_t" class="codetype"><span class="SCde">float_t</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Libc_float_t" class="code-type"><span class="SCde">float_t</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_fpos_t" class="codetype"><span class="SCde">fpos_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_fpos_t" class="code-type"><span class="SCde">fpos_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int16_t" class="codetype"><span class="SCde">int16_t</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Libc_int16_t" class="code-type"><span class="SCde">int16_t</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int32_t" class="codetype"><span class="SCde">int32_t</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_int32_t" class="code-type"><span class="SCde">int32_t</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int64_t" class="codetype"><span class="SCde">int64_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_int64_t" class="code-type"><span class="SCde">int64_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int8_t" class="codetype"><span class="SCde">int8_t</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Libc_int8_t" class="code-type"><span class="SCde">int8_t</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast16_t" class="codetype"><span class="SCde">int_fast16_t</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_int_fast16_t" class="code-type"><span class="SCde">int_fast16_t</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast32_t" class="codetype"><span class="SCde">int_fast32_t</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_int_fast32_t" class="code-type"><span class="SCde">int_fast32_t</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast64_t" class="codetype"><span class="SCde">int_fast64_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_int_fast64_t" class="code-type"><span class="SCde">int_fast64_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast8_t" class="codetype"><span class="SCde">int_fast8_t</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Libc_int_fast8_t" class="code-type"><span class="SCde">int_fast8_t</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least16_t" class="codetype"><span class="SCde">int_least16_t</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Libc_int_least16_t" class="code-type"><span class="SCde">int_least16_t</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least32_t" class="codetype"><span class="SCde">int_least32_t</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Libc_int_least32_t" class="code-type"><span class="SCde">int_least32_t</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least64_t" class="codetype"><span class="SCde">int_least64_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_int_least64_t" class="code-type"><span class="SCde">int_least64_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least8_t" class="codetype"><span class="SCde">int_least8_t</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Libc_int_least8_t" class="code-type"><span class="SCde">int_least8_t</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intmax_t" class="codetype"><span class="SCde">intmax_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_intmax_t" class="code-type"><span class="SCde">intmax_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intptr_t" class="codetype"><span class="SCde">intptr_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_intptr_t" class="code-type"><span class="SCde">intptr_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ptrdiff_t" class="codetype"><span class="SCde">ptrdiff_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_ptrdiff_t" class="code-type"><span class="SCde">ptrdiff_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_size_t" class="codetype"><span class="SCde">size_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_size_t" class="code-type"><span class="SCde">size_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_time_t" class="codetype"><span class="SCde">time_t</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Libc_time_t" class="code-type"><span class="SCde">time_t</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint16_t" class="codetype"><span class="SCde">uint16_t</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Libc_uint16_t" class="code-type"><span class="SCde">uint16_t</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint32_t" class="codetype"><span class="SCde">uint32_t</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc_uint32_t" class="code-type"><span class="SCde">uint32_t</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint64_t" class="codetype"><span class="SCde">uint64_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_uint64_t" class="code-type"><span class="SCde">uint64_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint8_t" class="codetype"><span class="SCde">uint8_t</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Libc_uint8_t" class="code-type"><span class="SCde">uint8_t</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast16_t" class="codetype"><span class="SCde">uint_fast16_t</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc_uint_fast16_t" class="code-type"><span class="SCde">uint_fast16_t</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast32_t" class="codetype"><span class="SCde">uint_fast32_t</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc_uint_fast32_t" class="code-type"><span class="SCde">uint_fast32_t</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast64_t" class="codetype"><span class="SCde">uint_fast64_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_uint_fast64_t" class="code-type"><span class="SCde">uint_fast64_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast8_t" class="codetype"><span class="SCde">uint_fast8_t</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Libc_uint_fast8_t" class="code-type"><span class="SCde">uint_fast8_t</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least16_t" class="codetype"><span class="SCde">uint_least16_t</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Libc_uint_least16_t" class="code-type"><span class="SCde">uint_least16_t</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least32_t" class="codetype"><span class="SCde">uint_least32_t</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Libc_uint_least32_t" class="code-type"><span class="SCde">uint_least32_t</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least64_t" class="codetype"><span class="SCde">uint_least64_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_uint_least64_t" class="code-type"><span class="SCde">uint_least64_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least8_t" class="codetype"><span class="SCde">uint_least8_t</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
+<td id="Libc_uint_least8_t" class="code-type"><span class="SCde">uint_least8_t</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintmax_t" class="codetype"><span class="SCde">uintmax_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_uintmax_t" class="code-type"><span class="SCde">uintmax_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintptr_t" class="codetype"><span class="SCde">uintptr_t</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Libc_uintptr_t" class="code-type"><span class="SCde">uintptr_t</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_va_list" class="codetype"><span class="SCde">va_list</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">CVaList</span></span></td>
+<td id="Libc_va_list" class="code-type"><span class="SCde">va_list</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">CVaList</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_wchar_t" class="codetype"><span class="SCde">wchar_t</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Libc_wchar_t" class="code-type"><span class="SCde">wchar_t</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_FILE"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">FILE</span></span>
+<td class="api-item">
+<span id="Libc_FILE"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">FILE</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc__Exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">_Exit</span></span>
+<td class="api-item">
+<span id="Libc__Exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">_Exit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> _Exit(status: <span class="STpe">s32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> _Exit(status: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_abort"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">abort</span></span>
+<td class="api-item">
+<span id="Libc_abort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">abort</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">abort</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">abort</span>()</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_abs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">abs</span></span>
+<td class="api-item">
+<span id="Libc_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">abs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">abs</span>(j: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">abs</span>(j: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_acos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acos</span></span>
+<td class="api-item">
+<span id="Libc_acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">acos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acos</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acos</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_acosf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acosf</span></span>
+<td class="api-item">
+<span id="Libc_acosf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">acosf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acosf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acosf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_acosh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acosh</span></span>
+<td class="api-item">
+<span id="Libc_acosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">acosh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acosh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acosh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_acoshf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acoshf</span></span>
+<td class="api-item">
+<span id="Libc_acoshf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">acoshf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acoshf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acoshf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_acrt_iob_func"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">acrt_iob_func</span></span>
+<td class="api-item">
+<span id="Libc_acrt_iob_func"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">acrt_iob_func</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acrt_iob_func</span>(index: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">acrt_iob_func</span>(index: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_aligned_alloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">aligned_alloc</span></span>
+<td class="api-item">
+<span id="Libc_aligned_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">aligned_alloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">aligned_alloc</span>(aligment: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">aligned_alloc</span>(aligment: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_asctime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asctime</span></span>
+<td class="api-item">
+<span id="Libc_asctime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">asctime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asctime</span>(timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asctime</span>(timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_asin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asin</span></span>
+<td class="api-item">
+<span id="Libc_asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">asin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asin</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asin</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_asinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinf</span></span>
+<td class="api-item">
+<span id="Libc_asinf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">asinf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_asinh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinh</span></span>
+<td class="api-item">
+<span id="Libc_asinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">asinh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_asinhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">asinhf</span></span>
+<td class="api-item">
+<span id="Libc_asinhf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">asinhf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">asinhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan</span></span>
+<td class="api-item">
+<span id="Libc_atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atan2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan2</span></span>
+<td class="api-item">
+<span id="Libc_atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atan2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan2</span>(y: <span class="STpe">f64</span>, x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan2</span>(y: <span class="STpe">f64</span>, x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atan2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atan2f</span></span>
+<td class="api-item">
+<span id="Libc_atan2f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atan2f</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan2f</span>(y: <span class="STpe">f32</span>, x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atan2f</span>(y: <span class="STpe">f32</span>, x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanf</span></span>
+<td class="api-item">
+<span id="Libc_atanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atanh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanh</span></span>
+<td class="api-item">
+<span id="Libc_atanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atanh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atanhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atanhf</span></span>
+<td class="api-item">
+<span id="Libc_atanhf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atanhf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atanhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atof</span></span>
+<td class="api-item">
+<span id="Libc_atof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atof</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atof</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atof</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atoi"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atoi</span></span>
+<td class="api-item">
+<span id="Libc_atoi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atoi</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atoi</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atoi</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atol"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atol</span></span>
+<td class="api-item">
+<span id="Libc_atol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atol</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atol</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atol</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_atoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">atoll</span></span>
+<td class="api-item">
+<span id="Libc_atoll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atoll</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atoll</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">atoll</span>(nptr: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_bsearch"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">bsearch</span></span>
+<td class="api-item">
+<span id="Libc_bsearch"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">bsearch</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bsearch</span>(key: *<span class="STpe">void</span>, base: *<span class="STpe">void</span>, nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, compar: *<span class="STpe">void</span>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bsearch</span>(key: *<span class="STpe">void</span>, base: *<span class="STpe">void</span>, nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, compar: *<span class="STpe">void</span>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_calloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">calloc</span></span>
+<td class="api-item">
+<span id="Libc_calloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">calloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">calloc</span>(nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">calloc</span>(nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_cbrt"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cbrt</span></span>
+<td class="api-item">
+<span id="Libc_cbrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">cbrt</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cbrt</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cbrt</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_cbrtf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cbrtf</span></span>
+<td class="api-item">
+<span id="Libc_cbrtf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">cbrtf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cbrtf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cbrtf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ceil"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ceil</span></span>
+<td class="api-item">
+<span id="Libc_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ceilf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ceilf</span></span>
+<td class="api-item">
+<span id="Libc_ceilf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ceilf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceilf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceilf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_clearerr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clearerr</span></span>
+<td class="api-item">
+<span id="Libc_clearerr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">clearerr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearerr</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearerr</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_clock"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">clock</span></span>
+<td class="api-item">
+<span id="Libc_clock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">clock</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clock</span>()-&gt;<span class="SCst">Libc</span>.<a href="#Libc_clock_t">clock_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clock</span>()-&gt;<span class="SCst">Libc</span>.<a href="#Libc_clock_t">clock_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_copysign"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">copysign</span></span>
+<td class="api-item">
+<span id="Libc_copysign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">copysign</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copysign</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copysign</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_copysignf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">copysignf</span></span>
+<td class="api-item">
+<span id="Libc_copysignf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">copysignf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copysignf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copysignf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_cos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cos</span></span>
+<td class="api-item">
+<span id="Libc_cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">cos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cos</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cos</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_cosf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cosf</span></span>
+<td class="api-item">
+<span id="Libc_cosf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">cosf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_cosh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">cosh</span></span>
+<td class="api-item">
+<span id="Libc_cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">cosh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_coshf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">coshf</span></span>
+<td class="api-item">
+<span id="Libc_coshf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">coshf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">coshf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">coshf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ctime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ctime</span></span>
+<td class="api-item">
+<span id="Libc_ctime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ctime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ctime</span>(timer: <span class="SKwd">const</span> *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ctime</span>(timer: <span class="SKwd">const</span> *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_difftime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">difftime</span></span>
+<td class="api-item">
+<span id="Libc_difftime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">difftime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">difftime</span>(time1: <span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>, time2: <span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">difftime</span>(time1: <span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>, time2: <span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_div"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">div</span></span>
+<td class="api-item">
+<span id="Libc_div"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">div</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">div</span>(numer: <span class="STpe">s32</span>, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_div_t">div_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">div</span>(numer: <span class="STpe">s32</span>, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_div_t">div_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_div_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">div_t</span></span>
+<td class="api-item">
+<span id="Libc_div_t"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">div_t</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L9" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">quot</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">quot</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rem</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">rem</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_erf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erf</span></span>
+<td class="api-item">
+<span id="Libc_erf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">erf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erf</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erf</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_erfc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erfc</span></span>
+<td class="api-item">
+<span id="Libc_erfc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">erfc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L90" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erfc</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erfc</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_erfcf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erfcf</span></span>
+<td class="api-item">
+<span id="Libc_erfcf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">erfcf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L91" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erfcf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erfcf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_erff"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">erff</span></span>
+<td class="api-item">
+<span id="Libc_erff"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">erff</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erff</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">erff</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exit</span></span>
+<td class="api-item">
+<span id="Libc_exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">exit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exit</span>(status: <span class="STpe">s32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exit</span>(status: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_exp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp</span></span>
+<td class="api-item">
+<span id="Libc_exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">exp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_exp2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp2</span></span>
+<td class="api-item">
+<span id="Libc_exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">exp2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp2</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp2</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_exp2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">exp2f</span></span>
+<td class="api-item">
+<span id="Libc_exp2f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">exp2f</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp2f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exp2f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_expf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expf</span></span>
+<td class="api-item">
+<span id="Libc_expf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">expf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_expm1"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expm1</span></span>
+<td class="api-item">
+<span id="Libc_expm1"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">expm1</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expm1</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expm1</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_expm1f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">expm1f</span></span>
+<td class="api-item">
+<span id="Libc_expm1f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">expm1f</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expm1f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expm1f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fabs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fabs</span></span>
+<td class="api-item">
+<span id="Libc_fabs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fabs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fabs</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fabs</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fabsf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fabsf</span></span>
+<td class="api-item">
+<span id="Libc_fabsf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fabsf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fabsf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fabsf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fclose"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fclose</span></span>
+<td class="api-item">
+<span id="Libc_fclose"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fclose</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fclose</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fclose</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fdim"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fdim</span></span>
+<td class="api-item">
+<span id="Libc_fdim"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fdim</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fdim</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fdim</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fdimf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fdimf</span></span>
+<td class="api-item">
+<span id="Libc_fdimf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fdimf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fdimf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fdimf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_feof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">feof</span></span>
+<td class="api-item">
+<span id="Libc_feof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">feof</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">feof</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">feof</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ferror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ferror</span></span>
+<td class="api-item">
+<span id="Libc_ferror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ferror</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ferror</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ferror</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fflush"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fflush</span></span>
+<td class="api-item">
+<span id="Libc_fflush"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fflush</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fflush</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fflush</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fgetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetc</span></span>
+<td class="api-item">
+<span id="Libc_fgetc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fgetc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgetc</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgetc</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fgetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgetpos</span></span>
+<td class="api-item">
+<span id="Libc_fgetpos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fgetpos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgetpos</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, pos: *<span class="SCst">Libc</span>.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgetpos</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, pos: *<span class="SCst">Libc</span>.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fgets"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fgets</span></span>
+<td class="api-item">
+<span id="Libc_fgets"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fgets</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgets</span>(s: *<span class="STpe">u8</span>, n: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fgets</span>(s: *<span class="STpe">u8</span>, n: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_floor"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">floor</span></span>
+<td class="api-item">
+<span id="Libc_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">floor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L99" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_floorf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">floorf</span></span>
+<td class="api-item">
+<span id="Libc_floorf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">floorf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floorf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floorf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fma</span></span>
+<td class="api-item">
+<span id="Libc_fma"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fma</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fma</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>, z: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fma</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>, z: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmaf</span></span>
+<td class="api-item">
+<span id="Libc_fmaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmaf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmaf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, z: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmaf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, z: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmax"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmax</span></span>
+<td class="api-item">
+<span id="Libc_fmax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmax</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmax</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmax</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmaxf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmaxf</span></span>
+<td class="api-item">
+<span id="Libc_fmaxf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmaxf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmaxf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmaxf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmin</span></span>
+<td class="api-item">
+<span id="Libc_fmin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L136" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmin</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmin</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fminf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fminf</span></span>
+<td class="api-item">
+<span id="Libc_fminf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fminf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fminf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fminf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmod"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmod</span></span>
+<td class="api-item">
+<span id="Libc_fmod"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmod</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmod</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmod</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fmodf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fmodf</span></span>
+<td class="api-item">
+<span id="Libc_fmodf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fmodf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmodf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fmodf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fopen</span></span>
+<td class="api-item">
+<span id="Libc_fopen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fopen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fopen</span>(filename: <span class="STpe">cstring</span>, mode: <span class="STpe">cstring</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fopen</span>(filename: <span class="STpe">cstring</span>, mode: <span class="STpe">cstring</span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fpclassify"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fpclassify</span></span>
+<td class="api-item">
+<span id="Libc_fpclassify"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fpclassify</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fpclassify</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fpclassify</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fpclassifyf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fpclassifyf</span></span>
+<td class="api-item">
+<span id="Libc_fpclassifyf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fpclassifyf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fpclassifyf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fpclassifyf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fprintf</span></span>
+<td class="api-item">
+<span id="Libc_fprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fprintf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fprintf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fputc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fputc</span></span>
+<td class="api-item">
+<span id="Libc_fputc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fputc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fputc</span>(s: <span class="STpe">cstring</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fputc</span>(s: <span class="STpe">cstring</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fread"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fread</span></span>
+<td class="api-item">
+<span id="Libc_fread"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fread</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fread</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fread</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_free"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">free</span></span>
+<td class="api-item">
+<span id="Libc_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(ptr: *<span class="STpe">void</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(ptr: *<span class="STpe">void</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_freopen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">freopen</span></span>
+<td class="api-item">
+<span id="Libc_freopen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">freopen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freopen</span>(filename: <span class="STpe">cstring</span>, mode: <span class="STpe">cstring</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freopen</span>(filename: <span class="STpe">cstring</span>, mode: <span class="STpe">cstring</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_frexp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">frexp</span></span>
+<td class="api-item">
+<span id="Libc_frexp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">frexp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frexp</span>(value: <span class="STpe">f64</span>, exp: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frexp</span>(value: <span class="STpe">f64</span>, exp: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_frexpf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">frexpf</span></span>
+<td class="api-item">
+<span id="Libc_frexpf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">frexpf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frexpf</span>(value: <span class="STpe">f32</span>, exp: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frexpf</span>(value: <span class="STpe">f32</span>, exp: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fscanf</span></span>
+<td class="api-item">
+<span id="Libc_fscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L159" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fscanf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fscanf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fseek"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fseek</span></span>
+<td class="api-item">
+<span id="Libc_fseek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fseek</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fseek</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, offset: <span class="STpe">s32</span>, whence: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fseek</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, offset: <span class="STpe">s32</span>, whence: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fsetpos"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fsetpos</span></span>
+<td class="api-item">
+<span id="Libc_fsetpos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fsetpos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fsetpos</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, pos: *<span class="SCst">Libc</span>.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fsetpos</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, pos: *<span class="SCst">Libc</span>.<a href="#Libc_fpos_t">fpos_t</a>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ftell"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ftell</span></span>
+<td class="api-item">
+<span id="Libc_ftell"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ftell</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ftell</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ftell</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_fwrite"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">fwrite</span></span>
+<td class="api-item">
+<span id="Libc_fwrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">fwrite</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fwrite</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fwrite</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, nmemb: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_getc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getc</span></span>
+<td class="api-item">
+<span id="Libc_getc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">getc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getc</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getc</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_getchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getchar</span></span>
+<td class="api-item">
+<span id="Libc_getchar"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">getchar</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getchar</span>()-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getchar</span>()-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_getenv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">getenv</span></span>
+<td class="api-item">
+<span id="Libc_getenv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">getenv</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getenv</span>(name: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getenv</span>(name: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_gmtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">gmtime</span></span>
+<td class="api-item">
+<span id="Libc_gmtime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">gmtime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gmtime</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gmtime</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_hypot"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">hypot</span></span>
+<td class="api-item">
+<span id="Libc_hypot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">hypot</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L81" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hypot</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hypot</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_hypotf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">hypotf</span></span>
+<td class="api-item">
+<span id="Libc_hypotf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">hypotf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hypotf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hypotf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ilogb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ilogb</span></span>
+<td class="api-item">
+<span id="Libc_ilogb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ilogb</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ilogb</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ilogb</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ilogbf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ilogbf</span></span>
+<td class="api-item">
+<span id="Libc_ilogbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ilogbf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ilogbf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ilogbf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isalnum"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isalnum</span></span>
+<td class="api-item">
+<span id="Libc_isalnum"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isalnum</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isalnum</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isalnum</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isalpha"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isalpha</span></span>
+<td class="api-item">
+<span id="Libc_isalpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isalpha</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isalpha</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isalpha</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isblank"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isblank</span></span>
+<td class="api-item">
+<span id="Libc_isblank"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isblank</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isblank</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isblank</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_iscntrl"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">iscntrl</span></span>
+<td class="api-item">
+<span id="Libc_iscntrl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">iscntrl</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L9" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">iscntrl</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">iscntrl</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isdigit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isdigit</span></span>
+<td class="api-item">
+<span id="Libc_isdigit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isdigit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isdigit</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isdigit</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isfinite"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isfinite</span></span>
+<td class="api-item">
+<span id="Libc_isfinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isfinite</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isfinite</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isfinite</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isfinite</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isgraph"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgraph</span></span>
+<td class="api-item">
+<span id="Libc_isgraph"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isgraph</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgraph</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgraph</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isgreater"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgreater</span></span>
+<td class="api-item">
+<span id="Libc_isgreater"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isgreater</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L197" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgreater</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgreater</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isgreater</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isgreaterequal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isgreaterequal</span></span>
+<td class="api-item">
+<span id="Libc_isgreaterequal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isgreaterequal</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgreaterequal</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isgreaterequal</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isgreaterequal</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isinf</span></span>
+<td class="api-item">
+<span id="Libc_isinf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isinf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isinf</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isless"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isless</span></span>
+<td class="api-item">
+<span id="Libc_isless"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isless</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L201" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isless</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isless</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isless</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_islessequal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islessequal</span></span>
+<td class="api-item">
+<span id="Libc_islessequal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">islessequal</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islessequal</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islessequal</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">islessequal</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_islessgreater"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islessgreater</span></span>
+<td class="api-item">
+<span id="Libc_islessgreater"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">islessgreater</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islessgreater</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islessgreater</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">islessgreater</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_islower"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">islower</span></span>
+<td class="api-item">
+<span id="Libc_islower"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">islower</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islower</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">islower</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isnan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isnan</span></span>
+<td class="api-item">
+<span id="Libc_isnan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isnan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isnan</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isnan</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isnan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isnormal"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isnormal</span></span>
+<td class="api-item">
+<span id="Libc_isnormal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isnormal</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isnormal</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isnormal</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isnormal</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isprint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isprint</span></span>
+<td class="api-item">
+<span id="Libc_isprint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isprint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isprint</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isprint</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ispunct"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ispunct</span></span>
+<td class="api-item">
+<span id="Libc_ispunct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ispunct</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ispunct</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ispunct</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isspace"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isspace</span></span>
+<td class="api-item">
+<span id="Libc_isspace"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isspace</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isspace</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isspace</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isunordered"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isunordered</span></span>
+<td class="api-item">
+<span id="Libc_isunordered"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isunordered</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L185" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isunordered</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isunordered</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
 <span class="SKwd">func</span> <span class="SFct">isunordered</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isupper"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isupper</span></span>
+<td class="api-item">
+<span id="Libc_isupper"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isupper</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isupper</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isupper</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_isxdigi"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">isxdigi</span></span>
+<td class="api-item">
+<span id="Libc_isxdigi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">isxdigi</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isxdigi</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isxdigi</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_labs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">labs</span></span>
+<td class="api-item">
+<span id="Libc_labs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">labs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">labs</span>(j: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">labs</span>(j: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ldexp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldexp</span></span>
+<td class="api-item">
+<span id="Libc_ldexp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldexp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldexp</span>(x: <span class="STpe">f64</span>, exp: <span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldexp</span>(x: <span class="STpe">f64</span>, exp: <span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ldexpf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldexpf</span></span>
+<td class="api-item">
+<span id="Libc_ldexpf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldexpf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldexpf</span>(x: <span class="STpe">f32</span>, exp: <span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldexpf</span>(x: <span class="STpe">f32</span>, exp: <span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv</span></span>
+<td class="api-item">
+<span id="Libc_ldiv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldiv</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldiv</span>(numer: <span class="STpe">s32</span>, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_ldiv_t">ldiv_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ldiv</span>(numer: <span class="STpe">s32</span>, denom: <span class="STpe">s32</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_ldiv_t">ldiv_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">ldiv_t</span></span>
+<td class="api-item">
+<span id="Libc_ldiv_t"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldiv_t</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">quot</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">quot</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rem</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">rem</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lgamma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lgamma</span></span>
+<td class="api-item">
+<span id="Libc_lgamma"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lgamma</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lgamma</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lgamma</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lgammaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lgammaf</span></span>
+<td class="api-item">
+<span id="Libc_lgammaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lgammaf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lgammaf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lgammaf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_llabs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llabs</span></span>
+<td class="api-item">
+<span id="Libc_llabs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llabs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llabs</span>(j: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llabs</span>(j: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lldiv"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv</span></span>
+<td class="api-item">
+<span id="Libc_lldiv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lldiv</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lldiv</span>(numer: <span class="STpe">s64</span>, denom: <span class="STpe">s64</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_lldiv_t">lldiv_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lldiv</span>(numer: <span class="STpe">s64</span>, denom: <span class="STpe">s64</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_lldiv_t">lldiv_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lldiv_t"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">lldiv_t</span></span>
+<td class="api-item">
+<span id="Libc_lldiv_t"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lldiv_t</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">quot</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde">quot</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rem</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td class="code-type"><span class="SCde">rem</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_llrint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llrint</span></span>
+<td class="api-item">
+<span id="Libc_llrint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llrint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llrint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llrint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_llrintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llrintf</span></span>
+<td class="api-item">
+<span id="Libc_llrintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llrintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llrintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llrintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_llround"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llround</span></span>
+<td class="api-item">
+<span id="Libc_llround"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llround</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llround</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llround</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_llroundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">llroundf</span></span>
+<td class="api-item">
+<span id="Libc_llroundf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llroundf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llroundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">llroundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_localtime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">localtime</span></span>
+<td class="api-item">
+<span id="Libc_localtime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">localtime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localtime</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localtime</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;*<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log</span></span>
+<td class="api-item">
+<span id="Libc_log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log10"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log10</span></span>
+<td class="api-item">
+<span id="Libc_log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log10</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log10</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log10</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log10f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log10f</span></span>
+<td class="api-item">
+<span id="Libc_log10f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log10f</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L63" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log10f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log10f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log1p"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log1p</span></span>
+<td class="api-item">
+<span id="Libc_log1p"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log1p</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log1p</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log1p</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log1pf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log1pf</span></span>
+<td class="api-item">
+<span id="Libc_log1pf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log1pf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log1pf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log1pf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log2"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log2</span></span>
+<td class="api-item">
+<span id="Libc_log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log2</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log2</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_log2f"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">log2f</span></span>
+<td class="api-item">
+<span id="Libc_log2f"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">log2f</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log2f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">log2f</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_logb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logb</span></span>
+<td class="api-item">
+<span id="Libc_logb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">logb</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logb</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logb</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_logbf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logbf</span></span>
+<td class="api-item">
+<span id="Libc_logbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">logbf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logbf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logbf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_logf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">logf</span></span>
+<td class="api-item">
+<span id="Libc_logf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">logf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">logf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lrint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lrint</span></span>
+<td class="api-item">
+<span id="Libc_lrint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lrint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lrint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lrint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lrintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lrintf</span></span>
+<td class="api-item">
+<span id="Libc_lrintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lrintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lrintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lrintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lround"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lround</span></span>
+<td class="api-item">
+<span id="Libc_lround"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lround</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lround</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lround</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_lroundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">lroundf</span></span>
+<td class="api-item">
+<span id="Libc_lroundf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lroundf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lroundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lroundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_malloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">malloc</span></span>
+<td class="api-item">
+<span id="Libc_malloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">malloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">malloc</span>(size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">malloc</span>(size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_mblen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mblen</span></span>
+<td class="api-item">
+<span id="Libc_mblen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mblen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mblen</span>(s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mblen</span>(s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_mbstowcs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mbstowcs</span></span>
+<td class="api-item">
+<span id="Libc_mbstowcs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mbstowcs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbstowcs</span>(pwcs: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbstowcs</span>(pwcs: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_mbtowc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mbtowc</span></span>
+<td class="api-item">
+<span id="Libc_mbtowc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mbtowc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbtowc</span>(pwc: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mbtowc</span>(pwc: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, s: <span class="STpe">cstring</span>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_memchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memchr</span></span>
+<td class="api-item">
+<span id="Libc_memchr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">memchr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memchr</span>(ptr: <span class="SKwd">const</span> *<span class="STpe">void</span>, value: <span class="STpe">s32</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memchr</span>(ptr: <span class="SKwd">const</span> *<span class="STpe">void</span>, value: <span class="STpe">s32</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_memcmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memcmp</span></span>
+<td class="api-item">
+<span id="Libc_memcmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">memcmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memcmp</span>(ptr1: <span class="SKwd">const</span> *<span class="STpe">void</span>, ptr2: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memcmp</span>(ptr1: <span class="SKwd">const</span> *<span class="STpe">void</span>, ptr2: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_memcpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memcpy</span></span>
+<td class="api-item">
+<span id="Libc_memcpy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">memcpy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memcpy</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memcpy</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_memmove"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memmove</span></span>
+<td class="api-item">
+<span id="Libc_memmove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">memmove</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memmove</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memmove</span>(dst: *<span class="STpe">void</span>, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_memset"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">memset</span></span>
+<td class="api-item">
+<span id="Libc_memset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">memset</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memset</span>(ptr: *<span class="STpe">void</span>, value: <span class="STpe">s32</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memset</span>(ptr: *<span class="STpe">void</span>, value: <span class="STpe">s32</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_mktime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">mktime</span></span>
+<td class="api-item">
+<span id="Libc_mktime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mktime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mktime</span>(timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mktime</span>(timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_modf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">modf</span></span>
+<td class="api-item">
+<span id="Libc_modf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">modf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L70" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">modf</span>(value: <span class="STpe">f64</span>, iptr: *<span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">modf</span>(value: <span class="STpe">f64</span>, iptr: *<span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_modff"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">modff</span></span>
+<td class="api-item">
+<span id="Libc_modff"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">modff</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">modff</span>(value: <span class="STpe">f32</span>, iptr: *<span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">modff</span>(value: <span class="STpe">f32</span>, iptr: *<span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nan</span></span>
+<td class="api-item">
+<span id="Libc_nan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L127" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nan</span>(tagp: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nan</span>(tagp: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nanf</span></span>
+<td class="api-item">
+<span id="Libc_nanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nanf</span>(tagp: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nanf</span>(tagp: <span class="STpe">cstring</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nearbyint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nearbyint</span></span>
+<td class="api-item">
+<span id="Libc_nearbyint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nearbyint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearbyint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearbyint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nearbyintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nearbyintf</span></span>
+<td class="api-item">
+<span id="Libc_nearbyintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nearbyintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearbyintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearbyintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nextafter"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nextafter</span></span>
+<td class="api-item">
+<span id="Libc_nextafter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nextafter</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextafter</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextafter</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_nextafterf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">nextafterf</span></span>
+<td class="api-item">
+<span id="Libc_nextafterf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">nextafterf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextafterf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextafterf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_perror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">perror</span></span>
+<td class="api-item">
+<span id="Libc_perror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">perror</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perror</span>(s: <span class="STpe">cstring</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perror</span>(s: <span class="STpe">cstring</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_pow"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">pow</span></span>
+<td class="api-item">
+<span id="Libc_pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">pow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pow</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pow</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_powf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">powf</span></span>
+<td class="api-item">
+<span id="Libc_powf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">powf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L84" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">powf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">powf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_printf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">printf</span></span>
+<td class="api-item">
+<span id="Libc_printf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">printf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_putc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putc</span></span>
+<td class="api-item">
+<span id="Libc_putc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">putc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">putc</span>(c: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">putc</span>(c: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_putchar"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">putchar</span></span>
+<td class="api-item">
+<span id="Libc_putchar"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">putchar</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">putchar</span>()-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">putchar</span>()-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_puts"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">puts</span></span>
+<td class="api-item">
+<span id="Libc_puts"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">puts</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">puts</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">puts</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_qsort"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">qsort</span></span>
+<td class="api-item">
+<span id="Libc_qsort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">qsort</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">qsort</span>(base: *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, compar: *<span class="STpe">void</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">qsort</span>(base: *<span class="STpe">void</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, compar: *<span class="STpe">void</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_quick_exit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">quick_exit</span></span>
+<td class="api-item">
+<span id="Libc_quick_exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">quick_exit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quick_exit</span>(status: <span class="STpe">s32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quick_exit</span>(status: <span class="STpe">s32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_rand"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rand</span></span>
+<td class="api-item">
+<span id="Libc_rand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rand</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rand</span>()-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rand</span>()-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_realloc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">realloc</span></span>
+<td class="api-item">
+<span id="Libc_realloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">realloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_remainder"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remainder</span></span>
+<td class="api-item">
+<span id="Libc_remainder"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">remainder</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainder</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainder</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_remainderf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remainderf</span></span>
+<td class="api-item">
+<span id="Libc_remainderf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">remainderf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainderf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainderf</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_remove"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remove</span></span>
+<td class="api-item">
+<span id="Libc_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">remove</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(filename: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(filename: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_remquo"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remquo</span></span>
+<td class="api-item">
+<span id="Libc_remquo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">remquo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remquo</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>, quo: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remquo</span>(x: <span class="STpe">f64</span>, y: <span class="STpe">f64</span>, quo: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_remquof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">remquof</span></span>
+<td class="api-item">
+<span id="Libc_remquof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">remquof</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remquof</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, quo: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remquof</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, quo: *<span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_rename"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rename</span></span>
+<td class="api-item">
+<span id="Libc_rename"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rename</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rename</span>(old: <span class="STpe">cstring</span>, new: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rename</span>(old: <span class="STpe">cstring</span>, new: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_rewind"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rewind</span></span>
+<td class="api-item">
+<span id="Libc_rewind"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rewind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rewind</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rewind</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_rint"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rint</span></span>
+<td class="api-item">
+<span id="Libc_rint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rint</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_rintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">rintf</span></span>
+<td class="api-item">
+<span id="Libc_rintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rintf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_round"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">round</span></span>
+<td class="api-item">
+<span id="Libc_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">round</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_roundf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">roundf</span></span>
+<td class="api-item">
+<span id="Libc_roundf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">roundf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roundf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_scalbln"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbln</span></span>
+<td class="api-item">
+<span id="Libc_scalbln"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">scalbln</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbln</span>(x: <span class="STpe">f64</span>, n: <span class="STpe">s32</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbln</span>(x: <span class="STpe">f64</span>, n: <span class="STpe">s32</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_scalblnf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalblnf</span></span>
+<td class="api-item">
+<span id="Libc_scalblnf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">scalblnf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalblnf</span>(x: <span class="STpe">f32</span>, n: <span class="STpe">s32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalblnf</span>(x: <span class="STpe">f32</span>, n: <span class="STpe">s32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_scalbn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbn</span></span>
+<td class="api-item">
+<span id="Libc_scalbn"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">scalbn</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbn</span>(x: <span class="STpe">f64</span>, n: <span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbn</span>(x: <span class="STpe">f64</span>, n: <span class="STpe">s64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_scalbnf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scalbnf</span></span>
+<td class="api-item">
+<span id="Libc_scalbnf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">scalbnf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbnf</span>(x: <span class="STpe">f32</span>, n: <span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scalbnf</span>(x: <span class="STpe">f32</span>, n: <span class="STpe">s64</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_scanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">scanf</span></span>
+<td class="api-item">
+<span id="Libc_scanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">scanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scanf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scanf</span>(format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_setbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setbuf</span></span>
+<td class="api-item">
+<span id="Libc_setbuf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">setbuf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setbuf</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, buf: *<span class="STpe">u8</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setbuf</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, buf: *<span class="STpe">u8</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_setvbuf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">setvbuf</span></span>
+<td class="api-item">
+<span id="Libc_setvbuf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">setvbuf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setvbuf</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, buf: *<span class="STpe">u8</span>, mode: <span class="STpe">s64</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setvbuf</span>(stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, buf: *<span class="STpe">u8</span>, mode: <span class="STpe">s64</span>, size: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_signbit"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">signbit</span></span>
+<td class="api-item">
+<span id="Libc_signbit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">signbit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signbit</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signbit</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SFct">signbit</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sin"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sin</span></span>
+<td class="api-item">
+<span id="Libc_sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sin</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sin</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sinf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinf</span></span>
+<td class="api-item">
+<span id="Libc_sinf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sinf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sinh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinh</span></span>
+<td class="api-item">
+<span id="Libc_sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sinh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sinhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sinhf</span></span>
+<td class="api-item">
+<span id="Libc_sinhf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sinhf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sinhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_snprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">snprintf</span></span>
+<td class="api-item">
+<span id="Libc_snprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">snprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">snprintf</span>(s: *<span class="STpe">u8</span>, count: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">snprintf</span>(s: *<span class="STpe">u8</span>, count: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sprintf</span></span>
+<td class="api-item">
+<span id="Libc_sprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sqrt"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sqrt</span></span>
+<td class="api-item">
+<span id="Libc_sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sqrt</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sqrt</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sqrt</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sqrtf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sqrtf</span></span>
+<td class="api-item">
+<span id="Libc_sqrtf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sqrtf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sqrtf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sqrtf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_srand"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">srand</span></span>
+<td class="api-item">
+<span id="Libc_srand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">srand</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">srand</span>(seed: <span class="STpe">u32</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">srand</span>(seed: <span class="STpe">u32</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_sscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">sscanf</span></span>
+<td class="api-item">
+<span id="Libc_sscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">sscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sscanf</span>(s: <span class="STpe">cstring</span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sscanf</span>(s: <span class="STpe">cstring</span>, format: <span class="STpe">cstring</span>, args: <span class="STpe">cvarargs</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_stdio_common_vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfprintf</span></span>
+<td class="api-item">
+<span id="Libc_stdio_common_vfprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">stdio_common_vfprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_stdio_common_vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vfscanf</span></span>
+<td class="api-item">
+<span id="Libc_stdio_common_vfscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">stdio_common_vfscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L70" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_stdio_common_vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vsprintf</span></span>
+<td class="api-item">
+<span id="Libc_stdio_common_vsprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">stdio_common_vsprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_stdio_common_vsscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">stdio_common_vsscanf</span></span>
+<td class="api-item">
+<span id="Libc_stdio_common_vsscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">stdio_common_vsscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: *<span class="STpe">void</span>, _ArgList: *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strcat"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcat</span></span>
+<td class="api-item">
+<span id="Libc_strcat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strcat</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcat</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcat</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strchr</span></span>
+<td class="api-item">
+<span id="Libc_strchr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strchr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strchr</span>(str: <span class="STpe">cstring</span>, character: <span class="STpe">s32</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strchr</span>(str: <span class="STpe">cstring</span>, character: <span class="STpe">s32</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strcmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcmp</span></span>
+<td class="api-item">
+<span id="Libc_strcmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strcmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strcoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcoll</span></span>
+<td class="api-item">
+<span id="Libc_strcoll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strcoll</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcoll</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcoll</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strcpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcpy</span></span>
+<td class="api-item">
+<span id="Libc_strcpy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strcpy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcpy</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcpy</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strcspn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strcspn</span></span>
+<td class="api-item">
+<span id="Libc_strcspn"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strcspn</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcspn</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strcspn</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strerror"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strerror</span></span>
+<td class="api-item">
+<span id="Libc_strerror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strerror</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strerror</span>(errnum: <span class="STpe">s32</span>)-&gt;<span class="STpe">cstring</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strerror</span>(errnum: <span class="STpe">s32</span>)-&gt;<span class="STpe">cstring</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strftime"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strftime</span></span>
+<td class="api-item">
+<span id="Libc_strftime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strftime</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L9" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strftime</span>(s: *<span class="STpe">u8</span>, maxsize: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="SKwd">const</span> *<span class="STpe">u8</span>, timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strftime</span>(s: *<span class="STpe">u8</span>, maxsize: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="SKwd">const</span> *<span class="STpe">u8</span>, timeptr: *<span class="SCst">Libc</span>.<a href="#Libc_tm">tm</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strlen"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strlen</span></span>
+<td class="api-item">
+<span id="Libc_strlen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strlen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strlen</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strlen</span>(s: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strncat"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncat</span></span>
+<td class="api-item">
+<span id="Libc_strncat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strncat</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncat</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncat</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strncmp"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncmp</span></span>
+<td class="api-item">
+<span id="Libc_strncmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strncmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strncpy"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strncpy</span></span>
+<td class="api-item">
+<span id="Libc_strncpy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strncpy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncpy</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strncpy</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strpbrk"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strpbrk</span></span>
+<td class="api-item">
+<span id="Libc_strpbrk"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strpbrk</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strpbrk</span>(str1: *<span class="STpe">u8</span>, str2: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strpbrk</span>(str1: *<span class="STpe">u8</span>, str2: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strrchr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strrchr</span></span>
+<td class="api-item">
+<span id="Libc_strrchr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strrchr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strrchr</span>(str: *<span class="STpe">u8</span>, character: <span class="STpe">s32</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strrchr</span>(str: *<span class="STpe">u8</span>, character: <span class="STpe">s32</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strspn"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strspn</span></span>
+<td class="api-item">
+<span id="Libc_strspn"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strspn</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strspn</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strspn</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strstr"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strstr</span></span>
+<td class="api-item">
+<span id="Libc_strstr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strstr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strstr</span>(str1: *<span class="STpe">u8</span>, str2: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strstr</span>(str1: *<span class="STpe">u8</span>, str2: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtod"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtod</span></span>
+<td class="api-item">
+<span id="Libc_strtod"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtod</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtod</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtod</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtof"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtof</span></span>
+<td class="api-item">
+<span id="Libc_strtof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtof</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtof</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtof</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtok"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtok</span></span>
+<td class="api-item">
+<span id="Libc_strtok"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtok</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtok</span>(str: *<span class="STpe">u8</span>, delimiters: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtok</span>(str: *<span class="STpe">u8</span>, delimiters: <span class="STpe">cstring</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtol"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtol</span></span>
+<td class="api-item">
+<span id="Libc_strtol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtol</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtol</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtol</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtoll"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoll</span></span>
+<td class="api-item">
+<span id="Libc_strtoll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoll</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoll</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoll</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtoul"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoul</span></span>
+<td class="api-item">
+<span id="Libc_strtoul"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoul</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoul</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">u32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoul</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">u32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strtoull"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strtoull</span></span>
+<td class="api-item">
+<span id="Libc_strtoull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoull</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoull</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">u64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strtoull</span>(nptr: <span class="STpe">cstring</span>, endptr: **<span class="STpe">u8</span>, base: <span class="STpe">s32</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_strxfrm"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">strxfrm</span></span>
+<td class="api-item">
+<span id="Libc_strxfrm"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strxfrm</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\string.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strxfrm</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">strxfrm</span>(dst: *<span class="STpe">u8</span>, src: <span class="STpe">cstring</span>, num: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_system"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">system</span></span>
+<td class="api-item">
+<span id="Libc_system"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">system</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">system</span>(cmd: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">system</span>(cmd: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tan"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tan</span></span>
+<td class="api-item">
+<span id="Libc_tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanf</span></span>
+<td class="api-item">
+<span id="Libc_tanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tanh"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanh</span></span>
+<td class="api-item">
+<span id="Libc_tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tanh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanh</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tanhf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tanhf</span></span>
+<td class="api-item">
+<span id="Libc_tanhf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tanhf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tanhf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tgamma"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tgamma</span></span>
+<td class="api-item">
+<span id="Libc_tgamma"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tgamma</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tgamma</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tgamma</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tgammaf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tgammaf</span></span>
+<td class="api-item">
+<span id="Libc_tgammaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tgammaf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tgammaf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tgammaf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_time"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">time</span></span>
+<td class="api-item">
+<span id="Libc_time"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">time</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">time</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">time</span>(timer: *<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_time_t">time_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tm"><span class="titletype">struct</span> <span class="titlelight">Libc.</span><span class="titlestrong">tm</span></span>
+<td class="api-item">
+<span id="Libc_tm"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tm</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\time.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">tm_sec</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_sec</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_min</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_min</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_hour</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_hour</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_mday</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_mday</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_mon</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_mon</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_year</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_year</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_wday</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_wday</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_yday</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_yday</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tm_isdst</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">tm_isdst</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tmpfile"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpfile</span></span>
+<td class="api-item">
+<span id="Libc_tmpfile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tmpfile</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpfile</span>()-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpfile</span>()-&gt;*<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tmpnam"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tmpnam</span></span>
+<td class="api-item">
+<span id="Libc_tmpnam"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tmpnam</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpnam</span>(s: *<span class="STpe">u8</span>)-&gt;*<span class="STpe">u8</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tmpnam</span>(s: *<span class="STpe">u8</span>)-&gt;*<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_tolower"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">tolower</span></span>
+<td class="api-item">
+<span id="Libc_tolower"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">tolower</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tolower</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tolower</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_toupper"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">toupper</span></span>
+<td class="api-item">
+<span id="Libc_toupper"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">toupper</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\ctype.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toupper</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toupper</span>(c: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_trunc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">trunc</span></span>
+<td class="api-item">
+<span id="Libc_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_truncf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">truncf</span></span>
+<td class="api-item">
+<span id="Libc_truncf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">truncf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\math.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">truncf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">truncf</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_ungetc"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">ungetc</span></span>
+<td class="api-item">
+<span id="Libc_ungetc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ungetc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ungetc</span>(c: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ungetc</span>(c: <span class="STpe">s64</span>, stream: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_va_end"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_end</span></span>
+<td class="api-item">
+<span id="Libc_va_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">va_end</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdarg.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">va_end</span>(vl: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_va_start"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">va_start</span></span>
+<td class="api-item">
+<span id="Libc_va_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">va_start</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdarg.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">va_start</span>(vl: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>, dummy: <span class="STpe">any</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vfprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfprintf</span></span>
+<td class="api-item">
+<span id="Libc_vfprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vfprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vfprintf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vfprintf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vfscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vfscanf</span></span>
+<td class="api-item">
+<span id="Libc_vfscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vfscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vfscanf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vfscanf</span>(file: *<span class="SCst">Libc</span>.<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vprintf</span></span>
+<td class="api-item">
+<span id="Libc_vprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vprintf</span>(format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vprintf</span>(format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vscanf</span></span>
+<td class="api-item">
+<span id="Libc_vscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vscanf</span>(format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vscanf</span>(format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vsnprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsnprintf</span></span>
+<td class="api-item">
+<span id="Libc_vsnprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vsnprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsnprintf</span>(s: *<span class="STpe">u8</span>, count: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsnprintf</span>(s: *<span class="STpe">u8</span>, count: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vsprintf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsprintf</span></span>
+<td class="api-item">
+<span id="Libc_vsprintf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vsprintf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsprintf</span>(s: *<span class="STpe">u8</span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_vsscanf"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">vsscanf</span></span>
+<td class="api-item">
+<span id="Libc_vsscanf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">vsscanf</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdio.swg#L191" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsscanf</span>(s: <span class="STpe">cstring</span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vsscanf</span>(s: <span class="STpe">cstring</span>, format: <span class="STpe">cstring</span>, args: *<span class="SCst">Swag</span>.<span class="SCst">CVaList</span>)-&gt;<span class="STpe">s64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_wcstombs"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">wcstombs</span></span>
+<td class="api-item">
+<span id="Libc_wcstombs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">wcstombs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wcstombs</span>(s: *<span class="STpe">u8</span>, pwcs: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wcstombs</span>(s: *<span class="STpe">u8</span>, pwcs: *<span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>, n: <span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a>)-&gt;<span class="SCst">Libc</span>.<a href="#Libc_size_t">size_t</a></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Libc_wctomb"><span class="titletype">func</span> <span class="titlelight">Libc.</span><span class="titlestrong">wctomb</span></span>
+<td class="api-item">
+<span id="Libc_wctomb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">wctomb</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 </div>
 </div>

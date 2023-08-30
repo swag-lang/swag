@@ -21,14 +21,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -61,7 +61,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -84,10 +84,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -96,7 +93,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -105,9 +102,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -125,7 +136,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -134,17 +145,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -158,15 +158,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -176,7 +173,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -185,7 +182,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -203,17 +203,17 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1 id="Script_file">Script file </h1>
-<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="incode">swgs</code>: </p>
-<div class="precode"><code><span class="SCde">$ swag new -f:myScript
+<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="inline-code">swgs</code>: </p>
+<div class="code-block"><code><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
 =&gt; type 'swag script -f:myScript.swgs' to run that script</span></code>
 </div>
-<p>This will generate a simple file with a <code class="incode">#dependency</code> block and one <code class="incode">#run</code> compiler function. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
+<p>This will generate a simple file with a <code class="inline-code">#dependency</code> block and one <code class="inline-code">#run</code> compiler function. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Here you can add your external dependencies</span>
@@ -225,15 +225,15 @@
     <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
 }</span></code>
 </div>
-<p>You can then run your script with the <code class="incode">script</code> command. </p>
-<div class="precode"><code><span class="SCde">$ swag script -f:myScript
+<p>You can then run your script with the <code class="inline-code">script</code> command. </p>
+<div class="code-block"><code><span class="SCde">$ swag script -f:myScript
 Hello world !</span></code>
 </div>
 <p>You can also just specify the script file <b>with the extension</b> as a command. </p>
-<div class="precode"><code><span class="SCde">$ swag myScript.swgs
+<div class="code-block"><code><span class="SCde">$ swag myScript.swgs
 Hello world !</span></code>
 </div>
-<p>You will find a bunch of small scripts in <code class="incode">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="incode">swag flappy.swgs</code>. </p>
+<p>You will find a bunch of small scripts in <code class="inline-code">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="inline-code">swag flappy.swgs</code>. </p>
 <p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
@@ -241,7 +241,7 @@ Hello world !</span></code>
 </div></p>
 <h2 id="Dependencies">Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
     <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
@@ -249,19 +249,19 @@ Hello world !</span></code>
 </div>
 <p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
 <ul>
-<li>To locate the Swag cache folder, add <code class="incode">--verbose-path</code> to the command line.</li>
-<li>To force the build of dependencies, add <code class="incode">--rebuildall</code> to the command line.</li>
+<li>To locate the Swag cache folder, add <code class="inline-code">--verbose-path</code> to the command line.</li>
+<li>To force the build of dependencies, add <code class="inline-code">--rebuildall</code> to the command line.</li>
 </ul>
 <h2 id="More_than_one_script_file">More than one script file </h2>
-<p>If your script is divided in more than one single file, you can add <code class="incode">#load &lt;filename&gt;</code> in the <code class="incode">#dependencies</code> block. </p>
-<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<p>If your script is divided in more than one single file, you can add <code class="inline-code">#load &lt;filename&gt;</code> in the <code class="inline-code">#dependencies</code> block. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
     <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
 }</span></code>
 </div>
 <h2 id="Debug">Debug </h2>
-<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <code class="incode">@breakpoint()</code> in your code when you want the debugger to trigger. </p>
+<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <code class="inline-code">@breakpoint()</code> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 </div>
 </div>

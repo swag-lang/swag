@@ -21,14 +21,14 @@
             overflow-y: scroll;
             width:      500px;
         }
-        .leftpage {
+        .left-page {
             margin:     10px;
         }
         .right {
             display:    block;
             width:      100%;
         }
-        .rightpage {
+        .right-page {
             max-width:  1024px;
             margin:     10px auto;
         }
@@ -61,7 +61,7 @@
             .left {
                 display: none;
             }
-            .rightpage {
+            .right-page {
                 margin:  10px;
             }
         }
@@ -91,10 +91,7 @@
         .container a {
             color:              DoggerBlue;
         }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
+        .code-type a {
             color:              inherit;
         }
         .left a, .enumeration a {
@@ -103,7 +100,7 @@
         .container a:hover {
             text-decoration:    underline;
         }
-        table.item {
+        table.api-item {
             border-collapse:    separate;
             background-color:   Black;
             color:              White;
@@ -112,9 +109,23 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .item td:first-child {
+        .api-item td:first-child {
             width:              33%;
             white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
         }
         table.enumeration {
             border:             1px solid LightGrey;
@@ -132,7 +143,7 @@
             background-color:   #f8f8f8;
             white-space:        nowrap;
         }
-        .codetype {
+        .code-type {
             background-color:   #eeeeee;
         }
         .container td:last-child {
@@ -141,17 +152,6 @@
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
         }
         .left h3 {
             background-color:   Black;
@@ -165,15 +165,12 @@
         .right h2 {
             margin-top:         35px;
         }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
+        .inline-code {
             background-color:   #eeeeee;
             padding:            2px;
             border: 1px dotted  #cccccc;
         }
-        .tdname .incode {
+        .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
@@ -183,7 +180,7 @@
             white-space:        break-spaces;
             overflow-wrap:      break-word;
         }
-        .precode {
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -192,7 +189,10 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-    .SCde { color: #222222; }
+        .code-block a {
+            color:  inherit; 
+        }
+            .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -210,7 +210,7 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="left">
-<div class="leftpage">
+<div class="left-page">
 <h2>Table of Contents</h2>
 <h3>Namespaces</h3>
 <h4></h4>
@@ -486,271 +486,271 @@
 </div>
 </div>
 <div class="right">
-<div class="rightpage">
+<div class="right-page">
 <blockquote>
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
 <h1>Swag Runtime</h1>
 <h1>Content</h1>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_F32_Bias"><span class="titletype">const</span> <span class="titlelight">F32.</span><span class="titlestrong">Constants</span></span>
+<td class="api-item">
+<span id="Swag_F32_Bias"><span class="api-item-title-kind">const</span> <span class="api-item-title-light">F32.</span><span class="api-item-title-strong">Constants</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td id="Swag_F32_Bias" class="codetype"><span class="SCst">Bias</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F32_Bias" class="code-type"><span class="SCst">Bias</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_ExpBits" class="codetype"><span class="SCst">ExpBits</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F32_ExpBits" class="code-type"><span class="SCst">ExpBits</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Inf" class="codetype"><span class="SCst">Inf</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Swag_F32_Inf" class="code-type"><span class="SCst">Inf</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_MantBits" class="codetype"><span class="SCst">MantBits</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F32_MantBits" class="code-type"><span class="SCst">MantBits</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Swag_F32_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Swag_F32_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Nan" class="codetype"><span class="SCst">Nan</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Swag_F32_Nan" class="code-type"><span class="SCst">Nan</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_NegInf" class="codetype"><span class="SCst">NegInf</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td id="Swag_F32_NegInf" class="code-type"><span class="SCst">NegInf</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Bias" class="codetype"><span class="SCst">Bias</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F64_Bias" class="code-type"><span class="SCst">Bias</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_ExpBits" class="codetype"><span class="SCst">ExpBits</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F64_ExpBits" class="code-type"><span class="SCst">ExpBits</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Inf" class="codetype"><span class="SCst">Inf</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Swag_F64_Inf" class="code-type"><span class="SCst">Inf</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_MantBits" class="codetype"><span class="SCst">MantBits</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_F64_MantBits" class="code-type"><span class="SCst">MantBits</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Swag_F64_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Swag_F64_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Nan" class="codetype"><span class="SCst">Nan</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Swag_F64_Nan" class="code-type"><span class="SCst">Nan</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_NegInf" class="codetype"><span class="SCst">NegInf</span></td>
-<td class="codetype"><span class="STpe">f64</span></td>
+<td id="Swag_F64_NegInf" class="code-type"><span class="SCst">NegInf</span></td>
+<td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_MaxErrors" class="codetype"><span class="SCst">MaxErrors</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_MaxErrors" class="code-type"><span class="SCst">MaxErrors</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td>Maximum nested errors. </td>
 </tr>
 <tr>
-<td id="Swag_MaxLenErrorMsg" class="codetype"><span class="SCst">MaxLenErrorMsg</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_MaxLenErrorMsg" class="code-type"><span class="SCst">MaxLenErrorMsg</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td>Maximum length of an error message. </td>
 </tr>
 <tr>
-<td id="Swag_MaxTraces" class="codetype"><span class="SCst">MaxTraces</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_MaxTraces" class="code-type"><span class="SCst">MaxTraces</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td>Maximum error traces. </td>
 </tr>
 <tr>
-<td id="Swag_S16_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Swag_S16_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S16_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">s16</span></td>
+<td id="Swag_S16_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_S32_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S32_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td id="Swag_S32_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Swag_S64_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S64_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">s64</span></td>
+<td id="Swag_S64_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Swag_S8_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_S8_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">s8</span></td>
+<td id="Swag_S8_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAll" class="codetype"><span class="SCst">SafetyAll</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyAll" class="code-type"><span class="SCst">SafetyAll</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAny" class="codetype"><span class="SCst">SafetyAny</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyAny" class="code-type"><span class="SCst">SafetyAny</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBool" class="codetype"><span class="SCst">SafetyBool</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyBool" class="code-type"><span class="SCst">SafetyBool</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyBoundCheck" class="codetype"><span class="SCst">SafetyBoundCheck</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyBoundCheck" class="code-type"><span class="SCst">SafetyBoundCheck</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyMath" class="codetype"><span class="SCst">SafetyMath</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyMath" class="code-type"><span class="SCst">SafetyMath</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNaN" class="codetype"><span class="SCst">SafetyNaN</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyNaN" class="code-type"><span class="SCst">SafetyNaN</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNone" class="codetype"><span class="SCst">SafetyNone</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyNone" class="code-type"><span class="SCst">SafetyNone</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyNullCheck" class="codetype"><span class="SCst">SafetyNullCheck</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyNullCheck" class="code-type"><span class="SCst">SafetyNullCheck</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyOverflow" class="codetype"><span class="SCst">SafetyOverflow</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyOverflow" class="code-type"><span class="SCst">SafetyOverflow</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySanity" class="codetype"><span class="SCst">SafetySanity</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetySanity" class="code-type"><span class="SCst">SafetySanity</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetySwitch" class="codetype"><span class="SCst">SafetySwitch</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetySwitch" class="code-type"><span class="SCst">SafetySwitch</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyUnreachable" class="codetype"><span class="SCst">SafetyUnreachable</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_SafetyUnreachable" class="code-type"><span class="SCst">SafetyUnreachable</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Swag_U16_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U16_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td id="Swag_U16_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_U32_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U32_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td id="Swag_U32_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Swag_U64_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U64_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td id="Swag_U64_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Swag_U8_Max" class="codetype"><span class="SCst">Max</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
-<td>Max <code class="incode">u8</code> value. </td>
+<td id="Swag_U8_Max" class="code-type"><span class="SCst">Max</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
+<td>Max <code class="inline-code">u8</code> value. </td>
 </tr>
 <tr>
-<td id="Swag_U8_Min" class="codetype"><span class="SCst">Min</span></td>
-<td class="codetype"><span class="STpe">u8</span></td>
-<td>Min <code class="incode">u8</code> value. </td>
+<td id="Swag_U8_Min" class="code-type"><span class="SCst">Min</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
+<td>Min <code class="inline-code">u8</code> value. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@abs"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@abs</span></span>
+<td class="api-item">
+<span id="@abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@abs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1009" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>
 <span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
@@ -758,607 +758,607 @@
 <span class="SKwd">func</span> <span class="SItr">@abs</span>(value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@acos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@acos</span></span>
+<td class="api-item">
+<span id="@acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@acos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L984" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@acos</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@alloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@alloc</span></span>
+<td class="api-item">
+<span id="@alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@alloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L872" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a system allocated memory block of <code class="incode">size</code> bytes. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></code>
+<p>Returns a system allocated memory block of <code class="inline-code">size</code> bytes. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></code>
 </div>
 <p> Use <a href="#@free">@free</a> to release the allocated memory. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@args"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@args</span></span>
+<td class="api-item">
+<span id="@args"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@args</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@args</span>()-&gt;<span class="SKwd">const</span> [..] <span class="STpe">string</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@args</span>()-&gt;<span class="SKwd">const</span> [..] <span class="STpe">string</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@asin"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@asin</span></span>
+<td class="api-item">
+<span id="@asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@asin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L982" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@asin</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@assert"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@assert</span></span>
+<td class="api-item">
+<span id="@assert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@assert</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L851" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Panic if the expression is false. Typically used in tests. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@assert</span>(value: <span class="STpe">bool</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@assert</span>(value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atan"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atan</span></span>
+<td class="api-item">
+<span id="@atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L986" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@atan</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atan2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atan2</span></span>
+<td class="api-item">
+<span id="@atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atan2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1018" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atan2</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atan2</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@atan2</span>(value1: <span class="STpe">f64</span>, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomadd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomadd</span></span>
+<td class="api-item">
+<span id="@atomadd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomadd</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L903" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Atomic <code class="incode">add</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<p>Atomic <code class="inline-code">add</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomand"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomand</span></span>
+<td class="api-item">
+<span id="@atomand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomand</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L913" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Atomic <code class="incode">and</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<p>Atomic <code class="inline-code">and</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomcmpxchg"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomcmpxchg</span></span>
+<td class="api-item">
+<span id="@atomcmpxchg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomcmpxchg</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L953" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Atomic 'compare and exchange'. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s16</span>, compareTo: <span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s16</span>, compareTo: <span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s32</span>, compareTo: <span class="STpe">s32</span>, exchangeWith: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s64</span>, compareTo: <span class="STpe">s64</span>, exchangeWith: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">s8</span>, compareTo: <span class="STpe">s8</span>, exchangeWith: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u16</span>, compareTo: <span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u16</span>, compareTo: <span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u32</span>, compareTo: <span class="STpe">u32</span>, exchangeWith: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u64</span>, compareTo: <span class="STpe">u64</span>, exchangeWith: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u8</span>, compareTo: <span class="STpe">u8</span>, exchangeWith: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomor</span></span>
+<td class="api-item">
+<span id="@atomor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L923" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Atomic <code class="incode">or</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<p>Atomic <code class="inline-code">or</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomxchg"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomxchg</span></span>
+<td class="api-item">
+<span id="@atomxchg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomxchg</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L943" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Atomic <code class="incode">exchange</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<p>Atomic <code class="inline-code">exchange</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s32</span>, exchangeWith: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s64</span>, exchangeWith: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s8</span>, exchangeWith: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u16</span>, exchangeWith: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u32</span>, exchangeWith: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u64</span>, exchangeWith: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">u8</span>, exchangeWith: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@atomxor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@atomxor</span></span>
+<td class="api-item">
+<span id="@atomxor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@atomxor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L933" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Atomic <code class="incode">xor</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
+<p>Atomic <code class="inline-code">xor</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u16</span>, value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u32</span>, value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u64</span>, value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">u8</span>, value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@bitcountlz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcountlz</span></span>
+<td class="api-item">
+<span id="@bitcountlz"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@bitcountlz</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1057" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the index+1 of the first set bit, starting from the left (msb). 0 if all zero. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountlz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@bitcountnz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcountnz</span></span>
+<td class="api-item">
+<span id="@bitcountnz"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@bitcountnz</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1045" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Count the number of bits set to 1. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcountnz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@bitcounttz"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@bitcounttz</span></span>
+<td class="api-item">
+<span id="@bitcounttz"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@bitcounttz</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1051" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the index+1 of the first set bit, starting from right (lsb). 0 if all zero. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SItr">@bitcounttz</span>(value: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@breakpoint"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@breakpoint</span></span>
+<td class="api-item">
+<span id="@breakpoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@breakpoint</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L853" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Stop a bytecode execution, and launch the bytecode debugger. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@breakpoint</span>()</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@breakpoint</span>()</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@byteswap"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@byteswap</span></span>
+<td class="api-item">
+<span id="@byteswap"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@byteswap</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1062" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Reverses the order of bytes in an integer. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@ceil"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@ceil</span></span>
+<td class="api-item">
+<span id="@ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@ceil</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L998" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@ceil</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@compiler"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compiler</span></span>
+<td class="api-item">
+<span id="@compiler"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compiler</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L867" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns an <a href="#Swag_ICompiler">ICompiler</a> interface to communicate with the compiler. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compiler</span>()-&gt;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compiler</span>()-&gt;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@compilererror"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilererror</span></span>
+<td class="api-item">
+<span id="@compilererror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilererror</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Raise a compiler error at the given source location. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilererror</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilererror</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@compilerwarning"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@compilerwarning</span></span>
+<td class="api-item">
+<span id="@compilerwarning"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilerwarning</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Raise a compiler warning at the given source location. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilerwarning</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@compilerwarning</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@cos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cos</span></span>
+<td class="api-item">
+<span id="@cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@cos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L970" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@cos</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@cosh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@cosh</span></span>
+<td class="api-item">
+<span id="@cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@cosh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L977" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@cosh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@dbgalloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@dbgalloc</span></span>
+<td class="api-item">
+<span id="@dbgalloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@dbgalloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@dbgalloc</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocator">DebugAllocator</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@dbgalloc</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocator">DebugAllocator</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@err"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@err</span></span>
+<td class="api-item">
+<span id="@err"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@err</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the current raised <a href="#Swag_Error">Error</a> or null if none. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@err</span>()-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Error">Error</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@err</span>()-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Error">Error</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@exp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@exp</span></span>
+<td class="api-item">
+<span id="@exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@exp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1012" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@exp</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@exp2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@exp2</span></span>
+<td class="api-item">
+<span id="@exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@exp2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1014" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@exp2</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@floor"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@floor</span></span>
+<td class="api-item">
+<span id="@floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@floor</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L996" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@floor</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@free"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@free</span></span>
+<td class="api-item">
+<span id="@free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L878" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Free a system memory block allocated with <a href="#@alloc">@alloc</a>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: ^<span class="STpe">void</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: ^<span class="STpe">void</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@getcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getcontext</span></span>
+<td class="api-item">
+<span id="@getcontext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@getcontext</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L855" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get the current thread context. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@getcontext</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Context">Context</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@getcontext</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Context">Context</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@getpinfos"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@getpinfos</span></span>
+<td class="api-item">
+<span id="@getpinfos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@getpinfos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L859" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get informations about the current process. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@getpinfos</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@getpinfos</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@gvtd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@gvtd</span></span>
+<td class="api-item">
+<span id="@gvtd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@gvtd</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L865" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the list of all global variables. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@gvtd</span>()-&gt;<span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Gvtd">Gvtd</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@gvtd</span>()-&gt;<span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Gvtd">Gvtd</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@isbytecode"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@isbytecode</span></span>
+<td class="api-item">
+<span id="@isbytecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@isbytecode</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L861" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns <code class="incode">true</code> is the current execution is bytecode. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@isbytecode</span>()-&gt;<span class="STpe">bool</span></span></code>
+<p>Returns <code class="inline-code">true</code> is the current execution is bytecode. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@isbytecode</span>()-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@itftableof"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@itftableof</span></span>
+<td class="api-item">
+<span id="@itftableof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@itftableof</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@itftableof</span>(structType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@itftableof</span>(structType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@log"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log</span></span>
+<td class="api-item">
+<span id="@log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@log</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L989" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@log</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@log10"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log10</span></span>
+<td class="api-item">
+<span id="@log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@log10</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L993" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@log10</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@log2"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@log2</span></span>
+<td class="api-item">
+<span id="@log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@log2</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L991" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@log2</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@max"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@max</span></span>
+<td class="api-item">
+<span id="@max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@max</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1040" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">f64</span>, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>
 <span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">s16</span>, value2: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">s32</span>, value2: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
@@ -1370,73 +1370,73 @@
 <span class="SKwd">func</span> <span class="SItr">@max</span>(value1: <span class="STpe">u8</span>, value2: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@memcmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memcmp</span></span>
+<td class="api-item">
+<span id="@memcmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@memcmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L890" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compare two memory blocks, and returns -1, 0 if equal, or 1. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst: <span class="SKwd">const</span> ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst: <span class="SKwd">const</span> ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@memcpy"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memcpy</span></span>
+<td class="api-item">
+<span id="@memcpy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@memcpy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L884" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Copy one memory block to another address. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memcpy</span>(dst: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memcpy</span>(dst: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@memmove"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memmove</span></span>
+<td class="api-item">
+<span id="@memmove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@memmove</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L887" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Move one memory block to another address. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memmove</span>(dst: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memmove</span>(dst: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@memset"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@memset</span></span>
+<td class="api-item">
+<span id="@memset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@memset</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L881" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set all bytes of a given memory block to <code class="incode">value</code>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memset</span>(dst: ^<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>)</span></code>
+<p>Set all bytes of a given memory block to <code class="inline-code">value</code>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memset</span>(dst: ^<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@min"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@min</span></span>
+<td class="api-item">
+<span id="@min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@min</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1029" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">f64</span>, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>
 <span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">s16</span>, value2: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">s32</span>, value2: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
@@ -1448,289 +1448,289 @@
 <span class="SKwd">func</span> <span class="SItr">@min</span>(value1: <span class="STpe">u8</span>, value2: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@modules"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@modules</span></span>
+<td class="api-item">
+<span id="@modules"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@modules</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L863" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the list of all loaded modules. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@modules</span>()-&gt;<span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@modules</span>()-&gt;<span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@muladd"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@muladd</span></span>
+<td class="api-item">
+<span id="@muladd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@muladd</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1067" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns '(val1 * val2) + val3'. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1: <span class="STpe">f32</span>, val2: <span class="STpe">f32</span>, val3: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1: <span class="STpe">f32</span>, val2: <span class="STpe">f32</span>, val3: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1: <span class="STpe">f64</span>, val2: <span class="STpe">f64</span>, val3: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1: <span class="STpe">f64</span>, val2: <span class="STpe">f64</span>, val3: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@panic"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@panic</span></span>
+<td class="api-item">
+<span id="@panic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@panic</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Stop the execution and panic. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@panic</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@panic</span>(message: <span class="STpe">string</span>, loc: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@pow"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@pow</span></span>
+<td class="api-item">
+<span id="@pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@pow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1016" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@pow</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@pow</span>(value1: <span class="STpe">f32</span>, value2: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@pow</span>(value1: <span class="STpe">f64</span>, value2: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@print"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@print</span></span>
+<td class="api-item">
+<span id="@print"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@print</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_str.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Basic print to console function. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@print</span>(params: ...)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@print</span>(params: ...)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@realloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@realloc</span></span>
+<td class="api-item">
+<span id="@realloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@realloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L875" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@round"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@round</span></span>
+<td class="api-item">
+<span id="@round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@round</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1002" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@round</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@rtflags"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@rtflags</span></span>
+<td class="api-item">
+<span id="@rtflags"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@rtflags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@rtflags</span>()-&gt;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_RuntimeFlags">RuntimeFlags</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@rtflags</span>()-&gt;<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_RuntimeFlags">RuntimeFlags</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@setcontext"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@setcontext</span></span>
+<td class="api-item">
+<span id="@setcontext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@setcontext</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L857" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Replace the current thread context. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@setcontext</span>(context: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Context">Context</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@setcontext</span>(context: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Context">Context</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@sin"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sin</span></span>
+<td class="api-item">
+<span id="@sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@sin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L968" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@sin</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@sinh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sinh</span></span>
+<td class="api-item">
+<span id="@sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@sinh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L975" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@sinh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@sqrt"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sqrt</span></span>
+<td class="api-item">
+<span id="@sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@sqrt</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L965" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@strcmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@strcmp</span></span>
+<td class="api-item">
+<span id="@strcmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@strcmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L896" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compare two zero terminated strings, and returns -1, 0 if equal, or 1. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@strcmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@strcmp</span>(str1: <span class="STpe">cstring</span>, str2: <span class="STpe">cstring</span>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@stringcmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@stringcmp</span></span>
+<td class="api-item">
+<span id="@stringcmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@stringcmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_str.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Compares two strings, and returns <code class="incode">true</code> if they are equal. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@stringcmp</span>(str1: <span class="STpe">string</span>, str2: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
+<p>Compares two strings, and returns <code class="inline-code">true</code> if they are equal. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@stringcmp</span>(str1: <span class="STpe">string</span>, str2: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@strlen"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@strlen</span></span>
+<td class="api-item">
+<span id="@strlen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@strlen</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L893" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the length of the given 0 terminated string. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@strlen</span>(str: <span class="STpe">cstring</span>)-&gt;<span class="STpe">u64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@strlen</span>(str: <span class="STpe">cstring</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@sysalloc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@sysalloc</span></span>
+<td class="api-item">
+<span id="@sysalloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@sysalloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sysalloc</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SystemAllocator">SystemAllocator</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sysalloc</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SystemAllocator">SystemAllocator</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@tan"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@tan</span></span>
+<td class="api-item">
+<span id="@tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@tan</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L972" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@tan</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@tanh"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@tanh</span></span>
+<td class="api-item">
+<span id="@tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@tanh</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L979" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@tanh</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@trunc"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@trunc</span></span>
+<td class="api-item">
+<span id="@trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@trunc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1000" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SItr">@trunc</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="@typecmp"><span class="titletype">func</span> <span class="titlelight"></span><span class="titlestrong">@typecmp</span></span>
+<td class="api-item">
+<span id="@typecmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@typecmp</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@typecmp</span>(typeA: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>, typeB: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>, cmpFlags: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span>)-&gt;<span class="STpe">bool</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@typecmp</span>(typeA: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>, typeB: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>, cmpFlags: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeCmpFlags">TypeCmpFlags</a></span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag"><span class="titletype">namespace</span> <span class="titlelight"></span><span class="titlestrong">Swag</span></span>
+<td class="api-item">
+<span id="Swag"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">Swag</span></span>
 </td>
 </tr>
 </table>
@@ -1755,11 +1755,11 @@
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgBackendLLVM"><span class="SCst">BuildCfgBackendLLVM</span></a></td>
-<td><code class="incode">LLVM</code> backend specific options. </td>
+<td><code class="inline-code">LLVM</code> backend specific options. </td>
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgBackendX64"><span class="SCst">BuildCfgBackendX64</span></a></td>
-<td><code class="incode">x86_64</code> backend specific options. </td>
+<td><code class="inline-code">x86_64</code> backend specific options. </td>
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgGenDoc"><span class="SCst">BuildCfgGenDoc</span></a></td>
@@ -1771,7 +1771,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CompilerMessage"><span class="SCst">CompilerMessage</span></a></td>
-<td>A message received in a <code class="incode">#message</code> function. </td>
+<td>A message received in a <code class="inline-code">#message</code> function. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Context"><span class="SCst">Context</span></a></td>
@@ -1791,7 +1791,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Error"><span class="SCst">Error</span></a></td>
-<td>Store a <code class="incode">throw</code> error informations. </td>
+<td>Store a <code class="inline-code">throw</code> error informations. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Gvtd"><span class="SCst">Gvtd</span></a></td>
@@ -1878,7 +1878,7 @@
 <table class="enumeration">
 <tr>
 <td><a href="#Swag_AllocatorMode"><span class="SCst">AllocatorMode</span></a></td>
-<td>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
+<td>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_AttributeUsage"><span class="SCst">AttributeUsage</span></a></td>
@@ -1910,7 +1910,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CompilerMsgMask"><span class="SCst">CompilerMsgMask</span></a></td>
-<td>The type of message you want to retreive in a <code class="incode">#message</code> function. </td>
+<td>The type of message you want to retreive in a <code class="inline-code">#message</code> function. </td>
 </tr>
 <tr>
 <td><a href="#Swag_ContextFlags"><span class="SCst">ContextFlags</span></a></td>
@@ -1930,7 +1930,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_TargetOs"><span class="SCst">TargetOs</span></a></td>
-<td>The <code class="incode">OS</code> to target when generating native code. </td>
+<td>The <code class="inline-code">OS</code> to target when generating native code. </td>
 </tr>
 <tr>
 <td><a href="#Swag_TypeCmpFlags"><span class="SCst">TypeCmpFlags</span></a></td>
@@ -1969,7 +1969,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CalleeReturn"><span class="SCst">CalleeReturn</span></a></td>
-<td>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </td>
+<td>A <code class="inline-code">return</code> in the following inlined function must be done in the callee context. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Compiler"><span class="SCst">Compiler</span></a></td>
@@ -2013,7 +2013,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Implicit"><span class="SCst">Implicit</span></a></td>
-<td>Can force an <code class="incode">opCast</code> special function to work as implicit. </td>
+<td>Can force an <code class="inline-code">opCast</code> special function to work as implicit. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Incomplete"><span class="SCst">Incomplete</span></a></td>
@@ -2025,7 +2025,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Macro"><span class="SCst">Macro</span></a></td>
-<td>The following function is a <code class="incode">macro</code>. </td>
+<td>The following function is a <code class="inline-code">macro</code>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Match"><span class="SCst">Match</span></a></td>
@@ -2033,7 +2033,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Mixin"><span class="SCst">Mixin</span></a></td>
-<td>The following function is a <code class="incode">mixin</code>. </td>
+<td>The following function is a <code class="inline-code">mixin</code>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_NoCopy"><span class="SCst">NoCopy</span></a></td>
@@ -2049,7 +2049,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_NotGeneric"><span class="SCst">NotGeneric</span></a></td>
-<td>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </td>
+<td>The following function is forced to not be generic, even if defined inside a generic <code class="inline-code">struct</code>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Offset"><span class="SCst">Offset</span></a></td>
@@ -2069,7 +2069,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Pack"><span class="SCst">Pack</span></a></td>
-<td><code class="incode">struct</code> packing information. </td>
+<td><code class="inline-code">struct</code> packing information. </td>
 </tr>
 <tr>
 <td><a href="#Swag_PrintBc"><span class="SCst">PrintBc</span></a></td>
@@ -2089,7 +2089,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Tls"><span class="SCst">Tls</span></a></td>
-<td>Put the following global variable in the <code class="incode">tls</code> segment. </td>
+<td>Put the following global variable in the <code class="inline-code">tls</code> segment. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Using"><span class="SCst">Using</span></a></td>
@@ -2101,61 +2101,61 @@
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Align"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Align</span></span>
+<td class="api-item">
+<span id="Swag_Align"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Align</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Align">Align</a></span>(value: <span class="STpe">u8</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Align">Align</a></span>(value: <span class="STpe">u8</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AllocatorMode"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">AllocatorMode</span></span>
+<td class="api-item">
+<span id="Swag_AllocatorMode"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AllocatorMode</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L298" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The <code class="incode">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
+<p>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Alloc</span></td>
+<td class="code-type"><span class="SCst">Alloc</span></td>
 <td>Allocate a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Free</span></td>
+<td class="code-type"><span class="SCst">Free</span></td>
 <td>Free a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Realloc</span></td>
+<td class="code-type"><span class="SCst">Realloc</span></td>
 <td>Reallocate a block of memory. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">FreeAll</span></td>
+<td class="code-type"><span class="SCst">FreeAll</span></td>
 <td>Free all memory allocated with the underlying allocator (ff possible). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">AssertIsAllocated</span></td>
+<td class="code-type"><span class="SCst">AssertIsAllocated</span></td>
 <td>The allocator must assert if the address is not currently allocated (if possible). </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AllocatorRequest"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">AllocatorRequest</span></span>
+<td class="api-item">
+<span id="Swag_AllocatorRequest"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AllocatorRequest</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L326" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2163,209 +2163,209 @@
 <p>Represents the request for a given allocator. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">callerLoc</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
+<td class="code-type"><span class="SCde">callerLoc</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>The caller code, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hint</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">hint</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>A hint message, to help tracking leaks. Optional. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">address</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">address</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>The returned address or the address to deal with. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">size</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>The requested size or the size to deal with. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">oldSize</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">oldSize</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>When reallocating. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">mode</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorMode">AllocatorMode</a></span></span></td>
+<td class="code-type"><span class="SCde">mode</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorMode">AllocatorMode</a></span></span></td>
 <td>Alloc, free, reallocate... </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">alignement</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">alignement</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Alignement constraint. </td>
 </tr>
 </table>
 <p> To allocate: </p>
 <ul>
-<li><code class="incode">mode</code> must be <b>AllocatorMode.Alloc</b></li>
-<li><code class="incode">size</code> must be the size in bytes to allocate</li>
-<li><code class="incode">alignement</code> must be the alignement constraint in bytes (or 0)</li>
-<li><code class="incode">address</code> will be the returned allocated memory address</li>
+<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Alloc</b></li>
+<li><code class="inline-code">size</code> must be the size in bytes to allocate</li>
+<li><code class="inline-code">alignement</code> must be the alignement constraint in bytes (or 0)</li>
+<li><code class="inline-code">address</code> will be the returned allocated memory address</li>
 </ul>
 <p> To free: </p>
 <ul>
-<li><code class="incode">mode</code> must be <b>AllocatorMode.Free</b></li>
-<li><code class="incode">size</code> must be the original allocated size in bytes of <code class="incode">address</code></li>
-<li><code class="incode">address</code> must be the memory address to release</li>
+<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Free</b></li>
+<li><code class="inline-code">size</code> must be the original allocated size in bytes of <code class="inline-code">address</code></li>
+<li><code class="inline-code">address</code> must be the memory address to release</li>
 </ul>
 <p> To reallocate: </p>
 <ul>
-<li><code class="incode">mode</code> must be <b>AllocatorMode.Realloc</b></li>
-<li><code class="incode">size</code> must be the original allocated size in bytes of <code class="incode">address</code></li>
-<li><code class="incode">address</code> must be the memory address to reallocate</li>
+<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Realloc</b></li>
+<li><code class="inline-code">size</code> must be the original allocated size in bytes of <code class="inline-code">address</code></li>
+<li><code class="inline-code">address</code> must be the memory address to reallocate</li>
 </ul>
 <p> See <a href="#Swag_IAllocator">IAllocator</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AttrMulti"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrMulti</span></span>
+<td class="api-item">
+<span id="Swag_AttrMulti"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AttrMulti</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrMulti">AttrMulti</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrMulti">AttrMulti</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AttrUsage"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttrUsage</span></span>
+<td class="api-item">
+<span id="Swag_AttrUsage"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AttrUsage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Attribute"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Attribute</span></span>
+<td class="api-item">
+<span id="Swag_Attribute"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Attribute</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L498" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">type</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">type</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">params</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeParam">AttributeParam</a></span></span></td>
+<td class="code-type"><span class="SCde">params</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeParam">AttributeParam</a></span></span></td>
 <td>Attribute parameters. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AttributeParam"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttributeParam</span></span>
+<td class="api-item">
+<span id="Swag_AttributeParam"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AttributeParam</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L492" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">name</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">name</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Name of the attribute parameter. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">value</span></td>
-<td class="codetype"><span class="STpe">any</span></td>
+<td class="code-type"><span class="SCde">value</span></td>
+<td class="code-type"><span class="STpe">any</span></td>
 <td>Optional default value. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_AttributeUsage"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">AttributeUsage</span></span>
+<td class="api-item">
+<span id="Swag_AttributeUsage"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AttributeUsage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L3" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Enum</span></td>
+<td class="code-type"><span class="SCst">Enum</span></td>
 <td>Attribute can be used on an enum. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">EnumValue</span></td>
+<td class="code-type"><span class="SCst">EnumValue</span></td>
 <td>Attribute can be used on an enum value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">StructVariable</span></td>
+<td class="code-type"><span class="SCst">StructVariable</span></td>
 <td>Attribute can be used on an struct member. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">GlobalVariable</span></td>
+<td class="code-type"><span class="SCst">GlobalVariable</span></td>
 <td>Attribute can be used on a global variable. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Variable</span></td>
+<td class="code-type"><span class="SCst">Variable</span></td>
 <td>Attribute can be used on any variable. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Struct</span></td>
+<td class="code-type"><span class="SCst">Struct</span></td>
 <td>Attribute can be used on a struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Function</span></td>
+<td class="code-type"><span class="SCst">Function</span></td>
 <td>Attribute can be used on a function. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">FunctionParameter</span></td>
+<td class="code-type"><span class="SCst">FunctionParameter</span></td>
 <td>Attribute can be used on a struct parameter. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">File</span></td>
-<td>Attribute can be used with <code class="incode">#global</code>. </td>
+<td class="code-type"><span class="SCst">File</span></td>
+<td>Attribute can be used with <code class="inline-code">#global</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Constant</span></td>
+<td class="code-type"><span class="SCst">Constant</span></td>
 <td>Attribute can be used on a constant. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Multi</span></td>
+<td class="code-type"><span class="SCst">Multi</span></td>
 <td>Attribute can be used more than once. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Gen</span></td>
+<td class="code-type"><span class="SCst">Gen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">All</span></td>
+<td class="code-type"><span class="SCst">All</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Backend"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">Backend</span></span>
+<td class="api-item">
+<span id="Swag_Backend"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Backend</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L636" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2373,25 +2373,25 @@
 <p>The type of backend to use. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">ByteCode</span></td>
+<td class="code-type"><span class="SCst">ByteCode</span></td>
 <td>Bytecode. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">X64</span></td>
+<td class="code-type"><span class="SCst">X64</span></td>
 <td>X86_64 backend. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">LLVM</span></td>
+<td class="code-type"><span class="SCst">LLVM</span></td>
 <td>LLVM backend. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfg"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfg</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfg"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfg</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L733" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2399,169 +2399,169 @@
 <p>The current module build configuration. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">moduleVersion</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">moduleVersion</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>The module version. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">moduleRevision</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">moduleRevision</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>The module revision. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">moduleBuildNum</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">moduleBuildNum</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>The module build value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">moduleNamespace</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">moduleNamespace</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The namespace name of the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">embbedImports</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">embbedImports</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Module should embbed all its dependencies. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">scratchAllocatorCapacity</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
-<td>Default capacity of the <code class="incode">temp</code> allocator (in bytes). </td>
+<td class="code-type"><span class="SCde">scratchAllocatorCapacity</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td>Default capacity of the <code class="inline-code">temp</code> allocator (in bytes). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">safetyGuards</span></td>
-<td class="codetype"><span class="STpe">u16</span></td>
+<td class="code-type"><span class="SCde">safetyGuards</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td>Activate specific safety checks. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">debugAllocator</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">debugAllocator</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Use Swag.DebugAllocator by default. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">debugAllocatorCaptureStack</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">debugAllocatorCaptureStack</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Capture the call stack for each allocation. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">debugAllocatorLeaks</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">debugAllocatorLeaks</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Detect memory leaks. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">errorStackTrace</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>Add stack trace in case a <code class="incode">throw</code> is raised. </td>
+<td class="code-type"><span class="SCde">errorStackTrace</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>Add stack trace in case a <code class="inline-code">throw</code> is raised. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">warnAsErrors</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">warnAsErrors</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Force some warnings to be treated as errors. Format is "WrnXXXX|WrnXXXX...". </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">warnAsWarning</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
-<td>Override <code class="incode">warnAsErrors</code>, restoring warnings as warnings. </td>
+<td class="code-type"><span class="SCde">warnAsWarning</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
+<td>Override <code class="inline-code">warnAsErrors</code>, restoring warnings as warnings. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">warnAsDisabled</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">warnAsDisabled</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Disable some specific warnings. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">warnDefaultDisabled</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">warnDefaultDisabled</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>All warnings are disabled, except those specified above. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">warnDefaultErrors</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">warnDefaultErrors</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>All warnings are treated as errors, except those specified above. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">byteCodeOptimizeLevel</span></td>
-<td class="codetype"><span class="STpe">s32</span></td>
+<td class="code-type"><span class="SCde">byteCodeOptimizeLevel</span></td>
+<td class="code-type"><span class="STpe">s32</span></td>
 <td>Optimization level of bytecode [0, 1 or 2]. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">byteCodeDebugInline</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">byteCodeDebugInline</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Trace into inlined code when generating debug infos. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">byteCodeEmitAssume</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td><code class="incode">assume</code> will panic if an error is raised. </td>
+<td class="code-type"><span class="SCde">byteCodeEmitAssume</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td><code class="inline-code">assume</code> will panic if an error is raised. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">byteCodeInline</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">byteCodeInline</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">byteCodeAutoInline</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">byteCodeAutoInline</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Automatic inlining of some other functions. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendKind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></span></span></td>
+<td class="code-type"><span class="SCde">backendKind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendKind">BuildCfgBackendKind</a></span></span></td>
 <td>Backend type (executable, dynamic lib...). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendSubKind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></span></span></td>
+<td class="code-type"><span class="SCde">backendSubKind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendSubKind">BuildCfgBackendSubKind</a></span></span></td>
 <td>Backend sub kind. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendDebugInformations</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>Output debug informations if <code class="incode">true</code>. </td>
+<td class="code-type"><span class="SCde">backendDebugInformations</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>Output debug informations if <code class="inline-code">true</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendOptimize</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></span></span></td>
+<td class="code-type"><span class="SCde">backendOptimize</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendOptim">BuildCfgBackendOptim</a></span></span></td>
 <td>Backend optimization level. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendNumCU</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">backendNumCU</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">linkerArgs</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">linkerArgs</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Additional linker arguments. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendLLVM</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></span></span></td>
+<td class="code-type"><span class="SCde">backendLLVM</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></span></span></td>
 <td>Specific LLVM options. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">backendX64</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span></span></td>
+<td class="code-type"><span class="SCde">backendX64</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span></span></td>
 <td>Specific X86_64 options. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">repoPath</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">repoPath</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Repository access path to the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">genDoc</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgGenDoc">BuildCfgGenDoc</a></span></span></td>
+<td class="code-type"><span class="SCde">genDoc</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgGenDoc">BuildCfgGenDoc</a></span></span></td>
 <td>Parameters for document generation. </td>
 </tr>
 </table>
 <p> See <a href="#Swag_ICompiler">ICompiler</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgBackendKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendKind</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgBackendKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L675" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2569,78 +2569,78 @@
 <p>The kind of native backend to generate. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">None</span></td>
+<td class="code-type"><span class="SCst">None</span></td>
 <td>Nothing. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Export</span></td>
-<td>The module is an <code class="incode">export</code> module which does not have its own code. </td>
+<td class="code-type"><span class="SCst">Export</span></td>
+<td>The module is an <code class="inline-code">export</code> module which does not have its own code. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Executable</span></td>
+<td class="code-type"><span class="SCst">Executable</span></td>
 <td>The module needs to be compiled to an executable application. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">DynamicLib</span></td>
+<td class="code-type"><span class="SCst">DynamicLib</span></td>
 <td>The module needs to be compiled to an dynamic library. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgBackendLLVM"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendLLVM</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgBackendLLVM"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendLLVM</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L657" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p><code class="incode">LLVM</code> backend specific options. </p>
+<p><code class="inline-code">LLVM</code> backend specific options. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">outputIR</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">outputIR</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Output IR in a file. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathFma</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>true in <code class="incode">release</code>. </td>
+<td class="code-type"><span class="SCde">fpMathFma</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>true in <code class="inline-code">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathNoNaN</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>true in <code class="incode">release</code>. </td>
+<td class="code-type"><span class="SCde">fpMathNoNaN</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>true in <code class="inline-code">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathNoInf</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>true in <code class="incode">release</code>. </td>
+<td class="code-type"><span class="SCde">fpMathNoInf</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>true in <code class="inline-code">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathNoSignedZero</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
-<td>true in <code class="incode">release</code>. </td>
+<td class="code-type"><span class="SCde">fpMathNoSignedZero</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>true in <code class="inline-code">release</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathUnsafe</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">fpMathUnsafe</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fpMathApproxFunc</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">fpMathApproxFunc</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgBackendOptim"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendOptim</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgBackendOptim"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendOptim</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L694" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2648,38 +2648,38 @@
 <p>These are the optimization levels for the backend. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">O0</span></td>
+<td class="code-type"><span class="SCst">O0</span></td>
 <td>No optimization. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">O1</span></td>
+<td class="code-type"><span class="SCst">O1</span></td>
 <td>Optimizations level 1. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">O2</span></td>
+<td class="code-type"><span class="SCst">O2</span></td>
 <td>Optimizations level 2. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">O3</span></td>
+<td class="code-type"><span class="SCst">O3</span></td>
 <td>Optimizations level 3. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Os</span></td>
+<td class="code-type"><span class="SCst">Os</span></td>
 <td>Optim for size level 1. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Oz</span></td>
+<td class="code-type"><span class="SCst">Oz</span></td>
 <td>Optim for size level 2. </td>
 </tr>
 </table>
-<p> Only <code class="incode">LLVM</code> backend uses this, as the <code class="incode">X86_64</code> backend does not have an optimization pass. </p>
+<p> Only <code class="inline-code">LLVM</code> backend uses this, as the <code class="inline-code">X86_64</code> backend does not have an optimization pass. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgBackendSubKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendSubKind</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgBackendSubKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendSubKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L686" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2687,185 +2687,185 @@
 <p>The native backend sub category. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Default</span></td>
+<td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Console</span></td>
+<td class="code-type"><span class="SCst">Console</span></td>
 <td></td>
 </tr>
 </table>
-<p> Under windows, by default, the application will be compiled to make a <code class="incode">windowed</code> application. But you can  change it and force the application to behave like a <code class="incode">console</code> one. </p>
+<p> Under windows, by default, the application will be compiled to make a <code class="inline-code">windowed</code> application. But you can  change it and force the application to behave like a <code class="inline-code">console</code> one. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgBackendX64"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgBackendX64</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgBackendX64"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendX64</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L670" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p><code class="incode">x86_64</code> backend specific options. </p>
+<p><code class="inline-code">x86_64</code> backend specific options. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgDocKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgDocKind</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgDocKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgDocKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L704" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">None</span></td>
+<td class="code-type"><span class="SCst">None</span></td>
 <td>Do not generate documentation for that module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Api</span></td>
+<td class="code-type"><span class="SCst">Api</span></td>
 <td>Generate 'api like' documentation. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Examples</span></td>
+<td class="code-type"><span class="SCst">Examples</span></td>
 <td>Generate 'examples like' documentation. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pages</span></td>
+<td class="code-type"><span class="SCst">Pages</span></td>
 <td>Generate one page per file. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_BuildCfgGenDoc"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">BuildCfgGenDoc</span></span>
+<td class="api-item">
+<span id="Swag_BuildCfgGenDoc"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgGenDoc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L712" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">kind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgDocKind">BuildCfgDocKind</a></span></span></td>
+<td class="code-type"><span class="SCde">kind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgDocKind">BuildCfgDocKind</a></span></span></td>
 <td>The kind of documentation to generate. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">outputName</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">outputName</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The name of the output file (without extension). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">outputExtension</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">outputExtension</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The output extension. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">titleToc</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">titleToc</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Title for the table of content. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">titleContent</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">titleContent</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Title for the main document content. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">css</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
-<td>The <code class="incode">css</code> file to include in generated documentations. </td>
+<td class="code-type"><span class="SCde">css</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
+<td>The <code class="inline-code">css</code> file to include in generated documentations. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">icon</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">icon</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The icon path of the page. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">startHead</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">startHead</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Content to insert at the start of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">endHead</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">endHead</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Content to insert at the end of the &lt;head&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">startBody</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">startBody</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Content to insert at the start of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">endBody</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">endBody</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Content to insert at the end of the &lt;body&gt; section. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">morePages</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
-<td>Additional external file pages to process (separated with <code class="incode">;</code>). </td>
+<td class="code-type"><span class="SCde">morePages</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
+<td>Additional external file pages to process (separated with <code class="inline-code">;</code>). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">syntaxDefaultColor</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">syntaxDefaultColor</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Code syntax default color (if not colorized). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">syntaxColorLum</span></td>
-<td class="codetype"><span class="STpe">f32</span></td>
+<td class="code-type"><span class="SCde">syntaxColorLum</span></td>
+<td class="code-type"><span class="STpe">f32</span></td>
 <td>Code syntax color luminosity in range ]0, 1]. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hasStyleSection</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">hasStyleSection</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Generate a default &lt;style&gt; section. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_CVaList"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">CVaList</span></span>
+<td class="api-item">
+<span id="Swag_CVaList"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CVaList</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L844" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">buf</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">2048</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">buf</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2048</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_CalleeReturn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">CalleeReturn</span></span>
+<td class="api-item">
+<span id="Swag_CalleeReturn"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CalleeReturn</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>A <code class="incode">return</code> in the following inlined function must be done in the callee context. </p>
+<p>A <code class="inline-code">return</code> in the following inlined function must be done in the callee context. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_CalleeReturn">CalleeReturn</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_CalleeReturn">CalleeReturn</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Compiler"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Compiler</span></span>
+<td class="api-item">
+<span id="Swag_Compiler"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Compiler</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2873,50 +2873,50 @@
 <p>The following function or variable is only defined at compile time. </p>
 <div class="addinfos"><b>Usage</b>: function global-var const 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Compiler">Compiler</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Compiler">Compiler</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_CompilerMessage"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMessage</span></span>
+<td class="api-item">
+<span id="Swag_CompilerMessage"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMessage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L814" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>A message received in a <code class="incode">#message</code> function. </p>
+<p>A message received in a <code class="inline-code">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">moduleName</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">moduleName</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Name of the module for which the message is sent. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">name</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
-<td>Depends on <code class="incode">kind</code>. </td>
+<td class="code-type"><span class="SCde">name</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
+<td>Depends on <code class="inline-code">kind</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">type</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
-<td>Depends on <code class="incode">kind</code>. </td>
+<td class="code-type"><span class="SCde">type</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td>Depends on <code class="inline-code">kind</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">kind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></span></span></td>
+<td class="code-type"><span class="SCde">kind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMsgKind">CompilerMsgKind</a></span></span></td>
 <td>Kind of the message. </td>
 </tr>
 </table>
-<p> In a <code class="incode">#message</code> function, you can retreive the associated message by calling <code class="incode">getMessage</code> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
+<p> In a <code class="inline-code">#message</code> function, you can retreive the associated message by calling <code class="inline-code">getMessage</code> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_CompilerMsgKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMsgKind</span></span>
+<td class="api-item">
+<span id="Swag_CompilerMsgKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMsgKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L781" class="src">[src]</a></td>
 </tr>
 </table>
@@ -2924,96 +2924,96 @@
 <p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">PassAfterSemantic</span></td>
+<td class="code-type"><span class="SCst">PassAfterSemantic</span></td>
 <td>Called once the program semantic has been done. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassBeforeRunByteCode</span></td>
+<td class="code-type"><span class="SCst">PassBeforeRunByteCode</span></td>
 <td>Called just before running bytecode. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassBeforeOutput</span></td>
+<td class="code-type"><span class="SCst">PassBeforeOutput</span></td>
 <td>Called just before generating the native code. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassAllDone</span></td>
+<td class="code-type"><span class="SCst">PassAllDone</span></td>
 <td>Called when everything has be done. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemFunctions</span></td>
+<td class="code-type"><span class="SCst">SemFunctions</span></td>
 <td>Called for each function in the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemTypes</span></td>
+<td class="code-type"><span class="SCst">SemTypes</span></td>
 <td>Called for each type in the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemGlobals</span></td>
+<td class="code-type"><span class="SCst">SemGlobals</span></td>
 <td>Called for each global variable in the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">AttributeGen</span></td>
+<td class="code-type"><span class="SCst">AttributeGen</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_CompilerMsgMask"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">CompilerMsgMask</span></span>
+<td class="api-item">
+<span id="Swag_CompilerMsgMask"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMsgMask</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L797" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The type of message you want to retreive in a <code class="incode">#message</code> function. </p>
+<p>The type of message you want to retreive in a <code class="inline-code">#message</code> function. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">PassAfterSemantic</span></td>
+<td class="code-type"><span class="SCst">PassAfterSemantic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassBeforeRun</span></td>
+<td class="code-type"><span class="SCst">PassBeforeRun</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassBeforeOutput</span></td>
+<td class="code-type"><span class="SCst">PassBeforeOutput</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PassAllDone</span></td>
+<td class="code-type"><span class="SCst">PassAllDone</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemFunctions</span></td>
+<td class="code-type"><span class="SCst">SemFunctions</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemTypes</span></td>
+<td class="code-type"><span class="SCst">SemTypes</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">SemGlobals</span></td>
+<td class="code-type"><span class="SCst">SemGlobals</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">AttributeGen</span></td>
+<td class="code-type"><span class="SCst">AttributeGen</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">All</span></td>
+<td class="code-type"><span class="SCst">All</span></td>
 <td></td>
 </tr>
 </table>
 <p> The function could be called for more than one reason, as this is a mask. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Complete"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Complete</span></span>
+<td class="api-item">
+<span id="Swag_Complete"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Complete</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3021,15 +3021,15 @@
 <p>The following switch must be complete. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Complete">Complete</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Complete">Complete</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ConstExpr"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">ConstExpr</span></span>
+<td class="api-item">
+<span id="Swag_ConstExpr"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ConstExpr</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3037,15 +3037,15 @@
 <p>Can be executed at compile time. </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ConstExpr">ConstExpr</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ConstExpr">ConstExpr</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Context"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Context</span></span>
+<td class="api-item">
+<span id="Swag_Context"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Context</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L383" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3053,166 +3053,166 @@
 <p>Thread context as returned by [@context]. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">allocator</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
+<td class="code-type"><span class="SCde">allocator</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td>The current allocator interface. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">flags</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ContextFlags">ContextFlags</a></span></span></td>
+<td class="code-type"><span class="SCde">flags</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ContextFlags">ContextFlags</a></span></span></td>
 <td>Context flags. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">tempAllocator</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span></span></td>
+<td class="code-type"><span class="SCde">tempAllocator</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span></span></td>
 <td>Other fields, can be in any order A temporary allocator. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">traces</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
+<td class="code-type"><span class="SCde">traces</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>Stack trace, in case of errors. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">errors</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Error">Error</a></span></span></td>
+<td class="code-type"><span class="SCde">errors</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">32</span>] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Error">Error</a></span></span></td>
 <td>All errors. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">exceptionLoc</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
+<td class="code-type"><span class="SCde">exceptionLoc</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td>When an exception is raised, this is the code location. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">exceptionParams</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">4</span>] <span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">exceptionParams</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td>When an exception is raised, this are the parameters. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">panic</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(<span class="STpe">string</span>, <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></td>
+<td class="code-type"><span class="SCde">panic</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="STpe">string</span>, <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span>)</span></td>
 <td>A function to call if there's a panic. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">errorIndex</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">errorIndex</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Number of errors in the array. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">traceIndex</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">traceIndex</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>The current trace index. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hasError</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">hasError</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>!= 0 if an error is raised. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ContextFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">ContextFlags</span></span>
+<td class="api-item">
+<span id="Swag_ContextFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ContextFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">None</span></td>
+<td class="code-type"><span class="SCst">None</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Test</span></td>
+<td class="code-type"><span class="SCst">Test</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">ByteCode</span></td>
+<td class="code-type"><span class="SCst">ByteCode</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">DebugAllocator</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">DebugAllocator</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">allocator</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
+<td class="code-type"><span class="SCde">allocator</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">mutex</span></td>
-<td class="codetype"><span class="SCst">MutexRW</span></td>
+<td class="code-type"><span class="SCde">mutex</span></td>
+<td class="code-type"><span class="SCst">MutexRW</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">firstAlloc</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">firstAlloc</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>First allocated block. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">firstFree</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">firstFree</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>First freed block. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lastFree</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">lastFree</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td>Last freed block. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sizeAlloc</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">sizeAlloc</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Total allocated memory, in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sizeFree</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">sizeFree</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Total of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">countAlloc</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">countAlloc</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Number of allocated blocks. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nextId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">nextId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>The next allocated id to assign. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">maxFreeSize</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">maxFreeSize</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Debug/behaviour parameters Maximum total size (in kbs) of free blocks in quarantine. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">breakOnAllocId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">breakOnAllocId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Will @assert when the current allocation id reaches that value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">showMaxLeaks</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">showMaxLeaks</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Maximum number of memory leaks to show. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">captureAllocStack</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">captureAllocStack</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>For each allocation, capture stack. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">detectLeaks</span></td>
-<td class="codetype"><span class="STpe">bool</span></td>
+<td class="code-type"><span class="SCde">detectLeaks</span></td>
+<td class="code-type"><span class="STpe">bool</span></td>
 <td>Detect memory leaks if true. </td>
 </tr>
 </table>
@@ -3259,185 +3259,185 @@
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_IAllocator_alloc"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">alloc</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_IAllocator_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">alloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_IAllocator_free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_IAllocator_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_IAllocator_releaseLast"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">releaseLast</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_IAllocator_releaseLast"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">releaseLast</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseLast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseLast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_IAllocator_req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L445" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_assertIsAllocated"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">assertIsAllocated</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_assertIsAllocated"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">assertIsAllocated</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>This function will assert if the given user address is not conform  to an allocated block. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_checkAllMemory"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkAllMemory</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_checkAllMemory"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">checkAllMemory</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L233" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Check all allocated blocks. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkAllMemory</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkAllMemory</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_checkIsAllocated"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkIsAllocated</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_checkIsAllocated"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">checkIsAllocated</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsAllocated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>, callerLoc = <span class="SCmp">#callerlocation</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_checkIsFreed"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">checkIsFreed</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_checkIsFreed"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">checkIsFreed</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkIsFreed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ptrHeader: ^<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_memAlign"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">memAlign</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_memAlign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">memAlign</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memAlign</span>(value: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span>)-&gt;<span class="STpe">u64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">memAlign</span>(value: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_opDrop"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">opDrop</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_printDisplaySize"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">printDisplaySize</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_printDisplaySize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">printDisplaySize</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printDisplaySize</span>(value: <span class="STpe">u64</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printDisplaySize</span>(value: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_printLeaks"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">printLeaks</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_printLeaks"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">printLeaks</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Output to the console the list of all allocated blocks (leaks). </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printLeaks</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">printLeaks</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocator_setup"><span class="titletype">func</span> <span class="titlelight">DebugAllocator.</span><span class="titlestrong">setup</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocator_setup"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DebugAllocator.</span><span class="api-item-title-strong">setup</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Setup the allocator. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocatorFooter"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">DebugAllocatorFooter</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocatorFooter"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">DebugAllocatorFooter</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3445,18 +3445,18 @@
 <p>Will be put just after the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">magic</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">magic</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_DebugAllocatorHeader"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">DebugAllocatorHeader</span></span>
+<td class="api-item">
+<span id="Swag_DebugAllocatorHeader"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">DebugAllocatorHeader</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\debugallocator.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3464,68 +3464,68 @@
 <p>Will be put just before the returned address. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">loc</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
+<td class="code-type"><span class="SCde">loc</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">allocAddr</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">allocAddr</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">allocSize</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">allocSize</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">userSize</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">userSize</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">hint</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">hint</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">prev</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">prev</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">next</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">next</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_DebugAllocatorHeader">DebugAllocatorHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">stack</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">16</span>] *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">stack</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">16</span>] *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">stackCount</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">stackCount</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">magic</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">magic</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">allocId</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">allocId</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Deprecated"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Deprecated</span></span>
+<td class="api-item">
+<span id="Swag_Deprecated"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Deprecated</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L84" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3533,15 +3533,15 @@
 <p>The following definition is deprecated and should not be used. </p>
 <div class="addinfos"><b>Usage</b>: function enum enum-value struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Discardable"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Discardable</span></span>
+<td class="api-item">
+<span id="Swag_Discardable"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Discardable</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3549,15 +3549,15 @@
 <p>The following function accepts that the called does not use its return value. </p>
 <div class="addinfos"><b>Usage</b>: function var 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Discardable">Discardable</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Discardable">Discardable</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_EnumFlags"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">EnumFlags</span></span>
+<td class="api-item">
+<span id="Swag_EnumFlags"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">EnumFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3565,15 +3565,15 @@
 <p>The following enum is a set of flags. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumFlags">EnumFlags</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumFlags">EnumFlags</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_EnumIndex"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">EnumIndex</span></span>
+<td class="api-item">
+<span id="Swag_EnumIndex"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">EnumIndex</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3581,107 +3581,107 @@
 <p>The following enum can be used to index arrays without casting. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumIndex">EnumIndex</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumIndex">EnumIndex</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Error"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Error</span></span>
+<td class="api-item">
+<span id="Swag_Error"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Error</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Store a <code class="incode">throw</code> error informations. </p>
+<p>Store a <code class="inline-code">throw</code> error informations. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">msgBuf</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">128</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">msgBuf</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="STpe">u8</span></span></td>
 <td>Buffer to store the error message. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">msg</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">msg</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Error message. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pushHasError</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">pushHasError</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pushTraceIndex</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">pushTraceIndex</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ExceptionKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">ExceptionKind</span></span>
+<td class="api-item">
+<span id="Swag_ExceptionKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ExceptionKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L362" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Panic</span></td>
+<td class="code-type"><span class="SCst">Panic</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Error</span></td>
+<td class="code-type"><span class="SCst">Error</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Warning</span></td>
+<td class="code-type"><span class="SCst">Warning</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ExportType"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">ExportType</span></span>
+<td class="api-item">
+<span id="Swag_ExportType"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ExportType</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="STpe">string</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="STpe">string</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_F32"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">F32</span></span>
+<td class="api-item">
+<span id="Swag_F32"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">F32</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_F64"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">F64</span></span>
+<td class="api-item">
+<span id="Swag_F64"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">F64</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Foreign"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Foreign</span></span>
+<td class="api-item">
+<span id="Swag_Foreign"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Foreign</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3689,30 +3689,30 @@
 <p>The following function is foreign (imported). </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Global"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Global</span></span>
+<td class="api-item">
+<span id="Swag_Global"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Global</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L189" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Global">Global</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Global">Global</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Gvtd"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Gvtd</span></span>
+<td class="api-item">
+<span id="Swag_Gvtd"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Gvtd</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L287" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3720,54 +3720,54 @@
 <p>Defined a global variable. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">ptr</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">ptr</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>Pointer to the global variable memory. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">opDrop</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
-<td>The <code class="incode">opDrop</code> function to call when the process must exit. </td>
+<td class="code-type"><span class="SCde">opDrop</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
+<td>The <code class="inline-code">opDrop</code> function to call when the process must exit. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_IAllocator"><span class="titletype">interface</span> <span class="titlelight">Swag.</span><span class="titlestrong">IAllocator</span></span>
+<td class="api-item">
+<span id="Swag_IAllocator"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">IAllocator</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L337" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">req</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>, *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
+<td class="code-type"><span class="SCde">req</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>, *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_IAllocator_req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></span>
+<td class="api-item">
+<span id="Swag_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L339" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ICompiler"><span class="titletype">interface</span> <span class="titlelight">Swag.</span><span class="titlestrong">ICompiler</span></span>
+<td class="api-item">
+<span id="Swag_ICompiler"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ICompiler</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L825" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3775,84 +3775,84 @@
 <p>This is the interface to communicate with the compiler. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">getMessage</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
-<td>Returns the compiler message in a <code class="incode">#message</code> function. </td>
+<td class="code-type"><span class="SCde">getMessage</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
+<td>Returns the compiler message in a <code class="inline-code">#message</code> function. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">getBuildCfg</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></td>
+<td class="code-type"><span class="SCde">getBuildCfg</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></td>
 <td>Returns the build configuration of the current module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">compileString</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SCde">compileString</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>, <span class="STpe">string</span>)</span></td>
 <td>Compile a global string. </td>
 </tr>
 </table>
-<p> The intrinsic <code class="incode">@compiler</code> will return that interface at compile-time, and <code class="incode">null</code> at runtime. </p>
+<p> The intrinsic <code class="inline-code">@compiler</code> will return that interface at compile-time, and <code class="inline-code">null</code> at runtime. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ICompiler_compileString"><span class="titletype">func</span> <span class="titlelight">ICompiler.</span><span class="titlestrong">compileString</span></span>
+<td class="api-item">
+<span id="Swag_ICompiler_compileString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">compileString</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L829" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compileString</span>(<span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compileString</span>(<span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ICompiler_getBuildCfg"><span class="titletype">func</span> <span class="titlelight">ICompiler.</span><span class="titlestrong">getBuildCfg</span></span>
+<td class="api-item">
+<span id="Swag_ICompiler_getBuildCfg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">getBuildCfg</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L828" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBuildCfg</span>(<span class="SKwd">self</span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBuildCfg</span>(<span class="SKwd">self</span>)-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfg">BuildCfg</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ICompiler_getMessage"><span class="titletype">func</span> <span class="titlelight">ICompiler.</span><span class="titlestrong">getMessage</span></span>
+<td class="api-item">
+<span id="Swag_ICompiler_getMessage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ICompiler.</span><span class="api-item-title-strong">getMessage</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L827" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMessage</span>(<span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMessage</span>(<span class="SKwd">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Implicit"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Implicit</span></span>
+<td class="api-item">
+<span id="Swag_Implicit"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Implicit</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Can force an <code class="incode">opCast</code> special function to work as implicit. </p>
+<p>Can force an <code class="inline-code">opCast</code> special function to work as implicit. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Implicit">Implicit</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Implicit">Implicit</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Incomplete"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Incomplete</span></span>
+<td class="api-item">
+<span id="Swag_Incomplete"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Incomplete</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3860,15 +3860,15 @@
 <p>The following switch is incomplete. </p>
 <div class="addinfos"><b>Usage</b>: enum 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Incomplete">Incomplete</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Incomplete">Incomplete</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Inline"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Inline</span></span>
+<td class="api-item">
+<span id="Swag_Inline"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Inline</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3876,85 +3876,85 @@
 <p>Force a function to be inlined. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Inline">Inline</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Inline">Inline</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Interface"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Interface</span></span>
+<td class="api-item">
+<span id="Swag_Interface"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Interface</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">obj</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">obj</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td>Pointer to the associated struct instance. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">itable</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> ^^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">itable</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^^<span class="STpe">void</span></span></td>
 <td>Pointer to the virtual table. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Macro"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Macro</span></span>
+<td class="api-item">
+<span id="Swag_Macro"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Macro</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The following function is a <code class="incode">macro</code>. </p>
+<p>The following function is a <code class="inline-code">macro</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Macro">Macro</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Macro">Macro</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Match"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Match</span></span>
+<td class="api-item">
+<span id="Swag_Match"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Match</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Match">Match</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Match">Match</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Mixin"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Mixin</span></span>
+<td class="api-item">
+<span id="Swag_Mixin"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Mixin</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The following function is a <code class="incode">mixin</code>. </p>
+<p>The following function is a <code class="inline-code">mixin</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Mixin">Mixin</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Mixin">Mixin</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Module"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">Module</span></span>
+<td class="api-item">
+<span id="Swag_Module"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Module</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L273" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3962,23 +3962,23 @@
 <p>Defined some informations about a loaded module. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">name</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">name</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Name of the module. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">types</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">types</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>All exported types. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_NoCopy"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NoCopy</span></span>
+<td class="api-item">
+<span id="Swag_NoCopy"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">NoCopy</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
@@ -3986,15 +3986,15 @@
 <p>The following struct should never be copied. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoCopy">NoCopy</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoCopy">NoCopy</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_NoDoc"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NoDoc</span></span>
+<td class="api-item">
+<span id="Swag_NoDoc"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">NoDoc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4002,15 +4002,15 @@
 <p>Do not generate documentation. </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoDoc">NoDoc</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoDoc">NoDoc</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_NoInline"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NoInline</span></span>
+<td class="api-item">
+<span id="Swag_NoInline"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">NoInline</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4018,32 +4018,32 @@
 <p>Never inline the following function. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoInline">NoInline</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoInline">NoInline</a></span></span></code>
 </div>
-<p> This is a hint for the <code class="incode">llvm</code> backend. </p>
+<p> This is a hint for the <code class="inline-code">llvm</code> backend. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_NotGeneric"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">NotGeneric</span></span>
+<td class="api-item">
+<span id="Swag_NotGeneric"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">NotGeneric</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The following function is forced to not be generic, even if defined inside a generic <code class="incode">struct</code>. </p>
+<p>The following function is forced to not be generic, even if defined inside a generic <code class="inline-code">struct</code>. </p>
 <div class="addinfos"><b>Usage</b>: function 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NotGeneric">NotGeneric</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NotGeneric">NotGeneric</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Offset"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Offset</span></span>
+<td class="api-item">
+<span id="Swag_Offset"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Offset</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4051,16 +4051,16 @@
 <p>Struct field member relocation. </p>
 <div class="addinfos"><b>Usage</b>: struct-var 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
-<p> The field offset in the struct should be the same as the variable <code class="incode">name</code> </p>
+<p> The field offset in the struct should be the same as the variable <code class="inline-code">name</code> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Opaque"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Opaque</span></span>
+<td class="api-item">
+<span id="Swag_Opaque"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Opaque</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4068,15 +4068,15 @@
 <p>When exporting the following struct, do not export its content. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Opaque">Opaque</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Opaque">Opaque</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Optim"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Optim</span></span>
+<td class="api-item">
+<span id="Swag_Optim"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Optim</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4084,52 +4084,52 @@
 <p>Enable/Disable a given function optimization. </p>
 <div class="addinfos"><b>Usage</b>: function multi 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p> Options are: </p>
 <table class="enumeration">
-<tr><td> <code class="incode">bytecode</code>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
-<tr><td> <code class="incode">backend</code>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
+<tr><td> <code class="inline-code">bytecode</code>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
+<tr><td> <code class="inline-code">backend</code>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
-<p> If <code class="incode">what</code> is null or empty, every options will be affected. </p>
+<p> If <code class="inline-code">what</code> is null or empty, every options will be affected. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Overflow"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Overflow</span></span>
+<td class="api-item">
+<span id="Swag_Overflow"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Overflow</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Overflow">Overflow</a></span>(value: <span class="STpe">bool</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Overflow">Overflow</a></span>(value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Pack"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Pack</span></span>
+<td class="api-item">
+<span id="Swag_Pack"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Pack</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p><code class="incode">struct</code> packing information. </p>
+<p><code class="inline-code">struct</code> packing information. </p>
 <div class="addinfos"><b>Usage</b>: struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_PrintBc"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">PrintBc</span></span>
+<td class="api-item">
+<span id="Swag_PrintBc"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">PrintBc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4137,15 +4137,15 @@
 <p>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintBc">PrintBc</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintBc">PrintBc</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_PrintGenBc"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">PrintGenBc</span></span>
+<td class="api-item">
+<span id="Swag_PrintGenBc"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">PrintGenBc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4153,15 +4153,15 @@
 <p>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </p>
 <div class="addinfos"><b>Usage</b>: function struct 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintGenBc">PrintGenBc</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintGenBc">PrintGenBc</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ProcessInfos"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">ProcessInfos</span></span>
+<td class="api-item">
+<span id="Swag_ProcessInfos"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ProcessInfos</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L280" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4169,80 +4169,80 @@
 <p>Defined some informations about the current process. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">modules</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></td>
+<td class="code-type"><span class="SCde">modules</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></td>
 <td>The list of all modules. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">args</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">args</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The application arguments, as returned by <a href="#@args">@args</a>. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_RuntimeFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">RuntimeFlags</span></span>
+<td class="api-item">
+<span id="Swag_RuntimeFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">RuntimeFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L615" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">FromCompiler</span></td>
+<td class="code-type"><span class="SCst">FromCompiler</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_S16"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">S16</span></span>
+<td class="api-item">
+<span id="Swag_S16"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">S16</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_S32"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">S32</span></span>
+<td class="api-item">
+<span id="Swag_S32"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">S32</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_S64"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">S64</span></span>
+<td class="api-item">
+<span id="Swag_S64"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">S64</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_S8"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">S8</span></span>
+<td class="api-item">
+<span id="Swag_S8"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">S8</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Safety"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Safety</span></span>
+<td class="api-item">
+<span id="Swag_Safety"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Safety</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L151" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4250,76 +4250,76 @@
 <p>Enable/Disable one or more safety checks. </p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p> For example: </p>
-<div class="precode"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("", false)]</span>                    <span class="SCmt">// Disable all</span>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Safety("", false)]</span>                    <span class="SCmt">// Disable all</span>
  <span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></code>
 </div>
 <p> Safety checks are: </p>
 <table class="enumeration">
-<tr><td> <code class="incode">boundcheck</code>   </td><td> Check out of bound access</td></tr>
-<tr><td> <code class="incode">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
-<tr><td> <code class="incode">math</code>         </td><td> Various math checks (like a negative <code class="incode">@sqrt</code>)</td></tr>
-<tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
-<tr><td> <code class="incode">unreachable</code>  </td><td> Panic if an <code class="incode">@unreachable</code> instruction is executed</td></tr>
-<tr><td> <code class="incode">any</code>          </td><td> Panic if a cast from a <code class="incode">any</code> variable does not match the real underlying type</td></tr>
-<tr><td> <code class="incode">bool</code>         </td><td> Panic if a <code class="incode">bool</code> does not have a valid value (<code class="incode">true</code> or <code class="incode">false</code>)</td></tr>
-<tr><td> <code class="incode">nan</code>          </td><td> Panic if a <code class="incode">nan</code> is used in a float arithmetic operation</td></tr>
-<tr><td> <code class="incode">sanity</code>       </td><td> Do a <code class="incode">sanity</code> check (per function)</td></tr>
-<tr><td> <code class="incode">null</code>         </td><td> Panic on derefencing some null pointers</td></tr>
+<tr><td> <code class="inline-code">boundcheck</code>   </td><td> Check out of bound access</td></tr>
+<tr><td> <code class="inline-code">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
+<tr><td> <code class="inline-code">math</code>         </td><td> Various math checks (like a negative <code class="inline-code">@sqrt</code>)</td></tr>
+<tr><td> <code class="inline-code">switch</code>       </td><td> Check an invalid case in a <code class="inline-code">#[Swag.Complete]</code> switch</td></tr>
+<tr><td> <code class="inline-code">unreachable</code>  </td><td> Panic if an <code class="inline-code">@unreachable</code> instruction is executed</td></tr>
+<tr><td> <code class="inline-code">any</code>          </td><td> Panic if a cast from a <code class="inline-code">any</code> variable does not match the real underlying type</td></tr>
+<tr><td> <code class="inline-code">bool</code>         </td><td> Panic if a <code class="inline-code">bool</code> does not have a valid value (<code class="inline-code">true</code> or <code class="inline-code">false</code>)</td></tr>
+<tr><td> <code class="inline-code">nan</code>          </td><td> Panic if a <code class="inline-code">nan</code> is used in a float arithmetic operation</td></tr>
+<tr><td> <code class="inline-code">sanity</code>       </td><td> Do a <code class="inline-code">sanity</code> check (per function)</td></tr>
+<tr><td> <code class="inline-code">null</code>         </td><td> Panic on derefencing some null pointers</td></tr>
 </table>
-<p> If <code class="incode">what</code> is null or empty, every options are will be affected. </p>
+<p> If <code class="inline-code">what</code> is null or empty, every options are will be affected. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">ScratchAllocator</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ScratchAllocator</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L342" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">allocator</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
+<td class="code-type"><span class="SCde">allocator</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">block</span></td>
-<td class="codetype"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">block</span></td>
+<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">capacity</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">capacity</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">used</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">used</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">maxUsed</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">maxUsed</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">firstLeak</span></td>
-<td class="codetype"><span class="SCde">*<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">firstLeak</span></td>
+<td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">totalLeak</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">totalLeak</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">maxLeak</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">maxLeak</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
@@ -4347,164 +4347,164 @@
 </tr>
 <tr>
 <td><a href="#Swag_ScratchAllocator_setCapacity"><span class="SCde"><span class="SFct">setCapacity</span>()</spa</a></td>
-<td>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
+<td>This will call <code class="inline-code">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_IAllocator_alloc"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">alloc</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_IAllocator_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">alloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_IAllocator_free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_IAllocator_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L84" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_IAllocator_req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L161" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_LeakHeader"><span class="titletype">struct</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">LeakHeader</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_LeakHeader"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">LeakHeader</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">prev</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">prev</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">next</span></td>
-<td class="codetype"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
+<td class="code-type"><span class="SCde">next</span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">size</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">size</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_align"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">align</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_align"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">align</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">align</span>(value: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span>)-&gt;<span class="STpe">u64</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">align</span>(value: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span>)-&gt;<span class="STpe">u64</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_alloc"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">alloc</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">alloc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span> = <span class="SNum">0</span>)-&gt;*<span class="STpe">void</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u64</span>, alignement: <span class="STpe">u32</span> = <span class="SNum">0</span>)-&gt;*<span class="STpe">void</span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_free"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">free</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, addr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_freeAll"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">freeAll</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_freeAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">freeAll</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Release all memory. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freeAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">freeAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_release"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">release</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_release"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">release</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Release the allocated block. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_ScratchAllocator_setCapacity"><span class="titletype">func</span> <span class="titlelight">ScratchAllocator.</span><span class="titlestrong">setCapacity</span></span>
+<td class="api-item">
+<span id="Swag_ScratchAllocator_setCapacity"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">setCapacity</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>This will call <code class="incode">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
+<p>This will call <code class="inline-code">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_SourceCodeLocation"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SourceCodeLocation</span></span>
+<td class="api-item">
+<span id="Swag_SourceCodeLocation"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">SourceCodeLocation</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L835" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4512,91 +4512,91 @@
 <p>Represent a part of a source code file. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">fileName</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">fileName</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Full path name of the source file. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lineStart</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">lineStart</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Start line (starts at 0). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">colStart</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">colStart</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Start column. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">lineEnd</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">lineEnd</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>End line. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">colEnd</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">colEnd</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>End column. </td>
 </tr>
 </table>
-<p> This is typically what will be returned by <code class="incode">#location</code> or <code class="incode">#callerlocation</code>. </p>
+<p> This is typically what will be returned by <code class="inline-code">#location</code> or <code class="inline-code">#callerlocation</code>. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Strict"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Strict</span></span>
+<td class="api-item">
+<span id="Swag_Strict"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Strict</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Strict">Strict</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Strict">Strict</a></span></span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_SystemAllocator"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">SystemAllocator</span></span>
+<td class="api-item">
+<span id="Swag_SystemAllocator"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">SystemAllocator</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\systemallocator.swg#L3" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_SystemAllocator_IAllocator_free"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">free</span></span>
+<td class="api-item">
+<span id="Swag_SystemAllocator_IAllocator_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">free</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\systemallocator.swg#L9" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_SystemAllocator_IAllocator_req"><span class="titletype">func</span> <span class="titlelight">IAllocator.</span><span class="titlestrong">req</span></span>
+<td class="api-item">
+<span id="Swag_SystemAllocator_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\systemallocator.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="precode"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">req</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, request: *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TargetArch"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TargetArch</span></span>
+<td class="api-item">
+<span id="Swag_TargetArch"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TargetArch</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L622" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4604,81 +4604,81 @@
 <p>Target processor. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">X86_64</span></td>
+<td class="code-type"><span class="SCst">X86_64</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TargetOs"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TargetOs</span></span>
+<td class="api-item">
+<span id="Swag_TargetOs"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TargetOs</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L628" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The <code class="incode">OS</code> to target when generating native code. </p>
+<p>The <code class="inline-code">OS</code> to target when generating native code. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Windows</span></td>
+<td class="code-type"><span class="SCst">Windows</span></td>
 <td>Windows 10/11. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Linux</span></td>
+<td class="code-type"><span class="SCst">Linux</span></td>
 <td>Linux (<b>unsupported</b>). </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">MaxOSX</span></td>
+<td class="code-type"><span class="SCst">MaxOSX</span></td>
 <td>MacOS (<b>unsupported</b>). </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Tls"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Tls</span></span>
+<td class="api-item">
+<span id="Swag_Tls"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Tls</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Put the following global variable in the <code class="incode">tls</code> segment. </p>
+<p>Put the following global variable in the <code class="inline-code">tls</code> segment. </p>
 <div class="addinfos"><b>Usage</b>: global-var 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Tls">Tls</a></span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Tls">Tls</a></span></span></code>
 </div>
 <p> A copy of the variable will be available for each thread. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeCmpFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeCmpFlags</span></span>
+<td class="api-item">
+<span id="Swag_TypeCmpFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeCmpFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L409" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Strict</span></td>
+<td class="code-type"><span class="SCst">Strict</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">CastAny</span></td>
+<td class="code-type"><span class="SCst">CastAny</span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfo"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfo</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfo"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfo</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L516" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4686,142 +4686,142 @@
 <p>Will be available for all types. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">fullname</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">fullname</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The full scoped name of the type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">name</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">name</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>The unscoped name. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">sizeof</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">sizeof</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">crc32</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">crc32</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>A unique CRC to identify the type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">flags</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></span></span></td>
+<td class="code-type"><span class="SCde">flags</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoFlags">TypeInfoFlags</a></span></span></td>
 <td>Some additional flags. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">kind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoKind">TypeInfoKind</a></span></span></td>
+<td class="code-type"><span class="SCde">kind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoKind">TypeInfoKind</a></span></span></td>
 <td>The kind of the type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">padding</span></td>
-<td class="codetype"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">padding</span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoAlias"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoAlias</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoAlias"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoAlias</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L539" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rawType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">rawType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoArray"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoArray</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoArray"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoArray</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L578" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pointedType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">pointedType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">finalType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">finalType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If this is an array with multiple dimensions, this will be the final type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">count</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">count</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of elements in the array. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">totalCount</span></td>
-<td class="codetype"><span class="STpe">u64</span></td>
+<td class="code-type"><span class="SCde">totalCount</span></td>
+<td class="code-type"><span class="STpe">u64</span></td>
 <td>The total number of elements in case this has multiple dimensions. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoEnum"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoEnum</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoEnum"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoEnum</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L570" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">values</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">values</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the values. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rawType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">rawType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying enum type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">attributes</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde">attributes</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoFlags"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoFlags</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoFlags</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L465" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4829,142 +4829,142 @@
 <p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Zero</span></td>
+<td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PointerTypeInfo</span></td>
+<td class="code-type"><span class="SCst">PointerTypeInfo</span></td>
 <td>This is a pointer to a <a href="#Swag_TypeInfo">TypeInfo</a> struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Integer</span></td>
+<td class="code-type"><span class="SCst">Integer</span></td>
 <td>This is a native integer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Float</span></td>
+<td class="code-type"><span class="SCst">Float</span></td>
 <td>This is a native float. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Unsigned</span></td>
+<td class="code-type"><span class="SCst">Unsigned</span></td>
 <td>This is a native unsigned integer. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">HasPostCopy</span></td>
-<td>This is a struct with a <code class="incode">opPostCopy</code>. </td>
+<td class="code-type"><span class="SCst">HasPostCopy</span></td>
+<td>This is a struct with a <code class="inline-code">opPostCopy</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">HasPostMove</span></td>
-<td>This is a struct with a <code class="incode">opPostMove</code>. </td>
+<td class="code-type"><span class="SCst">HasPostMove</span></td>
+<td>This is a struct with a <code class="inline-code">opPostMove</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">HasDrop</span></td>
-<td>This is a struct with a <code class="incode">opDrop</code>. </td>
+<td class="code-type"><span class="SCst">HasDrop</span></td>
+<td>This is a struct with a <code class="inline-code">opDrop</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Strict</span></td>
+<td class="code-type"><span class="SCst">Strict</span></td>
 <td>This is a typealias with the Swag.Strict attribute]. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">CanCopy</span></td>
+<td class="code-type"><span class="SCst">CanCopy</span></td>
 <td>This is a struct that can be copied. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Tuple</span></td>
+<td class="code-type"><span class="SCst">Tuple</span></td>
 <td>This is a tuple. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">CString</span></td>
-<td>This is a <code class="incode">cstring</code>. </td>
+<td class="code-type"><span class="SCst">CString</span></td>
+<td>This is a <code class="inline-code">cstring</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Generic</span></td>
+<td class="code-type"><span class="SCst">Generic</span></td>
 <td>This is a generic type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PointerRef</span></td>
+<td class="code-type"><span class="SCst">PointerRef</span></td>
 <td>This is a reference. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PointerMoveRef</span></td>
+<td class="code-type"><span class="SCst">PointerMoveRef</span></td>
 <td>This is a move reference. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">PointerArithmetic</span></td>
+<td class="code-type"><span class="SCst">PointerArithmetic</span></td>
 <td>This is a pointer to multiple values. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Character</span></td>
+<td class="code-type"><span class="SCst">Character</span></td>
 <td>This is a 32 bits character. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoFunc"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoFunc</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoFunc"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoFunc</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L561" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">generics</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">generics</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">parameters</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">parameters</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Parameters. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">returnType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
-<td>The return type, or <code class="incode">null</code>. </td>
+<td class="code-type"><span class="SCde">returnType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td>The return type, or <code class="inline-code">null</code>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">attributes</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde">attributes</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoGeneric"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoGeneric</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoGeneric"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoGeneric</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L599" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rawType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">rawType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoKind</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L416" class="src">[src]</a></td>
 </tr>
 </table>
@@ -4972,134 +4972,134 @@
 <p>The kind of the typeinfo. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Invalid</span></td>
+<td class="code-type"><span class="SCst">Invalid</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Native</span></td>
+<td class="code-type"><span class="SCst">Native</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNative">TypeInfoNative</a>. See <a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a> for the underlying type. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Namespace</span></td>
+<td class="code-type"><span class="SCst">Namespace</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoNamespace">TypeInfoNamespace</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Enum</span></td>
+<td class="code-type"><span class="SCst">Enum</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoEnum">TypeInfoEnum</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Func</span></td>
+<td class="code-type"><span class="SCst">Func</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Lambda</span></td>
+<td class="code-type"><span class="SCst">Lambda</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is a lambda or a closure. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Pointer</span></td>
+<td class="code-type"><span class="SCst">Pointer</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoPointer">TypeInfoPointer</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Array</span></td>
+<td class="code-type"><span class="SCst">Array</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Slice</span></td>
+<td class="code-type"><span class="SCst">Slice</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoSlice">TypeInfoSlice</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">TypeListTuple</span></td>
+<td class="code-type"><span class="SCst">TypeListTuple</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">TypeListArray</span></td>
+<td class="code-type"><span class="SCst">TypeListArray</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoArray">TypeInfoArray</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Variadic</span></td>
+<td class="code-type"><span class="SCst">Variadic</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">TypedVariadic</span></td>
+<td class="code-type"><span class="SCst">TypedVariadic</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">CVariadic</span></td>
+<td class="code-type"><span class="SCst">CVariadic</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoVariadic">TypeInfoVariadic</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Struct</span></td>
+<td class="code-type"><span class="SCst">Struct</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Generic</span></td>
+<td class="code-type"><span class="SCst">Generic</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Alias</span></td>
+<td class="code-type"><span class="SCst">Alias</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Code</span></td>
+<td class="code-type"><span class="SCst">Code</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Interface</span></td>
+<td class="code-type"><span class="SCst">Interface</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoStruct">TypeInfoStruct</a>, but this is an interface. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Attribute</span></td>
+<td class="code-type"><span class="SCst">Attribute</span></td>
 <td>The typeinfo is a <a href="#Swag_TypeInfoFunc">TypeInfoFunc</a>, but this is an attribute. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoNamespace"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNamespace</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoNamespace"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoNamespace</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L605" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoNative"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNative</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoNative"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoNative</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L527" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">nativeKind</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></span></span></td>
+<td class="code-type"><span class="SCde">nativeKind</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfoNativeKind">TypeInfoNativeKind</a></span></span></td>
 <td></td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoNativeKind"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoNativeKind</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoNativeKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoNativeKind</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L442" class="src">[src]</a></td>
 </tr>
 </table>
@@ -5107,224 +5107,224 @@
 <p>The native type if the type is... native. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Void</span></td>
+<td class="code-type"><span class="SCst">Void</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">S8</span></td>
+<td class="code-type"><span class="SCst">S8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">S16</span></td>
+<td class="code-type"><span class="SCst">S16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">S32</span></td>
+<td class="code-type"><span class="SCst">S32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">S64</span></td>
+<td class="code-type"><span class="SCst">S64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">U8</span></td>
+<td class="code-type"><span class="SCst">U8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">U16</span></td>
+<td class="code-type"><span class="SCst">U16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">U32</span></td>
+<td class="code-type"><span class="SCst">U32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">U64</span></td>
+<td class="code-type"><span class="SCst">U64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">F32</span></td>
+<td class="code-type"><span class="SCst">F32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">F64</span></td>
+<td class="code-type"><span class="SCst">F64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Bool</span></td>
+<td class="code-type"><span class="SCst">Bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Rune</span></td>
+<td class="code-type"><span class="SCst">Rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">String</span></td>
+<td class="code-type"><span class="SCst">String</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Any</span></td>
+<td class="code-type"><span class="SCst">Any</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">CString</span></td>
+<td class="code-type"><span class="SCst">CString</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Undefined</span></td>
+<td class="code-type"><span class="SCst">Undefined</span></td>
 <td></td>
 </tr>
 </table>
-<p> If the <code class="incode">kind</code> of the type is <code class="incode">TypeInfoKind.Native</code>, then this is the real native type. </p>
+<p> If the <code class="inline-code">kind</code> of the type is <code class="inline-code">TypeInfoKind.Native</code>, then this is the real native type. </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoPointer"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoPointer</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoPointer"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoPointer</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L533" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pointedType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">pointedType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The pointed type. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoSlice"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoSlice</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoSlice"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoSlice</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L587" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pointedType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">pointedType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoStruct"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoStruct</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoStruct"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoStruct</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L545" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">opInit</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
+<td class="code-type"><span class="SCde">opInit</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
 <td>Pointer to the function to initialize an instance of that struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">opDrop</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
+<td class="code-type"><span class="SCde">opDrop</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
 <td>Pointer to the function to drop an instance of that struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">opPostCopy</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
+<td class="code-type"><span class="SCde">opPostCopy</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
 <td>Pointer to the function to call after a copy. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">opPostMove</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
+<td class="code-type"><span class="SCde">opPostMove</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
 <td>Pointer to the function to call after a move. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">structName</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">structName</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>User name of the struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fromGeneric</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">fromGeneric</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>If it comes from a generic instantiation, this is the original generic struct. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">generics</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">generics</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>Generic parameters. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">fields</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">fields</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the fields. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">methods</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">methods</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the methods, if exported. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">interfaces</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
+<td class="code-type"><span class="SCde">interfaces</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeValue">TypeValue</a></span></span></td>
 <td>All the interfaces. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">attributes</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde">attributes</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>All the attributes. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeInfoVariadic"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeInfoVariadic</span></span>
+<td class="api-item">
+<span id="Swag_TypeInfoVariadic"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoVariadic</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L593" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde"><span class="SKwd">using</span> base</span></td>
-<td class="codetype"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">rawType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">rawType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>The underlying type. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_TypeValue"><span class="titletype">struct</span> <span class="titlelight">Swag.</span><span class="titlestrong">TypeValue</span></span>
+<td class="api-item">
+<span id="Swag_TypeValue"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeValue</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L505" class="src">[src]</a></td>
 </tr>
 </table>
@@ -5332,94 +5332,94 @@
 <p>Represents a value, like a function parameter or an enum value. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCde">name</span></td>
-<td class="codetype"><span class="STpe">string</span></td>
+<td class="code-type"><span class="SCde">name</span></td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td>Name of the value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">pointedType</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
+<td class="code-type"><span class="SCde">pointedType</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
 <td>Type of the value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">value</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">value</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td>Pointer to the constant value. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">attributes</span></td>
-<td class="codetype"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
+<td class="code-type"><span class="SCde">attributes</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Attribute">Attribute</a></span></span></td>
 <td>Associated attributes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">offset</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">offset</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Offset, in bytes. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCde">crc32</span></td>
-<td class="codetype"><span class="STpe">u32</span></td>
+<td class="code-type"><span class="SCde">crc32</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td>Unique crc32. </td>
 </tr>
 </table>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_U16"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">U16</span></span>
+<td class="api-item">
+<span id="Swag_U16"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">U16</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_U32"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">U32</span></span>
+<td class="api-item">
+<span id="Swag_U32"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">U32</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_U64"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">U64</span></span>
+<td class="api-item">
+<span id="Swag_U64"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">U64</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_U8"><span class="titletype">namespace</span> <span class="titlelight">Swag.</span><span class="titlestrong">U8</span></span>
+<td class="api-item">
+<span id="Swag_U8"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">U8</span></span>
 </td>
 </tr>
 </table>
 </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Using"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Using</span></span>
+<td class="api-item">
+<span id="Swag_Using"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Using</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="addinfos"><b>Usage</b>: all 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>...)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>...)</span></code>
 </div>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_Warn"><span class="titletype">attr</span> <span class="titlelight">Swag.</span><span class="titlestrong">Warn</span></span>
+<td class="api-item">
+<span id="Swag_Warn"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Warn</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L183" class="src">[src]</a></td>
 </tr>
 </table>
@@ -5427,21 +5427,21 @@
 <p>Change the behavior of a given warning or list of warnings. </p>
 <div class="addinfos"><b>Usage</b>: all multi 
 </div>
-<div class="precode"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></code>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></code>
 </div>
 <p> For example: </p>
-<div class="precode"><code><span class="SAtr">#[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
+<div class="code-block"><code><span class="SAtr">#[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
  #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
  #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]</span></code>
 </div>
 <p> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
 <p>
-<table class="item">
+<table class="api-item">
 <tr>
-<td class="item">
-<span class="content" id="Swag_WarnLevel"><span class="titletype">enum</span> <span class="titlelight">Swag.</span><span class="titlestrong">WarnLevel</span></span>
+<td class="api-item">
+<span id="Swag_WarnLevel"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">WarnLevel</span></span>
 </td>
-<td class="srcref">
+<td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
@@ -5449,15 +5449,15 @@
 <p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
 <table class="enumeration">
 <tr>
-<td class="codetype"><span class="SCst">Enable</span></td>
+<td class="code-type"><span class="SCst">Enable</span></td>
 <td>Enable the given warning. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Disable</span></td>
+<td class="code-type"><span class="SCst">Disable</span></td>
 <td>Disable the given warning. </td>
 </tr>
 <tr>
-<td class="codetype"><span class="SCst">Error</span></td>
+<td class="code-type"><span class="SCst">Error</span></td>
 <td>Force the given warning to be raised as an error. </td>
 </tr>
 </table>

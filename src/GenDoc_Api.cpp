@@ -240,17 +240,17 @@ void GenDoc::outputTitle(OneRef& c)
     }
 
     helpContent += "<p>\n";
-    helpContent += "<table class=\"item\">\n";
+    helpContent += "<table class=\"api-item\">\n";
     helpContent += "<tr>\n";
-    helpContent += "<td class=\"item\">\n";
-    helpContent += Fmt("<span class=\"content\" id=\"%s\">", toRef(c.fullName).c_str());
+    helpContent += "<td class=\"api-item\">\n";
+    helpContent += Fmt("<span id=\"%s\">", toRef(c.fullName).c_str());
 
     Vector<Utf8> tkn;
     Utf8::tokenize(c.displayName, '.', tkn);
 
-    helpContent += Fmt("<span class=\"titletype\">%s</span> ", name.c_str());
+    helpContent += Fmt("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
 
-    helpContent += "<span class=\"titlelight\">";
+    helpContent += "<span class=\"api-item-title-light\">";
     for (int i = 0; i < tkn.size() - 1; i++)
     {
         helpContent += tkn[i];
@@ -258,7 +258,7 @@ void GenDoc::outputTitle(OneRef& c)
     }
     helpContent += "</span>";
 
-    helpContent += "<span class=\"titlestrong\">";
+    helpContent += "<span class=\"api-item-title-strong\">";
     if (c.nodes[0]->kind == AstNodeKind::ConstDecl)
         helpContent += "Constants";
     else if (c.nodes[0]->kind == AstNodeKind::TypeAlias)
@@ -273,7 +273,7 @@ void GenDoc::outputTitle(OneRef& c)
     // Add a reference to the source code
     if (c.nodes[0]->kind != AstNodeKind::Namespace)
     {
-        helpContent += "<td class=\"srcref\">\n";
+        helpContent += "<td class=\"api-item-title-src-ref\">\n";
         Path str = Utf8(module->buildCfg.repoPath);
         if (!str.empty())
         {
@@ -571,11 +571,11 @@ void GenDoc::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"codetype\">", toRef(n->getScopedName()).c_str());
+                helpContent += Fmt("<td id=\"%s\" class=\"code-type\">", toRef(n->getScopedName()).c_str());
                 helpContent += syntaxColor(n->token.text, SyntaxColorMode::ForDoc);
                 helpContent += "</td>\n";
 
-                helpContent += "<td class=\"codetype\">";
+                helpContent += "<td class=\"code-type\">";
                 auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 outputType(varDecl);
                 helpContent += "</td>\n";
@@ -612,11 +612,11 @@ void GenDoc::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"codetype\">", toRef(n->getScopedName()).c_str());
+                helpContent += Fmt("<td id=\"%s\" class=\"code-type\">", toRef(n->getScopedName()).c_str());
                 helpContent += syntaxColor(n->token.text, SyntaxColorMode::ForDoc);
                 helpContent += "</td>\n";
 
-                helpContent += "<td class=\"codetype\">";
+                helpContent += "<td class=\"code-type\">";
                 auto typeDecl = CastAst<AstAlias>(n, AstNodeKind::TypeAlias);
                 outputType(typeDecl);
                 helpContent += "</td>\n";
@@ -684,7 +684,7 @@ void GenDoc::generateContent()
 
                     helpContent += "<tr>\n";
 
-                    helpContent += "<td class=\"codetype\">";
+                    helpContent += "<td class=\"code-type\">";
                     Utf8 n2;
                     if (varDecl->flags & AST_DECL_USING)
                         n2 += "using ";
@@ -692,7 +692,7 @@ void GenDoc::generateContent()
                     helpContent += syntaxColor(n2, SyntaxColorMode::ForDoc);
                     helpContent += "</td>\n";
 
-                    helpContent += "<td class=\"codetype\">";
+                    helpContent += "<td class=\"code-type\">";
                     outputType(varDecl);
                     helpContent += "</td>\n";
 
@@ -739,7 +739,7 @@ void GenDoc::generateContent()
                     continue;
 
                 helpContent += "<tr>\n";
-                helpContent += "<td class=\"codetype\">";
+                helpContent += "<td class=\"code-type\">";
                 helpContent += syntaxColor(enumVal->name, SyntaxColorMode::ForDoc);
                 helpContent += "</td>\n";
 
