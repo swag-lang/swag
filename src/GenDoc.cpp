@@ -596,169 +596,6 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
     }
 }
 
-void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDescTd)
-{
-    if (user.lines.empty())
-        return;
-
-    switch (user.kind)
-    {
-    case UserBlockKind::CodeSwag:
-    case UserBlockKind::CodeRaw:
-    case UserBlockKind::CodeAuto:
-    {
-        Utf8 block;
-        for (auto& l : user.lines)
-        {
-            block += l;
-            block += "\n";
-        }
-
-        uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
-        if (user.kind != UserBlockKind::CodeSwag)
-            flags &= ~GENDOC_CODE_SYNTAX_COL;
-
-        outputCode(block, flags);
-        return;
-    }
-
-    case UserBlockKind::ParagraphRaw:
-        helpContent += "<p style=\"white-space: break-spaces\">";
-        break;
-
-    case UserBlockKind::Blockquote:
-        helpContent += "<blockquote>\n";
-        helpContent += "<p>";
-        break;
-
-    case UserBlockKind::Paragraph:
-        if (!shortDescTd)
-            helpContent += "<p>";
-        break;
-
-    case UserBlockKind::List:
-        helpContent += "<ul>\n";
-        break;
-
-    case UserBlockKind::Table:
-        helpContent += "<table class=\"enumeration\">\n";
-        break;
-
-    case UserBlockKind::Title1:
-    case UserBlockKind::Title2:
-    case UserBlockKind::Title3:
-    case UserBlockKind::Title4:
-    case UserBlockKind::Title5:
-    case UserBlockKind::Title6:
-    {
-        int level = ((int) user.kind - (int) UserBlockKind::Title1);
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + level + 1, toRef(user.lines[0]).c_str());
-        break;
-    }
-    }
-
-    for (int i = 0; i < user.lines.size(); i++)
-    {
-        auto line = user.lines[i];
-        line.trim();
-
-        if (user.kind == UserBlockKind::Table)
-        {
-            Vector<Utf8> tkn;
-            Utf8::tokenize(line, '|', tkn);
-            helpContent += "<tr>";
-            for (int it = 0; it < tkn.size(); it++)
-            {
-                auto& t = tkn[it];
-                helpContent += "<td>";
-                helpContent += getFormattedText(t);
-                helpContent += "</td>";
-            }
-            helpContent += "</tr>\n";
-        }
-        else if (user.kind == UserBlockKind::List)
-        {
-            helpContent += "<li>";
-            helpContent += getFormattedText(line);
-            helpContent += "</li>\n";
-        }
-        else if (user.kind == UserBlockKind::ParagraphRaw)
-        {
-            helpContent += user.lines[i];
-
-            // Add one line break after each line, except the last line from a raw block, because we do
-            // not want one useless empty line
-            if (i != user.lines.size() - 1)
-                helpContent += "\n";
-        }
-        else if (user.kind == UserBlockKind::Paragraph || user.kind == UserBlockKind::Blockquote)
-        {
-            if (line.empty())
-                helpContent += "</p><p>";
-            else
-            {
-                helpContent += getFormattedText(user.lines[i]);
-                helpContent += " ";
-            }
-        }
-        else if (user.kind == UserBlockKind::Title1 || user.kind == UserBlockKind::Title2 || user.kind == UserBlockKind::Title3)
-        {
-            helpContent += getFormattedText(user.lines[i]);
-            helpContent += " ";
-
-            // Update toc
-            if (docKind == BuildCfgDocKind::Examples)
-            {
-                int myTitleLevel = (int) user.kind - (int) UserBlockKind::Title1;
-                addTocTitle(toRef(user.lines[i]), user.lines[i], titleLevel + myTitleLevel - 1);
-            }
-        }
-        else
-        {
-            helpContent += getFormattedText(user.lines[i]);
-            helpContent += " ";
-        }
-    }
-
-    switch (user.kind)
-    {
-    case UserBlockKind::ParagraphRaw:
-        helpContent += "</p>\n";
-        break;
-    case UserBlockKind::Paragraph:
-        if (!shortDescTd)
-            helpContent += "</p>\n";
-        break;
-    case UserBlockKind::Blockquote:
-        helpContent += "</p>\n";
-        helpContent += "</blockquote>\n";
-        break;
-    case UserBlockKind::List:
-        helpContent += "</ul>\n";
-        break;
-    case UserBlockKind::Table:
-        helpContent += "</table>\n";
-        break;
-    case UserBlockKind::Title1:
-    case UserBlockKind::Title2:
-    case UserBlockKind::Title3:
-    case UserBlockKind::Title4:
-    case UserBlockKind::Title5:
-    case UserBlockKind::Title6:
-    {
-        int level = ((int) user.kind - (int) UserBlockKind::Title1);
-        helpContent += Fmt("</h%d>\n", titleLevel + level + 1);
-        break;
-    }
-    }
-}
-
-void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
-{
-    for (auto& b : user.blocks)
-        outputUserBlock(b, titleLevel);
-}
-
 Utf8 GenDoc::getFormattedText(const Utf8& user)
 {
     if (user.empty())
@@ -924,6 +761,171 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         result += "</code>";
 
     return result;
+}
+
+void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDescTd)
+{
+    for (auto sub : user.subBlocks)
+        outputUserBlock(*sub, titleLevel, shortDescTd);
+    if (user.lines.empty())
+        return;
+
+    switch (user.kind)
+    {
+    case UserBlockKind::CodeSwag:
+    case UserBlockKind::CodeRaw:
+    case UserBlockKind::CodeAuto:
+    {
+        Utf8 block;
+        for (auto& l : user.lines)
+        {
+            block += l;
+            block += "\n";
+        }
+
+        uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
+        if (user.kind != UserBlockKind::CodeSwag)
+            flags &= ~GENDOC_CODE_SYNTAX_COL;
+
+        outputCode(block, flags);
+        return;
+    }
+
+    case UserBlockKind::ParagraphRaw:
+        helpContent += "<p style=\"white-space: break-spaces\">";
+        break;
+
+    case UserBlockKind::Blockquote:
+        helpContent += "<blockquote>\n";
+        helpContent += "<p>";
+        break;
+
+    case UserBlockKind::Paragraph:
+        if (!shortDescTd)
+            helpContent += "<p>";
+        break;
+
+    case UserBlockKind::List:
+        helpContent += "<ul>\n";
+        break;
+
+    case UserBlockKind::Table:
+        helpContent += "<table class=\"enumeration\">\n";
+        break;
+
+    case UserBlockKind::Title1:
+    case UserBlockKind::Title2:
+    case UserBlockKind::Title3:
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        int level = ((int) user.kind - (int) UserBlockKind::Title1);
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + level + 1, toRef(user.lines[0]).c_str());
+        break;
+    }
+    }
+
+    for (int i = 0; i < user.lines.size(); i++)
+    {
+        auto line = user.lines[i];
+        line.trim();
+
+        if (user.kind == UserBlockKind::Table)
+        {
+            Vector<Utf8> tkn;
+            Utf8::tokenize(line, '|', tkn);
+            helpContent += "<tr>";
+            for (int it = 0; it < tkn.size(); it++)
+            {
+                auto& t = tkn[it];
+                helpContent += "<td>";
+                helpContent += getFormattedText(t);
+                helpContent += "</td>";
+            }
+            helpContent += "</tr>\n";
+        }
+        else if (user.kind == UserBlockKind::List)
+        {
+            helpContent += "<li>";
+            helpContent += getFormattedText(line);
+            helpContent += "</li>\n";
+        }
+        else if (user.kind == UserBlockKind::ParagraphRaw)
+        {
+            helpContent += user.lines[i];
+
+            // Add one line break after each line, except the last line from a raw block, because we do
+            // not want one useless empty line
+            if (i != user.lines.size() - 1)
+                helpContent += "\n";
+        }
+        else if (user.kind == UserBlockKind::Paragraph || user.kind == UserBlockKind::Blockquote)
+        {
+            if (line.empty())
+                helpContent += "</p><p>";
+            else
+            {
+                helpContent += getFormattedText(user.lines[i]);
+                helpContent += " ";
+            }
+        }
+        else if (user.kind == UserBlockKind::Title1 || user.kind == UserBlockKind::Title2 || user.kind == UserBlockKind::Title3)
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+
+            // Update toc
+            if (docKind == BuildCfgDocKind::Examples)
+            {
+                int myTitleLevel = (int) user.kind - (int) UserBlockKind::Title1;
+                addTocTitle(toRef(user.lines[i]), user.lines[i], titleLevel + myTitleLevel - 1);
+            }
+        }
+        else
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+        }
+    }
+
+    switch (user.kind)
+    {
+    case UserBlockKind::ParagraphRaw:
+        helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Paragraph:
+        if (!shortDescTd)
+            helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Blockquote:
+        helpContent += "</p>\n";
+        helpContent += "</blockquote>\n";
+        break;
+    case UserBlockKind::List:
+        helpContent += "</ul>\n";
+        break;
+    case UserBlockKind::Table:
+        helpContent += "</table>\n";
+        break;
+    case UserBlockKind::Title1:
+    case UserBlockKind::Title2:
+    case UserBlockKind::Title3:
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        int level = ((int) user.kind - (int) UserBlockKind::Title1);
+        helpContent += Fmt("</h%d>\n", titleLevel + level + 1);
+        break;
+    }
+    }
+}
+
+void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
+{
+    for (auto& b : user.blocks)
+        outputUserBlock(b, titleLevel);
 }
 
 void GenDoc::constructPage()

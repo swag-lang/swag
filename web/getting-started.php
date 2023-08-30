@@ -265,7 +265,7 @@ Hello world!
 </div>
 <h3 id="Note_on_Windows_Defender_realtime_protection">Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
-<p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> <a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a>   À© </p>
+<p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> <code class="incode">+Zb</code> </p>
 <h1 id="Content_of_the_Swag_folder">Content of the Swag folder </h1>
 <p>The Swag folder contains the compiler <code class="incode">swag.exe</code>, but also a bunch of sub folders. </p>
 <ul>

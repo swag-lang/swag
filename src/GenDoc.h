@@ -32,8 +32,9 @@ struct GenDoc
 
     struct UserBlock
     {
-        UserBlockKind kind = UserBlockKind::Paragraph;
-        Vector<Utf8>  lines;
+        UserBlockKind      kind = UserBlockKind::Paragraph;
+        Vector<UserBlock*> subBlocks;
+        Vector<Utf8>       lines;
     };
 
     struct UserComment
