@@ -90,63 +90,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -164,20 +112,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -725,7 +731,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Pixel_Bmp_BI_BITFIELDS" class="code-type"><span class="SCst">BI_BITFIELDS</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -793,7 +799,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Pixel_Clipper_CInt" class="code-type"><span class="SCst">CInt</span></td>
 <td class="code-type"><span class="STpe">s64</span></td>
@@ -836,7 +842,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">AliceBlue</span></td>
 <td></td>
@@ -1427,7 +1433,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Copy</span></td>
 <td></td>
@@ -1542,7 +1548,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">biSize</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -1610,7 +1616,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -1631,7 +1637,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">color</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
@@ -1664,7 +1670,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Brush_createHatch"><span class="SCde"><span class="SFct">createHatch</span>()</spa</a></td>
 <td>Returns a hatch brush. </td>
@@ -1749,7 +1755,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">SolidColor</span></td>
 <td></td>
@@ -1774,7 +1780,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Intersection</span></td>
 <td></td>
@@ -1803,7 +1809,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">ReverseSolution</span></td>
 <td></td>
@@ -1828,7 +1834,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">s64</span></td>
@@ -1841,7 +1847,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Clipper_IntPoint_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
@@ -1871,7 +1877,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Square</span></td>
 <td></td>
@@ -1896,7 +1902,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">EvenOdd</span></td>
 <td></td>
@@ -1925,7 +1931,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Subject</span></td>
 <td></td>
@@ -1957,7 +1963,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Set</span></td>
 <td></td>
@@ -1978,7 +1984,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">a</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
@@ -2006,7 +2012,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Color_fromAbgr"><span class="SCde"><span class="SFct">fromAbgr</span>()</spa</a></td>
 <td>Create a new Color with specified values. </td>
@@ -2113,7 +2119,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></a></td>
 <td></td>
@@ -2515,7 +2521,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">r</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -2548,7 +2554,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">id</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
@@ -2571,7 +2577,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Clear</span></td>
 <td></td>
@@ -2676,7 +2682,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -2705,7 +2711,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -2738,7 +2744,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">decodePixels</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -2756,7 +2762,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
@@ -2777,7 +2783,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Separate</span></td>
 <td></td>
@@ -2798,7 +2804,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
@@ -2831,7 +2837,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Line</span></td>
 <td></td>
@@ -2864,7 +2870,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">ascent</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -2937,7 +2943,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Font_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">TypeFace</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
 <td>Creates a new Font of the given typeface and size. </td>
@@ -3011,7 +3017,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">regular</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
@@ -3034,7 +3040,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_FontFamily_createTypeFace"><span class="SCde"><span class="SFct">createTypeFace</span>()</spa</a></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
@@ -3138,7 +3144,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -3161,7 +3167,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Regular</span></td>
 <td></td>
@@ -3190,7 +3196,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -3214,7 +3220,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Gif_Decoder_getFrame"><span class="SCde"><span class="SFct">getFrame</span>()</spa</a></td>
 <td>Create an image for the current frame. </td>
@@ -3343,7 +3349,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">texture</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
@@ -3401,7 +3407,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">uv</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
@@ -3454,7 +3460,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Dot</span></td>
 <td></td>
@@ -3612,7 +3618,7 @@
 </table>
 </p>
 <p>Interface to decode a buffer. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">canDecode</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
@@ -3636,7 +3642,7 @@
 </table>
 </p>
 <p>Interface to decode a buffer. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">canEncode</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
@@ -3660,7 +3666,7 @@
 </table>
 </p>
 <p>An image buffer, in various pixel formats. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">pixels</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
@@ -3708,7 +3714,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Image_addDecoder"><span class="SCde"><span class="SFct">addDecoder</span>()</spa</a></td>
 <td>Register an image decoder. </td>
@@ -3939,7 +3945,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Image_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
 <td></td>
@@ -3956,7 +3962,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Red</span></td>
 <td></td>
@@ -3993,7 +3999,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Color</span></td>
 <td></td>
@@ -4026,7 +4032,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">HueVert</span></td>
 <td></td>
@@ -4088,7 +4094,7 @@
 </table>
 </p>
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">GaussianBlur3x3A</span></td>
 <td></td>
@@ -4197,7 +4203,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Copy</span></td>
 <td></td>
@@ -4218,7 +4224,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Raw</span></td>
 <td></td>
@@ -4263,7 +4269,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">T90</span></td>
 <td></td>
@@ -5059,7 +5065,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Pixel</span></td>
 <td></td>
@@ -5080,7 +5086,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -5150,7 +5156,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">quality</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
@@ -5205,7 +5211,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -5246,7 +5252,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">elements</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
@@ -5329,7 +5335,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_LinePath_arcTo"><span class="SCde"><span class="SFct">arcTo</span>()</spa</a></td>
 <td>Add an arc from the previous point. </td>
@@ -5583,7 +5589,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">paths</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
@@ -5601,7 +5607,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_LinePathList_clean"><span class="SCde"><span class="SFct">clean</span>()</spa</a></td>
 <td>Clean all paths  They must before be flattened. </td>
@@ -5729,7 +5735,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SCde"><span class="SFct">createContext</span>(<span class="SKwd">self</span>, <span class="SCst">HDC</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></a></td>
 <td></td>
@@ -5815,7 +5821,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5840,7 +5846,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Draft</span></td>
 <td></td>
@@ -5861,7 +5867,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">paintParams</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
@@ -5919,7 +5925,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">commandBuffer</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
@@ -6022,7 +6028,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Painter_addParams"><span class="SCde"><span class="SFct">addParams</span>()</spa</a></td>
 <td></td>
@@ -7471,7 +7477,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">size</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -7554,7 +7560,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Pen_createDash"><span class="SCde"><span class="SFct">createDash</span>()</spa</a></td>
 <td>Returns a dash pen. </td>
@@ -7622,7 +7628,7 @@
 </table>
 </p>
 <p>Desribe the layout format of one image pixel. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">BGR8</span></td>
 <td></td>
@@ -7744,7 +7750,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">compressionLevel</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Compress</span>.<span class="SCst">Deflate</span>.<span class="SCst">CompressionLevel</span></span></td>
@@ -7804,7 +7810,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">p</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
@@ -7827,7 +7833,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> v</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
@@ -7856,7 +7862,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Poly2Tri_Tesselate_addPoint"><span class="SCde"><span class="SFct">addPoint</span>()</spa</a></td>
 <td>Register a new point. </td>
@@ -7977,7 +7983,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">constrainedEdge</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
@@ -8015,7 +8021,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">points</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
@@ -8053,7 +8059,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Polygon_add"><span class="SCde"><span class="SFct">add</span>()</spa</a></td>
 <td>Add a new point. </td>
@@ -8242,7 +8248,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
@@ -8330,7 +8336,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_RenderOgl_addImage"><span class="SCde"><span class="SFct">addImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></a></td>
 <td>Register an image for rendering. </td>
@@ -8859,7 +8865,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -8897,7 +8903,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">hDC</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
@@ -8930,7 +8936,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">slice</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -8994,7 +9000,7 @@
 </table>
 </p>
 <p>Represents a string with embedded formats. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">raw</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -9028,7 +9034,7 @@
 </div>
 <p> See <a href="#Pixel_RichString_set">RichString.set</a> for a list of available markers. </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_RichString_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Compute layout. </td>
@@ -9051,7 +9057,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_RichString_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -9198,7 +9204,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">font</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
@@ -9251,7 +9257,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
@@ -9269,7 +9275,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -9327,7 +9333,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
@@ -9355,7 +9361,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
@@ -9373,7 +9379,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
@@ -9402,7 +9408,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Center</span></td>
 <td></td>
@@ -9431,7 +9437,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">ascent</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -9464,7 +9470,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">str</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span></span></td>
@@ -9477,7 +9483,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_StringPainter_color"><span class="SCde"><span class="SFct">color</span>()</spa</a></td>
 <td>Set text color. </td>
@@ -9598,7 +9604,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Center</span></td>
 <td></td>
@@ -9623,7 +9629,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -9651,7 +9657,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_Texture_getByteSize"><span class="SCde"><span class="SFct">getByteSize</span>()</spa</a></td>
 <td></td>
@@ -9772,7 +9778,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fullname</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -9805,7 +9811,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Pixel_TypeFace_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Get or create a new typeface from a memory buffer. </td>
@@ -9998,7 +10004,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Fill</span></td>
 <td></td>
@@ -10023,7 +10029,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -10048,7 +10054,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">pos</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>

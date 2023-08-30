@@ -130,7 +130,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         if (first)
         {
             helpContent += Fmt("<h3>%s</h3>\n", title);
-            helpContent += "<table class=\"enumeration\">\n";
+            helpContent += "<table class=\"table-enumeration\">\n";
             first = false;
         }
 
@@ -557,7 +557,7 @@ void GenDoc::generateContent()
         {
             outputTitle(c);
 
-            helpContent += "<table class=\"enumeration\">\n";
+            helpContent += "<table class=\"table-enumeration\">\n";
 
             for (int j = i; j < allNodes.size(); j++)
             {
@@ -598,7 +598,7 @@ void GenDoc::generateContent()
         {
             outputTitle(c);
 
-            helpContent += "<table class=\"enumeration\">\n";
+            helpContent += "<table class=\"table-enumeration\">\n";
 
             for (int j = i; j < allNodes.size(); j++)
             {
@@ -676,7 +676,7 @@ void GenDoc::generateContent()
 
                     if (first)
                     {
-                        helpContent += "<table class=\"enumeration\">\n";
+                        helpContent += "<table class=\"table-enumeration\">\n";
                         first = false;
                     }
 
@@ -732,7 +732,7 @@ void GenDoc::generateContent()
 
             auto enumNode = CastAst<AstEnum>(n0, AstNodeKind::EnumDecl);
 
-            helpContent += "<table class=\"enumeration\">\n";
+            helpContent += "<table class=\"table-enumeration\">\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)
             {
                 if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
@@ -840,7 +840,7 @@ void GenDoc::generateContent()
                 auto attrNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
 
-                helpContent += "<div class=\"addinfos\">";
+                helpContent += "<div class=\"api-additional-infos\">";
                 helpContent += "<b>Usage</b>: ";
                 if (typeInfo->attributeUsage & AttributeUsage::All)
                     helpContent += "all ";

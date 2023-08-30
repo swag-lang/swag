@@ -91,63 +91,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -165,20 +113,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -502,7 +508,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Swag_F32_Bias" class="code-type"><span class="SCst">Bias</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -1736,7 +1742,7 @@
 </table>
 </p>
 <h3>Structs</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_AllocatorRequest"><span class="SCst">AllocatorRequest</span></a></td>
 <td>Represents the request for a given allocator. </td>
@@ -1875,7 +1881,7 @@
 </tr>
 </table>
 <h3>Enums</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_AllocatorMode"><span class="SCst">AllocatorMode</span></a></td>
 <td>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
@@ -1954,7 +1960,7 @@
 </tr>
 </table>
 <h3>Attributes</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_Align"><span class="SCst">Align</span></a></td>
 <td></td>
@@ -2111,7 +2117,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: 
+<div class="api-additional-infos"><b>Usage</b>: 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Align">Align</a></span>(value: <span class="STpe">u8</span>)</span></code>
 </div>
@@ -2127,7 +2133,7 @@
 </table>
 </p>
 <p>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Alloc</span></td>
 <td>Allocate a block of memory. </td>
@@ -2161,7 +2167,7 @@
 </table>
 </p>
 <p>Represents the request for a given allocator. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">callerLoc</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
@@ -2229,7 +2235,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrMulti">AttrMulti</a></span></span></code>
 </div>
@@ -2244,7 +2250,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_AttrUsage">AttrUsage</a></span>(usage: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AttributeUsage">AttributeUsage</a></span>)</span></code>
 </div>
@@ -2259,7 +2265,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -2282,7 +2288,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -2305,7 +2311,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Enum</span></td>
 <td>Attribute can be used on an enum. </td>
@@ -2371,7 +2377,7 @@
 </table>
 </p>
 <p>The type of backend to use. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">ByteCode</span></td>
 <td>Bytecode. </td>
@@ -2397,7 +2403,7 @@
 </table>
 </p>
 <p>The current module build configuration. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">moduleVersion</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -2567,7 +2573,7 @@
 </table>
 </p>
 <p>The kind of native backend to generate. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td>Nothing. </td>
@@ -2597,7 +2603,7 @@
 </table>
 </p>
 <p><code class="inline-code">LLVM</code> backend specific options. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">outputIR</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -2646,7 +2652,7 @@
 </table>
 </p>
 <p>These are the optimization levels for the backend. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">O0</span></td>
 <td>No optimization. </td>
@@ -2685,7 +2691,7 @@
 </table>
 </p>
 <p>The native backend sub category. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
@@ -2719,7 +2725,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td>Do not generate documentation for that module. </td>
@@ -2748,7 +2754,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">kind</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgDocKind">BuildCfgDocKind</a></span></span></td>
@@ -2836,7 +2842,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buf</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2048</span>] <span class="STpe">u8</span></span></td>
@@ -2855,7 +2861,7 @@
 </table>
 </p>
 <p>A <code class="inline-code">return</code> in the following inlined function must be done in the callee context. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_CalleeReturn">CalleeReturn</a></span></span></code>
 </div>
@@ -2871,7 +2877,7 @@
 </table>
 </p>
 <p>The following function or variable is only defined at compile time. </p>
-<div class="addinfos"><b>Usage</b>: function global-var const 
+<div class="api-additional-infos"><b>Usage</b>: function global-var const 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Compiler">Compiler</a></span></span></code>
 </div>
@@ -2887,7 +2893,7 @@
 </table>
 </p>
 <p>A message received in a <code class="inline-code">#message</code> function. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">moduleName</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -2922,7 +2928,7 @@
 </table>
 </p>
 <p>The kind of message in <a href="#Swag_CompilerMessage">CompilerMessage</a>. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">PassAfterSemantic</span></td>
 <td>Called once the program semantic has been done. </td>
@@ -2968,7 +2974,7 @@
 </table>
 </p>
 <p>The type of message you want to retreive in a <code class="inline-code">#message</code> function. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">PassAfterSemantic</span></td>
 <td></td>
@@ -3019,7 +3025,7 @@
 </table>
 </p>
 <p>The following switch must be complete. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Complete">Complete</a></span></span></code>
 </div>
@@ -3035,7 +3041,7 @@
 </table>
 </p>
 <p>Can be executed at compile time. </p>
-<div class="addinfos"><b>Usage</b>: function struct 
+<div class="api-additional-infos"><b>Usage</b>: function struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ConstExpr">ConstExpr</a></span></span></code>
 </div>
@@ -3051,7 +3057,7 @@
 </table>
 </p>
 <p>Thread context as returned by [@context]. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">allocator</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
@@ -3119,7 +3125,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -3144,7 +3150,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">allocator</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
@@ -3217,7 +3223,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_DebugAllocator_assertIsAllocated"><span class="SCde"><span class="SFct">assertIsAllocated</span>()</spa</a></td>
 <td>This function will assert if the given user address is not conform  to an allocated block. </td>
@@ -3252,7 +3258,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_DebugAllocator_opDrop"><span class="SCde"><span class="SFct">opDrop</span>()</spa</a></td>
 <td></td>
@@ -3443,7 +3449,7 @@
 </table>
 </p>
 <p>Will be put just after the returned address. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">magic</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -3462,7 +3468,7 @@
 </table>
 </p>
 <p>Will be put just before the returned address. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">loc</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SourceCodeLocation">SourceCodeLocation</a></span></span></td>
@@ -3531,7 +3537,7 @@
 </table>
 </p>
 <p>The following definition is deprecated and should not be used. </p>
-<div class="addinfos"><b>Usage</b>: function enum enum-value struct 
+<div class="api-additional-infos"><b>Usage</b>: function enum enum-value struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Deprecated">Deprecated</a></span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></code>
 </div>
@@ -3547,7 +3553,7 @@
 </table>
 </p>
 <p>The following function accepts that the called does not use its return value. </p>
-<div class="addinfos"><b>Usage</b>: function var 
+<div class="api-additional-infos"><b>Usage</b>: function var 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Discardable">Discardable</a></span></span></code>
 </div>
@@ -3563,7 +3569,7 @@
 </table>
 </p>
 <p>The following enum is a set of flags. </p>
-<div class="addinfos"><b>Usage</b>: enum 
+<div class="api-additional-infos"><b>Usage</b>: enum 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumFlags">EnumFlags</a></span></span></code>
 </div>
@@ -3579,7 +3585,7 @@
 </table>
 </p>
 <p>The following enum can be used to index arrays without casting. </p>
-<div class="addinfos"><b>Usage</b>: enum 
+<div class="api-additional-infos"><b>Usage</b>: enum 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_EnumIndex">EnumIndex</a></span></span></code>
 </div>
@@ -3595,7 +3601,7 @@
 </table>
 </p>
 <p>Store a <code class="inline-code">throw</code> error informations. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">msgBuf</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="STpe">u8</span></span></td>
@@ -3628,7 +3634,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Panic</span></td>
 <td></td>
@@ -3653,7 +3659,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_ExportType">ExportType</a></span>(what: <span class="STpe">string</span>)</span></code>
 </div>
@@ -3687,7 +3693,7 @@
 </table>
 </p>
 <p>The following function is foreign (imported). </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Foreign">Foreign</a></span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></code>
 </div>
@@ -3702,7 +3708,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: 
+<div class="api-additional-infos"><b>Usage</b>: 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Global">Global</a></span></span></code>
 </div>
@@ -3718,7 +3724,7 @@
 </table>
 </p>
 <p>Defined a global variable. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">ptr</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -3741,7 +3747,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">req</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>, *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_AllocatorRequest">AllocatorRequest</a></span>)</span></td>
@@ -3773,7 +3779,7 @@
 </table>
 </p>
 <p>This is the interface to communicate with the compiler. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">getMessage</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
@@ -3842,7 +3848,7 @@
 </table>
 </p>
 <p>Can force an <code class="inline-code">opCast</code> special function to work as implicit. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Implicit">Implicit</a></span></span></code>
 </div>
@@ -3858,7 +3864,7 @@
 </table>
 </p>
 <p>The following switch is incomplete. </p>
-<div class="addinfos"><b>Usage</b>: enum 
+<div class="api-additional-infos"><b>Usage</b>: enum 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Incomplete">Incomplete</a></span></span></code>
 </div>
@@ -3874,7 +3880,7 @@
 </table>
 </p>
 <p>Force a function to be inlined. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Inline">Inline</a></span></span></code>
 </div>
@@ -3889,7 +3895,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">obj</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -3913,7 +3919,7 @@
 </table>
 </p>
 <p>The following function is a <code class="inline-code">macro</code>. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Macro">Macro</a></span></span></code>
 </div>
@@ -3928,7 +3934,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Match">Match</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
@@ -3944,7 +3950,7 @@
 </table>
 </p>
 <p>The following function is a <code class="inline-code">mixin</code>. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Mixin">Mixin</a></span></span></code>
 </div>
@@ -3960,7 +3966,7 @@
 </table>
 </p>
 <p>Defined some informations about a loaded module. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -3984,7 +3990,7 @@
 </table>
 </p>
 <p>The following struct should never be copied. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoCopy">NoCopy</a></span></span></code>
 </div>
@@ -4000,7 +4006,7 @@
 </table>
 </p>
 <p>Do not generate documentation. </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoDoc">NoDoc</a></span></span></code>
 </div>
@@ -4016,7 +4022,7 @@
 </table>
 </p>
 <p>Never inline the following function. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoInline">NoInline</a></span></span></code>
 </div>
@@ -4033,7 +4039,7 @@
 </table>
 </p>
 <p>The following function is forced to not be generic, even if defined inside a generic <code class="inline-code">struct</code>. </p>
-<div class="addinfos"><b>Usage</b>: function 
+<div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NotGeneric">NotGeneric</a></span></span></code>
 </div>
@@ -4049,7 +4055,7 @@
 </table>
 </p>
 <p>Struct field member relocation. </p>
-<div class="addinfos"><b>Usage</b>: struct-var 
+<div class="api-additional-infos"><b>Usage</b>: struct-var 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
@@ -4066,7 +4072,7 @@
 </table>
 </p>
 <p>When exporting the following struct, do not export its content. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Opaque">Opaque</a></span></span></code>
 </div>
@@ -4082,12 +4088,12 @@
 </table>
 </p>
 <p>Enable/Disable a given function optimization. </p>
-<div class="addinfos"><b>Usage</b>: function multi 
+<div class="api-additional-infos"><b>Usage</b>: function multi 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p> Options are: </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr><td> <code class="inline-code">bytecode</code>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
 <tr><td> <code class="inline-code">backend</code>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
@@ -4103,7 +4109,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Overflow">Overflow</a></span>(value: <span class="STpe">bool</span>)</span></code>
 </div>
@@ -4119,7 +4125,7 @@
 </table>
 </p>
 <p><code class="inline-code">struct</code> packing information. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></code>
 </div>
@@ -4135,7 +4141,7 @@
 </table>
 </p>
 <p>On a function or a struct, this will print the associated generated bytecode (after bytecode optimizations). </p>
-<div class="addinfos"><b>Usage</b>: function struct 
+<div class="api-additional-infos"><b>Usage</b>: function struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintBc">PrintBc</a></span></span></code>
 </div>
@@ -4151,7 +4157,7 @@
 </table>
 </p>
 <p>On a function or a struct, this will print the associated generated bytecode (right after generation, without bytecode optimizations). </p>
-<div class="addinfos"><b>Usage</b>: function struct 
+<div class="api-additional-infos"><b>Usage</b>: function struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_PrintGenBc">PrintGenBc</a></span></span></code>
 </div>
@@ -4167,7 +4173,7 @@
 </table>
 </p>
 <p>Defined some informations about the current process. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">modules</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_Module">Module</a></span></span></td>
@@ -4190,7 +4196,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -4248,7 +4254,7 @@
 </table>
 </p>
 <p>Enable/Disable one or more safety checks. </p>
-<div class="addinfos"><b>Usage</b>: all multi 
+<div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Safety">Safety</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
@@ -4257,7 +4263,7 @@
  <span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></code>
 </div>
 <p> Safety checks are: </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr><td> <code class="inline-code">boundcheck</code>   </td><td> Check out of bound access</td></tr>
 <tr><td> <code class="inline-code">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
 <tr><td> <code class="inline-code">math</code>         </td><td> Various math checks (like a negative <code class="inline-code">@sqrt</code>)</td></tr>
@@ -4281,7 +4287,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">allocator</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span></span></td>
@@ -4324,7 +4330,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Swag_ScratchAllocator_align"><span class="SCde"><span class="SFct">align</span>()</spa</a></td>
 <td></td>
@@ -4400,7 +4406,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">prev</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator">ScratchAllocator</a></span>.<span class="SCst"><a href="#Swag_ScratchAllocator_LeakHeader">LeakHeader</a></span></span></td>
@@ -4510,7 +4516,7 @@
 </table>
 </p>
 <p>Represent a part of a source code file. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fileName</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -4549,7 +4555,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: 
+<div class="api-additional-infos"><b>Usage</b>: 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Strict">Strict</a></span></span></code>
 </div>
@@ -4602,7 +4608,7 @@
 </table>
 </p>
 <p>Target processor. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">X86_64</span></td>
 <td></td>
@@ -4620,7 +4626,7 @@
 </table>
 </p>
 <p>The <code class="inline-code">OS</code> to target when generating native code. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Windows</span></td>
 <td>Windows 10/11. </td>
@@ -4646,7 +4652,7 @@
 </table>
 </p>
 <p>Put the following global variable in the <code class="inline-code">tls</code> segment. </p>
-<div class="addinfos"><b>Usage</b>: global-var 
+<div class="api-additional-infos"><b>Usage</b>: global-var 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Tls">Tls</a></span></span></code>
 </div>
@@ -4662,7 +4668,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Strict</span></td>
 <td></td>
@@ -4684,7 +4690,7 @@
 </table>
 </p>
 <p>Will be available for all types. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fullname</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -4732,7 +4738,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -4755,7 +4761,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -4793,7 +4799,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -4827,7 +4833,7 @@
 </table>
 </p>
 <p>Flags in each <a href="#Swag_TypeInfo">TypeInfo</a>. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -4908,7 +4914,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -4946,7 +4952,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -4970,7 +4976,7 @@
 </table>
 </p>
 <p>The kind of the typeinfo. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Invalid</span></td>
 <td></td>
@@ -5063,7 +5069,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5081,7 +5087,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5105,7 +5111,7 @@
 </table>
 </p>
 <p>The native type if the type is... native. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Void</span></td>
 <td></td>
@@ -5187,7 +5193,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5210,7 +5216,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5233,7 +5239,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5306,7 +5312,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
@@ -5330,7 +5336,7 @@
 </table>
 </p>
 <p>Represents a value, like a function parameter or an enum value. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -5409,7 +5415,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Using">Using</a></span>(what: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span>...)</span></code>
 </div>
@@ -5425,7 +5431,7 @@
 </table>
 </p>
 <p>Change the behavior of a given warning or list of warnings. </p>
-<div class="addinfos"><b>Usage</b>: all multi 
+<div class="api-additional-infos"><b>Usage</b>: all multi 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></code>
 </div>
@@ -5447,7 +5453,7 @@
 </table>
 </p>
 <p>Warning behavior for <a href="#Swag_Warn">Warn</a> attribute. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Enable</span></td>
 <td>Enable the given warning. </td>

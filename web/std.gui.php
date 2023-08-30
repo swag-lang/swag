@@ -90,63 +90,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -164,20 +112,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -1050,7 +1056,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Gui_Clipboard_Format" class="code-type"><span class="SCst">Format</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -1088,7 +1094,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">wnd</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -1111,7 +1117,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -1144,7 +1150,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ApplicationNative">ApplicationNative</a></span></span></td>
@@ -1327,7 +1333,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Application_addTimer"><span class="SCde"><span class="SFct">addTimer</span>()</spa</a></td>
 <td>Register a new timer for the given <code class="inline-code">target</code>. </td>
@@ -1961,7 +1967,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fileSmallIconsImage</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
@@ -2004,7 +2010,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td></td>
@@ -2037,7 +2043,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">curVec4</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
@@ -2070,7 +2076,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_BlendColor_apply"><span class="SCde"><span class="SFct">apply</span>()</spa</a></td>
 <td>Apply the color lerp to reach <code class="inline-code">target</code>. </td>
@@ -2118,7 +2124,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -2171,7 +2177,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">UnChecked</span></td>
 <td></td>
@@ -2196,7 +2202,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
@@ -2219,7 +2225,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_CheckButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -2275,7 +2281,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -2440,7 +2446,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -2523,7 +2529,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ColorPicker_change"><span class="SCde"><span class="SFct">change</span>()</spa</a></td>
 <td>Change one component, HSL or alpha. </td>
@@ -2677,7 +2683,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -2785,7 +2791,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ColorPickerCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -2882,7 +2888,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">SaturationLightness</span></td>
 <td></td>
@@ -2975,7 +2981,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">SaturationLightness</span></td>
 <td></td>
@@ -3012,7 +3018,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -3080,7 +3086,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ComboBox_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new item. </td>
@@ -3239,7 +3245,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
@@ -3262,7 +3268,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Select</span></td>
 <td></td>
@@ -3287,7 +3293,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -3315,7 +3321,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ComboCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -3358,7 +3364,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -3386,7 +3392,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -3459,7 +3465,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -3477,7 +3483,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeCursor">NativeCursor</a></span></span></td>
@@ -3485,7 +3491,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Cursor_apply"><span class="SCde"><span class="SFct">apply</span>()</spa</a></td>
 <td></td>
@@ -3567,7 +3573,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Arrow</span></td>
 <td></td>
@@ -3628,7 +3634,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -3646,7 +3652,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -3669,7 +3675,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Dialog_addButton"><span class="SCde"><span class="SFct">addButton</span>()</spa</a></td>
 <td>Add a button. </td>
@@ -3797,7 +3803,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -3847,7 +3853,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -3985,7 +3991,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_EditBox_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -4278,7 +4284,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Incomplete</span></td>
 <td></td>
@@ -4307,7 +4313,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -4336,7 +4342,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Square</span></td>
 <td></td>
@@ -4365,7 +4371,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">String</span></td>
 <td></td>
@@ -4394,7 +4400,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -4422,7 +4428,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_EditCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Create the popup list, but do not display it. </td>
@@ -4466,7 +4472,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
@@ -4489,7 +4495,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_EditDlg_createMultiLine"><span class="SCde"><span class="SFct">createMultiLine</span>()</spa</a></td>
 <td>Creates the message box. </td>
@@ -4592,7 +4598,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -4605,7 +4611,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_EmbInfoCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Create the popup list, but do not display it. </td>
@@ -4636,7 +4642,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Critical</span></td>
 <td></td>
@@ -4657,7 +4663,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">kind</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span></span></td>
@@ -4680,7 +4686,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Event_create"><span class="SCde"><span class="SFct">create</span>()</span></a></td>
 <td></td>
@@ -4715,7 +4721,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -4868,7 +4874,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
@@ -4926,7 +4932,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_FileDlg_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates the message box. </td>
@@ -5006,7 +5012,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">CreateFile</span></td>
 <td></td>
@@ -5035,7 +5041,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">title</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -5093,7 +5099,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">position</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
@@ -5116,7 +5122,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -5139,7 +5145,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -5160,7 +5166,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -5183,7 +5189,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -5221,7 +5227,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_FrameWnd_createView"><span class="SCde"><span class="SFct">createView</span>()</spa</a></td>
 <td></td>
@@ -5356,7 +5362,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -5389,7 +5395,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5418,7 +5424,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td></td>
@@ -5443,7 +5449,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -5491,7 +5497,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_GridLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
 <td>Recompute layout of all childs. </td>
@@ -5608,7 +5614,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5637,7 +5643,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -5705,7 +5711,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Header_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new view. </td>
@@ -5954,7 +5960,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5975,7 +5981,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td></td>
@@ -6000,7 +6006,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
@@ -6058,7 +6064,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">accept</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
@@ -6086,7 +6092,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">setup</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></td>
@@ -6114,7 +6120,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">onEvent</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
@@ -6237,7 +6243,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">imageList</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
@@ -6260,7 +6266,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Icon_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Set icon to invalid. </td>
@@ -6283,7 +6289,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Icon_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
@@ -6382,7 +6388,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -6415,7 +6421,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_IconBar_addCheckableItem"><span class="SCde"><span class="SFct">addCheckableItem</span>()</spa</a></td>
 <td>Add a new checkable button. </td>
@@ -6530,7 +6536,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -6551,7 +6557,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
@@ -6619,7 +6625,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_IconButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -6763,7 +6769,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -6804,7 +6810,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -6841,7 +6847,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -6874,7 +6880,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Square</span></td>
 <td></td>
@@ -6899,7 +6905,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Left</span></td>
 <td></td>
@@ -6928,7 +6934,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">texture</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
@@ -6951,7 +6957,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ImageList_countX"><span class="SCde"><span class="SFct">countX</span>()</spa</a></td>
 <td></td>
@@ -7016,7 +7022,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -7034,7 +7040,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ImageRect_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td></td>
@@ -7162,7 +7168,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
@@ -7200,7 +7206,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -7233,7 +7239,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">mdf</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span></span></td>
@@ -7266,7 +7272,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -7319,7 +7325,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Label_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -7398,7 +7404,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -7427,7 +7433,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -7580,7 +7586,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ListCtrl_addColumn"><span class="SCde"><span class="SFct">addColumn</span>()</spa</a></td>
 <td>Add one column in a multi columns list. </td>
@@ -8127,7 +8133,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -8172,7 +8178,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">sortKey</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -8210,7 +8216,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">colorBk</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
@@ -8293,7 +8299,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ListLine_canExpand"><span class="SCde"><span class="SFct">canExpand</span>()</spa</a></td>
 <td></td>
@@ -8376,7 +8382,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -8401,7 +8407,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -8481,7 +8487,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -8559,7 +8565,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_MenuCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>(<span class="SKwd">self</span>, <span class="SCst">WndId</span>)</span></a></td>
 <td>Add a new item. </td>
@@ -8765,7 +8771,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -8786,7 +8792,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
@@ -8804,7 +8810,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_MessageDlg_confirm"><span class="SCde"><span class="SFct">confirm</span>()</spa</a></td>
 <td>Message box to <code class="inline-code">confirm</code> something. </td>
@@ -8997,7 +9003,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -9035,7 +9041,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -9058,7 +9064,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">enableCache</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -9136,7 +9142,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Movie_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td></td>
@@ -9263,7 +9269,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -9288,7 +9294,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">cursor</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
@@ -9306,7 +9312,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">hWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
@@ -9329,7 +9335,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -9357,7 +9363,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">painter</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Painter</span></span></td>
@@ -9385,7 +9391,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -9409,7 +9415,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PaintImage_draw"><span class="SCde"><span class="SFct">draw</span>(<span class="SKwd">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, *<span class="SCst">Application</span>, *<span class="SCst">Painter</span>))</span></a></td>
 <td>Draw to an image by calling the closure. </td>
@@ -9465,7 +9471,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -9508,7 +9514,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PalettePicker_addColor"><span class="SCde"><span class="SFct">addColor</span>()</spa</a></td>
 <td>Add a color. </td>
@@ -9636,7 +9642,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -9694,7 +9700,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PopupListCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new item in the list. </td>
@@ -9779,7 +9785,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
@@ -9817,7 +9823,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -9884,7 +9890,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rightName</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
@@ -9952,7 +9958,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">TopLeft</span></td>
 <td></td>
@@ -9977,7 +9983,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -9995,7 +10001,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ProgressBar_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -10056,7 +10062,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -10077,7 +10083,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -10155,7 +10161,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PropertyList_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new struct to display. </td>
@@ -10184,7 +10190,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Category">Category</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
@@ -10199,7 +10205,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Description">Description</a></span>(desc: <span class="STpe">string</span>)</span></code>
 </div>
@@ -10214,7 +10220,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></code>
 </div>
@@ -10229,7 +10235,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Name">Name</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
@@ -10244,7 +10250,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_SubCategory">SubCategory</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
@@ -10315,7 +10321,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -10338,7 +10344,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PropertyListCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new struct to display. </td>
@@ -10387,7 +10393,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">filter</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -10491,7 +10497,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
@@ -10519,7 +10525,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_PushButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -10575,7 +10581,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Normal</span></td>
 <td></td>
@@ -10604,7 +10610,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -10627,7 +10633,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
@@ -10650,7 +10656,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_RadioButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -10724,7 +10730,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -10745,7 +10751,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -10768,7 +10774,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -10961,7 +10967,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -11169,7 +11175,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_RichEditCtrl_addMapping"><span class="SCde"><span class="SFct">addMapping</span>()</spa</a></td>
 <td></td>
@@ -12450,7 +12456,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">lineIndex</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -12473,7 +12479,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -12518,7 +12524,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">RichEditCtrl</span></td>
 <td></td>
@@ -12539,7 +12545,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">mapStyles</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span></span></td>
@@ -12612,7 +12618,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">key</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span></span></td>
@@ -12640,7 +12646,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">colBk</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
@@ -12663,7 +12669,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_RichEditRuneStyle_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
@@ -12693,7 +12699,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndoType">RichEditUndoType</a></span></span></td>
@@ -12766,7 +12772,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Delete</span></td>
 <td></td>
@@ -12810,7 +12816,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -12998,7 +13004,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ScrollWnd_getClientScrollRect"><span class="SCde"><span class="SFct">getClientScrollRect</span>()</spa</a></td>
 <td></td>
@@ -13127,7 +13133,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -13160,7 +13166,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">selection</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({start: <span class="STpe">u32</span>, end: <span class="STpe">u32</span>})</span></td>
@@ -13168,7 +13174,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SelModel_getSelectedRangeIndex"><span class="SCde"><span class="SFct">getSelectedRangeIndex</span>()</spa</a></td>
 <td></td>
@@ -13191,7 +13197,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SelModel_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
 <td></td>
@@ -13289,7 +13295,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -13312,7 +13318,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -13342,7 +13348,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">arr</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">T</span>)</span></td>
@@ -13355,7 +13361,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SigArray_call"><span class="SCde"><span class="SFct">call</span>()</spa</a></td>
 <td></td>
@@ -13370,7 +13376,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SigArray_opAssign"><span class="SCde"><span class="SFct">opAssign</span>()</spa</a></td>
 <td></td>
@@ -13439,7 +13445,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -13472,7 +13478,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -13585,7 +13591,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Slider_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -13781,7 +13787,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -13819,7 +13825,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SliderCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Create the popup list, but do not display it. </td>
@@ -13935,7 +13941,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -13968,7 +13974,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -14001,7 +14007,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_SplitterCtrl_addPane"><span class="SCde"><span class="SFct">addPane</span>()</spa</a></td>
 <td>Add a new pane. </td>
@@ -14124,7 +14130,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -14149,7 +14155,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">view</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -14197,7 +14203,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -14215,7 +14221,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_StackLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
 <td>Recompute layout of all childs. </td>
@@ -14277,7 +14283,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Top</span></td>
 <td></td>
@@ -14326,7 +14332,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -14344,7 +14350,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeSurface">NativeSurface</a></span></span></td>
@@ -14432,7 +14438,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Surface_bringToTop"><span class="SCde"><span class="SFct">bringToTop</span>()</spa</a></td>
 <td>Bring the surface at the top of the Z order. </td>
@@ -14858,7 +14864,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -14915,7 +14921,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">position</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
@@ -14943,7 +14949,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
@@ -14996,7 +15002,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -15019,7 +15025,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -15052,7 +15058,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -15120,7 +15126,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Tab_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
 <td>Add a new view. </td>
@@ -15256,7 +15262,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td></td>
@@ -15285,7 +15291,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Divide</span></td>
 <td></td>
@@ -15310,7 +15316,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Flat</span></td>
 <td></td>
@@ -15335,7 +15341,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">pos</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -15373,7 +15379,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td></td>
@@ -15402,7 +15408,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -15427,7 +15433,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">intialized</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -15455,7 +15461,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Theme_createDefaultFont"><span class="SCde"><span class="SFct">createDefaultFont</span>()</spa</a></td>
 <td>Create a default font with the given size. </td>
@@ -15594,7 +15600,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Transparent</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -17077,7 +17083,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">WndMinimize</span></td>
 <td></td>
@@ -17186,7 +17192,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Question</span></td>
 <td></td>
@@ -17219,7 +17225,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rect</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
@@ -17247,7 +17253,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">surfaceWnd_Shadow</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
@@ -17785,7 +17791,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">defaultFontSize</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -18203,7 +18209,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">imgWidgets</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
@@ -18286,7 +18292,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">refr</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></span></span></td>
@@ -18314,7 +18320,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ThemeStyle_addStyleSheetColors"><span class="SCde"><span class="SFct">addStyleSheetColors</span>()</spa</a></td>
 <td></td>
@@ -18486,7 +18492,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">theme</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
@@ -18509,7 +18515,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">timeMs</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -18532,7 +18538,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Timer_restart"><span class="SCde"><span class="SFct">restart</span>()</spa</a></td>
 <td></td>
@@ -18562,7 +18568,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
@@ -18585,7 +18591,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
@@ -18618,7 +18624,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_ToggleButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td></td>
@@ -18702,7 +18708,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">itf</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span></span></td>
@@ -18855,7 +18861,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Wnd_applyLayout"><span class="SCde"><span class="SFct">applyLayout</span>(<span class="SKwd">self</span>)</span></a></td>
 <td>Apply the current layout (childs constraints). </td>
@@ -20482,7 +20488,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -20527,7 +20533,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
@@ -20555,7 +20561,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Gui_WrapLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
 <td>Recompute layout of all childs. </td>

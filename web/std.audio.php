@@ -90,63 +90,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -164,20 +112,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -327,7 +333,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Audio_BusHandle" class="code-type"><span class="SCst">BusHandle</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
@@ -351,7 +357,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Represents a bus. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">XAudio2</span>.<span class="SCst">IXAudio2SubmixVoice</span></span></td>
@@ -360,7 +366,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 <p> A <a href="#Audio_Voice">Voice</a> can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted. </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Audio_Bus_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates an audio bus. </td>
@@ -483,7 +489,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Base struct for all codec instances. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">srcEncoding</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span></span></td>
@@ -512,7 +518,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Interface to describe a codec. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">canEncode</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, <span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFileEncoding">SoundFileEncoding</a></span>)-&gt;<span class="STpe">bool</span></span></td>
@@ -546,7 +552,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Represents a sound file. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fullname</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
@@ -615,7 +621,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 <p> The <code class="inline-code">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Audio_SoundFile_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
 <td>Load a <code class="inline-code">SoundFile</code> from disk. </td>
@@ -648,7 +654,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>SoundFile internal format. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Unknown</span></td>
 <td></td>
@@ -686,7 +692,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Determins which informations in the <a href="#Audio_SoundFile">SoundFile</a> struct are valid. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -745,7 +751,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </p>
 <p>Represents a playing sound. </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Audio_Voice_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates a new voice for a given sound file. </td>
@@ -986,7 +992,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -1015,7 +1021,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -1044,7 +1050,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>

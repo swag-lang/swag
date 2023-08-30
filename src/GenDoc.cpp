@@ -102,63 +102,11 @@ void GenDoc::outputStyles()
         .container a {\n\
             color:              DoggerBlue;\n\
         }\n\
-        .code-type a {\n\
-            color:              inherit;\n\
-        }\n\
-        .left a, .enumeration a {\n\
-            text-decoration:    none;\n\
-        }\n\
         .container a:hover {\n\
             text-decoration:    underline;\n\
         }\n\
-        table.api-item {\n\
-            border-collapse:    separate;\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            width:              100%;\n\
-            margin-top:         70px;\n\
-            margin-right:       0px;\n\
-            font-size:          110%;\n\
-        }\n\
-        .api-item td:first-child {\n\
-            width:              33%;\n\
-            white-space:        nowrap;\n\
-        }\n\
-        .api-item-title-src-ref {\n\
-            text-align:         right;\n\
-        }\n\
-        .api-item-title-kind {\n\
-            font-weight:        normal;\n\
-            font-size:          80%;\n\
-        }\n\
-        .api-item-title-light {\n\
-            font-weight:        normal;\n\
-        }\n\
-        .api-item-title-strong {\n\
-            font-weight:        bold;\n\
-            font-size:          100%;\n\
-        }\n\
-        table.enumeration {\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              100%;\n\
-            font-size:          90%;\n\
-        }\n\
-        .enumeration td {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            min-width:          100px;\n\
-        }\n\
-        .enumeration td:first-child {\n\
-            background-color:   #f8f8f8;\n\
-            white-space:        nowrap;\n\
-        }\n\
-        .code-type {\n\
-            background-color:   #eeeeee;\n\
-        }\n\
-        .container td:last-child {\n\
-            width:              100%;\n\
+        .left a {\n\
+            text-decoration:    none;\n\
         }\n\
         .left ul {\n\
             list-style-type:    none;\n\
@@ -176,20 +124,78 @@ void GenDoc::outputStyles()
         .right h2 {\n\
             margin-top:         35px;\n\
         }\n\
-        .inline-code {\n\
-            background-color:   #eeeeee;\n\
-            padding:            2px;\n\
-            border: 1px dotted  #cccccc;\n\
+        table.api-item {\n\
+            border-collapse:    separate;\n\
+            background-color:   Black;\n\
+            color:              White;\n\
+            width:              100%;\n\
+            margin-top:         70px;\n\
+            margin-right:       0px;\n\
+            font-size:          110%;\n\
+        }\n\
+        .api-item td:first-child {\n\
+            width:              33%;\n\
+            white-space:        nowrap;\n\
+        }\n\
+        .api-item-title-src-ref {\n\
+            text-align:         right;\n\
+        }\n\
+        .api-item-title-src-ref a {\n\
+            color:              inherit;\n\
+        }\n\
+        .api-item-title-kind {\n\
+            font-weight:        normal;\n\
+            font-size:          80%;\n\
+        }\n\
+        .api-item-title-light {\n\
+            font-weight:        normal;\n\
+        }\n\
+        .api-item-title-strong {\n\
+            font-weight:        bold;\n\
+            font-size:          100%;\n\
+        }\n\
+        .api-additional-infos {\n\
+            font-size:          90%;\n\
+            white-space:        break-spaces;\n\
+            overflow-wrap:      break-word;\n\
+        }\n\
+        table.table-enumeration {\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            width:              100%;\n\
+            font-size:          90%;\n\
+        }\n\
+        .table-enumeration td {\n\
+            padding:            6px;\n\
+            border:             1px solid LightGrey;\n\
+            border-collapse:    collapse;\n\
+            min-width:          100px;\n\
+        }\n\
+        .table-enumeration td:first-child {\n\
+            background-color:   #f8f8f8;\n\
+            white-space:        nowrap;\n\
+        }\n\
+        .table-enumeration a {\n\
+            text-decoration:    none;\n\
+        }\n\
+        .container td:last-child {\n\
+            width:              100%;\n\
         }\n\
         .tdname .inline-code {\n\
             background-color:   revert;\n\
             padding:            2px;\n\
             border:             revert;\n\
         }\n\
-        .addinfos {\n\
-            font-size:          90%;\n\
-            white-space:        break-spaces;\n\
-            overflow-wrap:      break-word;\n\
+        .code-type {\n\
+            background-color:   #eeeeee;\n\
+        }\n\
+        .inline-code {\n\
+            background-color:   #eeeeee;\n\
+            padding:            2px;\n\
+            border: 1px dotted  #cccccc;\n\
+        }\n\
+        .code-type a {\n\
+            color:              inherit;\n\
         }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\
@@ -825,7 +831,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::Table:
-        helpContent += "<table class=\"enumeration\">\n";
+        helpContent += "<table class=\"table-enumeration\">\n";
         break;
 
     case UserBlockKind::Title1:

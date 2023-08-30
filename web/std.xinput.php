@@ -90,63 +90,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -164,20 +112,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -262,7 +268,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_A" class="code-type"><span class="SCst">XINPUT_GAMEPAD_A</span></td>
 <td class="code-type"><span class="STpe">u16</span></td>
@@ -345,7 +351,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">wButtons</span></td>
 <td class="code-type"><span class="STpe">u16</span></td>
@@ -393,7 +399,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">dwPacketNumber</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -416,7 +422,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">wLeftMotorSpeed</span></td>
 <td class="code-type"><span class="STpe">u16</span></td>

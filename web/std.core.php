@@ -91,63 +91,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -165,20 +113,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -1715,7 +1721,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Core_ASSERT" class="code-type"><span class="SCst">ASSERT</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -1958,7 +1964,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="Core_Env_ProcessHandle" class="code-type"><span class="SCst">ProcessHandle</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
@@ -2014,7 +2020,7 @@
 <p>This is a generic dynamic array. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Array">Array</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">allocator</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
@@ -2037,7 +2043,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Array_add"><span class="SCde"><span class="SFct">add</span>(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></a></td>
 <td>Add a copy of one element at the end of the array. </td>
@@ -2184,7 +2190,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Array_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
@@ -2840,7 +2846,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(*<span class="SCst">T</span>)</span></td>
@@ -2848,7 +2854,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_ArrayPtr_addNewPtr"><span class="SCde"><span class="SFct">addNewPtr</span>()</spa</a></td>
 <td>Allocate a new pointer, and add it to the array. </td>
@@ -2867,7 +2873,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_ArrayPtr_opDrop"><span class="SCde"><span class="SFct">opDrop</span>()</spa</a></td>
 <td></td>
@@ -3094,7 +3100,7 @@
 </table>
 </p>
 <p>Manages a compact array of bit values, which are represented as booleans, where <code class="inline-code">true</code> indicates that  the bit is on (1) and <code class="inline-code">false</code> indicates the bit is off (0). </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buffer</span></td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u32</span></span></td>
@@ -3117,7 +3123,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_BitArray_andWith"><span class="SCde"><span class="SFct">andWith</span>()</spa</a></td>
 <td>Performs the bitwise AND operation between the elements of the current <code class="inline-code">BitArray</code> and the corresponding elements in the specified array. </td>
@@ -3160,7 +3166,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_BitArray_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td>Initializes a <code class="inline-code">BitArray</code> that contains bit values copied from the specified array of booleans. </td>
@@ -3402,7 +3408,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">readBuffer</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
@@ -3425,7 +3431,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_ByteStream_getSeek"><span class="SCde"><span class="SFct">getSeek</span>()</spa</a></td>
 <td>Returns the seek value. </td>
@@ -3726,7 +3732,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Latin1</span></td>
 <td></td>
@@ -3746,7 +3752,7 @@
 </table>
 </p>
 <h3>Structs</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_CommandLine_IsSet"><span class="SCst">IsSet</span></a></td>
 <td></td>
@@ -3761,7 +3767,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_CommandLine_getField"><span class="SCde"><span class="SFct">getField</span>()</spa</a></td>
 <td></td>
@@ -3780,7 +3786,7 @@
 </tr>
 </table>
 <h3>Attributes</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_CommandLine_ArgParams"><span class="SCst">ArgParams</span></a></td>
 <td></td>
@@ -3797,7 +3803,7 @@
 </tr>
 </table>
 </p>
-<div class="addinfos"><b>Usage</b>: all 
+<div class="api-additional-infos"><b>Usage</b>: all 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_CommandLine_ArgParams">ArgParams</a></span>(nameAlias: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></code>
 </div>
@@ -3838,7 +3844,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_Result">Result</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">isSet</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>'(<span class="SCst">T</span>)</span></td>
@@ -3924,7 +3930,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">stream</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
@@ -3952,7 +3958,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Compress_BitStream_consumeBits"><span class="SCde"><span class="SFct">consumeBits</span>()</spa</a></td>
 <td></td>
@@ -4221,7 +4227,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Compress_Deflate_compress"><span class="SCde"><span class="SFct">compress</span>()</spa</a></td>
 <td>Compress the source buffer. </td>
@@ -4242,7 +4248,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -4267,7 +4273,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">NoCompression</span></td>
 <td></td>
@@ -4300,7 +4306,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Default</span></td>
 <td></td>
@@ -4362,7 +4368,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Compress_Inflate_decompress"><span class="SCde"><span class="SFct">decompress</span>()</spa</a></td>
 <td>Decompress the associated stream. </td>
@@ -4394,7 +4400,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Compress_ZLib_compress"><span class="SCde"><span class="SFct">compress</span>()</spa</a></td>
 <td>Decompress stream. </td>
@@ -4444,7 +4450,7 @@
 </table>
 </p>
 <p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">allocator</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
@@ -4487,7 +4493,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_ConcatBuffer_addBytes"><span class="SCde"><span class="SFct">addBytes</span>()</spa</a></td>
 <td>Append a slice of bytes to the buffer  If <code class="inline-code">contiguous</code> is false, the slice will be divided in chunks if necessary. </td>
@@ -4570,7 +4576,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_ConcatBuffer_opCount"><span class="SCde"><span class="SFct">opCount</span>()</spa</a></td>
 <td></td>
@@ -4899,7 +4905,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">datas</span></td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
@@ -4937,7 +4943,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">bucket</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
@@ -4960,7 +4966,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Black</span></td>
 <td></td>
@@ -5295,7 +5301,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">matchExtension</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -5454,7 +5460,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rect</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
@@ -5477,7 +5483,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
@@ -5485,7 +5491,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Env_Process_waitForExit"><span class="SCde"><span class="SFct">waitForExit</span>()</spa</a></td>
 <td>Wait for the process to be done. </td>
@@ -5516,7 +5522,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Font</span></td>
 <td></td>
@@ -5573,7 +5579,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fileName</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
@@ -5711,7 +5717,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Read</span></td>
 <td></td>
@@ -5736,7 +5742,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5809,7 +5815,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">fullname</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></td>
@@ -5842,7 +5848,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_File_FileInfo_isDirectory"><span class="SCde"><span class="SFct">isDirectory</span>()</spa</a></td>
 <td></td>
@@ -5872,7 +5878,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Append</span></td>
 <td></td>
@@ -5909,7 +5915,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -5946,7 +5952,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></td>
@@ -5974,7 +5980,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_File_FileStream_close"><span class="SCde"><span class="SFct">close</span>()</spa</a></td>
 <td>Close the given file stream. </td>
@@ -6149,7 +6155,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
@@ -6172,7 +6178,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Begin</span></td>
 <td></td>
@@ -6197,7 +6203,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Ascii</span></td>
 <td></td>
@@ -6218,7 +6224,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">stream</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span></span></td>
@@ -6251,7 +6257,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_File_TextReader_close"><span class="SCde"><span class="SFct">close</span>()</spa</a></td>
 <td>Close the reader. </td>
@@ -6337,7 +6343,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">folders</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
@@ -6345,7 +6351,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_File_TweakFile_parse"><span class="SCde"><span class="SFct">parse</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">string</span>))</span></a></td>
 <td>Parse a list of lines. </td>
@@ -6750,7 +6756,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">numberFormat</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Globalization</span>.<span class="SCst"><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></span></span></td>
@@ -6769,7 +6775,7 @@
 </table>
 </p>
 <p>Provides culture-specific information for formatting and parsing numeric values. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">negativeSign</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
@@ -6839,7 +6845,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">adler</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -6847,7 +6853,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Hash_Adler32_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Returns the adler32 hash value for the given buffer. </td>
@@ -6914,7 +6920,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">crc</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -6922,7 +6928,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Hash_Crc32_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Returns the crc32 hash value for the given buffer. </td>
@@ -6989,7 +6995,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">compute</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
@@ -7007,7 +7013,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">padding</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
@@ -7030,7 +7036,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Hash_Md5_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Returns the md5 value for the given buffer. </td>
@@ -7115,7 +7121,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">data</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
@@ -7138,7 +7144,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Hash_Sha256_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
 <td>Returns the sha256 value for the given buffer. </td>
@@ -7239,7 +7245,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_HashSet">HashSet</a></span>(<span class="SCst">K</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">HASH_FREE</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -7287,7 +7293,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_HashSet_add"><span class="SCde"><span class="SFct">add</span>(<span class="SKwd">self</span>, <span class="SCst">K</span>)</span></a></td>
 <td>Add a new key. </td>
@@ -7330,7 +7336,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_HashSet_opCount"><span class="SCde"><span class="SFct">opCount</span>()</spa</a></td>
 <td></td>
@@ -7540,7 +7546,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>(<span class="SCst">K</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">hash</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -7565,7 +7571,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_HashTable">HashTable</a></span>(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">HASH_FREE</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -7613,7 +7619,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_HashTable_add"><span class="SCde"><span class="SFct">add</span>(<span class="SKwd">self</span>, <span class="SCst">K</span>, <span class="SCst">V</span>)</span></a></td>
 <td>Add a new key value pair. If the key already exists, then the value will be replaced. </td>
@@ -7660,7 +7666,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_HashTable_opCount"><span class="SCde"><span class="SFct">opCount</span>()</spa</a></td>
 <td></td>
@@ -7887,7 +7893,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">hash</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -7915,7 +7921,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">print</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>, <span class="STpe">string</span>)</span></td>
@@ -7934,7 +7940,7 @@
 </table>
 </p>
 <p>Represents a gamepad. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">previousState</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_GamePadState">GamePadState</a></span></span></td>
@@ -7957,7 +7963,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_GamePad_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset the previous and current state. </td>
@@ -8140,7 +8146,7 @@
 </table>
 </p>
 <p>Enumerates gamepad buttons. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">A</span></td>
 <td></td>
@@ -8253,7 +8259,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">DeviceNotConnected</span></td>
 <td></td>
@@ -8271,7 +8277,7 @@
 </table>
 </p>
 <p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">pressed</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="STpe">bool</span></span></td>
@@ -8284,7 +8290,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_GamePadState_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset state to its default value. </td>
@@ -8334,7 +8340,7 @@
 </table>
 </p>
 <p>Defines the keys on a keyboard. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">None</span></td>
 <td></td>
@@ -9099,7 +9105,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -9133,7 +9139,7 @@
 </table>
 </p>
 <p>Allows getting keystrokes from keyboard. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">previousState</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_KeyboardState">KeyboardState</a></span></span></td>
@@ -9171,7 +9177,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_Keyboard_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset the keyboard state. </td>
@@ -9370,7 +9376,7 @@
 </table>
 </p>
 <p>Represents one keyboard state. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_KeyboardStateNative">KeyboardStateNative</a></span></span></td>
@@ -9383,7 +9389,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_KeyboardState_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset keyboard state. </td>
@@ -9432,7 +9438,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">nativeState</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
@@ -9451,7 +9457,7 @@
 </table>
 </p>
 <p>Allows reading position and button click information from mouse. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">previousState</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_MouseState">MouseState</a></span></span></td>
@@ -9474,7 +9480,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_Mouse_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset the mouse state to its default value. </td>
@@ -9673,7 +9679,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Left</span></td>
 <td></td>
@@ -9707,7 +9713,7 @@
 </table>
 </p>
 <p>Represents one mouse state. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">pressed</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">bool</span></span></td>
@@ -9730,7 +9736,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Input_MouseState_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Reset the state to its default value. </td>
@@ -9835,7 +9841,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
@@ -9868,7 +9874,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">lambda</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
@@ -9901,7 +9907,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -9928,7 +9934,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Jobs_SliceJob">SliceJob</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
@@ -10075,7 +10081,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -10402,7 +10408,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_List">List</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">head</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
@@ -10420,7 +10426,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_List_addBack"><span class="SCde"><span class="SFct">addBack</span>(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></a></td>
 <td>Add a new element on front. </td>
@@ -10459,7 +10465,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_List_opDrop"><span class="SCde"><span class="SFct">opDrop</span>()</spa</a></td>
 <td></td>
@@ -10596,7 +10602,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_ListNode">ListNode</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">prev</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
@@ -10624,7 +10630,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">lock</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Sync</span>.<span class="SCst"><a href="#Core_Sync_Mutex">Mutex</a></span></span></td>
@@ -10657,7 +10663,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Log_addWriter"><span class="SCde"><span class="SFct">addWriter</span>()</spa</a></td>
 <td>Register a new writer interface. </td>
@@ -10814,7 +10820,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -10863,7 +10869,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rad</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -10871,14 +10877,14 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Angle_toDegrees"><span class="SCde"><span class="SFct">toDegrees</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Angle_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -10940,7 +10946,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Math_Const">Const</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Pi</span></td>
 <td class="code-type"><span class="SCst">T</span></td>
@@ -11043,7 +11049,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">lo</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -11056,14 +11062,14 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Int128_mul"><span class="SCde"><span class="SFct">mul</span>()</spa</a></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Int128_opCast"><span class="SCde"><span class="SFct">opCast</span>()</spa</a></td>
 <td></td>
@@ -11140,7 +11146,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">m</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>,<span class="SNum">3</span>] <span class="STpe">f32</span></span></td>
@@ -11148,7 +11154,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Matrix3x3_setIdentity"><span class="SCde"><span class="SFct">setIdentity</span>()</spa</a></td>
 <td></td>
@@ -11178,7 +11184,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">m</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4</span>,<span class="SNum">4</span>] <span class="STpe">f32</span></span></td>
@@ -11186,7 +11192,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Matrix4x4_setIdentity"><span class="SCde"><span class="SFct">setIdentity</span>()</spa</a></td>
 <td></td>
@@ -11218,7 +11224,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>(<span class="SCst">T</span>, <span class="SCst">N</span>: <span class="STpe">u32</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buf</span></td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
@@ -11226,7 +11232,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_NumericArray_from"><span class="SCde"><span class="SFct">from</span>()</spa</a></td>
 <td></td>
@@ -11245,7 +11251,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_NumericArray_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></a></td>
 <td></td>
@@ -11398,7 +11404,7 @@
 </table>
 </p>
 <p>A simple Point with 2 coordinates X and Y. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -11411,7 +11417,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Point_ceil"><span class="SCde"><span class="SFct">ceil</span>()</spa</a></td>
 <td>Perform a Math.ceil operation on all the coordinates. </td>
@@ -11450,7 +11456,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Point_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -11674,7 +11680,7 @@
 </table>
 </p>
 <p>A simple rectangle with 4 coordinates. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -11697,7 +11703,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Rectangle_applyPadding"><span class="SCde"><span class="SFct">applyPadding</span>()</spa</a></td>
 <td>Add a padding (offset to each side). </td>
@@ -11852,7 +11858,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Rectangle_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
@@ -12338,7 +12344,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">m11</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -12386,7 +12392,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Transform2_createRotation"><span class="SCde"><span class="SFct">createRotation</span>()</spa</a></td>
 <td>Creates a rotation matix, with a given center of rotation. </td>
@@ -12491,7 +12497,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Math_Variant">Variant</a></span>(<span class="SCst">T</span>: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
@@ -12509,7 +12515,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Variant_checkValidType"><span class="SCde"><span class="SFct">checkValidType</span>()</spa</a></td>
 <td></td>
@@ -12528,7 +12534,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Variant_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -12698,7 +12704,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -12711,7 +12717,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector2_angle"><span class="SCde"><span class="SFct">angle</span>()</spa</a></td>
 <td>Returns the angle with another vector. </td>
@@ -12858,7 +12864,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector2_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -13466,7 +13472,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -13484,7 +13490,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector3_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Set the vector to zero. </td>
@@ -13567,7 +13573,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector3_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -13955,7 +13961,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -13978,7 +13984,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector4_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Set the vector to zero. </td>
@@ -13989,7 +13995,7 @@
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Math_Vector4_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -15141,7 +15147,7 @@
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Parser_RegExp_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear content. </td>
@@ -15482,7 +15488,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">q</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4096</span>] <span class="STpe">u32</span></span></td>
@@ -15500,7 +15506,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Random_CMWC4096_nextU32"><span class="SCde"><span class="SFct">nextU32</span>()</spa</a></td>
 <td></td>
@@ -15547,7 +15553,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">w</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -15560,7 +15566,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Random_MWC_nextU32"><span class="SCde"><span class="SFct">nextU32</span>()</spa</a></td>
 <td></td>
@@ -15612,7 +15618,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">mt</span></td>
 <td class="code-type"><span class="SCde">[<span class="SNum">312</span>] <span class="STpe">u64</span></span></td>
@@ -15625,7 +15631,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Random_Mt64_nextU64"><span class="SCde"><span class="SFct">nextU64</span>()</spa</a></td>
 <td></td>
@@ -15679,7 +15685,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Random_Rng">Rng</a></span>(<span class="SCst">T</span> = <span class="SCst">Core</span>.<span class="SCst">Random</span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rng</span></td>
 <td class="code-type"><span class="SCst">T</span></td>
@@ -15692,7 +15698,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Random_Rng_nextBool"><span class="SCde"><span class="SFct">nextBool</span>()</spa</a></td>
 <td>Returns a random bool. </td>
@@ -16593,7 +16599,7 @@
 </table>
 </p>
 <p>Accept this other name for the field. </p>
-<div class="addinfos"><b>Usage</b>: struct-var multi 
+<div class="api-additional-infos"><b>Usage</b>: struct-var multi 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_Alias">Alias</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
@@ -16610,7 +16616,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Decoder">Decoder</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">serializer</span></td>
 <td class="code-type"><span class="SCst">T</span></td>
@@ -16623,7 +16629,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Decoder_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
 <td>Finish reading. </td>
@@ -16984,7 +16990,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Zero</span></td>
 <td></td>
@@ -17007,7 +17013,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Serialization_Encoder">Encoder</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">serializer</span></td>
 <td class="code-type"><span class="SCst">T</span></td>
@@ -17020,7 +17026,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Encoder_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
 <td>End serialization. </td>
@@ -17371,7 +17377,7 @@
 </table>
 </p>
 <p>The struct does not need versionning. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_Final">Final</a></span></span></code>
 </div>
@@ -17386,7 +17392,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">start</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
@@ -17759,7 +17765,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">start</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
@@ -18114,7 +18120,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">read</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
@@ -18218,7 +18224,7 @@
 </table>
 </p>
 <p>Do not serialize a struct or a field. </p>
-<div class="addinfos"><b>Usage</b>: struct struct-var 
+<div class="api-additional-infos"><b>Usage</b>: struct struct-var 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_NoSerialize">NoSerialize</a></span></span></code>
 </div>
@@ -18234,7 +18240,7 @@
 </table>
 </p>
 <p>The struct does not need versionning an can be serialized in place. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_PodFinal">PodFinal</a></span></span></code>
 </div>
@@ -18249,7 +18255,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">stream</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></td>
@@ -18272,7 +18278,7 @@
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Read_JSon_beginElement"><span class="SCde"><span class="SFct">beginElement</span>()</spa</a></td>
 <td></td>
@@ -18574,7 +18580,7 @@
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">stream</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></td>
@@ -18633,7 +18639,7 @@ Changes that are supported from V to V+1 are :</span></code>
 * 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning</span></code>
 </div>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Read_TagBin_beginElement"><span class="SCde"><span class="SFct">beginElement</span>()</spa</a></td>
 <td></td>
@@ -18918,7 +18924,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">tryForward</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -18936,7 +18942,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">mapSeek</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="STpe">u64</span>)</span></td>
@@ -18974,7 +18980,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Raw</span></td>
 <td></td>
@@ -18999,7 +19005,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">encode</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span></span></td>
@@ -19017,7 +19023,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Serializer_beginSection"><span class="SCde"><span class="SFct">beginSection</span>()</spa</a></td>
 <td>Start a new section. </td>
@@ -19181,7 +19187,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Set the struct version number. </p>
-<div class="addinfos"><b>Usage</b>: struct 
+<div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_Version">Version</a></span>(v: <span class="STpe">u32</span>)</span></code>
 </div>
@@ -19196,7 +19202,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">options</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span></span></td>
@@ -19229,7 +19235,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Write_JSon_beginElement"><span class="SCde"><span class="SFct">beginElement</span>()</spa</a></td>
 <td></td>
@@ -19497,7 +19503,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">indentLevel</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -19520,7 +19526,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">output</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
@@ -19538,7 +19544,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Serialization_Write_TagBin_beginElement"><span class="SCde"><span class="SFct">beginElement</span>()</spa</a></td>
 <td></td>
@@ -19789,7 +19795,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">startSeek</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></td>
@@ -19817,7 +19823,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Root</span></td>
 <td></td>
@@ -19859,7 +19865,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Slice_contains"><span class="SCde"><span class="SFct">contains</span>()</spa</a></td>
 <td>Returns true if the given slice contains the <code class="inline-code">value</code>. </td>
@@ -20070,7 +20076,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>(<span class="SCst">T</span>, <span class="SCst">N</span>: <span class="STpe">u64</span>)</span></code>
 </div>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buffer</span></td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
@@ -20083,7 +20089,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_StaticArray_add"><span class="SCde"><span class="SFct">add</span>(<span class="SKwd">self</span>, <span class="SCst">T</span>)</span></a></td>
 <td>Add a copy of one element at the end of the array. </td>
@@ -20206,7 +20212,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_StaticArray_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
@@ -20773,7 +20779,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">value</span></td>
 <td class="code-type"><span class="STpe">any</span></td>
@@ -20792,7 +20798,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Format structure to convert a float to a string. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> val</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span></span></td>
@@ -20815,7 +20821,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_StrConv_ConvertFormatFloat_setFormat"><span class="SCde"><span class="SFct">setFormat</span>()</spa</a></td>
 <td>Set some format options with a given user string. </td>
@@ -20860,7 +20866,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Format structure to convert an integer to a string. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> val</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span></span></td>
@@ -20889,7 +20895,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 <p> If <code class="inline-code">signed</code> is <code class="inline-code">true</code>, the value to convert must be stored in <code class="inline-code">signedValue</code>, otherwise it must  be stored in <code class="inline-code">unsignedValue</code>. </p>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_StrConv_ConvertFormatInt_setFormat"><span class="SCde"><span class="SFct">setFormat</span>()</spa</a></td>
 <td>Set some format options with a given user string. </td>
@@ -20945,7 +20951,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">convert</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_IConvert">IConvert</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, <span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, <span class="STpe">string</span>)</span></td>
@@ -20963,7 +20969,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">poke</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_IPokeValue">IPokeValue</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></td>
@@ -20981,7 +20987,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buffer</span></td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
@@ -20989,7 +20995,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_StrConv_StringBuilder_appendAny"><span class="SCde"><span class="SFct">appendAny</span>()</spa</a></td>
 <td>Append a value. </td>
@@ -21705,7 +21711,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">buffer</span></td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
@@ -21733,7 +21739,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_String_append"><span class="SCde"><span class="SFct">append</span>(<span class="SKwd">self</span>, <span class="STpe">rune</span>)</span></a></td>
 <td>Append a rune to the String. </td>
@@ -21860,7 +21866,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_String_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -22526,7 +22532,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">handle</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
@@ -22534,7 +22540,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Sync_Event_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates a new event. </td>
@@ -22673,7 +22679,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">v</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -22681,7 +22687,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Sync_Mutex_lock"><span class="SCde"><span class="SFct">lock</span>()</spa</a></td>
 <td>Lock mutex. </td>
@@ -22748,7 +22754,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">v</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -22756,7 +22762,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Sync_RWLock_lock"><span class="SCde"><span class="SFct">lock</span>()</spa</a></td>
 <td></td>
@@ -22954,7 +22960,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">userLambda</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(<span class="SCst">Core</span>.<span class="SCst">Threading</span>.<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>)</span></td>
@@ -22992,7 +22998,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Threading_Thread_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
 <td>Initialize a thread in pause state. </td>
@@ -23167,7 +23173,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Lowest</span></td>
 <td></td>
@@ -23215,7 +23221,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Represents an instant in time, typically expressed as a date and time of day. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">year</span></td>
 <td class="code-type"><span class="STpe">u16</span></td>
@@ -23253,7 +23259,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_DateTime_dayOfWeek"><span class="SCde"><span class="SFct">dayOfWeek</span>()</spa</a></td>
 <td>Returns the day of week of the current date. </td>
@@ -23288,7 +23294,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_DateTime_opCmp"><span class="SCde"><span class="SFct">opCmp</span>()</spa</a></td>
 <td></td>
@@ -23460,7 +23466,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">DateTime</span></td>
 <td>DDDD MMMM D YYYY HH:MM:SS. </td>
@@ -23489,7 +23495,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Sunday</span></td>
 <td></td>
@@ -23531,7 +23537,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Represents a delay, expressed in seconds. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">timeInSeconds</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -23539,7 +23545,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_Duration_fromMs"><span class="SCde"><span class="SFct">fromMs</span>()</spa</a></td>
 <td>Returns a duration initialized with milliseconds. </td>
@@ -23550,7 +23556,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_Duration_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
 <td></td>
@@ -23625,7 +23631,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">dtMin</span></td>
 <td class="code-type"><span class="STpe">f32</span></td>
@@ -23658,7 +23664,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_FrameTiming_pause"><span class="SCde"><span class="SFct">pause</span>()</spa</a></td>
 <td>Pause frame timing & count. </td>
@@ -23726,7 +23732,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Provides a set of methods and properties that you can use to accurately measure elapsed time. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">isStarted</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
@@ -23744,7 +23750,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_Stopwatch_elapsedMicroseconds"><span class="SCde"><span class="SFct">elapsedMicroseconds</span>()</spa</a></td>
 <td>Gets the total elapsed time in microseconds, after a call to <code class="inline-code">stop</code>. </td>
@@ -23921,7 +23927,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </table>
 </p>
 <p>Represents an interval of time, stored as a 64 bits integer. </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">ticks</span></td>
 <td class="code-type"><span class="STpe">u64</span></td>
@@ -23929,7 +23935,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_TimeSpan_addDays"><span class="SCde"><span class="SFct">addDays</span>()</spa</a></td>
 <td>Add or remove the given amount of days to the TimeSpan. </td>
@@ -23996,7 +24002,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_TimeSpan_opCmp"><span class="SCde"><span class="SFct">opCmp</span>()</spa</a></td>
 <td></td>
@@ -24245,7 +24251,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">userLambda</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>)</span></td>
@@ -24263,7 +24269,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_Time_Timer_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
 <td>Creates a new timer. </td>
@@ -24585,7 +24591,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde"><span class="SKwd">using</span> uuid</span></td>
 <td class="code-type"><span class="SCde">{val8: [<span class="SNum">16</span>] <span class="STpe">u8</span>, val64: [<span class="SNum">2</span>] <span class="STpe">u64</span>}</span></td>
@@ -24593,7 +24599,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_UUID_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
 <td>Clear id. </td>
@@ -24612,7 +24618,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 <h3>Special Functions</h3>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td><a href="#Core_UUID_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
 <td></td>
@@ -25056,7 +25062,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Latin1</span></td>
 <td></td>

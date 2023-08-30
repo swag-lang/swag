@@ -90,63 +90,11 @@
         .container a {
             color:              DoggerBlue;
         }
-        .code-type a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
         .container a:hover {
             text-decoration:    underline;
         }
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
+        .left a {
+            text-decoration:    none;
         }
         .left ul {
             list-style-type:    none;
@@ -164,20 +112,78 @@
         .right h2 {
             margin-top:         35px;
         }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
+        table.api-item {
+            border-collapse:    separate;
+            background-color:   Black;
+            color:              White;
+            width:              100%;
+            margin-top:         70px;
+            margin-right:       0px;
+            font-size:          110%;
+        }
+        .api-item td:first-child {
+            width:              33%;
+            white-space:        nowrap;
+        }
+        .api-item-title-src-ref {
+            text-align:         right;
+        }
+        .api-item-title-src-ref a {
+            color:              inherit;
+        }
+        .api-item-title-kind {
+            font-weight:        normal;
+            font-size:          80%;
+        }
+        .api-item-title-light {
+            font-weight:        normal;
+        }
+        .api-item-title-strong {
+            font-weight:        bold;
+            font-size:          100%;
+        }
+        .api-additional-infos {
+            font-size:          90%;
+            white-space:        break-spaces;
+            overflow-wrap:      break-word;
+        }
+        table.table-enumeration {
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            width:              100%;
+            font-size:          90%;
+        }
+        .table-enumeration td {
+            padding:            6px;
+            border:             1px solid LightGrey;
+            border-collapse:    collapse;
+            min-width:          100px;
+        }
+        .table-enumeration td:first-child {
+            background-color:   #f8f8f8;
+            white-space:        nowrap;
+        }
+        .table-enumeration a {
+            text-decoration:    none;
+        }
+        .container td:last-child {
+            width:              100%;
         }
         .tdname .inline-code {
             background-color:   revert;
             padding:            2px;
             border:             revert;
         }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
+        .code-type {
+            background-color:   #eeeeee;
+        }
+        .inline-code {
+            background-color:   #eeeeee;
+            padding:            2px;
+            border: 1px dotted  #cccccc;
+        }
+        .code-type a {
+            color:              inherit;
         }
         .code-block {
             background-color:   #eeeeee;
@@ -349,7 +355,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="FreeType_FT_LOAD_ADVANCE_ONLY" class="code-type"><span class="SCst">FT_LOAD_ADVANCE_ONLY</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -502,7 +508,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td id="FreeType_FT_Byte" class="code-type"><span class="SCst">FT_Byte</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
@@ -655,7 +661,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">xMin</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -688,7 +694,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">rows</span></td>
 <td class="code-type"><span class="STpe">u32</span></td>
@@ -741,7 +747,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">height</span></td>
 <td class="code-type"><span class="STpe">s16</span></td>
@@ -779,7 +785,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">face</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
@@ -838,7 +844,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">num_faces</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -1006,7 +1012,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">data</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -1042,7 +1048,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">library</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_LibraryRec">FT_LibraryRec</a></span></span></td>
@@ -1178,7 +1184,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">FT_GLYPH_FORMAT_NONE</span></td>
 <td></td>
@@ -1211,7 +1217,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">width</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -1303,7 +1309,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">FT_LCD_FILTER_NONE</span></td>
 <td></td>
@@ -1340,7 +1346,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">memory</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -1439,7 +1445,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">head</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -1488,7 +1494,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">xx</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -1534,7 +1540,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">n_contours</span></td>
 <td class="code-type"><span class="STpe">s16</span></td>
@@ -1603,7 +1609,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">move_to</span></td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
@@ -1672,7 +1678,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">FT_PIXEL_MODE_NONE</span></td>
 <td></td>
@@ -1734,7 +1740,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">FT_RENDER_MODE_NORMAL</span></td>
 <td></td>
@@ -1784,7 +1790,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">face</span></td>
 <td class="code-type"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst"><a href="#FreeType_FT_FaceRec">FT_FaceRec</a></span></span></td>
@@ -1817,7 +1823,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x_ppem</span></td>
 <td class="code-type"><span class="STpe">u16</span></td>
@@ -1870,7 +1876,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">index</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
@@ -1908,7 +1914,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 </p>
-<table class="enumeration">
+<table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">x</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
