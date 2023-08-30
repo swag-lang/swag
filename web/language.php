@@ -7579,10 +7579,13 @@ var g_Functions: Array'OneFunc</span></code>
   <span class="SItr">@print</span>(<span class="SStr">"true"</span>)</span></code>
 </div>
 <h4 id="Titles">Titles </h4>
-<p>You can define <b>titles</b> with <code class="incode">#</code>, <code class="incode">##</code>... The real level of the title will depend on the context and the generated documentation kind. </p>
+<p>You can define <b>titles</b> with <code class="incode">#</code>, <code class="incode">##</code> ... followed by a blank, and then the text. The real level of the title will depend on the context and the generated documentation kind. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// # Title 1</span>
 <span class="SCmt">// ## Title 2</span>
-<span class="SCmt">// ### Title 3</span></span></code>
+<span class="SCmt">// ### Title 3</span>
+<span class="SCmt">// #### Title 4</span>
+<span class="SCmt">// ##### Title 5</span>
+<span class="SCmt">// ###### Title 6</span></span></code>
 </div>
 <h4 id="References">References </h4>
 <p>You can create an external <b>reference</b> with <code class="incode">[name](link)</code>. </p>

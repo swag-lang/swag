@@ -159,13 +159,16 @@ if a == true
 */
 
 /**
-You can define **titles** with '#', '##'...
+You can define **titles** with '#', '##' ... followed by a blank, and then the text.
 The real level of the title will depend on the context and the generated documentation kind.
 */
 
 // # Title 1
 // ## Title 2
 // ### Title 3
+// #### Title 4
+// ##### Title 5
+// ###### Title 6
 
 /**
 ## References

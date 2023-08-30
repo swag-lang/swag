@@ -406,6 +406,18 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             {
                 blk.kind = UserBlockKind::Title3;
             }
+            else if (line.startsWith("#### "))
+            {
+                blk.kind = UserBlockKind::Title4;
+            }
+            else if (line.startsWith("##### "))
+            {
+                blk.kind = UserBlockKind::Title5;
+            }
+            else if (line.startsWith("###### "))
+            {
+                blk.kind = UserBlockKind::Title6;
+            }
             else
             {
                 blk.kind = UserBlockKind::Paragraph;
@@ -431,19 +443,12 @@ void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool 
             switch (blk.kind)
             {
             case UserBlockKind::Title1:
-                line.remove(0, 2); // #<blank>
-                blk.lines.push_back(line);
-                mustEnd = true;
-                start++;
-                break;
             case UserBlockKind::Title2:
-                line.remove(0, 3); // ##<blank>
-                blk.lines.push_back(line);
-                mustEnd = true;
-                start++;
-                break;
             case UserBlockKind::Title3:
-                line.remove(0, 4); // ###<blank>
+            case UserBlockKind::Title4:
+            case UserBlockKind::Title5:
+            case UserBlockKind::Title6:
+                line.remove(0, 2 + ((int) blk.kind - (int) UserBlockKind::Title1)); // #<blank>
                 blk.lines.push_back(line);
                 mustEnd = true;
                 start++;
@@ -614,14 +619,16 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::Title1:
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, toRef(user.lines[0]).c_str());
-        break;
     case UserBlockKind::Title2:
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 2, toRef(user.lines[0]).c_str());
-        break;
     case UserBlockKind::Title3:
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 3, toRef(user.lines[0]).c_str());
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        int level = ((int) user.kind - (int) UserBlockKind::Title1);
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + level + 1, toRef(user.lines[0]).c_str());
         break;
+    }
     }
 
     for (int i = 0; i < user.lines.size(); i++)
@@ -707,14 +714,16 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += "</table>\n";
         break;
     case UserBlockKind::Title1:
-        helpContent += Fmt("</h%d>\n", titleLevel + 1);
-        break;
     case UserBlockKind::Title2:
-        helpContent += Fmt("</h%d>\n", titleLevel + 2);
-        break;
     case UserBlockKind::Title3:
-        helpContent += Fmt("</h%d>\n", titleLevel + 3);
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        int level = ((int) user.kind - (int) UserBlockKind::Title1);
+        helpContent += Fmt("</h%d>\n", titleLevel + level + 1);
         break;
+    }
     }
 }
 
