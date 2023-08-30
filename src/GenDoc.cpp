@@ -229,6 +229,51 @@ Utf8 GenDoc::toRef(Utf8 str)
     return str;
 }
 
+const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link)
+{
+    name.clear();
+    link.clear();
+
+    if (*pz != '[')
+        return nullptr;
+    pz++;
+
+    while (*pz && *pz != ']')
+        name += *pz++;
+    if (*pz != ']')
+        return nullptr;
+
+    pz++;
+    if (*pz != '(')
+        return pz;
+    pz++;
+
+    while (*pz && *pz != ')')
+        link += *pz++;
+    if (*pz != ')')
+        return nullptr;
+    return pz + 1;
+}
+
+Utf8 GenDoc::findReference(const Utf8& name)
+{
+    auto it = collectInvert.find(name);
+    if (it != collectInvert.end())
+        return Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+
+    Vector<Utf8> tkns;
+    Utf8::tokenize(name, '.', tkns);
+    if (tkns.size() <= 1)
+        return "";
+
+    if (tkns[0] == "Swag")
+    {
+        return Fmt("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
+    }
+
+    return "";
+}
+
 void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 {
     if (code.empty())
@@ -309,25 +354,6 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
         helpContent += "</code>\n";
         helpContent += "</div>\n";
     }
-}
-
-Utf8 GenDoc::findReference(const Utf8& name)
-{
-    auto it = collectInvert.find(name);
-    if (it != collectInvert.end())
-        return Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
-
-    Vector<Utf8> tkns;
-    Utf8::tokenize(name, '.', tkns);
-    if (tkns.size() <= 1)
-        return "";
-
-    if (tkns[0] == "Swag")
-    {
-        return Fmt("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
-    }
-
-    return "";
 }
 
 void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc)
@@ -731,32 +757,6 @@ void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
 {
     for (auto& b : user.blocks)
         outputUserBlock(b, titleLevel);
-}
-
-const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link)
-{
-    name.clear();
-    link.clear();
-
-    if (*pz != '[')
-        return nullptr;
-    pz++;
-
-    while (*pz && *pz != ']')
-        name += *pz++;
-    if (*pz != ']')
-        return nullptr;
-
-    pz++;
-    if (*pz != '(')
-        return pz;
-    pz++;
-
-    while (*pz && *pz != ')')
-        link += *pz++;
-    if (*pz != ')')
-        return nullptr;
-    return pz + 1;
 }
 
 Utf8 GenDoc::getFormattedText(const Utf8& user)
