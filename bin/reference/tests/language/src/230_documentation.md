@@ -40,6 +40,26 @@ If the module contains **markdown** files with the '.md' extension, they will be
 // This is yet another paragraph.
 ```
 
+> Everything between empty lines is considered to be a simple paragraph. Which
+> means that if you put several comments on several lines like this, they all
+> will be part of the same paragraph.
+>
+> This is another paragraph because there's an empty line before.
+>
+> This is yet another paragraph.
+
+Inside a paragraph, you can end of line with '\' to force a break without creating a new paragraph.
+
+```swag
+// First line.
+// Second line is on first line.\
+// But third line has a break before.
+```
+
+> First line.
+> Second line is on first line.\
+> But third line has a break before.
+
 A paragraph that starts with `---` is a **verbatim** paragraph where every blanks and end of lines
 are respected. The paragraph will be generated `as is` without any markdown change.
 
@@ -73,9 +93,9 @@ You can create a **list** of bullet points with `\*`.
 // * This is a bullet point
 ```
 
-* This is a bullet point
-* This is a bullet point
-* This is a bullet point
+> * This is a bullet point
+> * This is a bullet point
+> * This is a bullet point
 
 ## Quotes
 
@@ -164,15 +184,23 @@ The real level of the title will depend on the context and the generated documen
 // ###### Title 6
 ```
 
-# References
+## References
 
 You can create an external **reference** with `\[name\](link)`.
 
 ```swag
-// This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.
+// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
 ```
 
-This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.
+> This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
+
+## Images
+
+You can insert an external **image** with `!\[name\](link)`.
+
+```swag
+// This is an image ![image](https://swag-lang/imgs/swag_icon.png).
+```
 
 ## Markdown
 
@@ -186,10 +214,8 @@ Some other markers are also supported inside texts.
 // This character \n is escaped, and 'n' will be output as is.
 ```
 
----
-This is `inline code` with back ticks.
-This is inline 'code' with normal ticks, but just for a single word.
-This is **bold**.
-This is *italic*.
-This character \n is escaped, and 'n' will be output as is.
----
+> This is `inline code` with back ticks.\
+> This is inline 'code' with normal ticks, but just for a single word.\
+> This is **bold**.\
+> This is *italic*.\
+> This character \n is escaped, and 'n' will be output as is.

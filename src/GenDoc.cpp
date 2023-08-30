@@ -733,6 +733,32 @@ void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
         outputUserBlock(b, titleLevel);
 }
 
+const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link)
+{
+    name.clear();
+    link.clear();
+
+    if (*pz != '[')
+        return nullptr;
+    pz++;
+
+    while (*pz && *pz != ']')
+        name += *pz++;
+    if (*pz != ']')
+        return nullptr;
+
+    pz++;
+    if (*pz != '(')
+        return pz;
+    pz++;
+
+    while (*pz && *pz != ')')
+        link += *pz++;
+    if (*pz != ')')
+        return nullptr;
+    return pz + 1;
+}
+
 Utf8 GenDoc::getFormattedText(const Utf8& user)
 {
     if (user.empty())
@@ -764,54 +790,63 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
 
         if (*pz == '\\')
         {
-            pz++;
+            if (pz[1] == 0)
+            {
+                result += "<br/>";
+                pz++;
+            }
+            else
+            {
+                pz++;
+                result += *pz++;
+            }
+
+            continue;
+        }
+
+        // image ![](link)
+        if (*pz == '!' && pz[1] == '[')
+        {
+            Utf8 name;
+            Utf8 link;
+            auto ppz = tokenizeReference(pz + 1, name, link);
+            if (ppz && !name.empty() && !link.empty())
+            {
+                pz = ppz;
+                result += Fmt("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
+                continue;
+            }
+
             result += *pz++;
             continue;
         }
 
         // [reference] to create an html link to the current document
-        if (*pz == '[' && (SWAG_IS_ALPHA(pz[1]) || pz[1] == '#' || pz[1] == '@'))
+        if (*pz == '[')
         {
-            pz++;
-
             Utf8 name;
-            name += *pz++;
-            while (*pz && *pz != ']')
-                name += *pz++;
-
-            if (*pz != ']')
+            Utf8 link;
+            auto ppz = tokenizeReference(pz, name, link);
+            if (ppz)
             {
-                result += "[";
-                result += name;
-                continue;
+                if (!link.empty())
+                {
+                    result += Fmt("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
+                    pz = ppz;
+                }
+                else if (!name.empty())
+                {
+                    auto ref = findReference(name);
+                    if (!ref.empty())
+                    {
+                        result += ref;
+                        pz = ppz;
+                        continue;
+                    }
+                }
             }
 
-            pz++;
-
-            // Markdown reference
-            if (*pz == '(')
-            {
-                Utf8 ref;
-                pz++;
-                while (*pz && *pz != ')')
-                    ref += *pz++;
-                result += Fmt("<a href=\"%s\">%s</a>", ref.c_str(), name.c_str());
-                if (*pz)
-                    pz++;
-                continue;
-            }
-
-            // Doc reference
-            auto ref = findReference(name);
-            if (!ref.empty())
-            {
-                result += ref;
-                continue;
-            }
-
-            result += "[";
-            result += name;
-            result += "]";
+            result += *pz++;
             continue;
         }
 

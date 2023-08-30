@@ -42,18 +42,19 @@ struct GenDoc
         Vector<UserBlock> blocks;
     };
 
-    void constructPage();
-    Utf8 toRef(Utf8 str);
-    void addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
-    bool generate(Module* mdl, BuildCfgDocKind kind);
-    void outputStyles();
-    Utf8 findReference(const Utf8& name);
-    void computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
-    void computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
-    Utf8 getFormattedText(const Utf8& user);
-    void outputCode(const Utf8& code, uint32_t flags);
-    void outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
-    void outputUserComment(const UserComment& user, int titleLevel = 1);
+    void        constructPage();
+    Utf8        toRef(Utf8 str);
+    void        addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
+    bool        generate(Module* mdl, BuildCfgDocKind kind);
+    void        outputStyles();
+    Utf8        findReference(const Utf8& name);
+    void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
+    void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
+    const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link);
+    Utf8        getFormattedText(const Utf8& user);
+    void        outputCode(const Utf8& code, uint32_t flags);
+    void        outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
+    void        outputUserComment(const UserComment& user, int titleLevel = 1);
 
     Module*         module = nullptr;
     BuildCfgDocKind docKind;

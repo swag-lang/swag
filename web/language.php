@@ -560,9 +560,8 @@
 <li><a href="#Tables">Tables</a></li>
 <li><a href="#Code">Code</a></li>
 <li><a href="#Titles">Titles</a></li>
-</ul>
 <li><a href="#References">References</a></li>
-<ul>
+<li><a href="#Images">Images</a></li>
 <li><a href="#Markdown">Markdown</a></li>
 </ul>
 <li><a href="#231_001_Api">Api</a></li>
@@ -7514,6 +7513,17 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">//</span>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
+<blockquote>
+<p>Everything between empty lines is considered to be a simple paragraph. Which means that if you put several comments on several lines like this, they all will be part of the same paragraph. </p><p>This is another paragraph because there's an empty line before. </p><p>This is yet another paragraph. </p>
+</blockquote>
+<p>Inside a paragraph, you can end of line with <code class="incode">\</code> to force a break without creating a new paragraph. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// First line.</span>
+<span class="SCmt">// Second line is on first line.\</span>
+<span class="SCmt">// But third line has a break before.</span></span></code>
+</div>
+<blockquote>
+<p>First line. Second line is on first line.<br/> But third line has a break before. </p>
+</blockquote>
 <p>A paragraph that starts with <code class="incode">---</code> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <code class="incode">as is</code> without any markdown change. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ---</span>
 <span class="SCmt">// Even...</span>
@@ -7536,11 +7546,9 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span></span></code>
 </div>
-<ul>
-<li>This is a bullet point</li>
-<li>This is a bullet point</li>
-<li>This is a bullet point</li>
-</ul>
+<blockquote>
+<p>* This is a bullet point * This is a bullet point * This is a bullet point </p>
+</blockquote>
 <h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <code class="incode">&gt;</code> </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// &gt; This is a block quote on multiple</span>
@@ -7600,11 +7608,17 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// ##### Title 5</span>
 <span class="SCmt">// ###### Title 6</span></span></code>
 </div>
-<h3 id="References">References </h3>
+<h4 id="References">References </h4>
 <p>You can create an external <b>reference</b> with <code class="incode">[name](link)</code>. </p>
-<div class="precode"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.</span></code>
+<div class="precode"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.</span></code>
 </div>
-<p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repo on GitHub. </p>
+<blockquote>
+<p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+</blockquote>
+<h4 id="Images">Images </h4>
+<p>You can insert an external <b>image</b> with <code class="incode">![name](link)</code>. </p>
+<div class="precode"><code><span class="SCmt">// This is an image ![image](https://swag-lang/imgs/swag_icon.png).</span></code>
+</div>
 <h4 id="Markdown">Markdown </h4>
 <p>Some other markers are also supported inside texts. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// This is `inline code` with back ticks.</span>
@@ -7613,11 +7627,9 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// This is *italic*.</span>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.</span></span></code>
 </div>
-<p style="white-space: break-spaces">This is `inline code` with back ticks.
-This is inline 'code' with normal ticks, but just for a single word.
-This is **bold**.
-This is *italic*.
-This character \n is escaped, and 'n' will be output as is.</p>
+<blockquote>
+<p>This is <code class="incode">inline code</code> with back ticks.<br/> This is inline <code class="incode">code</code> with normal ticks, but just for a single word.<br/> This is <b>bold</b>.<br/> This is <i>italic</i>.<br/> This character n is escaped, and <code class="incode">n</code> will be output as is. </p>
+</blockquote>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. </p>
