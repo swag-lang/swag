@@ -7647,14 +7647,14 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 </div>
 <h4 id="Markdown">Markdown </h4>
 <p>Some other markers are also supported inside texts. </p>
-<div class="precode"><code><span class="SCde"><span class="SCmt">// This is `inline code` with back ticks.</span>
-<span class="SCmt">// This is inline 'code' with normal ticks, but just for a single word.</span>
-<span class="SCmt">// This is **bold**.</span>
-<span class="SCmt">// This is *italic*.</span>
-<span class="SCmt">// This character \n is escaped, and 'n' will be output as is.</span></span></code>
+<div class="precode"><code><span class="SCde"><span class="SCmt">// This is `inline code` with back ticks.\</span>
+<span class="SCmt">// This is inline 'code' with normal ticks, but just for a single word.\</span>
+<span class="SCmt">// This is **bold**.\</span>
+<span class="SCmt">// This is *italic*.\</span>
+<span class="SCmt">// This character \n is escaped, and 'n' will be output as is.\</span></span></code>
 </div>
 <blockquote>
-<p>This is <code class="incode">inline code</code> with back ticks.<br/> This is inline <code class="incode">code</code> with normal ticks, but just for a single word.<br/> This is <b>bold</b>.<br/> This is <i>italic</i>.<br/> This character n is escaped, and <code class="incode">n</code> will be output as is. </p>
+<p>This is <code class="incode">inline code</code> with back ticks.<br/> This is inline <code class="incode">code</code> with normal ticks, but just for a single word.<br/> This is <b>bold</b>.<br/> This is <i>italic</i>.<br/> This character n is escaped, and <code class="incode">n</code> will be output as is.<br/> </p>
 </blockquote>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>

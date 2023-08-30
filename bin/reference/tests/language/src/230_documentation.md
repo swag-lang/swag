@@ -216,15 +216,15 @@ You can insert an external **image** with `!\[name\](link)`.
 Some other markers are also supported inside texts.
 
 ```swag
-// This is `inline code` with back ticks.
-// This is inline 'code' with normal ticks, but just for a single word.
-// This is **bold**.
-// This is *italic*.
-// This character \n is escaped, and 'n' will be output as is.
+// This is `inline code` with back ticks.\
+// This is inline 'code' with normal ticks, but just for a single word.\
+// This is **bold**.\
+// This is *italic*.\
+// This character \n is escaped, and 'n' will be output as is.\
 ```
 
 > This is `inline code` with back ticks.\
 > This is inline 'code' with normal ticks, but just for a single word.\
 > This is **bold**.\
 > This is *italic*.\
-> This character \n is escaped, and 'n' will be output as is.
+> This character \n is escaped, and 'n' will be output as is.\
