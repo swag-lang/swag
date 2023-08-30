@@ -58,7 +58,7 @@ bool GenDoc::generatePages()
         helpToc.clear();
         if (path.extension() == ".md")
         {
-            if (!processMarkDownFile(path))
+            if (!processMarkDownFile(path, 0))
                 return false;
         }
         else

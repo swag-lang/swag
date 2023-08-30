@@ -14,7 +14,7 @@ void GenDoc::addTitle(const Utf8& title, int level)
     helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", title.c_str(), title.c_str());
 }
 
-bool GenDoc::processMarkDownFile(const Path& fileName)
+bool GenDoc::processMarkDownFile(const Path& fileName, int titleLevel)
 {
     ifstream ifs(fileName);
 
@@ -31,7 +31,7 @@ bool GenDoc::processMarkDownFile(const Path& fileName)
 
     UserComment result;
     computeUserComments(result, lines, false);
-    outputUserComment(result, 0);
+    outputUserComment(result, titleLevel);
 
     return true;
 }
@@ -98,13 +98,6 @@ bool GenDoc::generateExamples()
     tocLastTitleLevel = 1;
     for (auto file : module->files)
     {
-        if (file->markDown)
-        {
-            if (!processMarkDownFile(file->path))
-                return false;
-            continue;
-        }
-
         Path path = file->name;
         path.replace_extension("");
 
@@ -129,8 +122,18 @@ bool GenDoc::generateExamples()
         helpContent += Fmt("</h%d>", titleLevel + 1);
 
         helpToc += "<ul>\n";
-        if (!processSourceFile(file->path, titleLevel + 1))
-            return false;
+
+        if (file->markDown)
+        {
+            if (!processMarkDownFile(file->path, titleLevel + 1))
+                return false;
+        }
+        else
+        {
+            if (!processSourceFile(file->path, titleLevel + 1))
+                return false;
+        }
+
         helpToc += "</ul>\n";
     }
 

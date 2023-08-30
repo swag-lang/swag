@@ -560,7 +560,9 @@
 <li><a href="#Tables">Tables</a></li>
 <li><a href="#Code">Code</a></li>
 <li><a href="#Titles">Titles</a></li>
+</ul>
 <li><a href="#References">References</a></li>
+<ul>
 <li><a href="#Markdown">Markdown</a></li>
 </ul>
 <li><a href="#231_001_Api">Api</a></li>
@@ -7498,7 +7500,7 @@ var g_Functions: Array'OneFunc</span></code>
 <table class="enumeration">
 <tr><td> Swag.DocKind.Api      </td><td> Generates an api documentation (all public symbols)</td></tr>
 <tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
-<tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of <code class="incode">Examples</code>)</td></tr>
+<tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of  <code class="incode">Examples</code>)</td></tr>
 </table>
 <h3 id="Markdown_files">Markdown files </h3>
 <p>If the module contains <b>markdown</b> files with the <code class="incode">.md</code> extension, they will be processed as if they were Swag comments. </p>
@@ -7512,17 +7514,24 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">//</span>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
-<p>A paragraph that starts with <code class="incode">---</code> is a paragraph where every blanks and end of lines are respected. </p>
+<p>A paragraph that starts with <code class="incode">---</code> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <code class="incode">as is</code> without any markdown change. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ---</span>
 <span class="SCmt">// Even...</span>
 <span class="SCmt">//</span>
 <span class="SCmt">// ...empty lines are preserved.</span>
 <span class="SCmt">//</span>
 <span class="SCmt">// You end that kind of paragraph with another '---' alone on its line.</span>
+<span class="SCmt">// Note that **everything** is not bold, put printed 'as it is'.</span>
 <span class="SCmt">// ---</span></span></code>
 </div>
+<p style="white-space: break-spaces">Even...
+
+...empty lines are preserved.
+
+You end that kind of paragraph with another '---' alone on its line.
+Note that **everything** is not bold, put printed 'as it is'.</p>
 <h4 id="Lists">Lists </h4>
-<p> You can create a <b>list</b> of bullet points with <code class="incode"><i></code>.</i> </p>
+<p>You can create a <b>list</b> of bullet points with <code class="incode">*</code>. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span>
 <span class="SCmt">// * This is a bullet point</span></span></code>
@@ -7557,19 +7566,23 @@ var g_Functions: Array'OneFunc</span></code>
 <tr><td> <code class="incode">switch</code>       </td><td> Check an invalid case in a <code class="incode">#[Swag.Complete]</code> switch</td></tr>
 </table>
 <h4 id="Code">Code </h4>
-<p>You can create a simple <b>code paragraph</b> with three backticks before and after the code, or just by indenting the code with four blanks or one tabulation. </p>
+<p>You can create a simple <b>code paragraph</b> with three backticks before and after the code. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ```</span>
 <span class="SCmt">// if a == true</span>
 <span class="SCmt">//   @print("true")</span>
-<span class="SCmt">// ```</span>
-
-<span class="SCmt">//    if a == true</span>
-<span class="SCmt">//        @print("true")</span></span></code>
+<span class="SCmt">// ```</span></span></code>
 </div>
 <div class="precode"><code><span class="SCde">if a == true
   @print("true")</span></code>
 </div>
-<p>You can create a code paragraph with <b>syntax coloration</b> by adding <code class="incode">swag</code> after the three backticks. </p>
+<p>You can also create that kind of paragraph by simply indenting the code with four blanks or one tabulation. </p>
+<div class="precode"><code><span class="SCde"><span class="SCmt">//    if a == false</span>
+<span class="SCmt">//        @print("false")</span></span></code>
+</div>
+<div class="precode"><code><span class="SCde">if a == false
+    @print("false")</span></code>
+</div>
+<p>And if you want <b>syntax coloration</b>, add <code class="incode">swag</code> after the three backticks. Only Swag syntax is supported right now. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// ```swag</span>
 <span class="SCmt">// if a == true</span>
 <span class="SCmt">//   @print("true")</span>
@@ -7587,13 +7600,11 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// ##### Title 5</span>
 <span class="SCmt">// ###### Title 6</span></span></code>
 </div>
-<h4 id="References">References </h4>
+<h3 id="References">References </h3>
 <p>You can create an external <b>reference</b> with <code class="incode">[name](link)</code>. </p>
 <div class="precode"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repo on GitHub.</span></code>
 </div>
-<blockquote>
 <p>This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repo on GitHub. </p>
-</blockquote>
 <h4 id="Markdown">Markdown </h4>
 <p>Some other markers are also supported inside texts. </p>
 <div class="precode"><code><span class="SCde"><span class="SCmt">// This is `inline code` with back ticks.</span>
@@ -7602,9 +7613,11 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// This is *italic*.</span>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.</span></span></code>
 </div>
-<blockquote>
-<p>This is <code class="incode">inline code</code> with back ticks. This is inline <code class="incode">code</code> with normal ticks, but just for a single word. This is <b>bold</b>. This is <i>italic</i>. This character n is escaped, and <code class="incode">n</code> will be output as is. </p>
-</blockquote>
+<p style="white-space: break-spaces">This is `inline code` with back ticks.
+This is inline 'code' with normal ticks, but just for a single word.
+This is **bold**.
+This is *italic*.
+This character \n is escaped, and 'n' will be output as is.</p>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="incode">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="incode">module.swg</code> file. </p>
@@ -7656,8 +7669,21 @@ var g_Functions: Array'OneFunc</span></code>
 }</span></code>
 </div>
 
-<h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file is a chapter or a sub chapter. </p>
-<p>This documentation has been generated in that mode, from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
+<h3 id="231_002_Examples">Examples</h3><p>In <code class="incode">Swag.DocKind.Examples</code> mode, swag will generate a documentation like this one. Each file will be a chapter or a sub chapter. </p>
+<p>File names must start with a number of 3 digits, and can be followed by another number for a sub part. </p>
+<div class="precode"><code><span class="SCde">100_my_title.swg            =&gt; will generate a '&lt;h1&gt;My title&lt;&lt;h1&gt;' heading
+101_001_my_sub_title.swg    =&gt; will generate a '&lt;h2&gt;My sub title&lt;&lt;h2&gt;' heading
+102_002_my_sub_title.swg    =&gt; will generate a '&lt;h2&gt;My sub title&lt;&lt;h2&gt;' heading
+110_my_other_title.swg      =&gt; will generate a '&lt;h1&gt;My other title&lt;&lt;h1&gt;' heading
+111_my_other_title.md       =&gt; you can mix with '.md' files</span></code>
+</div>
+<p>In that mode, the comments in the code you want to be interpreted as documentation (and not swag comments) must start with <code class="incode">/**</code>. </p>
+<div class="precode"><code><span class="SCde">/**
+This is a valid documentation comment.
+The comment must start with /** and end with */, which should be alone on their respective line.
+*/</span></code>
+</div>
+<p>Note that the documentation you are reading right now has been generated in that mode, from the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/language">std/reference/language</a> module. </p>
 
 <h3 id="231_003_Pages">Pages</h3><p>In <code class="incode">Swag.DocKind.Pages</code> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <code class="incode">Swag.DocKind.Examples</code> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
