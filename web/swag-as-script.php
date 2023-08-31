@@ -118,16 +118,10 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-note-title {
-            font-weight:        bold;
+        .blockquote-title-block {
+            margin-bottom:      10px;
         }
-        .blockquote-tip-title {
-            font-weight:        bold;
-        }
-        .blockquote-warning-title {
-            font-weight:        bold;
-        }
-        .blockquote-attention-title {
+        .blockquote-title {
             font-weight:        bold;
         }
         .container a {

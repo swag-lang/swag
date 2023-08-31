@@ -136,16 +136,10 @@ void GenDoc::outputStyles()
             margin-right:       20px;\n\
             padding:            10px;\n\
         }\n\
-        .blockquote-note-title {\n\
-            font-weight:        bold;\n\
+        .blockquote-title-block {\n\
+            margin-bottom:      10px;\n\
         }\n\
-        .blockquote-tip-title {\n\
-            font-weight:        bold;\n\
-        }\n\
-        .blockquote-warning-title {\n\
-            font-weight:        bold;\n\
-        }\n\
-        .blockquote-attention-title {\n\
+        .blockquote-title {\n\
             font-weight:        bold;\n\
         }\n\
         .container a {\n\
@@ -913,31 +907,39 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     case UserBlockKind::BlockquoteNote:
         helpContent += "<div class=\"blockquote-note\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
         helpContent += "<i class=\"fa fa-info-circle\"></i> ";
-        helpContent += "<span class=\"blockquote-note-title\"> Note<br/></span>";
+        helpContent += "<span class=\"blockquote-title\"> Note</span>";
+        helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, shortDescTd);
+            outputUserBlock(*sub, titleLevel, true);
         break;
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
         helpContent += "<i class=\"fa fa-lightbulb-o\"></i>";
-        helpContent += "<span class=\"blockquote-tip-title\"> Tip<br/></span>";
+        helpContent += "<span class=\"blockquote-title\"> Tip</span>";
+        helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, shortDescTd);
+            outputUserBlock(*sub, titleLevel, true);
         break;
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
         helpContent += "<i class=\"fa fa-exclamation-triangle\"></i>";
-        helpContent += "<span class=\"blockquote-warning-title\"> Warning<br/></span>";
+        helpContent += "<span class=\"blockquote-title\"> Warning</span>";
+        helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, shortDescTd);
+            outputUserBlock(*sub, titleLevel, true);
         break;
     case UserBlockKind::BlockquoteAttention:
         helpContent += "<div class=\"blockquote-attention\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
         helpContent += "<i class=\"fa fa-ban\"></i>";
-        helpContent += "<span class=\"blockquote-attention-title\"> Attention<br/></span>";
+        helpContent += "<span class=\"blockquote-title\"> Attention</span>";
+        helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, shortDescTd);
+            outputUserBlock(*sub, titleLevel, true);
         break;
 
     case UserBlockKind::Paragraph:

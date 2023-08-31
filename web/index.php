@@ -118,16 +118,10 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-note-title {
-            font-weight:        bold;
+        .blockquote-title-block {
+            margin-bottom:      10px;
         }
-        .blockquote-tip-title {
-            font-weight:        bold;
-        }
-        .blockquote-warning-title {
-            font-weight:        bold;
-        }
-        .blockquote-attention-title {
+        .blockquote-title {
             font-weight:        bold;
         }
         .container a {
@@ -331,9 +325,7 @@
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<i class="fa fa-exclamation-triangle"></i><span class="blockquote-warning-title"> Warning<br/></span><p> There's <b>no official</b> release yet. </p>
-<p> Everything (including this web site) is still under construction... </p>
-</div>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div> There's <b>no official</b> release yet.  Everything (including this web site) is still under construction... </div>
 </div>
 </div>
 </div>

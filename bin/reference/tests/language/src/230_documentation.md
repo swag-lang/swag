@@ -130,6 +130,7 @@ You can create a special quote by adding a title on the first line.
 * `:note`
 * `:tip`
 * `:warning`
+* `:attention`
 
 ```swag
 // > :note
