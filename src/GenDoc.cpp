@@ -128,10 +128,13 @@ void GenDoc::outputStyles()
             padding:            10px;\n\
         }\n\
         .blockquote-note-title {\n\
+            font-weight:        bold;\n\
         }\n\
         .blockquote-tip-title {\n\
+            font-weight:        bold;\n\
         }\n\
         .blockquote-warning-title {\n\
+            font-weight:        bold;\n\
         }\n\
         .container a {\n\
             color:              DoggerBlue;\n\
@@ -887,27 +890,21 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteNote:
         helpContent += "<div class=\"blockquote-note\">\n";
         helpContent += "<span class=\"blockquote-note-title\">\n";
-        helpContent += "<i class=\"fa fa-info-circle fa-lg\"></i> ";
-        helpContent += "Note<br/>";
-        helpContent += "</span>";
+        helpContent += "<i class=\"fa fa-info-circle fa-lg\"></i> Note<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
-        helpContent += "<span class=\"blockquote-note-tip\">\n";
-        helpContent += "<i class=\"fa fa-lightbulb-o fa-lg\"></i> ";
-        helpContent += "Tip<br/>";
-        helpContent += "</span>";
+        helpContent += "<span class=\"blockquote-tip-title\">\n";
+        helpContent += "<i class=\"fa fa-lightbulb-o fa-lg\"></i> Tip<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
-        helpContent += "<span class=\"blockquote-note-warning\">\n";
-        helpContent += "<i class=\"fa fa-exclamation-triangle fa-lg\"></i> ";
-        helpContent += "Warning<br/>";
-        helpContent += "</span>";
+        helpContent += "<span class=\"blockquote-warning-title\">\n";
+        helpContent += "<i class=\"fa fa-exclamation-triangle fa-lg\"></i> Warning<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;

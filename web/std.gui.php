@@ -116,10 +116,13 @@
             padding:            10px;
         }
         .blockquote-note-title {
+            font-weight:        bold;
         }
         .blockquote-tip-title {
+            font-weight:        bold;
         }
         .blockquote-warning-title {
+            font-weight:        bold;
         }
         .container a {
             color:              DoggerBlue;

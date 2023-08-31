@@ -110,10 +110,13 @@
             padding:            10px;
         }
         .blockquote-note-title {
+            font-weight:        bold;
         }
         .blockquote-tip-title {
+            font-weight:        bold;
         }
         .blockquote-warning-title {
+            font-weight:        bold;
         }
         .container a {
             color:              DoggerBlue;
@@ -316,7 +319,7 @@
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<span class="blockquote-note-warning">
+<span class="blockquote-warning-title">
 <i class="fa fa-exclamation-triangle fa-lg"></i> Warning<br/></span><p>There's <b>no official</b> release yet. </p>
 <p>Everything (including this web site) is still under construction... </p>
 </div>
