@@ -17,61 +17,23 @@
             margin:         0px auto;
             padding:        0px;
         }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .left-page {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .right-page {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .right-page {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
+        body { margin: 0px; line-height: 1.3em; }
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -119,32 +81,24 @@
             padding:            10px;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child { margin-bottom: 0px; }
-        .blockquote-note        p:last-child { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:      10px; }
-        .blockquote-title       { font-weight:        bold; }
-        .container a            { color:              DoggerBlue; }
-        .container a:hover      { text-decoration:    underline; }
-        .left a                 { text-decoration:    none; }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:   10px; }
+        .blockquote-title       { font-weight:     bold; }
+        
+        .container a            { color:           DoggerBlue; }
+        .container a:hover      { text-decoration: underline; }
+        
+        .left a                 { text-decoration: none; }
+        .left ul                { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         table.api-item {
             border-collapse:    separate;
             background-color:   Black;
@@ -154,32 +108,14 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-src-ref a {
-            color:              inherit;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .api-additional-infos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
         table.table-enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
@@ -192,32 +128,14 @@
             border-collapse:    collapse;
             min-width:          100px;
         }
-        .table-enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .table-enumeration a {
-            text-decoration:    none;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .tdname .inline-code {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .code-type a {
-            color:              inherit;
-        }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration a              { text-decoration: none; }
+        
+        .container td:last-child { width: 100%; }
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-type               { background-color: #eeeeee; }
+        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -227,9 +145,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-        .code-block a {
-            color:  inherit; 
-        }
+        .code-block a { color: inherit; }
             .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -252,12 +168,12 @@
 <div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="Script_file">Script file </h1>
-<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <code class="inline-code">swgs</code>: </p>
+<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="inline-code">swgs</span>: </p>
 <div class="code-block"><code><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
 =&gt; type 'swag script -f:myScript.swgs' to run that script</span></code>
 </div>
-<p>This will generate a simple file with a <code class="inline-code">#dependency</code> block and one <code class="inline-code">#run</code> compiler function. </p>
+<p>This will generate a simple file with a <span class="inline-code">#dependency</span> block and one <span class="inline-code">#run</span> compiler function. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
@@ -270,7 +186,7 @@
     <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
 }</span></code>
 </div>
-<p>You can then run your script with the <code class="inline-code">script</code> command. </p>
+<p>You can then run your script with the <span class="inline-code">script</span> command. </p>
 <div class="code-block"><code><span class="SCde">$ swag script -f:myScript
 Hello world !</span></code>
 </div>
@@ -278,7 +194,7 @@ Hello world !</span></code>
 <div class="code-block"><code><span class="SCde">$ swag myScript.swgs
 Hello world !</span></code>
 </div>
-<p>You will find a bunch of small scripts in <code class="inline-code">swag/bin/examples/scripts</code>. To run one of them from the console, go to the folder and type for example <code class="inline-code">swag flappy.swgs</code>. </p>
+<p>You will find a bunch of small scripts in <span class="inline-code">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="inline-code">swag flappy.swgs</span>. </p>
 <p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
@@ -294,11 +210,11 @@ Hello world !</span></code>
 </div>
 <p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
 <ul>
-<li>To locate the Swag cache folder, add <code class="inline-code">--verbose-path</code> to the command line.</li>
-<li>To force the build of dependencies, add <code class="inline-code">--rebuildall</code> to the command line.</li>
+<li>To locate the Swag cache folder, add <span class="inline-code">--verbose-path</span> to the command line.</li>
+<li>To force the build of dependencies, add <span class="inline-code">--rebuildall</span> to the command line.</li>
 </ul>
 <h2 id="More_than_one_script_file">More than one script file </h2>
-<p>If your script is divided in more than one single file, you can add <code class="inline-code">#load &lt;filename&gt;</code> in the <code class="inline-code">#dependencies</code> block. </p>
+<p>If your script is divided in more than one single file, you can add <span class="inline-code">#load &lt;filename&gt;</span> in the <span class="inline-code">#dependencies</span> block. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
@@ -306,7 +222,7 @@ Hello world !</span></code>
 }</span></code>
 </div>
 <h2 id="Debug">Debug </h2>
-<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <code class="inline-code">@breakpoint()</code> in your code when you want the debugger to trigger. </p>
+<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="inline-code">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 </div>
 </div>

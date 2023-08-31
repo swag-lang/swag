@@ -17,68 +17,26 @@
             margin:         0px auto;
             padding:        0px;
         }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .left-page {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .right-page {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .right-page {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-            .container {
-                height:     100vh;
-            }
-            .right {
-                overflow-y: scroll;
-            }
+            .container { height: 100vh; }
+            .right     { overflow-y: scroll; }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
+        body { margin: 0px; line-height: 1.3em; }
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -126,32 +84,24 @@
             padding:            10px;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child { margin-bottom: 0px; }
-        .blockquote-note        p:last-child { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:      10px; }
-        .blockquote-title       { font-weight:        bold; }
-        .container a            { color:              DoggerBlue; }
-        .container a:hover      { text-decoration:    underline; }
-        .left a                 { text-decoration:    none; }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:   10px; }
+        .blockquote-title       { font-weight:     bold; }
+        
+        .container a            { color:           DoggerBlue; }
+        .container a:hover      { text-decoration: underline; }
+        
+        .left a                 { text-decoration: none; }
+        .left ul                { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         table.api-item {
             border-collapse:    separate;
             background-color:   Black;
@@ -161,32 +111,14 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-src-ref a {
-            color:              inherit;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .api-additional-infos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
         table.table-enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
@@ -199,32 +131,14 @@
             border-collapse:    collapse;
             min-width:          100px;
         }
-        .table-enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .table-enumeration a {
-            text-decoration:    none;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .tdname .inline-code {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .code-type a {
-            color:              inherit;
-        }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration a              { text-decoration: none; }
+        
+        .container td:last-child { width: 100%; }
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-type               { background-color: #eeeeee; }
+        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -234,9 +148,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-        .code-block a {
-            color:  inherit; 
-        }
+        .code-block a { color: inherit; }
             .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -776,12 +688,12 @@
 <tr>
 <td id="Swag_U8_Max" class="code-type"><span class="SCst">Max</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>Max <code class="inline-code">u8</code> value. </td>
+<td>Max <span class="inline-code">u8</span> value. </td>
 </tr>
 <tr>
 <td id="Swag_U8_Min" class="code-type"><span class="SCst">Min</span></td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td>Min <code class="inline-code">u8</code> value. </td>
+<td>Min <span class="inline-code">u8</span> value. </td>
 </tr>
 </table>
 <p>
@@ -827,7 +739,7 @@
 </tr>
 </table>
 </p>
-<p>Returns a system allocated memory block of <code class="inline-code">size</code> bytes. </p>
+<p>Returns a system allocated memory block of <span class="inline-code">size</span> bytes. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></code>
 </div>
 <p> Use <a href="#@free">@free</a> to release the allocated memory. </p>
@@ -911,7 +823,7 @@
 </tr>
 </table>
 </p>
-<p>Atomic <code class="inline-code">add</code>. </p>
+<p>Atomic <span class="inline-code">add</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -933,7 +845,7 @@
 </tr>
 </table>
 </p>
-<p>Atomic <code class="inline-code">and</code>. </p>
+<p>Atomic <span class="inline-code">and</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomand</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -977,7 +889,7 @@
 </tr>
 </table>
 </p>
-<p>Atomic <code class="inline-code">or</code>. </p>
+<p>Atomic <span class="inline-code">or</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -999,7 +911,7 @@
 </tr>
 </table>
 </p>
-<p>Atomic <code class="inline-code">exchange</code>. </p>
+<p>Atomic <span class="inline-code">exchange</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s16</span>, exchangeWith: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s32</span>, exchangeWith: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxchg</span>(addr: *<span class="STpe">s64</span>, exchangeWith: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -1021,7 +933,7 @@
 </tr>
 </table>
 </p>
-<p>Atomic <code class="inline-code">xor</code>. </p>
+<p>Atomic <span class="inline-code">xor</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SItr">@atomxor</span>(addr: *<span class="STpe">s64</span>, value: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -1334,7 +1246,7 @@
 </tr>
 </table>
 </p>
-<p>Returns <code class="inline-code">true</code> is the current execution is bytecode. </p>
+<p>Returns <span class="inline-code">true</span> is the current execution is bytecode. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@isbytecode</span>()-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
@@ -1467,7 +1379,7 @@
 </tr>
 </table>
 </p>
-<p>Set all bytes of a given memory block to <code class="inline-code">value</code>. </p>
+<p>Set all bytes of a given memory block to <span class="inline-code">value</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@memset</span>(dst: ^<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>)</span></code>
 </div>
 <p>
@@ -1686,7 +1598,7 @@
 </tr>
 </table>
 </p>
-<p>Compares two strings, and returns <code class="inline-code">true</code> if they are equal. </p>
+<p>Compares two strings, and returns <span class="inline-code">true</span> if they are equal. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@stringcmp</span>(str1: <span class="STpe">string</span>, str2: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
@@ -1800,11 +1712,11 @@
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgBackendLLVM"><span class="SCst">BuildCfgBackendLLVM</span></a></td>
-<td><code class="inline-code">LLVM</code> backend specific options. </td>
+<td><span class="inline-code">LLVM</span> backend specific options. </td>
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgBackendX64"><span class="SCst">BuildCfgBackendX64</span></a></td>
-<td><code class="inline-code">x86_64</code> backend specific options. </td>
+<td><span class="inline-code">x86_64</span> backend specific options. </td>
 </tr>
 <tr>
 <td><a href="#Swag_BuildCfgGenDoc"><span class="SCst">BuildCfgGenDoc</span></a></td>
@@ -1816,7 +1728,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CompilerMessage"><span class="SCst">CompilerMessage</span></a></td>
-<td>A message received in a <code class="inline-code">#message</code> function. </td>
+<td>A message received in a <span class="inline-code">#message</span> function. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Context"><span class="SCst">Context</span></a></td>
@@ -1836,7 +1748,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Error"><span class="SCst">Error</span></a></td>
-<td>Store a <code class="inline-code">throw</code> error informations. </td>
+<td>Store a <span class="inline-code">throw</span> error informations. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Gvtd"><span class="SCst">Gvtd</span></a></td>
@@ -1923,7 +1835,7 @@
 <table class="table-enumeration">
 <tr>
 <td><a href="#Swag_AllocatorMode"><span class="SCst">AllocatorMode</span></a></td>
-<td>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
+<td>The <span class="inline-code">mode</span> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_AttributeUsage"><span class="SCst">AttributeUsage</span></a></td>
@@ -1955,7 +1867,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CompilerMsgMask"><span class="SCst">CompilerMsgMask</span></a></td>
-<td>The type of message you want to retreive in a <code class="inline-code">#message</code> function. </td>
+<td>The type of message you want to retreive in a <span class="inline-code">#message</span> function. </td>
 </tr>
 <tr>
 <td><a href="#Swag_ContextFlags"><span class="SCst">ContextFlags</span></a></td>
@@ -1975,7 +1887,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_TargetOs"><span class="SCst">TargetOs</span></a></td>
-<td>The <code class="inline-code">OS</code> to target when generating native code. </td>
+<td>The <span class="inline-code">OS</span> to target when generating native code. </td>
 </tr>
 <tr>
 <td><a href="#Swag_TypeCmpFlags"><span class="SCst">TypeCmpFlags</span></a></td>
@@ -2014,7 +1926,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_CalleeReturn"><span class="SCst">CalleeReturn</span></a></td>
-<td>A <code class="inline-code">return</code> in the following inlined function must be done in the callee context. </td>
+<td>A <span class="inline-code">return</span> in the following inlined function must be done in the callee context. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Compiler"><span class="SCst">Compiler</span></a></td>
@@ -2058,7 +1970,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Implicit"><span class="SCst">Implicit</span></a></td>
-<td>Can force an <code class="inline-code">opCast</code> special function to work as implicit. </td>
+<td>Can force an <span class="inline-code">opCast</span> special function to work as implicit. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Incomplete"><span class="SCst">Incomplete</span></a></td>
@@ -2070,7 +1982,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Macro"><span class="SCst">Macro</span></a></td>
-<td>The following function is a <code class="inline-code">macro</code>. </td>
+<td>The following function is a <span class="inline-code">macro</span>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Match"><span class="SCst">Match</span></a></td>
@@ -2078,7 +1990,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Mixin"><span class="SCst">Mixin</span></a></td>
-<td>The following function is a <code class="inline-code">mixin</code>. </td>
+<td>The following function is a <span class="inline-code">mixin</span>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_NoCopy"><span class="SCst">NoCopy</span></a></td>
@@ -2094,7 +2006,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_NotGeneric"><span class="SCst">NotGeneric</span></a></td>
-<td>The following function is forced to not be generic, even if defined inside a generic <code class="inline-code">struct</code>. </td>
+<td>The following function is forced to not be generic, even if defined inside a generic <span class="inline-code">struct</span>. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Offset"><span class="SCst">Offset</span></a></td>
@@ -2114,7 +2026,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Pack"><span class="SCst">Pack</span></a></td>
-<td><code class="inline-code">struct</code> packing information. </td>
+<td><span class="inline-code">struct</span> packing information. </td>
 </tr>
 <tr>
 <td><a href="#Swag_PrintBc"><span class="SCst">PrintBc</span></a></td>
@@ -2134,7 +2046,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_Tls"><span class="SCst">Tls</span></a></td>
-<td>Put the following global variable in the <code class="inline-code">tls</code> segment. </td>
+<td>Put the following global variable in the <span class="inline-code">tls</span> segment. </td>
 </tr>
 <tr>
 <td><a href="#Swag_Using"><span class="SCst">Using</span></a></td>
@@ -2171,7 +2083,7 @@
 </tr>
 </table>
 </p>
-<p>The <code class="inline-code">mode</code> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
+<p>The <span class="inline-code">mode</span> of an <a href="#Swag_AllocatorRequest">AllocatorRequest</a>. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Alloc</span></td>
@@ -2245,22 +2157,22 @@
 </table>
 <p> To allocate: </p>
 <ul>
-<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Alloc</b></li>
-<li><code class="inline-code">size</code> must be the size in bytes to allocate</li>
-<li><code class="inline-code">alignement</code> must be the alignement constraint in bytes (or 0)</li>
-<li><code class="inline-code">address</code> will be the returned allocated memory address</li>
+<li><span class="inline-code">mode</span> must be <b>AllocatorMode.Alloc</b></li>
+<li><span class="inline-code">size</span> must be the size in bytes to allocate</li>
+<li><span class="inline-code">alignement</span> must be the alignement constraint in bytes (or 0)</li>
+<li><span class="inline-code">address</span> will be the returned allocated memory address</li>
 </ul>
 <p> To free: </p>
 <ul>
-<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Free</b></li>
-<li><code class="inline-code">size</code> must be the original allocated size in bytes of <code class="inline-code">address</code></li>
-<li><code class="inline-code">address</code> must be the memory address to release</li>
+<li><span class="inline-code">mode</span> must be <b>AllocatorMode.Free</b></li>
+<li><span class="inline-code">size</span> must be the original allocated size in bytes of <span class="inline-code">address</span></li>
+<li><span class="inline-code">address</span> must be the memory address to release</li>
 </ul>
 <p> To reallocate: </p>
 <ul>
-<li><code class="inline-code">mode</code> must be <b>AllocatorMode.Realloc</b></li>
-<li><code class="inline-code">size</code> must be the original allocated size in bytes of <code class="inline-code">address</code></li>
-<li><code class="inline-code">address</code> must be the memory address to reallocate</li>
+<li><span class="inline-code">mode</span> must be <b>AllocatorMode.Realloc</b></li>
+<li><span class="inline-code">size</span> must be the original allocated size in bytes of <span class="inline-code">address</span></li>
+<li><span class="inline-code">address</span> must be the memory address to reallocate</li>
 </ul>
 <p> See <a href="#Swag_IAllocator">IAllocator</a> </p>
 <p>
@@ -2385,7 +2297,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">File</span></td>
-<td>Attribute can be used with <code class="inline-code">#global</code>. </td>
+<td>Attribute can be used with <span class="inline-code">#global</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">Constant</span></td>
@@ -2471,7 +2383,7 @@
 <tr>
 <td class="code-type"><span class="SCde">scratchAllocatorCapacity</span></td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Default capacity of the <code class="inline-code">temp</code> allocator (in bytes). </td>
+<td>Default capacity of the <span class="inline-code">temp</span> allocator (in bytes). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">safetyGuards</span></td>
@@ -2496,7 +2408,7 @@
 <tr>
 <td class="code-type"><span class="SCde">errorStackTrace</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Add stack trace in case a <code class="inline-code">throw</code> is raised. </td>
+<td>Add stack trace in case a <span class="inline-code">throw</span> is raised. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">warnAsErrors</span></td>
@@ -2506,7 +2418,7 @@
 <tr>
 <td class="code-type"><span class="SCde">warnAsWarning</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td>Override <code class="inline-code">warnAsErrors</code>, restoring warnings as warnings. </td>
+<td>Override <span class="inline-code">warnAsErrors</span>, restoring warnings as warnings. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">warnAsDisabled</span></td>
@@ -2536,7 +2448,7 @@
 <tr>
 <td class="code-type"><span class="SCde">byteCodeEmitAssume</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td><code class="inline-code">assume</code> will panic if an error is raised. </td>
+<td><span class="inline-code">assume</span> will panic if an error is raised. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">byteCodeInline</span></td>
@@ -2561,7 +2473,7 @@
 <tr>
 <td class="code-type"><span class="SCde">backendDebugInformations</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Output debug informations if <code class="inline-code">true</code>. </td>
+<td>Output debug informations if <span class="inline-code">true</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">backendOptimize</span></td>
@@ -2619,7 +2531,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">Export</span></td>
-<td>The module is an <code class="inline-code">export</code> module which does not have its own code. </td>
+<td>The module is an <span class="inline-code">export</span> module which does not have its own code. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">Executable</span></td>
@@ -2641,7 +2553,7 @@
 </tr>
 </table>
 </p>
-<p><code class="inline-code">LLVM</code> backend specific options. </p>
+<p><span class="inline-code">LLVM</span> backend specific options. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">outputIR</span></td>
@@ -2651,22 +2563,22 @@
 <tr>
 <td class="code-type"><span class="SCde">fpMathFma</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>true in <code class="inline-code">release</code>. </td>
+<td>true in <span class="inline-code">release</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">fpMathNoNaN</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>true in <code class="inline-code">release</code>. </td>
+<td>true in <span class="inline-code">release</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">fpMathNoInf</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>true in <code class="inline-code">release</code>. </td>
+<td>true in <span class="inline-code">release</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">fpMathNoSignedZero</span></td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>true in <code class="inline-code">release</code>. </td>
+<td>true in <span class="inline-code">release</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">fpMathUnsafe</span></td>
@@ -2717,7 +2629,7 @@
 <td>Optim for size level 2. </td>
 </tr>
 </table>
-<p> Only <code class="inline-code">LLVM</code> backend uses this, as the <code class="inline-code">X86_64</code> backend does not have an optimization pass. </p>
+<p> Only <span class="inline-code">LLVM</span> backend uses this, as the <span class="inline-code">X86_64</span> backend does not have an optimization pass. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2740,7 +2652,7 @@
 <td></td>
 </tr>
 </table>
-<p> Under windows, by default, the application will be compiled to make a <code class="inline-code">windowed</code> application. But you can  change it and force the application to behave like a <code class="inline-code">console</code> one. </p>
+<p> Under windows, by default, the application will be compiled to make a <span class="inline-code">windowed</span> application. But you can  change it and force the application to behave like a <span class="inline-code">console</span> one. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2752,7 +2664,7 @@
 </tr>
 </table>
 </p>
-<p><code class="inline-code">x86_64</code> backend specific options. </p>
+<p><span class="inline-code">x86_64</span> backend specific options. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2822,7 +2734,7 @@
 <tr>
 <td class="code-type"><span class="SCde">css</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td>The <code class="inline-code">css</code> file to include in generated documentations. </td>
+<td>The <span class="inline-code">css</span> file to include in generated documentations. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">icon</span></td>
@@ -2852,7 +2764,7 @@
 <tr>
 <td class="code-type"><span class="SCde">morePages</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td>Additional external file pages to process (separated with <code class="inline-code">;</code>). </td>
+<td>Additional external file pages to process (separated with <span class="inline-code">;</span>). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">syntaxDefaultColor</span></td>
@@ -2899,7 +2811,7 @@
 </tr>
 </table>
 </p>
-<p>A <code class="inline-code">return</code> in the following inlined function must be done in the callee context. </p>
+<p>A <span class="inline-code">return</span> in the following inlined function must be done in the callee context. </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_CalleeReturn">CalleeReturn</a></span></span></code>
@@ -2931,7 +2843,7 @@
 </tr>
 </table>
 </p>
-<p>A message received in a <code class="inline-code">#message</code> function. </p>
+<p>A message received in a <span class="inline-code">#message</span> function. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">moduleName</span></td>
@@ -2941,12 +2853,12 @@
 <tr>
 <td class="code-type"><span class="SCde">name</span></td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td>Depends on <code class="inline-code">kind</code>. </td>
+<td>Depends on <span class="inline-code">kind</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">type</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
-<td>Depends on <code class="inline-code">kind</code>. </td>
+<td>Depends on <span class="inline-code">kind</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">kind</span></td>
@@ -2954,7 +2866,7 @@
 <td>Kind of the message. </td>
 </tr>
 </table>
-<p> In a <code class="inline-code">#message</code> function, you can retreive the associated message by calling <code class="inline-code">getMessage</code> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
+<p> In a <span class="inline-code">#message</span> function, you can retreive the associated message by calling <span class="inline-code">getMessage</span> of the  interface returned by <a href="#@compiler">@compiler</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3012,7 +2924,7 @@
 </tr>
 </table>
 </p>
-<p>The type of message you want to retreive in a <code class="inline-code">#message</code> function. </p>
+<p>The type of message you want to retreive in a <span class="inline-code">#message</span> function. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">PassAfterSemantic</span></td>
@@ -3639,7 +3551,7 @@
 </tr>
 </table>
 </p>
-<p>Store a <code class="inline-code">throw</code> error informations. </p>
+<p>Store a <span class="inline-code">throw</span> error informations. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCde">msgBuf</span></td>
@@ -3772,7 +3684,7 @@
 <tr>
 <td class="code-type"><span class="SCde">opDrop</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
-<td>The <code class="inline-code">opDrop</code> function to call when the process must exit. </td>
+<td>The <span class="inline-code">opDrop</span> function to call when the process must exit. </td>
 </tr>
 </table>
 <p>
@@ -3822,7 +3734,7 @@
 <tr>
 <td class="code-type"><span class="SCde">getMessage</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ICompiler">ICompiler</a></span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_CompilerMessage">CompilerMessage</a></span></span></td>
-<td>Returns the compiler message in a <code class="inline-code">#message</code> function. </td>
+<td>Returns the compiler message in a <span class="inline-code">#message</span> function. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">getBuildCfg</span></td>
@@ -3835,7 +3747,7 @@
 <td>Compile a global string. </td>
 </tr>
 </table>
-<p> The intrinsic <code class="inline-code">@compiler</code> will return that interface at compile-time, and <code class="inline-code">null</code> at runtime. </p>
+<p> The intrinsic <span class="inline-code">@compiler</span> will return that interface at compile-time, and <span class="inline-code">null</span> at runtime. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3886,7 +3798,7 @@
 </tr>
 </table>
 </p>
-<p>Can force an <code class="inline-code">opCast</code> special function to work as implicit. </p>
+<p>Can force an <span class="inline-code">opCast</span> special function to work as implicit. </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Implicit">Implicit</a></span></span></code>
@@ -3957,7 +3869,7 @@
 </tr>
 </table>
 </p>
-<p>The following function is a <code class="inline-code">macro</code>. </p>
+<p>The following function is a <span class="inline-code">macro</span>. </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Macro">Macro</a></span></span></code>
@@ -3988,7 +3900,7 @@
 </tr>
 </table>
 </p>
-<p>The following function is a <code class="inline-code">mixin</code>. </p>
+<p>The following function is a <span class="inline-code">mixin</span>. </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Mixin">Mixin</a></span></span></code>
@@ -4065,7 +3977,7 @@
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NoInline">NoInline</a></span></span></code>
 </div>
-<p> This is a hint for the <code class="inline-code">llvm</code> backend. </p>
+<p> This is a hint for the <span class="inline-code">llvm</span> backend. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4077,7 +3989,7 @@
 </tr>
 </table>
 </p>
-<p>The following function is forced to not be generic, even if defined inside a generic <code class="inline-code">struct</code>. </p>
+<p>The following function is forced to not be generic, even if defined inside a generic <span class="inline-code">struct</span>. </p>
 <div class="api-additional-infos"><b>Usage</b>: function 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_NotGeneric">NotGeneric</a></span></span></code>
@@ -4098,7 +4010,7 @@
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Offset">Offset</a></span>(name: <span class="STpe">string</span>)</span></code>
 </div>
-<p> The field offset in the struct should be the same as the variable <code class="inline-code">name</code> </p>
+<p> The field offset in the struct should be the same as the variable <span class="inline-code">name</span> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4133,10 +4045,10 @@
 </div>
 <p> Options are: </p>
 <table class="table-enumeration">
-<tr><td> <code class="inline-code">bytecode</code>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
-<tr><td> <code class="inline-code">backend</code>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
+<tr><td> <span class="inline-code">bytecode</span>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
+<tr><td> <span class="inline-code">backend</span>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
-<p> If <code class="inline-code">what</code> is null or empty, every options will be affected. </p>
+<p> If <span class="inline-code">what</span> is null or empty, every options will be affected. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4163,7 +4075,7 @@
 </tr>
 </table>
 </p>
-<p><code class="inline-code">struct</code> packing information. </p>
+<p><span class="inline-code">struct</span> packing information. </p>
 <div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Pack">Pack</a></span>(value: <span class="STpe">u8</span>)</span></code>
@@ -4303,18 +4215,18 @@
 </div>
 <p> Safety checks are: </p>
 <table class="table-enumeration">
-<tr><td> <code class="inline-code">boundcheck</code>   </td><td> Check out of bound access</td></tr>
-<tr><td> <code class="inline-code">overflow</code>     </td><td> Check type conversion lost of bits or precision</td></tr>
-<tr><td> <code class="inline-code">math</code>         </td><td> Various math checks (like a negative <code class="inline-code">@sqrt</code>)</td></tr>
-<tr><td> <code class="inline-code">switch</code>       </td><td> Check an invalid case in a <code class="inline-code">#[Swag.Complete]</code> switch</td></tr>
-<tr><td> <code class="inline-code">unreachable</code>  </td><td> Panic if an <code class="inline-code">@unreachable</code> instruction is executed</td></tr>
-<tr><td> <code class="inline-code">any</code>          </td><td> Panic if a cast from a <code class="inline-code">any</code> variable does not match the real underlying type</td></tr>
-<tr><td> <code class="inline-code">bool</code>         </td><td> Panic if a <code class="inline-code">bool</code> does not have a valid value (<code class="inline-code">true</code> or <code class="inline-code">false</code>)</td></tr>
-<tr><td> <code class="inline-code">nan</code>          </td><td> Panic if a <code class="inline-code">nan</code> is used in a float arithmetic operation</td></tr>
-<tr><td> <code class="inline-code">sanity</code>       </td><td> Do a <code class="inline-code">sanity</code> check (per function)</td></tr>
-<tr><td> <code class="inline-code">null</code>         </td><td> Panic on derefencing some null pointers</td></tr>
+<tr><td> <span class="inline-code">boundcheck</span>   </td><td> Check out of bound access</td></tr>
+<tr><td> <span class="inline-code">overflow</span>     </td><td> Check type conversion lost of bits or precision</td></tr>
+<tr><td> <span class="inline-code">math</span>         </td><td> Various math checks (like a negative <span class="inline-code">@sqrt</span>)</td></tr>
+<tr><td> <span class="inline-code">switch</span>       </td><td> Check an invalid case in a <span class="inline-code">#[Swag.Complete]</span> switch</td></tr>
+<tr><td> <span class="inline-code">unreachable</span>  </td><td> Panic if an <span class="inline-code">@unreachable</span> instruction is executed</td></tr>
+<tr><td> <span class="inline-code">any</span>          </td><td> Panic if a cast from a <span class="inline-code">any</span> variable does not match the real underlying type</td></tr>
+<tr><td> <span class="inline-code">bool</span>         </td><td> Panic if a <span class="inline-code">bool</span> does not have a valid value (<span class="inline-code">true</span> or <span class="inline-code">false</span>)</td></tr>
+<tr><td> <span class="inline-code">nan</span>          </td><td> Panic if a <span class="inline-code">nan</span> is used in a float arithmetic operation</td></tr>
+<tr><td> <span class="inline-code">sanity</span>       </td><td> Do a <span class="inline-code">sanity</span> check (per function)</td></tr>
+<tr><td> <span class="inline-code">null</span>         </td><td> Panic on derefencing some null pointers</td></tr>
 </table>
-<p> If <code class="inline-code">what</code> is null or empty, every options are will be affected. </p>
+<p> If <span class="inline-code">what</span> is null or empty, every options are will be affected. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4392,7 +4304,7 @@
 </tr>
 <tr>
 <td><a href="#Swag_ScratchAllocator_setCapacity"><span class="SCde"><span class="SFct">setCapacity</span>()</spa</a></td>
-<td>This will call <code class="inline-code">release</code> prior to changing the capacity, so this must  be called at an early stage. </td>
+<td>This will call <span class="inline-code">release</span> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>
 <p>
@@ -4540,7 +4452,7 @@
 </tr>
 </table>
 </p>
-<p>This will call <code class="inline-code">release</code> prior to changing the capacity, so this must  be called at an early stage. </p>
+<p>This will call <span class="inline-code">release</span> prior to changing the capacity, so this must  be called at an early stage. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCapacity</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newCapacity: <span class="STpe">u64</span>, allocator: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_IAllocator">IAllocator</a></span>)</span></code>
 </div>
 <p>
@@ -4582,7 +4494,7 @@
 <td>End column. </td>
 </tr>
 </table>
-<p> This is typically what will be returned by <code class="inline-code">#location</code> or <code class="inline-code">#callerlocation</code>. </p>
+<p> This is typically what will be returned by <span class="inline-code">#location</span> or <span class="inline-code">#callerlocation</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4664,7 +4576,7 @@
 </tr>
 </table>
 </p>
-<p>The <code class="inline-code">OS</code> to target when generating native code. </p>
+<p>The <span class="inline-code">OS</span> to target when generating native code. </p>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SCst">Windows</span></td>
@@ -4690,7 +4602,7 @@
 </tr>
 </table>
 </p>
-<p>Put the following global variable in the <code class="inline-code">tls</code> segment. </p>
+<p>Put the following global variable in the <span class="inline-code">tls</span> segment. </p>
 <div class="api-additional-infos"><b>Usage</b>: global-var 
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Tls">Tls</a></span></span></code>
@@ -4895,15 +4807,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">HasPostCopy</span></td>
-<td>This is a struct with a <code class="inline-code">opPostCopy</code>. </td>
+<td>This is a struct with a <span class="inline-code">opPostCopy</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">HasPostMove</span></td>
-<td>This is a struct with a <code class="inline-code">opPostMove</code>. </td>
+<td>This is a struct with a <span class="inline-code">opPostMove</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">HasDrop</span></td>
-<td>This is a struct with a <code class="inline-code">opDrop</code>. </td>
+<td>This is a struct with a <span class="inline-code">opDrop</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">Strict</span></td>
@@ -4919,7 +4831,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">CString</span></td>
-<td>This is a <code class="inline-code">cstring</code>. </td>
+<td>This is a <span class="inline-code">cstring</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCst">Generic</span></td>
@@ -4972,7 +4884,7 @@
 <tr>
 <td class="code-type"><span class="SCde">returnType</span></td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_TypeInfo">TypeInfo</a></span></span></td>
-<td>The return type, or <code class="inline-code">null</code>. </td>
+<td>The return type, or <span class="inline-code">null</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SCde">attributes</span></td>
@@ -5220,7 +5132,7 @@
 <td></td>
 </tr>
 </table>
-<p> If the <code class="inline-code">kind</code> of the type is <code class="inline-code">TypeInfoKind.Native</code>, then this is the real native type. </p>
+<p> If the <span class="inline-code">kind</span> of the type is <span class="inline-code">TypeInfoKind.Native</span>, then this is the real native type. </p>
 <p>
 <table class="api-item">
 <tr>

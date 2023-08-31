@@ -16,68 +16,26 @@
             margin:         0px auto;
             padding:        0px;
         }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .left-page {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .right-page {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .right-page {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-            .container {
-                height:     100vh;
-            }
-            .right {
-                overflow-y: scroll;
-            }
+            .container { height: 100vh; }
+            .right     { overflow-y: scroll; }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
+        body { margin: 0px; line-height: 1.3em; }
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -125,32 +83,24 @@
             padding:            10px;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child { margin-bottom: 0px; }
-        .blockquote-note        p:last-child { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:      10px; }
-        .blockquote-title       { font-weight:        bold; }
-        .container a            { color:              DoggerBlue; }
-        .container a:hover      { text-decoration:    underline; }
-        .left a                 { text-decoration:    none; }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:   10px; }
+        .blockquote-title       { font-weight:     bold; }
+        
+        .container a            { color:           DoggerBlue; }
+        .container a:hover      { text-decoration: underline; }
+        
+        .left a                 { text-decoration: none; }
+        .left ul                { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         table.api-item {
             border-collapse:    separate;
             background-color:   Black;
@@ -160,32 +110,14 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-src-ref a {
-            color:              inherit;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .api-additional-infos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
         table.table-enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
@@ -198,32 +130,14 @@
             border-collapse:    collapse;
             min-width:          100px;
         }
-        .table-enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .table-enumeration a {
-            text-decoration:    none;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .tdname .inline-code {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .code-type a {
-            color:              inherit;
-        }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration a              { text-decoration: none; }
+        
+        .container td:last-child { width: 100%; }
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-type               { background-color: #eeeeee; }
+        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -233,9 +147,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-        .code-block a {
-            color:  inherit; 
-        }
+        .code-block a { color: inherit; }
             .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -1375,7 +1287,7 @@
 <table class="table-enumeration">
 <tr>
 <td><a href="#Gui_Application_addTimer"><span class="SCde"><span class="SFct">addTimer</span>()</spa</a></td>
-<td>Register a new timer for the given <code class="inline-code">target</code>. </td>
+<td>Register a new timer for the given <span class="inline-code">target</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_Application_createSurface"><span class="SCde"><span class="SFct">createSurface</span>()</spa</a></td>
@@ -1525,7 +1437,7 @@
 </tr>
 </table>
 </p>
-<p>Register a new timer for the given <code class="inline-code">target</code>. </p>
+<p>Register a new timer for the given <span class="inline-code">target</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></code>
 </div>
 <p>
@@ -2118,7 +2030,7 @@
 <table class="table-enumeration">
 <tr>
 <td><a href="#Gui_BlendColor_apply"><span class="SCde"><span class="SFct">apply</span>()</spa</a></td>
-<td>Apply the color lerp to reach <code class="inline-code">target</code>. </td>
+<td>Apply the color lerp to reach <span class="inline-code">target</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_BlendColor_cur"><span class="SCde"><span class="SFct">cur</span>()</spa</a></td>
@@ -2136,7 +2048,7 @@
 </tr>
 </table>
 </p>
-<p>Apply the color lerp to reach <code class="inline-code">target</code>. </p>
+<p>Apply the color lerp to reach <span class="inline-code">target</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, target: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
 </div>
 <p>
@@ -5547,7 +5459,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_GridLayoutCtrl_setColRowChild"><span class="SCde"><span class="SFct">setColRowChild</span>()</spa</a></td>
-<td>Set the wnd associated with the given <code class="inline-code">col</code> and <code class="inline-code">row</code>. </td>
+<td>Set the wnd associated with the given <span class="inline-code">col</span> and <span class="inline-code">row</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_GridLayoutCtrl_setColSize"><span class="SCde"><span class="SFct">setColSize</span>()</spa</a></td>
@@ -5610,7 +5522,7 @@
 </tr>
 </table>
 </p>
-<p>Set the wnd associated with the given <code class="inline-code">col</code> and <code class="inline-code">row</code>. </p>
+<p>Set the wnd associated with the given <span class="inline-code">col</span> and <span class="inline-code">row</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></code>
 </div>
 <p> Window can cover multiple columns and rows. </p>
@@ -7740,7 +7652,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_ListCtrl_sort"><span class="SCde"><span class="SFct">sort</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
-<td>Sort the list by a given column  If <code class="inline-code">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </td>
+<td>Sort the list by a given column  If <span class="inline-code">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
 <td><a href="#Gui_ListCtrl_toggleExpand"><span class="SCde"><span class="SFct">toggleExpand</span>()</spa</a></td>
@@ -8130,7 +8042,7 @@
 <p>Sort list as before. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
-<p>Sort the list by a given column  If <code class="inline-code">persistent</code> is true, then the sorted column will be displayed in the  header (if it exists). </p>
+<p>Sort the list by a given column  If <span class="inline-code">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>
@@ -8852,7 +8764,7 @@
 <table class="table-enumeration">
 <tr>
 <td><a href="#Gui_MessageDlg_confirm"><span class="SCde"><span class="SFct">confirm</span>()</spa</a></td>
-<td>Message box to <code class="inline-code">confirm</code> something. </td>
+<td>Message box to <span class="inline-code">confirm</span> something. </td>
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
@@ -8868,11 +8780,11 @@
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_ok"><span class="SCde"><span class="SFct">ok</span>()</spa</a></td>
-<td>Message box with a <code class="inline-code">ok</code>. </td>
+<td>Message box with a <span class="inline-code">ok</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_okCancel"><span class="SCde"><span class="SFct">okCancel</span>()</spa</a></td>
-<td>Message box with a <code class="inline-code">ok</code> and <code class="inline-code">cancel</code> button. </td>
+<td>Message box with a <span class="inline-code">ok</span> and <span class="inline-code">cancel</span> button. </td>
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_setIcon"><span class="SCde"><span class="SFct">setIcon</span>()</spa</a></td>
@@ -8884,11 +8796,11 @@
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_yesNo"><span class="SCde"><span class="SFct">yesNo</span>()</spa</a></td>
-<td>Message box with a <code class="inline-code">yes</code> and <code class="inline-code">no</code> button. </td>
+<td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
 </tr>
 <tr>
 <td><a href="#Gui_MessageDlg_yesNoCancel"><span class="SCde"><span class="SFct">yesNoCancel</span>()</spa</a></td>
-<td>Message box with a <code class="inline-code">yes</code> and <code class="inline-code">no</code> button. </td>
+<td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
 </tr>
 </table>
 <p>
@@ -8902,7 +8814,7 @@
 </tr>
 </table>
 </p>
-<p>Message box to <code class="inline-code">confirm</code> something. </p>
+<p>Message box to <span class="inline-code">confirm</span> something. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -8958,7 +8870,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <code class="inline-code">ok</code>. </p>
+<p>Message box with a <span class="inline-code">ok</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ok</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></code>
 </div>
 <p>
@@ -8972,7 +8884,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <code class="inline-code">ok</code> and <code class="inline-code">cancel</code> button. </p>
+<p>Message box with a <span class="inline-code">ok</span> and <span class="inline-code">cancel</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -9014,7 +8926,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <code class="inline-code">yes</code> and <code class="inline-code">no</code> button. </p>
+<p>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -9028,7 +8940,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <code class="inline-code">yes</code> and <code class="inline-code">no</code> button. </p>
+<p>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -9560,15 +9472,15 @@
 </tr>
 <tr>
 <td><a href="#Gui_PalettePicker_addHueColors"><span class="SCde"><span class="SFct">addHueColors</span>()</spa</a></td>
-<td>Add a range of changing <code class="inline-code">hue</code>. </td>
+<td>Add a range of changing <span class="inline-code">hue</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_PalettePicker_addLumColors"><span class="SCde"><span class="SFct">addLumColors</span>()</spa</a></td>
-<td>Add a range of changing <code class="inline-code">luminance</code>. </td>
+<td>Add a range of changing <span class="inline-code">luminance</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_PalettePicker_addSatColors"><span class="SCde"><span class="SFct">addSatColors</span>()</spa</a></td>
-<td>Add a range of changing <code class="inline-code">saturation</code>. </td>
+<td>Add a range of changing <span class="inline-code">saturation</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_PalettePicker_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
@@ -9626,7 +9538,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <code class="inline-code">hue</code>. </p>
+<p>Add a range of changing <span class="inline-code">hue</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat: <span class="STpe">f32</span>, lum: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
@@ -9640,7 +9552,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <code class="inline-code">luminance</code>. </p>
+<p>Add a range of changing <span class="inline-code">luminance</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addLumColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
 </div>
 <p>
@@ -9654,7 +9566,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <code class="inline-code">saturation</code>. </p>
+<p>Add a range of changing <span class="inline-code">saturation</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSatColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, lum: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
@@ -13649,7 +13561,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_Slider_setMinMax"><span class="SCde"><span class="SFct">setMinMax</span>()</spa</a></td>
-<td>Set the <code class="inline-code">min</code>, <code class="inline-code">max</code> and <code class="inline-code">steps</code> values. </td>
+<td>Set the <span class="inline-code">min</span>, <span class="inline-code">max</span> and <span class="inline-code">steps</span> values. </td>
 </tr>
 <tr>
 <td><a href="#Gui_Slider_setRangeValues"><span class="SCde"><span class="SFct">setRangeValues</span>()</spa</a></td>
@@ -13757,7 +13669,7 @@
 </tr>
 </table>
 </p>
-<p>Set the <code class="inline-code">min</code>, <code class="inline-code">max</code> and <code class="inline-code">steps</code> values. </p>
+<p>Set the <span class="inline-code">min</span>, <span class="inline-code">max</span> and <span class="inline-code">steps</span> values. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></code>
 </div>
 <p>
@@ -14484,7 +14396,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_Surface_center"><span class="SCde"><span class="SFct">center</span>()</spa</a></td>
-<td>Center this surface relative to <code class="inline-code">from</code>. </td>
+<td>Center this surface relative to <span class="inline-code">from</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_Surface_constaintToScreen"><span class="SCde"><span class="SFct">constaintToScreen</span>()</spa</a></td>
@@ -14596,7 +14508,7 @@
 </tr>
 </table>
 </p>
-<p>Center this surface relative to <code class="inline-code">from</code>. </p>
+<p>Center this surface relative to <span class="inline-code">from</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></code>
 </div>
 <p>
@@ -18971,7 +18883,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_Wnd_getClientRectPadding"><span class="SCde"><span class="SFct">getClientRectPadding</span>()</spa</a></td>
-<td>Returns the client area, with <code class="inline-code">padding</code> applied. </td>
+<td>Returns the client area, with <span class="inline-code">padding</span> applied. </td>
 </tr>
 <tr>
 <td><a href="#Gui_Wnd_getFocus"><span class="SCde"><span class="SFct">getFocus</span>()</spa</a></td>
@@ -19063,7 +18975,7 @@
 </tr>
 <tr>
 <td><a href="#Gui_Wnd_isParentOf"><span class="SCde"><span class="SFct">isParentOf</span>()</spa</a></td>
-<td>Returns true if <code class="inline-code">child</code> is in the child hieararchy of <code class="inline-code">self</code>. </td>
+<td>Returns true if <span class="inline-code">child</span> is in the child hieararchy of <span class="inline-code">self</span>. </td>
 </tr>
 <tr>
 <td><a href="#Gui_Wnd_isVisible"><span class="SCde"><span class="SFct">isVisible</span>()</spa</a></td>
@@ -19715,7 +19627,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the client area, with <code class="inline-code">padding</code> applied. </p>
+<p>Returns the client area, with <span class="inline-code">padding</span> applied. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRectPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
 </div>
 <p>
@@ -20028,7 +19940,7 @@
 </tr>
 </table>
 </p>
-<p>Returns true if <code class="inline-code">child</code> is in the child hieararchy of <code class="inline-code">self</code>. </p>
+<p>Returns true if <span class="inline-code">child</span> is in the child hieararchy of <span class="inline-code">self</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>

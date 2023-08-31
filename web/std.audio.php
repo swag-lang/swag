@@ -16,68 +16,26 @@
             margin:         0px auto;
             padding:        0px;
         }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .left-page {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .right-page {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .right-page {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-            .container {
-                height:     100vh;
-            }
-            .right {
-                overflow-y: scroll;
-            }
+            .container { height: 100vh; }
+            .right     { overflow-y: scroll; }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
+        body { margin: 0px; line-height: 1.3em; }
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -125,32 +83,24 @@
             padding:            10px;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child { margin-bottom: 0px; }
-        .blockquote-note        p:last-child { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:      10px; }
-        .blockquote-title       { font-weight:        bold; }
-        .container a            { color:              DoggerBlue; }
-        .container a:hover      { text-decoration:    underline; }
-        .left a                 { text-decoration:    none; }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:   10px; }
+        .blockquote-title       { font-weight:     bold; }
+        
+        .container a            { color:           DoggerBlue; }
+        .container a:hover      { text-decoration: underline; }
+        
+        .left a                 { text-decoration: none; }
+        .left ul                { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         table.api-item {
             border-collapse:    separate;
             background-color:   Black;
@@ -160,32 +110,14 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-src-ref a {
-            color:              inherit;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .api-additional-infos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
         table.table-enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
@@ -198,32 +130,14 @@
             border-collapse:    collapse;
             min-width:          100px;
         }
-        .table-enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .table-enumeration a {
-            text-decoration:    none;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .tdname .inline-code {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .code-type a {
-            color:              inherit;
-        }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration a              { text-decoration: none; }
+        
+        .container td:last-child { width: 100%; }
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-type               { background-color: #eeeeee; }
+        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -233,9 +147,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-        .code-block a {
-            color:  inherit; 
-        }
+        .code-block a { color: inherit; }
             .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -340,7 +252,7 @@
 <div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module audio</h1>
-<p><code class="inline-code">Std.Audio</code> is a module to decode and play sound files. Under windows, it is based on the <code class="inline-code">xaudio2</code> library. </p>
+<p><span class="inline-code">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="inline-code">xaudio2</span> library. </p>
 <h2 id="How_to_play_a_sound">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
@@ -349,7 +261,7 @@
 <p>You then have to load a sound file. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
 </div>
-<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <code class="inline-code">loadDatas</code> to false. </p>
+<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <span class="inline-code">loadDatas</span> to false. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
@@ -445,7 +357,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Creates an audio bus. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <code class="inline-code">parent</code>. </p>
+<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <span class="inline-code">parent</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -658,12 +570,12 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
-<p> The <code class="inline-code">SoundFile</code> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
+<p> The <span class="inline-code">SoundFile</span> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td><a href="#Audio_SoundFile_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
-<td>Load a <code class="inline-code">SoundFile</code> from disk. </td>
+<td>Load a <span class="inline-code">SoundFile</span> from disk. </td>
 </tr>
 </table>
 <p>
@@ -677,10 +589,10 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<p>Load a <code class="inline-code">SoundFile</code> from disk. </p>
+<p>Load a <span class="inline-code">SoundFile</span> from disk. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> Will load the sound datas if <code class="inline-code">loadDatas</code> is true.  Will load the sound metadatas if <code class="inline-code">loadMetaData</code> is true. </p>
+<p> Will load the sound datas if <span class="inline-code">loadDatas</span> is true.  Will load the sound metadatas if <span class="inline-code">loadMetaData</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -947,7 +859,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
-<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <code class="inline-code">DestroyOnStop</code> flag in <code class="inline-code">playFlags</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="inline-code">DestroyOnStop</span> flag in <span class="inline-code">playFlags</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -962,7 +874,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Set the playing pitch. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> The voice should have been created with <code class="inline-code">VoiceCreateFlags.AcceptPitch</code>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> The voice should have been created with <span class="inline-code">VoiceCreateFlags.AcceptPitch</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -977,7 +889,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Root a voice to a given list of buses. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can also set <code class="inline-code">buses</code> to null if you want to root the voice only to the  main bus (which is the default). </p>
+<p> You can also set <span class="inline-code">buses</span> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
 <table class="api-item">
 <tr>

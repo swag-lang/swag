@@ -17,61 +17,23 @@
             margin:         0px auto;
             padding:        0px;
         }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .left-page {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .right-page {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .right-page {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
+        body { margin: 0px; line-height: 1.3em; }
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -119,32 +81,24 @@
             padding:            10px;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child { margin-bottom: 0px; }
-        .blockquote-note        p:last-child { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:      10px; }
-        .blockquote-title       { font-weight:        bold; }
-        .container a            { color:              DoggerBlue; }
-        .container a:hover      { text-decoration:    underline; }
-        .left a                 { text-decoration:    none; }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:   10px; }
+        .blockquote-title       { font-weight:     bold; }
+        
+        .container a            { color:           DoggerBlue; }
+        .container a:hover      { text-decoration: underline; }
+        
+        .left a                 { text-decoration: none; }
+        .left ul                { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         table.api-item {
             border-collapse:    separate;
             background-color:   Black;
@@ -154,32 +108,14 @@
             margin-right:       0px;
             font-size:          110%;
         }
-        .api-item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        .api-item-title-src-ref {
-            text-align:         right;
-        }
-        .api-item-title-src-ref a {
-            color:              inherit;
-        }
-        .api-item-title-kind {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .api-item-title-light {
-            font-weight:        normal;
-        }
-        .api-item-title-strong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .api-additional-infos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
         table.table-enumeration {
             border:             1px solid LightGrey;
             border-collapse:    collapse;
@@ -192,32 +128,14 @@
             border-collapse:    collapse;
             min-width:          100px;
         }
-        .table-enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .table-enumeration a {
-            text-decoration:    none;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .tdname .inline-code {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .code-type {
-            background-color:   #eeeeee;
-        }
-        .inline-code {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .code-type a {
-            color:              inherit;
-        }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration a              { text-decoration: none; }
+        
+        .container td:last-child { width: 100%; }
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-type               { background-color: #eeeeee; }
+        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -227,9 +145,7 @@
             white-space:        pre;
             overflow-x:         auto;
         }
-        .code-block a {
-            color:  inherit; 
-        }
+        .code-block a { color: inherit; }
             .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -253,23 +169,23 @@
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="How_to_build_Swag">How to build Swag </h1>
 <h2 id="LLVM">LLVM </h2>
-<p>Swag has two backends, a <code class="inline-code">x86_64</code> custom backend written for fast compile, but with far from optimal generated code, and <code class="inline-code">llvm</code> for optimized builds. </p>
-<p>The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <code class="inline-code">15.0.7</code>. </p>
+<p>Swag has two backends, a <span class="inline-code">x86_64</span> custom backend written for fast compile, but with far from optimal generated code, and <span class="inline-code">llvm</span> for optimized builds. </p>
+<p>The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <span class="inline-code">15.0.7</span>. </p>
 <p>In order to build LLVM, you will have to install <a href="https://cmake.org/download/">cmake 3.23.2</a> (or later) and <a href="https://www.python.org/downloads/">python 3</a>. </p>
 <h2 id="Build">Build </h2>
-<p>You will need <code class="inline-code">Visual Studio 2022 17.1</code> or later. </p>
+<p>You will need <span class="inline-code">Visual Studio 2022 17.1</span> or later. </p>
 <ul>
-<li>As there's no automatic detection, edit <code class="inline-code">vs_build_cfg.bat</code> to match your version of Visual Studio and of the Windows SDK.</li>
-<li>Launch <code class="inline-code">swag/build/vs_build_llvm_release.bat</code>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
-<li>Launch <code class="inline-code">swag/build/vs_build_swag_release.bat</code>.</li>
-<li>You can also launch <code class="inline-code">swag/build/vs_build_extern.bat</code>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
+<li>As there's no automatic detection, edit <span class="inline-code">vs_build_cfg.bat</span> to match your version of Visual Studio and of the Windows SDK.</li>
+<li>Launch <span class="inline-code">swag/build/vs_build_llvm_release.bat</span>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
+<li>Launch <span class="inline-code">swag/build/vs_build_swag_release.bat</span>.</li>
+<li>You can also launch <span class="inline-code">swag/build/vs_build_extern.bat</span>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
 </ul>
-<p>If LLVM has been compiled once, you can also use the <code class="inline-code">Swag.sln</code> workspace in the <code class="inline-code">build</code> subfolder. </p>
+<p>If LLVM has been compiled once, you can also use the <span class="inline-code">Swag.sln</span> workspace in the <span class="inline-code">build</span> subfolder. </p>
 <h2 id="Windows_SDK">Windows SDK </h2>
-<p>The path to the SDK version is defined in <code class="inline-code">vs_build_cfg.bat</code>. </p>
-<p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<code class="inline-code">kernel32.lib</code>, <code class="inline-code">ucrt.lib</code>, <code class="inline-code">dbghelp.lib</code> and <code class="inline-code">user32.lib</code>). You will find them in <code class="inline-code">bin/runtime/windows-x86-64</code>. </p>
+<p>The path to the SDK version is defined in <span class="inline-code">vs_build_cfg.bat</span>. </p>
+<p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<span class="inline-code">kernel32.lib</span>, <span class="inline-code">ucrt.lib</span>, <span class="inline-code">dbghelp.lib</span> and <span class="inline-code">user32.lib</span>). You will find them in <span class="inline-code">bin/runtime/windows-x86-64</span>. </p>
 <p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>
-<p>The standard modules (in <code class="inline-code">bin/std/modules</code>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <code class="inline-code">publish</code> folder of the corresponding modules. </p>
+<p>The standard modules (in <span class="inline-code">bin/std/modules</span>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <span class="inline-code">publish</span> folder of the corresponding modules. </p>
 </div>
 </div>
 </div>

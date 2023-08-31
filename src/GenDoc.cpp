@@ -22,74 +22,32 @@ void GenDoc::outputStyles()
             margin:         0px auto;\n\
             padding:        0px;\n\
         }\n\
-        .left {\n\
-            display:    block;\n\
-            overflow-y: scroll;\n\
-            width:      500px;\n\
-        }\n\
-        .left-page {\n\
-            margin:     10px;\n\
-        }\n\
-        .right {\n\
-            display:    block;\n\
-            width:      100%;\n\
-        }\n\
-        .right-page {\n\
-            max-width:  1024px;\n\
-            margin:     10px auto;\n\
-        }\n\
-        @media(min-width: 640px) {\n\
-            .container {\n\
-                max-width: 640px;\n\
-            }\n\
-        }\n\
-        @media(min-width: 768px) {\n\
-            .container {\n\
-                max-width: 768px;\n\
-            }\n\
-        }\n\
-        @media(min-width: 1024px) {\n\
-            .container {\n\
-                max-width: 1024px;\n\
-            }\n\
-        }\n\
-        @media(min-width: 1280px) {\n\
-            .container {\n\
-                max-width: 1280px;\n\
-            }\n\
-        }\n\
-        @media(min-width: 1536px) {\n\
-            .container {\n\
-                max-width: 1536px;\n\
-            }\n\
-        }\n\
+        .left       { display: block; overflow-y: scroll; width: 500px; }\n\
+        .left-page  { margin: 10px; }\n\
+        .right      { display: block; width: 100%; }\n\
+        .right-page { max-width: 1024px; margin: 10px auto; }\n\
+        \n\
+        @media(min-width: 640px)  { .container { max-width: 640px; }}\n\
+        @media(min-width: 768px)  { .container { max-width: 768px; }}\n\
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}\n\
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}\n\
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}\n\
+        \n\
         @media screen and (max-width: 600px) {\n\
-            .left {\n\
-                display: none;\n\
-            }\n\
-            .right-page {\n\
-                margin:  10px;\n\
-            }\n\
+            .left       { display: none; }\n\
+            .right-page { margin:  10px; }\n\
         }\n";
 
     // Layout
     if (docKind != BuildCfgDocKind::Pages)
     {
         helpOutput += "\n\
-            .container {\n\
-                height:     100vh;\n\
-            }\n\
-            .right {\n\
-                overflow-y: scroll;\n\
-            }\n";
+            .container { height: 100vh; }\n\
+            .right     { overflow-y: scroll; }\n";
     }
 
     helpOutput += "\n\
-        body {\n\
-            margin:         0px;\n\
-            line-height:    1.3em;\n\
-            font-family:    Segoe UI;\n\
-        }\n\
+        body { margin: 0px; line-height: 1.3em; }\n\
         .blockquote-default {\n\
             border-radius:      5px;\n\
             border:             1px solid Orange;\n\
@@ -137,32 +95,24 @@ void GenDoc::outputStyles()
             padding:            10px;\n\
         }\n\
         .blockquote-default     p:first-child { margin-top: 0px; }\n\
-        .blockquote-default     p:last-child { margin-bottom: 0px; }\n\
-        .blockquote-note        p:last-child { margin-bottom: 0px; }\n\
-        .blockquote-tip         p:last-child { margin-bottom: 0px; }\n\
-        .blockquote-warning     p:last-child { margin-bottom: 0px; }\n\
-        .blockquote-attention   p:last-child { margin-bottom: 0px; }\n\
-        .blockquote-title-block { margin-bottom:      10px; }\n\
-        .blockquote-title       { font-weight:        bold; }\n\
-        .container a            { color:              DoggerBlue; }\n\
-        .container a:hover      { text-decoration:    underline; }\n\
-        .left a                 { text-decoration:    none; }\n\
-        .left ul {\n\
-            list-style-type:    none;\n\
-            margin-left:        -20px;\n\
-        }\n\
-        .left h3 {\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            padding:            6px;\n\
-        }\n\
-        .right h1 {\n\
-            margin-top:         50px;\n\
-            margin-bottom:      50px;\n\
-        }\n\
-        .right h2 {\n\
-            margin-top:         35px;\n\
-        }\n\
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote-note        p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote-tip         p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote-warning     p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote-attention   p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote-title-block { margin-bottom:   10px; }\n\
+        .blockquote-title       { font-weight:     bold; }\n\
+        \n\
+        .container a            { color:           DoggerBlue; }\n\
+        .container a:hover      { text-decoration: underline; }\n\
+        \n\
+        .left a                 { text-decoration: none; }\n\
+        .left ul                { list-style-type: none; margin-left: -20px; }\n\
+        .left h3    { background-color: Black; color: White; padding: 6px; }\n\
+        \n\
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
+        .right h2   { margin-top: 35px; }\n\
+        \n\
         table.api-item {\n\
             border-collapse:    separate;\n\
             background-color:   Black;\n\
@@ -172,32 +122,14 @@ void GenDoc::outputStyles()
             margin-right:       0px;\n\
             font-size:          110%;\n\
         }\n\
-        .api-item td:first-child {\n\
-            width:              33%;\n\
-            white-space:        nowrap;\n\
-        }\n\
-        .api-item-title-src-ref {\n\
-            text-align:         right;\n\
-        }\n\
-        .api-item-title-src-ref a {\n\
-            color:              inherit;\n\
-        }\n\
-        .api-item-title-kind {\n\
-            font-weight:        normal;\n\
-            font-size:          80%;\n\
-        }\n\
-        .api-item-title-light {\n\
-            font-weight:        normal;\n\
-        }\n\
-        .api-item-title-strong {\n\
-            font-weight:        bold;\n\
-            font-size:          100%;\n\
-        }\n\
-        .api-additional-infos {\n\
-            font-size:          90%;\n\
-            white-space:        break-spaces;\n\
-            overflow-wrap:      break-word;\n\
-        }\n\
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }\n\
+        .api-item-title-src-ref   { text-align:  right; }\n\
+        .api-item-title-src-ref a { color:       inherit; }\n\
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }\n\
+        .api-item-title-light     { font-weight: normal; }\n\
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }\n\
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }\n\
+        \n\
         table.table-enumeration {\n\
             border:             1px solid LightGrey;\n\
             border-collapse:    collapse;\n\
@@ -210,32 +142,14 @@ void GenDoc::outputStyles()
             border-collapse:    collapse;\n\
             min-width:          100px;\n\
         }\n\
-        .table-enumeration td:first-child {\n\
-            background-color:   #f8f8f8;\n\
-            white-space:        nowrap;\n\
-        }\n\
-        .table-enumeration a {\n\
-            text-decoration:    none;\n\
-        }\n\
-        .container td:last-child {\n\
-            width:              100%;\n\
-        }\n\
-        .tdname .inline-code {\n\
-            background-color:   revert;\n\
-            padding:            2px;\n\
-            border:             revert;\n\
-        }\n\
-        .code-type {\n\
-            background-color:   #eeeeee;\n\
-        }\n\
-        .inline-code {\n\
-            background-color:   #eeeeee;\n\
-            padding:            2px;\n\
-            border: 1px dotted  #cccccc;\n\
-        }\n\
-        .code-type a {\n\
-            color:              inherit;\n\
-        }\n\
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
+        .table-enumeration a              { text-decoration: none; }\n\
+        \n\
+        .container td:last-child { width: 100%; }\n\
+        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }\n\
+        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
+        .code-type               { background-color: #eeeeee; }\n\
+        .code-type a             { color: inherit; }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\
             border-radius:      5px;\n\
@@ -245,9 +159,7 @@ void GenDoc::outputStyles()
             white-space:        pre;\n\
             overflow-x:         auto;\n\
         }\n\
-        .code-block a {\n\
-            color:  inherit; \n\
-        }\n\
+        .code-block a { color: inherit; }\n\
         ";
 
     float    lum        = module->buildCfg.genDoc.syntaxColorLum;
@@ -827,11 +739,11 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 pz1++;
             if (*pz1 == '\'')
             {
-                result += "<code class=\"inline-code\">";
+                result += "<span class=\"inline-code\">";
                 pz++;
                 while (pz != pz1)
                     result += *pz++;
-                result += "</code>";
+                result += "</span>";
                 pz++;
             }
             else
@@ -844,9 +756,9 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
-                result += "<code class=\"inline-code\">";
+                result += "<span class=\"inline-code\">";
             else
-                result += "</code>";
+                result += "</span>";
             pz++;
             continue;
         }
