@@ -109,6 +109,15 @@
             margin-right:       20px;
             padding:            10px;
         }
+        .blockquote-attention {
+            border-radius:      5px;
+            border:             1px solid #DDBAB8;
+            background-color:   #FDDAD8;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
         .blockquote-note-title {
             font-weight:        bold;
         }
@@ -116,6 +125,9 @@
             font-weight:        bold;
         }
         .blockquote-warning-title {
+            font-weight:        bold;
+        }
+        .blockquote-attention-title {
             font-weight:        bold;
         }
         .container a {
@@ -319,11 +331,9 @@
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<span class="blockquote-warning-title">
-<i class="fa fa-exclamation-triangle fa-lg"></i> Warning<br/></span><p>There's <b>no official</b> release yet. </p>
-<p>Everything (including this web site) is still under construction... </p>
+<i class="fa fa-exclamation-triangle"></i><span class="blockquote-warning-title"> Warning<br/></span><p> There's <b>no official</b> release yet. </p>
+<p> Everything (including this web site) is still under construction... </p>
 </div>
-<p>couocu </p>
 </div>
 </div>
 </div>

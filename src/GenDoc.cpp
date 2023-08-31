@@ -127,6 +127,15 @@ void GenDoc::outputStyles()
             margin-right:       20px;\n\
             padding:            10px;\n\
         }\n\
+        .blockquote-attention {\n\
+            border-radius:      5px;\n\
+            border:             1px solid #DDBAB8;\n\
+            background-color:   #FDDAD8;\n\
+            margin:             20px;\n\
+            margin-left:        20px;\n\
+            margin-right:       20px;\n\
+            padding:            10px;\n\
+        }\n\
         .blockquote-note-title {\n\
             font-weight:        bold;\n\
         }\n\
@@ -134,6 +143,9 @@ void GenDoc::outputStyles()
             font-weight:        bold;\n\
         }\n\
         .blockquote-warning-title {\n\
+            font-weight:        bold;\n\
+        }\n\
+        .blockquote-attention-title {\n\
             font-weight:        bold;\n\
         }\n\
         .container a {\n\
@@ -456,6 +468,10 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             {
                 blk->kind = UserBlockKind::BlockquoteWarning;
             }
+            else if (line.startsWith("> :attention"))
+            {
+                blk->kind = UserBlockKind::BlockquoteAttention;
+            }
             else if (line.startsWith(">"))
             {
                 blk->kind = UserBlockKind::Blockquote;
@@ -510,7 +526,8 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
 
         for (; start < lines.size(); start++)
         {
-            auto line = lines[start];
+            bool lastLine = start == lines.size() - 1;
+            auto line     = lines[start];
             line.trim();
 
             bool mustEnd = false;
@@ -610,36 +627,43 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 break;
 
             case UserBlockKind::Blockquote:
-                if (!line.startsWith(">"))
+                if (line.startsWith(">"))
                 {
-                    mustEnd = true;
+                    auto line1 = line;
+                    line1.remove(0, 1);
+                    blk->lines.push_back(line1);
+                }
+
+                if (!line.startsWith(">") || lastLine)
+                {
+                    if (!lastLine)
+                        mustEnd = true;
                     computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
                     blk->lines.clear();
                 }
-                else
-                {
-                    line.remove(0, 1);
-                    line.trim();
-                    blk->lines.push_back(line);
-                }
+
                 break;
 
             case UserBlockKind::BlockquoteNote:
             case UserBlockKind::BlockquoteTip:
             case UserBlockKind::BlockquoteWarning:
-                if (!line.startsWith(">"))
+            case UserBlockKind::BlockquoteAttention:
+                if (line.startsWith(">"))
                 {
-                    mustEnd = true;
+                    auto line1 = line;
+                    line1.remove(0, 1);
+                    blk->lines.push_back(line1);
+                }
+
+                if (!line.startsWith(">") || lastLine)
+                {
+                    if (!lastLine)
+                        mustEnd = true;
                     blk->lines.erase(blk->lines.begin());
                     computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
                     blk->lines.clear();
                 }
-                else
-                {
-                    line.remove(0, 1);
-                    line.trim();
-                    blk->lines.push_back(line);
-                }
+
                 break;
 
             default:
@@ -889,22 +913,29 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     case UserBlockKind::BlockquoteNote:
         helpContent += "<div class=\"blockquote-note\">\n";
-        helpContent += "<span class=\"blockquote-note-title\">\n";
-        helpContent += "<i class=\"fa fa-info-circle fa-lg\"></i> Note<br/></span>";
+        helpContent += "<i class=\"fa fa-info-circle\"></i> ";
+        helpContent += "<span class=\"blockquote-note-title\"> Note<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
-        helpContent += "<span class=\"blockquote-tip-title\">\n";
-        helpContent += "<i class=\"fa fa-lightbulb-o fa-lg\"></i> Tip<br/></span>";
+        helpContent += "<i class=\"fa fa-lightbulb-o\"></i>";
+        helpContent += "<span class=\"blockquote-tip-title\"> Tip<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
-        helpContent += "<span class=\"blockquote-warning-title\">\n";
-        helpContent += "<i class=\"fa fa-exclamation-triangle fa-lg\"></i> Warning<br/></span>";
+        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i>";
+        helpContent += "<span class=\"blockquote-warning-title\"> Warning<br/></span>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, shortDescTd);
+        break;
+    case UserBlockKind::BlockquoteAttention:
+        helpContent += "<div class=\"blockquote-attention\">\n";
+        helpContent += "<i class=\"fa fa-ban\"></i>";
+        helpContent += "<span class=\"blockquote-attention-title\"> Attention<br/></span>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, shortDescTd);
         break;
@@ -973,7 +1004,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                  user.kind == UserBlockKind::Blockquote ||
                  user.kind == UserBlockKind::BlockquoteNote ||
                  user.kind == UserBlockKind::BlockquoteTip ||
-                 user.kind == UserBlockKind::BlockquoteWarning)
+                 user.kind == UserBlockKind::BlockquoteWarning ||
+                 user.kind == UserBlockKind::BlockquoteAttention)
         {
             if (line.empty())
                 helpContent += "</p><p>";
@@ -1015,6 +1047,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteNote:
     case UserBlockKind::BlockquoteTip:
     case UserBlockKind::BlockquoteWarning:
+    case UserBlockKind::BlockquoteAttention:
         helpContent += "</div>\n";
         break;
     case UserBlockKind::List:

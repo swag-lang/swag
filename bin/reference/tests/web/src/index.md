@@ -76,5 +76,3 @@ func loadAssets(wnd: *Wnd) throw
 > There's **no official** release yet.
 >
 > Everything (including this web site) is still under construction...
-
-couocu

@@ -109,6 +109,15 @@
             margin-right:       20px;
             padding:            10px;
         }
+        .blockquote-attention {
+            border-radius:      5px;
+            border:             1px solid #DDBAB8;
+            background-color:   #FDDAD8;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
         .blockquote-note-title {
             font-weight:        bold;
         }
@@ -116,6 +125,9 @@
             font-weight:        bold;
         }
         .blockquote-warning-title {
+            font-weight:        bold;
+        }
+        .blockquote-attention-title {
             font-weight:        bold;
         }
         .container a {

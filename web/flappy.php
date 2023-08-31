@@ -109,6 +109,15 @@
             margin-right:       20px;
             padding:            10px;
         }
+        .blockquote-attention {
+            border-radius:      5px;
+            border:             1px solid #DDBAB8;
+            background-color:   #FDDAD8;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
         .blockquote-note-title {
             font-weight:        bold;
         }
@@ -116,6 +125,9 @@
             font-weight:        bold;
         }
         .blockquote-warning-title {
+            font-weight:        bold;
+        }
+        .blockquote-attention-title {
             font-weight:        bold;
         }
         .container a {
@@ -297,7 +309,8 @@
 <h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <code class="inline-code">#run</code> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <code class="inline-code">#run</code> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="blockquote-default">
-You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="inline-code">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </div>
+<p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <code class="inline-code">onEvent</code> function before even defining it. Swag does not bother about the global declaration order. </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
