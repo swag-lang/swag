@@ -136,21 +136,17 @@ void GenDoc::outputStyles()
             margin-right:       20px;\n\
             padding:            10px;\n\
         }\n\
-        .blockquote-title-block {\n\
-            margin-bottom:      10px;\n\
-        }\n\
-        .blockquote-title {\n\
-            font-weight:        bold;\n\
-        }\n\
-        .container a {\n\
-            color:              DoggerBlue;\n\
-        }\n\
-        .container a:hover {\n\
-            text-decoration:    underline;\n\
-        }\n\
-        .left a {\n\
-            text-decoration:    none;\n\
-        }\n\
+        .blockquote-default     p:first-child { margin-top: 0px; }\n\
+        .blockquote-default     p:last-child { margin-bottom: 0px; }\n\
+        .blockquote-note        p:last-child { margin-bottom: 0px; }\n\
+        .blockquote-tip         p:last-child { margin-bottom: 0px; }\n\
+        .blockquote-warning     p:last-child { margin-bottom: 0px; }\n\
+        .blockquote-attention   p:last-child { margin-bottom: 0px; }\n\
+        .blockquote-title-block { margin-bottom:      10px; }\n\
+        .blockquote-title       { font-weight:        bold; }\n\
+        .container a            { color:              DoggerBlue; }\n\
+        .container a:hover      { text-decoration:    underline; }\n\
+        .left a                 { text-decoration:    none; }\n\
         .left ul {\n\
             list-style-type:    none;\n\
             margin-left:        -20px;\n\

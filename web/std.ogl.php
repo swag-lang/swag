@@ -124,21 +124,17 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-title-block {
-            margin-bottom:      10px;
-        }
-        .blockquote-title {
-            font-weight:        bold;
-        }
-        .container a {
-            color:              DoggerBlue;
-        }
-        .container a:hover {
-            text-decoration:    underline;
-        }
-        .left a {
-            text-decoration:    none;
-        }
+        .blockquote-default     p:first-child { margin-top: 0px; }
+        .blockquote-default     p:last-child { margin-bottom: 0px; }
+        .blockquote-note        p:last-child { margin-bottom: 0px; }
+        .blockquote-tip         p:last-child { margin-bottom: 0px; }
+        .blockquote-warning     p:last-child { margin-bottom: 0px; }
+        .blockquote-attention   p:last-child { margin-bottom: 0px; }
+        .blockquote-title-block { margin-bottom:      10px; }
+        .blockquote-title       { font-weight:        bold; }
+        .container a            { color:              DoggerBlue; }
+        .container a:hover      { text-decoration:    underline; }
+        .left a                 { text-decoration:    none; }
         .left ul {
             list-style-type:    none;
             margin-left:        -20px;
