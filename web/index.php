@@ -7,6 +7,7 @@
 <?php include('common/start-head.php'); ?><title>Swag</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
         .container {
@@ -74,12 +75,45 @@
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
-            background-color:   LightYellow;
             border-left:        6px solid Orange;
+            background-color:   LightYellow;
             margin:             20px;
             margin-left:        20px;
             margin-right:       20px;
             padding:            10px;
+        }
+        .blockquote-note {
+            border-radius:      5px;
+            border:             1px solid #ADCEDD;
+            background-color:   #CDEEFD;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-tip {
+            border-radius:      5px;
+            border:             1px solid #BCCFBC;
+            background-color:   #DCEFDC;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-warning {
+            border-radius:      5px;
+            border:             1px solid #DFBDB3;
+            background-color:   #FFDDD3;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-note-title {
+        }
+        .blockquote-tip-title {
+        }
+        .blockquote-warning-title {
         }
         .container a {
             color:              DoggerBlue;
@@ -281,8 +315,12 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
-<div class="blockquote-default">
-There's <b>no official</b> release yet. </p><p>Everything (including this web site) is still under construction... </div>
+<div class="blockquote-warning">
+<span class="blockquote-note-warning">
+<i class="fa fa-exclamation-triangle fa-lg"></i> Warning<br/></span><p>There's <b>no official</b> release yet. </p>
+<p>Everything (including this web site) is still under construction... </p>
+</div>
+<p>couocu </p>
 </div>
 </div>
 </div>

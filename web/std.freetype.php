@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php include('common/start-head.php'); ?><title>Module freetype</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
         .container {
@@ -80,12 +81,45 @@
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
-            background-color:   LightYellow;
             border-left:        6px solid Orange;
+            background-color:   LightYellow;
             margin:             20px;
             margin-left:        20px;
             margin-right:       20px;
             padding:            10px;
+        }
+        .blockquote-note {
+            border-radius:      5px;
+            border:             1px solid #ADCEDD;
+            background-color:   #CDEEFD;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-tip {
+            border-radius:      5px;
+            border:             1px solid #BCCFBC;
+            background-color:   #DCEFDC;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-warning {
+            border-radius:      5px;
+            border:             1px solid #DFBDB3;
+            background-color:   #FFDDD3;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-note-title {
+        }
+        .blockquote-tip-title {
+        }
+        .blockquote-warning-title {
         }
         .container a {
             color:              DoggerBlue;
