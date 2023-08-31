@@ -3094,7 +3094,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the Std.Core module. </div>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the Std.Core module. </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
@@ -7562,14 +7563,18 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div> Everything between empty lines is considered to be a simple paragraph. Which  means that if you put several comments on several lines like this, they all  will be part of the same paragraph.  This is another paragraph because there's an empty line before.  This is yet another paragraph. </div>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> Everything between empty lines is considered to be a simple paragraph. Which  means that if you put several comments on several lines like this, they all  will be part of the same paragraph. </p>
+<p> This is another paragraph because there's an empty line before. </p>
+<p> This is yet another paragraph. </p>
+</div>
 <p>Inside a paragraph, you can end of line with <code class="inline-code">\</code> to force a break without creating a new paragraph. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// First line.</span>
 <span class="SCmt">// Second line is on first line.\</span>
 <span class="SCmt">// But third line has a break before.</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div> First line.  Second line is on first line.<br/>  But third line has a break before. </div>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> First line.  Second line is on first line.<br/>  But third line has a break before. </p>
+</div>
 <p>A paragraph that starts with <code class="inline-code">---</code> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <code class="inline-code">as is</code> without any markdown change. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// ---</span>
 <span class="SCmt">// Even...</span>
@@ -7629,22 +7634,26 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title"> Note</span></div> This is the content </div>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title"> Note</span></div><p> This is the content </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :tip</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div> This is the content </div>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is the content </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :warning</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div> This is the content </div>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> This is the content </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :attention</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-attention">
-<div class="blockquote-title-block"><i class="fa fa-ban"></i><span class="blockquote-title"> Attention</span></div> This is the content </div>
+<div class="blockquote-title-block"><i class="fa fa-ban"></i><span class="blockquote-title"> Attention</span></div><p> This is the content </p>
+</div>
 <h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <code class="inline-code">|</code>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
@@ -7702,7 +7711,8 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <div class="code-block"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.</span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div> This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </div>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+</div>
 <h4 id="Images">Images </h4>
 <p>You can insert an external <b>image</b> with <code class="inline-code">![name](link)</code>. </p>
 <div class="code-block"><code><span class="SCmt">// This is an image ![image](https://swag-lang/imgs/swag_icon.png).</span></code>
@@ -7716,7 +7726,8 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.\</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div> This is <code class="inline-code">inline code</code> with back ticks.<br/>  This is inline <code class="inline-code">code</code> with normal ticks, but just for a single word.<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This character n is escaped, and <code class="inline-code">n</code> will be output as is.<br/> </div>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is <code class="inline-code">inline code</code> with back ticks.<br/>  This is inline <code class="inline-code">code</code> with normal ticks, but just for a single word.<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This character n is escaped, and <code class="inline-code">n</code> will be output as is.<br/> </p>
+</div>
 
 <h3 id="231_001_Api">Api</h3><p>In <code class="inline-code">Swag.DocKind.Api</code> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
 <p>The main module documentation should be placed at the top of the corresponding <code class="inline-code">module.swg</code> file. </p>

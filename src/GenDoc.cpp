@@ -902,7 +902,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::Blockquote:
         helpContent += "<div class=\"blockquote-default\">\n";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, shortDescTd);
+            outputUserBlock(*sub, titleLevel, false);
         break;
 
     case UserBlockKind::BlockquoteNote:
@@ -912,7 +912,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += "<span class=\"blockquote-title\"> Note</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, true);
+            outputUserBlock(*sub, titleLevel, false);
         break;
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
@@ -921,7 +921,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += "<span class=\"blockquote-title\"> Tip</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, true);
+            outputUserBlock(*sub, titleLevel, false);
         break;
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
@@ -930,7 +930,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += "<span class=\"blockquote-title\"> Warning</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, true);
+            outputUserBlock(*sub, titleLevel, false);
         break;
     case UserBlockKind::BlockquoteAttention:
         helpContent += "<div class=\"blockquote-attention\">\n";
@@ -939,7 +939,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += "<span class=\"blockquote-title\"> Attention</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, true);
+            outputUserBlock(*sub, titleLevel, false);
         break;
 
     case UserBlockKind::Paragraph:
