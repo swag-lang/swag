@@ -253,7 +253,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote-default">
+<div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>

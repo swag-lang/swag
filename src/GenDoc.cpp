@@ -1142,7 +1142,7 @@ void GenDoc::constructPage()
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"right-page\">\n";
 
-    helpOutput += "<div class=\"blockquote-default\">\n";
+    helpOutput += "<div class=\"blockquote-warning\">\n";
     helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     helpOutput += "</div>\n";
     helpOutput += helpContent;

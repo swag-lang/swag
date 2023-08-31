@@ -1084,7 +1084,7 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote-default">
+<div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module gui</h1>
 <h1>Content</h1>

@@ -253,7 +253,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote-default">
+<div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="How_to_build_Swag">How to build Swag </h1>
 <h2 id="LLVM">LLVM </h2>

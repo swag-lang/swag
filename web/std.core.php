@@ -1747,7 +1747,7 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote-default">
+<div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Swag Std.Core</h1>
 <p> The <code class="inline-code">Std.core</code> module contains basic types and algorithms.  It is the base of all other modules of the standard <code class="inline-code">Std</code> workspace. </p>

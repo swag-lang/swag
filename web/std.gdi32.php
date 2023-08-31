@@ -454,7 +454,7 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote-default">
+<div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module gdi32</h1>
 <p> Wrapper for Microsoft Gdi32 library. </p>
