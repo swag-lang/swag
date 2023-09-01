@@ -10,13 +10,7 @@
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
-        .container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            margin:         0px auto;
-            padding:        0px;
-        }
+        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
         .left       { display: block; overflow-y: scroll; width: 500px; }
         .left-page  { margin: 10px; }
         .right      { display: block; width: 100%; }
@@ -37,6 +31,16 @@
             .right     { overflow-y: scroll; }
 
         body { margin: 0px; line-height: 1.3em; }
+        
+        .container a        { color:           DoggerBlue; }
+        .container a:hover  { text-decoration: underline; }
+        
+        .left a     { text-decoration: none; }
+        .left ul    { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -92,25 +96,7 @@
         .blockquote-title-block { margin-bottom:   10px; }
         .blockquote-title       { font-weight:     bold; }
         
-        .container a            { color:           DoggerBlue; }
-        .container a:hover      { text-decoration: underline; }
-        
-        .left a                 { text-decoration: none; }
-        .left ul                { list-style-type: none; margin-left: -20px; }
-        .left h3    { background-color: Black; color: White; padding: 6px; }
-        
-        .right h1   { margin-top: 50px; margin-bottom: 50px; }
-        .right h2   { margin-top: 35px; }
-        
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
+        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -119,18 +105,8 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .table-enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
+        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration a              { text-decoration: none; }
         
@@ -149,7 +125,8 @@
             overflow-x:         auto;
         }
         .code-block a { color: inherit; }
-            .SCde { color: #222222; }
+        
+    .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }
@@ -1583,6 +1560,7 @@
 <li><a href="#Core_Threading_Thread_init">Thread.init</a></li>
 <li><a href="#Core_Threading_Thread_isDone">Thread.isDone</a></li>
 <li><a href="#Core_Threading_Thread_isValid">Thread.isValid</a></li>
+<li><a href="#Core_Threading_Thread_opDrop">Thread.opDrop</a></li>
 <li><a href="#Core_Threading_Thread_safeForceEnd">Thread.safeForceEnd</a></li>
 <li><a href="#Core_Threading_Thread_setPriority">Thread.setPriority</a></li>
 <li><a href="#Core_Threading_Thread_sleep">Thread.sleep</a></li>
@@ -22987,6 +22965,13 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 </table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td><a href="#Core_Threading_Thread_opDrop"><span class="SCde"><span class="SFct">opDrop</span>()</spa</a></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -23028,6 +23013,19 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <p>Returns true if the thread is valid. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
+</div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Threading_Thread_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Thread.</span><span class="api-item-title-strong">opDrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\thread.swg#L31" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="api-item">

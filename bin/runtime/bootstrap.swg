@@ -709,6 +709,7 @@ namespace Swag
         Pages       // Generate one page per file
     }
 
+    // This contains all options when generating documentation.
     struct BuildCfgGenDoc
     {
         kind                 = BuildCfgDocKind.None // The kind of documentation to generate

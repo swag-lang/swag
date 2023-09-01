@@ -10,13 +10,7 @@
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
-        .container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            margin:         0px auto;
-            padding:        0px;
-        }
+        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
         .left       { display: block; overflow-y: scroll; width: 500px; }
         .left-page  { margin: 10px; }
         .right      { display: block; width: 100%; }
@@ -34,6 +28,16 @@
         }
 
         body { margin: 0px; line-height: 1.3em; }
+        
+        .container a        { color:           DoggerBlue; }
+        .container a:hover  { text-decoration: underline; }
+        
+        .left a     { text-decoration: none; }
+        .left ul    { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
         .blockquote-default {
             border-radius:      5px;
             border:             1px solid Orange;
@@ -89,25 +93,7 @@
         .blockquote-title-block { margin-bottom:   10px; }
         .blockquote-title       { font-weight:     bold; }
         
-        .container a            { color:           DoggerBlue; }
-        .container a:hover      { text-decoration: underline; }
-        
-        .left a                 { text-decoration: none; }
-        .left ul                { list-style-type: none; margin-left: -20px; }
-        .left h3    { background-color: Black; color: White; padding: 6px; }
-        
-        .right h1   { margin-top: 50px; margin-bottom: 50px; }
-        .right h2   { margin-top: 35px; }
-        
-        table.api-item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
+        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -116,18 +102,8 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .table-enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
+        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration a              { text-decoration: none; }
         
@@ -146,7 +122,8 @@
             overflow-x:         auto;
         }
         .code-block a { color: inherit; }
-            .SCde { color: #222222; }
+        
+    .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
     .SFct { color: #ff6a00; }

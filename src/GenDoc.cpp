@@ -20,13 +20,7 @@ void GenDoc::outputStyles()
     helpOutput += "<style>\n";
 
     helpOutput += "\n\
-        .container {\n\
-            display:        flex;\n\
-            flex-wrap:      nowrap;\n\
-            flex-direction: row;\n\
-            margin:         0px auto;\n\
-            padding:        0px;\n\
-        }\n\
+        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }\n\
         .left       { display: block; overflow-y: scroll; width: 500px; }\n\
         .left-page  { margin: 10px; }\n\
         .right      { display: block; width: 100%; }\n\
@@ -53,6 +47,16 @@ void GenDoc::outputStyles()
 
     helpOutput += "\n\
         body { margin: 0px; line-height: 1.3em; }\n\
+        \n\
+        .container a        { color:           DoggerBlue; }\n\
+        .container a:hover  { text-decoration: underline; }\n\
+        \n\
+        .left a     { text-decoration: none; }\n\
+        .left ul    { list-style-type: none; margin-left: -20px; }\n\
+        .left h3    { background-color: Black; color: White; padding: 6px; }\n\
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
+        .right h2   { margin-top: 35px; }\n\
+        \n\
         .blockquote-default {\n\
             border-radius:      5px;\n\
             border:             1px solid Orange;\n\
@@ -108,25 +112,7 @@ void GenDoc::outputStyles()
         .blockquote-title-block { margin-bottom:   10px; }\n\
         .blockquote-title       { font-weight:     bold; }\n\
         \n\
-        .container a            { color:           DoggerBlue; }\n\
-        .container a:hover      { text-decoration: underline; }\n\
-        \n\
-        .left a                 { text-decoration: none; }\n\
-        .left ul                { list-style-type: none; margin-left: -20px; }\n\
-        .left h3    { background-color: Black; color: White; padding: 6px; }\n\
-        \n\
-        .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
-        .right h2   { margin-top: 35px; }\n\
-        \n\
-        table.api-item {\n\
-            border-collapse:    separate;\n\
-            background-color:   Black;\n\
-            color:              White;\n\
-            width:              100%;\n\
-            margin-top:         70px;\n\
-            margin-right:       0px;\n\
-            font-size:          110%;\n\
-        }\n\
+        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }\n\
         .api-item td:first-child  { width: 33%; white-space: nowrap; }\n\
         .api-item-title-src-ref   { text-align:  right; }\n\
         .api-item-title-src-ref a { color:       inherit; }\n\
@@ -135,18 +121,8 @@ void GenDoc::outputStyles()
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }\n\
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }\n\
         \n\
-        table.table-enumeration {\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            width:              100%;\n\
-            font-size:          90%;\n\
-        }\n\
-        .table-enumeration td {\n\
-            padding:            6px;\n\
-            border:             1px solid LightGrey;\n\
-            border-collapse:    collapse;\n\
-            min-width:          100px;\n\
-        }\n\
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }\n\
+        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }\n\
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
         .table-enumeration a              { text-decoration: none; }\n\
         \n\
@@ -165,7 +141,7 @@ void GenDoc::outputStyles()
             overflow-x:         auto;\n\
         }\n\
         .code-block a { color: inherit; }\n\
-        ";
+        \n";
 
     float    lum        = module->buildCfg.genDoc.syntaxColorLum;
     uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
