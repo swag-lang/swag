@@ -7517,7 +7517,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title">Note</span></div><p> This is the content </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class = "blockquote-title">Note</span></div><p> This is the content </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Tip:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>

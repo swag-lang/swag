@@ -726,6 +726,7 @@ namespace Swag
         morePages:           string                 // Additional external file pages to process (separated with ';')
         syntaxDefaultColor:  u32 = 0x00222222       // Code syntax default color (if not colorized)
         syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
+        hasFontAwesome       = true                 // Generate a reference to the FontAwesome script (icons)
         hasStyleSection      = true                 // Generate a default <style> section
     }
 

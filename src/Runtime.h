@@ -242,6 +242,7 @@ struct BuildCfgGenDoc
     SwagSlice       morePages;
     uint32_t        syntaxDefaultColor = 0x00222222;
     float           syntaxColorLum     = 0.5f;
+    bool            hasFontAwesome     = true;
     bool            hasStyleSection    = true;
 };
 

@@ -16,7 +16,6 @@ static const char* START_ATTENTION = "> Attention:";
 
 void GenDoc::outputStyles()
 {
-    helpOutput += "<script src=\"https://kit.fontawesome.com/f76be2b3ee.js\" crossorigin=\"anonymous\"></script>\n";
     helpOutput += "<style>\n";
 
     helpOutput += "\n\
@@ -804,7 +803,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteNote:
         helpContent += "<div class=\"blockquote-note\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-info-circle\"></i> <span class=\"blockquote-title\">Note</span>";
+        helpContent += "<i class=\"fa fa-info-circle\"></i> ";
+        helpContent += "<span class = \"blockquote-title\">Note</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -812,7 +812,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-lightbulb-o\"></i> <span class=\"blockquote-title\">Tip</span>";
+        helpContent += "<i class=\"fa fa-lightbulb-o\"></i> ";
+        helpContent += "<span class=\"blockquote-title\">Tip</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -820,7 +821,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i> <span class=\"blockquote-title\">Warning</span>";
+        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i> ";
+        helpContent += "<span class=\"blockquote-title\">Warning</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -828,7 +830,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteAttention:
         helpContent += "<div class=\"blockquote-attention\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-ban\"></i> <span class=\"blockquote-title\">Attention</span>";
+        helpContent += "<i class=\"fa fa-ban\"></i> ";
+        helpContent += "<span class=\"blockquote-title\">Attention</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -1000,6 +1003,10 @@ void GenDoc::constructPage()
     Utf8 css{module->buildCfg.genDoc.css};
     if (!css.empty())
         helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
+
+    // Font awesome reference
+    if (module->buildCfg.genDoc.hasFontAwesome)
+        helpOutput += "<script src=\"https://kit.fontawesome.com/f76be2b3ee.js\" crossorigin=\"anonymous\"></script>\n";
 
     // Predefined <style> section
     if (module->buildCfg.genDoc.hasStyleSection)
