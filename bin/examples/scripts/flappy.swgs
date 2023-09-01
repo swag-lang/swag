@@ -76,36 +76,39 @@ The compiler's '#run' function serves as the initial execution point for the scr
 /**
 # Global definitions
 ## Constants
+We declare global constants with 'const'. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection.
 */
-const Gravity      = 2.5
-const BirdImpulseY = 350
+const Gravity      = 2.5        // 2.5 is a 32 bits float, so the type of Gravity is 'f32'
 const GroundHeight = 40.0
 const SpeedHorz    = 100.0
+const BirdImpulseY = 350        // 350 is an integer, so the type of BirdImpulseY is 's32'
 
 /**
 ## Variables
 */
 
 var g_Bird:      Bird
+var g_Pipes:     Array'Pipe
+var g_Rect:      Math.Rectangle
 var g_Dt:        f32
 var g_Time:      f32
-var g_GameOver:  bool
-var g_Rect:      Math.Rectangle
-var g_Start:     bool
 var g_BasePos:   f32
-var g_Pipes:     Array'Pipe
 var g_Score:     s32
+var g_GameOver:  bool
+var g_Start:     bool
 var g_FirstStart = true
 
-var g_BirdTexture:  [3] Texture
+// Texture assets
+var g_DigitTexture: [10] Texture    // A static array of 10 textures
+var g_BirdTexture:  [3] Texture     // A static array of 3 textures
 var g_BackTexture:  Texture
 var g_OverTexture:  Texture
 var g_BaseTexture:  Texture
 var g_PipeTextureU: Texture
 var g_PipeTextureD: Texture
 var g_MsgTexture:   Texture
-var g_DigitTexture: [10] Texture
 
+// A pointer to the score font
 var g_Font: *Font
 
 /**

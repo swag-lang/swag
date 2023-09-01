@@ -207,32 +207,35 @@
 </div>
 <h1 id="Global_definitions">Global definitions </h1>
 <h2 id="Constants">Constants </h2>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>
-<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>
+<p>We declare global constants with <span class="code-inline">const</span>. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>        <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
-<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span></span></code>
+<span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
+<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></code>
 </div>
 <h2 id="Variables">Variables </h2>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
+<span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span>
+<span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
 <span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
-<span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
-<span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
-<span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span>
 <span class="SKwd">var</span> g_BasePos:   <span class="STpe">f32</span>
-<span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span>
 <span class="SKwd">var</span> g_Score:     <span class="STpe">s32</span>
+<span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
+<span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span>
 <span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span>
 
-<span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>
+<span class="SCmt">// Texture assets</span>
+<span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>    <span class="SCmt">// A static array of 10 textures</span>
+<span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>     <span class="SCmt">// A static array of 3 textures</span>
 <span class="SKwd">var</span> g_BackTexture:  <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_OverTexture:  <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_BaseTexture:  <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_PipeTextureU: <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_PipeTextureD: <span class="SCst">Texture</span>
 <span class="SKwd">var</span> g_MsgTexture:   <span class="SCst">Texture</span>
-<span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>
 
+<span class="SCmt">// A pointer to the score font</span>
 <span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></code>
 </div>
 <h2 id="Types">Types </h2>
