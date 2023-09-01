@@ -879,6 +879,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     }
     }
 
+    int32_t tableColCount = UINT32_MAX;
     for (int i = 0; i < user.lines.size(); i++)
     {
         auto line = user.lines[i];
@@ -888,6 +889,15 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         {
             Vector<Utf8> tkn;
             Utf8::tokenize(line, '|', tkn);
+
+            if (tkn.back().empty())
+                tkn.erase(tkn.end());
+            while (i && tkn.size() < tableColCount)
+                tkn.push_back("");
+            while (i && tkn.size() > tableColCount)
+                tkn.erase(tkn.end());
+            tableColCount = (uint32_t) tkn.size();
+
             helpContent += "<tr>";
             for (int it = 0; it < tkn.size(); it++)
             {
