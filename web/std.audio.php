@@ -104,14 +104,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -227,7 +227,7 @@
 <div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1>Module audio</h1>
-<p><span class="inline-code">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="inline-code">xaudio2</span> library. </p>
+<p><span class="code-inline">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="code-inline">xaudio2</span> library. </p>
 <h2 id="How_to_play_a_sound">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
@@ -236,7 +236,7 @@
 <p>You then have to load a sound file. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
 </div>
-<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <span class="inline-code">loadDatas</span> to false. </p>
+<p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <span class="code-inline">loadDatas</span> to false. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
@@ -332,7 +332,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Creates an audio bus. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <span class="inline-code">parent</span>. </p>
+<p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <span class="code-inline">parent</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -545,12 +545,12 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <td>Number of valid bits per sample (&lt;= bitsPerSample). </td>
 </tr>
 </table>
-<p> The <span class="inline-code">SoundFile</span> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
+<p> The <span class="code-inline">SoundFile</span> is not necessary fully loaded in memory, in case we want it to be streamed. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Audio_SoundFile_load">load</a></span><span class="SCde">()</span></td>
-<td>Load a <span class="inline-code">SoundFile</span> from disk. </td>
+<td>Load a <span class="code-inline">SoundFile</span> from disk. </td>
 </tr>
 </table>
 <p>
@@ -564,10 +564,10 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </tr>
 </table>
 </p>
-<p>Load a <span class="inline-code">SoundFile</span> from disk. </p>
+<p>Load a <span class="code-inline">SoundFile</span> from disk. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
 </div>
-<p> Will load the sound datas if <span class="inline-code">loadDatas</span> is true.  Will load the sound metadatas if <span class="inline-code">loadMetaData</span> is true. </p>
+<p> Will load the sound datas if <span class="code-inline">loadDatas</span> is true.  Will load the sound metadatas if <span class="code-inline">loadMetaData</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -834,7 +834,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
 </div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
-<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="inline-code">DestroyOnStop</span> flag in <span class="inline-code">playFlags</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="code-inline">DestroyOnStop</span> flag in <span class="code-inline">playFlags</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -849,7 +849,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Set the playing pitch. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> The voice should have been created with <span class="inline-code">VoiceCreateFlags.AcceptPitch</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
+<p> The voice should have been created with <span class="code-inline">VoiceCreateFlags.AcceptPitch</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -864,7 +864,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <p>Root a voice to a given list of buses. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
-<p> You can also set <span class="inline-code">buses</span> to null if you want to root the voice only to the  main bus (which is the default). </p>
+<p> You can also set <span class="code-inline">buses</span> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
 <table class="api-item">
 <tr>

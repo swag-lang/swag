@@ -102,14 +102,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -143,12 +143,12 @@
 <div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <h1 id="Script_file">Script file </h1>
-<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="inline-code">swgs</span>: </p>
+<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="code-inline">swgs</span>: </p>
 <div class="code-block"><code><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
 =&gt; type 'swag script -f:myScript.swgs' to run that script</span></code>
 </div>
-<p>This will generate a simple file with a <span class="inline-code">#dependency</span> block and one <span class="inline-code">#run</span> compiler function. </p>
+<p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and one <span class="code-inline">#run</span> compiler function. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
@@ -161,7 +161,7 @@
     <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
 }</span></code>
 </div>
-<p>You can then run your script with the <span class="inline-code">script</span> command. </p>
+<p>You can then run your script with the <span class="code-inline">script</span> command. </p>
 <div class="code-block"><code><span class="SCde">$ swag script -f:myScript
 Hello world !</span></code>
 </div>
@@ -169,7 +169,7 @@ Hello world !</span></code>
 <div class="code-block"><code><span class="SCde">$ swag myScript.swgs
 Hello world !</span></code>
 </div>
-<p>You will find a bunch of small scripts in <span class="inline-code">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="inline-code">swag flappy.swgs</span>. </p>
+<p>You will find a bunch of small scripts in <span class="code-inline">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="code-inline">swag flappy.swgs</span>. </p>
 <p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
@@ -185,11 +185,11 @@ Hello world !</span></code>
 </div>
 <p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
 <ul>
-<li>To locate the Swag cache folder, add <span class="inline-code">--verbose-path</span> to the command line.</li>
-<li>To force the build of dependencies, add <span class="inline-code">--rebuildall</span> to the command line.</li>
+<li>To locate the Swag cache folder, add <span class="code-inline">--verbose-path</span> to the command line.</li>
+<li>To force the build of dependencies, add <span class="code-inline">--rebuildall</span> to the command line.</li>
 </ul>
 <h2 id="More_than_one_script_file">More than one script file </h2>
-<p>If your script is divided in more than one single file, you can add <span class="inline-code">#load &lt;filename&gt;</span> in the <span class="inline-code">#dependencies</span> block. </p>
+<p>If your script is divided in more than one single file, you can add <span class="code-inline">#load &lt;filename&gt;</span> in the <span class="code-inline">#dependencies</span> block. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
@@ -197,7 +197,7 @@ Hello world !</span></code>
 }</span></code>
 </div>
 <h2 id="Debug">Debug </h2>
-<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="inline-code">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
+<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 </div>
 </div>

@@ -102,14 +102,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -143,20 +143,20 @@
 <div class="blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
-<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <span class="inline-code">bin/examples/scripts</span> folder, and type : </p>
+<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
 </div>
 <p>Instead of mainly explaining the game, the aim here is to describe the language. Note also that this page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
 <p>So, let's begin. </p>
 <h1 id="Dependencies">Dependencies </h1>
-<p>Normally, you'd put the <span class="inline-code">#dependency</span> block in the <span class="inline-code">module.swg</span> file of a module. But if it's a script and there's no <span class="inline-code">module.swg</span> file, you just put it at the top of the script file. </p>
+<p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span> file, you just put it at the top of the script file. </p>
 <p>This special compiler block is used to specify : </p>
 <ul>
-<li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <span class="inline-code">gui</span> module.</li>
-<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <span class="inline-code">#load</span> directive.</li>
-<li><b>Module configuration</b>. If present, a special <span class="inline-code">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
+<li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <span class="code-inline">gui</span> module.</li>
+<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <span class="code-inline">#load</span> directive.</li>
+<li><b>Module configuration</b>. If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
 </ul>
-<p>So in our case, we need to import the module <span class="inline-code">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="inline-code">core</span> and <span class="inline-code">pixel</span> (2D painting). </p>
+<p>So in our case, we need to import the module <span class="code-inline">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="code-inline">core</span> and <span class="code-inline">pixel</span> (2D painting). </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
@@ -183,14 +183,14 @@
     }
 }</span></code>
 </div>
-<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <span class="inline-code">using</span> statement immediately after the <span class="inline-code">#dependency</span> block. </p>
-<p>The <span class="inline-code">gui</span> module depends on <span class="inline-code">pixel</span> which depends on <span class="inline-code">core</span>. So we bring all the three namespaces into the file scope. </p>
+<p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <span class="code-inline">using</span> statement immediately after the <span class="code-inline">#dependency</span> block. </p>
+<p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
 <h1 id="Entry_point">Entry point </h1>
-<p>The compiler's <span class="inline-code">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="inline-code">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
+<p>The compiler's <span class="code-inline">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="code-inline">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="inline-code">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {

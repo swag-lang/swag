@@ -102,14 +102,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -145,21 +145,21 @@
 <h1 id="Contribute_to_the_test_suite">Contribute to the test suite </h1>
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3 id="Create_a_workspace_and_a_test_module">Create a workspace and a test module </h3>
-<p>First create a workspace with the <span class="inline-code">--test</span> option. </p>
+<p>First create a workspace with the <span class="code-inline">--test</span> option. </p>
 <div class="code-block"><code><span class="SCde">$ swag new -w:myWorkspace --test</span></code>
 </div>
-<p>This will also create a test module <span class="inline-code">myWorkspace</span> located in <span class="inline-code">myWorkspacetests</span>. </p>
-<p>You can then compile and run the tests with the <span class="inline-code">test</span> command. </p>
+<p>This will also create a test module <span class="code-inline">myWorkspace</span> located in <span class="code-inline">myWorkspacetests</span>. </p>
+<p>You can then compile and run the tests with the <span class="code-inline">test</span> command. </p>
 <div class="code-block"><code><span class="SCde">$ swag test -w:myWorkspace</span></code>
 </div>
-<p>To force the build, add <span class="inline-code">--rebuild</span>. </p>
+<p>To force the build, add <span class="code-inline">--rebuild</span>. </p>
 <h3 id="Write_tests">Write tests </h3>
 <ul>
 <li>Tests should be small, located in different <b>small files</b>.</li>
-<li>Just write files like <span class="inline-code">test1.swg</span>, <span class="inline-code">test2.swg</span> and so on, in the <span class="inline-code">src</span> sub folder of your module.</li>
+<li>Just write files like <span class="code-inline">test1.swg</span>, <span class="code-inline">test2.swg</span> and so on, in the <span class="code-inline">src</span> sub folder of your module.</li>
 <li>Here you are only testing the compiler, and not the standard libraries. So do not add dependencies to external modules.</li>
-<li>You can use <span class="inline-code">@print</span> temporary to see a result, but in the end tests should be silent. <span class="inline-code">@assert</span> is the way to go.</li>
-<li><span class="inline-code">swagbintestsuite</span> is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.</li>
+<li>You can use <span class="code-inline">@print</span> temporary to see a result, but in the end tests should be silent. <span class="code-inline">@assert</span> is the way to go.</li>
+<li><span class="code-inline">swagbintestsuite</span> is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.</li>
 <li>Note that if a test works as expected, <b>keep it</b>, and <b>write another one</b> ! This is useful for testing regression.</li>
 </ul>
 </div>

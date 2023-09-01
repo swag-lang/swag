@@ -104,14 +104,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -1262,7 +1262,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_addTimer">addTimer</a></span><span class="SCde">()</span></td>
-<td>Register a new timer for the given <span class="inline-code">target</span>. </td>
+<td>Register a new timer for the given <span class="code-inline">target</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Application_createSurface">createSurface</a></span><span class="SCde">()</span></td>
@@ -1412,7 +1412,7 @@
 </tr>
 </table>
 </p>
-<p>Register a new timer for the given <span class="inline-code">target</span>. </p>
+<p>Register a new timer for the given <span class="code-inline">target</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></code>
 </div>
 <p>
@@ -2005,7 +2005,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_BlendColor_apply">apply</a></span><span class="SCde">()</span></td>
-<td>Apply the color lerp to reach <span class="inline-code">target</span>. </td>
+<td>Apply the color lerp to reach <span class="code-inline">target</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_BlendColor_cur">cur</a></span><span class="SCde">()</span></td>
@@ -2023,7 +2023,7 @@
 </tr>
 </table>
 </p>
-<p>Apply the color lerp to reach <span class="inline-code">target</span>. </p>
+<p>Apply the color lerp to reach <span class="code-inline">target</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, target: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
 </div>
 <p>
@@ -5434,7 +5434,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild</a></span><span class="SCde">()</span></td>
-<td>Set the wnd associated with the given <span class="inline-code">col</span> and <span class="inline-code">row</span>. </td>
+<td>Set the wnd associated with the given <span class="code-inline">col</span> and <span class="code-inline">row</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_setColSize">setColSize</a></span><span class="SCde">()</span></td>
@@ -5497,7 +5497,7 @@
 </tr>
 </table>
 </p>
-<p>Set the wnd associated with the given <span class="inline-code">col</span> and <span class="inline-code">row</span>. </p>
+<p>Set the wnd associated with the given <span class="code-inline">col</span> and <span class="code-inline">row</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></code>
 </div>
 <p> Window can cover multiple columns and rows. </p>
@@ -7627,7 +7627,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
-<td>Sort the list by a given column  If <span class="inline-code">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </td>
+<td>Sort the list by a given column  If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_toggleExpand">toggleExpand</a></span><span class="SCde">()</span></td>
@@ -8017,7 +8017,7 @@
 <p>Sort list as before. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
-<p>Sort the list by a given column  If <span class="inline-code">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </p>
+<p>Sort the list by a given column  If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></code>
 </div>
 <p>
@@ -8739,7 +8739,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_confirm">confirm</a></span><span class="SCde">()</span></td>
-<td>Message box to <span class="inline-code">confirm</span> something. </td>
+<td>Message box to <span class="code-inline">confirm</span> something. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_create">create</a></span><span class="SCde">()</span></td>
@@ -8755,11 +8755,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_ok">ok</a></span><span class="SCde">()</span></td>
-<td>Message box with a <span class="inline-code">ok</span>. </td>
+<td>Message box with a <span class="code-inline">ok</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_okCancel">okCancel</a></span><span class="SCde">()</span></td>
-<td>Message box with a <span class="inline-code">ok</span> and <span class="inline-code">cancel</span> button. </td>
+<td>Message box with a <span class="code-inline">ok</span> and <span class="code-inline">cancel</span> button. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_setIcon">setIcon</a></span><span class="SCde">()</span></td>
@@ -8771,11 +8771,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_yesNo">yesNo</a></span><span class="SCde">()</span></td>
-<td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
+<td>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel</a></span><span class="SCde">()</span></td>
-<td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
+<td>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </td>
 </tr>
 </table>
 <p>
@@ -8789,7 +8789,7 @@
 </tr>
 </table>
 </p>
-<p>Message box to <span class="inline-code">confirm</span> something. </p>
+<p>Message box to <span class="code-inline">confirm</span> something. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -8845,7 +8845,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <span class="inline-code">ok</span>. </p>
+<p>Message box with a <span class="code-inline">ok</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ok</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></code>
 </div>
 <p>
@@ -8859,7 +8859,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <span class="inline-code">ok</span> and <span class="inline-code">cancel</span> button. </p>
+<p>Message box with a <span class="code-inline">ok</span> and <span class="code-inline">cancel</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -8901,7 +8901,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </p>
+<p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -8915,7 +8915,7 @@
 </tr>
 </table>
 </p>
-<p>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </p>
+<p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
 </div>
 <p>
@@ -9447,15 +9447,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addHueColors">addHueColors</a></span><span class="SCde">()</span></td>
-<td>Add a range of changing <span class="inline-code">hue</span>. </td>
+<td>Add a range of changing <span class="code-inline">hue</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addLumColors">addLumColors</a></span><span class="SCde">()</span></td>
-<td>Add a range of changing <span class="inline-code">luminance</span>. </td>
+<td>Add a range of changing <span class="code-inline">luminance</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addSatColors">addSatColors</a></span><span class="SCde">()</span></td>
-<td>Add a range of changing <span class="inline-code">saturation</span>. </td>
+<td>Add a range of changing <span class="code-inline">saturation</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_create">create</a></span><span class="SCde">()</span></td>
@@ -9513,7 +9513,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <span class="inline-code">hue</span>. </p>
+<p>Add a range of changing <span class="code-inline">hue</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat: <span class="STpe">f32</span>, lum: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
@@ -9527,7 +9527,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <span class="inline-code">luminance</span>. </p>
+<p>Add a range of changing <span class="code-inline">luminance</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addLumColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
 </div>
 <p>
@@ -9541,7 +9541,7 @@
 </tr>
 </table>
 </p>
-<p>Add a range of changing <span class="inline-code">saturation</span>. </p>
+<p>Add a range of changing <span class="code-inline">saturation</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSatColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, lum: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
@@ -13536,7 +13536,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Slider_setMinMax">setMinMax</a></span><span class="SCde">()</span></td>
-<td>Set the <span class="inline-code">min</span>, <span class="inline-code">max</span> and <span class="inline-code">steps</span> values. </td>
+<td>Set the <span class="code-inline">min</span>, <span class="code-inline">max</span> and <span class="code-inline">steps</span> values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Slider_setRangeValues">setRangeValues</a></span><span class="SCde">()</span></td>
@@ -13644,7 +13644,7 @@
 </tr>
 </table>
 </p>
-<p>Set the <span class="inline-code">min</span>, <span class="inline-code">max</span> and <span class="inline-code">steps</span> values. </p>
+<p>Set the <span class="code-inline">min</span>, <span class="code-inline">max</span> and <span class="code-inline">steps</span> values. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></code>
 </div>
 <p>
@@ -14371,7 +14371,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Surface_center">center</a></span><span class="SCde">()</span></td>
-<td>Center this surface relative to <span class="inline-code">from</span>. </td>
+<td>Center this surface relative to <span class="code-inline">from</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Surface_constaintToScreen">constaintToScreen</a></span><span class="SCde">()</span></td>
@@ -14483,7 +14483,7 @@
 </tr>
 </table>
 </p>
-<p>Center this surface relative to <span class="inline-code">from</span>. </p>
+<p>Center this surface relative to <span class="code-inline">from</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></code>
 </div>
 <p>
@@ -18858,7 +18858,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding</a></span><span class="SCde">()</span></td>
-<td>Returns the client area, with <span class="inline-code">padding</span> applied. </td>
+<td>Returns the client area, with <span class="code-inline">padding</span> applied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getFocus">getFocus</a></span><span class="SCde">()</span></td>
@@ -18950,7 +18950,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isParentOf">isParentOf</a></span><span class="SCde">()</span></td>
-<td>Returns true if <span class="inline-code">child</span> is in the child hieararchy of <span class="inline-code">self</span>. </td>
+<td>Returns true if <span class="code-inline">child</span> is in the child hieararchy of <span class="code-inline">self</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isVisible">isVisible</a></span><span class="SCde">()</span></td>
@@ -19602,7 +19602,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the client area, with <span class="inline-code">padding</span> applied. </p>
+<p>Returns the client area, with <span class="code-inline">padding</span> applied. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRectPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
 </div>
 <p>
@@ -19915,7 +19915,7 @@
 </tr>
 </table>
 </p>
-<p>Returns true if <span class="inline-code">child</span> is in the child hieararchy of <span class="inline-code">self</span>. </p>
+<p>Returns true if <span class="code-inline">child</span> is in the child hieararchy of <span class="code-inline">self</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>

@@ -104,14 +104,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -1345,7 +1345,7 @@
 </tr>
 </table>
 </p>
-<p>Get the Argb value that matches <span class="inline-code">name</span>. </p>
+<p>Get the Argb value that matches <span class="code-inline">name</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromName</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Argb">Argb</a></span></span></code>
 </div>
 <p>
@@ -1985,7 +1985,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span><span class="SCde">()</span></td>
-<td>Blend two colors, keeping the alpha channel of <span class="inline-code">col0</span> untouched. </td>
+<td>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDarker">getDarker</a></span><span class="SCde">()</span></td>
@@ -2216,7 +2216,7 @@
 </tr>
 </table>
 </p>
-<p>Blend two colors, keeping the alpha channel of <span class="inline-code">col0</span> untouched. </p>
+<p>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, col1: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></code>
 </div>
 <p>
@@ -3671,11 +3671,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_canLoad">canLoad</a></span><span class="SCde">()</span></td>
-<td>Returns <span class="inline-code">true</span> if the given filename has a corresponding decoder. </td>
+<td>Returns <span class="code-inline">true</span> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_canSave">canSave</a></span><span class="SCde">()</span></td>
-<td>Returns <span class="inline-code">true</span> if the given filename has a corresponding encoder. </td>
+<td>Returns <span class="code-inline">true</span> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_clear">clear</a></span><span class="SCde">()</span></td>
@@ -3687,7 +3687,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_contrast">contrast</a></span><span class="SCde">()</span></td>
-<td>Change the contrast. <span class="inline-code">factor</span> is [-1, 1]. </td>
+<td>Change the contrast. <span class="code-inline">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixel">copyPixel</a></span><span class="SCde">()</span></td>
@@ -3711,15 +3711,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_fade">fade</a></span><span class="SCde">()</span></td>
-<td>Fade to a given color. <span class="inline-code">factor</span> is [0, 1]. </td>
+<td>Fade to a given color. <span class="code-inline">factor</span> is [0, 1]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_fill">fill</a></span><span class="SCde">()</span></td>
-<td>Fill image with <span class="inline-code">color</span>. </td>
+<td>Fill image with <span class="code-inline">color</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient2">fillGradient2</a></span><span class="SCde">()</span></td>
-<td>Fill with an horizontal gradient from <span class="inline-code">color0</span> to <span class="inline-code">color1</span>. </td>
+<td>Fill with an horizontal gradient from <span class="code-inline">color0</span> to <span class="code-inline">color1</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient4">fillGradient4</a></span><span class="SCde">()</span></td>
@@ -3763,7 +3763,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_init">init</a></span><span class="SCde">()</span></td>
-<td>Initialize image informations  <span class="inline-code">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
+<td>Initialize image informations  <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span><span class="SCde">()</span></td>
@@ -3775,7 +3775,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_lightness">lightness</a></span><span class="SCde">()</span></td>
-<td>Change the lightness. <span class="inline-code">factor</span> is [-1, 1]. </td>
+<td>Change the lightness. <span class="code-inline">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_load">load</a></span><span class="SCde">()</span></td>
@@ -3795,7 +3795,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_resize">resize</a></span><span class="SCde">()</span></td>
-<td>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </td>
+<td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_save">save</a></span><span class="SCde">()</span></td>
@@ -3851,7 +3851,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toResize">toResize</a></span><span class="SCde">()</span></td>
-<td>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </td>
+<td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></span><span class="SCde">()</span></td>
@@ -4307,7 +4307,7 @@
 </tr>
 </table>
 </p>
-<p>Returns <span class="inline-code">true</span> if the given filename has a corresponding decoder. </p>
+<p>Returns <span class="code-inline">true</span> if the given filename has a corresponding decoder. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canLoad</span>(fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
@@ -4321,7 +4321,7 @@
 </tr>
 </table>
 </p>
-<p>Returns <span class="inline-code">true</span> if the given filename has a corresponding encoder. </p>
+<p>Returns <span class="code-inline">true</span> if the given filename has a corresponding encoder. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canSave</span>(fileName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
@@ -4363,7 +4363,7 @@
 </tr>
 </table>
 </p>
-<p>Change the contrast. <span class="inline-code">factor</span> is [-1, 1]. </p>
+<p>Change the contrast. <span class="code-inline">factor</span> is [-1, 1]. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contrast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
@@ -4434,7 +4434,7 @@
 </tr>
 </table>
 </p>
-<p>Fade to a given color. <span class="inline-code">factor</span> is [0, 1]. </p>
+<p>Fade to a given color. <span class="code-inline">factor</span> is [0, 1]. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fade</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
@@ -4448,7 +4448,7 @@
 </tr>
 </table>
 </p>
-<p>Fill image with <span class="inline-code">color</span>. </p>
+<p>Fill image with <span class="code-inline">color</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
@@ -4462,7 +4462,7 @@
 </tr>
 </table>
 </p>
-<p>Fill with an horizontal gradient from <span class="inline-code">color0</span> to <span class="inline-code">color1</span>. </p>
+<p>Fill with an horizontal gradient from <span class="code-inline">color0</span> to <span class="code-inline">color1</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillGradient2</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color0: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, color1: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></code>
 </div>
 <p>
@@ -4604,7 +4604,7 @@
 </tr>
 </table>
 </p>
-<p>Initialize image informations  <span class="inline-code">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
+<p>Initialize image informations  <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, pf: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></code>
 </div>
 <p>
@@ -4646,7 +4646,7 @@
 </tr>
 </table>
 </p>
-<p>Change the lightness. <span class="inline-code">factor</span> is [-1, 1]. </p>
+<p>Change the lightness. <span class="code-inline">factor</span> is [-1, 1]. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lightness</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, factor: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
 </div>
 <p>
@@ -4730,7 +4730,7 @@
 </tr>
 </table>
 </p>
-<p>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </p>
+<p>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)</span></code>
 </div>
 <p>
@@ -4913,7 +4913,7 @@
 </tr>
 </table>
 </p>
-<p>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </p>
+<p>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toResize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, newWidth: <span class="STpe">s32</span>, newHeight: <span class="STpe">s32</span>, mode = <span class="SCst"><a href="#Pixel_Image_ResizeMode">ResizeMode</a></span>.<span class="SCst">Raw</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></code>
 </div>
 <p>
@@ -5268,11 +5268,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_bezierTo">bezierTo</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
+<td>Add a curve from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_bezierTo">bezierTo</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
+<td>Add a curve from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_clearCache">clearCache</a></span><span class="SCde">()</span></td>
@@ -5284,7 +5284,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_curveTo">curveTo</a></span><span class="SCde">()</span></td>
-<td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
+<td>Add a curve from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_flatten">flatten</a></span><span class="SCde">()</span></td>
@@ -5292,7 +5292,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_lineTo">lineTo</a></span><span class="SCde">()</span></td>
-<td>Add a line from the previous point to <span class="inline-code">pt</span>. </td>
+<td>Add a line from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setArc">setArc</a></span><span class="SCde">()</span></td>
@@ -5344,10 +5344,10 @@
 </tr>
 </table>
 </p>
-<p>Add a curve from the previous point to <span class="inline-code">pt</span>. </p>
+<p>Add a curve from the previous point to <span class="code-inline">pt</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bezierTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, ctx: <span class="STpe">f32</span>, cty: <span class="STpe">f32</span>)</span></code>
 </div>
-<p>Add a curve from the previous point to <span class="inline-code">pt</span>. </p>
+<p>Add a curve from the previous point to <span class="code-inline">pt</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bezierTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, ct1x: <span class="STpe">f32</span>, ct1y: <span class="STpe">f32</span>, ct2x: <span class="STpe">f32</span>, ct2y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
@@ -5389,7 +5389,7 @@
 </tr>
 </table>
 </p>
-<p>Add a curve from the previous point to <span class="inline-code">pt</span>. </p>
+<p>Add a curve from the previous point to <span class="code-inline">pt</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curveTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
@@ -5417,7 +5417,7 @@
 </tr>
 </table>
 </p>
-<p>Add a line from the previous point to <span class="inline-code">pt</span>. </p>
+<p>Add a line from the previous point to <span class="code-inline">pt</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineTo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
 </div>
 <p>
@@ -6021,7 +6021,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
-<td>Draw the line path with the given <span class="inline-code">pen</span>. </td>
+<td>Draw the line path with the given <span class="code-inline">pen</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>, <span class="SCst">DrawPathListMode</span>)</span></td>
@@ -6129,7 +6129,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
-<td>Fill the line path with the given <span class="inline-code">brush</span>. </td>
+<td>Fill the line path with the given <span class="code-inline">brush</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
@@ -6145,7 +6145,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPolygon">fillPolygon</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
-<td>Fill the polygon with the given <span class="inline-code">brush</span>. </td>
+<td>Fill the polygon with the given <span class="code-inline">brush</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPolygon">fillPolygon</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
@@ -6432,8 +6432,8 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">capStyleExtent</span>(capStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span>, lineSize: <span class="STpe">f32</span>, capScale: <span class="STpe">f32</span>)-&gt;{w: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>}</span></code>
 </div>
 <ul>
-<li><span class="inline-code">lineSize</span> is the supposed line drawing size</li>
-<li><span class="inline-code">capScale</span> is the supposed LineCapStyle scale</li>
+<li><span class="code-inline">lineSize</span> is the supposed line drawing size</li>
+<li><span class="code-inline">capScale</span> is the supposed LineCapStyle scale</li>
 </ul>
 <p> Returns the width and the length. </p>
 <p>
@@ -6543,7 +6543,7 @@
 <p>Draw the line path. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>, penSize: <span class="STpe">f32</span>)</span></code>
 </div>
-<p>Draw the line path with the given <span class="inline-code">pen</span>. </p>
+<p>Draw the line path with the given <span class="code-inline">pen</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, pen: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span>)</span></code>
 </div>
 <p>Draw the line path. </p>
@@ -6584,7 +6584,7 @@
 <p>Draw a rich string. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawRichString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, text: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span>, format: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span>, forceCompute = <span class="SKwd">false</span>)</span></code>
 </div>
-<p> A rich string can be multiline, and accepts  The layout will be computed at the first call, and each time <span class="inline-code">pos</span> has changed </p>
+<p> A rich string can be multiline, and accepts  The layout will be computed at the first call, and each time <span class="code-inline">pos</span> has changed </p>
 <p>
 <table class="api-item">
 <tr>
@@ -6726,7 +6726,7 @@
 </tr>
 </table>
 </p>
-<p>Fill the line path with the given <span class="inline-code">brush</span>. </p>
+<p>Fill the line path with the given <span class="code-inline">brush</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
 <p>Fill the line path. </p>
@@ -6749,7 +6749,7 @@
 </tr>
 </table>
 </p>
-<p>Fill the polygon with the given <span class="inline-code">brush</span>. </p>
+<p>Fill the polygon with the given <span class="code-inline">brush</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></code>
 </div>
 <p>Fill the polygon with the given color. </p>
@@ -8333,7 +8333,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></span><span class="SCde">()</span></td>
-<td>Unregister a texture created with <span class="inline-code">addImage</span>. </td>
+<td>Unregister a texture created with <span class="code-inline">addImage</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></span><span class="SCde">()</span></td>
@@ -8620,7 +8620,7 @@
 </tr>
 </table>
 </p>
-<p>Unregister a texture created with <span class="inline-code">addImage</span>. </p>
+<p>Unregister a texture created with <span class="code-inline">addImage</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeTexture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>)</span></code>
 </div>
 <p>
@@ -8950,7 +8950,7 @@
 <tr>
 <td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>If dirty, <span class="inline-code">Compute</span>. </td>
+<td>If dirty, <span class="code-inline">Compute</span>. </td>
 </tr>
 </table>
 <p> This kind of string is a specific version of [Core.String] but specific for painting. It can contains  some special markers to change it's appearence. </p>
@@ -8975,7 +8975,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RichString_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
-<td>Returns <span class="inline-code">true</span> if the string is empty. </td>
+<td>Returns <span class="code-inline">true</span> if the string is empty. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_RichString_set">set</a></span><span class="SCde">()</span></td>
@@ -9011,7 +9011,7 @@
 <p>Compute layout. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, force = <span class="SKwd">false</span>)</span></code>
 </div>
-<p> This will transform the string in a serie of chunks, each chunk having its one style. The string  will only be recomputed if it's dirty (the text has changed) or if <span class="inline-code">force</span> is true. </p>
+<p> This will transform the string in a serie of chunks, each chunk having its one style. The string  will only be recomputed if it's dirty (the text has changed) or if <span class="code-inline">force</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9052,7 +9052,7 @@
 </tr>
 </table>
 </p>
-<p>Returns <span class="inline-code">true</span> if the string is empty. </p>
+<p>Returns <span class="code-inline">true</span> if the string is empty. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
 </div>
 <p>
@@ -9110,12 +9110,12 @@
 </div>
 <p> The string can have multiple lines.  Accepted markers are: </p>
 <ul>
-<li><span class="inline-code">&lt;u&gt;</span> =&gt; underline</li>
-<li><span class="inline-code">&lt;b&gt;</span> =&gt; bold</li>
-<li><span class="inline-code">&lt;i&gt;</span> =&gt; italic</li>
-<li><span class="inline-code">&lt;p1&gt;</span> =&gt; color palette 1</li>
-<li><span class="inline-code">&lt;p2&gt;</span> =&gt; color palette 2</li>
-<li><span class="inline-code">&lt;p3&gt;</span> =&gt; color palette 3</li>
+<li><span class="code-inline">&lt;u&gt;</span> =&gt; underline</li>
+<li><span class="code-inline">&lt;b&gt;</span> =&gt; bold</li>
+<li><span class="code-inline">&lt;i&gt;</span> =&gt; italic</li>
+<li><span class="code-inline">&lt;p1&gt;</span> =&gt; color palette 1</li>
+<li><span class="code-inline">&lt;p2&gt;</span> =&gt; color palette 2</li>
+<li><span class="code-inline">&lt;p3&gt;</span> =&gt; color palette 3</li>
 </ul>
 <div class="code-block"><code><span class="SCde">&lt;b&gt;this <span class="SInv">is</span> bold&lt;b&gt; but this <span class="SInv">is</span> normal &lt;i&gt;<span class="SLgc">and</span> this <span class="SInv">is</span> italic&lt;/i&gt;</span></code>
 </div>

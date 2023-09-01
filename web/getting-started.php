@@ -102,14 +102,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
@@ -145,7 +145,7 @@
 <h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
 <h3 id="Under_windows_10/11">Under windows 10/11 </h3>
-<p>You should register the location of the swag compiler (<span class="inline-code">swag.exe</span>) in the PATH environment variable to be able to call it from everywhere. </p>
+<p>You should register the location of the swag compiler (<span class="code-inline">swag.exe</span>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
 <div class="code-block"><code><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
 [Environment]::SetEnvironmentVariable(
@@ -171,26 +171,26 @@
 </div>
 <p>A workspace contains a predefined number of sub folders: </p>
 <ul>
-<li><span class="inline-code">modules/</span> contains all the modules (sub folders) of that workspace.</li>
-<li><span class="inline-code">output/</span> (generated) contains the result of the build (this is where the executable will be located).</li>
-<li><span class="inline-code">tests/</span> (optional) contains a list of test modules.</li>
-<li><span class="inline-code">dependencies/</span> (generated) contains a list of external modules needed to compile the workspace.</li>
+<li><span class="code-inline">modules/</span> contains all the modules (sub folders) of that workspace.</li>
+<li><span class="code-inline">output/</span> (generated) contains the result of the build (this is where the executable will be located).</li>
+<li><span class="code-inline">tests/</span> (optional) contains a list of test modules.</li>
+<li><span class="code-inline">dependencies/</span> (generated) contains a list of external modules needed to compile the workspace.</li>
 </ul>
 <p>A module is also organized in a predefined way: </p>
 <ul>
-<li><span class="inline-code">moduleName/</span> the folder name of the module is used to create output files.</li>
-<li><span class="inline-code">src/</span> contains the source code.</li>
-<li><span class="inline-code">public/</span> (generated) will contain all the exports needed by other modules to use that one (in case of a dynamic library).</li>
-<li><span class="inline-code">publish/</span> contains additional files to use that module (like an external C dll).</li>
+<li><span class="code-inline">moduleName/</span> the folder name of the module is used to create output files.</li>
+<li><span class="code-inline">src/</span> contains the source code.</li>
+<li><span class="code-inline">public/</span> (generated) will contain all the exports needed by other modules to use that one (in case of a dynamic library).</li>
+<li><span class="code-inline">publish/</span> contains additional files to use that module (like an external C dll).</li>
 </ul>
-<p>A module always contains a special file named <span class="inline-code">module.swg</span>. This file is used to configure the module, and is <b>mandatory</b>. </p>
+<p>A module always contains a special file named <span class="code-inline">module.swg</span>. This file is used to configure the module, and is <b>mandatory</b>. </p>
 <h3 id="To_compile_your_workspace">To compile your workspace </h3>
 <div class="code-block"><code><span class="SCde">$ swag build -w:first
             Workspace first [fast-debug-windows-x86_64]
             Building first
                 Done 0.067s</span></code>
 </div>
-<p>You can omit the workspace name (<span class="inline-code">-w:first</span> or <span class="inline-code">--workspace:first</span>) if you call the compiler directly from the workspace folder. This command will compile all modules in <span class="inline-code">modules/</span>. </p>
+<p>You can omit the workspace name (<span class="code-inline">-w:first</span> or <span class="code-inline">--workspace:first</span>) if you call the compiler directly from the workspace folder. This command will compile all modules in <span class="code-inline">modules/</span>. </p>
 <p>You can also build and run your workspace. </p>
 <div class="code-block"><code><span class="SCde">$ swag run -w:first
             Workspace first [fast-debug-windows-x86_64]
@@ -203,18 +203,18 @@ Hello world!
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
 <h1 id="Content_of_the_Swag_folder">Content of the Swag folder </h1>
-<p>The Swag folder contains the compiler <span class="inline-code">swag.exe</span>, but also a bunch of sub folders. </p>
+<p>The Swag folder contains the compiler <span class="code-inline">swag.exe</span>, but also a bunch of sub folders. </p>
 <ul>
-<li><span class="inline-code">reference/</span> is a workspace which contains an overview of the language, in the form of small tests.</li>
-<li><span class="inline-code">testsuite/</span> is a workspace which contains all the tests to debug the compiler.</li>
-<li><span class="inline-code">runtime/</span> contains the compiler runtime, which is included in all user modules.</li>
-<li><span class="inline-code">std/</span> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
+<li><span class="code-inline">reference/</span> is a workspace which contains an overview of the language, in the form of small tests.</li>
+<li><span class="code-inline">testsuite/</span> is a workspace which contains all the tests to debug the compiler.</li>
+<li><span class="code-inline">runtime/</span> contains the compiler runtime, which is included in all user modules.</li>
+<li><span class="code-inline">std/</span> is the <a href="std.php">standard workspace</a> which contains all the standard modules that come with the compiler. A big work in progress.</li>
 </ul>
 <h1 id="The_Swag_language">The Swag language </h1>
-<p>You should take a look at the <span class="inline-code">reference/</span> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
+<p>You should take a look at the <span class="code-inline">reference/</span> sub folder in the Swag directory, or to the corresponding generated <a href="language.php">documentation</a>. It contains the list of all that can be done with the language, in the form of small tests (in fact it's not really exhaustive, but should be...). </p>
 <p>It's a good starting point to familiarize yourself with the language. </p>
-<p>And as this is a normal Swag workspace, you could also build and test it with <span class="inline-code">swag test -w:swag/reference</span>. </p>
-<p>You will also find some small examples (mostly written for tests) in <span class="inline-code">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="inline-code">/examples</span>) and type for example <span class="inline-code">swag run -m:wnd</span>. </p>
+<p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
+<p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 </div>
 </div>
 </div>

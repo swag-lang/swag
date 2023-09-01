@@ -121,14 +121,14 @@ void GenDoc::outputStyles()
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }\n\
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }\n\
         \n\
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }\n\
-        .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }\n\
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
         .table-enumeration td:last-child  { width: 100%; }\n\
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
         .table-enumeration a              { text-decoration: none; color: inherit; }\n\
         \n\
-        .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\
             border-radius:      5px;\n\
@@ -727,7 +727,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 pz1++;
             if (*pz1 == '\'')
             {
-                result += "<span class=\"inline-code\">";
+                result += "<span class=\"code-inline\">";
                 pz++;
                 while (pz != pz1)
                     result += *pz++;
@@ -744,7 +744,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         {
             inCodeMode = !inCodeMode;
             if (inCodeMode)
-                result += "<span class=\"inline-code\">";
+                result += "<span class=\"code-inline\">";
             else
                 result += "</span>";
             pz++;
