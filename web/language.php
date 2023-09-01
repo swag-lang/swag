@@ -7533,30 +7533,30 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 </div>
 <p>You can create a special quote by adding a title on the first line. </p>
 <ul>
-<li><span class="inline-code">:note</span></li>
-<li><span class="inline-code">:tip</span></li>
-<li><span class="inline-code">:warning</span></li>
-<li><span class="inline-code">:attention</span></li>
+<li><span class="inline-code">Note:</span></li>
+<li><span class="inline-code">Tip:</span></li>
+<li><span class="inline-code">Warning:</span></li>
+<li><span class="inline-code">Attention:</span></li>
 </ul>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :note</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Note:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title"> Note</span></div><p> This is the content </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :tip</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Tip:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-tip">
 <div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is the content </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :warning</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Warning:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> This is the content </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; :attention</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Attention:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-attention">

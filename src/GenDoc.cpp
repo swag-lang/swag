@@ -358,19 +358,19 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 blk->kind = UserBlockKind::CodeRaw;
                 start++;
             }
-            else if (line.startsWith("> :note"))
+            else if (line.startsWith("> Note:"))
             {
                 blk->kind = UserBlockKind::BlockquoteNote;
             }
-            else if (line.startsWith("> :tip"))
+            else if (line.startsWith("> Tip:"))
             {
                 blk->kind = UserBlockKind::BlockquoteTip;
             }
-            else if (line.startsWith("> :warning"))
+            else if (line.startsWith("> Warning:"))
             {
                 blk->kind = UserBlockKind::BlockquoteWarning;
             }
-            else if (line.startsWith("> :attention"))
+            else if (line.startsWith("> Attention:"))
             {
                 blk->kind = UserBlockKind::BlockquoteAttention;
             }

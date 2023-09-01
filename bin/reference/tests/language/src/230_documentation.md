@@ -40,7 +40,7 @@ If the module contains **markdown** files with the '.md' extension, they will be
 // This is yet another paragraph.
 ```
 
-> :tip
+> Tip:
 > Everything between empty lines is considered to be a simple paragraph. Which
 > means that if you put several comments on several lines like this, they all
 > will be part of the same paragraph.
@@ -57,7 +57,7 @@ Inside a paragraph, you can end of line with '\' to force a break without creati
 // But third line has a break before.
 ```
 
-> :tip
+> Tip:
 > First line.
 > Second line is on first line.\
 > But third line has a break before.
@@ -76,7 +76,7 @@ are respected. The paragraph will be generated `as is` without any markdown chan
 // ---
 ```
 
-> :tip
+> Tip:
 > ---
 > Even...
 >
@@ -105,7 +105,7 @@ You can create a **list** of bullet points with `\*`.
 // * This is a bullet point
 ```
 
-> :tip
+> Tip:
 > * This is a bullet point
 > * This is a bullet point
 > * This is a bullet point
@@ -127,41 +127,41 @@ You can create a **quote** with `>`
 > End of the quote.
 
 You can create a special quote by adding a title on the first line.
-* `:note`
-* `:tip`
-* `:warning`
-* `:attention`
+* `Note:`
+* `Tip:`
+* `Warning:`
+* `Attention:`
 
 ```swag
-// > :note
+// > Note:
 // > This is the content
 ```
 
-> :note
+> Note:
 > This is the content
 
 ```swag
-// > :tip
+// > Tip:
 // > This is the content
 ```
 
-> :tip
+> Tip:
 > This is the content
 
 ```swag
-// > :warning
+// > Warning:
 // > This is the content
 ```
 
-> :warning
+> Warning:
 > This is the content
 
 ```swag
-// > :attention
+// > Attention:
 // > This is the content
 ```
 
-> :attention
+> Attention:
 > This is the content
 
 ## Tables
@@ -176,7 +176,7 @@ You can create a **table** with `|`.
 // | switch       | Check an invalid case in a '#[Swag.Complete]' switch
 ```
 
-> :tip
+> Tip:
 > | boundcheck   | Check out of bound access
 > | overflow     | Check type conversion lost of bits or precision
 > | math         | Various math checks (like a negative '@sqrt')
@@ -193,7 +193,7 @@ You can create a simple **code paragraph** with three backticks before and after
 // ```
 ```
 
-> :tip
+> Tip:
 > ```
 > if a == true
 >   @print("true")
@@ -215,7 +215,7 @@ And if you want **syntax coloration**, add 'swag' after the three backticks. Onl
 // ```
 ```
 
-> :tip
+> Tip:
 > ```swag
 > if a == true
 >   @print("true")
@@ -243,7 +243,7 @@ You can create an external **reference** with `\[name\](link)`.
 // This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
 ```
 
-> :tip
+> Tip:
 > This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
 
 ## Images
@@ -266,7 +266,7 @@ Some other markers are also supported inside texts.
 // This character \n is escaped, and 'n' will be output as is.\
 ```
 
-> :tip
+> Tip:
 > This is `inline code` with back ticks.\
 > This is inline 'code' with normal ticks, but just for a single word.\
 > This is **bold**.\
