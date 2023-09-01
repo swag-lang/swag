@@ -33,6 +33,7 @@
         
         .container a        { color:           DoggerBlue; }
         .container a:hover  { text-decoration: underline; }
+        .container img      { margin:          0 auto; }
         
         .left a     { text-decoration: none; }
         .left ul    { list-style-type: none; margin-left: -20px; }

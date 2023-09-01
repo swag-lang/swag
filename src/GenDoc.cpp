@@ -49,6 +49,7 @@ void GenDoc::outputStyles()
         \n\
         .container a        { color:           DoggerBlue; }\n\
         .container a:hover  { text-decoration: underline; }\n\
+        .container img      { margin:          0 auto; }\n\
         \n\
         .left a     { text-decoration: none; }\n\
         .left ul    { list-style-type: none; margin-left: -20px; }\n\
