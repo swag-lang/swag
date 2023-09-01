@@ -128,7 +128,7 @@ void GenDoc::outputStyles()
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
         .table-enumeration a              { text-decoration: none; color: inherit; }\n\
         \n\
-        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 0px 8px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\
             border-radius:      5px;\n\
