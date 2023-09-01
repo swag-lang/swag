@@ -999,267 +999,270 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
     }
 
-    for (size_t i = 0; i < childs.size(); i++)
     {
-        auto child = childs[i];
-        if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
-            continue;
-
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-
-        // Using can only be used on a structure
-        if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
-            return context->report({child, Err(Err0668)});
-        if (child->flags & AST_DECL_USING && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
-
-        TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_REGISTERED_IN_STRUCT))
+        SWAG_RACE_CONDITION_WRITE(typeInfo->raceFields);
+        for (size_t i = 0; i < childs.size(); i++)
         {
-            typeParam           = g_TypeMgr->makeParam();
-            typeParam->name     = child->token.text;
-            typeParam->typeInfo = child->typeInfo;
-            typeParam->offset   = storageOffset;
-            if (varDecl->flags & AST_DECL_USING)
-                typeParam->flags |= TYPEINFOPARAM_HAS_USING;
-            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
+            auto child = childs[i];
+            if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
+                continue;
+
+            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+
+            // Using can only be used on a structure
+            if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
+                return context->report({child, Err(Err0668)});
+            if (child->flags & AST_DECL_USING && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
+                return context->report({child, Fmt(Err(Err0669), child->typeInfo->getDisplayNameC())});
+
+            TypeInfoParam* typeParam = nullptr;
+            if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_REGISTERED_IN_STRUCT))
+            {
+                typeParam           = g_TypeMgr->makeParam();
+                typeParam->name     = child->token.text;
+                typeParam->typeInfo = child->typeInfo;
+                typeParam->offset   = storageOffset;
+                if (varDecl->flags & AST_DECL_USING)
+                    typeParam->flags |= TYPEINFOPARAM_HAS_USING;
+                SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
+                if (child->kind == AstNodeKind::VarDecl)
+                    typeInfo->fields.push_back(typeParam);
+                else
+                    typeInfo->consts.push_back(typeParam);
+            }
+
+            child->flags |= AST_REGISTERED_IN_STRUCT;
             if (child->kind == AstNodeKind::VarDecl)
-                typeInfo->fields.push_back(typeParam);
+                typeParam = typeInfo->fields[storageIndexField];
             else
-                typeInfo->consts.push_back(typeParam);
-        }
+                typeParam = typeInfo->consts[storageIndexConst];
+            typeParam->typeInfo = child->typeInfo;
+            typeParam->declNode = child;
 
-        child->flags |= AST_REGISTERED_IN_STRUCT;
-        if (child->kind == AstNodeKind::VarDecl)
-            typeParam = typeInfo->fields[storageIndexField];
-        else
-            typeParam = typeInfo->consts[storageIndexConst];
-        typeParam->typeInfo = child->typeInfo;
-        typeParam->declNode = child;
+            if (child->kind != AstNodeKind::VarDecl)
+            {
+                storageIndexConst++;
+                continue;
+            }
 
-        if (child->kind != AstNodeKind::VarDecl)
-        {
-            storageIndexConst++;
-            continue;
-        }
+            typeParam->index = storageIndexField;
+            auto varTypeInfo = varDecl->typeInfo;
 
-        typeParam->index = storageIndexField;
-        auto varTypeInfo = varDecl->typeInfo;
-
-        // If variable is not empty, then struct is not
-        if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
-            structFlags &= ~TYPEINFO_STRUCT_EMPTY;
-
-        // If variable is initialized, struct is too.
-        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-        {
-            if (varDecl->assignment || varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
-                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-            else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
-                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        }
-
-        // Inherit flags
-        if (varTypeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
-            structFlags |= TYPEINFO_STRUCT_NO_COPY;
-
-        // Remove attribute constexpr if necessary
-        if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
-            node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
-
-        // Var is a struct
-        if (varTypeInfo->isStruct())
-        {
-            if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-
-            if (!(varTypeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
-                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-            if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
+            // If variable is not empty, then struct is not
+            if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
                 structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
-            if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
+            // If variable is initialized, struct is too.
+            if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             {
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (!varDecl->type->hasComputedValue())
-                {
-                    auto constSegment = getConstantSegFromContext(varDecl);
-                    varDecl->type->setFlagsValueIsComputed();
-                    varDecl->type->computedValue->storageSegment = constSegment;
-                    SWAG_CHECK(collectAssignment(context, constSegment, varDecl->type->computedValue->storageOffset, varDecl));
-                }
-            }
-
-            // :opAffectConstExpr
-            // Collect has already been simulated with an opAffect
-            else if (varDecl->assignment)
-            {
-                SWAG_ASSERT(varDecl->semFlags & SEMFLAG_EXEC_RET_STACK);
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            }
-        }
-
-        // Var is an array of structs
-        else if (varTypeInfo->isArray() && !varDecl->assignment)
-        {
-            auto varTypeArray = CastTypeInfo<TypeInfoArray>(varTypeInfo, TypeInfoKind::Array);
-            if (varTypeArray->pointedType->isStruct())
-            {
-                structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                if (varDecl->assignment || varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-                if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_EMPTY))
+                else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
+                    structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            }
+
+            // Inherit flags
+            if (varTypeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
+                structFlags |= TYPEINFO_STRUCT_NO_COPY;
+
+            // Remove attribute constexpr if necessary
+            if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
+
+            // Var is a struct
+            if (varTypeInfo->isStruct())
+            {
+                if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+
+                if (!(varTypeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                    structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+                if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
                     structFlags &= ~TYPEINFO_STRUCT_EMPTY;
-            }
-        }
 
-        // Var has an initialization
-        else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-        {
-            SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->flags & AST_CONST_EXPR, varDecl->assignment, Err(Err0670)));
-
-            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_FORCEALIAS);
-            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
-
-            if (typeInfoAssignment->isString())
-            {
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (typeParam)
+                if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
                 {
-                    typeParam->allocateComputedValue();
-                    typeParam->value->reg = varDecl->assignment->computedValue->reg;
-                }
-            }
-            else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue->reg.u64)
-            {
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (typeParam)
-                {
-                    typeParam->allocateComputedValue();
-                    typeParam->value->reg = varDecl->assignment->computedValue->reg;
-                }
-            }
-
-            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        }
-
-        // If the struct is not generic, be sure that a field is not generic either
-        if (!(node->flags & AST_IS_GENERIC))
-        {
-            if (varTypeInfo->isGeneric())
-            {
-                if (varDecl->type)
-                    child = varDecl->type;
-                if (!node->genericParameters)
-                    return context->report({child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())});
-                return context->report({child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())});
-            }
-        }
-
-        auto realStorageOffset = storageOffset;
-
-        // Attribute 'Swag.offset' can be used to force the storage offset of the member
-        bool relocated = false;
-        if (typeParam)
-        {
-            auto forceOffset = typeParam->attributes.getValue(g_LangSpec->name_Swag_Offset, g_LangSpec->name_name);
-            if (forceOffset)
-            {
-                for (auto p : typeInfo->fields)
-                {
-                    if (p->name == forceOffset->text)
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                    if (!varDecl->type->hasComputedValue())
                     {
-                        realStorageOffset = p->offset;
-                        relocated         = true;
-                        break;
+                        auto constSegment = getConstantSegFromContext(varDecl);
+                        varDecl->type->setFlagsValueIsComputed();
+                        varDecl->type->computedValue->storageSegment = constSegment;
+                        SWAG_CHECK(collectAssignment(context, constSegment, varDecl->type->computedValue->storageOffset, varDecl));
                     }
                 }
 
-                if (!relocated)
+                // :opAffectConstExpr
+                // Collect has already been simulated with an opAffect
+                else if (varDecl->assignment)
                 {
-                    auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
-                    SWAG_ASSERT(attr);
-                    return context->report({attr->node, attr->parameters[0].token, Fmt(Err(Err0673), forceOffset->text.c_str())});
+                    SWAG_ASSERT(varDecl->semFlags & SEMFLAG_EXEC_RET_STACK);
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 }
             }
-        }
 
-        // Compute struct alignement
-        auto alignOf      = TypeManager::alignOf(child->typeInfo);
-        typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
+            // Var is an array of structs
+            else if (varTypeInfo->isArray() && !varDecl->assignment)
+            {
+                auto varTypeArray = CastTypeInfo<TypeInfoArray>(varTypeInfo, TypeInfoKind::Array);
+                if (varTypeArray->pointedType->isStruct())
+                {
+                    structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                    if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                        structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+                    if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_EMPTY))
+                        structFlags &= ~TYPEINFO_STRUCT_EMPTY;
+                }
+            }
 
-        // Compute padding before the current field
-        if (!relocated && node->packing > 1 && alignOf)
-        {
-            auto userAlignOf = typeParam->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
-            if (userAlignOf)
-                alignOf = userAlignOf->reg.u8;
+            // Var has an initialization
+            else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            {
+                SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->flags & AST_CONST_EXPR, varDecl->assignment, Err(Err0670)));
+
+                auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_FORCEALIAS);
+                typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
+
+                if (typeInfoAssignment->isString())
+                {
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                    if (typeParam)
+                    {
+                        typeParam->allocateComputedValue();
+                        typeParam->value->reg = varDecl->assignment->computedValue->reg;
+                    }
+                }
+                else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue->reg.u64)
+                {
+                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                    if (typeParam)
+                    {
+                        typeParam->allocateComputedValue();
+                        typeParam->value->reg = varDecl->assignment->computedValue->reg;
+                    }
+                }
+
+                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+            }
+
+            // If the struct is not generic, be sure that a field is not generic either
+            if (!(node->flags & AST_IS_GENERIC))
+            {
+                if (varTypeInfo->isGeneric())
+                {
+                    if (varDecl->type)
+                        child = varDecl->type;
+                    if (!node->genericParameters)
+                        return context->report({child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())});
+                    return context->report({child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())});
+                }
+            }
+
+            auto realStorageOffset = storageOffset;
+
+            // Attribute 'Swag.offset' can be used to force the storage offset of the member
+            bool relocated = false;
+            if (typeParam)
+            {
+                auto forceOffset = typeParam->attributes.getValue(g_LangSpec->name_Swag_Offset, g_LangSpec->name_name);
+                if (forceOffset)
+                {
+                    for (auto p : typeInfo->fields)
+                    {
+                        if (p->name == forceOffset->text)
+                        {
+                            realStorageOffset = p->offset;
+                            relocated         = true;
+                            break;
+                        }
+                    }
+
+                    if (!relocated)
+                    {
+                        auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
+                        SWAG_ASSERT(attr);
+                        return context->report({attr->node, attr->parameters[0].token, Fmt(Err(Err0673), forceOffset->text.c_str())});
+                    }
+                }
+            }
+
+            // Compute struct alignement
+            auto alignOf      = TypeManager::alignOf(child->typeInfo);
+            typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
+
+            // Compute padding before the current field
+            if (!relocated && node->packing > 1 && alignOf)
+            {
+                auto userAlignOf = typeParam->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
+                if (userAlignOf)
+                    alignOf = userAlignOf->reg.u8;
+                else
+                    alignOf = min(alignOf, node->packing);
+                realStorageOffset = (uint32_t) TypeManager::align(realStorageOffset, alignOf);
+                storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
+            }
+
+            typeParam->offset                                          = realStorageOffset;
+            child->resolvedSymbolOverload->computedValue.storageOffset = realStorageOffset;
+            child->resolvedSymbolOverload->storageIndex                = storageIndexField;
+
+            auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
+
+            if (relocated)
+                storageOffset = max(storageOffset, realStorageOffset + childType->sizeOf);
+            else if (node->packing)
+                storageOffset += childType->sizeOf;
+
+            // Create a generic alias
+            if (!(child->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
+            {
+                // Special field name starts with 'item' followed by a number
+                bool hasItemName = false;
+                if (child->token.text.length() > 4 &&
+                    child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
+                {
+                    hasItemName = true;
+                    for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
+                    {
+                        if (!isdigit(child->token.text[idx]))
+                            hasItemName = false;
+                    }
+                }
+
+                // User cannot name its variables itemX
+                if (!(node->flags & AST_GENERATED) && hasItemName)
+                {
+                    auto note = Diagnostic::help(Hlp(Hlp0009));
+                    return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, note);
+                }
+
+                if (!hasItemName)
+                {
+                    auto  overload = child->resolvedSymbolOverload;
+                    Utf8  name     = Fmt("item%u", storageIndexField);
+                    auto& symTable = node->scope->symTable;
+
+                    AddSymbolTypeInfo toAdd;
+                    toAdd.node           = child;
+                    toAdd.typeInfo       = child->typeInfo;
+                    toAdd.kind           = SymbolKind::Variable;
+                    toAdd.flags          = overload->flags;
+                    toAdd.storageOffset  = overload->computedValue.storageOffset;
+                    toAdd.storageSegment = overload->computedValue.storageSegment;
+                    toAdd.aliasName      = &name;
+
+                    symTable.addSymbolTypeInfo(context, toAdd);
+                }
+            }
             else
-                alignOf = min(alignOf, node->packing);
-            realStorageOffset = (uint32_t) TypeManager::align(realStorageOffset, alignOf);
-            storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
-        }
-
-        typeParam->offset                                          = realStorageOffset;
-        child->resolvedSymbolOverload->computedValue.storageOffset = realStorageOffset;
-        child->resolvedSymbolOverload->storageIndex                = storageIndexField;
-
-        auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
-        typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
-
-        if (relocated)
-            storageOffset = max(storageOffset, realStorageOffset + childType->sizeOf);
-        else if (node->packing)
-            storageOffset += childType->sizeOf;
-
-        // Create a generic alias
-        if (!(child->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
-        {
-            // Special field name starts with 'item' followed by a number
-            bool hasItemName = false;
-            if (child->token.text.length() > 4 &&
-                child->token.text[0] == 'i' && child->token.text[1] == 't' && child->token.text[2] == 'e' && child->token.text[3] == 'm')
             {
-                hasItemName = true;
-                for (uint32_t idx = 4; idx < child->token.text.length(); idx++)
-                {
-                    if (!isdigit(child->token.text[idx]))
-                        hasItemName = false;
-                }
+                typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
             }
 
-            // User cannot name its variables itemX
-            if (!(node->flags & AST_GENERATED) && hasItemName)
-            {
-                auto note = Diagnostic::help(Hlp(Hlp0009));
-                return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, note);
-            }
-
-            if (!hasItemName)
-            {
-                auto  overload = child->resolvedSymbolOverload;
-                Utf8  name     = Fmt("item%u", storageIndexField);
-                auto& symTable = node->scope->symTable;
-
-                AddSymbolTypeInfo toAdd;
-                toAdd.node           = child;
-                toAdd.typeInfo       = child->typeInfo;
-                toAdd.kind           = SymbolKind::Variable;
-                toAdd.flags          = overload->flags;
-                toAdd.storageOffset  = overload->computedValue.storageOffset;
-                toAdd.storageSegment = overload->computedValue.storageSegment;
-                toAdd.aliasName      = &name;
-
-                symTable.addSymbolTypeInfo(context, toAdd);
-            }
+            storageIndexField++;
         }
-        else
-        {
-            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
-        }
-
-        storageIndexField++;
     }
 
     // A struct cannot have a zero size

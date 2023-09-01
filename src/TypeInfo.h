@@ -636,6 +636,8 @@ struct TypeInfoStruct : public TypeInfo
     uint32_t cptRemainingInterfacesReg  = 0;
     uint32_t cptRemainingMethods        = 0;
     uint32_t cptRemainingSpecialMethods = 0;
+
+    SWAG_RACE_CONDITION_INSTANCE(raceFields);
 };
 
 struct TypeInfoAlias : public TypeInfo

@@ -267,23 +267,26 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
         }
 
         // Be sure sub structs are generated too
-        for (auto typeParam : typeInfoStruct->fields)
         {
-            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-            if (typeVar->isArray())
-                typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-            if (!typeVar->isStruct())
-                continue;
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            generateStructAlloc(context, typeStructVar);
-            if (context->result != ContextResult::Done)
-                return;
-            if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-                needDrop = true;
-            if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-                needPostCopy = true;
-            if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-                needPostMove = true;
+            SWAG_RACE_CONDITION_READ(typeInfoStruct->raceFields);
+            for (auto typeParam : typeInfoStruct->fields)
+            {
+                auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+                if (typeVar->isArray())
+                    typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+                if (!typeVar->isStruct())
+                    continue;
+                auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+                generateStructAlloc(context, typeStructVar);
+                if (context->result != ContextResult::Done)
+                    return;
+                if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
+                    needDrop = true;
+                if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
+                    needPostCopy = true;
+                if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+                    needPostMove = true;
+            }
         }
 
         switch (kind)
@@ -1624,7 +1627,11 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
-    auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+    context->job->waitTypeCompleted(typeStruct);
+    if (context->result != ContextResult::Done)
+        return true;
+
     bool somethingToDo = false;
     switch (node->kind)
     {
