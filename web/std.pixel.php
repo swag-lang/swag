@@ -660,57 +660,57 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Pixel_Bmp_BI_BITFIELDS" class="code-type"><span class="SCst">BI_BITFIELDS</span></td>
+<td id="Pixel_Bmp_BI_BITFIELDS">BI_BITFIELDS</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RGB" class="code-type"><span class="SCst">BI_RGB</span></td>
+<td id="Pixel_Bmp_BI_RGB">BI_RGB</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE4" class="code-type"><span class="SCst">BI_RLE4</span></td>
+<td id="Pixel_Bmp_BI_RLE4">BI_RLE4</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_Bmp_BI_RLE8" class="code-type"><span class="SCst">BI_RLE8</span></td>
+<td id="Pixel_Bmp_BI_RLE8">BI_RLE8</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ClipperScaleCoords" class="code-type"><span class="SCst">ClipperScaleCoords</span></td>
+<td id="Pixel_ClipperScaleCoords">ClipperScaleCoords</td>
 <td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetHandle" class="code-type"><span class="SCst">InvalidRenderTargetHandle</span></td>
+<td id="Pixel_InvalidRenderTargetHandle">InvalidRenderTargetHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidRenderTargetSurfaceHandle" class="code-type"><span class="SCst">InvalidRenderTargetSurfaceHandle</span></td>
+<td id="Pixel_InvalidRenderTargetSurfaceHandle">InvalidRenderTargetSurfaceHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderHandle" class="code-type"><span class="SCst">InvalidShaderHandle</span></td>
+<td id="Pixel_InvalidShaderHandle">InvalidShaderHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidShaderParamHandle" class="code-type"><span class="SCst">InvalidShaderParamHandle</span></td>
+<td id="Pixel_InvalidShaderParamHandle">InvalidShaderParamHandle</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_InvalidTextureHandle" class="code-type"><span class="SCst">InvalidTextureHandle</span></td>
+<td id="Pixel_InvalidTextureHandle">InvalidTextureHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_MaxAAEdge" class="code-type"><span class="SCst">MaxAAEdge</span></td>
+<td id="Pixel_MaxAAEdge">MaxAAEdge</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -728,32 +728,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Pixel_Clipper_CInt" class="code-type"><span class="SCst">CInt</span></td>
+<td id="Pixel_Clipper_CInt">CInt</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetHandle" class="code-type"><span class="SCst">RenderTargetHandle</span></td>
+<td id="Pixel_RenderTargetHandle">RenderTargetHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_RenderTargetSurfaceHandle" class="code-type"><span class="SCst">RenderTargetSurfaceHandle</span></td>
+<td id="Pixel_RenderTargetSurfaceHandle">RenderTargetSurfaceHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderHandle" class="code-type"><span class="SCst">ShaderHandle</span></td>
+<td id="Pixel_ShaderHandle">ShaderHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_ShaderParamHandle" class="code-type"><span class="SCst">ShaderParamHandle</span></td>
+<td id="Pixel_ShaderParamHandle">ShaderParamHandle</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Pixel_TextureHandle" class="code-type"><span class="SCst">TextureHandle</span></td>
+<td id="Pixel_TextureHandle">TextureHandle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -771,567 +771,567 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">AliceBlue</span></td>
+<td>AliceBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AntiqueWhite</span></td>
+<td>AntiqueWhite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Aqua</span></td>
+<td>Aqua</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Aquamarine</span></td>
+<td>Aquamarine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Azure</span></td>
+<td>Azure</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Beige</span></td>
+<td>Beige</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bisque</span></td>
+<td>Bisque</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Black</span></td>
+<td>Black</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BlanchedAlmond</span></td>
+<td>BlanchedAlmond</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Blue</span></td>
+<td>Blue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BlueViolet</span></td>
+<td>BlueViolet</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Brown</span></td>
+<td>Brown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BurlyWood</span></td>
+<td>BurlyWood</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CadetBlue</span></td>
+<td>CadetBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Chartreuse</span></td>
+<td>Chartreuse</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Chocolate</span></td>
+<td>Chocolate</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Coral</span></td>
+<td>Coral</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CornflowerBlue</span></td>
+<td>CornflowerBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cornsilk</span></td>
+<td>Cornsilk</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Crimson</span></td>
+<td>Crimson</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cyan</span></td>
+<td>Cyan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkBlue</span></td>
+<td>DarkBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkCyan</span></td>
+<td>DarkCyan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkGoldenrod</span></td>
+<td>DarkGoldenrod</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkGray</span></td>
+<td>DarkGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkGreen</span></td>
+<td>DarkGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkKhaki</span></td>
+<td>DarkKhaki</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkMagenta</span></td>
+<td>DarkMagenta</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkOliveGreen</span></td>
+<td>DarkOliveGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkOrange</span></td>
+<td>DarkOrange</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkOrchid</span></td>
+<td>DarkOrchid</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkRed</span></td>
+<td>DarkRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkSalmon</span></td>
+<td>DarkSalmon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkSeaGreen</span></td>
+<td>DarkSeaGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkSlateBlue</span></td>
+<td>DarkSlateBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkSlateGray</span></td>
+<td>DarkSlateGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkTurquoise</span></td>
+<td>DarkTurquoise</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkViolet</span></td>
+<td>DarkViolet</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeepPink</span></td>
+<td>DeepPink</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeepSkyBlue</span></td>
+<td>DeepSkyBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DimGray</span></td>
+<td>DimGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DodgerBlue</span></td>
+<td>DodgerBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Firebrick</span></td>
+<td>Firebrick</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FloralWhite</span></td>
+<td>FloralWhite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ForestGreen</span></td>
+<td>ForestGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Fuchsia</span></td>
+<td>Fuchsia</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gainsboro</span></td>
+<td>Gainsboro</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GhostWhite</span></td>
+<td>GhostWhite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gold</span></td>
+<td>Gold</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Goldenrod</span></td>
+<td>Goldenrod</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray</span></td>
+<td>Gray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Green</span></td>
+<td>Green</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenYellow</span></td>
+<td>GreenYellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Honeydew</span></td>
+<td>Honeydew</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HotPink</span></td>
+<td>HotPink</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IndianRed</span></td>
+<td>IndianRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Indigo</span></td>
+<td>Indigo</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Ivory</span></td>
+<td>Ivory</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Khaki</span></td>
+<td>Khaki</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Lavender</span></td>
+<td>Lavender</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LavenderBlush</span></td>
+<td>LavenderBlush</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LawnGreen</span></td>
+<td>LawnGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LemonChiffon</span></td>
+<td>LemonChiffon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightBlue</span></td>
+<td>LightBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightCoral</span></td>
+<td>LightCoral</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightCyan</span></td>
+<td>LightCyan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightGoldenrodYellow</span></td>
+<td>LightGoldenrodYellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightGray</span></td>
+<td>LightGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightGreen</span></td>
+<td>LightGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightPink</span></td>
+<td>LightPink</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightSalmon</span></td>
+<td>LightSalmon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightSeaGreen</span></td>
+<td>LightSeaGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightSkyBlue</span></td>
+<td>LightSkyBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightSlateGray</span></td>
+<td>LightSlateGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightSteelBlue</span></td>
+<td>LightSteelBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightYellow</span></td>
+<td>LightYellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Lime</span></td>
+<td>Lime</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LimeGreen</span></td>
+<td>LimeGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Linen</span></td>
+<td>Linen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Magenta</span></td>
+<td>Magenta</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Maroon</span></td>
+<td>Maroon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumAquamarine</span></td>
+<td>MediumAquamarine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumBlue</span></td>
+<td>MediumBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumOrchid</span></td>
+<td>MediumOrchid</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumPurple</span></td>
+<td>MediumPurple</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumSeaGreen</span></td>
+<td>MediumSeaGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumSlateBlue</span></td>
+<td>MediumSlateBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumSpringGreen</span></td>
+<td>MediumSpringGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumTurquoise</span></td>
+<td>MediumTurquoise</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediumVioletRed</span></td>
+<td>MediumVioletRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MidnightBlue</span></td>
+<td>MidnightBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MintCream</span></td>
+<td>MintCream</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MistyRose</span></td>
+<td>MistyRose</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Moccasin</span></td>
+<td>Moccasin</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NavajoWhite</span></td>
+<td>NavajoWhite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Navy</span></td>
+<td>Navy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OldLace</span></td>
+<td>OldLace</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Olive</span></td>
+<td>Olive</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OliveDrab</span></td>
+<td>OliveDrab</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Orange</span></td>
+<td>Orange</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OrangeRed</span></td>
+<td>OrangeRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Orchid</span></td>
+<td>Orchid</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PaleGoldenrod</span></td>
+<td>PaleGoldenrod</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PaleGreen</span></td>
+<td>PaleGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PaleTurquoise</span></td>
+<td>PaleTurquoise</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PaleVioletRed</span></td>
+<td>PaleVioletRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PapayaWhip</span></td>
+<td>PapayaWhip</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PeachPuff</span></td>
+<td>PeachPuff</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Peru</span></td>
+<td>Peru</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Pink</span></td>
+<td>Pink</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Plum</span></td>
+<td>Plum</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PowderBlue</span></td>
+<td>PowderBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Purple</span></td>
+<td>Purple</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Red</span></td>
+<td>Red</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RosyBrown</span></td>
+<td>RosyBrown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RoyalBlue</span></td>
+<td>RoyalBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaddleBrown</span></td>
+<td>SaddleBrown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Salmon</span></td>
+<td>Salmon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SandyBrown</span></td>
+<td>SandyBrown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SeaGreen</span></td>
+<td>SeaGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SeaShell</span></td>
+<td>SeaShell</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sienna</span></td>
+<td>Sienna</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Silver</span></td>
+<td>Silver</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SkyBlue</span></td>
+<td>SkyBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SlateBlue</span></td>
+<td>SlateBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SlateGray</span></td>
+<td>SlateGray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Snow</span></td>
+<td>Snow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SpringGreen</span></td>
+<td>SpringGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SteelBlue</span></td>
+<td>SteelBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Tan</span></td>
+<td>Tan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Teal</span></td>
+<td>Teal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Thistle</span></td>
+<td>Thistle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Tomato</span></td>
+<td>Tomato</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Turquoise</span></td>
+<td>Turquoise</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Violet</span></td>
+<td>Violet</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Wheat</span></td>
+<td>Wheat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">White</span></td>
+<td>White</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WhiteSmoke</span></td>
+<td>WhiteSmoke</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Yellow</span></td>
+<td>Yellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">YellowGreen</span></td>
+<td>YellowGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 </table>
@@ -1362,31 +1362,31 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Copy</span></td>
+<td>Copy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Alpha</span></td>
+<td>Alpha</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Add</span></td>
+<td>Add</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sub</span></td>
+<td>Sub</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SubDst</span></td>
+<td>SubDst</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Min</span></td>
+<td>Min</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Max</span></td>
+<td>Max</td>
 <td></td>
 </tr>
 </table>
@@ -1477,57 +1477,57 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">biSize</span></td>
+<td>biSize</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biWidth</span></td>
+<td>biWidth</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biHeight</span></td>
+<td>biHeight</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biPlanes</span></td>
+<td>biPlanes</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biBitCount</span></td>
+<td>biBitCount</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biCompression</span></td>
+<td>biCompression</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biSizeImage</span></td>
+<td>biSizeImage</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biXPelsPerMeter</span></td>
+<td>biXPelsPerMeter</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biYPelsPerMeter</span></td>
+<td>biYPelsPerMeter</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biClrUsed</span></td>
+<td>biClrUsed</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">biClrImportant</span></td>
+<td>biClrImportant</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -1545,11 +1545,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Inside</span></td>
+<td>Inside</td>
 <td></td>
 </tr>
 </table>
@@ -1566,32 +1566,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">color</span></td>
+<td>color</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hatch</span></td>
+<td>hatch</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">texture</span></td>
+<td>texture</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">uvMode</span></td>
+<td>uvMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">uvRect</span></td>
+<td>uvRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
@@ -1684,15 +1684,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">SolidColor</span></td>
+<td>SolidColor</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Texture</span></td>
+<td>Texture</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hatch</span></td>
+<td>Hatch</td>
 <td></td>
 </tr>
 </table>
@@ -1709,19 +1709,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Intersection</span></td>
+<td>Intersection</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Union</span></td>
+<td>Union</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Difference</span></td>
+<td>Difference</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Xor</span></td>
+<td>Xor</td>
 <td></td>
 </tr>
 </table>
@@ -1738,15 +1738,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">ReverseSolution</span></td>
+<td>ReverseSolution</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">StrictlySimple</span></td>
+<td>StrictlySimple</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PreserveCollinear</span></td>
+<td>PreserveCollinear</td>
 <td></td>
 </tr>
 </table>
@@ -1763,12 +1763,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
@@ -1806,15 +1806,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Miter</span></td>
+<td>Miter</td>
 <td></td>
 </tr>
 </table>
@@ -1831,19 +1831,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">EvenOdd</span></td>
+<td>EvenOdd</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NonZero</span></td>
+<td>NonZero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Positive</span></td>
+<td>Positive</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Negative</span></td>
+<td>Negative</td>
 <td></td>
 </tr>
 </table>
@@ -1860,11 +1860,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Subject</span></td>
+<td>Subject</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Clip</span></td>
+<td>Clip</td>
 <td></td>
 </tr>
 </table>
@@ -1892,11 +1892,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Set</span></td>
+<td>Set</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Clear</span></td>
+<td>Clear</td>
 <td></td>
 </tr>
 </table>
@@ -1913,27 +1913,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">a</span></td>
+<td>a</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">r</span></td>
+<td>r</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">g</span></td>
+<td>g</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">b</span></td>
+<td>b</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">argb</span></td>
+<td>argb</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -2450,22 +2450,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">r</span></td>
+<td>r</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">g</span></td>
+<td>g</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">b</span></td>
+<td>b</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">a</span></td>
+<td>a</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -2483,12 +2483,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_CommandId">CommandId</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> params</span></td>
+<td>using params</td>
 <td class="code-type"><span class="SCde">{clear: {color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>}, drawTriangles: {start: <span class="STpe">u32</span>, count: <span class="STpe">u32</span>}, transform: {tr: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>}, clippingRect: {rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>}, clippingRegion: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>}, font: {fontRef: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>}, blendingMode: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>}, textureFont: {font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, atlasIndex: <span class="STpe">s32</span>}, colorMask: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>, renderTgt: {tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha: <span class="STpe">bool</span>}, shader: {shader: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>}, shaderParam: {param: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, _f32: <span class="STpe">f32</span>, _s32: <span class="STpe">s32</span>}, texture0: {boundRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, textureRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, type: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>, hatch: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, uvMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>, interpolationMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
 <td></td>
 </tr>
@@ -2506,95 +2506,95 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Clear</span></td>
+<td>Clear</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ColorMask</span></td>
+<td>ColorMask</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Transform</span></td>
+<td>Transform</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DrawTriangles</span></td>
+<td>DrawTriangles</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BindTexture0</span></td>
+<td>BindTexture0</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ResetTexture0</span></td>
+<td>ResetTexture0</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BindTextureFont</span></td>
+<td>BindTextureFont</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ResetTextureFont</span></td>
+<td>ResetTextureFont</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetClippingRect</span></td>
+<td>SetClippingRect</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ResetClippingRect</span></td>
+<td>ResetClippingRect</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">StartClippingRegion</span></td>
+<td>StartClippingRegion</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EndClippingRegion</span></td>
+<td>EndClippingRegion</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ResetClippingRegion</span></td>
+<td>ResetClippingRegion</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetClippingRegionMode</span></td>
+<td>SetClippingRegionMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UpdateFont</span></td>
+<td>UpdateFont</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">StartNoOverlap</span></td>
+<td>StartNoOverlap</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">StopNoOverlap</span></td>
+<td>StopNoOverlap</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetBlendingMode</span></td>
+<td>SetBlendingMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BindRenderTarget</span></td>
+<td>BindRenderTarget</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UnbindRenderTarget</span></td>
+<td>UnbindRenderTarget</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReleaseRenderTarget</span></td>
+<td>ReleaseRenderTarget</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetShader</span></td>
+<td>SetShader</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetShaderParam</span></td>
+<td>SetShaderParam</td>
 <td></td>
 </tr>
 </table>
@@ -2611,19 +2611,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Triangle</span></td>
+<td>Triangle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 </table>
@@ -2640,23 +2640,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Pattern</span></td>
+<td>Pattern</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Dot</span></td>
+<td>Dot</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Dash</span></td>
+<td>Dash</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DashDot</span></td>
+<td>DashDot</td>
 <td></td>
 </tr>
 </table>
@@ -2673,7 +2673,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">decodePixels</span></td>
+<td>decodePixels</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -2691,11 +2691,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Blur</span></td>
+<td>Blur</td>
 <td></td>
 </tr>
 </table>
@@ -2712,11 +2712,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Separate</span></td>
+<td>Separate</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Merge</span></td>
+<td>Merge</td>
 <td></td>
 </tr>
 </table>
@@ -2733,22 +2733,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ElementType">ElementType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">p1</span></td>
+<td>p1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">p2</span></td>
+<td>p2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
@@ -2766,23 +2766,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Line</span></td>
+<td>Line</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Arc</span></td>
+<td>Arc</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bezier1</span></td>
+<td>Bezier1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bezier2</span></td>
+<td>Bezier2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Curve</span></td>
+<td>Curve</td>
 <td></td>
 </tr>
 </table>
@@ -2799,72 +2799,72 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">ascent</span></td>
+<td>ascent</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">descent</span></td>
+<td>descent</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">underlinePos</span></td>
+<td>underlinePos</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">underlineSize</span></td>
+<td>underlineSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceBold</span></td>
+<td>forceBold</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceItalic</span></td>
+<td>forceItalic</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fullname</span></td>
+<td>fullname</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">typeFace</span></td>
+<td>typeFace</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_TypeFace">TypeFace</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">atlases</span></td>
+<td>atlases</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphAtlas">GlyphAtlas</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">asciiRef</span></td>
+<td>asciiRef</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">unicodeRef</span></td>
+<td>unicodeRef</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">rune</span>, *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_GlyphDesc">GlyphDesc</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirty</span></td>
+<td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -2946,22 +2946,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">regular</span></td>
+<td>regular</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bold</span></td>
+<td>bold</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">italic</span></td>
+<td>italic</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boldItalic</span></td>
+<td>boldItalic</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
@@ -3073,12 +3073,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">faces</span></td>
+<td>faces</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyleEnumerate">FontFamilyStyleEnumerate</a></span></span></td>
 <td></td>
 </tr>
@@ -3096,19 +3096,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Regular</span></td>
+<td>Regular</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bold</span></td>
+<td>Bold</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Italic</span></td>
+<td>Italic</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BoldItalic</span></td>
+<td>BoldItalic</td>
 <td></td>
 </tr>
 </table>
@@ -3125,12 +3125,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">face</span></td>
+<td>face</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gdi32</span>.<span class="SCst">LOGFONTW</span></span></td>
 <td></td>
 </tr>
@@ -3278,47 +3278,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">texture</span></td>
+<td>texture</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bpp</span></td>
+<td>bpp</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">datas</span></td>
+<td>datas</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirty</span></td>
+<td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curX</span></td>
+<td>curX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curY</span></td>
+<td>curY</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">nextY</span></td>
+<td>nextY</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -3336,42 +3336,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">uv</span></td>
+<td>uv</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">atlasIndex</span></td>
+<td>atlasIndex</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">advanceX</span></td>
+<td>advanceX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">advanceY</span></td>
+<td>advanceY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shiftX</span></td>
+<td>shiftX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shiftY</span></td>
+<td>shiftY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -3389,147 +3389,147 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Dot</span></td>
+<td>Dot</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Horizontal</span></td>
+<td>Horizontal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorizontalLight</span></td>
+<td>HorizontalLight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorizontalNarrow</span></td>
+<td>HorizontalNarrow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Vertical</span></td>
+<td>Vertical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VerticalLight</span></td>
+<td>VerticalLight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VerticalNarrow</span></td>
+<td>VerticalNarrow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SolidDiamond</span></td>
+<td>SolidDiamond</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OutlinedDiamond</span></td>
+<td>OutlinedDiamond</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorizontalDark</span></td>
+<td>HorizontalDark</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VerticalDark</span></td>
+<td>VerticalDark</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Grid</span></td>
+<td>Grid</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GridLarge</span></td>
+<td>GridLarge</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GridDotted</span></td>
+<td>GridDotted</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cross</span></td>
+<td>Cross</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CrossLarge</span></td>
+<td>CrossLarge</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent5</span></td>
+<td>Percent5</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent10</span></td>
+<td>Percent10</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent20</span></td>
+<td>Percent20</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent25</span></td>
+<td>Percent25</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent30</span></td>
+<td>Percent30</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent40</span></td>
+<td>Percent40</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent50</span></td>
+<td>Percent50</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent60</span></td>
+<td>Percent60</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent70</span></td>
+<td>Percent70</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent75</span></td>
+<td>Percent75</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent80</span></td>
+<td>Percent80</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Percent90</span></td>
+<td>Percent90</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CheckBoard</span></td>
+<td>CheckBoard</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CheckBoardLarge</span></td>
+<td>CheckBoardLarge</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Weave</span></td>
+<td>Weave</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DiagonalForward</span></td>
+<td>DiagonalForward</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DiagonalForwardLight</span></td>
+<td>DiagonalForwardLight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DiagonalBackward</span></td>
+<td>DiagonalBackward</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DiagonalBackwardLight</span></td>
+<td>DiagonalBackwardLight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DiagonalCross</span></td>
+<td>DiagonalCross</td>
 <td></td>
 </tr>
 </table>
@@ -3547,12 +3547,12 @@
 <p>Interface to decode a buffer. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">canDecode</span></td>
+<td>canDecode</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">decode</span></td>
+<td>decode</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageDecoder">IImageDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DecodeOptions">DecodeOptions</a></span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -3571,12 +3571,12 @@
 <p>Interface to decode a buffer. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">canEncode</span></td>
+<td>canEncode</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">encode</span></td>
+<td>encode</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_IImageEncoder">IImageEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst">ConcatBuffer</span>, <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span>, <span class="STpe">any</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -3595,47 +3595,47 @@
 <p>An image buffer, in various pixel formats. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">pixels</span></td>
+<td>pixels</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td>All the pixels. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Size in bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td>The width of the image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td>The height of the image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width8</span></td>
+<td>width8</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td>The width, in bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pf</span></td>
+<td>pf</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td>Format of one pixel. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bpp</span></td>
+<td>bpp</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td>Bits per pixel. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bpp8</span></td>
+<td>bpp8</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td>Bytes per pixel. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">workingBuffer</span></td>
+<td>workingBuffer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Image">Image</a></span></span></td>
 <td>Temporary buffer for filters and transformations. </td>
 </tr>
@@ -3891,27 +3891,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Red</span></td>
+<td>Red</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Green</span></td>
+<td>Green</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Blue</span></td>
+<td>Blue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Alpha</span></td>
+<td>Alpha</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RGB</span></td>
+<td>RGB</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RGBA</span></td>
+<td>RGBA</td>
 <td></td>
 </tr>
 </table>
@@ -3928,23 +3928,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Color</span></td>
+<td>Color</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MinRGB</span></td>
+<td>MinRGB</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MaxRGB</span></td>
+<td>MaxRGB</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MeanRGB</span></td>
+<td>MeanRGB</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Alpha</span></td>
+<td>Alpha</td>
 <td></td>
 </tr>
 </table>
@@ -3961,51 +3961,51 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">HueVert</span></td>
+<td>HueVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueHorz</span></td>
+<td>HueHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaturationVert</span></td>
+<td>SaturationVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaturationHorz</span></td>
+<td>SaturationHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightnessVert</span></td>
+<td>LightnessVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightnessHorz</span></td>
+<td>LightnessHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueSaturation</span></td>
+<td>HueSaturation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueLightness</span></td>
+<td>HueLightness</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaturationLightness</span></td>
+<td>SaturationLightness</td>
 <td>(h,0,1) (h,1,0.5) (h,0,0) (h,1,0). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenBlue</span></td>
+<td>GreenBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedBlue</span></td>
+<td>RedBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedGreen</span></td>
+<td>RedGreen</td>
 <td></td>
 </tr>
 </table>
@@ -4023,99 +4023,99 @@
 <p>Kernel format is : kernelSize, kernelNormalizeValue, kernelValues... </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">GaussianBlur3x3A</span></td>
+<td>GaussianBlur3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GaussianBlur3x3B</span></td>
+<td>GaussianBlur3x3B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GaussianBlur5x5A</span></td>
+<td>GaussianBlur5x5A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BoxBlur3x3A</span></td>
+<td>BoxBlur3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BoxBlur5x5A</span></td>
+<td>BoxBlur5x5A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sharpen3x3A</span></td>
+<td>Sharpen3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sharpen3x3B</span></td>
+<td>Sharpen3x3B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Soften3x3A</span></td>
+<td>Soften3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossLeft3x3A</span></td>
+<td>EmbossLeft3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossLeft3x3B</span></td>
+<td>EmbossLeft3x3B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossLeft3x3C</span></td>
+<td>EmbossLeft3x3C</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossRight3x3A</span></td>
+<td>EmbossRight3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossRight3x3B</span></td>
+<td>EmbossRight3x3B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EmbossRight3x3C</span></td>
+<td>EmbossRight3x3C</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3A</span></td>
+<td>EdgeDetect3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3B</span></td>
+<td>EdgeDetect3x3B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3C</span></td>
+<td>EdgeDetect3x3C</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3D</span></td>
+<td>EdgeDetect3x3D</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3E</span></td>
+<td>EdgeDetect3x3E</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EdgeDetect3x3F</span></td>
+<td>EdgeDetect3x3F</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SobelHorizontal3x3A</span></td>
+<td>SobelHorizontal3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SobelVertical3x3A</span></td>
+<td>SobelVertical3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PrevitHorizontal3x3A</span></td>
+<td>PrevitHorizontal3x3A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PrevitVertical3x3A</span></td>
+<td>PrevitVertical3x3A</td>
 <td></td>
 </tr>
 </table>
@@ -4132,11 +4132,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Copy</span></td>
+<td>Copy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AlphaBlend</span></td>
+<td>AlphaBlend</td>
 <td></td>
 </tr>
 </table>
@@ -4153,35 +4153,35 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Raw</span></td>
+<td>Raw</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bilinear</span></td>
+<td>Bilinear</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bicubic</span></td>
+<td>Bicubic</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gaussian</span></td>
+<td>Gaussian</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Quadratic</span></td>
+<td>Quadratic</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hermite</span></td>
+<td>Hermite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hamming</span></td>
+<td>Hamming</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Catrom</span></td>
+<td>Catrom</td>
 <td></td>
 </tr>
 </table>
@@ -4198,15 +4198,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">T90</span></td>
+<td>T90</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">T180</span></td>
+<td>T180</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">T270</span></td>
+<td>T270</td>
 <td></td>
 </tr>
 </table>
@@ -4994,11 +4994,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Pixel</span></td>
+<td>Pixel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Linear</span></td>
+<td>Linear</td>
 <td></td>
 </tr>
 </table>
@@ -5015,23 +5015,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bevel</span></td>
+<td>Bevel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Miter</span></td>
+<td>Miter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MiterBevel</span></td>
+<td>MiterBevel</td>
 <td></td>
 </tr>
 </table>
@@ -5085,7 +5085,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">quality</span></td>
+<td>quality</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td>Encoding quality between 1 and 100. </td>
 </tr>
@@ -5140,31 +5140,31 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Triangle</span></td>
+<td>Triangle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ArrowAnchor</span></td>
+<td>ArrowAnchor</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SquareAnchor</span></td>
+<td>SquareAnchor</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RoundAnchor</span></td>
+<td>RoundAnchor</td>
 <td></td>
 </tr>
 </table>
@@ -5181,82 +5181,82 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">elements</span></td>
+<td>elements</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Element">Element</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">startPoint</span></td>
+<td>startPoint</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endPoint</span></td>
+<td>endPoint</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isClosed</span></td>
+<td>isClosed</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isDirty</span></td>
+<td>isDirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">serial</span></td>
+<td>serial</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">flattenQuality</span></td>
+<td>flattenQuality</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPolyOnly</span></td>
+<td>isPolyOnly</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isFlatten</span></td>
+<td>isFlatten</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMin</span></td>
+<td>bvMin</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMax</span></td>
+<td>bvMax</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endPosBuffer</span></td>
+<td>endPosBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">polygon</span></td>
+<td>polygon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Polygon">Polygon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">points</span></td>
+<td>points</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">triangles</span></td>
+<td>triangles</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edgeList</span></td>
+<td>edgeList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
@@ -5518,17 +5518,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">paths</span></td>
+<td>paths</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMin</span></td>
+<td>bvMin</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMax</span></td>
+<td>bvMax</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
@@ -5750,15 +5750,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Antialiased</span></td>
+<td>Antialiased</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 </table>
@@ -5775,11 +5775,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Draft</span></td>
+<td>Draft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Normal</span></td>
+<td>Normal</td>
 <td></td>
 </tr>
 </table>
@@ -5796,47 +5796,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">paintParams</span></td>
+<td>paintParams</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintParams">PaintParams</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paintQuality</span></td>
+<td>paintQuality</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintQuality">PaintQuality</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">transform</span></td>
+<td>transform</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">blendingMode</span></td>
+<td>blendingMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">interpolationMode</span></td>
+<td>interpolationMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">clippingRect</span></td>
+<td>clippingRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackClipRect</span></td>
+<td>stackClipRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">clippingRectOn</span></td>
+<td>clippingRectOn</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorMask</span></td>
+<td>colorMask</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span></span></td>
 <td></td>
 </tr>
@@ -5854,102 +5854,102 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">commandBuffer</span></td>
+<td>commandBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Command">Command</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">vertexBuffer</span></td>
+<td>vertexBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_VertexLayout">VertexLayout</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">triangulateIdx</span></td>
+<td>triangulateIdx</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fake</span></td>
+<td>fake</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sharedSolidPen</span></td>
+<td>sharedSolidPen</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Pen">Pen</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sharedSolidBrush</span></td>
+<td>sharedSolidBrush</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sharedLinePath</span></td>
+<td>sharedLinePath</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sharedLinePathList</span></td>
+<td>sharedLinePathList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LinePathList">LinePathList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sharedRoundTmp</span></td>
+<td>sharedRoundTmp</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({factor: <span class="STpe">f32</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>})</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curState</span></td>
+<td>curState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackState</span></td>
+<td>stackState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PaintState">PaintState</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackTransform</span></td>
+<td>stackTransform</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastTexture0Type</span></td>
+<td>lastTexture0Type</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackRT</span></td>
+<td>stackRT</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curRT</span></td>
+<td>curRT</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastTexture0Handle</span></td>
+<td>lastTexture0Handle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasTextureFont</span></td>
+<td>hasTextureFont</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">drawingBegin</span></td>
+<td>drawingBegin</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">overlapMode</span></td>
+<td>overlapMode</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canSetTexture0</span></td>
+<td>canSetTexture0</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -7406,82 +7406,82 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">brush</span></td>
+<td>brush</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pattern</span></td>
+<td>pattern</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dashBeginCapStyle</span></td>
+<td>dashBeginCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dashEndCapStyle</span></td>
+<td>dashEndCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">borderPos</span></td>
+<td>borderPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BorderPos">BorderPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capStartScaleX</span></td>
+<td>capStartScaleX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capStartScaleY</span></td>
+<td>capStartScaleY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capEndScaleX</span></td>
+<td>capEndScaleX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capEndScaleY</span></td>
+<td>capEndScaleY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">joinMiterLimit</span></td>
+<td>joinMiterLimit</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">plotOffset</span></td>
+<td>plotOffset</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dashStyle</span></td>
+<td>dashStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_DashStyle">DashStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">beginCapStyle</span></td>
+<td>beginCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endCapStyle</span></td>
+<td>endCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">joinStyle</span></td>
+<td>joinStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_JoinStyle">JoinStyle</a></span></span></td>
 <td></td>
 </tr>
@@ -7557,19 +7557,19 @@
 <p>Desribe the layout format of one image pixel. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">BGR8</span></td>
+<td>BGR8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BGRA8</span></td>
+<td>BGRA8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RGB8</span></td>
+<td>RGB8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RGBA8</span></td>
+<td>RGBA8</td>
 <td></td>
 </tr>
 </table>
@@ -7679,12 +7679,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">compressionLevel</span></td>
+<td>compressionLevel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Compress</span>.<span class="SCst">Deflate</span>.<span class="SCst">CompressionLevel</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">filtering</span></td>
+<td>filtering</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -7739,12 +7739,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">p</span></td>
+<td>p</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">q</span></td>
+<td>q</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
@@ -7762,17 +7762,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> v</span></td>
+<td>using v</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edgeList</span></td>
+<td>edgeList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">border</span></td>
+<td>border</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
 <td></td>
 </tr>
@@ -7912,27 +7912,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">constrainedEdge</span></td>
+<td>constrainedEdge</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">delaunayEdge</span></td>
+<td>delaunayEdge</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">points</span></td>
+<td>points</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">neighbors</span></td>
+<td>neighbors</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">interior</span></td>
+<td>interior</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -7950,37 +7950,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">points</span></td>
+<td>points</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isClockwise</span></td>
+<td>isClockwise</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isConvex</span></td>
+<td>isConvex</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">area</span></td>
+<td>area</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">totalLen</span></td>
+<td>totalLen</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMin</span></td>
+<td>bvMin</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bvMax</span></td>
+<td>bvMax</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
@@ -8177,87 +8177,87 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td>using native</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_NativeRenderOgl">NativeRenderOgl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">vertexbuffer</span></td>
+<td>vertexbuffer</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shaderSimple</span></td>
+<td>shaderSimple</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderSimple">ShaderSimple</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shaderAA</span></td>
+<td>shaderAA</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderAA">ShaderAA</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shaderBlur</span></td>
+<td>shaderBlur</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBlur">ShaderBlur</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">worldTransform</span></td>
+<td>worldTransform</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">orthoMatrix</span></td>
+<td>orthoMatrix</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Matrix4x4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modelMatrix</span></td>
+<td>modelMatrix</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Matrix4x4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">whiteTexture</span></td>
+<td>whiteTexture</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hatchTextures</span></td>
+<td>hatchTextures</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">36</span>] <span class="SCst">Ogl</span>.<span class="SCst">GLuint</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">blendingMode</span></td>
+<td>blendingMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curRC</span></td>
+<td>curRC</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderingContext">RenderingContext</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackReleasedRT</span></td>
+<td>stackReleasedRT</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stackRT</span></td>
+<td>stackRT</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curRT</span></td>
+<td>curRT</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curShader</span></td>
+<td>curShader</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">overlapMode</span></td>
+<td>overlapMode</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8794,27 +8794,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorBuffer</span></td>
+<td>colorBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">depthStencil</span></td>
+<td>depthStencil</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paintAlpha</span></td>
+<td>paintAlpha</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paintAlphaIdx</span></td>
+<td>paintAlphaIdx</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -8832,22 +8832,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">hDC</span></td>
+<td>hDC</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hRC</span></td>
+<td>hRC</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -8865,52 +8865,52 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">slice</span></td>
+<td>slice</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fontStyle</span></td>
+<td>fontStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasFontStyle</span></td>
+<td>hasFontStyle</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isSpace</span></td>
+<td>isSpace</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isEol</span></td>
+<td>isEol</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorIdx</span></td>
+<td>colorIdx</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boundRect</span></td>
+<td>boundRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pos</span></td>
+<td>pos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">font</span></td>
+<td>font</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">under</span></td>
+<td>under</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UnderlineStyle">UnderlineStyle</a></span></span></td>
 <td></td>
 </tr>
@@ -8929,27 +8929,27 @@
 <p>Represents a string with embedded formats. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">raw</span></td>
+<td>raw</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td>The string as passed by the user. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">chunks</span></td>
+<td>chunks</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichChunk">RichChunk</a></span>)</span></td>
 <td>The corresponding list of chunks. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">layoutRect</span></td>
+<td>layoutRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boundRect</span></td>
+<td>boundRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirty</span></td>
+<td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td>If dirty, <span class="inline-code">Compute</span>. </td>
 </tr>
@@ -9133,42 +9133,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">font</span></td>
+<td>font</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamily">FontFamily</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fontStyle</span></td>
+<td>fontStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_FontFamilyStyle">FontFamilyStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">palette</span></td>
+<td>palette</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">brush</span></td>
+<td>brush</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Brush">Brush</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">horzAlignment</span></td>
+<td>horzAlignment</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringHorzAlignment">StringHorzAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">vertAlignment</span></td>
+<td>vertAlignment</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringVertAlignment">StringVertAlignment</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lineGap</span></td>
+<td>lineGap</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">flags</span></td>
+<td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_StringFormatFlags">StringFormatFlags</a></span></span></td>
 <td></td>
 </tr>
@@ -9186,7 +9186,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
@@ -9204,47 +9204,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mvp</span></td>
+<td>mvp</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mdl</span></td>
+<td>mdl</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boundRect</span></td>
+<td>boundRect</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">textureRect</span></td>
+<td>textureRect</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">uvMode</span></td>
+<td>uvMode</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">copyMode</span></td>
+<td>copyMode</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">textureW</span></td>
+<td>textureW</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">textureH</span></td>
+<td>textureH</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
@@ -9262,17 +9262,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radius</span></td>
+<td>radius</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">axis</span></td>
+<td>axis</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
@@ -9290,7 +9290,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span></span></td>
 <td></td>
 </tr>
@@ -9308,19 +9308,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WordWrap</span></td>
+<td>WordWrap</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Clip</span></td>
+<td>Clip</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DontAdaptSingleLineHeight</span></td>
+<td>DontAdaptSingleLineHeight</td>
 <td></td>
 </tr>
 </table>
@@ -9337,19 +9337,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Center</span></td>
+<td>Center</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Justify</span></td>
+<td>Justify</td>
 <td></td>
 </tr>
 </table>
@@ -9366,22 +9366,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">ascent</span></td>
+<td>ascent</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Maximum size above baseline. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">descent</span></td>
+<td>descent</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Maximum size below baseline. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>ascent + descent. </td>
 </tr>
@@ -9399,12 +9399,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">str</span></td>
+<td>str</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichString">RichString</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fmt</span></td>
+<td>fmt</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RichStringFormat">RichStringFormat</a></span></span></td>
 <td></td>
 </tr>
@@ -9533,15 +9533,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Center</span></td>
+<td>Center</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 </table>
@@ -9558,27 +9558,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pf</span></td>
+<td>pf</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">valid</span></td>
+<td>valid</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -9707,32 +9707,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">fullname</span></td>
+<td>fullname</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">face</span></td>
+<td>face</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">FreeType</span>.<span class="SCst">FT_FaceRec</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceBoldDiv</span></td>
+<td>forceBoldDiv</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceItalic</span></td>
+<td>forceItalic</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceBold</span></td>
+<td>forceBold</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -9933,15 +9933,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Fill</span></td>
+<td>Fill</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FillSubRect</span></td>
+<td>FillSubRect</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Tile</span></td>
+<td>Tile</td>
 <td></td>
 </tr>
 </table>
@@ -9958,15 +9958,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Underline</span></td>
+<td>Underline</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Strikeout</span></td>
+<td>Strikeout</td>
 <td></td>
 </tr>
 </table>
@@ -9983,27 +9983,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">pos</span></td>
+<td>pos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">uv</span></td>
+<td>uv</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">color</span></td>
+<td>color</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aa</span></td>
+<td>aa</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">12</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aanum</span></td>
+<td>aanum</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>

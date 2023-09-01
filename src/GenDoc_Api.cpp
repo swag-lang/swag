@@ -135,6 +135,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         }
 
         helpContent += "<tr>\n";
+        helpContent += "<td class=\"code-type\">";
 
         if (kind == AstNodeKind::FuncDecl)
         {
@@ -168,18 +169,16 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                 parameters += ")";
             }
 
-            helpContent += "<td class=\"code-type\">";
             helpContent += Fmt("<span class=\"%s\"><a href=\"#%s\">%s</a></span>", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
             helpContent += syntaxColor(parameters, SyntaxColorMode::ForDoc);
-            helpContent += "</td>\n";
         }
         else
         {
-            helpContent += "<td>";
             auto name = syntaxColor(n1->token.text, SyntaxColorMode::ForDoc);
             helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
-            helpContent += "</td>\n";
         }
+
+        helpContent += "</td>\n";
 
         // Short desc
         helpContent += "<td>";
@@ -566,8 +565,8 @@ void GenDoc::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"code-type\">", toRef(n->getScopedName()).c_str());
-                helpContent += syntaxColor(n->token.text, SyntaxColorMode::ForDoc);
+                helpContent += Fmt("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                helpContent += n->token.text;
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"code-type\">";
@@ -607,8 +606,8 @@ void GenDoc::generateContent()
 
                 helpContent += "<tr>\n";
 
-                helpContent += Fmt("<td id=\"%s\" class=\"code-type\">", toRef(n->getScopedName()).c_str());
-                helpContent += syntaxColor(n->token.text, SyntaxColorMode::ForDoc);
+                helpContent += Fmt("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                helpContent += n->token.text;
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"code-type\">";
@@ -679,12 +678,12 @@ void GenDoc::generateContent()
 
                     helpContent += "<tr>\n";
 
-                    helpContent += "<td class=\"code-type\">";
+                    helpContent += "<td>";
                     Utf8 n2;
                     if (varDecl->flags & AST_DECL_USING)
                         n2 += "using ";
                     n2 += structVal->name;
-                    helpContent += syntaxColor(n2, SyntaxColorMode::ForDoc);
+                    helpContent += n2;
                     helpContent += "</td>\n";
 
                     helpContent += "<td class=\"code-type\">";
@@ -734,8 +733,8 @@ void GenDoc::generateContent()
                     continue;
 
                 helpContent += "<tr>\n";
-                helpContent += "<td class=\"code-type\">";
-                helpContent += syntaxColor(enumVal->name, SyntaxColorMode::ForDoc);
+                helpContent += "<td>";
+                helpContent += enumVal->name;
                 helpContent += "</td>\n";
 
                 helpContent += "<td>";

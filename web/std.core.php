@@ -1650,232 +1650,232 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Core_ASSERT" class="code-type"><span class="SCst">ASSERT</span></td>
+<td id="Core_ASSERT">ASSERT</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_BIG_ENDIAN" class="code-type"><span class="SCst">BIG_ENDIAN</span></td>
+<td id="Core_BIG_ENDIAN">BIG_ENDIAN</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Env_EndLine" class="code-type"><span class="SCst">EndLine</span></td>
+<td id="Core_Env_EndLine">EndLine</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Latin1_CharProperties" class="code-type"><span class="SCst">CharProperties</span></td>
+<td id="Core_Latin1_CharProperties">CharProperties</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">256</span>] <span class="SCst">Core</span>.<span class="SCst">Latin1</span>.<span class="SCst"><a href="#Core_Latin1_CharAttribute">CharAttribute</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_AltDirectorySeparatorChar" class="code-type"><span class="SCst">AltDirectorySeparatorChar</span></td>
+<td id="Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_DirectorySeparatorChar" class="code-type"><span class="SCst">DirectorySeparatorChar</span></td>
+<td id="Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Path_VolumeSeparatorChar" class="code-type"><span class="SCst">VolumeSeparatorChar</span></td>
+<td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Random_NN" class="code-type"><span class="SCst">NN</span></td>
+<td id="Core_Random_NN">NN</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorIncomplete" class="code-type"><span class="SCst">ParseErrorIncomplete</span></td>
+<td id="Core_StrConv_ParseErrorIncomplete">ParseErrorIncomplete</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorInvalid" class="code-type"><span class="SCst">ParseErrorInvalid</span></td>
+<td id="Core_StrConv_ParseErrorInvalid">ParseErrorInvalid</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StrConv_ParseErrorOverflow" class="code-type"><span class="SCst">ParseErrorOverflow</span></td>
+<td id="Core_StrConv_ParseErrorOverflow">ParseErrorOverflow</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_StringSmallSize" class="code-type"><span class="SCst">StringSmallSize</span></td>
+<td id="Core_StringSmallSize">StringSmallSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DayOfWeekNames" class="code-type"><span class="SCst">DayOfWeekNames</span></td>
+<td id="Core_Time_DayOfWeekNames">DayOfWeekNames</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">7</span>] <span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer100Years" class="code-type"><span class="SCst">DaysPer100Years</span></td>
+<td id="Core_Time_DaysPer100Years">DaysPer100Years</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer400Years" class="code-type"><span class="SCst">DaysPer400Years</span></td>
+<td id="Core_Time_DaysPer400Years">DaysPer400Years</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPer4Years" class="code-type"><span class="SCst">DaysPer4Years</span></td>
+<td id="Core_Time_DaysPer4Years">DaysPer4Years</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysPerYear" class="code-type"><span class="SCst">DaysPerYear</span></td>
+<td id="Core_Time_DaysPerYear">DaysPerYear</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo10000" class="code-type"><span class="SCst">DaysTo10000</span></td>
+<td id="Core_Time_DaysTo10000">DaysTo10000</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/9999. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1601" class="code-type"><span class="SCst">DaysTo1601</span></td>
+<td id="Core_Time_DaysTo1601">DaysTo1601</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/1600. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1899" class="code-type"><span class="SCst">DaysTo1899</span></td>
+<td id="Core_Time_DaysTo1899">DaysTo1899</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/30/1899. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysTo1970" class="code-type"><span class="SCst">DaysTo1970</span></td>
+<td id="Core_Time_DaysTo1970">DaysTo1970</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of days from 1/1/0001 to 12/31/1969. </td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth365" class="code-type"><span class="SCst">DaysToMonth365</span></td>
+<td id="Core_Time_DaysToMonth365">DaysToMonth365</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_DaysToMonth366" class="code-type"><span class="SCst">DaysToMonth366</span></td>
+<td id="Core_Time_DaysToMonth366">DaysToMonth366</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">13</span>] <span class="STpe">u16</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMilliSeconds" class="code-type"><span class="SCst">MaxMilliSeconds</span></td>
+<td id="Core_Time_MaxMilliSeconds">MaxMilliSeconds</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxMillis" class="code-type"><span class="SCst">MaxMillis</span></td>
+<td id="Core_Time_MaxMillis">MaxMillis</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MaxTicks" class="code-type"><span class="SCst">MaxTicks</span></td>
+<td id="Core_Time_MaxTicks">MaxTicks</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerDay" class="code-type"><span class="SCst">MillisPerDay</span></td>
+<td id="Core_Time_MillisPerDay">MillisPerDay</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerHour" class="code-type"><span class="SCst">MillisPerHour</span></td>
+<td id="Core_Time_MillisPerHour">MillisPerHour</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerMinute" class="code-type"><span class="SCst">MillisPerMinute</span></td>
+<td id="Core_Time_MillisPerMinute">MillisPerMinute</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MillisPerSecond" class="code-type"><span class="SCst">MillisPerSecond</span></td>
+<td id="Core_Time_MillisPerSecond">MillisPerSecond</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_MonthNames" class="code-type"><span class="SCst">MonthNames</span></td>
+<td id="Core_Time_MonthNames">MonthNames</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [<span class="SNum">12</span>] <span class="STpe">string</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerDay" class="code-type"><span class="SCst">TicksPerDay</span></td>
+<td id="Core_Time_TicksPerDay">TicksPerDay</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerHour" class="code-type"><span class="SCst">TicksPerHour</span></td>
+<td id="Core_Time_TicksPerHour">TicksPerHour</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMilliSecond" class="code-type"><span class="SCst">TicksPerMilliSecond</span></td>
+<td id="Core_Time_TicksPerMilliSecond">TicksPerMilliSecond</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerMinute" class="code-type"><span class="SCst">TicksPerMinute</span></td>
+<td id="Core_Time_TicksPerMinute">TicksPerMinute</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TicksPerSecond" class="code-type"><span class="SCst">TicksPerSecond</span></td>
+<td id="Core_Time_TicksPerSecond">TicksPerSecond</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_RuneError" class="code-type"><span class="SCst">RuneError</span></td>
+<td id="Core_Utf16_RuneError">RuneError</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr1" class="code-type"><span class="SCst">Surr1</span></td>
+<td id="Core_Utf16_Surr1">Surr1</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr2" class="code-type"><span class="SCst">Surr2</span></td>
+<td id="Core_Utf16_Surr2">Surr2</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_Surr3" class="code-type"><span class="SCst">Surr3</span></td>
+<td id="Core_Utf16_Surr3">Surr3</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf16_SurrSelf" class="code-type"><span class="SCst">SurrSelf</span></td>
+<td id="Core_Utf16_SurrSelf">SurrSelf</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_MaxRunes" class="code-type"><span class="SCst">MaxRunes</span></td>
+<td id="Core_Utf8_MaxRunes">MaxRunes</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_RuneError" class="code-type"><span class="SCst">RuneError</span></td>
+<td id="Core_Utf8_RuneError">RuneError</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMax" class="code-type"><span class="SCst">SurrogateMax</span></td>
+<td id="Core_Utf8_SurrogateMax">SurrogateMax</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Utf8_SurrogateMin" class="code-type"><span class="SCst">SurrogateMin</span></td>
+<td id="Core_Utf8_SurrogateMin">SurrogateMin</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_WINDOWS" class="code-type"><span class="SCst">WINDOWS</span></td>
+<td id="Core_WINDOWS">WINDOWS</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -1893,42 +1893,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Core_Env_ProcessHandle" class="code-type"><span class="SCst">ProcessHandle</span></td>
+<td id="Core_Env_ProcessHandle">ProcessHandle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_File_FileHandle" class="code-type"><span class="SCst">FileHandle</span></td>
+<td id="Core_File_FileHandle">FileHandle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Input_VirtualKey" class="code-type"><span class="SCst">VirtualKey</span></td>
+<td id="Core_Input_VirtualKey">VirtualKey</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF32" class="code-type"><span class="SCst">ConstF32</span></td>
+<td id="Core_Math_ConstF32">ConstF32</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Math_ConstF64" class="code-type"><span class="SCst">ConstF64</span></td>
+<td id="Core_Math_ConstF64">ConstF64</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Threading_ThreadHandle" class="code-type"><span class="SCst">ThreadHandle</span></td>
+<td id="Core_Threading_ThreadHandle">ThreadHandle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_Ticks" class="code-type"><span class="SCst">Ticks</span></td>
+<td id="Core_Time_Ticks">Ticks</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Core_Time_TimerHandle" class="code-type"><span class="SCst">TimerHandle</span></td>
+<td id="Core_Time_TimerHandle">TimerHandle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -1949,22 +1949,22 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td>Associated allocator. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">^<span class="SCst">T</span></span></td>
 <td>Memory block of all datas. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of valid datas. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capacity</span></td>
+<td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of elements that can be stored in the buffer. </td>
 </tr>
@@ -2775,7 +2775,7 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(*<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
@@ -3029,22 +3029,22 @@
 <p>Manages a compact array of bit values, which are represented as booleans, where <span class="inline-code">true</span> indicates that  the bit is on (1) and <span class="inline-code">false</span> indicates the bit is off (0). </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capacity</span></td>
+<td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -3337,22 +3337,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">readBuffer</span></td>
+<td>readBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeBuffer</span></td>
+<td>writeBuffer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">seek</span></td>
+<td>seek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">eof</span></td>
+<td>eof</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -3661,11 +3661,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Latin1</span></td>
+<td>Latin1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Unicode</span></td>
+<td>Unicode</td>
 <td></td>
 </tr>
 </table>
@@ -3681,15 +3681,15 @@
 <h3>Structs</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Core_CommandLine_IsSet"><span class="SCst">IsSet</span></a></td>
+<td class="code-type"><a href="#Core_CommandLine_IsSet"><span class="SCst">IsSet</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_ParseOptions"><span class="SCst">ParseOptions</span></a></td>
+<td class="code-type"><a href="#Core_CommandLine_ParseOptions"><span class="SCst">ParseOptions</span></a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Core_CommandLine_Result"><span class="SCst">Result</span></a></td>
+<td class="code-type"><a href="#Core_CommandLine_Result"><span class="SCst">Result</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -3715,7 +3715,7 @@
 <h3>Attributes</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Core_CommandLine_ArgParams"><span class="SCst">ArgParams</span></a></td>
+<td class="code-type"><a href="#Core_CommandLine_ArgParams"><span class="SCst">ArgParams</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -3773,7 +3773,7 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">isSet</span></td>
+<td>isSet</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_CommandLine">CommandLine</a></span>.<span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
@@ -3859,27 +3859,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">stream</span></td>
+<td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curByte</span></td>
+<td>curByte</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">codeBuffer</span></td>
+<td>codeBuffer</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">numBits</span></td>
+<td>numBits</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">eof</span></td>
+<td>eof</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -4177,15 +4177,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ComputeAdler32</span></td>
+<td>ComputeAdler32</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 </table>
@@ -4202,23 +4202,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">NoCompression</span></td>
+<td>NoCompression</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BestSpeed</span></td>
+<td>BestSpeed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BestCompression</span></td>
+<td>BestCompression</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UberCompression</span></td>
+<td>UberCompression</td>
 <td></td>
 </tr>
 </table>
@@ -4235,23 +4235,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Filtered</span></td>
+<td>Filtered</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HuffmanOnly</span></td>
+<td>HuffmanOnly</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Rle</span></td>
+<td>Rle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Fixed</span></td>
+<td>Fixed</td>
 <td></td>
 </tr>
 </table>
@@ -4379,42 +4379,42 @@
 <p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when  the buffer needs to increase its size. This is the main difference with Array. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">firstBucket</span></td>
+<td>firstBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curBucket</span></td>
+<td>curBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastBucket</span></td>
+<td>lastBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentSP</span></td>
+<td>currentSP</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">granularity</span></td>
+<td>granularity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isAtEnd</span></td>
+<td>isAtEnd</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">viewFirstBucket</span></td>
+<td>viewFirstBucket</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
@@ -4834,27 +4834,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">datas</span></td>
+<td>datas</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">next</span></td>
+<td>next</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">countBefore</span></td>
+<td>countBefore</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -4872,12 +4872,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">bucket</span></td>
+<td>bucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sp</span></td>
+<td>sp</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
@@ -4895,63 +4895,63 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Black</span></td>
+<td>Black</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">White</span></td>
+<td>White</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray</span></td>
+<td>Gray</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Red</span></td>
+<td>Red</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Blue</span></td>
+<td>Blue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Green</span></td>
+<td>Green</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cyan</span></td>
+<td>Cyan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Yellow</span></td>
+<td>Yellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Magenta</span></td>
+<td>Magenta</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkRed</span></td>
+<td>DarkRed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkBlue</span></td>
+<td>DarkBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkGreen</span></td>
+<td>DarkGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkCyan</span></td>
+<td>DarkCyan</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkYellow</span></td>
+<td>DarkYellow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DarkMagenta</span></td>
+<td>DarkMagenta</td>
 <td></td>
 </tr>
 </table>
@@ -5230,37 +5230,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">matchExtension</span></td>
+<td>matchExtension</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">skipAttributes</span></td>
+<td>skipAttributes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">recurse</span></td>
+<td>recurse</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wantFiles</span></td>
+<td>wantFiles</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wantDirectories</span></td>
+<td>wantDirectories</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wantSpecialDirectories</span></td>
+<td>wantSpecialDirectories</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">filterLambda</span></td>
+<td>filterLambda</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
@@ -5389,12 +5389,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">rect</span></td>
+<td>rect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">work</span></td>
+<td>work</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
 <td></td>
 </tr>
@@ -5412,7 +5412,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -5451,47 +5451,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Font</span></td>
+<td>Font</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UserAppData</span></td>
+<td>UserAppData</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UserDocuments</span></td>
+<td>UserDocuments</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CommonAppData</span></td>
+<td>CommonAppData</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Desktop</span></td>
+<td>Desktop</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UserPictures</span></td>
+<td>UserPictures</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UserVideos</span></td>
+<td>UserVideos</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UserMusic</span></td>
+<td>UserMusic</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CommonPictures</span></td>
+<td>CommonPictures</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CommonVideos</span></td>
+<td>CommonVideos</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CommonMusic</span></td>
+<td>CommonMusic</td>
 <td></td>
 </tr>
 </table>
@@ -5508,12 +5508,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">fileName</span></td>
+<td>fileName</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">arguments</span></td>
+<td>arguments</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
@@ -5646,15 +5646,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Read</span></td>
+<td>Read</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Write</span></td>
+<td>Write</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReadWrite</span></td>
+<td>ReadWrite</td>
 <td></td>
 </tr>
 </table>
@@ -5671,63 +5671,63 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReadOnly</span></td>
+<td>ReadOnly</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hidden</span></td>
+<td>Hidden</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">System</span></td>
+<td>System</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Directory</span></td>
+<td>Directory</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Archive</span></td>
+<td>Archive</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Device</span></td>
+<td>Device</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Normal</span></td>
+<td>Normal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Temporary</span></td>
+<td>Temporary</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SparseFile</span></td>
+<td>SparseFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReparsePoint</span></td>
+<td>ReparsePoint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Compressed</span></td>
+<td>Compressed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Offline</span></td>
+<td>Offline</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NotContentIndexed</span></td>
+<td>NotContentIndexed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Encrypted</span></td>
+<td>Encrypted</td>
 <td></td>
 </tr>
 </table>
@@ -5744,32 +5744,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">fullname</span></td>
+<td>fullname</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">attributes</span></td>
+<td>attributes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">creationTime</span></td>
+<td>creationTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastAccessTime</span></td>
+<td>lastAccessTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastWriteTime</span></td>
+<td>lastWriteTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -5807,27 +5807,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Append</span></td>
+<td>Append</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Create</span></td>
+<td>Create</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CreateNew</span></td>
+<td>CreateNew</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Open</span></td>
+<td>Open</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OpenOrCreate</span></td>
+<td>OpenOrCreate</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Truncate</span></td>
+<td>Truncate</td>
 <td></td>
 </tr>
 </table>
@@ -5844,27 +5844,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Delete</span></td>
+<td>Delete</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Inheritable</span></td>
+<td>Inheritable</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Read</span></td>
+<td>Read</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Write</span></td>
+<td>Write</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReadWrite</span></td>
+<td>ReadWrite</td>
 <td></td>
 </tr>
 </table>
@@ -5881,27 +5881,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canRead</span></td>
+<td>canRead</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canSeek</span></td>
+<td>canSeek</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canWrite</span></td>
+<td>canWrite</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -6084,12 +6084,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">data</span></td>
+<td>data</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -6107,15 +6107,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Begin</span></td>
+<td>Begin</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Current</span></td>
+<td>Current</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">End</span></td>
+<td>End</td>
 <td></td>
 </tr>
 </table>
@@ -6132,11 +6132,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Ascii</span></td>
+<td>Ascii</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Utf8</span></td>
+<td>Utf8</td>
 <td></td>
 </tr>
 </table>
@@ -6153,32 +6153,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">stream</span></td>
+<td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">encodingType</span></td>
+<td>encodingType</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">byteSeek</span></td>
+<td>byteSeek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bufferSize</span></td>
+<td>bufferSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checkPreamble</span></td>
+<td>checkPreamble</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -6272,7 +6272,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">folders</span></td>
+<td>folders</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
 <td></td>
 </tr>
@@ -6685,7 +6685,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">numberFormat</span></td>
+<td>numberFormat</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Globalization</span>.<span class="SCst"><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></span></span></td>
 <td></td>
 </tr>
@@ -6704,17 +6704,17 @@
 <p>Provides culture-specific information for formatting and parsing numeric values. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">negativeSign</span></td>
+<td>negativeSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">positiveSign</span></td>
+<td>positiveSign</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">decimalSeparator</span></td>
+<td>decimalSeparator</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
@@ -6774,7 +6774,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">adler</span></td>
+<td>adler</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -6849,7 +6849,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">crc</span></td>
+<td>crc</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -6924,7 +6924,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">compute</span></td>
+<td>compute</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
@@ -6942,22 +6942,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">padding</span></td>
+<td>padding</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">state</span></td>
+<td>state</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
@@ -7050,22 +7050,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">data</span></td>
+<td>data</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">state</span></td>
+<td>state</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">8</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">datalen</span></td>
+<td>datalen</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bitlen</span></td>
+<td>bitlen</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -7174,47 +7174,47 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">HASH_FREE</span></td>
+<td>HASH_FREE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_DELETED</span></td>
+<td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_FIRST</span></td>
+<td>HASH_FIRST</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_MASK</span></td>
+<td>HASH_MASK</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">table</span></td>
+<td>table</td>
 <td class="code-type"><span class="SCde">^<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst">K</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capacity</span></td>
+<td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">deleted</span></td>
+<td>deleted</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of deleted entries. </td>
 </tr>
@@ -7475,12 +7475,12 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">hash</span></td>
+<td>hash</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">key</span></td>
+<td>key</td>
 <td class="code-type"><span class="SCst">K</span></td>
 <td></td>
 </tr>
@@ -7500,47 +7500,47 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">HASH_FREE</span></td>
+<td>HASH_FREE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_DELETED</span></td>
+<td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_FIRST</span></td>
+<td>HASH_FIRST</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HASH_MASK</span></td>
+<td>HASH_MASK</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">table</span></td>
+<td>table</td>
 <td class="code-type"><span class="SCde">^<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of valid entries. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capacity</span></td>
+<td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of total entries the table can hold. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">deleted</span></td>
+<td>deleted</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td>Number of deleted entries. </td>
 </tr>
@@ -7822,17 +7822,17 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">hash</span></td>
+<td>hash</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">key</span></td>
+<td>key</td>
 <td class="code-type"><span class="SCst">K</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">value</span></td>
+<td>value</td>
 <td class="code-type"><span class="SCst">V</span></td>
 <td></td>
 </tr>
@@ -7850,7 +7850,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">print</span></td>
+<td>print</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
@@ -7869,22 +7869,22 @@
 <p>Represents a gamepad. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">previousState</span></td>
+<td>previousState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_GamePadState">GamePadState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentState</span></td>
+<td>currentState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_GamePadState">GamePadState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">padIndex</span></td>
+<td>padIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">connected</span></td>
+<td>connected</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8075,103 +8075,103 @@
 <p>Enumerates gamepad buttons. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">A</span></td>
+<td>A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">B</span></td>
+<td>B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Back</span></td>
+<td>Back</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BigButton</span></td>
+<td>BigButton</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DPadDown</span></td>
+<td>DPadDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DPadLeft</span></td>
+<td>DPadLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DPadRight</span></td>
+<td>DPadRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DPadUp</span></td>
+<td>DPadUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftShoulder</span></td>
+<td>LeftShoulder</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftStick</span></td>
+<td>LeftStick</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftThumbstickDown</span></td>
+<td>LeftThumbstickDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftThumbstickLeft</span></td>
+<td>LeftThumbstickLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftThumbstickRight</span></td>
+<td>LeftThumbstickRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftThumbstickUp</span></td>
+<td>LeftThumbstickUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftTrigger</span></td>
+<td>LeftTrigger</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightShoulder</span></td>
+<td>RightShoulder</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightStick</span></td>
+<td>RightStick</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightThumbstickDown</span></td>
+<td>RightThumbstickDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightThumbstickLeft</span></td>
+<td>RightThumbstickLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightThumbstickRight</span></td>
+<td>RightThumbstickRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightThumbstickUp</span></td>
+<td>RightThumbstickUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightTrigger</span></td>
+<td>RightTrigger</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Start</span></td>
+<td>Start</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">X</span></td>
+<td>X</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Y</span></td>
+<td>Y</td>
 <td></td>
 </tr>
 </table>
@@ -8188,7 +8188,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">DeviceNotConnected</span></td>
+<td>DeviceNotConnected</td>
 <td></td>
 </tr>
 </table>
@@ -8206,12 +8206,12 @@
 <p>Represents specific information about the state of the controller,  including the current state of buttons and sticks. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">pressed</span></td>
+<td>pressed</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
@@ -8269,755 +8269,755 @@
 <p>Defines the keys on a keyboard. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">A</span></td>
+<td>A</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Add</span></td>
+<td>Add</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Apps</span></td>
+<td>Apps</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Attn</span></td>
+<td>Attn</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">B</span></td>
+<td>B</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Back</span></td>
+<td>Back</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserBack</span></td>
+<td>BrowserBack</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserFavorites</span></td>
+<td>BrowserFavorites</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserForward</span></td>
+<td>BrowserForward</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserHome</span></td>
+<td>BrowserHome</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserRefresh</span></td>
+<td>BrowserRefresh</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserSearch</span></td>
+<td>BrowserSearch</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BrowserStop</span></td>
+<td>BrowserStop</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">C</span></td>
+<td>C</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cancel</span></td>
+<td>Cancel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Capital</span></td>
+<td>Capital</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CapsLock</span></td>
+<td>CapsLock</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Clear</span></td>
+<td>Clear</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Control</span></td>
+<td>Control</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Crsel</span></td>
+<td>Crsel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D</span></td>
+<td>D</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D0</span></td>
+<td>D0</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D1</span></td>
+<td>D1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D2</span></td>
+<td>D2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D3</span></td>
+<td>D3</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D4</span></td>
+<td>D4</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D5</span></td>
+<td>D5</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D6</span></td>
+<td>D6</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D7</span></td>
+<td>D7</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D8</span></td>
+<td>D8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">D9</span></td>
+<td>D9</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Decimal</span></td>
+<td>Decimal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Delete</span></td>
+<td>Delete</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Divide</span></td>
+<td>Divide</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Down</span></td>
+<td>Down</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">E</span></td>
+<td>E</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">End</span></td>
+<td>End</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Enter</span></td>
+<td>Enter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EraseEof</span></td>
+<td>EraseEof</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Escape</span></td>
+<td>Escape</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Execute</span></td>
+<td>Execute</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Exsel</span></td>
+<td>Exsel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F</span></td>
+<td>F</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F1</span></td>
+<td>F1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F10</span></td>
+<td>F10</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F11</span></td>
+<td>F11</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F12</span></td>
+<td>F12</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F13</span></td>
+<td>F13</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F14</span></td>
+<td>F14</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F15</span></td>
+<td>F15</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F16</span></td>
+<td>F16</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F17</span></td>
+<td>F17</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F18</span></td>
+<td>F18</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F19</span></td>
+<td>F19</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F2</span></td>
+<td>F2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F20</span></td>
+<td>F20</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F21</span></td>
+<td>F21</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F22</span></td>
+<td>F22</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F23</span></td>
+<td>F23</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F24</span></td>
+<td>F24</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F3</span></td>
+<td>F3</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F4</span></td>
+<td>F4</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F5</span></td>
+<td>F5</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F6</span></td>
+<td>F6</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F7</span></td>
+<td>F7</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F8</span></td>
+<td>F8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F9</span></td>
+<td>F9</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FinalMode</span></td>
+<td>FinalMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">G</span></td>
+<td>G</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">H</span></td>
+<td>H</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HanguelMode</span></td>
+<td>HanguelMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HangulMode</span></td>
+<td>HangulMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HanjaMode</span></td>
+<td>HanjaMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Help</span></td>
+<td>Help</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Home</span></td>
+<td>Home</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">I</span></td>
+<td>I</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IMEAccept</span></td>
+<td>IMEAccept</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IMEAceept</span></td>
+<td>IMEAceept</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IMEConvert</span></td>
+<td>IMEConvert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IMEModeChange</span></td>
+<td>IMEModeChange</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IMENonConvert</span></td>
+<td>IMENonConvert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Insert</span></td>
+<td>Insert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">J</span></td>
+<td>J</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">JunjaMode</span></td>
+<td>JunjaMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">K</span></td>
+<td>K</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">KanaMode</span></td>
+<td>KanaMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">KanjiMode</span></td>
+<td>KanjiMode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">L</span></td>
+<td>L</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LButton</span></td>
+<td>LButton</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LControl</span></td>
+<td>LControl</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LMenu</span></td>
+<td>LMenu</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LShift</span></td>
+<td>LShift</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LWin</span></td>
+<td>LWin</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LaunchApplication1</span></td>
+<td>LaunchApplication1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LaunchApplication2</span></td>
+<td>LaunchApplication2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LaunchMail</span></td>
+<td>LaunchMail</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LineFeed</span></td>
+<td>LineFeed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">M</span></td>
+<td>M</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MButton</span></td>
+<td>MButton</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediaNextTrack</span></td>
+<td>MediaNextTrack</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediaPlayPause</span></td>
+<td>MediaPlayPause</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediaPreviousTrack</span></td>
+<td>MediaPreviousTrack</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MediaStop</span></td>
+<td>MediaStop</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MenuCtrl</span></td>
+<td>MenuCtrl</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Multiply</span></td>
+<td>Multiply</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">N</span></td>
+<td>N</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Next</span></td>
+<td>Next</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NoName</span></td>
+<td>NoName</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumLock</span></td>
+<td>NumLock</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad0</span></td>
+<td>NumPad0</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad1</span></td>
+<td>NumPad1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad2</span></td>
+<td>NumPad2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad3</span></td>
+<td>NumPad3</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad4</span></td>
+<td>NumPad4</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad5</span></td>
+<td>NumPad5</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad6</span></td>
+<td>NumPad6</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad7</span></td>
+<td>NumPad7</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad8</span></td>
+<td>NumPad8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NumPad9</span></td>
+<td>NumPad9</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">O</span></td>
+<td>O</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem1</span></td>
+<td>Oem1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem102</span></td>
+<td>Oem102</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem2</span></td>
+<td>Oem2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem3</span></td>
+<td>Oem3</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem4</span></td>
+<td>Oem4</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem5</span></td>
+<td>Oem5</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem6</span></td>
+<td>Oem6</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem7</span></td>
+<td>Oem7</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Oem8</span></td>
+<td>Oem8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemBackslash</span></td>
+<td>OemBackslash</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemClear</span></td>
+<td>OemClear</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemCloseBrackets</span></td>
+<td>OemCloseBrackets</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemComma</span></td>
+<td>OemComma</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemMinus</span></td>
+<td>OemMinus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemOpenBrackets</span></td>
+<td>OemOpenBrackets</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemPeriod</span></td>
+<td>OemPeriod</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemPipe</span></td>
+<td>OemPipe</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemPlus</span></td>
+<td>OemPlus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemQuestion</span></td>
+<td>OemQuestion</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemQuotes</span></td>
+<td>OemQuotes</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemSemicolon</span></td>
+<td>OemSemicolon</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OemTilde</span></td>
+<td>OemTilde</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">P</span></td>
+<td>P</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Pa1</span></td>
+<td>Pa1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Packet</span></td>
+<td>Packet</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PageDown</span></td>
+<td>PageDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PageUp</span></td>
+<td>PageUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Pause</span></td>
+<td>Pause</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Play</span></td>
+<td>Play</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Print</span></td>
+<td>Print</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PrintScreen</span></td>
+<td>PrintScreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Prior</span></td>
+<td>Prior</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Process</span></td>
+<td>Process</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Q</span></td>
+<td>Q</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">R</span></td>
+<td>R</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RButton</span></td>
+<td>RButton</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RControl</span></td>
+<td>RControl</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RMenu</span></td>
+<td>RMenu</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RShift</span></td>
+<td>RShift</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RWin</span></td>
+<td>RWin</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Return</span></td>
+<td>Return</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">S</span></td>
+<td>S</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Scroll</span></td>
+<td>Scroll</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Select</span></td>
+<td>Select</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectMedia</span></td>
+<td>SelectMedia</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Separator</span></td>
+<td>Separator</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Shift</span></td>
+<td>Shift</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sleep</span></td>
+<td>Sleep</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Space</span></td>
+<td>Space</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Subtract</span></td>
+<td>Subtract</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">T</span></td>
+<td>T</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Tab</span></td>
+<td>Tab</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">U</span></td>
+<td>U</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Up</span></td>
+<td>Up</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">V</span></td>
+<td>V</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VolumeDown</span></td>
+<td>VolumeDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VolumeMute</span></td>
+<td>VolumeMute</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VolumeUp</span></td>
+<td>VolumeUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">W</span></td>
+<td>W</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">X</span></td>
+<td>X</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">XButton1</span></td>
+<td>XButton1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">XButton2</span></td>
+<td>XButton2</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Y</span></td>
+<td>Y</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Z</span></td>
+<td>Z</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Zoom</span></td>
+<td>Zoom</td>
 <td></td>
 </tr>
 </table>
@@ -9034,23 +9034,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Shift</span></td>
+<td>Shift</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Control</span></td>
+<td>Control</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Alt</span></td>
+<td>Alt</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CtrlShift</span></td>
+<td>CtrlShift</td>
 <td></td>
 </tr>
 </table>
@@ -9068,37 +9068,37 @@
 <p>Allows getting keystrokes from keyboard. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">previousState</span></td>
+<td>previousState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_KeyboardState">KeyboardState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentState</span></td>
+<td>currentState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_KeyboardState">KeyboardState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedRepeat</span></td>
+<td>pressedRepeat</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedTime</span></td>
+<td>pressedTime</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedRepeatStartTimeMs</span></td>
+<td>pressedRepeatStartTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedRepeatTimeMs</span></td>
+<td>pressedRepeatTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canRepeat</span></td>
+<td>canRepeat</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -9305,12 +9305,12 @@
 <p>Represents one keyboard state. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td>using native</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_KeyboardStateNative">KeyboardStateNative</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressed</span></td>
+<td>pressed</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">188</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
@@ -9367,7 +9367,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">nativeState</span></td>
+<td>nativeState</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Win32</span>.<span class="SCst">BYTE</span></span></td>
 <td></td>
 </tr>
@@ -9386,22 +9386,22 @@
 <p>Allows reading position and button click information from mouse. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">previousState</span></td>
+<td>previousState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_MouseState">MouseState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentState</span></td>
+<td>currentState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst"><a href="#Core_Input_MouseState">MouseState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dblClk</span></td>
+<td>dblClk</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dblClkTimeMs</span></td>
+<td>dblClkTimeMs</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -9608,23 +9608,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Middle</span></td>
+<td>Middle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">XButton1</span></td>
+<td>XButton1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">XButton2</span></td>
+<td>XButton2</td>
 <td></td>
 </tr>
 </table>
@@ -9642,22 +9642,22 @@
 <p>Represents one mouse state. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">pressed</span></td>
+<td>pressed</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedTime</span></td>
+<td>pressedTime</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pressedPos</span></td>
+<td>pressedPos</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
@@ -9770,22 +9770,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">startIndex</span></td>
+<td>startIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endIndex</span></td>
+<td>endIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData</span></td>
+<td>userData</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -9803,22 +9803,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">lambda</span></td>
+<td>lambda</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="STpe">void</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">data</span></td>
+<td>data</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">state</span></td>
+<td>state</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_JobState">JobState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pendingIndex</span></td>
+<td>pendingIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -9836,15 +9836,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">InPending</span></td>
+<td>InPending</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Done</span></td>
+<td>Done</td>
 <td></td>
 </tr>
 </table>
@@ -9863,22 +9863,22 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">[..] <span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">offset</span></td>
+<td>offset</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData</span></td>
+<td>userData</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -10010,63 +10010,63 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Control</span></td>
+<td>Control</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Punctuation</span></td>
+<td>Punctuation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BinDigit</span></td>
+<td>BinDigit</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HexDigit</span></td>
+<td>HexDigit</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Digit</span></td>
+<td>Digit</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Symbol</span></td>
+<td>Symbol</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Spacing</span></td>
+<td>Spacing</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Upper</span></td>
+<td>Upper</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Lower</span></td>
+<td>Lower</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Printable</span></td>
+<td>Printable</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LowerUtf8</span></td>
+<td>LowerUtf8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UpperUtf8</span></td>
+<td>UpperUtf8</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Graphical</span></td>
+<td>Graphical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Letter</span></td>
+<td>Letter</td>
 <td></td>
 </tr>
 </table>
@@ -10337,17 +10337,17 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">head</span></td>
+<td>head</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tail</span></td>
+<td>tail</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -10531,17 +10531,17 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">prev</span></td>
+<td>prev</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">next</span></td>
+<td>next</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ListNode">ListNode</a></span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">value</span></td>
+<td>value</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
@@ -10559,32 +10559,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">lock</span></td>
+<td>lock</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Sync</span>.<span class="SCst"><a href="#Core_Sync_Mutex">Mutex</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buf</span></td>
+<td>buf</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_StringBuilder">StringBuilder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dt</span></td>
+<td>dt</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writers</span></td>
+<td>writers</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">prefix</span></td>
+<td>prefix</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">flags</span></td>
+<td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></td>
 <td></td>
 </tr>
@@ -10749,39 +10749,39 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Prefix</span></td>
+<td>Prefix</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Date</span></td>
+<td>Date</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Time</span></td>
+<td>Time</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ShortFileName</span></td>
+<td>ShortFileName</td>
 <td>Exclusive with LongFileName. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LongFileName</span></td>
+<td>LongFileName</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Line</span></td>
+<td>Line</td>
 <td>Exclusive with FullLoc. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FullLoc</span></td>
+<td>FullLoc</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 </table>
@@ -10798,7 +10798,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">rad</span></td>
+<td>rad</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -10875,92 +10875,92 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Pi</span></td>
+<td>Pi</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">E</span></td>
+<td>E</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TwoPi</span></td>
+<td>TwoPi</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PiBy2</span></td>
+<td>PiBy2</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PiBy3</span></td>
+<td>PiBy3</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PiBy4</span></td>
+<td>PiBy4</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PiBy6</span></td>
+<td>PiBy6</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PiBy8</span></td>
+<td>PiBy8</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ThreePiBy4</span></td>
+<td>ThreePiBy4</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OneByPi</span></td>
+<td>OneByPi</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TwoByPi</span></td>
+<td>TwoByPi</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sqrt2</span></td>
+<td>Sqrt2</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OneBySqrt2</span></td>
+<td>OneBySqrt2</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Ln2</span></td>
+<td>Ln2</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Ln10</span></td>
+<td>Ln10</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Log2E</span></td>
+<td>Log2E</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Log10E</span></td>
+<td>Log10E</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Epsilon</span></td>
+<td>Epsilon</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
@@ -10978,12 +10978,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">lo</span></td>
+<td>lo</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hi</span></td>
+<td>hi</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
@@ -11075,7 +11075,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">m</span></td>
+<td>m</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">3</span>,<span class="SNum">3</span>] <span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
@@ -11113,7 +11113,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">m</span></td>
+<td>m</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4</span>,<span class="SNum">4</span>] <span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
@@ -11153,7 +11153,7 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">buf</span></td>
+<td>buf</td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
 <td></td>
 </tr>
@@ -11333,12 +11333,12 @@
 <p>A simple Point with 2 coordinates X and Y. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -11609,22 +11609,22 @@
 <p>A simple rectangle with 4 coordinates. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Left position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Top position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Rectangle width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">height</span></td>
+<td>height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Rectangle height. </td>
 </tr>
@@ -12273,47 +12273,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">m11</span></td>
+<td>m11</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m12</span></td>
+<td>m12</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m21</span></td>
+<td>m21</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m22</span></td>
+<td>m22</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m31</span></td>
+<td>m31</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m32</span></td>
+<td>m32</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">m</span></td>
+<td>m</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2</span>,<span class="SNum">2</span>] <span class="STpe">f32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tx</span></td>
+<td>tx</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">ty</span></td>
+<td>ty</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -12426,17 +12426,17 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">[?] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AllFlags</span></td>
+<td>AllFlags</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -12633,12 +12633,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -13401,17 +13401,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">z</span></td>
+<td>z</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -13890,22 +13890,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">x</span></td>
+<td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">y</span></td>
+<td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">z</span></td>
+<td>z</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">w</span></td>
+<td>w</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -15417,17 +15417,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">q</span></td>
+<td>q</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4096</span>] <span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">c</span></td>
+<td>c</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">i</span></td>
+<td>i</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td>special invalid value (&gt; 4095) to force the seed on first get. </td>
 </tr>
@@ -15482,12 +15482,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">w</span></td>
+<td>w</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">z</span></td>
+<td>z</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -15547,12 +15547,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">mt</span></td>
+<td>mt</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">312</span>] <span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mti</span></td>
+<td>mti</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -15614,12 +15614,12 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">rng</span></td>
+<td>rng</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">seedDone</span></td>
+<td>seedDone</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -16545,12 +16545,12 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">serializer</span></td>
+<td>serializer</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">flags</span></td>
+<td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_DecoderFlags">DecoderFlags</a></span></span></td>
 <td></td>
 </tr>
@@ -16919,11 +16919,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IgnoreStructFieldError</span></td>
+<td>IgnoreStructFieldError</td>
 <td></td>
 </tr>
 </table>
@@ -16942,12 +16942,12 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">serializer</span></td>
+<td>serializer</td>
 <td class="code-type"><span class="SCst">T</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">errorIfUnknown</span></td>
+<td>errorIfUnknown</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td>If true, raise an error if a type cannot be saved, and just ignore if false. </td>
 </tr>
@@ -17321,102 +17321,102 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">start</span></td>
+<td>start</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">end</span></td>
+<td>end</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">beginField</span></td>
+<td>beginField</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endField</span></td>
+<td>endField</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">beginSection</span></td>
+<td>beginSection</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endSection</span></td>
+<td>endSection</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">getVersion</span></td>
+<td>getVersion</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">read</span></td>
+<td>read</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, *<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readBufferU8</span></td>
+<td>readBufferU8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readBool</span></td>
+<td>readBool</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readS8</span></td>
+<td>readS8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readS16</span></td>
+<td>readS16</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readS32</span></td>
+<td>readS32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readS64</span></td>
+<td>readS64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readU8</span></td>
+<td>readU8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readU16</span></td>
+<td>readU16</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readU32</span></td>
+<td>readU32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readU64</span></td>
+<td>readU64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readF32</span></td>
+<td>readF32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readF64</span></td>
+<td>readF64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -17694,97 +17694,97 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">start</span></td>
+<td>start</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">end</span></td>
+<td>end</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">beginField</span></td>
+<td>beginField</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endField</span></td>
+<td>endField</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">beginSection</span></td>
+<td>beginSection</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endSection</span></td>
+<td>endSection</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">write</span></td>
+<td>write</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeBufferU8</span></td>
+<td>writeBufferU8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeBool</span></td>
+<td>writeBool</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">bool</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeS8</span></td>
+<td>writeS8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeS16</span></td>
+<td>writeS16</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeS32</span></td>
+<td>writeS32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeS64</span></td>
+<td>writeS64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeU8</span></td>
+<td>writeU8</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeU16</span></td>
+<td>writeU16</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeU32</span></td>
+<td>writeU32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeU64</span></td>
+<td>writeU64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeF32</span></td>
+<td>writeF32</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeF64</span></td>
+<td>writeF64</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
@@ -18049,27 +18049,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">read</span></td>
+<td>read</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">write</span></td>
+<td>write</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">readElement</span></td>
+<td>readElement</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">writeElement</span></td>
+<td>writeElement</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, <span class="SKwd">const</span> *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">postSerialize</span></td>
+<td>postSerialize</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -18184,22 +18184,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">stream</span></td>
+<td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">line</span></td>
+<td>line</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">col</span></td>
+<td>col</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">propName</span></td>
+<td>propName</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></td>
 <td></td>
 </tr>
@@ -18509,37 +18509,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">stream</span></td>
+<td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">options</span></td>
+<td>options</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">freeSections</span></td>
+<td>freeSections</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sections</span></td>
+<td>sections</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">convertNextNative</span></td>
+<td>convertNextNative</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">convertValToArray</span></td>
+<td>convertValToArray</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">convertArrayToVal</span></td>
+<td>convertArrayToVal</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -18853,7 +18853,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">tryForward</span></td>
+<td>tryForward</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td>Accept to try to read a newest version, otherwise error. </td>
 </tr>
@@ -18871,27 +18871,27 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">mapSeek</span></td>
+<td>mapSeek</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">afterFatSeek</span></td>
+<td>afterFatSeek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">version</span></td>
+<td>version</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">kind</span></td>
+<td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">skipFat</span></td>
+<td>skipFat</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -18909,15 +18909,15 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Raw</span></td>
+<td>Raw</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Unordered</span></td>
+<td>Unordered</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Ordered</span></td>
+<td>Ordered</td>
 <td></td>
 </tr>
 </table>
@@ -18934,17 +18934,17 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">encode</span></td>
+<td>encode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">decode</span></td>
+<td>decode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isWrite</span></td>
+<td>isWrite</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -19131,32 +19131,32 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">options</span></td>
+<td>options</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">output</span></td>
+<td>output</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">indent</span></td>
+<td>indent</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fmtInt</span></td>
+<td>fmtInt</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fmtFloat</span></td>
+<td>fmtFloat</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastSeekValue</span></td>
+<td>lastSeekValue</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></td>
 <td></td>
 </tr>
@@ -19432,12 +19432,12 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">indentLevel</span></td>
+<td>indentLevel</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">saveBlanks</span></td>
+<td>saveBlanks</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -19455,17 +19455,17 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">output</span></td>
+<td>output</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">freeSections</span></td>
+<td>freeSections</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sections</span></td>
+<td>sections</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
@@ -19724,17 +19724,17 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">startSeek</span></td>
+<td>startSeek</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mapSeek</span></td>
+<td>mapSeek</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">kind</span></td>
+<td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
 <td></td>
 </tr>
@@ -19752,19 +19752,19 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Root</span></td>
+<td>Root</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Fat</span></td>
+<td>Fat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sequence</span></td>
+<td>Sequence</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Version</span></td>
+<td>Version</td>
 <td></td>
 </tr>
 </table>
@@ -20005,12 +20005,12 @@ Changes that are supported from V to V+1 are :</span></code>
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst">T</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -20708,7 +20708,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">value</span></td>
+<td>value</td>
 <td class="code-type"><span class="STpe">any</span></td>
 <td></td>
 </tr>
@@ -20727,22 +20727,22 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Format structure to convert a float to a string. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> val</span></td>
+<td>using val</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">precision</span></td>
+<td>precision</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td>-1 is for 'most possible precision'. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fmt</span></td>
+<td>fmt</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceSign</span></td>
+<td>forceSign</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -20795,27 +20795,27 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Format structure to convert an integer to a string. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> val</span></td>
+<td>using val</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">base</span></td>
+<td>base</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">padding</span></td>
+<td>padding</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceSign</span></td>
+<td>forceSign</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -20880,7 +20880,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">convert</span></td>
+<td>convert</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_IConvert">IConvert</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, <span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
@@ -20898,7 +20898,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">poke</span></td>
+<td>poke</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">StrConv</span>.<span class="SCst"><a href="#Core_StrConv_IPokeValue">IPokeValue</a></span>, <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
@@ -20916,7 +20916,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
 <td></td>
 </tr>
@@ -21640,27 +21640,27 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">buffer</span></td>
+<td>buffer</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">length</span></td>
+<td>length</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">capacity</span></td>
+<td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">allocator</span></td>
+<td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">padding</span></td>
+<td>padding</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">16</span>] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
@@ -22461,7 +22461,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> ^<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -22608,7 +22608,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">v</span></td>
+<td>v</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -22683,7 +22683,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">v</span></td>
+<td>v</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -22889,37 +22889,37 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">userLambda</span></td>
+<td>userLambda</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(<span class="SCst">Core</span>.<span class="SCst">Threading</span>.<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">context</span></td>
+<td>context</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">Context</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userParam</span></td>
+<td>userParam</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">priority</span></td>
+<td>priority</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Threading</span>.<span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">requestEnd</span></td>
+<td>requestEnd</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -23102,23 +23102,23 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Lowest</span></td>
+<td>Lowest</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BelowNormal</span></td>
+<td>BelowNormal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Normal</span></td>
+<td>Normal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AboveNormal</span></td>
+<td>AboveNormal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Highest</span></td>
+<td>Highest</td>
 <td></td>
 </tr>
 </table>
@@ -23150,37 +23150,37 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Represents an instant in time, typically expressed as a date and time of day. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">year</span></td>
+<td>year</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">month</span></td>
+<td>month</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">day</span></td>
+<td>day</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hour</span></td>
+<td>hour</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minute</span></td>
+<td>minute</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">second</span></td>
+<td>second</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">millisecond</span></td>
+<td>millisecond</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
@@ -23395,19 +23395,19 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">DateTime</span></td>
+<td>DateTime</td>
 <td>DDDD MMMM D YYYY HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DateTimeMs</span></td>
+<td>DateTimeMs</td>
 <td>DDDD MMMM D YYYY HH:MM:SS.ZZZ. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Iso</span></td>
+<td>Iso</td>
 <td>YYYY-MM-DD HH:MM:SS. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IsoMs</span></td>
+<td>IsoMs</td>
 <td>YYYY-MM-DD HH:MM:SS.ZZZ. </td>
 </tr>
 </table>
@@ -23424,31 +23424,31 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Sunday</span></td>
+<td>Sunday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Monday</span></td>
+<td>Monday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Tuesday</span></td>
+<td>Tuesday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Wednesday</span></td>
+<td>Wednesday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Thursday</span></td>
+<td>Thursday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Friday</span></td>
+<td>Friday</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Saturday</span></td>
+<td>Saturday</td>
 <td></td>
 </tr>
 </table>
@@ -23466,7 +23466,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Represents a delay, expressed in seconds. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">timeInSeconds</span></td>
+<td>timeInSeconds</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>The duration in seconds. </td>
 </tr>
@@ -23560,32 +23560,32 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">dtMin</span></td>
+<td>dtMin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dtMax</span></td>
+<td>dtMax</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dt</span></td>
+<td>dt</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td>Current delta time, in seconds. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameCount</span></td>
+<td>frameCount</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td>Frame counter. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">prevTick</span></td>
+<td>prevTick</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paused</span></td>
+<td>paused</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -23661,17 +23661,17 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Provides a set of methods and properties that you can use to accurately measure elapsed time. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">isStarted</span></td>
+<td>isStarted</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">startTimeStamp</span></td>
+<td>startTimeStamp</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">elapsedTicks</span></td>
+<td>elapsedTicks</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -23856,7 +23856,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <p>Represents an interval of time, stored as a 64 bits integer. </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">ticks</span></td>
+<td>ticks</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -24180,17 +24180,17 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">userLambda</span></td>
+<td>userLambda</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">handle</span></td>
+<td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">context</span></td>
+<td>context</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">Context</span></span></td>
 <td></td>
 </tr>
@@ -24520,7 +24520,7 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> uuid</span></td>
+<td>using uuid</td>
 <td class="code-type"><span class="SCde">{val8: [<span class="SNum">16</span>] <span class="STpe">u8</span>, val64: [<span class="SNum">2</span>] <span class="STpe">u64</span>}</span></td>
 <td></td>
 </tr>
@@ -24991,19 +24991,19 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Latin1</span></td>
+<td>Latin1</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Latin1NoCase</span></td>
+<td>Latin1NoCase</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Unicode</span></td>
+<td>Unicode</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">UnicodeNoCase</span></td>
+<td>UnicodeNoCase</td>
 <td></td>
 </tr>
 </table>

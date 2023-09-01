@@ -526,227 +526,227 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Libc_BUFSIZ" class="code-type"><span class="SCst">BUFSIZ</span></td>
+<td id="Libc_BUFSIZ">BUFSIZ</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_CLOCKS_PER_SEC" class="code-type"><span class="SCst">CLOCKS_PER_SEC</span></td>
+<td id="Libc_CLOCKS_PER_SEC">CLOCKS_PER_SEC</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EOF" class="code-type"><span class="SCst">EOF</span></td>
+<td id="Libc_EOF">EOF</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_FAILURE" class="code-type"><span class="SCst">EXIT_FAILURE</span></td>
+<td id="Libc_EXIT_FAILURE">EXIT_FAILURE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_EXIT_SUCCESS" class="code-type"><span class="SCst">EXIT_SUCCESS</span></td>
+<td id="Libc_EXIT_SUCCESS">EXIT_SUCCESS</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FILENAME_MAX" class="code-type"><span class="SCst">FILENAME_MAX</span></td>
+<td id="Libc_FILENAME_MAX">FILENAME_MAX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FOPEN_MAX" class="code-type"><span class="SCst">FOPEN_MAX</span></td>
+<td id="Libc_FOPEN_MAX">FOPEN_MAX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGB0" class="code-type"><span class="SCst">FP_ILOGB0</span></td>
+<td id="Libc_FP_ILOGB0">FP_ILOGB0</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ILOGBNAN" class="code-type"><span class="SCst">FP_ILOGBNAN</span></td>
+<td id="Libc_FP_ILOGBNAN">FP_ILOGBNAN</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_INFINITE" class="code-type"><span class="SCst">FP_INFINITE</span></td>
+<td id="Libc_FP_INFINITE">FP_INFINITE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NAN" class="code-type"><span class="SCst">FP_NAN</span></td>
+<td id="Libc_FP_NAN">FP_NAN</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_NORMAL" class="code-type"><span class="SCst">FP_NORMAL</span></td>
+<td id="Libc_FP_NORMAL">FP_NORMAL</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_SUBNORMAL" class="code-type"><span class="SCst">FP_SUBNORMAL</span></td>
+<td id="Libc_FP_SUBNORMAL">FP_SUBNORMAL</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_FP_ZERO" class="code-type"><span class="SCst">FP_ZERO</span></td>
+<td id="Libc_FP_ZERO">FP_ZERO</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ForeignLib" class="code-type"><span class="SCst">ForeignLib</span></td>
+<td id="Libc_ForeignLib">ForeignLib</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VAL" class="code-type"><span class="SCst">HUGE_VAL</span></td>
+<td id="Libc_HUGE_VAL">HUGE_VAL</td>
 <td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_HUGE_VALF" class="code-type"><span class="SCst">HUGE_VALF</span></td>
+<td id="Libc_HUGE_VALF">HUGE_VALF</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INFINITY" class="code-type"><span class="SCst">INFINITY</span></td>
+<td id="Libc_INFINITY">INFINITY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MAX" class="code-type"><span class="SCst">INT16_MAX</span></td>
+<td id="Libc_INT16_MAX">INT16_MAX</td>
 <td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT16_MIN" class="code-type"><span class="SCst">INT16_MIN</span></td>
+<td id="Libc_INT16_MIN">INT16_MIN</td>
 <td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MAX" class="code-type"><span class="SCst">INT32_MAX</span></td>
+<td id="Libc_INT32_MAX">INT32_MAX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT32_MIN" class="code-type"><span class="SCst">INT32_MIN</span></td>
+<td id="Libc_INT32_MIN">INT32_MIN</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MAX" class="code-type"><span class="SCst">INT64_MAX</span></td>
+<td id="Libc_INT64_MAX">INT64_MAX</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT64_MIN" class="code-type"><span class="SCst">INT64_MIN</span></td>
+<td id="Libc_INT64_MIN">INT64_MIN</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MAX" class="code-type"><span class="SCst">INT8_MAX</span></td>
+<td id="Libc_INT8_MAX">INT8_MAX</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_INT8_MIN" class="code-type"><span class="SCst">INT8_MIN</span></td>
+<td id="Libc_INT8_MIN">INT8_MIN</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_L_tmpnam" class="code-type"><span class="SCst">L_tmpnam</span></td>
+<td id="Libc_L_tmpnam">L_tmpnam</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERREXCEPT" class="code-type"><span class="SCst">MATH_ERREXCEPT</span></td>
+<td id="Libc_MATH_ERREXCEPT">MATH_ERREXCEPT</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_MATH_ERRNO" class="code-type"><span class="SCst">MATH_ERRNO</span></td>
+<td id="Libc_MATH_ERRNO">MATH_ERRNO</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_NAN" class="code-type"><span class="SCst">NAN</span></td>
+<td id="Libc_NAN">NAN</td>
 <td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MAX" class="code-type"><span class="SCst">PTRDIFF_MAX</span></td>
+<td id="Libc_PTRDIFF_MAX">PTRDIFF_MAX</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_PTRDIFF_MIN" class="code-type"><span class="SCst">PTRDIFF_MIN</span></td>
+<td id="Libc_PTRDIFF_MIN">PTRDIFF_MIN</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_CUR" class="code-type"><span class="SCst">SEEK_CUR</span></td>
+<td id="Libc_SEEK_CUR">SEEK_CUR</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_END" class="code-type"><span class="SCst">SEEK_END</span></td>
+<td id="Libc_SEEK_END">SEEK_END</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SEEK_SET" class="code-type"><span class="SCst">SEEK_SET</span></td>
+<td id="Libc_SEEK_SET">SEEK_SET</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_SIZE_MAX" class="code-type"><span class="SCst">SIZE_MAX</span></td>
+<td id="Libc_SIZE_MAX">SIZE_MAX</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TIME_UTC" class="code-type"><span class="SCst">TIME_UTC</span></td>
+<td id="Libc_TIME_UTC">TIME_UTC</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_TMP_MAX" class="code-type"><span class="SCst">TMP_MAX</span></td>
+<td id="Libc_TMP_MAX">TMP_MAX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT16_MAX" class="code-type"><span class="SCst">UINT16_MAX</span></td>
+<td id="Libc_UINT16_MAX">UINT16_MAX</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT32_MAX" class="code-type"><span class="SCst">UINT32_MAX</span></td>
+<td id="Libc_UINT32_MAX">UINT32_MAX</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT64_MAX" class="code-type"><span class="SCst">UINT64_MAX</span></td>
+<td id="Libc_UINT64_MAX">UINT64_MAX</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_UINT8_MAX" class="code-type"><span class="SCst">UINT8_MAX</span></td>
+<td id="Libc_UINT8_MAX">UINT8_MAX</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOFBF" class="code-type"><span class="SCde">_IOFBF</span></td>
+<td id="Libc__IOFBF">_IOFBF</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IOLBF" class="code-type"><span class="SCde">_IOLBF</span></td>
+<td id="Libc__IOLBF">_IOLBF</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc__IONBF" class="code-type"><span class="SCde">_IONBF</span></td>
+<td id="Libc__IONBF">_IONBF</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -764,187 +764,187 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Libc_clock_t" class="code-type"><span class="SCde">clock_t</span></td>
+<td id="Libc_clock_t">clock_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_double_t" class="code-type"><span class="SCde">double_t</span></td>
+<td id="Libc_double_t">double_t</td>
 <td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_float_t" class="code-type"><span class="SCde">float_t</span></td>
+<td id="Libc_float_t">float_t</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_fpos_t" class="code-type"><span class="SCde">fpos_t</span></td>
+<td id="Libc_fpos_t">fpos_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int16_t" class="code-type"><span class="SCde">int16_t</span></td>
+<td id="Libc_int16_t">int16_t</td>
 <td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int32_t" class="code-type"><span class="SCde">int32_t</span></td>
+<td id="Libc_int32_t">int32_t</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int64_t" class="code-type"><span class="SCde">int64_t</span></td>
+<td id="Libc_int64_t">int64_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int8_t" class="code-type"><span class="SCde">int8_t</span></td>
+<td id="Libc_int8_t">int8_t</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast16_t" class="code-type"><span class="SCde">int_fast16_t</span></td>
+<td id="Libc_int_fast16_t">int_fast16_t</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast32_t" class="code-type"><span class="SCde">int_fast32_t</span></td>
+<td id="Libc_int_fast32_t">int_fast32_t</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast64_t" class="code-type"><span class="SCde">int_fast64_t</span></td>
+<td id="Libc_int_fast64_t">int_fast64_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_fast8_t" class="code-type"><span class="SCde">int_fast8_t</span></td>
+<td id="Libc_int_fast8_t">int_fast8_t</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least16_t" class="code-type"><span class="SCde">int_least16_t</span></td>
+<td id="Libc_int_least16_t">int_least16_t</td>
 <td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least32_t" class="code-type"><span class="SCde">int_least32_t</span></td>
+<td id="Libc_int_least32_t">int_least32_t</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least64_t" class="code-type"><span class="SCde">int_least64_t</span></td>
+<td id="Libc_int_least64_t">int_least64_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_int_least8_t" class="code-type"><span class="SCde">int_least8_t</span></td>
+<td id="Libc_int_least8_t">int_least8_t</td>
 <td class="code-type"><span class="STpe">s8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intmax_t" class="code-type"><span class="SCde">intmax_t</span></td>
+<td id="Libc_intmax_t">intmax_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_intptr_t" class="code-type"><span class="SCde">intptr_t</span></td>
+<td id="Libc_intptr_t">intptr_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_ptrdiff_t" class="code-type"><span class="SCde">ptrdiff_t</span></td>
+<td id="Libc_ptrdiff_t">ptrdiff_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_size_t" class="code-type"><span class="SCde">size_t</span></td>
+<td id="Libc_size_t">size_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_time_t" class="code-type"><span class="SCde">time_t</span></td>
+<td id="Libc_time_t">time_t</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint16_t" class="code-type"><span class="SCde">uint16_t</span></td>
+<td id="Libc_uint16_t">uint16_t</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint32_t" class="code-type"><span class="SCde">uint32_t</span></td>
+<td id="Libc_uint32_t">uint32_t</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint64_t" class="code-type"><span class="SCde">uint64_t</span></td>
+<td id="Libc_uint64_t">uint64_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint8_t" class="code-type"><span class="SCde">uint8_t</span></td>
+<td id="Libc_uint8_t">uint8_t</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast16_t" class="code-type"><span class="SCde">uint_fast16_t</span></td>
+<td id="Libc_uint_fast16_t">uint_fast16_t</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast32_t" class="code-type"><span class="SCde">uint_fast32_t</span></td>
+<td id="Libc_uint_fast32_t">uint_fast32_t</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast64_t" class="code-type"><span class="SCde">uint_fast64_t</span></td>
+<td id="Libc_uint_fast64_t">uint_fast64_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_fast8_t" class="code-type"><span class="SCde">uint_fast8_t</span></td>
+<td id="Libc_uint_fast8_t">uint_fast8_t</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least16_t" class="code-type"><span class="SCde">uint_least16_t</span></td>
+<td id="Libc_uint_least16_t">uint_least16_t</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least32_t" class="code-type"><span class="SCde">uint_least32_t</span></td>
+<td id="Libc_uint_least32_t">uint_least32_t</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least64_t" class="code-type"><span class="SCde">uint_least64_t</span></td>
+<td id="Libc_uint_least64_t">uint_least64_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uint_least8_t" class="code-type"><span class="SCde">uint_least8_t</span></td>
+<td id="Libc_uint_least8_t">uint_least8_t</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintmax_t" class="code-type"><span class="SCde">uintmax_t</span></td>
+<td id="Libc_uintmax_t">uintmax_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_uintptr_t" class="code-type"><span class="SCde">uintptr_t</span></td>
+<td id="Libc_uintptr_t">uintptr_t</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_va_list" class="code-type"><span class="SCde">va_list</span></td>
+<td id="Libc_va_list">va_list</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">CVaList</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Libc_wchar_t" class="code-type"><span class="SCde">wchar_t</span></td>
+<td id="Libc_wchar_t">wchar_t</td>
 <td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
@@ -1506,12 +1506,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">quot</span></td>
+<td>quot</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rem</span></td>
+<td>rem</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -2592,12 +2592,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">quot</span></td>
+<td>quot</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rem</span></td>
+<td>rem</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -2667,12 +2667,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">quot</span></td>
+<td>quot</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rem</span></td>
+<td>rem</td>
 <td class="code-type"><span class="STpe">s64</span></td>
 <td></td>
 </tr>
@@ -4160,47 +4160,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">tm_sec</span></td>
+<td>tm_sec</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_min</span></td>
+<td>tm_min</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_hour</span></td>
+<td>tm_hour</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_mday</span></td>
+<td>tm_mday</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_mon</span></td>
+<td>tm_mon</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_year</span></td>
+<td>tm_year</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_wday</span></td>
+<td>tm_wday</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_yday</span></td>
+<td>tm_yday</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tm_isdst</span></td>
+<td>tm_isdst</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>

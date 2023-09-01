@@ -985,27 +985,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td id="Gui_Clipboard_Format" class="code-type"><span class="SCst">Format</span></td>
+<td id="Gui_Clipboard_Format">Format</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_FrameCallback" class="code-type"><span class="SCst">FrameCallback</span></td>
+<td id="Gui_FrameCallback">FrameCallback</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_HookEvent" class="code-type"><span class="SCst">HookEvent</span></td>
+<td id="Gui_HookEvent">HookEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_RichEditStyleRef" class="code-type"><span class="SCst">RichEditStyleRef</span></td>
+<td id="Gui_RichEditStyleRef">RichEditStyleRef</td>
 <td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
-<td id="Gui_WndId" class="code-type"><span class="SCst">WndId</span></td>
+<td id="Gui_WndId">WndId</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
@@ -1023,12 +1023,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">wnd</span></td>
+<td>wnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
@@ -1046,23 +1046,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">X</span></td>
+<td>X</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Y</span></td>
+<td>Y</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Width</span></td>
+<td>Width</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Height</span></td>
+<td>Height</td>
 <td></td>
 </tr>
 </table>
@@ -1079,182 +1079,182 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td>using native</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ApplicationNative">ApplicationNative</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigFrame</span></td>
+<td>sigFrame</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">appIcon</span></td>
+<td>appIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">renderer</span></td>
+<td>renderer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RenderOgl</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">theme</span></td>
+<td>theme</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">style</span></td>
+<td>style</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">keyb</span></td>
+<td>keyb</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Keyboard</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mouse</span></td>
+<td>mouse</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Mouse</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mainSurface</span></td>
+<td>mainSurface</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">postedEvents</span></td>
+<td>postedEvents</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">surfaces</span></td>
+<td>surfaces</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">postDestroy</span></td>
+<td>postDestroy</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hookEvents</span></td>
+<td>hookEvents</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursorStack</span></td>
+<td>cursorStack</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endModalExit</span></td>
+<td>endModalExit</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">inModalLoop</span></td>
+<td>inModalLoop</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">quitCode</span></td>
+<td>quitCode</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timing</span></td>
+<td>timing</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">FrameTiming</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mustQuit</span></td>
+<td>mustQuit</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endModal</span></td>
+<td>endModal</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isActivated</span></td>
+<td>isActivated</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fadeDisabledSurface</span></td>
+<td>fadeDisabledSurface</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mutexPostedEvents</span></td>
+<td>mutexPostedEvents</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Sync</span>.<span class="SCst">Mutex</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">duringTimerEvents</span></td>
+<td>duringTimerEvents</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timers</span></td>
+<td>timers</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timersToAdd</span></td>
+<td>timersToAdd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timersToDelete</span></td>
+<td>timersToDelete</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameEvents</span></td>
+<td>frameEvents</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modalSurfaces</span></td>
+<td>modalSurfaces</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toDelete</span></td>
+<td>toDelete</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({ptr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>})</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mouseEnterWnd</span></td>
+<td>mouseEnterWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mouseCaptureWnd</span></td>
+<td>mouseCaptureWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">keybFocusWnd</span></td>
+<td>keybFocusWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxRunFrame</span></td>
+<td>maxRunFrame</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">configPath</span></td>
+<td>configPath</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotKeys</span></td>
+<td>hotKeys</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
 <td></td>
 </tr>
@@ -1896,32 +1896,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">fileSmallIconsImage</span></td>
+<td>fileSmallIconsImage</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fileSmallIconsImageList</span></td>
+<td>fileSmallIconsImageList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mapFileSmallIcons</span></td>
+<td>mapFileSmallIcons</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fileBigIconsImage</span></td>
+<td>fileBigIconsImage</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fileBigIconsImageList</span></td>
+<td>fileBigIconsImageList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mapFileBigIcons</span></td>
+<td>mapFileBigIcons</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
@@ -1939,23 +1939,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Window</span></td>
+<td>Window</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Dialog</span></td>
+<td>Dialog</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DialogBar</span></td>
+<td>DialogBar</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">View</span></td>
+<td>View</td>
 <td></td>
 </tr>
 </table>
@@ -1972,32 +1972,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">curVec4</span></td>
+<td>curVec4</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">startVec4</span></td>
+<td>startVec4</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">destVec4</span></td>
+<td>destVec4</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">factor</span></td>
+<td>factor</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">start</span></td>
+<td>start</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">speed</span></td>
+<td>speed</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -2053,42 +2053,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigPressed</span></td>
+<td>sigPressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigRightPressed</span></td>
+<td>sigRightPressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressed</span></td>
+<td>isPressed</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressing</span></td>
+<td>isPressing</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHot</span></td>
+<td>isHot</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isIn</span></td>
+<td>isIn</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -2106,15 +2106,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">UnChecked</span></td>
+<td>UnChecked</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Checked</span></td>
+<td>Checked</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Undefined</span></td>
+<td>Undefined</td>
 <td></td>
 </tr>
 </table>
@@ -2131,22 +2131,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
+<td>using button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checked</span></td>
+<td>checked</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ButtonCheckState">ButtonCheckState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checkButtonFlags</span></td>
+<td>checkButtonFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButtonFlags">CheckButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span>))</span></td>
 <td></td>
 </tr>
@@ -2210,15 +2210,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ThreeState</span></td>
+<td>ThreeState</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightAlign</span></td>
+<td>RightAlign</td>
 <td></td>
 </tr>
 </table>
@@ -2375,82 +2375,82 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hue</span></td>
+<td>hue</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sat</span></td>
+<td>sat</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lum</span></td>
+<td>lum</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">a</span></td>
+<td>a</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">r</span></td>
+<td>r</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">g</span></td>
+<td>g</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">b</span></td>
+<td>b</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mode</span></td>
+<td>mode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirty</span></td>
+<td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isMoving</span></td>
+<td>isMoving</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">img</span></td>
+<td>img</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">texture</span></td>
+<td>texture</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">xCur</span></td>
+<td>xCur</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">yCur</span></td>
+<td>yCur</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -2612,107 +2612,107 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">oldColor</span></td>
+<td>oldColor</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">color</span></td>
+<td>color</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">oldColorDone</span></td>
+<td>oldColorDone</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mode</span></td>
+<td>mode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">staticRes</span></td>
+<td>staticRes</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pickBox</span></td>
+<td>pickBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pickBar</span></td>
+<td>pickBar</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pickAlpha</span></td>
+<td>pickAlpha</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editR</span></td>
+<td>editR</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editG</span></td>
+<td>editG</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editB</span></td>
+<td>editB</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editA</span></td>
+<td>editA</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editH</span></td>
+<td>editH</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioH</span></td>
+<td>radioH</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioL</span></td>
+<td>radioL</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioS</span></td>
+<td>radioS</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioR</span></td>
+<td>radioR</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioG</span></td>
+<td>radioG</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioB</span></td>
+<td>radioB</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></td>
 <td></td>
 </tr>
@@ -2817,83 +2817,83 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">SaturationLightness</span></td>
+<td>SaturationLightness</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueSaturation</span></td>
+<td>HueSaturation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueLightness</span></td>
+<td>HueLightness</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenBlue</span></td>
+<td>GreenBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedBlue</span></td>
+<td>RedBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedGreen</span></td>
+<td>RedGreen</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueVert</span></td>
+<td>HueVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueHorz</span></td>
+<td>HueHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightnessVert</span></td>
+<td>LightnessVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightnessHorz</span></td>
+<td>LightnessHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaturationVert</span></td>
+<td>SaturationVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SaturationHorz</span></td>
+<td>SaturationHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AlphaHorz</span></td>
+<td>AlphaHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AlphaVert</span></td>
+<td>AlphaVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedHorz</span></td>
+<td>RedHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedVert</span></td>
+<td>RedVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenHorz</span></td>
+<td>GreenHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenVert</span></td>
+<td>GreenVert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BlueHorz</span></td>
+<td>BlueHorz</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BlueVert</span></td>
+<td>BlueVert</td>
 <td></td>
 </tr>
 </table>
@@ -2910,27 +2910,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">SaturationLightness</span></td>
+<td>SaturationLightness</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueSaturation</span></td>
+<td>HueSaturation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HueLightness</span></td>
+<td>HueLightness</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">GreenBlue</span></td>
+<td>GreenBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedBlue</span></td>
+<td>RedBlue</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RedGreen</span></td>
+<td>RedGreen</td>
 <td></td>
 </tr>
 </table>
@@ -2947,67 +2947,67 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">kind</span></td>
+<td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minWidthPopup</span></td>
+<td>minWidthPopup</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxHeightPopup</span></td>
+<td>maxHeightPopup</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span>, <span class="STpe">u32</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox</span></td>
+<td>editBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHot</span></td>
+<td>isHot</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popup</span></td>
+<td>popup</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectedIdx</span></td>
+<td>selectedIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxIconSize</span></td>
+<td>maxIconSize</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBk</span></td>
+<td>aniBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBorder</span></td>
+<td>aniBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniText</span></td>
+<td>aniText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -3174,12 +3174,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isSeparator</span></td>
+<td>isSeparator</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -3197,15 +3197,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Select</span></td>
+<td>Select</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Edit</span></td>
+<td>Edit</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CheckBox</span></td>
+<td>CheckBox</td>
 <td></td>
 </tr>
 </table>
@@ -3222,27 +3222,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelSize</span></td>
+<td>labelSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboSize</span></td>
+<td>comboSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">combo</span></td>
+<td>combo</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
@@ -3293,17 +3293,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">source</span></td>
+<td>source</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
@@ -3321,62 +3321,62 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">source</span></td>
+<td>source</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">longName</span></td>
+<td>longName</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shortcut</span></td>
+<td>shortcut</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip</span></td>
+<td>toolTip</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">setFlags</span></td>
+<td>setFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>.<span class="SCst">SetFlags</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">disabled</span></td>
+<td>disabled</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checked</span></td>
+<td>checked</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hidden</span></td>
+<td>hidden</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -3394,7 +3394,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
@@ -3412,7 +3412,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td>using native</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeCursor">NativeCursor</a></span></span></td>
 <td></td>
 </tr>
@@ -3502,51 +3502,51 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Arrow</span></td>
+<td>Arrow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SizeWE</span></td>
+<td>SizeWE</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SizeNS</span></td>
+<td>SizeNS</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SizeNWSE</span></td>
+<td>SizeNWSE</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SizeNESW</span></td>
+<td>SizeNESW</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SizeAll</span></td>
+<td>SizeAll</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cross</span></td>
+<td>Cross</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Help</span></td>
+<td>Help</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hand</span></td>
+<td>Hand</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">IBeam</span></td>
+<td>IBeam</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">No</span></td>
+<td>No</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Wait</span></td>
+<td>Wait</td>
 <td></td>
 </tr>
 </table>
@@ -3563,7 +3563,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
@@ -3581,22 +3581,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wndBottom</span></td>
+<td>wndBottom</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buttons</span></td>
+<td>buttons</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigPressedButton</span></td>
+<td>sigPressedButton</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
@@ -3732,27 +3732,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Center</span></td>
+<td>Center</td>
 <td></td>
 </tr>
 </table>
@@ -3782,137 +3782,137 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">text</span></td>
+<td>text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">form</span></td>
+<td>form</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxForm">EditBoxForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBoxFlags</span></td>
+<td>editBoxFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">inputMode</span></td>
+<td>inputMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxInputMode">EditBoxInputMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxLength</span></td>
+<td>maxLength</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rightMargin</span></td>
+<td>rightMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigLoseFocus</span></td>
+<td>sigLoseFocus</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigEnterPressed</span></td>
+<td>sigEnterPressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigEscapePressed</span></td>
+<td>sigEscapePressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigCheckContent</span></td>
+<td>sigCheckContent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxCheckResult">EditBoxCheckResult</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> minMax</span></td>
+<td>using minMax</td>
 <td class="code-type"><span class="SCde">{minMaxS64: {min: <span class="STpe">s64</span>, max: <span class="STpe">s64</span>}, minMaxU64: {min: <span class="STpe">u64</span>, max: <span class="STpe">u64</span>}, minMaxF64: {min: <span class="STpe">f64</span>, max: <span class="STpe">f64</span>}}</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBk</span></td>
+<td>aniBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBorder</span></td>
+<td>aniBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isInvalid</span></td>
+<td>isInvalid</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHot</span></td>
+<td>isHot</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isDragging</span></td>
+<td>isDragging</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selBeg</span></td>
+<td>selBeg</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selEnd</span></td>
+<td>selEnd</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timerCaret</span></td>
+<td>timerCaret</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">visibleCaret</span></td>
+<td>visibleCaret</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">posSelBeg</span></td>
+<td>posSelBeg</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">posSelEnd</span></td>
+<td>posSelEnd</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollPosX</span></td>
+<td>scrollPosX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">countRunes</span></td>
+<td>countRunes</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -4213,19 +4213,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Incomplete</span></td>
+<td>Incomplete</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Valid</span></td>
+<td>Valid</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">InvalidDismiss</span></td>
+<td>InvalidDismiss</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">InvalidShow</span></td>
+<td>InvalidShow</td>
 <td></td>
 </tr>
 </table>
@@ -4242,19 +4242,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AutoLoseFocus</span></td>
+<td>AutoLoseFocus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReadOnly</span></td>
+<td>ReadOnly</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightAlign</span></td>
+<td>RightAlign</td>
 <td></td>
 </tr>
 </table>
@@ -4271,19 +4271,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 </table>
@@ -4300,19 +4300,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">String</span></td>
+<td>String</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">S64</span></td>
+<td>S64</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">U64</span></td>
+<td>U64</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">F64</span></td>
+<td>F64</td>
 <td></td>
 </tr>
 </table>
@@ -4329,27 +4329,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelSize</span></td>
+<td>labelSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editSize</span></td>
+<td>editSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit</span></td>
+<td>edit</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
@@ -4401,22 +4401,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
+<td>using dialog</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit</span></td>
+<td>edit</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit</span></td>
+<td>richEdit</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></td>
 <td></td>
 </tr>
@@ -4527,12 +4527,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
@@ -4571,11 +4571,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Critical</span></td>
+<td>Critical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Information</span></td>
+<td>Information</td>
 <td></td>
 </tr>
 </table>
@@ -4592,22 +4592,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">kind</span></td>
+<td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">target</span></td>
+<td>target</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">accepted</span></td>
+<td>accepted</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -4650,143 +4650,143 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Create</span></td>
+<td>Create</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Destroy</span></td>
+<td>Destroy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Resize</span></td>
+<td>Resize</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Move</span></td>
+<td>Move</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PrePaint</span></td>
+<td>PrePaint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Paint</span></td>
+<td>Paint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PostPaint</span></td>
+<td>PostPaint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">KeyPressed</span></td>
+<td>KeyPressed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">KeyReleased</span></td>
+<td>KeyReleased</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Rune</span></td>
+<td>Rune</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseAccept</span></td>
+<td>MouseAccept</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MousePressed</span></td>
+<td>MousePressed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseReleased</span></td>
+<td>MouseReleased</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseDoubleClick</span></td>
+<td>MouseDoubleClick</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseMove</span></td>
+<td>MouseMove</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseEnter</span></td>
+<td>MouseEnter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseLeave</span></td>
+<td>MouseLeave</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MouseWheel</span></td>
+<td>MouseWheel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Quit</span></td>
+<td>Quit</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SysCommand</span></td>
+<td>SysCommand</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetTheme</span></td>
+<td>SetTheme</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Timer</span></td>
+<td>Timer</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SetFocus</span></td>
+<td>SetFocus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">KillFocus</span></td>
+<td>KillFocus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Command</span></td>
+<td>Command</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ComputeCommandState</span></td>
+<td>ComputeCommandState</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ApplyCommandState</span></td>
+<td>ApplyCommandState</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Frame</span></td>
+<td>Frame</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SerializeState</span></td>
+<td>SerializeState</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Show</span></td>
+<td>Show</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hide</span></td>
+<td>Hide</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Invalidate</span></td>
+<td>Invalidate</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SysUser</span></td>
+<td>SysUser</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Notify</span></td>
+<td>Notify</td>
 <td></td>
 </tr>
 </table>
@@ -4803,57 +4803,57 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
+<td>using dialog</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">treeCtrl</span></td>
+<td>treeCtrl</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">treePathStr</span></td>
+<td>treePathStr</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">String</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listCtrl</span></td>
+<td>listCtrl</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboPath</span></td>
+<td>comboPath</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboPathStr</span></td>
+<td>comboPathStr</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">String</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editFile</span></td>
+<td>editFile</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboType</span></td>
+<td>comboType</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dlgOptions</span></td>
+<td>dlgOptions</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curFolder</span></td>
+<td>curFolder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curList</span></td>
+<td>curList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileInfo</span>)</span></td>
 <td></td>
 </tr>
@@ -4941,19 +4941,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">CreateFile</span></td>
+<td>CreateFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectOneFile</span></td>
+<td>SelectOneFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectMultiFiles</span></td>
+<td>SelectMultiFiles</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectFolder</span></td>
+<td>SelectFolder</td>
 <td></td>
 </tr>
 </table>
@@ -4970,47 +4970,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">title</span></td>
+<td>title</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnOkName</span></td>
+<td>btnOkName</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">openFolder</span></td>
+<td>openFolder</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editName</span></td>
+<td>editName</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">drivePane</span></td>
+<td>drivePane</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mode</span></td>
+<td>mode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgMode">FileDlgMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">filters</span></td>
+<td>filters</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({name: <span class="STpe">string</span>, extensions: <span class="STpe">string</span>})</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">shortcuts</span></td>
+<td>shortcuts</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({type: <span class="SCst">Core</span>.<span class="SCst">Env</span>.<span class="SCst">SpecialDirectory</span>, name: <span class="STpe">string</span>})</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">state</span></td>
+<td>state</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgState">FileDlgState</a></span></span></td>
 <td></td>
 </tr>
@@ -5028,12 +5028,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">curFolder</span></td>
+<td>curFolder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
@@ -5051,12 +5051,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">other</span></td>
+<td>other</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
@@ -5074,11 +5074,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MousePressed</span></td>
+<td>MousePressed</td>
 <td></td>
 </tr>
 </table>
@@ -5095,12 +5095,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">firstFrame</span></td>
+<td>firstFrame</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -5118,37 +5118,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">view</span></td>
+<td>view</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameForm</span></td>
+<td>frameForm</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndForm">FrameWndForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameFlags</span></td>
+<td>frameFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">anchor</span></td>
+<td>anchor</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndAnchor">FrameWndAnchor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">anchorPos</span></td>
+<td>anchorPos</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">usedColorBk</span></td>
+<td>usedColorBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
@@ -5291,23 +5291,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 </table>
@@ -5324,19 +5324,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Borders</span></td>
+<td>Borders</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FocusBorder</span></td>
+<td>FocusBorder</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SmallShadow</span></td>
+<td>SmallShadow</td>
 <td></td>
 </tr>
 </table>
@@ -5353,15 +5353,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 </table>
@@ -5378,47 +5378,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">gridLayoutFlags</span></td>
+<td>gridLayoutFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrlFlags">GridLayoutCtrlFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">numColumns</span></td>
+<td>numColumns</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">numRows</span></td>
+<td>numRows</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">spacingHorz</span></td>
+<td>spacingHorz</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">spacingVert</span></td>
+<td>spacingVert</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">layout</span></td>
+<td>layout</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colSizes</span></td>
+<td>colSizes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rowSizes</span></td>
+<td>rowSizes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
@@ -5543,19 +5543,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AdaptSizeToContent</span></td>
+<td>AdaptSizeToContent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AdaptColWidth</span></td>
+<td>AdaptColWidth</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AdaptRowHeight</span></td>
+<td>AdaptRowHeight</td>
 <td></td>
 </tr>
 </table>
@@ -5572,67 +5572,67 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">form</span></td>
+<td>form</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderForm">HeaderForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerFlags</span></td>
+<td>headerFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderFlags">HeaderFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">marginItems</span></td>
+<td>marginItems</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigLayoutChanged</span></td>
+<td>sigLayoutChanged</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigClicked</span></td>
+<td>sigClicked</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotSeparator</span></td>
+<td>hotSeparator</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">moving</span></td>
+<td>moving</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">clicked</span></td>
+<td>clicked</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">correctMoving</span></td>
+<td>correctMoving</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sortColumn</span></td>
+<td>sortColumn</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sortMark</span></td>
+<td>sortMark</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -5889,11 +5889,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Clickable</span></td>
+<td>Clickable</td>
 <td></td>
 </tr>
 </table>
@@ -5910,15 +5910,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 </table>
@@ -5935,47 +5935,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minWidth</span></td>
+<td>minWidth</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxWidth</span></td>
+<td>maxWidth</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizeable</span></td>
+<td>sizeable</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">clickable</span></td>
+<td>clickable</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconMargin</span></td>
+<td>iconMargin</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">column</span></td>
+<td>column</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -5993,17 +5993,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">accept</span></td>
+<td>accept</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">update</span></td>
+<td>update</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">execute</span></td>
+<td>execute</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ActionContext">ActionContext</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
@@ -6021,17 +6021,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">setup</span></td>
+<td>setup</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">insertRune</span></td>
+<td>insertRune</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>, <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">compute</span></td>
+<td>compute</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
@@ -6049,112 +6049,112 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">onEvent</span></td>
+<td>onEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onHookEvent</span></td>
+<td>onHookEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onCreateEvent</span></td>
+<td>onCreateEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CreateEvent">CreateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onDestroyEvent</span></td>
+<td>onDestroyEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onStateEvent</span></td>
+<td>onStateEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StateEvent">StateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onResizeEvent</span></td>
+<td>onResizeEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onPrePaintEvent</span></td>
+<td>onPrePaintEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onPaintEvent</span></td>
+<td>onPaintEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onPostPaintEvent</span></td>
+<td>onPostPaintEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onKeyEvent</span></td>
+<td>onKeyEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onMouseEvent</span></td>
+<td>onMouseEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onSysCommandEvent</span></td>
+<td>onSysCommandEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onSysUserEvent</span></td>
+<td>onSysUserEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysUserEvent">SysUserEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onSetThemeEvent</span></td>
+<td>onSetThemeEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onTimerEvent</span></td>
+<td>onTimerEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onFocusEvent</span></td>
+<td>onFocusEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onCommandEvent</span></td>
+<td>onCommandEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandEvent">CommandEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onComputeStateEvent</span></td>
+<td>onComputeStateEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onApplyStateEvent</span></td>
+<td>onApplyStateEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onFrameEvent</span></td>
+<td>onFrameEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameEvent">FrameEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onSerializeStateEvent</span></td>
+<td>onSerializeStateEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onNotifyEvent</span></td>
+<td>onNotifyEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>)</span></td>
 <td></td>
 </tr>
@@ -6172,22 +6172,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">imageList</span></td>
+<td>imageList</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">index</span></td>
+<td>index</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizeX</span></td>
+<td>sizeX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizeY</span></td>
+<td>sizeY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -6317,32 +6317,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconBarFlags</span></td>
+<td>iconBarFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconSize</span></td>
+<td>iconSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconPadding</span></td>
+<td>iconPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigUpdateState</span></td>
+<td>sigUpdateState</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigCheckChanged</span></td>
+<td>sigCheckChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
@@ -6465,11 +6465,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Vertical</span></td>
+<td>Vertical</td>
 <td></td>
 </tr>
 </table>
@@ -6486,67 +6486,67 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
+<td>using button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">form</span></td>
+<td>form</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonForm">IconButtonForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconBtnFlags</span></td>
+<td>iconBtnFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checkedForm</span></td>
+<td>checkedForm</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonCheckedForm">IconButtonCheckedForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">arrowPos</span></td>
+<td>arrowPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonArrowPos">IconButtonArrowPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">textPos</span></td>
+<td>textPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonTextPos">IconButtonTextPos</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigHidePopup</span></td>
+<td>sigHidePopup</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigShowPopup</span></td>
+<td>sigShowPopup</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigCheckChanged</span></td>
+<td>sigCheckChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigPaintIcon</span></td>
+<td>sigPaintIcon</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBk</span></td>
+<td>aniBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isChecked</span></td>
+<td>isChecked</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popup</span></td>
+<td>popup</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
@@ -6698,31 +6698,31 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightUp</span></td>
+<td>RightUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightDown</span></td>
+<td>RightDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 </table>
@@ -6739,27 +6739,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Full</span></td>
+<td>Full</td>
 <td></td>
 </tr>
 </table>
@@ -6776,23 +6776,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Checkable</span></td>
+<td>Checkable</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CheckableToggle</span></td>
+<td>CheckableToggle</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Popup</span></td>
+<td>Popup</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Center</span></td>
+<td>Center</td>
 <td></td>
 </tr>
 </table>
@@ -6809,15 +6809,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Square</span></td>
+<td>Square</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RoundSquare</span></td>
+<td>RoundSquare</td>
 <td></td>
 </tr>
 </table>
@@ -6834,19 +6834,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 </table>
@@ -6863,22 +6863,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">texture</span></td>
+<td>texture</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">totalFrames</span></td>
+<td>totalFrames</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameSizeX</span></td>
+<td>frameSizeX</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameSizeY</span></td>
+<td>frameSizeY</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -6951,17 +6951,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">movie</span></td>
+<td>movie</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Movie">Movie</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">textureFrame</span></td>
+<td>textureFrame</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
 <td></td>
 </tr>
@@ -7097,27 +7097,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData0</span></td>
+<td>userData0</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData1</span></td>
+<td>userData1</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -7135,22 +7135,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modifiers</span></td>
+<td>modifiers</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">key</span></td>
+<td>key</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">char</span></td>
+<td>char</td>
 <td class="code-type"><span class="STpe">rune</span></td>
 <td></td>
 </tr>
@@ -7168,22 +7168,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">mdf</span></td>
+<td>mdf</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">key</span></td>
+<td>key</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">target</span></td>
+<td>target</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
@@ -7201,52 +7201,52 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconColor</span></td>
+<td>iconColor</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelFlags</span></td>
+<td>labelFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_LabelFlags">LabelFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">horzAlignmentIcon</span></td>
+<td>horzAlignmentIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">StringHorzAlignment</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">vertAlignmentIcon</span></td>
+<td>vertAlignmentIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">StringVertAlignment</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">horzAlignmentText</span></td>
+<td>horzAlignmentText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">StringHorzAlignment</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">vertAlignmentText</span></td>
+<td>vertAlignmentText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">StringVertAlignment</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paddingText</span></td>
+<td>paddingText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paddingIcon</span></td>
+<td>paddingIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
@@ -7333,19 +7333,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WordWrap</span></td>
+<td>WordWrap</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightText</span></td>
+<td>LightText</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AutoHeight</span></td>
+<td>AutoHeight</td>
 <td></td>
 </tr>
 </table>
@@ -7362,152 +7362,152 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">horizontalExtent</span></td>
+<td>horizontalExtent</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lineHeight</span></td>
+<td>lineHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">indentWidth</span></td>
+<td>indentWidth</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconSize</span></td>
+<td>iconSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconMarginFirstCol</span></td>
+<td>iconMarginFirstCol</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listFlags</span></td>
+<td>listFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListFlags">ListFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectionMode</span></td>
+<td>selectionMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListSelectionMode">ListSelectionMode</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">leftTextMargin</span></td>
+<td>leftTextMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigSelChanged</span></td>
+<td>sigSelChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigCheckChanged</span></td>
+<td>sigCheckChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigRightClick</span></td>
+<td>sigRightClick</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigLeftDoubleClick</span></td>
+<td>sigLeftDoubleClick</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigExpand</span></td>
+<td>sigExpand</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigCollapse</span></td>
+<td>sigCollapse</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigKeyPressed</span></td>
+<td>sigKeyPressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigVirtualFill</span></td>
+<td>sigVirtualFill</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigSort</span></td>
+<td>sigSort</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)-&gt;<span class="STpe">s32</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toFreeLines</span></td>
+<td>toFreeLines</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lines</span></td>
+<td>lines</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">idxLineToIdxList</span></td>
+<td>idxLineToIdxList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selModel</span></td>
+<td>selModel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checkModel</span></td>
+<td>checkModel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SelModel">SelModel</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">focusIndex</span></td>
+<td>focusIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIndex</span></td>
+<td>hotIndex</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollWnd</span></td>
+<td>scrollWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listView</span></td>
+<td>listView</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListView">ListView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header</span></td>
+<td>header</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">virtualCount</span></td>
+<td>virtualCount</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isVirtual</span></td>
+<td>isVirtual</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8062,35 +8062,35 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HideSelection</span></td>
+<td>HideSelection</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AlternateLines</span></td>
+<td>AlternateLines</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorzLines</span></td>
+<td>HorzLines</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VertLines</span></td>
+<td>VertLines</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ForceMarginExpandMark</span></td>
+<td>ForceMarginExpandMark</td>
 <td>Force one margin even if no expand mark. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NoMouseEmptySel</span></td>
+<td>NoMouseEmptySel</td>
 <td>Click does not clear selection if not on an item. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HotTrack</span></td>
+<td>HotTrack</td>
 <td></td>
 </tr>
 </table>
@@ -8107,27 +8107,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">sortKey</span></td>
+<td>sortKey</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorBk</span></td>
+<td>colorBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorFg</span></td>
+<td>colorFg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">column</span></td>
+<td>column</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">horzAlign</span></td>
+<td>horzAlign</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">StringHorzAlignment</span></span></td>
 <td></td>
 </tr>
@@ -8145,82 +8145,82 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">colorBk</span></td>
+<td>colorBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorFg</span></td>
+<td>colorFg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData0</span></td>
+<td>userData0</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData1</span></td>
+<td>userData1</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData2</span></td>
+<td>userData2</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData3</span></td>
+<td>userData3</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">leftTextMargin</span></td>
+<td>leftTextMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceExpandMark</span></td>
+<td>forceExpandMark</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">canCheck</span></td>
+<td>canCheck</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">separator</span></td>
+<td>separator</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconMargin</span></td>
+<td>iconMargin</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lines</span></td>
+<td>lines</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">parent</span></td>
+<td>parent</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">index</span></td>
+<td>index</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">level</span></td>
+<td>level</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">expanded</span></td>
+<td>expanded</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8311,15 +8311,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Single</span></td>
+<td>Single</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Multi</span></td>
+<td>Multi</td>
 <td></td>
 </tr>
 </table>
@@ -8336,17 +8336,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">list</span></td>
+<td>list</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">discardMouseRelease</span></td>
+<td>discardMouseRelease</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8416,77 +8416,77 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onValidateResult</span></td>
+<td>onValidateResult</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onComputeItem</span></td>
+<td>onComputeItem</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupMenuItem">PopupMenuItem</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuCtrlFlags</span></td>
+<td>menuCtrlFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrlFlags">MenuCtrlFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paddingSel</span></td>
+<td>paddingSel</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectedIdx</span></td>
+<td>selectedIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bar</span></td>
+<td>bar</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endModal</span></td>
+<td>endModal</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endModalResult</span></td>
+<td>endModalResult</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">ownerMenu</span></td>
+<td>ownerMenu</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">subVisible</span></td>
+<td>subVisible</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timer</span></td>
+<td>timer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirtyLayout</span></td>
+<td>dirtyLayout</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paintByFrame</span></td>
+<td>paintByFrame</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -8700,11 +8700,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NoKeyShortcuts</span></td>
+<td>NoKeyShortcuts</td>
 <td></td>
 </tr>
 </table>
@@ -8721,17 +8721,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> dialog</span></td>
+<td>using dialog</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelIcon</span></td>
+<td>labelIcon</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
@@ -8932,27 +8932,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">button</span></td>
+<td>button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">MouseButton</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">surfacePos</span></td>
+<td>surfacePos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">move</span></td>
+<td>move</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modifiers</span></td>
+<td>modifiers</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span></span></td>
 <td></td>
 </tr>
@@ -8970,12 +8970,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">oldPos</span></td>
+<td>oldPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
@@ -8993,77 +8993,77 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">enableCache</span></td>
+<td>enableCache</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mustLoop</span></td>
+<td>mustLoop</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">inPause</span></td>
+<td>inPause</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">playFreq</span></td>
+<td>playFreq</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigFrameChanged</span></td>
+<td>sigFrameChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Movie">Movie</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">numFrames</span></td>
+<td>numFrames</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameIndex</span></td>
+<td>frameIndex</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frame</span></td>
+<td>frame</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">source</span></td>
+<td>source</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MovieSource">MovieSource</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">imgList</span></td>
+<td>imgList</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">gif</span></td>
+<td>gif</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Gif</span>.<span class="SCst">Decoder</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bytes</span></td>
+<td>bytes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cacheFrames</span></td>
+<td>cacheFrames</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentTime</span></td>
+<td>currentTime</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirtyFrame</span></td>
+<td>dirtyFrame</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -9198,15 +9198,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SpriteSheet</span></td>
+<td>SpriteSheet</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gif</span></td>
+<td>Gif</td>
 <td></td>
 </tr>
 </table>
@@ -9223,7 +9223,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">cursor</span></td>
+<td>cursor</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
@@ -9241,12 +9241,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">hWnd</span></td>
+<td>hWnd</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastDeadChar</span></td>
+<td>lastDeadChar</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -9264,17 +9264,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">ntfyKind</span></td>
+<td>ntfyKind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">from</span></td>
+<td>from</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
@@ -9292,17 +9292,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">painter</span></td>
+<td>painter</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Painter</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">renderer</span></td>
+<td>renderer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">RenderOgl</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isDisabled</span></td>
+<td>isDisabled</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -9320,12 +9320,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bc</span></td>
+<td>bc</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span></span></td>
 <td></td>
 </tr>
@@ -9400,42 +9400,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectedColor</span></td>
+<td>selectedColor</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pal</span></td>
+<td>pal</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">palPos</span></td>
+<td>palPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boxSize</span></td>
+<td>boxSize</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">boxMargin</span></td>
+<td>boxMargin</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -9571,57 +9571,57 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">heightItem</span></td>
+<td>heightItem</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">heightSeparator</span></td>
+<td>heightSeparator</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minWidthPopup</span></td>
+<td>minWidthPopup</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxHeightPopup</span></td>
+<td>maxHeightPopup</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">simFitX</span></td>
+<td>simFitX</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">simFitY</span></td>
+<td>simFitY</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigSelected</span></td>
+<td>sigSelected</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectedIdx</span></td>
+<td>selectedIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollWnd</span></td>
+<td>scrollWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxIconSize</span></td>
+<td>maxIconSize</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -9714,27 +9714,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Item">Item</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isSeparator</span></td>
+<td>isSeparator</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniSel</span></td>
+<td>aniSel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniText</span></td>
+<td>aniText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniCheck</span></td>
+<td>aniCheck</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -9752,17 +9752,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">list</span></td>
+<td>list</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -9819,57 +9819,57 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">rightName</span></td>
+<td>rightName</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popup</span></td>
+<td>popup</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">pos</span></td>
+<td>pos</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">separator</span></td>
+<td>separator</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">disabled</span></td>
+<td>disabled</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checked</span></td>
+<td>checked</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hidden</span></td>
+<td>hidden</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniSel</span></td>
+<td>aniSel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniText</span></td>
+<td>aniText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniRightText</span></td>
+<td>aniRightText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -9887,15 +9887,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">TopLeft</span></td>
+<td>TopLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AnchorTopCenter</span></td>
+<td>AnchorTopCenter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AnchorBottomCenter</span></td>
+<td>AnchorBottomCenter</td>
 <td></td>
 </tr>
 </table>
@@ -9912,17 +9912,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">prgBarFlags</span></td>
+<td>prgBarFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ProgressBarFlags">ProgressBarFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progression</span></td>
+<td>progression</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -9991,11 +9991,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Infinite</span></td>
+<td>Infinite</td>
 <td></td>
 </tr>
 </table>
@@ -10012,77 +10012,77 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">nameMarginBefore</span></td>
+<td>nameMarginBefore</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">nameHeight</span></td>
+<td>nameHeight</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">nameMarginAfter</span></td>
+<td>nameMarginAfter</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">descMarginAfter</span></td>
+<td>descMarginAfter</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">enumFlagsMarginBefore</span></td>
+<td>enumFlagsMarginBefore</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxSizeCombo</span></td>
+<td>maxSizeCombo</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxSizeEditValue</span></td>
+<td>maxSizeEditValue</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">font0</span></td>
+<td>font0</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">font1</span></td>
+<td>font1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">font2</span></td>
+<td>font2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollWnd</span></td>
+<td>scrollWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edView</span></td>
+<td>edView</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListView">PropertyListView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">categs</span></td>
+<td>categs</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({item: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>, lvl: <span class="STpe">s32</span>})</span></td>
 <td></td>
 </tr>
@@ -10250,22 +10250,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitter</span></td>
+<td>splitter</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">list</span></td>
+<td>list</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">prop</span></td>
+<td>prop</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></td>
 <td></td>
 </tr>
@@ -10322,82 +10322,82 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">filter</span></td>
+<td>filter</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">line</span></td>
+<td>line</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">ptrData</span></td>
+<td>ptrData</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">typeValue</span></td>
+<td>typeValue</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">TypeValue</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceShow</span></td>
+<td>forceShow</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelDesc</span></td>
+<td>labelDesc</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox</span></td>
+<td>editBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checkBox</span></td>
+<td>checkBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox</span></td>
+<td>comboBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sliderBox</span></td>
+<td>sliderBox</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">onResize</span></td>
+<td>onResize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListItem">PropertyListItem</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniFocusBk</span></td>
+<td>aniFocusBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniFocusBorder</span></td>
+<td>aniFocusBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">extendFocus</span></td>
+<td>extendFocus</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -10426,27 +10426,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
+<td>using button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">form</span></td>
+<td>form</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButtonForm">PushButtonForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBk</span></td>
+<td>aniBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBorder</span></td>
+<td>aniBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniText</span></td>
+<td>aniText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -10510,19 +10510,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Normal</span></td>
+<td>Normal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Default</span></td>
+<td>Default</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Strong</span></td>
+<td>Strong</td>
 <td></td>
 </tr>
 </table>
@@ -10539,12 +10539,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">quitCode</span></td>
+<td>quitCode</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -10562,22 +10562,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
+<td>using button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">checked</span></td>
+<td>checked</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">radioButtonFlags</span></td>
+<td>radioButtonFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButtonFlags">RadioButtonFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span>))</span></td>
 <td></td>
 </tr>
@@ -10659,11 +10659,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightAlign</span></td>
+<td>RightAlign</td>
 <td></td>
 </tr>
 </table>
@@ -10680,12 +10680,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">oldSize</span></td>
+<td>oldSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
@@ -10703,183 +10703,183 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorLeft</span></td>
+<td>CursorLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorRight</span></td>
+<td>CursorRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorUp</span></td>
+<td>CursorUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorDown</span></td>
+<td>CursorDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorStartLine</span></td>
+<td>CursorStartLine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorEndLine</span></td>
+<td>CursorEndLine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorStartFile</span></td>
+<td>CursorStartFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorEndFile</span></td>
+<td>CursorEndFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorWordLeft</span></td>
+<td>CursorWordLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorWordRight</span></td>
+<td>CursorWordRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorPageUp</span></td>
+<td>CursorPageUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CursorPageDown</span></td>
+<td>CursorPageDown</td>
 <td>CMD_CURSOR_MATCH_PAIR. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ScrollLineUp</span></td>
+<td>ScrollLineUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ScrollLineDown</span></td>
+<td>ScrollLineDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeleteLeft</span></td>
+<td>DeleteLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeleteRight</span></td>
+<td>DeleteRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeleteLine</span></td>
+<td>DeleteLine</td>
 <td>CMD_EDIT_DELETE_LINE. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EditTabulation</span></td>
+<td>EditTabulation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">EditBackTabulation</span></td>
+<td>EditBackTabulation</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeleteWordLeft</span></td>
+<td>DeleteWordLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DeleteWordRight</span></td>
+<td>DeleteWordRight</td>
 <td>CMD_EDIT_DELETE_LINE_LEFT CMD_EDIT_DELETE_LINE_RIGHT. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ToggleOverwrite</span></td>
+<td>ToggleOverwrite</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ClipboardCopy</span></td>
+<td>ClipboardCopy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ClipboardPaste</span></td>
+<td>ClipboardPaste</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ClipboardCut</span></td>
+<td>ClipboardCut</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Undo</span></td>
+<td>Undo</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Redo</span></td>
+<td>Redo</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRuneLeft</span></td>
+<td>SelectRuneLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRuneRight</span></td>
+<td>SelectRuneRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRuneUp</span></td>
+<td>SelectRuneUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRuneDown</span></td>
+<td>SelectRuneDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRectLeft</span></td>
+<td>SelectRectLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRectRight</span></td>
+<td>SelectRectRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRectUp</span></td>
+<td>SelectRectUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectRectDown</span></td>
+<td>SelectRectDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectStartLine</span></td>
+<td>SelectStartLine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectEndLine</span></td>
+<td>SelectEndLine</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectStartFile</span></td>
+<td>SelectStartFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectEndFile</span></td>
+<td>SelectEndFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectAllFile</span></td>
+<td>SelectAllFile</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectWordLeft</span></td>
+<td>SelectWordLeft</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectWordRight</span></td>
+<td>SelectWordRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectPageUp</span></td>
+<td>SelectPageUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SelectPageDown</span></td>
+<td>SelectPageDown</td>
 <td>CMD_SEL_HIDE_LINE CMD_MARKER_BOOKMARK_ADD CMD_MARKER_BOOKMARK_PREV CMD_MARKER_BOOKMARK_NEXT CMD_MARKER_BOOKMARK_FAST CMD_MAKE_UPPER CMD_MAKE_LOWER CMD_COMMENT_CPP CMD_UNCOMMENT_CPP. </td>
 </tr>
 </table>
@@ -10896,207 +10896,207 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdFlags</span></td>
+<td>richEdFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditFlags">RichEditFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lineSpacing</span></td>
+<td>lineSpacing</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">overwriteMode</span></td>
+<td>overwriteMode</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabSize</span></td>
+<td>tabSize</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">marginLeft</span></td>
+<td>marginLeft</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">marginRight</span></td>
+<td>marginRight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lexer</span></td>
+<td>lexer</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">form</span></td>
+<td>form</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditForm">RichEditForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigIsReadOnly</span></td>
+<td>sigIsReadOnly</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="STpe">bool</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigModified</span></td>
+<td>sigModified</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">bkColorModel</span></td>
+<td>bkColorModel</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">styles</span></td>
+<td>styles</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stylesSelect</span></td>
+<td>stylesSelect</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2</span>] <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursorPos</span></td>
+<td>cursorPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selBeg</span></td>
+<td>selBeg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lines</span></td>
+<td>lines</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">freeLines</span></td>
+<td>freeLines</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollWnd</span></td>
+<td>scrollWnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edView</span></td>
+<td>edView</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditView">RichEditView</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selRectangle</span></td>
+<td>selRectangle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasSelRect</span></td>
+<td>hasSelRect</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modified</span></td>
+<td>modified</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">recomputeScroll</span></td>
+<td>recomputeScroll</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirtyFirstLineView</span></td>
+<td>dirtyFirstLineView</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceCaretVisible</span></td>
+<td>forceCaretVisible</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">forceCaretVisibleCenter</span></td>
+<td>forceCaretVisibleCenter</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">undoMgr</span></td>
+<td>undoMgr</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toUndo</span></td>
+<td>toUndo</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndo">RichEditUndo</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mapping</span></td>
+<td>mapping</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditMapping">RichEditMapping</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">currentUndo</span></td>
+<td>currentUndo</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">undoCounter</span></td>
+<td>undoCounter</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modifiedUndoMarker</span></td>
+<td>modifiedUndoMarker</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">serialUndo</span></td>
+<td>serialUndo</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">countVisibleLines</span></td>
+<td>countVisibleLines</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">firstVisibleLineView</span></td>
+<td>firstVisibleLineView</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lastVisibleLineView</span></td>
+<td>lastVisibleLineView</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">clipFormat</span></td>
+<td>clipFormat</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursorPosUndo</span></td>
+<td>cursorPosUndo</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selBegUndo</span></td>
+<td>selBegUndo</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
@@ -12385,12 +12385,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">lineIndex</span></td>
+<td>lineIndex</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">charPosInLine</span></td>
+<td>charPosInLine</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -12408,35 +12408,35 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ReadOnly</span></td>
+<td>ReadOnly</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ShowFocusSel</span></td>
+<td>ShowFocusSel</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CurLineBorder</span></td>
+<td>CurLineBorder</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">DrawBlanks</span></td>
+<td>DrawBlanks</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TabToSpaces</span></td>
+<td>TabToSpaces</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WordWrap</span></td>
+<td>WordWrap</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">AutoLoseFocus</span></td>
+<td>AutoLoseFocus</td>
 <td></td>
 </tr>
 </table>
@@ -12453,11 +12453,11 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">RichEditCtrl</span></td>
+<td>RichEditCtrl</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Edit</span></td>
+<td>Edit</td>
 <td></td>
 </tr>
 </table>
@@ -12474,12 +12474,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">mapStyles</span></td>
+<td>mapStyles</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">256</span>] <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mapWords</span></td>
+<td>mapWords</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">HashTable</span>'(<span class="STpe">string</span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
@@ -12547,17 +12547,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">key</span></td>
+<td>key</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">modifiers</span></td>
+<td>modifiers</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">command</span></td>
+<td>command</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></td>
 <td></td>
 </tr>
@@ -12575,22 +12575,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">colBk</span></td>
+<td>colBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colFg</span></td>
+<td>colFg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fontMode</span></td>
+<td>fontMode</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamilyStyle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">underline</span></td>
+<td>underline</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">UnderlineStyle</span></span></td>
 <td></td>
 </tr>
@@ -12628,62 +12628,62 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditUndoType">RichEditUndoType</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">concatChars</span></td>
+<td>concatChars</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selBeg</span></td>
+<td>selBeg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursorPos</span></td>
+<td>cursorPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">runes</span></td>
+<td>runes</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">styles</span></td>
+<td>styles</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">serial</span></td>
+<td>serial</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasSelRect</span></td>
+<td>hasSelRect</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">begSelectionBefore</span></td>
+<td>begSelectionBefore</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endSelectionBefore</span></td>
+<td>endSelectionBefore</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">begSelectionAfter</span></td>
+<td>begSelectionAfter</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">endSelectionAfter</span></td>
+<td>endSelectionAfter</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></td>
 <td></td>
 </tr>
@@ -12701,23 +12701,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Delete</span></td>
+<td>Delete</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Insert</span></td>
+<td>Insert</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Selection</span></td>
+<td>Selection</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Show</span></td>
+<td>Show</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hide</span></td>
+<td>Hide</td>
 <td></td>
 </tr>
 </table>
@@ -12745,187 +12745,187 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollIncrementV</span></td>
+<td>scrollIncrementV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollIncrementH</span></td>
+<td>scrollIncrementH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollSize</span></td>
+<td>scrollSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollWndFlags</span></td>
+<td>scrollWndFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWndFlags">ScrollWndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigScrollPosChanged</span></td>
+<td>sigScrollPosChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigScrollSizeChanged</span></td>
+<td>sigScrollSizeChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ScrollWnd">ScrollWnd</a></span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">oldMouseCapture</span></td>
+<td>oldMouseCapture</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollSmoothPos</span></td>
+<td>scrollSmoothPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollRequestPos</span></td>
+<td>scrollRequestPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">smoothScroll</span></td>
+<td>smoothScroll</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">showBarV</span></td>
+<td>showBarV</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">needV</span></td>
+<td>needV</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">posBoxV</span></td>
+<td>posBoxV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizeBoxV</span></td>
+<td>sizeBoxV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHotV</span></td>
+<td>isHotV</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHotBarV</span></td>
+<td>isHotBarV</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressedV</span></td>
+<td>isPressedV</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">showBarH</span></td>
+<td>showBarH</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">needH</span></td>
+<td>needH</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">posBoxH</span></td>
+<td>posBoxH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizeBoxH</span></td>
+<td>sizeBoxH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHotH</span></td>
+<td>isHotH</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHotBarH</span></td>
+<td>isHotBarH</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressedH</span></td>
+<td>isPressedH</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isMoving</span></td>
+<td>isMoving</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isGrabbing</span></td>
+<td>isGrabbing</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">correcMoving</span></td>
+<td>correcMoving</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">offsetClientV</span></td>
+<td>offsetClientV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">offsetClientH</span></td>
+<td>offsetClientH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paddingZ</span></td>
+<td>paddingZ</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">paddingW</span></td>
+<td>paddingW</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBkBarV</span></td>
+<td>aniBkBarV</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBkBarH</span></td>
+<td>aniBkBarH</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBoxV</span></td>
+<td>aniBoxV</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBoxH</span></td>
+<td>aniBoxH</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">grabbingPos</span></td>
+<td>grabbingPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
@@ -13062,23 +13062,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SmallBar</span></td>
+<td>SmallBar</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ForceHorizontal</span></td>
+<td>ForceHorizontal</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ForceVertical</span></td>
+<td>ForceVertical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TransparentBar</span></td>
+<td>TransparentBar</td>
 <td></td>
 </tr>
 </table>
@@ -13095,7 +13095,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">selection</span></td>
+<td>selection</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({start: <span class="STpe">u32</span>, end: <span class="STpe">u32</span>})</span></td>
 <td></td>
 </tr>
@@ -13224,12 +13224,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">ser</span></td>
+<td>ser</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Serializer</span></span></td>
 <td></td>
 </tr>
@@ -13247,17 +13247,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">style</span></td>
+<td>style</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">parent</span></td>
+<td>parent</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
@@ -13277,12 +13277,12 @@
 </div>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">arr</span></td>
+<td>arr</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">disabled</span></td>
+<td>disabled</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
@@ -13374,23 +13374,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 </table>
@@ -13407,112 +13407,112 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">value1</span></td>
+<td>value1</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">value2</span></td>
+<td>value2</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">min</span></td>
+<td>min</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">max</span></td>
+<td>max</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">steps</span></td>
+<td>steps</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sliderFlags</span></td>
+<td>sliderFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderFlags">SliderFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigStartChange</span></td>
+<td>sigStartChange</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigEndChange</span></td>
+<td>sigEndChange</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isMoving</span></td>
+<td>isMoving</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressed1</span></td>
+<td>isPressed1</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPressed2</span></td>
+<td>isPressed2</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHot1</span></td>
+<td>isHot1</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHot2</span></td>
+<td>isHot2</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasValue1</span></td>
+<td>hasValue1</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hasValue2</span></td>
+<td>hasValue2</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">correcMoving</span></td>
+<td>correcMoving</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniMark1</span></td>
+<td>aniMark1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniMark2</span></td>
+<td>aniMark2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniStep1</span></td>
+<td>aniStep1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniStep2</span></td>
+<td>aniStep2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -13716,37 +13716,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">labelSize</span></td>
+<td>labelSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editSize</span></td>
+<td>editSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider</span></td>
+<td>slider</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit</span></td>
+<td>edit</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></td>
 <td></td>
 </tr>
@@ -13870,23 +13870,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Range</span></td>
+<td>Range</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HilightBar</span></td>
+<td>HilightBar</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Vertical</span></td>
+<td>Vertical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Integer</span></td>
+<td>Integer</td>
 <td></td>
 </tr>
 </table>
@@ -13903,32 +13903,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> frameWnd</span></td>
+<td>using frameWnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitterFlags</span></td>
+<td>splitterFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterFlags">SplitterFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">titleSize</span></td>
+<td>titleSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">correctMoving</span></td>
+<td>correctMoving</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">moving</span></td>
+<td>moving</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -14059,15 +14059,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Vertical</span></td>
+<td>Vertical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HideBars</span></td>
+<td>HideBars</td>
 <td></td>
 </tr>
 </table>
@@ -14084,37 +14084,37 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">view</span></td>
+<td>view</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">size</span></td>
+<td>size</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minSize</span></td>
+<td>minSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxSize</span></td>
+<td>maxSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label</span></td>
+<td>label</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tryPreserveSize</span></td>
+<td>tryPreserveSize</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBar</span></td>
+<td>aniBar</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -14132,17 +14132,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">layoutKind</span></td>
+<td>layoutKind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">spacing</span></td>
+<td>spacing</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -14212,39 +14212,39 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Top</span></td>
+<td>Top</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TopAutoSize</span></td>
+<td>TopAutoSize</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Bottom</span></td>
+<td>Bottom</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Left</span></td>
+<td>Left</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LeftAutoSize</span></td>
+<td>LeftAutoSize</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Right</span></td>
+<td>Right</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorzCenter</span></td>
+<td>HorzCenter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HorzCenterVertCenter</span></td>
+<td>HorzCenterVertCenter</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">VertCenter</span></td>
+<td>VertCenter</td>
 <td></td>
 </tr>
 </table>
@@ -14261,7 +14261,7 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
@@ -14279,87 +14279,87 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> native</span></td>
+<td>using native</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NativeSurface">NativeSurface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">app</span></td>
+<td>app</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd</span></td>
+<td>wnd</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">painter</span></td>
+<td>painter</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Painter</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rt</span></td>
+<td>rt</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RenderTarget</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData</span></td>
+<td>userData</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rc</span></td>
+<td>rc</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RenderingContext</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minSize</span></td>
+<td>minSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxSize</span></td>
+<td>maxSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">flags</span></td>
+<td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirtyRect</span></td>
+<td>dirtyRect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorDisabled</span></td>
+<td>colorDisabled</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isDirty</span></td>
+<td>isDirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isHidden</span></td>
+<td>isHidden</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isDisabled</span></td>
+<td>isDisabled</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isMinimized</span></td>
+<td>isMinimized</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> state</span></td>
+<td>using state</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceState">SurfaceState</a></span></span></td>
 <td></td>
 </tr>
@@ -14793,47 +14793,47 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BigCaption</span></td>
+<td>BigCaption</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SmallCaption</span></td>
+<td>SmallCaption</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MinimizeBtn</span></td>
+<td>MinimizeBtn</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">MaximizeBtn</span></td>
+<td>MaximizeBtn</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">CloseBtn</span></td>
+<td>CloseBtn</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Border</span></td>
+<td>Border</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Sizeable</span></td>
+<td>Sizeable</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Secondary</span></td>
+<td>Secondary</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TopMost</span></td>
+<td>TopMost</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">OverlappedWindow</span></td>
+<td>OverlappedWindow</td>
 <td></td>
 </tr>
 </table>
@@ -14850,17 +14850,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">positionNotMaximized</span></td>
+<td>positionNotMaximized</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isMaximized</span></td>
+<td>isMaximized</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -14878,42 +14878,42 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWnd">FrameWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icon</span></td>
+<td>icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minimizeBtn</span></td>
+<td>minimizeBtn</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maximizeBtn</span></td>
+<td>maximizeBtn</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">closeBtn</span></td>
+<td>closeBtn</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">movingSurface</span></td>
+<td>movingSurface</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sizingBorder</span></td>
+<td>sizingBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SizingBorder">SizingBorder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursorSet</span></td>
+<td>cursorSet</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -14931,12 +14931,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sysKind</span></td>
+<td>sysKind</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>.<span class="SCst">Kind</span></span></td>
 <td></td>
 </tr>
@@ -14954,22 +14954,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userMsg</span></td>
+<td>userMsg</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">param0</span></td>
+<td>param0</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">param1</span></td>
+<td>param1</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
 </tr>
@@ -14987,67 +14987,67 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">barForm</span></td>
+<td>barForm</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabBarForm">TabBarForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">viewForm</span></td>
+<td>viewForm</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabViewForm">TabViewForm</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">barLayout</span></td>
+<td>barLayout</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabBarLayout">TabBarLayout</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigSelChanged</span></td>
+<td>sigSelChanged</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>'(<span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Tab">Tab</a></span>))</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">buttonPopup</span></td>
+<td>buttonPopup</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">views</span></td>
+<td>views</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">ArrayPtr</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabItem">TabItem</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popup</span></td>
+<td>popup</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectedIdx</span></td>
+<td>selectedIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">firstVisibleIdx</span></td>
+<td>firstVisibleIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hotIdx</span></td>
+<td>hotIdx</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">barHeight</span></td>
+<td>barHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">mostRightPos</span></td>
+<td>mostRightPos</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -15191,19 +15191,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">FlatRound</span></td>
+<td>FlatRound</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 </table>
@@ -15220,15 +15220,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Divide</span></td>
+<td>Divide</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Fixed</span></td>
+<td>Fixed</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Auto</span></td>
+<td>Auto</td>
 <td></td>
 </tr>
 </table>
@@ -15245,15 +15245,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Button</span></td>
+<td>Button</td>
 <td></td>
 </tr>
 </table>
@@ -15270,27 +15270,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">pos</span></td>
+<td>pos</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">width</span></td>
+<td>width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">view</span></td>
+<td>view</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniImg</span></td>
+<td>aniImg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniText</span></td>
+<td>aniText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -15308,19 +15308,19 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Button</span></td>
+<td>Button</td>
 <td></td>
 </tr>
 </table>
@@ -15337,15 +15337,15 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">None</span></td>
+<td>None</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Flat</span></td>
+<td>Flat</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Round</span></td>
+<td>Round</td>
 <td></td>
 </tr>
 </table>
@@ -15362,27 +15362,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">intialized</span></td>
+<td>intialized</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">res</span></td>
+<td>res</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeResources">ThemeResources</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">rects</span></td>
+<td>rects</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">metrics</span></td>
+<td>metrics</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colors</span></td>
+<td>colors</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></td>
 <td></td>
 </tr>
@@ -15529,1472 +15529,1472 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Transparent</span></td>
+<td>Transparent</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Blue</span></td>
+<td>Blue</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LightBlue</span></td>
+<td>LightBlue</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Disabled</span></td>
+<td>Disabled</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LighterSmall</span></td>
+<td>LighterSmall</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LighterMedium</span></td>
+<td>LighterMedium</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LighterBig</span></td>
+<td>LighterBig</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">LighterVeryBig</span></td>
+<td>LighterVeryBig</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">White</span></td>
+<td>White</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray1</span></td>
+<td>Gray1</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray2</span></td>
+<td>Gray2</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray3</span></td>
+<td>Gray3</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray4</span></td>
+<td>Gray4</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray5</span></td>
+<td>Gray5</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray6</span></td>
+<td>Gray6</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray7</span></td>
+<td>Gray7</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Gray8</span></td>
+<td>Gray8</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richColor1</span></td>
+<td>richColor1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richColor2</span></td>
+<td>richColor2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richColor3</span></td>
+<td>richColor3</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">surfaceDisabled</span></td>
+<td>surfaceDisabled</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hilight</span></td>
+<td>hilight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hilightLight</span></td>
+<td>hilightLight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hilightDark</span></td>
+<td>hilightDark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">disabled</span></td>
+<td>disabled</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">transparent</span></td>
+<td>transparent</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lighterSmall</span></td>
+<td>lighterSmall</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lighterMedium</span></td>
+<td>lighterMedium</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lighterBig</span></td>
+<td>lighterBig</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">lighterVeryBig</span></td>
+<td>lighterVeryBig</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_Bk</span></td>
+<td>wnd_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_Caption</span></td>
+<td>wnd_Caption</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_CaptionNotActived</span></td>
+<td>wnd_CaptionNotActived</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_CaptionText</span></td>
+<td>wnd_CaptionText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_CaptionNotActivatedText</span></td>
+<td>wnd_CaptionNotActivatedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_BtnCloseBk</span></td>
+<td>wnd_BtnCloseBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_BtnCloseHotBk</span></td>
+<td>wnd_BtnCloseHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_Shadow</span></td>
+<td>wnd_Shadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">view_Bk</span></td>
+<td>view_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dlg_Bk</span></td>
+<td>dlg_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dlg_BtnBarBk</span></td>
+<td>dlg_BtnBarBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_StrongText</span></td>
+<td>btnPush_StrongText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_StrongBorder</span></td>
+<td>btnPush_StrongBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_StrongBk</span></td>
+<td>btnPush_StrongBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Text</span></td>
+<td>btnPush_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Border</span></td>
+<td>btnPush_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Bk</span></td>
+<td>btnPush_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_PressedText</span></td>
+<td>btnPush_PressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_PressedBorder</span></td>
+<td>btnPush_PressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_PressedBk</span></td>
+<td>btnPush_PressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_HotText</span></td>
+<td>btnPush_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_HotBorder</span></td>
+<td>btnPush_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_HotBk</span></td>
+<td>btnPush_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_DisabledText</span></td>
+<td>btnPush_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_DisabledBorder</span></td>
+<td>btnPush_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_DisabledBk</span></td>
+<td>btnPush_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_DisabledText</span></td>
+<td>btnPushFlat_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_DisabledBorder</span></td>
+<td>btnPushFlat_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_DisabledBk</span></td>
+<td>btnPushFlat_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_Text</span></td>
+<td>btnPushFlat_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_Border</span></td>
+<td>btnPushFlat_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_Bk</span></td>
+<td>btnPushFlat_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_PressedText</span></td>
+<td>btnPushFlat_PressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_PressedBorder</span></td>
+<td>btnPushFlat_PressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_PressedBk</span></td>
+<td>btnPushFlat_PressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_HotText</span></td>
+<td>btnPushFlat_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_HotBorder</span></td>
+<td>btnPushFlat_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushFlat_HotBk</span></td>
+<td>btnPushFlat_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_DisabledText</span></td>
+<td>btnPushDefault_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_DisabledBorder</span></td>
+<td>btnPushDefault_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_DisabledBk</span></td>
+<td>btnPushDefault_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_Text</span></td>
+<td>btnPushDefault_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_Border</span></td>
+<td>btnPushDefault_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_Bk</span></td>
+<td>btnPushDefault_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_PressedText</span></td>
+<td>btnPushDefault_PressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_PressedBorder</span></td>
+<td>btnPushDefault_PressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_PressedBk</span></td>
+<td>btnPushDefault_PressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_HotText</span></td>
+<td>btnPushDefault_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_HotBorder</span></td>
+<td>btnPushDefault_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPushDefault_HotBk</span></td>
+<td>btnPushDefault_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_Icon</span></td>
+<td>btnIcon_Icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_Text</span></td>
+<td>btnIcon_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_Bk</span></td>
+<td>btnIcon_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_DisabledIcon</span></td>
+<td>btnIcon_DisabledIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_DisabledText</span></td>
+<td>btnIcon_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_DisabledBk</span></td>
+<td>btnIcon_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_PressedIcon</span></td>
+<td>btnIcon_PressedIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_PressedText</span></td>
+<td>btnIcon_PressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_PressedBk</span></td>
+<td>btnIcon_PressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_HotIcon</span></td>
+<td>btnIcon_HotIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_HotText</span></td>
+<td>btnIcon_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_HotBk</span></td>
+<td>btnIcon_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedDisabledIcon</span></td>
+<td>btnIcon_CheckedDisabledIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedDisabledText</span></td>
+<td>btnIcon_CheckedDisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedPressedIcon</span></td>
+<td>btnIcon_CheckedPressedIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedPressedText</span></td>
+<td>btnIcon_CheckedPressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedHotIcon</span></td>
+<td>btnIcon_CheckedHotIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedHotText</span></td>
+<td>btnIcon_CheckedHotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedIcon</span></td>
+<td>btnIcon_CheckedIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedText</span></td>
+<td>btnIcon_CheckedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedDisabledBk</span></td>
+<td>btnIcon_CheckedDisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedPressedBk</span></td>
+<td>btnIcon_CheckedPressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedHotBk</span></td>
+<td>btnIcon_CheckedHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedBk</span></td>
+<td>btnIcon_CheckedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedMark</span></td>
+<td>btnIcon_CheckedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedPressedMark</span></td>
+<td>btnIcon_CheckedPressedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedHotMark</span></td>
+<td>btnIcon_CheckedHotMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedDisabledMark</span></td>
+<td>btnIcon_CheckedDisabledMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Text</span></td>
+<td>label_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_TextLight</span></td>
+<td>label_TextLight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Text1</span></td>
+<td>label_Text1</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Text2</span></td>
+<td>label_Text2</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Text3</span></td>
+<td>label_Text3</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_DisabledText</span></td>
+<td>label_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Icon</span></td>
+<td>label_Icon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_DisabledIcon</span></td>
+<td>label_DisabledIcon</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Text</span></td>
+<td>btnCheck_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Border</span></td>
+<td>btnCheck_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Mark</span></td>
+<td>btnCheck_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Bk</span></td>
+<td>btnCheck_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_PressedText</span></td>
+<td>btnCheck_PressedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_PressedBorder</span></td>
+<td>btnCheck_PressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_PressedMark</span></td>
+<td>btnCheck_PressedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_PressedBk</span></td>
+<td>btnCheck_PressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_HotText</span></td>
+<td>btnCheck_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_HotBorder</span></td>
+<td>btnCheck_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_HotMark</span></td>
+<td>btnCheck_HotMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_HotBk</span></td>
+<td>btnCheck_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_DisabledText</span></td>
+<td>btnCheck_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_DisabledBorder</span></td>
+<td>btnCheck_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_DisabledMark</span></td>
+<td>btnCheck_DisabledMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_DisabledBk</span></td>
+<td>btnCheck_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedText</span></td>
+<td>btnCheck_CheckedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedBk</span></td>
+<td>btnCheck_CheckedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedBorder</span></td>
+<td>btnCheck_CheckedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedMark</span></td>
+<td>btnCheck_CheckedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip_Bk</span></td>
+<td>toolTip_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip_Border</span></td>
+<td>toolTip_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip_Text</span></td>
+<td>toolTip_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_Border</span></td>
+<td>edit_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_FocusBorder</span></td>
+<td>edit_FocusBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_HotBorder</span></td>
+<td>edit_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_DisabledBorder</span></td>
+<td>edit_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_Bk</span></td>
+<td>edit_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_DisabledBk</span></td>
+<td>edit_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_ErrorBk</span></td>
+<td>edit_ErrorBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_HotBk</span></td>
+<td>edit_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_FocusBk</span></td>
+<td>edit_FocusBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_Note</span></td>
+<td>edit_Note</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_Text</span></td>
+<td>edit_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_DisabledText</span></td>
+<td>edit_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_SelectedText</span></td>
+<td>edit_SelectedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_SelectedBk</span></td>
+<td>edit_SelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_ErrorBorder</span></td>
+<td>edit_ErrorBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_Bk</span></td>
+<td>richEdit_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_TextSpecial</span></td>
+<td>richEdit_TextSpecial</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_Text</span></td>
+<td>richEdit_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_SelText</span></td>
+<td>richEdit_SelText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_SelTextNoFocus</span></td>
+<td>richEdit_SelTextNoFocus</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_SelBk</span></td>
+<td>richEdit_SelBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_SelBkNoFocus</span></td>
+<td>richEdit_SelBkNoFocus</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_Caret</span></td>
+<td>richEdit_Caret</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_CurLineBorder</span></td>
+<td>richEdit_CurLineBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_DisabledBorder</span></td>
+<td>btnToggle_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_DisabledMark</span></td>
+<td>btnToggle_DisabledMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_DisabledBk</span></td>
+<td>btnToggle_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffBorder</span></td>
+<td>btnToggle_OffBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffMark</span></td>
+<td>btnToggle_OffMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffBk</span></td>
+<td>btnToggle_OffBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffHotBorder</span></td>
+<td>btnToggle_OffHotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffHotMark</span></td>
+<td>btnToggle_OffHotMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffHotBk</span></td>
+<td>btnToggle_OffHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffPressedBorder</span></td>
+<td>btnToggle_OffPressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffPressedMark</span></td>
+<td>btnToggle_OffPressedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OffPressedBk</span></td>
+<td>btnToggle_OffPressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnBorder</span></td>
+<td>btnToggle_OnBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnMark</span></td>
+<td>btnToggle_OnMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnBk</span></td>
+<td>btnToggle_OnBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnHotBorder</span></td>
+<td>btnToggle_OnHotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnHotMark</span></td>
+<td>btnToggle_OnHotMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnHotBk</span></td>
+<td>btnToggle_OnHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnPressedBorder</span></td>
+<td>btnToggle_OnPressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnPressedMark</span></td>
+<td>btnToggle_OnPressedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_OnPressedBk</span></td>
+<td>btnToggle_OnPressedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkLeft</span></td>
+<td>slider_BkLeft</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkMiddle</span></td>
+<td>slider_BkMiddle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkRight</span></td>
+<td>slider_BkRight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_HilightBk</span></td>
+<td>slider_HilightBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_Mark</span></td>
+<td>slider_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_HotMark</span></td>
+<td>slider_HotMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_PressedMark</span></td>
+<td>slider_PressedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_DisabledMark</span></td>
+<td>slider_DisabledMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_DisabledBk</span></td>
+<td>slider_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_StepBk</span></td>
+<td>slider_StepBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_HilightStepBk</span></td>
+<td>slider_HilightStepBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_HotStepBk</span></td>
+<td>slider_HotStepBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_DisabledText</span></td>
+<td>tabItem_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_SelectedText</span></td>
+<td>tabItem_SelectedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_UnSelectedText</span></td>
+<td>tabItem_UnSelectedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_FlatSelected</span></td>
+<td>tabItem_FlatSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_FlatHot</span></td>
+<td>tabItem_FlatHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_RoundSelected</span></td>
+<td>tabItem_RoundSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_RoundHot</span></td>
+<td>tabItem_RoundHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_ButtonSelected</span></td>
+<td>tabItem_ButtonSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_ButtonHot</span></td>
+<td>tabItem_ButtonHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_FlatBk</span></td>
+<td>tabBar_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_RoundBk</span></td>
+<td>tabBar_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabView_FlatBk</span></td>
+<td>tabView_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabView_RoundBk</span></td>
+<td>tabView_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Bk</span></td>
+<td>menuPopup_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Border</span></td>
+<td>menuPopup_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Shadow</span></td>
+<td>menuPopup_Shadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Separator</span></td>
+<td>menuPopup_Separator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_Bk</span></td>
+<td>menuBar_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_Border</span></td>
+<td>menuBar_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_SelectedBk</span></td>
+<td>menuBar_SelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_Text</span></td>
+<td>popupItem_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_RightText</span></td>
+<td>popupItem_RightText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_DisabledText</span></td>
+<td>popupItem_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_HotText</span></td>
+<td>popupItem_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_HotRightText</span></td>
+<td>popupItem_HotRightText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupItem_HotBk</span></td>
+<td>popupItem_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_Bk</span></td>
+<td>scrollBar_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_HotBk</span></td>
+<td>scrollBar_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_DisabledBk</span></td>
+<td>scrollBar_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_Box</span></td>
+<td>scrollBar_Box</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_HotBox</span></td>
+<td>scrollBar_HotBox</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_PressedBox</span></td>
+<td>scrollBar_PressedBox</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Border</span></td>
+<td>comboBox_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_HotBorder</span></td>
+<td>comboBox_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_DisabledBorder</span></td>
+<td>comboBox_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_SelectedBorder</span></td>
+<td>comboBox_SelectedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Bk</span></td>
+<td>comboBox_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_HotBk</span></td>
+<td>comboBox_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_DisabledBk</span></td>
+<td>comboBox_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_SelectedBk</span></td>
+<td>comboBox_SelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Text</span></td>
+<td>comboBox_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_HotText</span></td>
+<td>comboBox_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_DisabledText</span></td>
+<td>comboBox_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_SelectedText</span></td>
+<td>comboBox_SelectedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBoxItem_Text</span></td>
+<td>comboBoxItem_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBoxItem_HotBk</span></td>
+<td>comboBoxItem_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBoxItem_HotText</span></td>
+<td>comboBoxItem_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBoxItem_CheckMark</span></td>
+<td>comboBoxItem_CheckMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBoxItem_HotCheckMark</span></td>
+<td>comboBoxItem_HotCheckMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_Separator</span></td>
+<td>popupList_Separator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_HotBk</span></td>
+<td>popupList_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_Text</span></td>
+<td>popupList_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_HotText</span></td>
+<td>popupList_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_CheckMark</span></td>
+<td>popupList_CheckMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_HotCheckMark</span></td>
+<td>popupList_HotCheckMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SmallShadow</span></td>
+<td>frameWnd_SmallShadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_Border</span></td>
+<td>frameWnd_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_PopupBorder</span></td>
+<td>frameWnd_PopupBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_FocusBorder</span></td>
+<td>frameWnd_FocusBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_DisabledBorder</span></td>
+<td>frameWnd_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_Bk</span></td>
+<td>frameWnd_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_DisabledBk</span></td>
+<td>frameWnd_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_FocusBk</span></td>
+<td>frameWnd_FocusBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_FocusSelectedBk</span></td>
+<td>listItem_FocusSelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_SelectedBk</span></td>
+<td>listItem_SelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_HotBk</span></td>
+<td>listItem_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_DisabledText</span></td>
+<td>listItem_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_SelectedText</span></td>
+<td>listItem_SelectedText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_Text</span></td>
+<td>listItem_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_Separator</span></td>
+<td>listItem_Separator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_AlternateBk</span></td>
+<td>listItem_AlternateBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">listItem_Line</span></td>
+<td>listItem_Line</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_DisabledText</span></td>
+<td>headerItem_DisabledText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_HotText</span></td>
+<td>headerItem_HotText</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_HotBk</span></td>
+<td>headerItem_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_ClickedBk</span></td>
+<td>headerItem_ClickedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_Text</span></td>
+<td>headerItem_Text</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">headerItem_Separator</span></td>
+<td>headerItem_Separator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_Bk</span></td>
+<td>header_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_TitleBk</span></td>
+<td>splitView_TitleBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_Bar</span></td>
+<td>splitView_Bar</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_BarHot</span></td>
+<td>splitView_BarHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_DisabledBorder</span></td>
+<td>progressBar_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_DisabledBk</span></td>
+<td>progressBar_DisabledBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_DisabledMark</span></td>
+<td>progressBar_DisabledMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Border</span></td>
+<td>progressBar_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Bk</span></td>
+<td>progressBar_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Mark</span></td>
+<td>progressBar_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">palPicker_Border</span></td>
+<td>palPicker_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">palPicker_HotBorder</span></td>
+<td>palPicker_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_Border</span></td>
+<td>colorPicker_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_BackAlpha</span></td>
+<td>colorPicker_BackAlpha</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_Mark</span></td>
+<td>colorPicker_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">imageRect_Fg</span></td>
+<td>imageRect_Fg</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">embInfo_CriticalBk</span></td>
+<td>embInfo_CriticalBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">embInfo_InformationBk</span></td>
+<td>embInfo_InformationBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">propList_focusBk</span></td>
+<td>propList_focusBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">propList_focusBorder</span></td>
+<td>propList_focusBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></td>
 <td></td>
 </tr>
@@ -17012,99 +17012,99 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">WndMinimize</span></td>
+<td>WndMinimize</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WndMaximize</span></td>
+<td>WndMaximize</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">WndClose</span></td>
+<td>WndClose</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Search</span></td>
+<td>Search</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">RightPopupArrow</span></td>
+<td>RightPopupArrow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BottomPopupArrow</span></td>
+<td>BottomPopupArrow</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SortArrowDown</span></td>
+<td>SortArrowDown</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SortArrowUp</span></td>
+<td>SortArrowUp</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SortArrowRight</span></td>
+<td>SortArrowRight</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Picker</span></td>
+<td>Picker</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Play</span></td>
+<td>Play</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Pause</span></td>
+<td>Pause</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Stop</span></td>
+<td>Stop</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SendToBack</span></td>
+<td>SendToBack</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">SendBackward</span></td>
+<td>SendBackward</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BringForward</span></td>
+<td>BringForward</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">BringToFront</span></td>
+<td>BringToFront</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Plus</span></td>
+<td>Plus</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">More</span></td>
+<td>More</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Undo</span></td>
+<td>Undo</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Redo</span></td>
+<td>Redo</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Copy</span></td>
+<td>Copy</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Paste</span></td>
+<td>Paste</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Cut</span></td>
+<td>Cut</td>
 <td></td>
 </tr>
 </table>
@@ -17121,23 +17121,23 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Question</span></td>
+<td>Question</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Warning</span></td>
+<td>Warning</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Critical</span></td>
+<td>Critical</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Information</span></td>
+<td>Information</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">HourGlass</span></td>
+<td>HourGlass</td>
 <td></td>
 </tr>
 </table>
@@ -17154,17 +17154,17 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">rect</span></td>
+<td>rect</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">corner</span></td>
+<td>corner</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">keepBordersRatio</span></td>
+<td>keepBordersRatio</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -17182,527 +17182,527 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">surfaceWnd_Shadow</span></td>
+<td>surfaceWnd_Shadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_Border</span></td>
+<td>wnd_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_Caption</span></td>
+<td>wnd_Caption</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_CaptionSmall</span></td>
+<td>wnd_CaptionSmall</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dlg_BtnBar</span></td>
+<td>dlg_BtnBar</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Normal</span></td>
+<td>btnPush_Normal</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_NormalBorder</span></td>
+<td>btnPush_NormalBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Hot</span></td>
+<td>btnPush_Hot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_HotBorder</span></td>
+<td>btnPush_HotBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Pressed</span></td>
+<td>btnPush_Pressed</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_PressedBorder</span></td>
+<td>btnPush_PressedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Disabled</span></td>
+<td>btnPush_Disabled</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_DisabledBorder</span></td>
+<td>btnPush_DisabledBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SquareBk</span></td>
+<td>btnIcon_SquareBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_RoundBk</span></td>
+<td>btnIcon_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_RoundSquareBk</span></td>
+<td>btnIcon_RoundSquareBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedBottom</span></td>
+<td>btnIcon_CheckedBottom</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedTop</span></td>
+<td>btnIcon_CheckedTop</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedLeft</span></td>
+<td>btnIcon_CheckedLeft</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedRight</span></td>
+<td>btnIcon_CheckedRight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_CheckedFull</span></td>
+<td>btnIcon_CheckedFull</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_ArrowDown</span></td>
+<td>btnIcon_ArrowDown</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_ArrowLeft</span></td>
+<td>btnIcon_ArrowLeft</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_ArrowUp</span></td>
+<td>btnIcon_ArrowUp</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_ArrowRight</span></td>
+<td>btnIcon_ArrowRight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Normal</span></td>
+<td>btnCheck_Normal</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_NormalBorder</span></td>
+<td>btnCheck_NormalBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Undefined</span></td>
+<td>btnCheck_Undefined</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_UndefinedBorder</span></td>
+<td>btnCheck_UndefinedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_UndefinedMark</span></td>
+<td>btnCheck_UndefinedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Checked</span></td>
+<td>btnCheck_Checked</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedBorder</span></td>
+<td>btnCheck_CheckedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_CheckedMark</span></td>
+<td>btnCheck_CheckedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnRadio_NormalBorder</span></td>
+<td>btnRadio_NormalBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnRadio_Normal</span></td>
+<td>btnRadio_Normal</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnRadio_CheckedBorder</span></td>
+<td>btnRadio_CheckedBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnRadio_Checked</span></td>
+<td>btnRadio_Checked</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnRadio_CheckedMark</span></td>
+<td>btnRadio_CheckedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_SquareBk</span></td>
+<td>edit_SquareBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_SquareBorder</span></td>
+<td>edit_SquareBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_RoundBk</span></td>
+<td>edit_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_RoundBorder</span></td>
+<td>edit_RoundBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_FlatBk</span></td>
+<td>edit_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">edit_FlatBorder</span></td>
+<td>edit_FlatBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_Bk</span></td>
+<td>btnToggle_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_Border</span></td>
+<td>btnToggle_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_Mark</span></td>
+<td>btnToggle_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkLeft</span></td>
+<td>slider_BkLeft</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkMiddle</span></td>
+<td>slider_BkMiddle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkRight</span></td>
+<td>slider_BkRight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkLeftVert</span></td>
+<td>slider_BkLeftVert</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkMiddleVert</span></td>
+<td>slider_BkMiddleVert</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BkRightVert</span></td>
+<td>slider_BkRightVert</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_Mark</span></td>
+<td>slider_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_Step</span></td>
+<td>slider_Step</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_FlatSelected</span></td>
+<td>tabItem_FlatSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_RoundSelected</span></td>
+<td>tabItem_RoundSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_RoundHot</span></td>
+<td>tabItem_RoundHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_ButtonSelected</span></td>
+<td>tabItem_ButtonSelected</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabItem_ButtonHot</span></td>
+<td>tabItem_ButtonHot</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_FlatBk</span></td>
+<td>tabBar_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_FlatRoundBk</span></td>
+<td>tabBar_FlatRoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_RoundBk</span></td>
+<td>tabBar_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabView_FlatBk</span></td>
+<td>tabView_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabView_RoundBk</span></td>
+<td>tabView_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Shadow</span></td>
+<td>menuPopup_Shadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Bk</span></td>
+<td>menuPopup_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Border</span></td>
+<td>menuPopup_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_HotBk</span></td>
+<td>menuPopup_HotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_Bk</span></td>
+<td>menuBar_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_Border</span></td>
+<td>menuBar_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_SelectedBk</span></td>
+<td>menuBar_SelectedBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuItem_CheckedMark</span></td>
+<td>menuItem_CheckedMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BkV</span></td>
+<td>scrollBar_BkV</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BkH</span></td>
+<td>scrollBar_BkH</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BoxV</span></td>
+<td>scrollBar_BoxV</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BoxH</span></td>
+<td>scrollBar_BoxH</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_Corner</span></td>
+<td>scrollBar_Corner</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SmallShadow</span></td>
+<td>frameWnd_SmallShadow</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SquareBk</span></td>
+<td>frameWnd_SquareBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SquareBorder</span></td>
+<td>frameWnd_SquareBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_RoundBk</span></td>
+<td>frameWnd_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_RoundBorder</span></td>
+<td>frameWnd_RoundBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorTop</span></td>
+<td>frameWnd_AnchorTop</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorTopBk</span></td>
+<td>frameWnd_AnchorTopBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorBottom</span></td>
+<td>frameWnd_AnchorBottom</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorBottomBk</span></td>
+<td>frameWnd_AnchorBottomBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorRight</span></td>
+<td>frameWnd_AnchorRight</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorRightBk</span></td>
+<td>frameWnd_AnchorRightBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorLeft</span></td>
+<td>frameWnd_AnchorLeft</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorLeftBk</span></td>
+<td>frameWnd_AnchorLeftBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_FlatBk</span></td>
+<td>header_FlatBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_RoundBk</span></td>
+<td>header_RoundBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">selectionBox_Bk</span></td>
+<td>selectionBox_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_HorzBarBk</span></td>
+<td>splitView_HorzBarBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_HorzBarHotBk</span></td>
+<td>splitView_HorzBarHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_VertBarBk</span></td>
+<td>splitView_VertBarBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_VertBarHotBk</span></td>
+<td>splitView_VertBarHotBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Bk</span></td>
+<td>progressBar_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Border</span></td>
+<td>progressBar_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Mark</span></td>
+<td>progressBar_Mark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_RoundPick</span></td>
+<td>colorPicker_RoundPick</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_SquarePick</span></td>
+<td>colorPicker_SquarePick</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_Bk</span></td>
+<td>colorPicker_Bk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_Border</span></td>
+<td>colorPicker_Border</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span></span></td>
 <td></td>
 </tr>
@@ -17720,407 +17720,407 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">defaultFontSize</span></td>
+<td>defaultFontSize</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultFixedFontSize</span></td>
+<td>defaultFixedFontSize</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">surfaceWnd_ShadowSize</span></td>
+<td>surfaceWnd_ShadowSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_BorderSize</span></td>
+<td>wnd_BorderSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_BigCaptionCY</span></td>
+<td>wnd_BigCaptionCY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_SmallCaptionCY</span></td>
+<td>wnd_SmallCaptionCY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wnd_CaptionMarginTitle</span></td>
+<td>wnd_CaptionMarginTitle</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_FlatHeight</span></td>
+<td>tabBar_FlatHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_RoundHeight</span></td>
+<td>tabBar_RoundHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">tabBar_ButtonHeight</span></td>
+<td>tabBar_ButtonHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Padding</span></td>
+<td>btnPush_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Width</span></td>
+<td>btnPush_Width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnPush_Height</span></td>
+<td>btnPush_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconText_Margin</span></td>
+<td>iconText_Margin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Size</span></td>
+<td>btnCheck_Size</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnCheck_Padding</span></td>
+<td>btnCheck_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dialog_Padding</span></td>
+<td>dialog_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dialog_BtnPadding</span></td>
+<td>dialog_BtnPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox_SquarePadding</span></td>
+<td>editBox_SquarePadding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox_RoundPadding</span></td>
+<td>editBox_RoundPadding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox_FlatPadding</span></td>
+<td>editBox_FlatPadding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox_Width</span></td>
+<td>editBox_Width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">editBox_Height</span></td>
+<td>editBox_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_Width</span></td>
+<td>btnToggle_Width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnToggle_Height</span></td>
+<td>btnToggle_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_Width</span></td>
+<td>slider_Width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_Height</span></td>
+<td>slider_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_BoxSize</span></td>
+<td>slider_BoxSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">slider_StepSize</span></td>
+<td>slider_StepSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_Padding</span></td>
+<td>menuPopup_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_SpaceLines</span></td>
+<td>menuPopup_SpaceLines</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_ShadowSize</span></td>
+<td>menuPopup_ShadowSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_IconTextMargin</span></td>
+<td>menuPopup_IconTextMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuPopup_SeparatorHeight</span></td>
+<td>menuPopup_SeparatorHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_Height</span></td>
+<td>menuBar_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">menuBar_SpaceBetween</span></td>
+<td>menuBar_SpaceBetween</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">iconBar_ButtonsPadding</span></td>
+<td>iconBar_ButtonsPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_NormalSize</span></td>
+<td>scrollBar_NormalSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_SmallSize</span></td>
+<td>scrollBar_SmallSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BoxPadding</span></td>
+<td>scrollBar_BoxPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollBar_BoxMinSize</span></td>
+<td>scrollBar_BoxMinSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Width</span></td>
+<td>comboBox_Width</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Height</span></td>
+<td>comboBox_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_RightMargin</span></td>
+<td>comboBox_RightMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_Padding</span></td>
+<td>comboBox_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">comboBox_IconTextMargin</span></td>
+<td>comboBox_IconTextMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_Padding</span></td>
+<td>popupList_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_IconTextMargin</span></td>
+<td>popupList_IconTextMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">popupList_SeparatorPadding</span></td>
+<td>popupList_SeparatorPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_WidthArrow</span></td>
+<td>btnIcon_WidthArrow</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_HeightArrow</span></td>
+<td>btnIcon_HeightArrow</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_Padding</span></td>
+<td>btnIcon_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_MarginArrow</span></td>
+<td>btnIcon_MarginArrow</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SpacingIcon</span></td>
+<td>btnIcon_SpacingIcon</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SpacingArrowH</span></td>
+<td>btnIcon_SpacingArrowH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SpacingArrowV</span></td>
+<td>btnIcon_SpacingArrowV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SpacingTextH</span></td>
+<td>btnIcon_SpacingTextH</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">btnIcon_SpacingTextV</span></td>
+<td>btnIcon_SpacingTextV</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SquarePadding</span></td>
+<td>frameWnd_SquarePadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_RoundPadding</span></td>
+<td>frameWnd_RoundPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_FlatPadding</span></td>
+<td>frameWnd_FlatPadding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_SmallShadowSize</span></td>
+<td>frameWnd_SmallShadowSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorWidth</span></td>
+<td>frameWnd_AnchorWidth</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorHeight</span></td>
+<td>frameWnd_AnchorHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorOverlap</span></td>
+<td>frameWnd_AnchorOverlap</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorRoundBorderMargin</span></td>
+<td>frameWnd_AnchorRoundBorderMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">frameWnd_AnchorSquareBorderMargin</span></td>
+<td>frameWnd_AnchorSquareBorderMargin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">list_Padding</span></td>
+<td>list_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">list_ExpandSize</span></td>
+<td>list_ExpandSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_Height</span></td>
+<td>header_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_Padding</span></td>
+<td>header_Padding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">header_Separator</span></td>
+<td>header_Separator</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">splitView_BarSize</span></td>
+<td>splitView_BarSize</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_Height</span></td>
+<td>progressBar_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_ClipOffset</span></td>
+<td>progressBar_ClipOffset</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">progressBar_SpeedInf</span></td>
+<td>progressBar_SpeedInf</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_RoundPick</span></td>
+<td>colorPicker_RoundPick</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">colorPicker_SquarePick</span></td>
+<td>colorPicker_SquarePick</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">label_Height</span></td>
+<td>label_Height</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">richEdit_Padding</span></td>
+<td>richEdit_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip_Padding</span></td>
+<td>toolTip_Padding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -18138,72 +18138,72 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">imgWidgets</span></td>
+<td>imgWidgets</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">Texture</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icons24</span></td>
+<td>icons24</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">icons64</span></td>
+<td>icons64</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">spin</span></td>
+<td>spin</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultTypeFaceR</span></td>
+<td>defaultTypeFaceR</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultTypeFaceB</span></td>
+<td>defaultTypeFaceB</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultTypeFaceI</span></td>
+<td>defaultTypeFaceI</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultTypeFaceBI</span></td>
+<td>defaultTypeFaceBI</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultFsTypeFaceR</span></td>
+<td>defaultFsTypeFaceR</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultFsTypeFaceB</span></td>
+<td>defaultFsTypeFaceB</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultFsTypeFaceI</span></td>
+<td>defaultFsTypeFaceI</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">defaultFsTypeFaceBI</span></td>
+<td>defaultFsTypeFaceBI</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">TypeFace</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fontDefault</span></td>
+<td>fontDefault</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">fontDefaultFs</span></td>
+<td>fontDefaultFs</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
@@ -18221,27 +18221,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">refr</span></td>
+<td>refr</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyleRef">ThemeStyleRef</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dirty</span></td>
+<td>dirty</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">styleSheetMetrics</span></td>
+<td>styleSheetMetrics</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">styleSheetColors</span></td>
+<td>styleSheetColors</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">font</span></td>
+<td>font</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></td>
 <td></td>
 </tr>
@@ -18421,12 +18421,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">theme</span></td>
+<td>theme</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">count</span></td>
+<td>count</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -18444,22 +18444,22 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">timeMs</span></td>
+<td>timeMs</td>
 <td class="code-type"><span class="STpe">s32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">target</span></td>
+<td>target</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">stopwatch</span></td>
+<td>stopwatch</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Stopwatch</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toDelete</span></td>
+<td>toDelete</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
@@ -18497,12 +18497,12 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> base</span></td>
+<td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">timer</span></td>
+<td>timer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
 <td></td>
 </tr>
@@ -18520,32 +18520,32 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> button</span></td>
+<td>using button</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Button">Button</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isToggled</span></td>
+<td>isToggled</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">sigChanged</span></td>
+<td>sigChanged</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBk</span></td>
+<td>aniBk</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniBorder</span></td>
+<td>aniBorder</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">aniMark</span></td>
+<td>aniMark</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
 <td></td>
 </tr>
@@ -18637,152 +18637,152 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde">itf</span></td>
+<td>itf</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IWnd">IWnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">type</span></td>
+<td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">surface</span></td>
+<td>surface</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">style</span></td>
+<td>style</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wndFlags</span></td>
+<td>wndFlags</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndFlags">WndFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">userData</span></td>
+<td>userData</td>
 <td class="code-type"><span class="SCde">*<span class="STpe">void</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">position</span></td>
+<td>position</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">minSize</span></td>
+<td>minSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">maxSize</span></td>
+<td>maxSize</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">scrollPos</span></td>
+<td>scrollPos</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">invalidatePadding</span></td>
+<td>invalidatePadding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">parent</span></td>
+<td>parent</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">owner</span></td>
+<td>owner</td>
 <td class="code-type"><span class="SCde">*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">childs</span></td>
+<td>childs</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">name</span></td>
+<td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Pixel</span>.<span class="SCst">RichString</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">id</span></td>
+<td>id</td>
 <td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">cursor</span></td>
+<td>cursor</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">toolTip</span></td>
+<td>toolTip</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">keyShortcuts</span></td>
+<td>keyShortcuts</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyShortcut">KeyShortcut</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">actions</span></td>
+<td>actions</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IActionUI">IActionUI</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">margin</span></td>
+<td>margin</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">padding</span></td>
+<td>padding</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">dockStyle</span></td>
+<td>dockStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DockStyle">DockStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">anchorStyle</span></td>
+<td>anchorStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_AnchorStyle">AnchorStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">focusStrategy</span></td>
+<td>focusStrategy</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusStategy">FocusStategy</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">backgroundStyle</span></td>
+<td>backgroundStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_BackgroundStyle">BackgroundStyle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isAllocated</span></td>
+<td>isAllocated</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">isPendingDestroy</span></td>
+<td>isPendingDestroy</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">createEventDone</span></td>
+<td>createEventDone</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">hookOnEvent</span></td>
+<td>hookOnEvent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
@@ -20417,35 +20417,35 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCst">Zero</span></td>
+<td>Zero</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">NoScroll</span></td>
+<td>NoScroll</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">ClipChildren</span></td>
+<td>ClipChildren</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Disabled</span></td>
+<td>Disabled</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">Hidden</span></td>
+<td>Hidden</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PreChildsPaint</span></td>
+<td>PreChildsPaint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">PostChildsPaint</span></td>
+<td>PostChildsPaint</td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCst">TopMost</span></td>
+<td>TopMost</td>
 <td></td>
 </tr>
 </table>
@@ -20462,27 +20462,27 @@
 </p>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SCde"><span class="SKwd">using</span> wnd</span></td>
+<td>using wnd</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">spacing</span></td>
+<td>spacing</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wrapWidth</span></td>
+<td>wrapWidth</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">wrapHeight</span></td>
+<td>wrapHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SCde">resultHeight</span></td>
+<td>resultHeight</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
