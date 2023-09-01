@@ -126,7 +126,8 @@ You can create a **quote** with `>`
 >
 > End of the quote.
 
-You can create a special quote by adding a title on the first line.
+You can create a special quote by adding a title on the first line. There must be exactly one blank between `>` and the title, and the title case should be respected.
+
 * `Note:`
 * `Tip:`
 * `Warning:`
@@ -157,12 +158,10 @@ You can create a special quote by adding a title on the first line.
 > This is the content
 
 ```swag
-// > Attention:
-// > This is the content
+// > Attention: Content can be on the same line as the title
 ```
 
-> Attention:
-> This is the content
+> Attention: Content can be on the same line as the title
 
 ## Tables
 

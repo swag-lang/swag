@@ -9,6 +9,11 @@
 #include "SyntaxColor.h"
 #pragma optimize("", off)
 
+static const char* START_NOTE      = "> Note:";
+static const char* START_TIP       = "> Tip:";
+static const char* START_WARNING   = "> Warning:";
+static const char* START_ATTENTION = "> Attention:";
+
 void GenDoc::outputStyles()
 {
     helpOutput += "<script src=\"https://kit.fontawesome.com/f76be2b3ee.js\" crossorigin=\"anonymous\"></script>\n";
@@ -358,19 +363,19 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 blk->kind = UserBlockKind::CodeRaw;
                 start++;
             }
-            else if (line.startsWith("> Note:"))
+            else if (line.startsWith(START_NOTE))
             {
                 blk->kind = UserBlockKind::BlockquoteNote;
             }
-            else if (line.startsWith("> Tip:"))
+            else if (line.startsWith(START_TIP))
             {
                 blk->kind = UserBlockKind::BlockquoteTip;
             }
-            else if (line.startsWith("> Warning:"))
+            else if (line.startsWith(START_WARNING))
             {
                 blk->kind = UserBlockKind::BlockquoteWarning;
             }
-            else if (line.startsWith("> Attention:"))
+            else if (line.startsWith(START_ATTENTION))
             {
                 blk->kind = UserBlockKind::BlockquoteAttention;
             }
@@ -561,7 +566,16 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 {
                     if (!lastLine)
                         mustEnd = true;
-                    blk->lines.erase(blk->lines.begin());
+                    if (blk->kind == UserBlockKind::BlockquoteNote)
+                        blk->lines[0].remove(0, (uint32_t) strlen(START_NOTE) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteTip)
+                        blk->lines[0].remove(0, (uint32_t) strlen(START_TIP) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteWarning)
+                        blk->lines[0].remove(0, (uint32_t) strlen(START_WARNING) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteAttention)
+                        blk->lines[0].remove(0, (uint32_t) strlen(START_ATTENTION) - 1);
+                    else
+                        SWAG_ASSERT(false);
                     computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
                     blk->lines.clear();
                 }

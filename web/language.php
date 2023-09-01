@@ -7531,7 +7531,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <p> This is a block quote on multiple  lines. </p>
 <p> End of the quote. </p>
 </div>
-<p>You can create a special quote by adding a title on the first line. </p>
+<p>You can create a special quote by adding a title on the first line. There must be exactly one blank between <span class="inline-code">&gt;</span> and the title, and the title case should be respected. </p>
 <ul>
 <li><span class="inline-code">Note:</span></li>
 <li><span class="inline-code">Tip:</span></li>
@@ -7556,11 +7556,10 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <div class="blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> This is the content </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Attention:</span>
-<span class="SCmt">// &gt; This is the content</span></span></code>
+<div class="code-block"><code><span class="SCmt">// &gt; Attention: Content can be on the same line as the title</span></code>
 </div>
 <div class="blockquote-attention">
-<div class="blockquote-title-block"><i class="fa fa-ban"></i><span class="blockquote-title"> Attention</span></div><p> This is the content </p>
+<div class="blockquote-title-block"><i class="fa fa-ban"></i><span class="blockquote-title"> Attention</span></div><p> Content can be on the same line as the title </p>
 </div>
 <h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <span class="inline-code">|</span>. </p>
