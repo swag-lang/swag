@@ -107,10 +107,9 @@
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
-        .table-enumeration a              { text-decoration: none; }
+        .table-enumeration a              { text-decoration: none; color: inherit; }
         
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;

@@ -126,10 +126,9 @@ void GenDoc::outputStyles()
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
         .table-enumeration td:last-child  { width: 100%; }\n\
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
-        .table-enumeration a              { text-decoration: none; }\n\
+        .table-enumeration a              { text-decoration: none; color: inherit; }\n\
         \n\
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
-        .code-type a             { color: inherit; }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\
             border-radius:      5px;\n\
