@@ -2979,7 +2979,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the Std.Core module. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i> <span class="blockquote-title">Warning</span></div><p> On a string, it will loop for each byte, <b>not</b> runes (if a rune is encoded in more than one byte). If you want to iterate on all runes, you will have to use the Std.Core module. </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -7448,7 +7448,7 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// This is yet another paragraph.</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> Everything between empty lines is considered to be a simple paragraph. Which  means that if you put several comments on several lines like this, they all  will be part of the same paragraph. </p>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p> Everything between empty lines is considered to be a simple paragraph. Which  means that if you put several comments on several lines like this, they all  will be part of the same paragraph. </p>
 <p> This is another paragraph because there's an empty line before. </p>
 <p> This is yet another paragraph. </p>
 </div>
@@ -7458,7 +7458,7 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// But third line has a break before.</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> First line.  Second line is on first line.<br/>  But third line has a break before. </p>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p> First line.  Second line is on first line.<br/>  But third line has a break before. </p>
 </div>
 <p>A paragraph that starts with <span class="inline-code">---</span> is a <b>verbatim</b> paragraph where every blanks and end of lines are respected. The paragraph will be generated <span class="inline-code">as is</span> without any markdown change. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// ---</span>
@@ -7471,7 +7471,7 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// ---</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p style="white-space: break-spaces"> Even...
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p style="white-space: break-spaces"> Even...
 
  ...empty lines are preserved.
 
@@ -7491,7 +7491,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// * This is a bullet point</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><ul>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><ul>
 <li>This is a bullet point</li>
 <li>This is a bullet point</li>
 <li>This is a bullet point</li>
@@ -7519,24 +7519,24 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title"> Note</span></div><p> This is the content </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title">Note</span></div><p> This is the content </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Tip:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is the content </p>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p> This is the content </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; Warning:</span>
 <span class="SCmt">// &gt; This is the content</span></span></code>
 </div>
 <div class="blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i><span class="blockquote-title"> Warning</span></div><p> This is the content </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i> <span class="blockquote-title">Warning</span></div><p> This is the content </p>
 </div>
 <div class="code-block"><code><span class="SCmt">// &gt; Attention: Content can be on the same line as the title</span></code>
 </div>
 <div class="blockquote-attention">
-<div class="blockquote-title-block"><i class="fa fa-ban"></i><span class="blockquote-title"> Attention</span></div><p> Content can be on the same line as the title </p>
+<div class="blockquote-title-block"><i class="fa fa-ban"></i> <span class="blockquote-title">Attention</span></div><p> Content can be on the same line as the title </p>
 </div>
 <h4 id="Tables">Tables </h4>
 <p>You can create a <b>table</b> with <span class="inline-code">|</span>. </p>
@@ -7547,7 +7547,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// | switch       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><table class="table-enumeration">
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><table class="table-enumeration">
 <tr><td> boundcheck   </td><td> Check out of bound access</td></tr>
 <tr><td> overflow     </td><td> Check type conversion lost of bits or precision</td></tr>
 <tr><td> math         </td><td> Various math checks (like a negative <span class="inline-code">@sqrt</span>)</td></tr>
@@ -7562,7 +7562,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// ```</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><div class="code-block"><code><span class="SCde">if a == true
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><div class="code-block"><code><span class="SCde">if a == true
    @print("true")</span></code>
 </div>
 </div>
@@ -7577,7 +7577,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// ```</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><div class="code-block"><code><span class="SCde"><span class="SLgc">if</span> a == <span class="SKwd">true</span>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><div class="code-block"><code><span class="SCde"><span class="SLgc">if</span> a == <span class="SKwd">true</span>
    <span class="SItr">@print</span>(<span class="SStr">"true"</span>)</span></code>
 </div>
 </div>
@@ -7595,7 +7595,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <div class="code-block"><code><span class="SCmt">// This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.</span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p> This is a <a href="https://github.com/swag-lang/swag">reference</a> to the Swag repository on GitHub. </p>
 </div>
 <h4 id="Images">Images </h4>
 <p>You can insert an external <b>image</b> with <span class="inline-code">![name](link)</span>. </p>
@@ -7610,7 +7610,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.\</span></span></code>
 </div>
 <div class="blockquote-tip">
-<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i><span class="blockquote-title"> Tip</span></div><p> This is <span class="inline-code">inline code</span> with back ticks.<br/>  This is inline <span class="inline-code">code</span> with normal ticks, but just for a single word.<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This character n is escaped, and <span class="inline-code">n</span> will be output as is.<br/> </p>
+<div class="blockquote-title-block"><i class="fa fa-lightbulb-o"></i> <span class="blockquote-title">Tip</span></div><p> This is <span class="inline-code">inline code</span> with back ticks.<br/>  This is inline <span class="inline-code">code</span> with normal ticks, but just for a single word.<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This character n is escaped, and <span class="inline-code">n</span> will be output as is.<br/> </p>
 </div>
 
 <h3 id="231_001_Api">Api</h3><p>In <span class="inline-code">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>

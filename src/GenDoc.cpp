@@ -806,8 +806,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteNote:
         helpContent += "<div class=\"blockquote-note\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-info-circle\"></i> ";
-        helpContent += "<span class=\"blockquote-title\"> Note</span>";
+        helpContent += "<i class=\"fa fa-info-circle\"></i> <span class=\"blockquote-title\">Note</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -815,8 +814,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteTip:
         helpContent += "<div class=\"blockquote-tip\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-lightbulb-o\"></i>";
-        helpContent += "<span class=\"blockquote-title\"> Tip</span>";
+        helpContent += "<i class=\"fa fa-lightbulb-o\"></i> <span class=\"blockquote-title\">Tip</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -824,8 +822,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteWarning:
         helpContent += "<div class=\"blockquote-warning\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i>";
-        helpContent += "<span class=\"blockquote-title\"> Warning</span>";
+        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i> <span class=\"blockquote-title\">Warning</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -833,8 +830,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteAttention:
         helpContent += "<div class=\"blockquote-attention\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-ban\"></i>";
-        helpContent += "<span class=\"blockquote-title\"> Attention</span>";
+        helpContent += "<i class=\"fa fa-ban\"></i> <span class=\"blockquote-title\">Attention</span>";
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);

@@ -1560,7 +1560,6 @@
 <li><a href="#Core_Threading_Thread_init">Thread.init</a></li>
 <li><a href="#Core_Threading_Thread_isDone">Thread.isDone</a></li>
 <li><a href="#Core_Threading_Thread_isValid">Thread.isValid</a></li>
-<li><a href="#Core_Threading_Thread_opDrop">Thread.opDrop</a></li>
 <li><a href="#Core_Threading_Thread_safeForceEnd">Thread.safeForceEnd</a></li>
 <li><a href="#Core_Threading_Thread_setPriority">Thread.setPriority</a></li>
 <li><a href="#Core_Threading_Thread_sleep">Thread.sleep</a></li>
@@ -22965,13 +22964,6 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 </table>
-<h3>Special Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td><a href="#Core_Threading_Thread_opDrop"><span class="SCde"><span class="SFct">opDrop</span>()</spa</a></td>
-<td></td>
-</tr>
-</table>
 <p>
 <table class="api-item">
 <tr>
@@ -23013,19 +23005,6 @@ Changes that are supported from V to V+1 are :</span></code>
 </p>
 <p>Returns true if the thread is valid. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Threading_Thread_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Thread.</span><span class="api-item-title-strong">opDrop</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\thread.swg#L31" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
 </div>
 <p>
 <table class="api-item">

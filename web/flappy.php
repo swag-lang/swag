@@ -192,7 +192,7 @@
 <h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <span class="inline-code">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="inline-code">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="blockquote-note">
-<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title"> Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="inline-code">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i> <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="inline-code">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {
