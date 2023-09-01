@@ -3152,42 +3152,42 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_assertIsAllocated">assertIsAllocated</a></span></td>
 <td>This function will assert if the given user address is not conform  to an allocated block. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkAllMemory">checkAllMemory</a></span></td>
 <td>Check all allocated blocks. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkIsAllocated">checkIsAllocated</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_checkIsFreed">checkIsFreed</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_memAlign">memAlign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_memAlign">memAlign</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_printDisplaySize">printDisplaySize</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_printLeaks">printLeaks</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_printLeaks">printLeaks</a></span></td>
 <td>Output to the console the list of all allocated blocks (leaks). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_setup">setup</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_setup">setup</a></span></td>
 <td>Setup the allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_DebugAllocator_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -4259,27 +4259,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_align">align</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_align">align</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_alloc">alloc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_alloc">alloc</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_free">free</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_free">free</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_freeAll">freeAll</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_freeAll">freeAll</a></span></td>
 <td>Release all memory. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_release">release</a></span></td>
 <td>Release the allocated block. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_setCapacity">setCapacity</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Swag_ScratchAllocator_setCapacity">setCapacity</a></span></td>
 <td>This will call <span class="code-inline">release</span> prior to changing the capacity, so this must  be called at an early stage. </td>
 </tr>
 </table>

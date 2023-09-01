@@ -140,7 +140,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         if (kind == AstNodeKind::FuncDecl)
         {
             // Deal with overloads. If multiple functions with the same name, then output parameters too
-            Utf8 parameters = "()";
+            Utf8 parameters;
             if (symbolsMap.find(n1->token.text)->second.size() > 1)
             {
                 AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);

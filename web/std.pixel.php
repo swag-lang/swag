@@ -1598,19 +1598,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createHatch">createHatch</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createHatch">createHatch</a></span></td>
 <td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createSolid">createSolid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createSolid">createSolid</a></span></td>
 <td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTexture">createTexture</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTexture">createTexture</a></span></td>
 <td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTiled">createTiled</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTiled">createTiled</a></span></td>
 <td>Returns a tiled texture brush. </td>
 </tr>
 </table>
@@ -1775,7 +1775,7 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -1940,7 +1940,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromAbgr">fromAbgr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromAbgr">fromAbgr</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
@@ -1960,59 +1960,59 @@
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgbf">fromArgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgbf">fromArgbf</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromHsl">fromHsl</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromHsl">fromHsl</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgb">fromRgb</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgb">fromRgb</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgbf">fromRgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgbf">fromRgbf</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromVector4">fromVector4</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromVector4">fromVector4</a></span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlend">getBlend</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlend">getBlend</a></span></td>
 <td>Blend two colors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span></td>
 <td>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDarker">getDarker</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDarker">getDarker</a></span></td>
 <td>Returns a darker color. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></span></td>
 <td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getLighter">getLighter</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getLighter">getLighter</a></span></td>
 <td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_isOpaque">isOpaque</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_isOpaque">isOpaque</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgb">setArgb</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgb">setArgb</a></span></td>
 <td>Set all components. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgbf">setArgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgbf">setArgbf</a></span></td>
 <td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setHsl">setHsl</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setHsl">setHsl</a></span></td>
 <td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
@@ -2024,23 +2024,23 @@
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgbf">setRgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgbf">setRgbf</a></span></td>
 <td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toArgbf">toArgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toArgbf">toArgbf</a></span></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toHsl">toHsl</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toHsl">toHsl</a></span></td>
 <td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toRgbf">toRgbf</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toRgbf">toRgbf</a></span></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toVector4">toVector4</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toVector4">toVector4</a></span></td>
 <td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
@@ -2879,11 +2879,11 @@
 <td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc</a></span></td>
 <td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Font_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_release">release</a></span></td>
 <td>Release the given font. </td>
 </tr>
 </table>
@@ -2968,23 +2968,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_createTypeFace">createTypeFace</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_createTypeFace">createTypeFace</a></span></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs</a></span></td>
 <td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFont">getFont</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFont">getFont</a></span></td>
 <td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFromOs">getFromOs</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFromOs">getFromOs</a></span></td>
 <td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_setFont">setFont</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_setFont">setFont</a></span></td>
 <td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
@@ -3148,23 +3148,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getFrame">getFrame</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getFrame">getFrame</a></span></td>
 <td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></span></td>
 <td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_init">init</a></span></td>
 <td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame</a></span></td>
 <td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_rewind">rewind</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_rewind">rewind</a></span></td>
 <td>Restart at frame 0. </td>
 </tr>
 </table>
@@ -3642,15 +3642,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addDecoder">addDecoder</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addDecoder">addDecoder</a></span></td>
 <td>Register an image decoder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addEncoder">addEncoder</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addEncoder">addEncoder</a></span></td>
 <td>Register an image encoder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_allocPixels">allocPixels</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_allocPixels">allocPixels</a></span></td>
 <td>Allocate pixels. </td>
 </tr>
 <tr>
@@ -3662,39 +3662,39 @@
 <td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyKernel">applyKernel</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyKernel">applyKernel</a></span></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer</a></span></td>
 <td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canLoad">canLoad</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canLoad">canLoad</a></span></td>
 <td>Returns <span class="code-inline">true</span> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canSave">canSave</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canSave">canSave</a></span></td>
 <td>Returns <span class="code-inline">true</span> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_clear">clear</a></span></td>
 <td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_colorize">colorize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_colorize">colorize</a></span></td>
 <td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_contrast">contrast</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_contrast">contrast</a></span></td>
 <td>Change the contrast. <span class="code-inline">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixel">copyPixel</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixel">copyPixel</a></span></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_create">create</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_create">create</a></span></td>
 <td>Creates a new image. </td>
 </tr>
 <tr>
@@ -3706,35 +3706,35 @@
 <td>Crop image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_decode">decode</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_decode">decode</a></span></td>
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fade">fade</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fade">fade</a></span></td>
 <td>Fade to a given color. <span class="code-inline">factor</span> is [0, 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fill">fill</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fill">fill</a></span></td>
 <td>Fill image with <span class="code-inline">color</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient2">fillGradient2</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient2">fillGradient2</a></span></td>
 <td>Fill with an horizontal gradient from <span class="code-inline">color0</span> to <span class="code-inline">color1</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient4">fillGradient4</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient4">fillGradient4</a></span></td>
 <td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillHsl">fillHsl</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillHsl">fillHsl</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_flip">flip</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_flip">flip</a></span></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer</a></span></td>
 <td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
@@ -3746,79 +3746,79 @@
 <td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_gamma">gamma</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_gamma">gamma</a></span></td>
 <td>Change the gamma. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_getPixelColor">getPixelColor</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_getPixelColor">getPixelColor</a></span></td>
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_grayScale">grayScale</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_grayScale">grayScale</a></span></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_halfSize">halfSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_halfSize">halfSize</a></span></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_init">init</a></span></td>
 <td>Initialize image informations  <span class="code-inline">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span></td>
 <td>Invert colors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_isValid">isValid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_isValid">isValid</a></span></td>
 <td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_lightness">lightness</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_lightness">lightness</a></span></td>
 <td>Change the lightness. <span class="code-inline">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_load">load</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_load">load</a></span></td>
 <td>Load the given image file. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mirror">mirror</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mirror">mirror</a></span></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mix">mix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mix">mix</a></span></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_release">release</a></span></td>
 <td>Release the content of the image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_resize">resize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_resize">resize</a></span></td>
 <td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_save">save</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_save">save</a></span></td>
 <td>Save the image to a file. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setAlpha">setAlpha</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setAlpha">setAlpha</a></span></td>
 <td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setChannel">setChannel</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setChannel">setChannel</a></span></td>
 <td>Change specified color channels. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></span></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></span></td>
 <td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></span></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
@@ -3830,50 +3830,50 @@
 <td>Crop image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toFlip">toFlip</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toFlip">toFlip</a></span></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHICON">toHICON</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHICON">toHICON</a></span></td>
 <td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHalfSize">toHalfSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHalfSize">toHalfSize</a></span></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMirror">toMirror</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMirror">toMirror</a></span></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMix">toMix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMix">toMix</a></span></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toResize">toResize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toResize">toResize</a></span></td>
 <td>Resize image  Put <span class="code-inline">newWidth</span> or <span class="code-inline">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></span></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toTurn">toTurn</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toTurn">toTurn</a></span></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_turn">turn</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_turn">turn</a></span></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_visitPixels">visitPixels</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_visitPixels">visitPixels</a></span></td>
 <td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_opVisit">opVisit</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -5263,7 +5263,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_arcTo">arcTo</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_arcTo">arcTo</a></span></td>
 <td>Add an arc from the previous point. </td>
 </tr>
 <tr>
@@ -5275,47 +5275,47 @@
 <td>Add a curve from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_clearCache">clearCache</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_clearCache">clearCache</a></span></td>
 <td>Clear internal cache. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_close">close</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_close">close</a></span></td>
 <td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_curveTo">curveTo</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_curveTo">curveTo</a></span></td>
 <td>Add a curve from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_flatten">flatten</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_flatten">flatten</a></span></td>
 <td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_lineTo">lineTo</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_lineTo">lineTo</a></span></td>
 <td>Add a line from the previous point to <span class="code-inline">pt</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setArc">setArc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setArc">setArc</a></span></td>
 <td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setCircle">setCircle</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setCircle">setCircle</a></span></td>
 <td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setEllipse">setEllipse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setEllipse">setEllipse</a></span></td>
 <td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRect">setRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRect">setRect</a></span></td>
 <td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRoundRect">setRoundRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRoundRect">setRoundRect</a></span></td>
 <td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_start">start</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_start">start</a></span></td>
 <td>Reset the path. </td>
 </tr>
 </table>
@@ -5535,23 +5535,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clean">clean</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clean">clean</a></span></td>
 <td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clear">clear</a></span></td>
 <td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_count">count</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_count">count</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_flatten">flatten</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_flatten">flatten</a></span></td>
 <td>Flatten all paths. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_newPath">newPath</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_newPath">newPath</a></span></td>
 <td>Returns a new path. </td>
 </tr>
 <tr>
@@ -5671,15 +5671,15 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_dropContext">dropContext</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_dropContext">dropContext</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -5956,27 +5956,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_addParams">addParams</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_addParams">addParams</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_begin">begin</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_begin">begin</a></span></td>
 <td>Call this before drawing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget</a></span></td>
 <td>Bind a render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_capStyleExtent">capStyleExtent</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_capStyleExtent">capStyleExtent</a></span></td>
 <td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_clear">clear</a></span></td>
 <td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_computeLayout">computeLayout</a></span></td>
 <td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
@@ -6048,7 +6048,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRichString">drawRichString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRichString">drawRichString</a></span></td>
 <td>Draw a rich string. </td>
 </tr>
 <tr>
@@ -6076,7 +6076,7 @@
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawStringCenter">drawStringCenter</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawStringCenter">drawStringCenter</a></span></td>
 <td>Draw a simple string (centered). </td>
 </tr>
 <tr>
@@ -6104,11 +6104,11 @@
 <td>Draw a texture image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_end">end</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_end">end</a></span></td>
 <td>Call this after drawing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_endClippingRegion">endClippingRegion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_endClippingRegion">endClippingRegion</a></span></td>
 <td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
@@ -6184,7 +6184,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getClippingRect">getClippingRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getClippingRect">getClippingRect</a></span></td>
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
@@ -6196,23 +6196,23 @@
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getParams">getParams</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getParams">getParams</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getQuality">getQuality</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getQuality">getQuality</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getTransform">getTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getTransform">getTransform</a></span></td>
 <td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect</a></span></td>
 <td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureRune">measureRune</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureRune">measureRune</a></span></td>
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
@@ -6224,55 +6224,55 @@
 <td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popClippingRect">popClippingRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popClippingRect">popClippingRect</a></span></td>
 <td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popState">popState</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popState">popState</a></span></td>
 <td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popTransform">popTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popTransform">popTransform</a></span></td>
 <td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingRect">pushClippingRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingRect">pushClippingRect</a></span></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect</a></span></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushState">pushState</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushState">pushState</a></span></td>
 <td>Save the current paint state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushTransform">pushTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushTransform">pushTransform</a></span></td>
 <td>Push the current transformation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget</a></span></td>
 <td>Release the render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_removeParams">removeParams</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_removeParams">removeParams</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRect">resetClippingRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRect">resetClippingRect</a></span></td>
 <td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion</a></span></td>
 <td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetState">resetState</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetState">resetState</a></span></td>
 <td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetTransform">resetTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetTransform">resetTransform</a></span></td>
 <td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
@@ -6284,19 +6284,19 @@
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace</a></span></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setAntialiased">setAntialiased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setAntialiased">setAntialiased</a></span></td>
 <td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setBlendingMode">setBlendingMode</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setBlendingMode">setBlendingMode</a></span></td>
 <td>Set the current blending mode. </td>
 </tr>
 <tr>
@@ -6308,7 +6308,7 @@
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode</a></span></td>
 <td>Set the clipping region mode. </td>
 </tr>
 <tr>
@@ -6320,31 +6320,31 @@
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode</a></span></td>
 <td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setParams">setParams</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setParams">setParams</a></span></td>
 <td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setQuality">setQuality</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setQuality">setQuality</a></span></td>
 <td>Set the paint quality. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setShader">setShader</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setShader">setShader</a></span></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
@@ -6356,23 +6356,23 @@
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setState">setState</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setState">setState</a></span></td>
 <td>Set the current painting state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setTransform">setTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setTransform">setTransform</a></span></td>
 <td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_startClippingRegion">startClippingRegion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_startClippingRegion">startClippingRegion</a></span></td>
 <td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_translateTransform">translateTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_translateTransform">translateTransform</a></span></td>
 <td>Set the paint position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget</a></span></td>
 <td>Bind a render target. </td>
 </tr>
 </table>
@@ -7488,15 +7488,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createDash">createDash</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createDash">createDash</a></span></td>
 <td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createHatch">createHatch</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createHatch">createHatch</a></span></td>
 <td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createSolid">createSolid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createSolid">createSolid</a></span></td>
 <td>Returns a solid color pen. </td>
 </tr>
 </table>
@@ -7790,27 +7790,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint</a></span></td>
 <td>Register a new point. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_clear">clear</a></span></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine</a></span></td>
 <td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles</a></span></td>
 <td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine</a></span></td>
 <td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate</a></span></td>
 <td>Triangulate. </td>
 </tr>
 </table>
@@ -7987,27 +7987,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_add">add</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_add">add</a></span></td>
 <td>Add a new point. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clean">clean</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clean">clean</a></span></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clear">clear</a></span></td>
 <td>Clear all points. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_compute">compute</a></span></td>
 <td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getClean">getClean</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getClean">getClean</a></span></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getOffset">getOffset</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getOffset">getOffset</a></span></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
@@ -8019,7 +8019,7 @@
 <td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_normalizeDist">normalizeDist</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_normalizeDist">normalizeDist</a></span></td>
 <td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
@@ -8272,75 +8272,75 @@
 <td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_begin">begin</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_begin">begin</a></span></td>
 <td>To be called before rendering. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget</a></span></td>
 <td>Set the current render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_clear">clear</a></span></td>
 <td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget</a></span></td>
 <td>Create a render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createShader">createShader</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createShader">createShader</a></span></td>
 <td>Create the given shader. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget</a></span></td>
 <td>Delete a render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_draw">draw</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_draw">draw</a></span></td>
 <td>Draw the given painter. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_end">end</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_end">end</a></span></td>
 <td>To be called after rendering. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></span></td>
 <td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></span></td>
 <td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels</a></span></td>
 <td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_init">init</a></span></td>
 <td>First init. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget</a></span></td>
 <td>Release the given render target. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></span></td>
 <td>Unregister a texture created with <span class="code-inline">addImage</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></span></td>
 <td>Reset the scissor. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetTransform">resetTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetTransform">resetTransform</a></span></td>
 <td>Reset the world transform. </td>
 </tr>
 <tr>
@@ -8352,35 +8352,35 @@
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext</a></span></td>
 <td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect</a></span></td>
 <td>Force the scissor. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setShader">setShader</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setShader">setShader</a></span></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_translateTransform">translateTransform</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_translateTransform">translateTransform</a></span></td>
 <td>Translate the world transform. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget</a></span></td>
 <td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage</a></span></td>
 <td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_updateTexture">updateTexture</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_updateTexture">updateTexture</a></span></td>
 <td>Update content of texture. </td>
 </tr>
 </table>
@@ -8962,38 +8962,38 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_compute">compute</a></span></td>
 <td>Compute layout. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_getNaked">getNaked</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_getNaked">getNaked</a></span></td>
 <td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_invalidate">invalidate</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_invalidate">invalidate</a></span></td>
 <td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_isEmpty">isEmpty</a></span></td>
 <td>Returns <span class="code-inline">true</span> if the string is empty. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_set">set</a></span></td>
 <td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -9411,27 +9411,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_color">color</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_color">color</a></span></td>
 <td>Set text color. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_draw">draw</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_draw">draw</a></span></td>
 <td>Draw string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_flags">flags</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_flags">flags</a></span></td>
 <td>Set drawing flags. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_font">font</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_font">font</a></span></td>
 <td>Set font. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_horzAlign">horzAlign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_horzAlign">horzAlign</a></span></td>
 <td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_vertAlign">vertAlign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_vertAlign">vertAlign</a></span></td>
 <td>Set vertical alignment. </td>
 </tr>
 </table>
@@ -9585,11 +9585,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_getByteSize">getByteSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_getByteSize">getByteSize</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_isValid">isValid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_isValid">isValid</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -9739,43 +9739,43 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_create">create</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_create">create</a></span></td>
 <td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT</a></span></td>
 <td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getFamilyName">getFamilyName</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getFamilyName">getFamilyName</a></span></td>
 <td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline</a></span></td>
 <td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getStringOutline">getStringOutline</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getStringOutline">getStringOutline</a></span></td>
 <td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isBold">isBold</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isBold">isBold</a></span></td>
 <td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isItalic">isItalic</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isItalic">isItalic</a></span></td>
 <td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_load">load</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_load">load</a></span></td>
 <td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_release">release</a></span></td>
 <td>Release the given typeface. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_renderGlyph">renderGlyph</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_renderGlyph">renderGlyph</a></span></td>
 <td>Render one glyph. </td>
 </tr>
 </table>

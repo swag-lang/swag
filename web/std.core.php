@@ -1983,59 +1983,59 @@
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_addOnce">addOnce</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_addOnce">addOnce</a></span></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_back">back</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_back">back</a></span></td>
 <td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_backPtr">backPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_backPtr">backPtr</a></span></td>
 <td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_clear">clear</a></span></td>
 <td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_contains">contains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_contains">contains</a></span></td>
 <td>Returns true if the given <span class="code-inline">value</span> is in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_createBuffer">createBuffer</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_createBuffer">createBuffer</a></span></td>
 <td>Create a working buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_createTemp">createTemp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_createTemp">createTemp</a></span></td>
 <td>Create a temporary array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAddress">emplaceAddress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAddress">emplaceAddress</a></span></td>
 <td>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAt">emplaceAt</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAt">emplaceAt</a></span></td>
 <td>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress</a></span></td>
 <td>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_free">free</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_free">free</a></span></td>
 <td>Free the array content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_front">front</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_front">front</a></span></td>
 <td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_frontPtr">frontPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_frontPtr">frontPtr</a></span></td>
 <td>Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_grow">grow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_grow">grow</a></span></td>
 <td>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements  Number of valid elements does not change. </td>
 </tr>
 <tr>
@@ -2051,15 +2051,15 @@
 <td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_isEmpty">isEmpty</a></span></td>
 <td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_popBack">popBack</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_popBack">popBack</a></span></td>
 <td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_realloc">realloc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_realloc">realloc</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2071,27 +2071,27 @@
 <td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_removeAt">removeAt</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_removeAt">removeAt</a></span></td>
 <td>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_removeAtOrdered">removeAtOrdered</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_removeAtOrdered">removeAtOrdered</a></span></td>
 <td>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_removeBack">removeBack</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_removeBack">removeBack</a></span></td>
 <td>Remove the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_removeOrdered">removeOrdered</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_removeOrdered">removeOrdered</a></span></td>
 <td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_reserve">reserve</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_reserve">reserve</a></span></td>
 <td>Reserve room for <span class="code-inline">newCapacity</span> elements without changing the array count  Number of valid elements does not change. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_resize">resize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_resize">resize</a></span></td>
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
@@ -2103,22 +2103,22 @@
 <td>Sort array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_sortReverse">sortReverse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_sortReverse">sortReverse</a></span></td>
 <td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_swap">swap</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_swap">swap</a></span></td>
 <td>Swap two elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span></td>
 <td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opAffect">opAffect</a></span></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
@@ -2130,19 +2130,15 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opData">opData</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opData">opData</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opDrop">opDrop</a></span><span class="SCde">()</span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -2150,23 +2146,27 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAffect">opIndexAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAssign">opIndexAssign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAffect">opIndexAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opPostCopy">opPostCopy</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAssign">opIndexAssign</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opSlice">opSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opPostCopy">opPostCopy</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opSlice">opSlice</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opVisit">opVisit</a></span></td>
 <td>Visit every elements of the array. </td>
 </tr>
 </table>
@@ -2782,26 +2782,26 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_addNewPtr">addNewPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_addNewPtr">addNewPtr</a></span></td>
 <td>Allocate a new pointer, and add it to the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_clear">clear</a></span></td>
 <td>Release content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_deletePtr">deletePtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_deletePtr">deletePtr</a></span></td>
 <td>Delete one pointer allocated here. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_newPtr">newPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_newPtr">newPtr</a></span></td>
 <td>Allocate a new pointer by using the contextual allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -3051,11 +3051,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_andWith">andWith</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_andWith">andWith</a></span></td>
 <td>Performs the bitwise AND operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_get">get</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_get">get</a></span></td>
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
@@ -3067,7 +3067,7 @@
 <td>Inverts the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_orWith">orWith</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_orWith">orWith</a></span></td>
 <td>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
 </tr>
 <tr>
@@ -3079,42 +3079,42 @@
 <td>Reserve the given amount of bits and set an initial value to all bits. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_set">set</a></span></td>
 <td>Sets the bit at a specific position to the specified value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_setAll">setAll</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_setAll">setAll</a></span></td>
 <td>Sets all bits to the specified value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_xorWith">xorWith</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_xorWith">xorWith</a></span></td>
 <td>Performs the bitwise XOR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opAffect">opAffect</a></span></td>
 <td>Initializes a <span class="code-inline">BitArray</span> that contains bit values copied from the specified array of booleans. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opEquals">opEquals</a></span></td>
 <td>Compares two arrays, and returns <span class="code-inline">true</span> if they are equal. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndex">opIndex</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndex">opIndex</a></span></td>
 <td>Gets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndexAffect">opIndexAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndexAffect">opIndexAffect</a></span></td>
 <td>Sets the value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_opVisit">opVisit</a></span></td>
 <td>Visit all the booleans. </td>
 </tr>
 </table>
@@ -3359,67 +3359,67 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_getSeek">getSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_getSeek">getSeek</a></span></td>
 <td>Returns the seek value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_isEof">isEof</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_isEof">isEof</a></span></td>
 <td>Returns true if end has been reached. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_length">length</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_length">length</a></span></td>
 <td>Returns length of associated slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_moveSeek">moveSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_moveSeek">moveSeek</a></span></td>
 <td>Seek to the next byte. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openRead">openRead</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openRead">openRead</a></span></td>
 <td>Creates a byte stream to read from a slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openWrite">openWrite</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openWrite">openWrite</a></span></td>
 <td>Creates a byte stream to write to an array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_peekU8">peekU8</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_peekU8">peekU8</a></span></td>
 <td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readBytes">readBytes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readBytes">readBytes</a></span></td>
 <td>Read the given amount of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readData">readData</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readData">readData</a></span></td>
 <td>Get the buffer of datas to read. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readNative">readNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readNative">readNative</a></span></td>
 <td>Read a <span class="code-inline">native</span> type value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readU8">readU8</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readU8">readU8</a></span></td>
 <td>Read one byte and seek. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice</a></span></td>
 <td>Returns a slice of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToString">remainReadToString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToString">remainReadToString</a></span></td>
 <td>Returns a string of the remaing bytes to read. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_setSeek">setSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_setSeek">setSeek</a></span></td>
 <td>Seek to the given position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeBytes">writeBytes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeBytes">writeBytes</a></span></td>
 <td>Write the given amount of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeNative">writeNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeNative">writeNative</a></span></td>
 <td>Write a <span class="code-inline">native</span> type value. </td>
 </tr>
 </table>
@@ -3695,19 +3695,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_getField">getField</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_getField">getField</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_isOption">isOption</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_isOption">isOption</a></span></td>
 <td>Returns true if <span class="code-inline">oneArg</span> is a valid option (starting with a delimiter). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_parse">parse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_parse">parse</a></span></td>
 <td>Parse all the arguments and fill the result. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_splitArguments">splitArguments</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_CommandLine_splitArguments">splitArguments</a></span></td>
 <td>Clean and split a list of arguments  -option:value or -option=value =&gt; -option value. </td>
 </tr>
 </table>
@@ -3886,63 +3886,63 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_consumeBits">consumeBits</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_consumeBits">consumeBits</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_curPtr">curPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_curPtr">curPtr</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_init">init</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32">peek32</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32">peek32</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32Be">peek32Be</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32Be">peek32Be</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBits">peekBits</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBits">peekBits</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBytes">peekBytes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBytes">peekBytes</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBits">readBits</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBits">readBits</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_refill">refill</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_refill">refill</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_revert">revert</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_revert">revert</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_size">size</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_size">size</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_startPtr">startPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_startPtr">startPtr</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -4155,11 +4155,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_Deflate_compress">compress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_Deflate_compress">compress</a></span></td>
 <td>Compress the source buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_Deflate_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_Deflate_init">init</a></span></td>
 <td>Initialize the compressor  Can be called multiple times. </td>
 </tr>
 </table>
@@ -4296,7 +4296,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_Inflate_decompress">decompress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_Inflate_decompress">decompress</a></span></td>
 <td>Decompress the associated stream. </td>
 </tr>
 </table>
@@ -4328,11 +4328,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_ZLib_compress">compress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_ZLib_compress">compress</a></span></td>
 <td>Decompress stream. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Compress_ZLib_decompress">decompress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Compress_ZLib_decompress">decompress</a></span></td>
 <td>Decompress stream. </td>
 </tr>
 </table>
@@ -4421,94 +4421,94 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addBytes">addBytes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addBytes">addBytes</a></span></td>
 <td>Append a slice of bytes to the buffer  If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addNative">addNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addNative">addNative</a></span></td>
 <td>Append one byte to the buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addStruct">addStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addStruct">addStruct</a></span></td>
 <td>Append the content of a struct. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_clear">clear</a></span></td>
 <td>Clear the content without freing the buffers. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_count">count</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_count">count</a></span></td>
 <td>Returns the number of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getOffset">getOffset</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getOffset">getOffset</a></span></td>
 <td>Get the linearized seek offset. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getSeek">getSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getSeek">getSeek</a></span></td>
 <td>Returns the current <span class="code-inline">seek</span> in the buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_grow">grow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_grow">grow</a></span></td>
 <td>Be sure that there is enough room to store at least <span class="code-inline">numBytes</span> bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_makeLinear">makeLinear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_makeLinear">makeLinear</a></span></td>
 <td>linearize all buckets in one single big bucket. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveSeek">moveSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveSeek">moveSeek</a></span></td>
 <td>Seek current write pointer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveToString">moveToString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveToString">moveToString</a></span></td>
 <td>Move the content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_release">release</a></span></td>
 <td>Release all allocated buffers. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setAllocator">setAllocator</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setAllocator">setAllocator</a></span></td>
 <td>Associate an allocator with the buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize</a></span></td>
 <td>Set the granularity of datas when allocated new buckets. Minimum size is 4. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek</a></span></td>
 <td>Set the end <span class="code-inline">seek</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket</a></span></td>
 <td>Share <span class="code-inline">data</span> with the firstBucket. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setSeek">setSeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setSeek">setSeek</a></span></td>
 <td>Set the current <span class="code-inline">seek</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toSlice">toSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toSlice">toSlice</a></span></td>
 <td>Convert to a slice <i>only</i> if the buffer is linear (see <span class="code-inline">makeLinear</span>). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toString">toString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toString">toString</a></span></td>
 <td>Convert buffer to a String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opVisit">opVisit</a></span></td>
 <td>Visit all valid buckets. </td>
 </tr>
 </table>
@@ -5419,7 +5419,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Env_Process_waitForExit">waitForExit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_Process_waitForExit">waitForExit</a></span></td>
 <td>Wait for the process to be done. </td>
 </tr>
 </table>
@@ -5776,7 +5776,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileInfo_isDirectory">isDirectory</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileInfo_isDirectory">isDirectory</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -5908,39 +5908,39 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_close">close</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_close">close</a></span></td>
 <td>Close the given file stream. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_getPosition">getPosition</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_getPosition">getPosition</a></span></td>
 <td>Returns the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_getSize">getSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_getSize">getSize</a></span></td>
 <td>Returns the given file stream length on disk. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_isOpen">isOpen</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_isOpen">isOpen</a></span></td>
 <td>Returns true if the stream is valid. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_read">read</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_read">read</a></span></td>
 <td>Read from the given file stream, and returns the number of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_readValue">readValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_readValue">readValue</a></span></td>
 <td>Read from the given file stream, and returns <span class="code-inline">true</span> if all bytes have been read. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_setPosition">setPosition</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_setPosition">setPosition</a></span></td>
 <td>Set the current seek position of the given file stream. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_skipPosition">skipPosition</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_skipPosition">skipPosition</a></span></td>
 <td>Skip <span class="code-inline">bytes</span> from current position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_write">write</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_write">write</a></span></td>
 <td>Write to the given file stream, and returns the number of written bytes. </td>
 </tr>
 </table>
@@ -6185,19 +6185,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_close">close</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_close">close</a></span></td>
 <td>Close the reader. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_open">open</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_open">open</a></span></td>
 <td>Open the reader. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readLine">readLine</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readLine">readLine</a></span></td>
 <td>Read one line of text. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readToEnd">readToEnd</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readToEnd">readToEnd</a></span></td>
 <td>Read from the current position to the end, and returns the corresponding  utf8 string. </td>
 </tr>
 </table>
@@ -6287,11 +6287,11 @@
 <td>Parse a list of lines. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parseFile">parseFile</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parseFile">parseFile</a></span></td>
 <td>Read and parse a file. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_registerFolder">registerFolder</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_registerFolder">registerFolder</a></span></td>
 <td>Register a new structure to be parsed. </td>
 </tr>
 </table>
@@ -6781,15 +6781,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_compute">compute</a></span></td>
 <td>Returns the adler32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_init">init</a></span></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Adler32_update">update</a></span></td>
 <td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
 </tr>
 </table>
@@ -6856,15 +6856,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_compute">compute</a></span></td>
 <td>Returns the crc32 hash value for the given buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_init">init</a></span></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc32_update">update</a></span></td>
 <td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
 </tr>
 </table>
@@ -6964,19 +6964,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_compute">compute</a></span></td>
 <td>Returns the md5 value for the given buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_final">final</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_final">final</a></span></td>
 <td>Finalize the computation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_init">init</a></span></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Md5_update">update</a></span></td>
 <td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
 </tr>
 </table>
@@ -7072,19 +7072,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_compute">compute</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_compute">compute</a></span></td>
 <td>Returns the sha256 value for the given buffer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_final">final</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_final">final</a></span></td>
 <td>Finalize the computation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_init">init</a></span></td>
 <td>Initialize the hashing sequence. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha256_update">update</a></span></td>
 <td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
 </tr>
 </table>
@@ -7229,54 +7229,54 @@
 <td>Add a new key. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_clear">clear</a></span></td>
 <td>Remove all elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_contains">contains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_contains">contains</a></span></td>
 <td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_emplaceInternal">emplaceInternal</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_emplaceInternal">emplaceInternal</a></span></td>
 <td>Add a new key. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_free">free</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_free">free</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_grow">grow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_grow">grow</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_hashKey">hashKey</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_hashKey">hashKey</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_remove">remove</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_remove">remove</a></span></td>
 <td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_reserve">reserve</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_reserve">reserve</a></span></td>
 <td>Reserve <span class="code-inline">newCapacity</span> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opPostCopy">opPostCopy</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opPostCopy">opPostCopy</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_opVisit">opVisit</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -7555,58 +7555,58 @@
 <td>Add a new key value pair. If the key already exists, then the value will be replaced. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_clear">clear</a></span></td>
 <td>Remove all elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_contains">contains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_contains">contains</a></span></td>
 <td>Returns true if the table contains the given key. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_emplaceInternal">emplaceInternal</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_emplaceInternal">emplaceInternal</a></span></td>
 <td>Use with care !. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_find">find</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_find">find</a></span></td>
 <td>Find the given key, and returns the corresponding entry. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_free">free</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_free">free</a></span></td>
 <td>Free the hashtable content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_grow">grow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_grow">grow</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_hashKey">hashKey</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_hashKey">hashKey</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_remove">remove</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_remove">remove</a></span></td>
 <td>Remove the given key if it exists. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_reserve">reserve</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_reserve">reserve</a></span></td>
 <td>Reserve <span class="code-inline">newCapacity</span> elements in the table. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opPostCopy">opPostCopy</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opPostCopy">opPostCopy</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opVisit">opVisit</a></span></td>
 <td>alias0 is the key, and alias1 is the value. </td>
 </tr>
 </table>
@@ -7891,31 +7891,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_clear">clear</a></span></td>
 <td>Reset the previous and current state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_getPosition">getPosition</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_getPosition">getPosition</a></span></td>
 <td>Get the analog position of the given button. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonJustPressed">isButtonJustPressed</a></span></td>
 <td>Determines whether specified input device button has just been pressed. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonJustReleased">isButtonJustReleased</a></span></td>
 <td>Determines whether specified input device button has just been released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonPressed">isButtonPressed</a></span></td>
 <td>Determines whether specified input device button is pressed. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isButtonReleased">isButtonReleased</a></span></td>
 <td>Determines whether specified input device button is released (not pressed). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isConnected">isConnected</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_isConnected">isConnected</a></span></td>
 <td>Returns true if the corresponding <span class="code-inline">padIndex</span> is connected. </td>
 </tr>
 <tr>
@@ -7927,7 +7927,7 @@
 <td>Set the left and right vibration of the given <span class="code-inline">padIndex</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_update">update</a></span></td>
 <td>Update the GamePad current state. </td>
 </tr>
 </table>
@@ -8218,11 +8218,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePadState_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePadState_clear">clear</a></span></td>
 <td>Reset state to its default value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePadState_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePadState_update">update</a></span></td>
 <td>Compute the current state of the given pad index. </td>
 </tr>
 </table>
@@ -9105,19 +9105,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_clear">clear</a></span></td>
 <td>Reset the keyboard state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_getPressedModifiers">getPressedModifiers</a></span></td>
 <td>Returns the currently pressed key modifiers. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyJustPressed">isKeyJustPressed</a></span></td>
 <td>Determines whether given key has just been pressed. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyJustReleased">isKeyJustReleased</a></span></td>
 <td>Determines whether given key has just been released. </td>
 </tr>
 <tr>
@@ -9129,23 +9129,23 @@
 <td>Returns true if the given key is pressed. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyReleased">isKeyReleased</a></span></td>
 <td>Determines whether given key is currently being released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_keyToRune">keyToRune</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_keyToRune">keyToRune</a></span></td>
 <td>Try to transform the given key to the corresponding rune. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_keyToVirtualKey">keyToVirtualKey</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_update">update</a></span></td>
 <td>Compute current state of the keyboard (all keys). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_virtualKeyToKey">virtualKeyToKey</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -9317,11 +9317,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_KeyboardState_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_KeyboardState_clear">clear</a></span></td>
 <td>Reset keyboard state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_KeyboardState_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_KeyboardState_update">update</a></span></td>
 <td>Compute current keyboard state. </td>
 </tr>
 </table>
@@ -9408,31 +9408,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_clear">clear</a></span></td>
 <td>Reset the mouse state to its default value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getMove">getMove</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getMove">getMove</a></span></td>
 <td>Returns the move between the current position and the previous one. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getPosition">getPosition</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getPosition">getPosition</a></span></td>
 <td>Returns the mouse position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_getPreviousPos">getPreviousPos</a></span></td>
 <td>Returns the previous mouse position, before the last update. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonDoubleClick">isButtonDoubleClick</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonJustPressed">isButtonJustPressed</a></span></td>
 <td>Determines whether the specified mouse button has just been pressed. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonJustReleased">isButtonJustReleased</a></span></td>
 <td>Determines whether the specified mouse button has just been released. </td>
 </tr>
 <tr>
@@ -9444,11 +9444,11 @@
 <td>Determins if one given mouse button is pressed or not. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonReleased">isButtonReleased</a></span></td>
 <td>Determines whether the specified mouse button is released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_update">update</a></span></td>
 <td>Compute the current state of the mouse. </td>
 </tr>
 </table>
@@ -9664,11 +9664,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_MouseState_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_MouseState_clear">clear</a></span></td>
 <td>Reset the state to its default value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_MouseState_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_MouseState_update">update</a></span></td>
 <td>Compute the actual state of the mouse. </td>
 </tr>
 </table>
@@ -10370,7 +10370,7 @@
 <td>Add a new element on front. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_clear">clear</a></span></td>
 <td>Clear all elements. </td>
 </tr>
 <tr>
@@ -10393,11 +10393,11 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_opVisit">opVisit</a></span></td>
 <td>Visit every elements of the list. </td>
 </tr>
 </table>
@@ -10591,35 +10591,35 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_addWriter">addWriter</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_addWriter">addWriter</a></span></td>
 <td>Register a new writer interface. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_clearWriters">clearWriters</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_clearWriters">clearWriters</a></span></td>
 <td>Remove all writers. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_create">create</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_create">create</a></span></td>
 <td>Create a new log. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_getFlags">getFlags</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_getFlags">getFlags</a></span></td>
 <td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_getPrefix">getPrefix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_getPrefix">getPrefix</a></span></td>
 <td>Get the logger prefix. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_print">print</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_print">print</a></span></td>
 <td>Main print function. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_setFlags">setFlags</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_setFlags">setFlags</a></span></td>
 <td>Set the logger flags. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Log_setPrefix">setPrefix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Log_setPrefix">setPrefix</a></span></td>
 <td>Set the logger prefix. </td>
 </tr>
 </table>
@@ -10805,18 +10805,18 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_toDegrees">toDegrees</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_toDegrees">toDegrees</a></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffectSuffix">opAffectSuffix</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -10990,22 +10990,22 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_mul">mul</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_mul">mul</a></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opCast">opCast</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opCast">opCast</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opCmp">opCmp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opCmp">opCmp</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Int128_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -11082,7 +11082,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Matrix3x3_setIdentity">setIdentity</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Matrix3x3_setIdentity">setIdentity</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -11120,7 +11120,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Matrix4x4_setIdentity">setIdentity</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Matrix4x4_setIdentity">setIdentity</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -11160,7 +11160,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_from">from</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_from">from</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11172,7 +11172,7 @@
 <td>Multiply & add. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_set">set</a></span></td>
 <td>Set all values. </td>
 </tr>
 </table>
@@ -11195,15 +11195,15 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opBinary">opBinary</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opBinary">opBinary</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opIndex">opIndex</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opIndex">opIndex</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -11345,23 +11345,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_ceil">ceil</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_ceil">ceil</a></span></td>
 <td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_clear">clear</a></span></td>
 <td>Set Point to (0, 0). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Check if two points are equal with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZero">isZero</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZero">isZero</a></span></td>
 <td>Returns <span class="code-inline">true</span> if the Point is null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon</a></span></td>
 <td>Check for zero with an epsilon. </td>
 </tr>
 <tr>
@@ -11373,18 +11373,18 @@
 <td>Offset this Point by a given value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_round">round</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_round">round</a></span></td>
 <td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_trunc">trunc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_trunc">trunc</a></span></td>
 <td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11404,11 +11404,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opUnary">opUnary</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opUnary">opUnary</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -11631,27 +11631,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_applyPadding">applyPadding</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_applyPadding">applyPadding</a></span></td>
 <td>Add a padding (offset to each side). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_bottom">bottom</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_bottom">bottom</a></span></td>
 <td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_ceil">ceil</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_ceil">ceil</a></span></td>
 <td>Perform a Math.ceil operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_center">center</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_center">center</a></span></td>
 <td>Central point. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_clear">clear</a></span></td>
 <td>Set rectangle to (0, 0, 0, 0). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_constrainIn">constrainIn</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_constrainIn">constrainIn</a></span></td>
 <td>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </td>
 </tr>
 <tr>
@@ -11667,11 +11667,11 @@
 <td>Determines if the specfied point is contained within the rectangular region. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_getUnion">getUnion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_getUnion">getUnion</a></span></td>
 <td>Creates a rectangle that represents the union between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_horzCenter">horzCenter</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_horzCenter">horzCenter</a></span></td>
 <td>Horizontal center coordinate (x + width / 2). </td>
 </tr>
 <tr>
@@ -11691,43 +11691,43 @@
 <td>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersectWith">intersectWith</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersectWith">intersectWith</a></span></td>
 <td>Determines if this rectangle intersets with <span class="code-inline">rect</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmpty">isEmpty</a></span></td>
 <td>Returns true if this instance has a surface of zero (width or height are null). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon</a></span></td>
 <td>Returns true if this instance has a surface of zero (width and height are null). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isNormalized">isNormalized</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isNormalized">isNormalized</a></span></td>
 <td>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZero">isZero</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZero">isZero</a></span></td>
 <td>Returns true if this instance is null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon</a></span></td>
 <td>Returns true if this instance is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveBottom">moveBottom</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveBottom">moveBottom</a></span></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveLeft">moveLeft</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveLeft">moveLeft</a></span></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveRight">moveRight</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveRight">moveRight</a></span></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveTop">moveTop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveTop">moveTop</a></span></td>
 <td>Move the left coordinate, reducing the width. </td>
 </tr>
 <tr>
@@ -11743,11 +11743,11 @@
 <td>Offset the rectangle position by a x and y values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_right">right</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_right">right</a></span></td>
 <td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_round">round</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_round">round</a></span></td>
 <td>Perform a Math.round operation on all the coordinates. </td>
 </tr>
 <tr>
@@ -11759,34 +11759,34 @@
 <td>Multiply the width by <span class="code-inline">x</span> and the height by <span class="code-inline">y</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_set">set</a></span></td>
 <td>Initialize the rectangle with two position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setBottom">setBottom</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setBottom">setBottom</a></span></td>
 <td>Bottom coordinate (y + height). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setRight">setRight</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setRight">setRight</a></span></td>
 <td>Right coordinate (x + width). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setUnion">setUnion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setUnion">setUnion</a></span></td>
 <td>Creates a rectangle that represents the union. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_trunc">trunc</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_trunc">trunc</a></span></td>
 <td>Perform a Math.trunc operation on all the coordinates. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_vertCenter">vertCenter</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_vertCenter">vertCenter</a></span></td>
 <td>Vertical center coordinate (y + height / 2). </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -12320,23 +12320,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createRotation">createRotation</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createRotation">createRotation</a></span></td>
 <td>Creates a rotation matix, with a given center of rotation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createScale">createScale</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createScale">createScale</a></span></td>
 <td>Creates a scale matix, with a given center. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createTranslation">createTranslation</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createTranslation">createTranslation</a></span></td>
 <td>Creates a translation matix. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_multiply">multiply</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_multiply">multiply</a></span></td>
 <td>Multiply two matricies. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_setIdentity">setIdentity</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_setIdentity">setIdentity</a></span></td>
 <td>Set transform to identity. </td>
 </tr>
 </table>
@@ -12443,46 +12443,46 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_checkValidType">checkValidType</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_checkValidType">checkValidType</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_drop">drop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_drop">drop</a></span></td>
 <td>Drop the variant content (if necessary). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_get">get</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_get">get</a></span></td>
 <td>Get the variant value of the given type  Will assert if the current type does not match. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_set">set</a></span></td>
 <td>Set the variant value. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opCmp">opCmp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opCmp">opCmp</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opDrop">opDrop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostCopy">opPostCopy</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostCopy">opPostCopy</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostMove">opPostMove</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostMove">opPostMove</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -12645,19 +12645,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle">angle</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle">angle</a></span></td>
 <td>Returns the angle with another vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_ceil">ceil</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_ceil">ceil</a></span></td>
 <td>Math.ceil. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clear">clear</a></span></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cosAngle">cosAngle</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cosAngle">cosAngle</a></span></td>
 <td>Returns the cosine angle with another vector. </td>
 </tr>
 <tr>
@@ -12669,130 +12669,130 @@
 <td>Returns the perpendicular vector in the 2D plane. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distance">distance</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distance">distance</a></span></td>
 <td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceSquared">distanceSquared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceSquared">distanceSquared</a></span></td>
 <td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToLine">distanceToLine</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToLine">distanceToLine</a></span></td>
 <td>Returns the distance of the point to the given line. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment</a></span></td>
 <td>Returns the distance of the point to the given segment. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_dot">dot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_dot">dot</a></span></td>
 <td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_floor">floor</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_floor">floor</a></span></td>
 <td>Math.floor. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInEllipse">isInEllipse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInEllipse">isInEllipse</a></span></td>
 <td>Returns true if the point <span class="code-inline">pt</span> is inside an ellipse. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInTriangle">isInTriangle</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInTriangle">isInTriangle</a></span></td>
 <td>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZero">isZero</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZero">isZero</a></span></td>
 <td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon</a></span></td>
 <td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_length">length</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_length">length</a></span></td>
 <td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lengthSquared">lengthSquared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lengthSquared">lengthSquared</a></span></td>
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lerp">lerp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lerp">lerp</a></span></td>
 <td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect</a></span></td>
 <td>Compute the intersection point of two lines. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_max">max</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_max">max</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_min">min</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_min">min</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg</a></span></td>
 <td>Returns the minimal segment between two segments (and the minimal distance). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_negate">negate</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_negate">negate</a></span></td>
 <td>Negate the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalize">normalize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalize">normalize</a></span></td>
 <td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe</a></span></td>
 <td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_polyContains">polyContains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_polyContains">polyContains</a></span></td>
 <td>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span></td>
 <td>Rotate the vector by a given angle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_round">round</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_round">round</a></span></td>
 <td>Math.round. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect</a></span></td>
 <td>Compute the intersection point of two segments. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_set">set</a></span></td>
 <td>Set content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLength">setLength</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLength">setLength</a></span></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe</a></span></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalize">toNormalize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalize">toNormalize</a></span></td>
 <td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe</a></span></td>
 <td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -12812,11 +12812,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opUnary">opUnary</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opUnary">opUnary</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -13418,90 +13418,90 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clear">clear</a></span></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distance">distance</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distance">distance</a></span></td>
 <td>Returns the distance between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceSquared">distanceSquared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceSquared">distanceSquared</a></span></td>
 <td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_dot">dot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_dot">dot</a></span></td>
 <td>Returns the dot product between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Returns true if this vector is equals to another with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZero">isZero</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZero">isZero</a></span></td>
 <td>Returns true if this vector is null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon</a></span></td>
 <td>Returns true if this vector is null with an epsilon. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_length">length</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_length">length</a></span></td>
 <td>Return sthe length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lengthSquared">lengthSquared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lengthSquared">lengthSquared</a></span></td>
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lerp">lerp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lerp">lerp</a></span></td>
 <td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_max">max</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_max">max</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_min">min</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_min">min</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_negate">negate</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_negate">negate</a></span></td>
 <td>Negate the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalize">normalize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalize">normalize</a></span></td>
 <td>Normalize this vector (set its length to 1). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe</a></span></td>
 <td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_set">set</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_set">set</a></span></td>
 <td>Set content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLength">setLength</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLength">setLength</a></span></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe</a></span></td>
 <td>Set the vector length. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalize">toNormalize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalize">toNormalize</a></span></td>
 <td>Returns this vector normalized. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe</a></span></td>
 <td>Returns this vector normalized even if its length is almost null. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -13521,11 +13521,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opUnary">opUnary</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opUnary">opUnary</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -13912,26 +13912,26 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clear">clear</a></span></td>
 <td>Set the vector to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lerp">lerp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lerp">lerp</a></span></td>
 <td>Lerp one vector with another. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opUnary">opUnary</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opUnary">opUnary</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -15075,23 +15075,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_clear">clear</a></span></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_compile">compile</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_compile">compile</a></span></td>
 <td>Compile the expression. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span></td>
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span></td>
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span></td>
 <td>Returns true if <span class="code-inline">str</span> matches the regexp. </td>
 </tr>
 </table>
@@ -15434,11 +15434,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_nextU32">nextU32</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_nextU32">nextU32</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_seedU32">seedU32</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_seedU32">seedU32</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -15494,7 +15494,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_nextU32">nextU32</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_nextU32">nextU32</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -15559,7 +15559,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_nextU64">nextU64</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_nextU64">nextU64</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -15626,7 +15626,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextBool">nextBool</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextBool">nextBool</a></span></td>
 <td>Returns a random bool. </td>
 </tr>
 <tr>
@@ -15678,19 +15678,19 @@
 <td>Returns an unsigned random value in a given range  <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedNow">seedNow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedNow">seedNow</a></span></td>
 <td>Seed the rng with the current time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedU32">seedU32</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedU32">seedU32</a></span></td>
 <td>Seed random generator with a 32 bits value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedU64">seedU64</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_seedU64">seedU64</a></span></td>
 <td>Seed random generator with a 64 bits value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_shuffle">shuffle</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_shuffle">shuffle</a></span></td>
 <td>Randomly change the order of a slice. </td>
 </tr>
 </table>
@@ -16557,23 +16557,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_end">end</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_end">end</a></span></td>
 <td>Finish reading. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readAll">readAll</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readAll">readAll</a></span></td>
 <td>Read a full struct. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readTypeValue">readTypeValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readValue">readValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readValue">readValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_start">start</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_start">start</a></span></td>
 <td>Start reading. </td>
 </tr>
 </table>
@@ -16954,23 +16954,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_end">end</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_end">end</a></span></td>
 <td>End serialization. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_start">start</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_start">start</a></span></td>
 <td>Start serialization. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeAll">writeAll</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeAll">writeAll</a></span></td>
 <td>Write a full struct. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeTypeValue">writeTypeValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeValue">writeValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Encoder_writeValue">writeValue</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -18206,71 +18206,71 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginElement">beginElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginElement">beginElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginRoot">beginRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginSection">beginSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginSection">beginSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginSequence">beginSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginStruct">beginStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginValue">beginValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_beginValue">beginValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endElement">endElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endElement">endElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endRoot">endRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endRoot">endRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endSection">endSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endSection">endSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endSequence">endSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endSequence">endSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endStruct">endStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endStruct">endStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endValue">endValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_endValue">endValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_getVersion">getVersion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_getVersion">getVersion</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_readNative">readNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_readNative">readNative</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_startRead">startRead</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_startRead">startRead</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_toNextSequenceElement">toNextSequenceElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_JSon_zapBlanks">zapBlanks</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -18567,67 +18567,67 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endElement">endElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endElement">endElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSection">endSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSection">endSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endValue">endValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endValue">endValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_readNative">readNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_readNative">readNative</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_startRead">startRead</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_startRead">startRead</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -18951,23 +18951,23 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_beginSection">beginSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_beginSection">beginSection</a></span></td>
 <td>Start a new section. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_end">end</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_end">end</a></span></td>
 <td>End encoding/decoding. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_endSection">endSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_endSection">endSection</a></span></td>
 <td>End the previous section. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_isReading">isReading</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_isReading">isReading</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_isWriting">isWriting</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_isWriting">isWriting</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -18979,11 +18979,11 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Serialize one value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_startRead">startRead</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_startRead">startRead</a></span></td>
 <td>Start decoding. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_startWrite">startWrite</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_startWrite">startWrite</a></span></td>
 <td>Start encoding. </td>
 </tr>
 </table>
@@ -19163,63 +19163,63 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginElement">beginElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginElement">beginElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSection">beginSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSection">beginSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginValue">beginValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginValue">beginValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endElement">endElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endElement">endElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endRoot">endRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endRoot">endRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSection">endSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSection">endSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSequence">endSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSequence">endSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endStruct">endStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endStruct">endStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endValue">endValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endValue">endValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_startWrite">startWrite</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_startWrite">startWrite</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeNative">writeNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeNative">writeNative</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -19472,59 +19472,59 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endElement">endElement</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endElement">endElement</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSection">endSection</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSection">endSection</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endValue">endValue</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endValue">endValue</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -19793,23 +19793,23 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_contains">contains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_contains">contains</a></span></td>
 <td>Returns true if the given slice contains the <span class="code-inline">value</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_equals">equals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_equals">equals</a></span></td>
 <td>Returns true if two slices are equal. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_findLinear">findLinear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_findLinear">findLinear</a></span></td>
 <td>Find <span class="code-inline">value</span> in a slice by performing a linear search. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_findSorted">findSorted</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_findSorted">findSorted</a></span></td>
 <td>Find <span class="code-inline">value</span> in a slice by performing a binary search. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_insertionSort">insertionSort</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_insertionSort">insertionSort</a></span></td>
 <td>Insertion sort algorithm (slow). </td>
 </tr>
 <tr>
@@ -19821,15 +19821,15 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Returns true if the slice is sorted. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_modifyInPlace">modifyInPlace</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_modifyInPlace">modifyInPlace</a></span></td>
 <td>Transform the content of a slice with a given lambda. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_quickSort">quickSort</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_quickSort">quickSort</a></span></td>
 <td>Quick sort algorithm. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Slice_reverse">reverse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Slice_reverse">reverse</a></span></td>
 <td>Reverse the content of a slice. </td>
 </tr>
 <tr>
@@ -20029,47 +20029,47 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Move one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_addOnce">addOnce</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_addOnce">addOnce</a></span></td>
 <td>Add a copy of one element at the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_back">back</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_back">back</a></span></td>
 <td>Returns a copy of the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_backPtr">backPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_backPtr">backPtr</a></span></td>
 <td>Returns the address of the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_clear">clear</a></span></td>
 <td>Set the number of elements to 0. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_contains">contains</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_contains">contains</a></span></td>
 <td>Returns true if the given <span class="code-inline">value</span> is in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAddress">emplaceAddress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAddress">emplaceAddress</a></span></td>
 <td>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not  initialize them. Returns the address of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAt">emplaceAt</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAt">emplaceAt</a></span></td>
 <td>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the values are moved at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress</a></span></td>
 <td>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_free">free</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_free">free</a></span></td>
 <td>Free the array content. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_front">front</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_front">front</a></span></td>
 <td>Returns a copy of the first element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_frontPtr">frontPtr</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_frontPtr">frontPtr</a></span></td>
 <td>Returns the address of the first element. </td>
 </tr>
 <tr>
@@ -20085,11 +20085,11 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then  the value is added at the end of the array.  Order is preserved. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_isEmpty">isEmpty</a></span></td>
 <td>Returns true if the array is empty. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_popBack">popBack</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_popBack">popBack</a></span></td>
 <td>Returns a copy of the last element, and remove it from the array. </td>
 </tr>
 <tr>
@@ -20101,23 +20101,23 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAt">removeAt</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAt">removeAt</a></span></td>
 <td>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered</a></span></td>
 <td>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeBack">removeBack</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeBack">removeBack</a></span></td>
 <td>Remove the last element. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeOrdered">removeOrdered</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeOrdered">removeOrdered</a></span></td>
 <td>Remove the given <span class="code-inline">value</span>  If not found, does nothing. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_resize">resize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_resize">resize</a></span></td>
 <td>Change the number of valid elements in the array. </td>
 </tr>
 <tr>
@@ -20129,18 +20129,18 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Sort array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sortReverse">sortReverse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sortReverse">sortReverse</a></span></td>
 <td>Sort array in reverse order (from biggest to lowest value). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_toSlice">toSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_toSlice">toSlice</a></span></td>
 <td>Returns a slice. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opAffect">opAffect</a></span></td>
 <td>Initializes an Array that contains values copied from the specified array. </td>
 </tr>
 <tr>
@@ -20152,19 +20152,15 @@ Changes that are supported from V to V+1 are :</span></code>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opData">opData</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opData">opData</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opDrop">opDrop</a></span><span class="SCde">()</span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opDrop">opDrop</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -20172,19 +20168,23 @@ Changes that are supported from V to V+1 are :</span></code>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAffect">opIndexAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAssign">opIndexAssign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAffect">opIndexAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opSlice">opSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAssign">opIndexAssign</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opVisit">opVisit</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opSlice">opSlice</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opVisit">opVisit</a></span></td>
 <td>Visit every elements of the array. </td>
 </tr>
 </table>
@@ -20749,7 +20749,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_ConvertFormatFloat_setFormat">setFormat</a></span></td>
 <td>Set some format options with a given user string. </td>
 </tr>
 </table>
@@ -20823,7 +20823,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_ConvertFormatInt_setFormat">setFormat</a></span></td>
 <td>Set some format options with a given user string. </td>
 </tr>
 </table>
@@ -20923,47 +20923,47 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendAny">appendAny</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendAny">appendAny</a></span></td>
 <td>Append a value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendEOL">appendEOL</a></span></td>
 <td>Append a end of line. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendFormat">appendFormat</a></span></td>
 <td>Append a formatted string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendRune">appendRune</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendRune">appendRune</a></span></td>
 <td>Append a rune. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendString">appendString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_appendString">appendString</a></span></td>
 <td>Append a string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_clear">clear</a></span></td>
 <td>Clear the content of the builder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_count">count</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_count">count</a></span></td>
 <td>Returns the number of characters. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_moveToString">moveToString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_moveToString">moveToString</a></span></td>
 <td>Return the content as a string by eating the content of the string builder (if possible). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_setBucketSize">setBucketSize</a></span></td>
 <td>Set sizes of buckets of the string builder. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_toString">toString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_toString">toString</a></span></td>
 <td>Return the content as a string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated</a></span></td>
 <td>Force a ending 0. </td>
 </tr>
 </table>
@@ -21679,79 +21679,79 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Append a byte to the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_appendFormat">appendFormat</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_appendFormat">appendFormat</a></span></td>
 <td>Append a formatted string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_back">back</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_back">back</a></span></td>
 <td>Get the last byte. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_clear">clear</a></span></td>
 <td>Set the length of the String to 0. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_ensureNotNull">ensureNotNull</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_ensureNotNull">ensureNotNull</a></span></td>
 <td>Transform a null string in an empty one. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_from">from</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_from">from</a></span></td>
 <td>Convert a literal string to a String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_grow">grow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_grow">grow</a></span></td>
 <td>Ensure the String is big enough to store a given amount of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span></td>
 <td>Insert a substring at the given position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_isEmpty">isEmpty</a></span></td>
 <td>Returns true if the String has zero length. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_isNull">isNull</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_isNull">isNull</a></span></td>
 <td>Returns true if the String is null (undefined). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_isNullOrEmpty">isNullOrEmpty</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_isNullOrEmpty">isNullOrEmpty</a></span></td>
 <td>Returns true if the String is null or empty. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_join">join</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_join">join</a></span></td>
 <td>Join a list of strings to make a unique one. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_joinWith">joinWith</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_joinWith">joinWith</a></span></td>
 <td>Join an list of strings to make a unique one, by using a given <span class="code-inline">separator</span>  between them. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_makeLower">makeLower</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_makeLower">makeLower</a></span></td>
 <td>Convert the string inplace to lower case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_makeUpper">makeUpper</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_makeUpper">makeUpper</a></span></td>
 <td>Convert the string inplace to upper case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_remove">remove</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_remove">remove</a></span></td>
 <td>Remove some bytes at the given index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_removeBack">removeBack</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_removeBack">removeBack</a></span></td>
 <td>Remove some bytes at the end. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span></td>
 <td>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_reserve">reserve</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_reserve">reserve</a></span></td>
 <td>Reserve room for at least <span class="code-inline">newCapacity</span> bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toCharArray">toCharArray</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toCharArray">toCharArray</a></span></td>
 <td>Convert string to a 32 bits character array. </td>
 </tr>
 <tr>
@@ -21763,11 +21763,11 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toString">toString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toString">toString</a></span></td>
 <td>Returns a string type. </td>
 </tr>
 <tr>
@@ -21779,22 +21779,22 @@ Changes that are supported from V to V+1 are :</span></code>
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_trim">trim</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_trim">trim</a></span></td>
 <td>Removes all leading and trailing white-space characters from the current String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_trimEnd">trimEnd</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_trimEnd">trimEnd</a></span></td>
 <td>Remove whitespaces at the end of the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_trimStart">trimStart</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_trimStart">trimStart</a></span></td>
 <td>Remove whitespaces at the start of the String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -21822,43 +21822,43 @@ Changes that are supported from V to V+1 are :</span></code>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCmp">opCmp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCmp">opCmp</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCount">opCount</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCount">opCount</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opData">opData</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opData">opData</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opIndex">opIndex</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opIndex">opIndex</a></span></td>
 <td>Returns the byte at the given index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opIndexAffect">opIndexAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opIndexAffect">opIndexAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opIndexAssign">opIndexAssign</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opIndexAssign">opIndexAssign</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opSlice">opSlice</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opSlice">opSlice</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opVisitBytes">opVisitBytes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opVisitBytes">opVisitBytes</a></span></td>
 <td>Visit the String utf8 bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opVisitRunes">opVisitRunes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opVisitRunes">opVisitRunes</a></span></td>
 <td>Visit the String runes  See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </td>
 </tr>
 </table>
@@ -22468,31 +22468,31 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_create">create</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_create">create</a></span></td>
 <td>Creates a new event. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_init">init</a></span></td>
 <td>Initialize event. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_isValid">isValid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_isValid">isValid</a></span></td>
 <td>Returns true if the event is valid. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_release">release</a></span></td>
 <td>Destroy an existing event. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_reset">reset</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_reset">reset</a></span></td>
 <td>Reset the event state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_signal">signal</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_signal">signal</a></span></td>
 <td>Signal the event. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_wait">wait</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Event_wait">wait</a></span></td>
 <td>Wait for the event to be signaled. </td>
 </tr>
 </table>
@@ -22615,15 +22615,15 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_lock">lock</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_lock">lock</a></span></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_tryLock">tryLock</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_tryLock">tryLock</a></span></td>
 <td>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_unlock">unlock</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_Mutex_unlock">unlock</a></span></td>
 <td>Unlock mutex. </td>
 </tr>
 </table>
@@ -22690,35 +22690,35 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lock">lock</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lock">lock</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lockExclusive">lockExclusive</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lockExclusive">lockExclusive</a></span></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lockShared">lockShared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_lockShared">lockShared</a></span></td>
 <td>Lock mutex. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_tryLockExclusive">tryLockExclusive</a></span></td>
 <td>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_tryLockShared">tryLockShared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_tryLockShared">tryLockShared</a></span></td>
 <td>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlock">unlock</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlock">unlock</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlockExclusive">unlockExclusive</a></span></td>
 <td>Unlock mutex. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlockShared">unlockShared</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_RWLock_unlockShared">unlockShared</a></span></td>
 <td>Unlock mutex. </td>
 </tr>
 </table>
@@ -22926,39 +22926,39 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_init">init</a></span></td>
 <td>Initialize a thread in pause state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_isDone">isDone</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_isDone">isDone</a></span></td>
 <td>Returns true if the thread has finished. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_isValid">isValid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_isValid">isValid</a></span></td>
 <td>Returns true if the thread is valid. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_safeForceEnd">safeForceEnd</a></span></td>
 <td>Force the thread to safely exist  User code needs to check for <span class="code-inline">requestEnd</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_setPriority">setPriority</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_setPriority">setPriority</a></span></td>
 <td>Set the thread priority. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_sleep">sleep</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_sleep">sleep</a></span></td>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_start">start</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_start">start</a></span></td>
 <td>Resume the given thread, if it was paused. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_wait">wait</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_wait">wait</a></span></td>
 <td>Wait for the given thread to be done, and close it  After that call, isValid() will return false. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_yield">yield</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Threading_Thread_yield">yield</a></span></td>
 <td>Sleep the current thread for a given amount of milliseconds. </td>
 </tr>
 </table>
@@ -23187,46 +23187,46 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek</a></span></td>
 <td>Returns the day of week of the current date. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName</a></span></td>
 <td>Returns the day of week name. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_isValid">isValid</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_isValid">isValid</a></span></td>
 <td>Returns true if this is a valid datatime. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_monthName">monthName</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_monthName">monthName</a></span></td>
 <td>Returns the month name. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_now">now</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_now">now</a></span></td>
 <td>Returns a DateTime containing the current date and time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_parse">parse</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_parse">parse</a></span></td>
 <td>Convert a string to a DateTime with the given format. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_setNow">setNow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_setNow">setNow</a></span></td>
 <td>Initialize the structure with the current local date and time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_toString">toString</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_toString">toString</a></span></td>
 <td>Convert to string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opCmp">opCmp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opCmp">opCmp</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -23473,22 +23473,22 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_fromMs">fromMs</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_fromMs">fromMs</a></span></td>
 <td>Returns a duration initialized with milliseconds. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_toMs">toMs</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_toMs">toMs</a></span></td>
 <td>Returns the value in milliseconds. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_opAffect">opAffect</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_opAffect">opAffect</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Duration_opAffectSuffix">opAffectSuffix</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -23592,15 +23592,15 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_pause">pause</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_pause">pause</a></span></td>
 <td>Pause frame timing & count. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_unpause">unpause</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_unpause">unpause</a></span></td>
 <td>Unpause frame timing & count. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_update">update</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_update">update</a></span></td>
 <td>Update frame timers. </td>
 </tr>
 </table>
@@ -23678,39 +23678,39 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds</a></span></td>
 <td>Gets the total elapsed time in microseconds, after a call to <span class="code-inline">stop</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow</a></span></td>
 <td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds</a></span></td>
 <td>Gets the total elapsed time in milliseconds, after a call to <span class="code-inline">stop</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow</a></span></td>
 <td>Gets the current elapsed time in milliseconds since the start. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_reset">reset</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_reset">reset</a></span></td>
 <td>Stops time interval measurement and resets the elapsed time to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_restart">restart</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_restart">restart</a></span></td>
 <td>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure</a></span></td>
 <td>Measure until the end of the scope, and print the result in the console. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_start">start</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_start">start</a></span></td>
 <td>Starts, or resumes, measuring elapsed time for an interval. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_stop">stop</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_stop">stop</a></span></td>
 <td>Stops measuring elapsed time for an interval. </td>
 </tr>
 </table>
@@ -23863,74 +23863,74 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addDays">addDays</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addDays">addDays</a></span></td>
 <td>Add or remove the given amount of days to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addHours">addHours</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addHours">addHours</a></span></td>
 <td>Add or remove the given amount of hours to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds</a></span></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMinutes">addMinutes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMinutes">addMinutes</a></span></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMonths">addMonths</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMonths">addMonths</a></span></td>
 <td>Add or remove the given amount of months to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addSeconds">addSeconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addSeconds">addSeconds</a></span></td>
 <td>Add or remove the given amount of minutes to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addYears">addYears</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addYears">addYears</a></span></td>
 <td>Add or remove the given amount of years to the TimeSpan. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_from">from</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_from">from</a></span></td>
 <td>Creates a TimeSpan with the given DateTime. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_now">now</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_now">now</a></span></td>
 <td>Returns the current date and time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_setNow">setNow</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_setNow">setNow</a></span></td>
 <td>Initialize the TimeSpan with the current date and time. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_toDateTime">toDateTime</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_toDateTime">toDateTime</a></span></td>
 <td>Converts a TimeSpan to a DateTime. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalDays">totalDays</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalDays">totalDays</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalHours">totalHours</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalHours">totalHours</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes</a></span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds</a></span></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_opCmp">opCmp</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_opCmp">opCmp</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -24197,15 +24197,15 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_create">create</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_create">create</a></span></td>
 <td>Creates a new timer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_init">init</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_init">init</a></span></td>
 <td>Initialize timer. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_release">release</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Time_Timer_release">release</a></span></td>
 <td>Release the timer. </td>
 </tr>
 </table>
@@ -24527,11 +24527,11 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_clear">clear</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_UUID_clear">clear</a></span></td>
 <td>Clear id. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_getRandom">getRandom</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_UUID_getRandom">getRandom</a></span></td>
 <td>Get a version 4 UUID (random). </td>
 </tr>
 <tr>
@@ -24546,7 +24546,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_opEquals">opEquals</a></span><span class="SCde">()</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_UUID_opEquals">opEquals</a></span></td>
 <td></td>
 </tr>
 </table>
