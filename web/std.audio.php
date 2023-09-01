@@ -107,12 +107,11 @@
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
         .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration td:last-child  { width: 100%; }
+        .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; }
         
-        .container td:last-child { width: 100%; }
-        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-type               { background-color: #eeeeee; }
         .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
@@ -296,27 +295,27 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Audio_Bus_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates an audio bus. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_destroy">destroy</a></span><span class="SCde">()</span></td>
 <td>Destroy the bus (immediatly). </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolume"><span class="SCde"><span class="SFct">getVolume</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_getVolume">getVolume</a></span><span class="SCde">()</span></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_getVolumeDB"><span class="SCde"><span class="SFct">getVolumeDB</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_getVolumeDB">getVolumeDB</a></span><span class="SCde">()</span></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolume"><span class="SCde"><span class="SFct">setVolume</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_setVolume">setVolume</a></span><span class="SCde">()</span></td>
 <td>Set the playing bus volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Bus_setVolumeDB"><span class="SCde"><span class="SFct">setVolumeDB</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Bus_setVolumeDB">setVolumeDB</a></span><span class="SCde">()</span></td>
 <td>Set the playing bus volume in DB. </td>
 </tr>
 </table>
@@ -551,7 +550,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Audio_SoundFile_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_SoundFile_load">load</a></span><span class="SCde">()</span></td>
 <td>Load a <span class="inline-code">SoundFile</span> from disk. </td>
 </tr>
 </table>
@@ -681,55 +680,55 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Audio_Voice_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates a new voice for a given sound file. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_destroy">destroy</a></span><span class="SCde">()</span></td>
 <td>Destroy the voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolume"><span class="SCde"><span class="SFct">getVolume</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_getVolume">getVolume</a></span><span class="SCde">()</span></td>
 <td>Returns the actual volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_getVolumeDB"><span class="SCde"><span class="SFct">getVolumeDB</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_getVolumeDB">getVolumeDB</a></span><span class="SCde">()</span></td>
 <td>Returns the actual volume, in DB. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_isPlaying"><span class="SCde"><span class="SFct">isPlaying</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_isPlaying">isPlaying</a></span><span class="SCde">()</span></td>
 <td>Returns true if the voice is currently playing. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_pause"><span class="SCde"><span class="SFct">pause</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_pause">pause</a></span><span class="SCde">()</span></td>
 <td>Pause the playing voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play"><span class="SCde"><span class="SFct">play</span>(*<span class="SCst">SoundFile</span>, <span class="SCst">VoiceCreateFlags</span>, <span class="SCst">VoicePlayFlags</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_play">play</a></span><span class="SCde">(*<span class="SCst">SoundFile</span>, <span class="SCst">VoiceCreateFlags</span>, <span class="SCst">VoicePlayFlags</span>)</span></td>
 <td>Creates a voice and plays it. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_play"><span class="SCde"><span class="SFct">play</span>(<span class="SKwd">self</span>, <span class="SCst">VoicePlayFlags</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_play">play</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">VoicePlayFlags</span>)</span></td>
 <td>Plays a voice. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setFrequencyRatio"><span class="SCde"><span class="SFct">setFrequencyRatio</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_setFrequencyRatio">setFrequencyRatio</a></span><span class="SCde">()</span></td>
 <td>Set the playing pitch. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setRooting"><span class="SCde"><span class="SFct">setRooting</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_setRooting">setRooting</a></span><span class="SCde">()</span></td>
 <td>Root a voice to a given list of buses. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolume"><span class="SCde"><span class="SFct">setVolume</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_setVolume">setVolume</a></span><span class="SCde">()</span></td>
 <td>Set the playing voice volume between [0..1]. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_setVolumeDB"><span class="SCde"><span class="SFct">setVolumeDB</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_setVolumeDB">setVolumeDB</a></span><span class="SCde">()</span></td>
 <td>Set the playing voice volume. </td>
 </tr>
 <tr>
-<td><a href="#Audio_Voice_stop"><span class="SCde"><span class="SFct">stop</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Audio_Voice_stop">stop</a></span><span class="SCde">()</span></td>
 <td>Stop the playing voice. </td>
 </tr>
 </table>

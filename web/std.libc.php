@@ -107,12 +107,11 @@
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
         .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration td:last-child  { width: 100%; }
+        .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; }
         
-        .container td:last-child { width: 100%; }
-        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-type               { background-color: #eeeeee; }
         .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;

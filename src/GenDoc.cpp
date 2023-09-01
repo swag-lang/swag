@@ -124,12 +124,11 @@ void GenDoc::outputStyles()
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }\n\
         .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }\n\
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
+        .table-enumeration td:last-child  { width: 100%; }\n\
+        .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
         .table-enumeration a              { text-decoration: none; }\n\
         \n\
-        .container td:last-child { width: 100%; }\n\
-        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }\n\
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
-        .code-type               { background-color: #eeeeee; }\n\
         .code-type a             { color: inherit; }\n\
         .code-block {\n\
             background-color:   #eeeeee;\n\

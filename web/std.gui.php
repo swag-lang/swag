@@ -107,12 +107,11 @@
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
         .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration td:last-child  { width: 100%; }
+        .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; }
         
-        .container td:last-child { width: 100%; }
-        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-type               { background-color: #eeeeee; }
         .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
@@ -1263,143 +1262,143 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Application_addTimer"><span class="SCde"><span class="SFct">addTimer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_addTimer">addTimer</a></span><span class="SCde">()</span></td>
 <td>Register a new timer for the given <span class="inline-code">target</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_createSurface"><span class="SCde"><span class="SFct">createSurface</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_createSurface">createSurface</a></span><span class="SCde">()</span></td>
 <td>Creates a new surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_deleteTimer"><span class="SCde"><span class="SFct">deleteTimer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_deleteTimer">deleteTimer</a></span><span class="SCde">()</span></td>
 <td>Delete and unregister timer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_destroyWnd"><span class="SCde"><span class="SFct">destroyWnd</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_destroyWnd">destroyWnd</a></span><span class="SCde">()</span></td>
 <td>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_doModalLoop"><span class="SCde"><span class="SFct">doModalLoop</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_doModalLoop">doModalLoop</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_exitModal"><span class="SCde"><span class="SFct">exitModal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_exitModal">exitModal</a></span><span class="SCde">()</span></td>
 <td>End current modal loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDirectoryIcon"><span class="SCde"><span class="SFct">getDirectoryIcon</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getDirectoryIcon">getDirectoryIcon</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getDt"><span class="SCde"><span class="SFct">getDt</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getDt">getDt</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getFileIcon"><span class="SCde"><span class="SFct">getFileIcon</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getFileIcon">getFileIcon</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcut"><span class="SCde"><span class="SFct">getHotKeyShortcut</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getHotKeyShortcut">getHotKeyShortcut</a></span><span class="SCde">()</span></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getHotKeyShortcutNameFor"><span class="SCde"><span class="SFct">getHotKeyShortcutNameFor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getHotKeyShortcutNameFor">getHotKeyShortcutNameFor</a></span><span class="SCde">()</span></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getKeyboard"><span class="SCde"><span class="SFct">getKeyboard</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getKeyboard">getKeyboard</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouse"><span class="SCde"><span class="SFct">getMouse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getMouse">getMouse</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getMouseCapture"><span class="SCde"><span class="SFct">getMouseCapture</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getMouseCapture">getMouseCapture</a></span><span class="SCde">()</span></td>
 <td>Return the captured wnd for mouse. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getRenderer"><span class="SCde"><span class="SFct">getRenderer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getRenderer">getRenderer</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_getWndAtMouse"><span class="SCde"><span class="SFct">getWndAtMouse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_getWndAtMouse">getWndAtMouse</a></span><span class="SCde">()</span></td>
 <td>Returns the window under the given point. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_invalidate"><span class="SCde"><span class="SFct">invalidate</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_invalidate">invalidate</a></span><span class="SCde">()</span></td>
 <td>Force all surfaces to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_loadState"><span class="SCde"><span class="SFct">loadState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_loadState">loadState</a></span><span class="SCde">()</span></td>
 <td>Load the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_popCursor"><span class="SCde"><span class="SFct">popCursor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_popCursor">popCursor</a></span><span class="SCde">()</span></td>
 <td>Pop a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postEvent"><span class="SCde"><span class="SFct">postEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_postEvent">postEvent</a></span><span class="SCde">()</span></td>
 <td>Post a new event (thread safe). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_postQuitEvent"><span class="SCde"><span class="SFct">postQuitEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_postQuitEvent">postQuitEvent</a></span><span class="SCde">()</span></td>
 <td>Ask to exit the application. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_pushCursor"><span class="SCde"><span class="SFct">pushCursor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_pushCursor">pushCursor</a></span><span class="SCde">()</span></td>
 <td>Push a new mouse cursor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerFrameEvent"><span class="SCde"><span class="SFct">registerFrameEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_registerFrameEvent">registerFrameEvent</a></span><span class="SCde">()</span></td>
 <td>Register a window to receive a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHookEvents"><span class="SCde"><span class="SFct">registerHookEvents</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_registerHookEvents">registerHookEvents</a></span><span class="SCde">()</span></td>
 <td>Register a window to receive hook events. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_registerHotKey"><span class="SCde"><span class="SFct">registerHotKey</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_registerHotKey">registerHotKey</a></span><span class="SCde">()</span></td>
 <td>Register a global os key action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_run"><span class="SCde"><span class="SFct">run</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_run">run</a></span><span class="SCde">()</span></td>
 <td>Run until exit. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runFrame"><span class="SCde"><span class="SFct">runFrame</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_runFrame">runFrame</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_runSurface"><span class="SCde"><span class="SFct">runSurface</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_runSurface">runSurface</a></span><span class="SCde">()</span></td>
 <td>Create a main surface, and run. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_saveState"><span class="SCde"><span class="SFct">saveState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_saveState">saveState</a></span><span class="SCde">()</span></td>
 <td>Save the application state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_sendEvent"><span class="SCde"><span class="SFct">sendEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_sendEvent">sendEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setActivated"><span class="SCde"><span class="SFct">setActivated</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_setActivated">setActivated</a></span><span class="SCde">()</span></td>
 <td>Set activated state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setAppIcon"><span class="SCde"><span class="SFct">setAppIcon</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_setAppIcon">setAppIcon</a></span><span class="SCde">()</span></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_setConfigPath"><span class="SCde"><span class="SFct">setConfigPath</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_setConfigPath">setConfigPath</a></span><span class="SCde">()</span></td>
 <td>Associate a configuration file. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterFrameEvent"><span class="SCde"><span class="SFct">unregisterFrameEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_unregisterFrameEvent">unregisterFrameEvent</a></span><span class="SCde">()</span></td>
 <td>Unregister a window that receives a FrameEvent each running loop. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Application_unregisterHookEvents"><span class="SCde"><span class="SFct">unregisterHookEvents</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Application_unregisterHookEvents">unregisterHookEvents</a></span><span class="SCde">()</span></td>
 <td>Unregister a window to receive hook events. </td>
 </tr>
 </table>
@@ -2006,11 +2005,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_BlendColor_apply"><span class="SCde"><span class="SFct">apply</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_BlendColor_apply">apply</a></span><span class="SCde">()</span></td>
 <td>Apply the color lerp to reach <span class="inline-code">target</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_BlendColor_cur"><span class="SCde"><span class="SFct">cur</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_BlendColor_cur">cur</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -2155,7 +2154,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_CheckButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_CheckButton_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -2459,23 +2458,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ColorPicker_change"><span class="SCde"><span class="SFct">change</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPicker_change">change</a></span><span class="SCde">()</span></td>
 <td>Change one component, HSL or alpha. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPicker_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_getColor"><span class="SCde"><span class="SFct">getColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPicker_getColor">getColor</a></span><span class="SCde">()</span></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setColor"><span class="SCde"><span class="SFct">setColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPicker_setColor">setColor</a></span><span class="SCde">()</span></td>
 <td>Set the base color, and repaint. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPicker_setMode"><span class="SCde"><span class="SFct">setMode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPicker_setMode">setMode</a></span><span class="SCde">()</span></td>
 <td>Set the color picker box mode. </td>
 </tr>
 </table>
@@ -2721,19 +2720,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPickerCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_getColor"><span class="SCde"><span class="SFct">getColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPickerCtrl_getColor">getColor</a></span><span class="SCde">()</span></td>
 <td>Returns the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setColor"><span class="SCde"><span class="SFct">setColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPickerCtrl_setColor">setColor</a></span><span class="SCde">()</span></td>
 <td>Set the selected color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ColorPickerCtrl_setMode"><span class="SCde"><span class="SFct">setMode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ColorPickerCtrl_setMode">setMode</a></span><span class="SCde">()</span></td>
 <td>Change the display mode. </td>
 </tr>
 </table>
@@ -3016,27 +3015,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ComboBox_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_addSeparator"><span class="SCde"><span class="SFct">addSeparator</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_addSeparator">addSeparator</a></span><span class="SCde">()</span></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Remove all items. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_getSelectedItem"><span class="SCde"><span class="SFct">getSelectedItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_getSelectedItem">getSelectedItem</a></span><span class="SCde">()</span></td>
 <td>Returns the selected item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ComboBox_selectItem"><span class="SCde"><span class="SFct">selectItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboBox_selectItem">selectItem</a></span><span class="SCde">()</span></td>
 <td>Set the selected item index. </td>
 </tr>
 </table>
@@ -3251,7 +3250,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ComboCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ComboCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -3421,19 +3420,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Cursor_apply"><span class="SCde"><span class="SFct">apply</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Cursor_apply">apply</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Cursor_clear">clear</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_from"><span class="SCde"><span class="SFct">from</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Cursor_from">from</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Cursor_wait"><span class="SCde"><span class="SFct">wait</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Cursor_wait">wait</a></span><span class="SCde">()</span></td>
 <td>Force the wait cursor. </td>
 </tr>
 </table>
@@ -3605,23 +3604,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Dialog_addButton"><span class="SCde"><span class="SFct">addButton</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Dialog_addButton">addButton</a></span><span class="SCde">()</span></td>
 <td>Add a button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createDialog"><span class="SCde"><span class="SFct">createDialog</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Dialog_createDialog">createDialog</a></span><span class="SCde">()</span></td>
 <td>Creates a simple dialog box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_createSurface"><span class="SCde"><span class="SFct">createSurface</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Dialog_createSurface">createSurface</a></span><span class="SCde">()</span></td>
 <td>Creates an associated surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_doModal"><span class="SCde"><span class="SFct">doModal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Dialog_doModal">doModal</a></span><span class="SCde">()</span></td>
 <td>Display dialog as modal, and returns the user selected window id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Dialog_validateId"><span class="SCde"><span class="SFct">validateId</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Dialog_validateId">validateId</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -3921,51 +3920,51 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_EditBox_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_deleteSelection"><span class="SCde"><span class="SFct">deleteSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_deleteSelection">deleteSelection</a></span><span class="SCde">()</span></td>
 <td>Delete selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_getText"><span class="SCde"><span class="SFct">getText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_getText">getText</a></span><span class="SCde">()</span></td>
 <td>Get the associated text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_selectAll"><span class="SCde"><span class="SFct">selectAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_selectAll">selectAll</a></span><span class="SCde">()</span></td>
 <td>Select all text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setForm"><span class="SCde"><span class="SFct">setForm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setForm">setForm</a></span><span class="SCde">()</span></td>
 <td>Set the editbox form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputF64"><span class="SCde"><span class="SFct">setInputF64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setInputF64">setInputF64</a></span><span class="SCde">()</span></td>
 <td>Editbox will edit floating points. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputS64"><span class="SCde"><span class="SFct">setInputS64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setInputS64">setInputS64</a></span><span class="SCde">()</span></td>
 <td>Editbox will edit signed integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setInputU64"><span class="SCde"><span class="SFct">setInputU64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setInputU64">setInputU64</a></span><span class="SCde">()</span></td>
 <td>Editbox will edit unsigned integers. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setNote"><span class="SCde"><span class="SFct">setNote</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setNote">setNote</a></span><span class="SCde">()</span></td>
 <td>Set the editbox note. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setSelection"><span class="SCde"><span class="SFct">setSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setSelection">setSelection</a></span><span class="SCde">()</span></td>
 <td>Set current selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setText"><span class="SCde"><span class="SFct">setText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setText">setText</a></span><span class="SCde">()</span></td>
 <td>Set the editbox content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditBox_setTextSilent"><span class="SCde"><span class="SFct">setTextSilent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditBox_setTextSilent">setTextSilent</a></span><span class="SCde">()</span></td>
 <td>Set the editbox content, but do not notify change. </td>
 </tr>
 </table>
@@ -4358,7 +4357,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_EditCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4425,23 +4424,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_EditDlg_createMultiLine"><span class="SCde"><span class="SFct">createMultiLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditDlg_createMultiLine">createMultiLine</a></span><span class="SCde">()</span></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_createSingleLine"><span class="SCde"><span class="SFct">createSingleLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditDlg_createSingleLine">createSingleLine</a></span><span class="SCde">()</span></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_getText"><span class="SCde"><span class="SFct">getText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditDlg_getText">getText</a></span><span class="SCde">()</span></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setMessage"><span class="SCde"><span class="SFct">setMessage</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditDlg_setMessage">setMessage</a></span><span class="SCde">()</span></td>
 <td>Associate a message above the editbox. </td>
 </tr>
 <tr>
-<td><a href="#Gui_EditDlg_setText"><span class="SCde"><span class="SFct">setText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EditDlg_setText">setText</a></span><span class="SCde">()</span></td>
 <td>Set the text. </td>
 </tr>
 </table>
@@ -4541,7 +4540,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_EmbInfoCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_EmbInfoCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 </table>
@@ -4616,11 +4615,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Event_create"><span class="SCde"><span class="SFct">create</span>()</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Event_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Event_create"><span class="SCde"><span class="SFct">create</span>(<span class="SCst">EventKind</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Event_create">create</a></span><span class="SCde">(<span class="SCst">EventKind</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -4862,15 +4861,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_FileDlg_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FileDlg_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedName"><span class="SCde"><span class="SFct">getSelectedName</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FileDlg_getSelectedName">getSelectedName</a></span><span class="SCde">()</span></td>
 <td>Get the first selection. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FileDlg_getSelectedNames"><span class="SCde"><span class="SFct">getSelectedNames</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FileDlg_getSelectedNames">getSelectedNames</a></span><span class="SCde">()</span></td>
 <td>Get all selections. </td>
 </tr>
 </table>
@@ -5157,19 +5156,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_FrameWnd_createView"><span class="SCde"><span class="SFct">createView</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FrameWnd_createView">createView</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameFlags"><span class="SCde"><span class="SFct">setFrameFlags</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FrameWnd_setFrameFlags">setFrameFlags</a></span><span class="SCde">()</span></td>
 <td>Set the frame wnd flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setFrameForm"><span class="SCde"><span class="SFct">setFrameForm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FrameWnd_setFrameForm">setFrameForm</a></span><span class="SCde">()</span></td>
 <td>Set the frame wnd form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_FrameWnd_setView"><span class="SCde"><span class="SFct">setView</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_FrameWnd_setView">setView</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -5427,23 +5426,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create a layout control. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColRowChild"><span class="SCde"><span class="SFct">setColRowChild</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_setColRowChild">setColRowChild</a></span><span class="SCde">()</span></td>
 <td>Set the wnd associated with the given <span class="inline-code">col</span> and <span class="inline-code">row</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setColSize"><span class="SCde"><span class="SFct">setColSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_setColSize">setColSize</a></span><span class="SCde">()</span></td>
 <td>Set size, in pixel, of a given column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_GridLayoutCtrl_setRowSize"><span class="SCde"><span class="SFct">setRowSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_GridLayoutCtrl_setRowSize">setRowSize</a></span><span class="SCde">()</span></td>
 <td>Set size, in pixel, of a given row. </td>
 </tr>
 </table>
@@ -5641,47 +5640,47 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Header_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItem"><span class="SCde"><span class="SFct">getItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItem">getItem</a></span><span class="SCde">()</span></td>
 <td>Returns the given item, by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemByCol"><span class="SCde"><span class="SFct">getItemByCol</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItemByCol">getItemByCol</a></span><span class="SCde">()</span></td>
 <td>Returns the given item, by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPosition"><span class="SCde"><span class="SFct">getItemPosition</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItemPosition">getItemPosition</a></span><span class="SCde">()</span></td>
 <td>Get an item position by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemPositionByCol"><span class="SCde"><span class="SFct">getItemPositionByCol</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItemPositionByCol">getItemPositionByCol</a></span><span class="SCde">()</span></td>
 <td>Get an item position by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidth"><span class="SCde"><span class="SFct">getItemWidth</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItemWidth">getItemWidth</a></span><span class="SCde">()</span></td>
 <td>Get an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getItemWidthByCol"><span class="SCde"><span class="SFct">getItemWidthByCol</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getItemWidthByCol">getItemWidthByCol</a></span><span class="SCde">()</span></td>
 <td>Get an item width by column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_getTotalItemsWidth"><span class="SCde"><span class="SFct">getTotalItemsWidth</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_getTotalItemsWidth">getTotalItemsWidth</a></span><span class="SCde">()</span></td>
 <td>Get the header total width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidth"><span class="SCde"><span class="SFct">setItemWidth</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_setItemWidth">setItemWidth</a></span><span class="SCde">()</span></td>
 <td>Set an item width by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Header_setItemWidthByCol"><span class="SCde"><span class="SFct">setItemWidthByCol</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Header_setItemWidthByCol">setItemWidthByCol</a></span><span class="SCde">()</span></td>
 <td>Set an item width by column. </td>
 </tr>
 </table>
@@ -6196,30 +6195,30 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Icon_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Set icon to invalid. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_from"><span class="SCde"><span class="SFct">from</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_from">from</a></span><span class="SCde">()</span></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_isValid">isValid</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_paint"><span class="SCde"><span class="SFct">paint</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_paint">paint</a></span><span class="SCde">()</span></td>
 <td>Paint icon at the given position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Icon_set"><span class="SCde"><span class="SFct">set</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_set">set</a></span><span class="SCde">()</span></td>
 <td>Initialize the icon from an image list. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Icon_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Icon_opEquals">opEquals</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -6351,23 +6350,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_IconBar_addCheckableItem"><span class="SCde"><span class="SFct">addCheckableItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconBar_addCheckableItem">addCheckableItem</a></span><span class="SCde">()</span></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addCheckableToggleItem"><span class="SCde"><span class="SFct">addCheckableToggleItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconBar_addCheckableToggleItem">addCheckableToggleItem</a></span><span class="SCde">()</span></td>
 <td>Add a new checkable button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconBar_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconBar_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconBar_setIconBarFlags"><span class="SCde"><span class="SFct">setIconBarFlags</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconBar_setIconBarFlags">setIconBarFlags</a></span><span class="SCde">()</span></td>
 <td>Change bar flags. </td>
 </tr>
 </table>
@@ -6555,15 +6554,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_IconButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconButton_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setCheck"><span class="SCde"><span class="SFct">setCheck</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconButton_setCheck">setCheck</a></span><span class="SCde">()</span></td>
 <td>Set the check state of the button (if the button is checkable). </td>
 </tr>
 <tr>
-<td><a href="#Gui_IconButton_setForm"><span class="SCde"><span class="SFct">setForm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_IconButton_setForm">setForm</a></span><span class="SCde">()</span></td>
 <td>Set the button form. </td>
 </tr>
 </table>
@@ -6887,15 +6886,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ImageList_countX"><span class="SCde"><span class="SFct">countX</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageList_countX">countX</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_countY"><span class="SCde"><span class="SFct">countY</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageList_countY">countY</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageList_set"><span class="SCde"><span class="SFct">set</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageList_set">set</a></span><span class="SCde">()</span></td>
 <td>Initialize image list. </td>
 </tr>
 </table>
@@ -6970,31 +6969,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ImageRect_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_clear">clear</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setFile"><span class="SCde"><span class="SFct">setFile</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setFile">setFile</a></span><span class="SCde">()</span></td>
 <td>Load and set movie. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage"><span class="SCde"><span class="SFct">setImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage"><span class="SCde"><span class="SFct">setImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setImage"><span class="SCde"><span class="SFct">setImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ImageRect_setMovie"><span class="SCde"><span class="SFct">setMovie</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setMovie">setMovie</a></span><span class="SCde">()</span></td>
 <td>Set movie as an image list. </td>
 </tr>
 </table>
@@ -7255,15 +7254,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Label_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Label_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_getText"><span class="SCde"><span class="SFct">getText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Label_getText">getText</a></span><span class="SCde">()</span></td>
 <td>Get the text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Label_setText"><span class="SCde"><span class="SFct">setText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Label_setText">setText</a></span><span class="SCde">()</span></td>
 <td>Change the text. </td>
 </tr>
 </table>
@@ -7516,127 +7515,127 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ListCtrl_addColumn"><span class="SCde"><span class="SFct">addColumn</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_addColumn">addColumn</a></span><span class="SCde">()</span></td>
 <td>Add one column in a multi columns list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapse"><span class="SCde"><span class="SFct">collapse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_collapse">collapse</a></span><span class="SCde">()</span></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_collapseAll"><span class="SCde"><span class="SFct">collapseAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_collapseAll">collapseAll</a></span><span class="SCde">()</span></td>
 <td>Collapse all lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
 <td>Compute global layout, once all lines have been added. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createLine"><span class="SCde"><span class="SFct">createLine</span>(<span class="SKwd">self</span>, *<span class="SCst">ListLine</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createLine">createLine</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">ListLine</span>)</span></td>
 <td>Add one new line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createLine"><span class="SCde"><span class="SFct">createLine</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, *<span class="SCst">ListLine</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createLine">createLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, *<span class="SCst">ListLine</span>)</span></td>
 <td>Add one line, and set first column. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createMultiColumns"><span class="SCde"><span class="SFct">createMultiColumns</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createMultiColumns">createMultiColumns</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_createSimple"><span class="SCde"><span class="SFct">createSimple</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createSimple">createSimple</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_ensureVisibleLine"><span class="SCde"><span class="SFct">ensureVisibleLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_ensureVisibleLine">ensureVisibleLine</a></span><span class="SCde">()</span></td>
 <td>Set the corresponding line visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_expand"><span class="SCde"><span class="SFct">expand</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_expand">expand</a></span><span class="SCde">()</span></td>
 <td>Expand the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getCheckedLines"><span class="SCde"><span class="SFct">getCheckedLines</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getCheckedLines">getCheckedLines</a></span><span class="SCde">()</span></td>
 <td>Get all the checked lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFirstVisibleLineIndex"><span class="SCde"><span class="SFct">getFirstVisibleLineIndex</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getFirstVisibleLineIndex">getFirstVisibleLineIndex</a></span><span class="SCde">()</span></td>
 <td>Returns the first visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getFocusLine"><span class="SCde"><span class="SFct">getFocusLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getFocusLine">getFocusLine</a></span><span class="SCde">()</span></td>
 <td>Get the line with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLastVisibleLineIndex"><span class="SCde"><span class="SFct">getLastVisibleLineIndex</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getLastVisibleLineIndex">getLastVisibleLineIndex</a></span><span class="SCde">()</span></td>
 <td>Returns the last visible line index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLine"><span class="SCde"><span class="SFct">getLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getLine">getLine</a></span><span class="SCde">()</span></td>
 <td>Get a line by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineCount"><span class="SCde"><span class="SFct">getLineCount</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getLineCount">getLineCount</a></span><span class="SCde">()</span></td>
 <td>Returns the number of lines in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getLineHeight"><span class="SCde"><span class="SFct">getLineHeight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getLineHeight">getLineHeight</a></span><span class="SCde">()</span></td>
 <td>Get the height of one line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLine"><span class="SCde"><span class="SFct">getSelectedLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getSelectedLine">getSelectedLine</a></span><span class="SCde">()</span></td>
 <td>Returns a selected line  Mostly for singlesel mode. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_getSelectedLines"><span class="SCde"><span class="SFct">getSelectedLines</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_getSelectedLines">getSelectedLines</a></span><span class="SCde">()</span></td>
 <td>Get all the selected lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isLineSelected"><span class="SCde"><span class="SFct">isLineSelected</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_isLineSelected">isLineSelected</a></span><span class="SCde">()</span></td>
 <td>Returns. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_isSelectedLine"><span class="SCde"><span class="SFct">isSelectedLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_isSelectedLine">isSelectedLine</a></span><span class="SCde">()</span></td>
 <td>Returns true if the line at the given index is selected. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLine"><span class="SCde"><span class="SFct">selectLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_selectLine">selectLine</a></span><span class="SCde">()</span></td>
 <td>Select of unselect the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_selectLines"><span class="SCde"><span class="SFct">selectLines</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_selectLines">selectLines</a></span><span class="SCde">()</span></td>
 <td>Select a range of lines. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setColumnWidth"><span class="SCde"><span class="SFct">setColumnWidth</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_setColumnWidth">setColumnWidth</a></span><span class="SCde">()</span></td>
 <td>Set the column width. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setFocus"><span class="SCde"><span class="SFct">setFocus</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_setFocus">setFocus</a></span><span class="SCde">()</span></td>
 <td>Set focus to the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_setVirtualCount"><span class="SCde"><span class="SFct">setVirtualCount</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_setVirtualCount">setVirtualCount</a></span><span class="SCde">()</span></td>
 <td>Set the number of lines in a virtual list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_sort"><span class="SCde"><span class="SFct">sort</span>(<span class="SKwd">self</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
 <td>Sort list as before. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_sort"><span class="SCde"><span class="SFct">sort</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_sort">sort</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Sort the list by a given column  If <span class="inline-code">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_toggleExpand"><span class="SCde"><span class="SFct">toggleExpand</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_toggleExpand">toggleExpand</a></span><span class="SCde">()</span></td>
 <td>Collapse the given line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListCtrl_unselectAll"><span class="SCde"><span class="SFct">unselectAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_unselectAll">unselectAll</a></span><span class="SCde">()</span></td>
 <td>Unselect all lines. </td>
 </tr>
 </table>
@@ -8229,19 +8228,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ListLine_canExpand"><span class="SCde"><span class="SFct">canExpand</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListLine_canExpand">canExpand</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_getItem"><span class="SCde"><span class="SFct">getItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListLine_getItem">getItem</a></span><span class="SCde">()</span></td>
 <td>Get an item by index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_isParentOf"><span class="SCde"><span class="SFct">isParentOf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListLine_isParentOf">isParentOf</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ListLine_setItem"><span class="SCde"><span class="SFct">setItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListLine_setItem">setItem</a></span><span class="SCde">()</span></td>
 <td>Initialize a given column item. </td>
 </tr>
 </table>
@@ -8495,43 +8494,43 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_MenuCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>(<span class="SKwd">self</span>, <span class="SCst">WndId</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addItem">addItem</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">WndId</span>)</span></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SCst">WndId</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addItem">addItem</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SCst">WndId</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addPopup"><span class="SCde"><span class="SFct">addPopup</span>(<span class="SKwd">self</span>, *<span class="SCst">MenuCtrl</span>, <span class="SCst">WndId</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addPopup">addPopup</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">MenuCtrl</span>, <span class="SCst">WndId</span>)</span></td>
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addPopup"><span class="SCde"><span class="SFct">addPopup</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>, *<span class="SCst">MenuCtrl</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="SCst">WndId</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addPopup">addPopup</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, *<span class="SCst">MenuCtrl</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="SCst">WndId</span>)</span></td>
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_addSeparator"><span class="SCde"><span class="SFct">addSeparator</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addSeparator">addSeparator</a></span><span class="SCde">()</span></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_computeLayoutPopup"><span class="SCde"><span class="SFct">computeLayoutPopup</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_computeLayoutPopup">computeLayoutPopup</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createBar"><span class="SCde"><span class="SFct">createBar</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_createBar">createBar</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_createPopup"><span class="SCde"><span class="SFct">createPopup</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_createPopup">createPopup</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_doModal"><span class="SCde"><span class="SFct">doModal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_doModal">doModal</a></span><span class="SCde">()</span></td>
 <td>Make the popup menu modal  Will return the selected id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MenuCtrl_updateState"><span class="SCde"><span class="SFct">updateState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_updateState">updateState</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -8740,43 +8739,43 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_MessageDlg_confirm"><span class="SCde"><span class="SFct">confirm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_confirm">confirm</a></span><span class="SCde">()</span></td>
 <td>Message box to <span class="inline-code">confirm</span> something. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates the message box. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_doModal"><span class="SCde"><span class="SFct">doModal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_doModal">doModal</a></span><span class="SCde">()</span></td>
 <td>Display the box, centered, and returns the id of the pressed button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_error"><span class="SCde"><span class="SFct">error</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_error">error</a></span><span class="SCde">()</span></td>
 <td>Message box to show an error. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_ok"><span class="SCde"><span class="SFct">ok</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_ok">ok</a></span><span class="SCde">()</span></td>
 <td>Message box with a <span class="inline-code">ok</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_okCancel"><span class="SCde"><span class="SFct">okCancel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_okCancel">okCancel</a></span><span class="SCde">()</span></td>
 <td>Message box with a <span class="inline-code">ok</span> and <span class="inline-code">cancel</span> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIcon"><span class="SCde"><span class="SFct">setIcon</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_setIcon">setIcon</a></span><span class="SCde">()</span></td>
 <td>Set big icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_setIconColor"><span class="SCde"><span class="SFct">setIconColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_setIconColor">setIconColor</a></span><span class="SCde">()</span></td>
 <td>Set big icon color (icon must has been set before). </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNo"><span class="SCde"><span class="SFct">yesNo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_yesNo">yesNo</a></span><span class="SCde">()</span></td>
 <td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
 </tr>
 <tr>
-<td><a href="#Gui_MessageDlg_yesNoCancel"><span class="SCde"><span class="SFct">yesNoCancel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MessageDlg_yesNoCancel">yesNoCancel</a></span><span class="SCde">()</span></td>
 <td>Message box with a <span class="inline-code">yes</span> and <span class="inline-code">no</span> button. </td>
 </tr>
 </table>
@@ -9072,31 +9071,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Movie_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_clear">clear</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_isValid">isValid</a></span><span class="SCde">()</span></td>
 <td>Returns true if the movie has valid content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_pause"><span class="SCde"><span class="SFct">pause</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_pause">pause</a></span><span class="SCde">()</span></td>
 <td>Set/Reset pause state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_set"><span class="SCde"><span class="SFct">set</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_set">set</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></td>
 <td>Associate an image list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_set"><span class="SCde"><span class="SFct">set</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_set">set</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Associate a filename. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_setFrameIndex"><span class="SCde"><span class="SFct">setFrameIndex</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_setFrameIndex">setFrameIndex</a></span><span class="SCde">()</span></td>
 <td>Set the current video frame. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Movie_update"><span class="SCde"><span class="SFct">update</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_update">update</a></span><span class="SCde">()</span></td>
 <td>Update timing and change frames. </td>
 </tr>
 </table>
@@ -9345,15 +9344,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PaintImage_draw"><span class="SCde"><span class="SFct">draw</span>(<span class="SKwd">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, *<span class="SCst">Application</span>, *<span class="SCst">Painter</span>))</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PaintImage_draw">draw</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, *<span class="SCst">Application</span>, *<span class="SCst">Painter</span>))</span></td>
 <td>Draw to an image by calling the closure. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PaintImage_draw"><span class="SCde"><span class="SFct">draw</span>(<span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, *<span class="SCst">Application</span>, *<span class="SCst">Painter</span>))</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PaintImage_draw">draw</a></span><span class="SCde">(<span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, *<span class="SCst">Application</span>, *<span class="SCst">Painter</span>))</span></td>
 <td>One shot paint to image. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PaintImage_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PaintImage_init">init</a></span><span class="SCde">()</span></td>
 <td>First init the PaintImage instance. </td>
 </tr>
 </table>
@@ -9444,23 +9443,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PalettePicker_addColor"><span class="SCde"><span class="SFct">addColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addColor">addColor</a></span><span class="SCde">()</span></td>
 <td>Add a color. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addHueColors"><span class="SCde"><span class="SFct">addHueColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addHueColors">addHueColors</a></span><span class="SCde">()</span></td>
 <td>Add a range of changing <span class="inline-code">hue</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addLumColors"><span class="SCde"><span class="SFct">addLumColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addLumColors">addLumColors</a></span><span class="SCde">()</span></td>
 <td>Add a range of changing <span class="inline-code">luminance</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_addSatColors"><span class="SCde"><span class="SFct">addSatColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_addSatColors">addSatColors</a></span><span class="SCde">()</span></td>
 <td>Add a range of changing <span class="inline-code">saturation</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PalettePicker_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PalettePicker_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -9630,19 +9629,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PopupListCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new item in the list. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_addSeparator"><span class="SCde"><span class="SFct">addSeparator</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_addSeparator">addSeparator</a></span><span class="SCde">()</span></td>
 <td>Add a separator. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PopupListCtrl_show"><span class="SCde"><span class="SFct">show</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PopupListCtrl_show">show</a></span><span class="SCde">()</span></td>
 <td>Show popup. </td>
 </tr>
 </table>
@@ -9931,11 +9930,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ProgressBar_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ProgressBar_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ProgressBar_setProgression"><span class="SCde"><span class="SFct">setProgression</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ProgressBar_setProgression">setProgression</a></span><span class="SCde">()</span></td>
 <td>Set the progression in [0..1] range. </td>
 </tr>
 </table>
@@ -10091,19 +10090,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PropertyList_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyList_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyList_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_refresh"><span class="SCde"><span class="SFct">refresh</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyList_refresh">refresh</a></span><span class="SCde">()</span></td>
 <td>Refresh displayed values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyList_setStringFilter"><span class="SCde"><span class="SFct">setStringFilter</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyList_setStringFilter">setStringFilter</a></span><span class="SCde">()</span></td>
 <td>Show hidden content depending on the input filter. </td>
 </tr>
 </table>
@@ -10274,11 +10273,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PropertyListCtrl_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyListCtrl_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new struct to display. </td>
 </tr>
 <tr>
-<td><a href="#Gui_PropertyListCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PropertyListCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates a new PropertyList instance. </td>
 </tr>
 </table>
@@ -10455,7 +10454,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_PushButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_PushButton_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -10586,11 +10585,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_RadioButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RadioButton_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RadioButton_setChecked"><span class="SCde"><span class="SFct">setChecked</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RadioButton_setChecked">setChecked</a></span><span class="SCde">()</span></td>
 <td>Set the checked state. </td>
 </tr>
 </table>
@@ -11105,299 +11104,299 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_RichEditCtrl_addMapping"><span class="SCde"><span class="SFct">addMapping</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_addMapping">addMapping</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_addText"><span class="SCde"><span class="SFct">addText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_addText">addText</a></span><span class="SCde">()</span></td>
 <td>Append a text with a given style. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canRedo"><span class="SCde"><span class="SFct">canRedo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_canRedo">canRedo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_canUndo"><span class="SCde"><span class="SFct">canUndo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_canUndo">canUndo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_charPressed"><span class="SCde"><span class="SFct">charPressed</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_charPressed">charPressed</a></span><span class="SCde">()</span></td>
 <td>Simulate a keyboard character pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_checkSelection"><span class="SCde"><span class="SFct">checkSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_checkSelection">checkSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearMapping"><span class="SCde"><span class="SFct">clearMapping</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_clearMapping">clearMapping</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearSelection"><span class="SCde"><span class="SFct">clearSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_clearSelection">clearSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_clearUndo"><span class="SCde"><span class="SFct">clearUndo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_clearUndo">clearUndo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_copyToClipboard"><span class="SCde"><span class="SFct">copyToClipboard</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_copyToClipboard">copyToClipboard</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteBegLine"><span class="SCde"><span class="SFct">deleteBegLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteBegLine">deleteBegLine</a></span><span class="SCde">()</span></td>
 <td>Delete a given text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLeft"><span class="SCde"><span class="SFct">deleteLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteLeft">deleteLeft</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteLine"><span class="SCde"><span class="SFct">deleteLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteLine">deleteLine</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteRight"><span class="SCde"><span class="SFct">deleteRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteRight">deleteRight</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteSelection"><span class="SCde"><span class="SFct">deleteSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteSelection">deleteSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordLeft"><span class="SCde"><span class="SFct">deleteWordLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteWordLeft">deleteWordLeft</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_deleteWordRight"><span class="SCde"><span class="SFct">deleteWordRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_deleteWordRight">deleteWordRight</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCaretIsVisible"><span class="SCde"><span class="SFct">ensureCaretIsVisible</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_ensureCaretIsVisible">ensureCaretIsVisible</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_ensureCursorIsVisible"><span class="SCde"><span class="SFct">ensureCursorIsVisible</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_ensureCursorIsVisible">ensureCursorIsVisible</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_evaluateSize"><span class="SCde"><span class="SFct">evaluateSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_evaluateSize">evaluateSize</a></span><span class="SCde">()</span></td>
 <td>Evaluate the rendering size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_executeCommand"><span class="SCde"><span class="SFct">executeCommand</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_executeCommand">executeCommand</a></span><span class="SCde">()</span></td>
 <td>Execute a command. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getBegSelection"><span class="SCde"><span class="SFct">getBegSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getBegSelection">getBegSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCaretPos"><span class="SCde"><span class="SFct">getCaretPos</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getCaretPos">getCaretPos</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorDisplayPos"><span class="SCde"><span class="SFct">getCursorDisplayPos</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getCursorDisplayPos">getCursorDisplayPos</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getCursorPosFromPoint"><span class="SCde"><span class="SFct">getCursorPosFromPoint</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getCursorPosFromPoint">getCursorPosFromPoint</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getEndSelection"><span class="SCde"><span class="SFct">getEndSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getEndSelection">getEndSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getMappingCommand"><span class="SCde"><span class="SFct">getMappingCommand</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getMappingCommand">getMappingCommand</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRune"><span class="SCde"><span class="SFct">getRune</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getRune">getRune</a></span><span class="SCde">()</span></td>
 <td>Get the rune at the given cursor pos. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getRuneSize"><span class="SCde"><span class="SFct">getRuneSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getRuneSize">getRuneSize</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getSelectedText"><span class="SCde"><span class="SFct">getSelectedText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getSelectedText">getSelectedText</a></span><span class="SCde">()</span></td>
 <td>Get the selected text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTabOffset"><span class="SCde"><span class="SFct">getTabOffset</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getTabOffset">getTabOffset</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getText"><span class="SCde"><span class="SFct">getText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getText">getText</a></span><span class="SCde">()</span></td>
 <td>Get the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getTextAndStyles"><span class="SCde"><span class="SFct">getTextAndStyles</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getTextAndStyles">getTextAndStyles</a></span><span class="SCde">()</span></td>
 <td>Get the full text with the associated styles per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_getXExtent"><span class="SCde"><span class="SFct">getXExtent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_getXExtent">getXExtent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertBegLine"><span class="SCde"><span class="SFct">insertBegLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertBegLine">insertBegLine</a></span><span class="SCde">()</span></td>
 <td>Insert text at the start of each selected line. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertRune"><span class="SCde"><span class="SFct">insertRune</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertRune">insertRune</a></span><span class="SCde">()</span></td>
 <td>Insert a rune. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertText"><span class="SCde"><span class="SFct">insertText</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertText">insertText</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Insert a text with a given style. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_insertText"><span class="SCde"><span class="SFct">insertText</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertText">insertText</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></td>
 <td>Insert a text with a style per character. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isReadOnly"><span class="SCde"><span class="SFct">isReadOnly</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_isReadOnly">isReadOnly</a></span><span class="SCde">()</span></td>
 <td>Returns true if the rich edit is read only. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_isSelectionEmpty"><span class="SCde"><span class="SFct">isSelectionEmpty</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_isSelectionEmpty">isSelectionEmpty</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_keyPressed"><span class="SCde"><span class="SFct">keyPressed</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_keyPressed">keyPressed</a></span><span class="SCde">()</span></td>
 <td>Simulate a keyboard pressed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_lexAll"><span class="SCde"><span class="SFct">lexAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_lexAll">lexAll</a></span><span class="SCde">()</span></td>
 <td>Lex the full text. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorDown"><span class="SCde"><span class="SFct">moveCursorDown</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorDown">moveCursorDown</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndFile"><span class="SCde"><span class="SFct">moveCursorEndFile</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorEndFile">moveCursorEndFile</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorEndLine"><span class="SCde"><span class="SFct">moveCursorEndLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorEndLine">moveCursorEndLine</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorLeft"><span class="SCde"><span class="SFct">moveCursorLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorLeft">moveCursorLeft</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageDown"><span class="SCde"><span class="SFct">moveCursorPageDown</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorPageDown">moveCursorPageDown</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorPageUp"><span class="SCde"><span class="SFct">moveCursorPageUp</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorPageUp">moveCursorPageUp</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorRight"><span class="SCde"><span class="SFct">moveCursorRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorRight">moveCursorRight</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartFile"><span class="SCde"><span class="SFct">moveCursorStartFile</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorStartFile">moveCursorStartFile</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorStartLine"><span class="SCde"><span class="SFct">moveCursorStartLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorStartLine">moveCursorStartLine</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorUp"><span class="SCde"><span class="SFct">moveCursorUp</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorUp">moveCursorUp</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordLeft"><span class="SCde"><span class="SFct">moveCursorWordLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorWordLeft">moveCursorWordLeft</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_moveCursorWordRight"><span class="SCde"><span class="SFct">moveCursorWordRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_moveCursorWordRight">moveCursorWordRight</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pasteFromClipboard"><span class="SCde"><span class="SFct">pasteFromClipboard</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_pasteFromClipboard">pasteFromClipboard</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_popUndo"><span class="SCde"><span class="SFct">popUndo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_popUndo">popUndo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_pushUndo"><span class="SCde"><span class="SFct">pushUndo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_pushUndo">pushUndo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_redo"><span class="SCde"><span class="SFct">redo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_redo">redo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineDown"><span class="SCde"><span class="SFct">scrollLineDown</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_scrollLineDown">scrollLineDown</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_scrollLineUp"><span class="SCde"><span class="SFct">scrollLineUp</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_scrollLineUp">scrollLineUp</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectAll"><span class="SCde"><span class="SFct">selectAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_selectAll">selectAll</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_selectWord"><span class="SCde"><span class="SFct">selectWord</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_selectWord">selectWord</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setCursorPos"><span class="SCde"><span class="SFct">setCursorPos</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setCursorPos">setCursorPos</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setDefaultMapping"><span class="SCde"><span class="SFct">setDefaultMapping</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setDefaultMapping">setDefaultMapping</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setFocus"><span class="SCde"><span class="SFct">setFocus</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setFocus">setFocus</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setForm"><span class="SCde"><span class="SFct">setForm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setForm">setForm</a></span><span class="SCde">()</span></td>
 <td>Set form. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setLexer"><span class="SCde"><span class="SFct">setLexer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setLexer">setLexer</a></span><span class="SCde">()</span></td>
 <td>Associate a lexer. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRectangularSelection"><span class="SCde"><span class="SFct">setRectangularSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setRectangularSelection">setRectangularSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setRichEdFlags"><span class="SCde"><span class="SFct">setRichEdFlags</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setRichEdFlags">setRichEdFlags</a></span><span class="SCde">()</span></td>
 <td>Set richedit flags. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setSelection"><span class="SCde"><span class="SFct">setSelection</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setSelection">setSelection</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_setText"><span class="SCde"><span class="SFct">setText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_setText">setText</a></span><span class="SCde">()</span></td>
 <td>Set the text content. </td>
 </tr>
 <tr>
-<td><a href="#Gui_RichEditCtrl_undo"><span class="SCde"><span class="SFct">undo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_undo">undo</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -12599,7 +12598,7 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_RichEditRuneStyle_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditRuneStyle_opEquals">opEquals</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -12934,23 +12933,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ScrollWnd_getClientScrollRect"><span class="SCde"><span class="SFct">getClientScrollRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_getClientScrollRect">getClientScrollRect</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_getScrollPos"><span class="SCde"><span class="SFct">getScrollPos</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_getScrollPos">getScrollPos</a></span><span class="SCde">()</span></td>
 <td>Get the current scroll position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollPos"><span class="SCde"><span class="SFct">setScrollPos</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
 <td>Set the current scroll position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollPos"><span class="SCde"><span class="SFct">setScrollPos</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ScrollWnd_setScrollSize"><span class="SCde"><span class="SFct">setScrollSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_setScrollSize">setScrollSize</a></span><span class="SCde">()</span></td>
 <td>Set the scroll size (window virtual size). </td>
 </tr>
 </table>
@@ -13104,30 +13103,30 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SelModel_getSelectedRangeIndex"><span class="SCde"><span class="SFct">getSelectedRangeIndex</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_getSelectedRangeIndex">getSelectedRangeIndex</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isEmpty"><span class="SCde"><span class="SFct">isEmpty</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_isSelected"><span class="SCde"><span class="SFct">isSelected</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_isSelected">isSelected</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_select"><span class="SCde"><span class="SFct">select</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_select">select</a></span><span class="SCde">()</span></td>
 <td>Select the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SelModel_unselectAll"><span class="SCde"><span class="SFct">unselectAll</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_unselectAll">unselectAll</a></span><span class="SCde">()</span></td>
 <td>Unselect all. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SelModel_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SelModel_opVisit">opVisit</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -13291,22 +13290,22 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SigArray_call"><span class="SCde"><span class="SFct">call</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SigArray_call">call</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_disable"><span class="SCde"><span class="SFct">disable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SigArray_disable">disable</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SigArray_enable"><span class="SCde"><span class="SFct">enable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SigArray_enable">enable</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SigArray_opAssign"><span class="SCde"><span class="SFct">opAssign</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SigArray_opAssign">opAssign</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -13521,39 +13520,39 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Slider_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValue"><span class="SCde"><span class="SFct">getValue</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_getValue">getValue</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueLeft"><span class="SCde"><span class="SFct">getValueLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_getValueLeft">getValueLeft</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_getValueRight"><span class="SCde"><span class="SFct">getValueRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_getValueRight">getValueRight</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setMinMax"><span class="SCde"><span class="SFct">setMinMax</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setMinMax">setMinMax</a></span><span class="SCde">()</span></td>
 <td>Set the <span class="inline-code">min</span>, <span class="inline-code">max</span> and <span class="inline-code">steps</span> values. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setRangeValues"><span class="SCde"><span class="SFct">setRangeValues</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setRangeValues">setRangeValues</a></span><span class="SCde">()</span></td>
 <td>Set left and right values, for a range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValue"><span class="SCde"><span class="SFct">setValue</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setValue">setValue</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueLeft"><span class="SCde"><span class="SFct">setValueLeft</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setValueLeft">setValueLeft</a></span><span class="SCde">()</span></td>
 <td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Slider_setValueRight"><span class="SCde"><span class="SFct">setValueRight</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setValueRight">setValueRight</a></span><span class="SCde">()</span></td>
 <td>Set the right value (in case of a range). </td>
 </tr>
 </table>
@@ -13755,23 +13754,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SliderCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create the popup list, but do not display it. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxF32"><span class="SCde"><span class="SFct">setMinMaxF32</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setMinMaxF32">setMinMaxF32</a></span><span class="SCde">()</span></td>
 <td>Set a f32 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxS64"><span class="SCde"><span class="SFct">setMinMaxS64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setMinMaxS64">setMinMaxS64</a></span><span class="SCde">()</span></td>
 <td>Set a f64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setMinMaxU64"><span class="SCde"><span class="SFct">setMinMaxU64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setMinMaxU64">setMinMaxU64</a></span><span class="SCde">()</span></td>
 <td>Set a u64 range. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SliderCtrl_setValue"><span class="SCde"><span class="SFct">setValue</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setValue">setValue</a></span><span class="SCde">()</span></td>
 <td>Set the slider current value. </td>
 </tr>
 </table>
@@ -13937,19 +13936,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_SplitterCtrl_addPane"><span class="SCde"><span class="SFct">addPane</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SplitterCtrl_addPane">addPane</a></span><span class="SCde">()</span></td>
 <td>Add a new pane. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SplitterCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates a new SplitterCtrl instance. </td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_isVertical"><span class="SCde"><span class="SFct">isVertical</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SplitterCtrl_isVertical">isVertical</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_SplitterCtrl_setPaneSize"><span class="SCde"><span class="SFct">setPaneSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_SplitterCtrl_setPaneSize">setPaneSize</a></span><span class="SCde">()</span></td>
 <td>Set the pane size (size of the first view). </td>
 </tr>
 </table>
@@ -14151,11 +14150,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_StackLayoutCtrl_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_StackLayoutCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_StackLayoutCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create a layout control. </td>
 </tr>
 </table>
@@ -14368,95 +14367,95 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Surface_bringToTop"><span class="SCde"><span class="SFct">bringToTop</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_bringToTop">bringToTop</a></span><span class="SCde">()</span></td>
 <td>Bring the surface at the top of the Z order. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_center"><span class="SCde"><span class="SFct">center</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_center">center</a></span><span class="SCde">()</span></td>
 <td>Center this surface relative to <span class="inline-code">from</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_constaintToScreen"><span class="SCde"><span class="SFct">constaintToScreen</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_constaintToScreen">constaintToScreen</a></span><span class="SCde">()</span></td>
 <td>Constraint a window to be inside the closest monitor. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_destroy">destroy</a></span><span class="SCde">()</span></td>
 <td>Destroy the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_disable"><span class="SCde"><span class="SFct">disable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_disable">disable</a></span><span class="SCde">()</span></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_enable"><span class="SCde"><span class="SFct">enable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_enable">enable</a></span><span class="SCde">()</span></td>
 <td>Enable the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_getView"><span class="SCde"><span class="SFct">getView</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_getView">getView</a></span><span class="SCde">()</span></td>
 <td>Returns inside view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_hide"><span class="SCde"><span class="SFct">hide</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_hide">hide</a></span><span class="SCde">()</span></td>
 <td>Hide the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidate"><span class="SCde"><span class="SFct">invalidate</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_invalidate">invalidate</a></span><span class="SCde">()</span></td>
 <td>Invalidate the full surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_invalidateRect"><span class="SCde"><span class="SFct">invalidateRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_invalidateRect">invalidateRect</a></span><span class="SCde">()</span></td>
 <td>Invalidate one part of the surface to be painted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_paint"><span class="SCde"><span class="SFct">paint</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_paint">paint</a></span><span class="SCde">()</span></td>
 <td>Main surface paint function. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_screenToSurface"><span class="SCde"><span class="SFct">screenToSurface</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_screenToSurface">screenToSurface</a></span><span class="SCde">()</span></td>
 <td>Transform a point in screen space relative to the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setIcon"><span class="SCde"><span class="SFct">setIcon</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_setIcon">setIcon</a></span><span class="SCde">()</span></td>
 <td>Set the surface icon. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setPosition"><span class="SCde"><span class="SFct">setPosition</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_setPosition">setPosition</a></span><span class="SCde">()</span></td>
 <td>Set the surface position. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setSurfaceFlags"><span class="SCde"><span class="SFct">setSurfaceFlags</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_setSurfaceFlags">setSurfaceFlags</a></span><span class="SCde">()</span></td>
 <td>Change flag surfaces. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setTitle"><span class="SCde"><span class="SFct">setTitle</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_setTitle">setTitle</a></span><span class="SCde">()</span></td>
 <td>Set the surface title. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_setView"><span class="SCde"><span class="SFct">setView</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_setView">setView</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_show"><span class="SCde"><span class="SFct">show</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_show">show</a></span><span class="SCde">()</span></td>
 <td>Show the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMaximized"><span class="SCde"><span class="SFct">showMaximized</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_showMaximized">showMaximized</a></span><span class="SCde">()</span></td>
 <td>Show the surface as maximized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showMinimized"><span class="SCde"><span class="SFct">showMinimized</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_showMinimized">showMinimized</a></span><span class="SCde">()</span></td>
 <td>Show the surface as minimized. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_showNormal"><span class="SCde"><span class="SFct">showNormal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_showNormal">showNormal</a></span><span class="SCde">()</span></td>
 <td>Show the surface in its default state. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Surface_surfaceToScreen"><span class="SCde"><span class="SFct">surfaceToScreen</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Surface_surfaceToScreen">surfaceToScreen</a></span><span class="SCde">()</span></td>
 <td>Transform a point relative to the surface in screen space. </td>
 </tr>
 </table>
@@ -15056,19 +15055,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Tab_addItem"><span class="SCde"><span class="SFct">addItem</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Tab_addItem">addItem</a></span><span class="SCde">()</span></td>
 <td>Add a new view. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Tab_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_select"><span class="SCde"><span class="SFct">select</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Tab_select">select</a></span><span class="SCde">()</span></td>
 <td>Select one tab at the given index. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Tab_setForm"><span class="SCde"><span class="SFct">setForm</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Tab_setForm">setForm</a></span><span class="SCde">()</span></td>
 <td>Set the tab form. </td>
 </tr>
 </table>
@@ -15391,35 +15390,35 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Theme_createDefaultFont"><span class="SCde"><span class="SFct">createDefaultFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_createDefaultFont">createDefaultFont</a></span><span class="SCde">()</span></td>
 <td>Create a default font with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_createDefaultFontFS"><span class="SCde"><span class="SFct">createDefaultFontFS</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_createDefaultFontFS">createDefaultFontFS</a></span><span class="SCde">()</span></td>
 <td>Create a default font (fixed size) with the given size. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawIconText"><span class="SCde"><span class="SFct">drawIconText</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawIconText">drawIconText</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawSubRect"><span class="SCde"><span class="SFct">drawSubRect</span>(<span class="SKwd">self</span>, *<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_drawSubRect"><span class="SCde"><span class="SFct">drawSubRect</span>(*<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(*<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon24"><span class="SCde"><span class="SFct">getIcon24</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_getIcon24">getIcon24</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_getIcon64"><span class="SCde"><span class="SFct">getIcon64</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_getIcon64">getIcon64</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Theme_setTextColors"><span class="SCde"><span class="SFct">setTextColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_setTextColors">setTextColors</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -18250,43 +18249,43 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetColors"><span class="SCde"><span class="SFct">addStyleSheetColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_addStyleSheetColors">addStyleSheetColors</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_addStyleSheetMetrics"><span class="SCde"><span class="SFct">addStyleSheetMetrics</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_addStyleSheetMetrics">addStyleSheetMetrics</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearFont"><span class="SCde"><span class="SFct">clearFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_clearFont">clearFont</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_clearStyleSheetColors"><span class="SCde"><span class="SFct">clearStyleSheetColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_clearStyleSheetColors">clearStyleSheetColors</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_create">create</a></span><span class="SCde">()</span></td>
 <td>Create a specific style based on the parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_getFont"><span class="SCde"><span class="SFct">getFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_getFont">getFont</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setFont"><span class="SCde"><span class="SFct">setFont</span>(<span class="SKwd">self</span>, *<span class="SCst">Font</span>, <span class="SCst">FontFamilyStyle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setFont">setFont</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">Font</span>, <span class="SCst">FontFamilyStyle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setFont"><span class="SCde"><span class="SFct">setFont</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">FontFamily</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setFont">setFont</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">FontFamily</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetColors"><span class="SCde"><span class="SFct">setStyleSheetColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setStyleSheetColors">setStyleSheetColors</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_ThemeStyle_setStyleSheetMetrics"><span class="SCde"><span class="SFct">setStyleSheetMetrics</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setStyleSheetMetrics">setStyleSheetMetrics</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -18468,7 +18467,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Timer_restart"><span class="SCde"><span class="SFct">restart</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Timer_restart">restart</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -18554,7 +18553,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_ToggleButton_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ToggleButton_create">create</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -18791,323 +18790,323 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_Wnd_applyLayout"><span class="SCde"><span class="SFct">applyLayout</span>(<span class="SKwd">self</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_applyLayout">applyLayout</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
 <td>Apply the current layout (childs constraints). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_applyLayout"><span class="SCde"><span class="SFct">applyLayout</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_applyLayout">applyLayout</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToFront"><span class="SCde"><span class="SFct">bringToFront</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_bringToFront">bringToFront</a></span><span class="SCde">()</span></td>
 <td>Force the window to be the first painted (before all siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_bringToTop"><span class="SCde"><span class="SFct">bringToTop</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_bringToTop">bringToTop</a></span><span class="SCde">()</span></td>
 <td>Force the window to be the last painted (on top of siblings). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_captureMouse"><span class="SCde"><span class="SFct">captureMouse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_captureMouse">captureMouse</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_computeStyle"><span class="SCde"><span class="SFct">computeStyle</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_computeStyle">computeStyle</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">Wnd</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">Wnd</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">Wnd</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroy"><span class="SCde"><span class="SFct">destroy</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_destroy">destroy</a></span><span class="SCde">()</span></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_destroyNow"><span class="SCde"><span class="SFct">destroyNow</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_destroyNow">destroyNow</a></span><span class="SCde">()</span></td>
 <td>Destroy the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_disable"><span class="SCde"><span class="SFct">disable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_disable">disable</a></span><span class="SCde">()</span></td>
 <td>Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_enable"><span class="SCde"><span class="SFct">enable</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_enable">enable</a></span><span class="SCde">()</span></td>
 <td>Enable/Disable the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_fitPosInParent"><span class="SCde"><span class="SFct">fitPosInParent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_fitPosInParent">fitPosInParent</a></span><span class="SCde">()</span></td>
 <td>Be sure rect is fully inside the parent rectangle (if possible). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getApp"><span class="SCde"><span class="SFct">getApp</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getApp">getApp</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getChildById"><span class="SCde"><span class="SFct">getChildById</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getChildById">getChildById</a></span><span class="SCde">()</span></td>
 <td>Retrieve the child with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRect"><span class="SCde"><span class="SFct">getClientRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getClientRect">getClientRect</a></span><span class="SCde">()</span></td>
 <td>Returns the client area. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getClientRectPadding"><span class="SCde"><span class="SFct">getClientRectPadding</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getClientRectPadding">getClientRectPadding</a></span><span class="SCde">()</span></td>
 <td>Returns the client area, with <span class="inline-code">padding</span> applied. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFocus"><span class="SCde"><span class="SFct">getFocus</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getFocus">getFocus</a></span><span class="SCde">()</span></td>
 <td>Get the window with the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getFont"><span class="SCde"><span class="SFct">getFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getFont">getFont</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcut"><span class="SCde"><span class="SFct">getKeyShortcut</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getKeyShortcut">getKeyShortcut</a></span><span class="SCde">()</span></td>
 <td>Get the id associated with a shortcut. null if none. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getKeyShortcutNameFor"><span class="SCde"><span class="SFct">getKeyShortcutNameFor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getKeyShortcutNameFor">getKeyShortcutNameFor</a></span><span class="SCde">()</span></td>
 <td>Get the name associated with a given id shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getMouseCapture"><span class="SCde"><span class="SFct">getMouseCapture</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getMouseCapture">getMouseCapture</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getOwner"><span class="SCde"><span class="SFct">getOwner</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getOwner">getOwner</a></span><span class="SCde">()</span></td>
 <td>Get the owner of the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getParentById"><span class="SCde"><span class="SFct">getParentById</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getParentById">getParentById</a></span><span class="SCde">()</span></td>
 <td>Retrieve the parent with the given id. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getRectIn"><span class="SCde"><span class="SFct">getRectIn</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getRectIn">getRectIn</a></span><span class="SCde">()</span></td>
 <td>Get the wnd position relative to a given parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getSurfaceRect"><span class="SCde"><span class="SFct">getSurfaceRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getSurfaceRect">getSurfaceRect</a></span><span class="SCde">()</span></td>
 <td>Get the wnd position in the surface. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTheme"><span class="SCde"><span class="SFct">getTheme</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getTheme">getTheme</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeColors"><span class="SCde"><span class="SFct">getThemeColors</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getThemeColors">getThemeColors</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeMetrics"><span class="SCde"><span class="SFct">getThemeMetrics</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getThemeMetrics">getThemeMetrics</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getThemeRects"><span class="SCde"><span class="SFct">getThemeRects</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getThemeRects">getThemeRects</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTiming"><span class="SCde"><span class="SFct">getTiming</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getTiming">getTiming</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopView"><span class="SCde"><span class="SFct">getTopView</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getTopView">getTopView</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getTopWnd"><span class="SCde"><span class="SFct">getTopWnd</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getTopWnd">getTopWnd</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_getWndAt"><span class="SCde"><span class="SFct">getWndAt</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_getWndAt">getWndAt</a></span><span class="SCde">()</span></td>
 <td>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hasFocus"><span class="SCde"><span class="SFct">hasFocus</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_hasFocus">hasFocus</a></span><span class="SCde">()</span></td>
 <td>Returns true if the window has the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_hide"><span class="SCde"><span class="SFct">hide</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_hide">hide</a></span><span class="SCde">()</span></td>
 <td>Hide the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidate"><span class="SCde"><span class="SFct">invalidate</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_invalidate">invalidate</a></span><span class="SCde">()</span></td>
 <td>Force the window to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_invalidateRect"><span class="SCde"><span class="SFct">invalidateRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_invalidateRect">invalidateRect</a></span><span class="SCde">()</span></td>
 <td>Force o local position to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isEnabled"><span class="SCde"><span class="SFct">isEnabled</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isEnabled">isEnabled</a></span><span class="SCde">()</span></td>
 <td>Returns true if window, and all its parents, are enabled. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isParentOf"><span class="SCde"><span class="SFct">isParentOf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isParentOf">isParentOf</a></span><span class="SCde">()</span></td>
 <td>Returns true if <span class="inline-code">child</span> is in the child hieararchy of <span class="inline-code">self</span>. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisible"><span class="SCde"><span class="SFct">isVisible</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isVisible">isVisible</a></span><span class="SCde">()</span></td>
 <td>Returns true if window, and all its parents, are visible. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_isVisibleState"><span class="SCde"><span class="SFct">isVisibleState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_isVisibleState">isVisibleState</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_localToSurface"><span class="SCde"><span class="SFct">localToSurface</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_localToSurface"><span class="SCde"><span class="SFct">localToSurface</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_move"><span class="SCde"><span class="SFct">move</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_move">move</a></span><span class="SCde">()</span></td>
 <td>Move the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_notifyEvent"><span class="SCde"><span class="SFct">notifyEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_notifyEvent">notifyEvent</a></span><span class="SCde">()</span></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_ownerNotifyEvent"><span class="SCde"><span class="SFct">ownerNotifyEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_ownerNotifyEvent">ownerNotifyEvent</a></span><span class="SCde">()</span></td>
 <td>Send a notification event. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_paint"><span class="SCde"><span class="SFct">paint</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_paint">paint</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postCommandEvent"><span class="SCde"><span class="SFct">postCommandEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_postCommandEvent">postCommandEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postEvent"><span class="SCde"><span class="SFct">postEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_postEvent">postEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postInvalidateEvent"><span class="SCde"><span class="SFct">postInvalidateEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_postInvalidateEvent">postInvalidateEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postQuitEvent"><span class="SCde"><span class="SFct">postQuitEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_postQuitEvent">postQuitEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_postResizeEvent"><span class="SCde"><span class="SFct">postResizeEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_postResizeEvent">postResizeEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_processEvent"><span class="SCde"><span class="SFct">processEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_processEvent">processEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerAction"><span class="SCde"><span class="SFct">registerAction</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_registerAction">registerAction</a></span><span class="SCde">()</span></td>
 <td>Register one new action. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_registerKeyShortcut"><span class="SCde"><span class="SFct">registerKeyShortcut</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_registerKeyShortcut">registerKeyShortcut</a></span><span class="SCde">()</span></td>
 <td>Register a keyboard shortcut. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_releaseMouse"><span class="SCde"><span class="SFct">releaseMouse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_releaseMouse">releaseMouse</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_resize"><span class="SCde"><span class="SFct">resize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_resize">resize</a></span><span class="SCde">()</span></td>
 <td>Resize the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_screenToSurface"><span class="SCde"><span class="SFct">screenToSurface</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_screenToSurface">screenToSurface</a></span><span class="SCde">()</span></td>
 <td>Convert a screen coordinate to a surface coordinate (relative to my surface). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCommandEvent"><span class="SCde"><span class="SFct">sendCommandEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendCommandEvent">sendCommandEvent</a></span><span class="SCde">()</span></td>
 <td>Send the command event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendComputeCommandStateEvent"><span class="SCde"><span class="SFct">sendComputeCommandStateEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendComputeCommandStateEvent">sendComputeCommandStateEvent</a></span><span class="SCde">()</span></td>
 <td>Send the command state event with the given id to the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendCreateEvent"><span class="SCde"><span class="SFct">sendCreateEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendCreateEvent">sendCreateEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendEvent"><span class="SCde"><span class="SFct">sendEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendEvent">sendEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendResizeEvent"><span class="SCde"><span class="SFct">sendResizeEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendResizeEvent">sendResizeEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_sendStateEvent"><span class="SCde"><span class="SFct">sendStateEvent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_sendStateEvent">sendStateEvent</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_serializeState"><span class="SCde"><span class="SFct">serializeState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_serializeState">serializeState</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllMargins"><span class="SCde"><span class="SFct">setAllMargins</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllMargins">setAllMargins</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllMargins"><span class="SCde"><span class="SFct">setAllMargins</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllMargins">setAllMargins</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllPaddings"><span class="SCde"><span class="SFct">setAllPaddings</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllPaddings">setAllPaddings</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setAllPaddings"><span class="SCde"><span class="SFct">setAllPaddings</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllPaddings">setAllPaddings</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setFocus"><span class="SCde"><span class="SFct">setFocus</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setFocus">setFocus</a></span><span class="SCde">()</span></td>
 <td>Set the keyboard focus. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setMargin"><span class="SCde"><span class="SFct">setMargin</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setMargin">setMargin</a></span><span class="SCde">()</span></td>
 <td>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPadding"><span class="SCde"><span class="SFct">setPadding</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPadding">setPadding</a></span><span class="SCde">()</span></td>
 <td>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setParent"><span class="SCde"><span class="SFct">setParent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setParent">setParent</a></span><span class="SCde">()</span></td>
 <td>Set window parent. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPosition"><span class="SCde"><span class="SFct">setPosition</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPosition">setPosition</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">bool</span>)</span></td>
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_setPosition"><span class="SCde"><span class="SFct">setPosition</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPosition">setPosition</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">bool</span>)</span></td>
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_show"><span class="SCde"><span class="SFct">show</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_show">show</a></span><span class="SCde">()</span></td>
 <td>Show the window. </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_surfaceToLocal"><span class="SCde"><span class="SFct">surfaceToLocal</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_surfaceToLocal">surfaceToLocal</a></span><span class="SCde">()</span></td>
 <td>Convert a surface coordinate to a local coordinate (relative to me). </td>
 </tr>
 <tr>
-<td><a href="#Gui_Wnd_updateCommandState"><span class="SCde"><span class="SFct">updateCommandState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_updateCommandState">updateCommandState</a></span><span class="SCde">()</span></td>
 <td>Main function to update command state of various windows/widgets. </td>
 </tr>
 </table>
@@ -20491,11 +20490,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_WrapLayoutCtrl_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
 <td>Recompute layout of all childs. </td>
 </tr>
 <tr>
-<td><a href="#Gui_WrapLayoutCtrl_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_WrapLayoutCtrl_create">create</a></span><span class="SCde">()</span></td>
 <td>Create a layout control. </td>
 </tr>
 </table>

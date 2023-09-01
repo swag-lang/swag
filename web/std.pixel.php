@@ -107,12 +107,11 @@
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: 100%; font-size: 90%; }
         .table-enumeration td             { padding: 6px; border: 1px solid LightGrey; border-collapse: collapse; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration td:last-child  { width: 100%; }
+        .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; }
         
-        .container td:last-child { width: 100%; }
-        .tdname .inline-code     { background-color: revert; padding: 2px; border: revert; }
         .inline-code             { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 2px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-type               { background-color: #eeeeee; }
         .code-type a             { color: inherit; }
         .code-block {
             background-color:   #eeeeee;
@@ -1600,19 +1599,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Brush_createHatch"><span class="SCde"><span class="SFct">createHatch</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createHatch">createHatch</a></span><span class="SCde">()</span></td>
 <td>Returns a hatch brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createSolid"><span class="SCde"><span class="SFct">createSolid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createSolid">createSolid</a></span><span class="SCde">()</span></td>
 <td>Returns a solid color brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTexture"><span class="SCde"><span class="SFct">createTexture</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTexture">createTexture</a></span><span class="SCde">()</span></td>
 <td>Returns a full texture brush. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Brush_createTiled"><span class="SCde"><span class="SFct">createTiled</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Brush_createTiled">createTiled</a></span><span class="SCde">()</span></td>
 <td>Returns a tiled texture brush. </td>
 </tr>
 </table>
@@ -1777,7 +1776,7 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Clipper_IntPoint_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -1942,134 +1941,134 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Color_fromAbgr"><span class="SCde"><span class="SFct">fromAbgr</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromAbgr">fromAbgr</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="SCst">Argb</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="SCst">Argb</span>)</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u8</span>, <span class="SCst">Argb</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="SCst">Argb</span>)</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgb"><span class="SCde"><span class="SFct">fromArgb</span>(<span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromArgbf"><span class="SCde"><span class="SFct">fromArgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgbf">fromArgbf</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromHsl"><span class="SCde"><span class="SFct">fromHsl</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromHsl">fromHsl</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgb"><span class="SCde"><span class="SFct">fromRgb</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgb">fromRgb</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromRgbf"><span class="SCde"><span class="SFct">fromRgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgbf">fromRgbf</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_fromVector4"><span class="SCde"><span class="SFct">fromVector4</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromVector4">fromVector4</a></span><span class="SCde">()</span></td>
 <td>Create a new Color with specified values. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlend"><span class="SCde"><span class="SFct">getBlend</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlend">getBlend</a></span><span class="SCde">()</span></td>
 <td>Blend two colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getBlendKeepAlpha"><span class="SCde"><span class="SFct">getBlendKeepAlpha</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span><span class="SCde">()</span></td>
 <td>Blend two colors, keeping the alpha channel of <span class="inline-code">col0</span> untouched. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDarker"><span class="SCde"><span class="SFct">getDarker</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDarker">getDarker</a></span><span class="SCde">()</span></td>
 <td>Returns a darker color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getDistanceRgb"><span class="SCde"><span class="SFct">getDistanceRgb</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></span><span class="SCde">()</span></td>
 <td>Returns the distance between the other color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_getLighter"><span class="SCde"><span class="SFct">getLighter</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getLighter">getLighter</a></span><span class="SCde">()</span></td>
 <td>Returns a lighter color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_isOpaque"><span class="SCde"><span class="SFct">isOpaque</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_isOpaque">isOpaque</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgb"><span class="SCde"><span class="SFct">setArgb</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgb">setArgb</a></span><span class="SCde">()</span></td>
 <td>Set all components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setArgbf"><span class="SCde"><span class="SFct">setArgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgbf">setArgbf</a></span><span class="SCde">()</span></td>
 <td>Set all components with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setHsl"><span class="SCde"><span class="SFct">setHsl</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setHsl">setHsl</a></span><span class="SCde">()</span></td>
 <td>Initialize color with hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb"><span class="SCde"><span class="SFct">setRgb</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgb">setRgb</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgb"><span class="SCde"><span class="SFct">setRgb</span>(<span class="SKwd">self</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgb">setRgb</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
 <td>Just set r, g and b components. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_setRgbf"><span class="SCde"><span class="SFct">setRgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgbf">setRgbf</a></span><span class="SCde">()</span></td>
 <td>Set r,g,b with floats in the range [0 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toArgbf"><span class="SCde"><span class="SFct">toArgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toArgbf">toArgbf</a></span><span class="SCde">()</span></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toHsl"><span class="SCde"><span class="SFct">toHsl</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toHsl">toHsl</a></span><span class="SCde">()</span></td>
 <td>Returns hue, saturation, lightness. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toRgbf"><span class="SCde"><span class="SFct">toRgbf</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toRgbf">toRgbf</a></span><span class="SCde">()</span></td>
 <td>Retrieve all components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_toVector4"><span class="SCde"><span class="SFct">toVector4</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toVector4">toVector4</a></span><span class="SCde">()</span></td>
 <td>Get the color as a [Math.Vector4]. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opAffect"><span class="SCde"><span class="SFct">opAffect</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">Argb</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Color_opEquals"><span class="SCde"><span class="SFct">opEquals</span>(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -2873,19 +2872,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Font_create"><span class="SCde"><span class="SFct">create</span>(*<span class="SCst">TypeFace</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_create">create</a></span><span class="SCde">(*<span class="SCst">TypeFace</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Creates a new Font of the given typeface and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_create"><span class="SCde"><span class="SFct">create</span>(<span class="STpe">string</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_create">create</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Creates a new Font with the given filename and size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_getGlyphDesc"><span class="SCde"><span class="SFct">getGlyphDesc</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_getGlyphDesc">getGlyphDesc</a></span><span class="SCde">()</span></td>
 <td>Returns the glyph descriptor of a given rune. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Font_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Font_release">release</a></span><span class="SCde">()</span></td>
 <td>Release the given font. </td>
 </tr>
 </table>
@@ -2970,23 +2969,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_FontFamily_createTypeFace"><span class="SCde"><span class="SFct">createTypeFace</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_createTypeFace">createTypeFace</a></span><span class="SCde">()</span></td>
 <td>Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_enumerateFromOs"><span class="SCde"><span class="SFct">enumerateFromOs</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_enumerateFromOs">enumerateFromOs</a></span><span class="SCde">()</span></td>
 <td>Enumerate the font families available in the os. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFont"><span class="SCde"><span class="SFct">getFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFont">getFont</a></span><span class="SCde">()</span></td>
 <td>Get the font corresponding to the style. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_getFromOs"><span class="SCde"><span class="SFct">getFromOs</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_getFromOs">getFromOs</a></span><span class="SCde">()</span></td>
 <td>Get a FontFamilyEnumerate from a font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_FontFamily_setFont"><span class="SCde"><span class="SFct">setFont</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_FontFamily_setFont">setFont</a></span><span class="SCde">()</span></td>
 <td>Set the font corresponding to a given style. </td>
 </tr>
 </table>
@@ -3150,23 +3149,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getFrame"><span class="SCde"><span class="SFct">getFrame</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getFrame">getFrame</a></span><span class="SCde">()</span></td>
 <td>Create an image for the current frame. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_getNumFrames"><span class="SCde"><span class="SFct">getNumFrames</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_getNumFrames">getNumFrames</a></span><span class="SCde">()</span></td>
 <td>Returns the number of frames  As Gif does not store it, we need to go threw all images (!). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_init">init</a></span><span class="SCde">()</span></td>
 <td>Initialize the decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_nextFrame"><span class="SCde"><span class="SFct">nextFrame</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_nextFrame">nextFrame</a></span><span class="SCde">()</span></td>
 <td>Get the next frame. Returns false if we have reached the end. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Gif_Decoder_rewind"><span class="SCde"><span class="SFct">rewind</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Gif_Decoder_rewind">rewind</a></span><span class="SCde">()</span></td>
 <td>Restart at frame 0. </td>
 </tr>
 </table>
@@ -3644,238 +3643,238 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Image_addDecoder"><span class="SCde"><span class="SFct">addDecoder</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addDecoder">addDecoder</a></span><span class="SCde">()</span></td>
 <td>Register an image decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_addEncoder"><span class="SCde"><span class="SFct">addEncoder</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_addEncoder">addEncoder</a></span><span class="SCde">()</span></td>
 <td>Register an image encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocPixels"><span class="SCde"><span class="SFct">allocPixels</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_allocPixels">allocPixels</a></span><span class="SCde">()</span></td>
 <td>Allocate pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SCde"><span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">self</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer</a></span><span class="SCde">(<span class="SKwd">self</span>)</span></td>
 <td>Allocate a computing buffer with current image size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_allocWorkingBuffer"><span class="SCde"><span class="SFct">allocWorkingBuffer</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">PixelFormat</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_allocWorkingBuffer">allocWorkingBuffer</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">PixelFormat</span>)</span></td>
 <td>Allocate a computing buffer with new sizes. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyKernel"><span class="SCde"><span class="SFct">applyKernel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyKernel">applyKernel</a></span><span class="SCde">()</span></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_applyWorkingBuffer"><span class="SCde"><span class="SFct">applyWorkingBuffer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_applyWorkingBuffer">applyWorkingBuffer</a></span><span class="SCde">()</span></td>
 <td>Replace the current image content with the working buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canLoad"><span class="SCde"><span class="SFct">canLoad</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canLoad">canLoad</a></span><span class="SCde">()</span></td>
 <td>Returns <span class="inline-code">true</span> if the given filename has a corresponding decoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_canSave"><span class="SCde"><span class="SFct">canSave</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_canSave">canSave</a></span><span class="SCde">()</span></td>
 <td>Returns <span class="inline-code">true</span> if the given filename has a corresponding encoder. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_colorize"><span class="SCde"><span class="SFct">colorize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_colorize">colorize</a></span><span class="SCde">()</span></td>
 <td>Colorize the image by setting the hue and saturation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_contrast"><span class="SCde"><span class="SFct">contrast</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_contrast">contrast</a></span><span class="SCde">()</span></td>
 <td>Change the contrast. <span class="inline-code">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_copyPixel"><span class="SCde"><span class="SFct">copyPixel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixel">copyPixel</a></span><span class="SCde">()</span></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_create">create</a></span><span class="SCde">()</span></td>
 <td>Creates a new image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop"><span class="SCde"><span class="SFct">crop</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_crop">crop</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_crop"><span class="SCde"><span class="SFct">crop</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_crop">crop</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_decode"><span class="SCde"><span class="SFct">decode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_decode">decode</a></span><span class="SCde">()</span></td>
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fade"><span class="SCde"><span class="SFct">fade</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fade">fade</a></span><span class="SCde">()</span></td>
 <td>Fade to a given color. <span class="inline-code">factor</span> is [0, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fill"><span class="SCde"><span class="SFct">fill</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fill">fill</a></span><span class="SCde">()</span></td>
 <td>Fill image with <span class="inline-code">color</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient2"><span class="SCde"><span class="SFct">fillGradient2</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient2">fillGradient2</a></span><span class="SCde">()</span></td>
 <td>Fill with an horizontal gradient from <span class="inline-code">color0</span> to <span class="inline-code">color1</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillGradient4"><span class="SCde"><span class="SFct">fillGradient4</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillGradient4">fillGradient4</a></span><span class="SCde">()</span></td>
 <td>Fill with a gradient with a different color at each corner. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_fillHsl"><span class="SCde"><span class="SFct">fillHsl</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fillHsl">fillHsl</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_flip"><span class="SCde"><span class="SFct">flip</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_flip">flip</a></span><span class="SCde">()</span></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_freeWorkingBuffer"><span class="SCde"><span class="SFct">freeWorkingBuffer</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_freeWorkingBuffer">freeWorkingBuffer</a></span><span class="SCde">()</span></td>
 <td>Free the working buffer if allocated. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from"><span class="SCde"><span class="SFct">from</span>(<span class="SCst">HBITMAP</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_from">from</a></span><span class="SCde">(<span class="SCst">HBITMAP</span>)</span></td>
 <td>Creates an image from a windows HBITMAP. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_from"><span class="SCde"><span class="SFct">from</span>(<span class="SCst">HICON</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_from">from</a></span><span class="SCde">(<span class="SCst">HICON</span>)</span></td>
 <td>Creates an image from a windows HICON. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_gamma"><span class="SCde"><span class="SFct">gamma</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_gamma">gamma</a></span><span class="SCde">()</span></td>
 <td>Change the gamma. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_getPixelColor"><span class="SCde"><span class="SFct">getPixelColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_getPixelColor">getPixelColor</a></span><span class="SCde">()</span></td>
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_grayScale"><span class="SCde"><span class="SFct">grayScale</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_grayScale">grayScale</a></span><span class="SCde">()</span></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_halfSize"><span class="SCde"><span class="SFct">halfSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_halfSize">halfSize</a></span><span class="SCde">()</span></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_init">init</a></span><span class="SCde">()</span></td>
 <td>Initialize image informations  <span class="inline-code">pixels</span> is set to null, and must be initialized after a call to that function  This gives the opportunity to set the pixels with an external buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_invert"><span class="SCde"><span class="SFct">invert</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span><span class="SCde">()</span></td>
 <td>Invert colors. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_isValid">isValid</a></span><span class="SCde">()</span></td>
 <td>Returns true if the image is valid. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_lightness"><span class="SCde"><span class="SFct">lightness</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_lightness">lightness</a></span><span class="SCde">()</span></td>
 <td>Change the lightness. <span class="inline-code">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_load">load</a></span><span class="SCde">()</span></td>
 <td>Load the given image file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mirror"><span class="SCde"><span class="SFct">mirror</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mirror">mirror</a></span><span class="SCde">()</span></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_mix"><span class="SCde"><span class="SFct">mix</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_mix">mix</a></span><span class="SCde">()</span></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_release">release</a></span><span class="SCde">()</span></td>
 <td>Release the content of the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_resize"><span class="SCde"><span class="SFct">resize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_resize">resize</a></span><span class="SCde">()</span></td>
 <td>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_save"><span class="SCde"><span class="SFct">save</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_save">save</a></span><span class="SCde">()</span></td>
 <td>Save the image to a file. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setAlpha"><span class="SCde"><span class="SFct">setAlpha</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setAlpha">setAlpha</a></span><span class="SCde">()</span></td>
 <td>Change the alpha channel. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setChannel"><span class="SCde"><span class="SFct">setChannel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setChannel">setChannel</a></span><span class="SCde">()</span></td>
 <td>Change specified color channels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelFormat"><span class="SCde"><span class="SFct">setPixelFormat</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></span><span class="SCde">()</span></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_setPixelRGBA8"><span class="SCde"><span class="SFct">setPixelRGBA8</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></span><span class="SCde">()</span></td>
 <td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toApplyKernel"><span class="SCde"><span class="SFct">toApplyKernel</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></span><span class="SCde">()</span></td>
 <td>Apply a kernel to the image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop"><span class="SCde"><span class="SFct">toCrop</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toCrop">toCrop</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toCrop"><span class="SCde"><span class="SFct">toCrop</span>(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toCrop">toCrop</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
 <td>Crop image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toFlip"><span class="SCde"><span class="SFct">toFlip</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toFlip">toFlip</a></span><span class="SCde">()</span></td>
 <td>Flip image vertically. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHICON"><span class="SCde"><span class="SFct">toHICON</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHICON">toHICON</a></span><span class="SCde">()</span></td>
 <td>Transform an image to a windows icon. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toHalfSize"><span class="SCde"><span class="SFct">toHalfSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toHalfSize">toHalfSize</a></span><span class="SCde">()</span></td>
 <td>Divide image size by 2 with a bilinear 2x2 filter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMirror"><span class="SCde"><span class="SFct">toMirror</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMirror">toMirror</a></span><span class="SCde">()</span></td>
 <td>Flip image horizontally. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toMix"><span class="SCde"><span class="SFct">toMix</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toMix">toMix</a></span><span class="SCde">()</span></td>
 <td>Mix with another image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toResize"><span class="SCde"><span class="SFct">toResize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toResize">toResize</a></span><span class="SCde">()</span></td>
 <td>Resize image  Put <span class="inline-code">newWidth</span> or <span class="inline-code">newHeight</span> to 0 to keep aspect ratio. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toSetPixelFormat"><span class="SCde"><span class="SFct">toSetPixelFormat</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toSetPixelFormat">toSetPixelFormat</a></span><span class="SCde">()</span></td>
 <td>Change image pixel format. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_toTurn"><span class="SCde"><span class="SFct">toTurn</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_toTurn">toTurn</a></span><span class="SCde">()</span></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_turn"><span class="SCde"><span class="SFct">turn</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_turn">turn</a></span><span class="SCde">()</span></td>
 <td>Turn image by a given predefined angle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Image_visitPixels"><span class="SCde"><span class="SFct">visitPixels</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_visitPixels">visitPixels</a></span><span class="SCde">()</span></td>
 <td>Macro to visit all pixels of the image in parallel chunks. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Image_opVisit"><span class="SCde"><span class="SFct">opVisit</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_opVisit">opVisit</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -5265,59 +5264,59 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_LinePath_arcTo"><span class="SCde"><span class="SFct">arcTo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_arcTo">arcTo</a></span><span class="SCde">()</span></td>
 <td>Add an arc from the previous point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo"><span class="SCde"><span class="SFct">bezierTo</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_bezierTo">bezierTo</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_bezierTo"><span class="SCde"><span class="SFct">bezierTo</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_bezierTo">bezierTo</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_clearCache"><span class="SCde"><span class="SFct">clearCache</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_clearCache">clearCache</a></span><span class="SCde">()</span></td>
 <td>Clear internal cache. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_close"><span class="SCde"><span class="SFct">close</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_close">close</a></span><span class="SCde">()</span></td>
 <td>Close the figure  Will add a line or a curve to the first point if necessary. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_curveTo"><span class="SCde"><span class="SFct">curveTo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_curveTo">curveTo</a></span><span class="SCde">()</span></td>
 <td>Add a curve from the previous point to <span class="inline-code">pt</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_flatten"><span class="SCde"><span class="SFct">flatten</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_flatten">flatten</a></span><span class="SCde">()</span></td>
 <td>Convert the path to a list of points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_lineTo"><span class="SCde"><span class="SFct">lineTo</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_lineTo">lineTo</a></span><span class="SCde">()</span></td>
 <td>Add a line from the previous point to <span class="inline-code">pt</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setArc"><span class="SCde"><span class="SFct">setArc</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setArc">setArc</a></span><span class="SCde">()</span></td>
 <td>Initialize the path with an arc. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setCircle"><span class="SCde"><span class="SFct">setCircle</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setCircle">setCircle</a></span><span class="SCde">()</span></td>
 <td>Initialize the path with a circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setEllipse"><span class="SCde"><span class="SFct">setEllipse</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setEllipse">setEllipse</a></span><span class="SCde">()</span></td>
 <td>Initialize the path with an ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRect"><span class="SCde"><span class="SFct">setRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRect">setRect</a></span><span class="SCde">()</span></td>
 <td>Initialize the path with a rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_setRoundRect"><span class="SCde"><span class="SFct">setRoundRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_setRoundRect">setRoundRect</a></span><span class="SCde">()</span></td>
 <td>Initialize the path with a round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePath_start"><span class="SCde"><span class="SFct">start</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePath_start">start</a></span><span class="SCde">()</span></td>
 <td>Reset the path. </td>
 </tr>
 </table>
@@ -5537,31 +5536,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_LinePathList_clean"><span class="SCde"><span class="SFct">clean</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clean">clean</a></span><span class="SCde">()</span></td>
 <td>Clean all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Remove all internal line paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_count"><span class="SCde"><span class="SFct">count</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_count">count</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_flatten"><span class="SCde"><span class="SFct">flatten</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_flatten">flatten</a></span><span class="SCde">()</span></td>
 <td>Flatten all paths. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_newPath"><span class="SCde"><span class="SFct">newPath</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_newPath">newPath</a></span><span class="SCde">()</span></td>
 <td>Returns a new path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Call fast offset on all paths  They must before be flattened. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_LinePathList_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_LinePathList_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></td>
 <td>Call quality offset on all paths  They must before be flattened. </td>
 </tr>
 </table>
@@ -5665,23 +5664,23 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SCde"><span class="SFct">createContext</span>(<span class="SKwd">self</span>, <span class="SCst">HDC</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_createContext">createContext</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">HDC</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_createContext"><span class="SCde"><span class="SFct">createContext</span>(<span class="SKwd">self</span>, <span class="SCst">HWND</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_createContext">createContext</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">HWND</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>, <span class="SCst">HGLRC</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_dropContext"><span class="SCde"><span class="SFct">dropContext</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_dropContext">dropContext</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_setCurrentContext"><span class="SCde"><span class="SFct">setCurrentContext</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_setCurrentContext">setCurrentContext</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_NativeRenderOgl_swapBuffers"><span class="SCde"><span class="SFct">swapBuffers</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_NativeRenderOgl_swapBuffers">swapBuffers</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -5958,423 +5957,423 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Painter_addParams"><span class="SCde"><span class="SFct">addParams</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_addParams">addParams</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_begin"><span class="SCde"><span class="SFct">begin</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_begin">begin</a></span><span class="SCde">()</span></td>
 <td>Call this before drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_bindRenderTarget"><span class="SCde"><span class="SFct">bindRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_bindRenderTarget">bindRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Bind a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_capStyleExtent"><span class="SCde"><span class="SFct">capStyleExtent</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_capStyleExtent">capStyleExtent</a></span><span class="SCde">()</span></td>
 <td>Returns the extent in both directions of a given LineCapStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear the rendering surface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_computeLayout"><span class="SCde"><span class="SFct">computeLayout</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_computeLayout">computeLayout</a></span><span class="SCde">()</span></td>
 <td>Recompute the layout for a given rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc"><span class="SCde"><span class="SFct">drawArc</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawArc">drawArc</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an arc between two angles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawArc"><span class="SCde"><span class="SFct">drawArc</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawArc">drawArc</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle"><span class="SCde"><span class="SFct">drawCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawCircle">drawCircle</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an empty circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawCircle"><span class="SCde"><span class="SFct">drawCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawCircle">drawCircle</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse"><span class="SCde"><span class="SFct">drawEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawEllipse">drawEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an empty ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawEllipse"><span class="SCde"><span class="SFct">drawEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawEllipse">drawEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawLine">drawLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector2</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td>Draw a line. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawLine">drawLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawLine"><span class="SCde"><span class="SFct">drawLine</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawLine">drawLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td>Draw the line path with the given <span class="inline-code">pen</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>, <span class="SCst">DrawPathListMode</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>, <span class="SCst">DrawPathListMode</span>)</span></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawPath"><span class="SCde"><span class="SFct">drawPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>, <span class="SCst">DrawPathListMode</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawPath">drawPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>, <span class="SCst">DrawPathListMode</span>)</span></td>
 <td>Draw the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRect">drawRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRect">drawRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRect">drawRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an empty rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRect"><span class="SCde"><span class="SFct">drawRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRect">drawRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRichString"><span class="SCde"><span class="SFct">drawRichString</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRichString">drawRichString</a></span><span class="SCde">()</span></td>
 <td>Draw a rich string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRoundRect">drawRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRoundRect">drawRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRoundRect">drawRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw an empty round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawRoundRect"><span class="SCde"><span class="SFct">drawRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawRoundRect">drawRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Pen</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString"><span class="SCde"><span class="SFct">drawString</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawString">drawString</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawString"><span class="SCde"><span class="SFct">drawString</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawString">drawString</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">string</span>, *<span class="SCst">Font</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="SCst">UnderlineStyle</span>, <span class="STpe">f32</span>)</span></td>
 <td>Draw a simple string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawStringCenter"><span class="SCde"><span class="SFct">drawStringCenter</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawStringCenter">drawStringCenter</a></span><span class="SCde">()</span></td>
 <td>Draw a simple string (centered). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Draw a portion of an image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_drawTexture"><span class="SCde"><span class="SFct">drawTexture</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_drawTexture">drawTexture</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Draw a texture image. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_end">end</a></span><span class="SCde">()</span></td>
 <td>Call this after drawing. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_endClippingRegion"><span class="SCde"><span class="SFct">endClippingRegion</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_endClippingRegion">endClippingRegion</a></span><span class="SCde">()</span></td>
 <td>Stop painting in the clipping buffer. Back to normal. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle"><span class="SCde"><span class="SFct">fillCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillCircle">fillCircle</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Draw a solid circle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillCircle"><span class="SCde"><span class="SFct">fillCircle</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillCircle">fillCircle</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse"><span class="SCde"><span class="SFct">fillEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillEllipse">fillEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Draw a solid ellipse. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillEllipse"><span class="SCde"><span class="SFct">fillEllipse</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillEllipse">fillEllipse</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Fill the line path with the given <span class="inline-code">brush</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Fill the list of paths  clockwise = fill, anti-clockwise = hole. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPath"><span class="SCde"><span class="SFct">fillPath</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPath">fillPath</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePathList</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Fill the line path. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon"><span class="SCde"><span class="SFct">fillPolygon</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPolygon">fillPolygon</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Fill the polygon with the given <span class="inline-code">brush</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillPolygon"><span class="SCde"><span class="SFct">fillPolygon</span>(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPolygon">fillPolygon</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">LinePath</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td>Fill the polygon with the given color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRect">fillRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRect">fillRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRect">fillRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Draw a filled rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRect"><span class="SCde"><span class="SFct">fillRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRect">fillRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRoundRect">fillRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRoundRect">fillRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRoundRect">fillRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Brush</span>)</span></td>
 <td>Draw a filled round rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_fillRoundRect"><span class="SCde"><span class="SFct">fillRoundRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRoundRect">fillRoundRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getClippingRect"><span class="SCde"><span class="SFct">getClippingRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getClippingRect">getClippingRect</a></span><span class="SCde">()</span></td>
 <td>Get the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs"><span class="SCde"><span class="SFct">getGlyphs</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">rune</span>), *<span class="SCst">Font</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getGlyphs">getGlyphs</a></span><span class="SCde">(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">rune</span>), *<span class="SCst">Font</span>)</span></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getGlyphs"><span class="SCde"><span class="SFct">getGlyphs</span>(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getGlyphs">getGlyphs</a></span><span class="SCde">(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></td>
 <td>Returns all the glyphs for a given string and font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getParams"><span class="SCde"><span class="SFct">getParams</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getParams">getParams</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getQuality"><span class="SCde"><span class="SFct">getQuality</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getQuality">getQuality</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_getTransform"><span class="SCde"><span class="SFct">getTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_getTransform">getTransform</a></span><span class="SCde">()</span></td>
 <td>Returns the current tranformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_isEmptyClippingRect"><span class="SCde"><span class="SFct">isEmptyClippingRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_isEmptyClippingRect">isEmptyClippingRect</a></span><span class="SCde">()</span></td>
 <td>Returns true if the current clipping rectangle is empty (no drawing !). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureRune"><span class="SCde"><span class="SFct">measureRune</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureRune">measureRune</a></span><span class="SCde">()</span></td>
 <td>Get a rune size for a given font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString"><span class="SCde"><span class="SFct">measureString</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">GlyphDesc</span>))</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureString">measureString</a></span><span class="SCde">(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="SKwd">const</span> *<span class="SCst">GlyphDesc</span>))</span></td>
 <td>Returns the bounding rectangle if a given text, at a given position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_measureString"><span class="SCde"><span class="SFct">measureString</span>(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_measureString">measureString</a></span><span class="SCde">(<span class="STpe">string</span>, *<span class="SCst">Font</span>)</span></td>
 <td>Returns the metrics of a given text. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popClippingRect"><span class="SCde"><span class="SFct">popClippingRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popClippingRect">popClippingRect</a></span><span class="SCde">()</span></td>
 <td>Restore the original clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popState"><span class="SCde"><span class="SFct">popState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popState">popState</a></span><span class="SCde">()</span></td>
 <td>Restore the last paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_popTransform"><span class="SCde"><span class="SFct">popTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_popTransform">popTransform</a></span><span class="SCde">()</span></td>
 <td>Restore the pushed transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingRect"><span class="SCde"><span class="SFct">pushClippingRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingRect">pushClippingRect</a></span><span class="SCde">()</span></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushClippingSurfaceRect"><span class="SCde"><span class="SFct">pushClippingSurfaceRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushClippingSurfaceRect">pushClippingSurfaceRect</a></span><span class="SCde">()</span></td>
 <td>Interface the given rectangle with the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushState"><span class="SCde"><span class="SFct">pushState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushState">pushState</a></span><span class="SCde">()</span></td>
 <td>Save the current paint state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_pushTransform"><span class="SCde"><span class="SFct">pushTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_pushTransform">pushTransform</a></span><span class="SCde">()</span></td>
 <td>Push the current transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_releaseRenderTarget"><span class="SCde"><span class="SFct">releaseRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_releaseRenderTarget">releaseRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Release the render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_removeParams"><span class="SCde"><span class="SFct">removeParams</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_removeParams">removeParams</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRect"><span class="SCde"><span class="SFct">resetClippingRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRect">resetClippingRect</a></span><span class="SCde">()</span></td>
 <td>Reset the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetClippingRegion"><span class="SCde"><span class="SFct">resetClippingRegion</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetClippingRegion">resetClippingRegion</a></span><span class="SCde">()</span></td>
 <td>Reset clipping buffer to its default value (no more clipping). </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetState"><span class="SCde"><span class="SFct">resetState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetState">resetState</a></span><span class="SCde">()</span></td>
 <td>Reset the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_resetTransform"><span class="SCde"><span class="SFct">resetTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_resetTransform">resetTransform</a></span><span class="SCde">()</span></td>
 <td>Reset the paint position, rotation, scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_rotateTransform">rotateTransform</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_rotateTransform">rotateTransform</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_rotateTransformInPlace"><span class="SCde"><span class="SFct">rotateTransformInPlace</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_rotateTransformInPlace">rotateTransformInPlace</a></span><span class="SCde">()</span></td>
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_scaleTransform"><span class="SCde"><span class="SFct">scaleTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span><span class="SCde">()</span></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setAntialiased"><span class="SCde"><span class="SFct">setAntialiased</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setAntialiased">setAntialiased</a></span><span class="SCde">()</span></td>
 <td>Set antialiased mode on/off. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setBlendingMode"><span class="SCde"><span class="SFct">setBlendingMode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setBlendingMode">setBlendingMode</a></span><span class="SCde">()</span></td>
 <td>Set the current blending mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect"><span class="SCde"><span class="SFct">setClippingRect</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setClippingRect">setClippingRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRect"><span class="SCde"><span class="SFct">setClippingRect</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setClippingRect">setClippingRect</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set the current clipping rectangle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setClippingRegionMode"><span class="SCde"><span class="SFct">setClippingRegionMode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setClippingRegionMode">setClippingRegionMode</a></span><span class="SCde">()</span></td>
 <td>Set the clipping region mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask"><span class="SCde"><span class="SFct">setColorMask</span>(<span class="SKwd">self</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMask">setColorMask</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMask"><span class="SCde"><span class="SFct">setColorMask</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ColorMask</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMask">setColorMask</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ColorMask</span>)</span></td>
 <td>Set color mask. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskAlpha"><span class="SCde"><span class="SFct">setColorMaskAlpha</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskAlpha">setColorMaskAlpha</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskColor"><span class="SCde"><span class="SFct">setColorMaskColor</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskColor">setColorMaskColor</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setColorMaskFull"><span class="SCde"><span class="SFct">setColorMaskFull</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setColorMaskFull">setColorMaskFull</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setInterpolationMode"><span class="SCde"><span class="SFct">setInterpolationMode</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setInterpolationMode">setInterpolationMode</a></span><span class="SCde">()</span></td>
 <td>Set the texture interpolation mode. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setParams"><span class="SCde"><span class="SFct">setParams</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setParams">setParams</a></span><span class="SCde">()</span></td>
 <td>Set the paint parameters. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setQuality"><span class="SCde"><span class="SFct">setQuality</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setQuality">setQuality</a></span><span class="SCde">()</span></td>
 <td>Set the paint quality. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShader"><span class="SCde"><span class="SFct">setShader</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setShader">setShader</a></span><span class="SCde">()</span></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam"><span class="SCde"><span class="SFct">setShaderParam</span>(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setShaderParam">setShaderParam</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setShaderParam"><span class="SCde"><span class="SFct">setShaderParam</span>(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">s32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setShaderParam">setShaderParam</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SCst">ShaderParamHandle</span>, <span class="STpe">s32</span>)</span></td>
 <td>Set a shader parameter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setState"><span class="SCde"><span class="SFct">setState</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setState">setState</a></span><span class="SCde">()</span></td>
 <td>Set the current painting state. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_setTransform"><span class="SCde"><span class="SFct">setTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_setTransform">setTransform</a></span><span class="SCde">()</span></td>
 <td>Set the paint transformation. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_startClippingRegion"><span class="SCde"><span class="SFct">startClippingRegion</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_startClippingRegion">startClippingRegion</a></span><span class="SCde">()</span></td>
 <td>Start painting in the clipping buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_translateTransform"><span class="SCde"><span class="SFct">translateTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_translateTransform">translateTransform</a></span><span class="SCde">()</span></td>
 <td>Set the paint position. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Painter_unbindRenderTarget"><span class="SCde"><span class="SFct">unbindRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_unbindRenderTarget">unbindRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Bind a render target. </td>
 </tr>
 </table>
@@ -7490,15 +7489,15 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Pen_createDash"><span class="SCde"><span class="SFct">createDash</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createDash">createDash</a></span><span class="SCde">()</span></td>
 <td>Returns a dash pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createHatch"><span class="SCde"><span class="SFct">createHatch</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createHatch">createHatch</a></span><span class="SCde">()</span></td>
 <td>Return a predefined hatch pen. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Pen_createSolid"><span class="SCde"><span class="SFct">createSolid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Pen_createSolid">createSolid</a></span><span class="SCde">()</span></td>
 <td>Returns a solid color pen. </td>
 </tr>
 </table>
@@ -7792,27 +7791,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_addPoint"><span class="SCde"><span class="SFct">addPoint</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_addPoint">addPoint</a></span><span class="SCde">()</span></td>
 <td>Register a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear content. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine"><span class="SCde"><span class="SFct">endPolyLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_endPolyLine">endPolyLine</a></span><span class="SCde">()</span></td>
 <td>To call to register the polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_getTriangles"><span class="SCde"><span class="SFct">getTriangles</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_getTriangles">getTriangles</a></span><span class="SCde">()</span></td>
 <td>Returns the list of triangles. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine"><span class="SCde"><span class="SFct">startPolyLine</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_startPolyLine">startPolyLine</a></span><span class="SCde">()</span></td>
 <td>To call before adding a polyline. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Poly2Tri_Tesselate_triangulate"><span class="SCde"><span class="SFct">triangulate</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Poly2Tri_Tesselate_triangulate">triangulate</a></span><span class="SCde">()</span></td>
 <td>Triangulate. </td>
 </tr>
 </table>
@@ -7989,47 +7988,47 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Polygon_add"><span class="SCde"><span class="SFct">add</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_add">add</a></span><span class="SCde">()</span></td>
 <td>Add a new point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clean"><span class="SCde"><span class="SFct">clean</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clean">clean</a></span><span class="SCde">()</span></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear all points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_compute">compute</a></span><span class="SCde">()</span></td>
 <td>Compute internal values, like convex/clockwise  Call it once the polygon contains all its points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getClean"><span class="SCde"><span class="SFct">getClean</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getClean">getClean</a></span><span class="SCde">()</span></td>
 <td>Clean polygon by removing bad/unecessary points. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getOffset"><span class="SCde"><span class="SFct">getOffset</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getOffset">getOffset</a></span><span class="SCde">()</span></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint"><span class="SCde"><span class="SFct">getPoint</span>(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getPoint">getPoint</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>)</span></td>
 <td>Get the given point. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_getPoint"><span class="SCde"><span class="SFct">getPoint</span>(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_getPoint">getPoint</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">u64</span>, <span class="STpe">f32</span>)</span></td>
 <td>Get the given point, with an optional offset. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_normalizeDist"><span class="SCde"><span class="SFct">normalizeDist</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_normalizeDist">normalizeDist</a></span><span class="SCde">()</span></td>
 <td>Divide by adding points if two points are too far away. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>)</span></td>
 <td>Fast expand polygon by a given amount. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_Polygon_offset"><span class="SCde"><span class="SFct">offset</span>(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Polygon_offset">offset</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">f32</span>, <span class="SCst">JoinStyle</span>, <span class="STpe">f32</span>)</span></td>
 <td>Slow but quality offset with a joinStyle. </td>
 </tr>
 </table>
@@ -8266,123 +8265,123 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage"><span class="SCde"><span class="SFct">addImage</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_addImage">addImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></td>
 <td>Register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_addImage"><span class="SCde"><span class="SFct">addImage</span>(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_addImage">addImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>)</span></td>
 <td>Load and register an image for rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_begin"><span class="SCde"><span class="SFct">begin</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_begin">begin</a></span><span class="SCde">()</span></td>
 <td>To be called before rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_bindRenderTarget"><span class="SCde"><span class="SFct">bindRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_bindRenderTarget">bindRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Set the current render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_clear"><span class="SCde"><span class="SFct">clear</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_clear">clear</a></span><span class="SCde">()</span></td>
 <td>Clear current render buffers. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_computeMatrices"><span class="SCde"><span class="SFct">computeMatrices</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_computeMatrices">computeMatrices</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createRenderTarget"><span class="SCde"><span class="SFct">createRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createRenderTarget">createRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Create a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_createShader"><span class="SCde"><span class="SFct">createShader</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_createShader">createShader</a></span><span class="SCde">()</span></td>
 <td>Create the given shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_deleteRenderTarget"><span class="SCde"><span class="SFct">deleteRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_deleteRenderTarget">deleteRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Delete a render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_draw"><span class="SCde"><span class="SFct">draw</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_draw">draw</a></span><span class="SCde">()</span></td>
 <td>Draw the given painter. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_end"><span class="SCde"><span class="SFct">end</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_end">end</a></span><span class="SCde">()</span></td>
 <td>To be called after rendering. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getRenderTarget"><span class="SCde"><span class="SFct">getRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getRenderTarget">getRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Get a render target of the given size  releaseRenderTarget must be called to release it. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTargetSize"><span class="SCde"><span class="SFct">getTargetSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTargetSize">getTargetSize</a></span><span class="SCde">()</span></td>
 <td>Get the actual render target size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_getTexturePixels"><span class="SCde"><span class="SFct">getTexturePixels</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_getTexturePixels">getTexturePixels</a></span><span class="SCde">()</span></td>
 <td>Returns the pixels associated to a texture. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_init"><span class="SCde"><span class="SFct">init</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_init">init</a></span><span class="SCde">()</span></td>
 <td>First init. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_pixelFormatToNative"><span class="SCde"><span class="SFct">pixelFormatToNative</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_pixelFormatToNative">pixelFormatToNative</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_releaseRenderTarget"><span class="SCde"><span class="SFct">releaseRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_releaseRenderTarget">releaseRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Release the given render target. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_removeTexture"><span class="SCde"><span class="SFct">removeTexture</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_removeTexture">removeTexture</a></span><span class="SCde">()</span></td>
 <td>Unregister a texture created with <span class="inline-code">addImage</span>. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetScissorRect"><span class="SCde"><span class="SFct">resetScissorRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetScissorRect">resetScissorRect</a></span><span class="SCde">()</span></td>
 <td>Reset the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_resetTransform"><span class="SCde"><span class="SFct">resetTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_resetTransform">resetTransform</a></span><span class="SCde">()</span></td>
 <td>Reset the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>)</span></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_rotateTransform"><span class="SCde"><span class="SFct">rotateTransform</span>(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_rotateTransform">rotateTransform</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Angle</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_scaleTransform"><span class="SCde"><span class="SFct">scaleTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span><span class="SCde">()</span></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setCurrentContext"><span class="SCde"><span class="SFct">setCurrentContext</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setCurrentContext">setCurrentContext</a></span><span class="SCde">()</span></td>
 <td>Set the current rendering context. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setScissorRect"><span class="SCde"><span class="SFct">setScissorRect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setScissorRect">setScissorRect</a></span><span class="SCde">()</span></td>
 <td>Force the scissor. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_setShader"><span class="SCde"><span class="SFct">setShader</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_setShader">setShader</a></span><span class="SCde">()</span></td>
 <td>Set the current shader. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_translateTransform"><span class="SCde"><span class="SFct">translateTransform</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_translateTransform">translateTransform</a></span><span class="SCde">()</span></td>
 <td>Translate the world transform. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTarget"><span class="SCde"><span class="SFct">unbindRenderTarget</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTarget">unbindRenderTarget</a></span><span class="SCde">()</span></td>
 <td>Go back to the previous render target, or frame buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_unbindRenderTargetToImage"><span class="SCde"><span class="SFct">unbindRenderTargetToImage</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_unbindRenderTargetToImage">unbindRenderTargetToImage</a></span><span class="SCde">()</span></td>
 <td>Get current render target pixels. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RenderOgl_updateTexture"><span class="SCde"><span class="SFct">updateTexture</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_updateTexture">updateTexture</a></span><span class="SCde">()</span></td>
 <td>Update content of texture. </td>
 </tr>
 </table>
@@ -8964,38 +8963,38 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_RichString_compute"><span class="SCde"><span class="SFct">compute</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_compute">compute</a></span><span class="SCde">()</span></td>
 <td>Compute layout. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_getNaked"><span class="SCde"><span class="SFct">getNaked</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_getNaked">getNaked</a></span><span class="SCde">()</span></td>
 <td>Transform the given string to a naked one. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_invalidate"><span class="SCde"><span class="SFct">invalidate</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_invalidate">invalidate</a></span><span class="SCde">()</span></td>
 <td>Force the string to be repainted. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_isEmpty"><span class="SCde"><span class="SFct">isEmpty</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_isEmpty">isEmpty</a></span><span class="SCde">()</span></td>
 <td>Returns <span class="inline-code">true</span> if the string is empty. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_set"><span class="SCde"><span class="SFct">set</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_set">set</a></span><span class="SCde">()</span></td>
 <td>Associate a string. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_RichString_opAffect"><span class="SCde"><span class="SFct">opAffect</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opAffect">opAffect</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opCount"><span class="SCde"><span class="SFct">opCount</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opCount">opCount</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_RichString_opEquals"><span class="SCde"><span class="SFct">opEquals</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RichString_opEquals">opEquals</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -9413,27 +9412,27 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_StringPainter_color"><span class="SCde"><span class="SFct">color</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_color">color</a></span><span class="SCde">()</span></td>
 <td>Set text color. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_draw"><span class="SCde"><span class="SFct">draw</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_draw">draw</a></span><span class="SCde">()</span></td>
 <td>Draw string. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_flags"><span class="SCde"><span class="SFct">flags</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_flags">flags</a></span><span class="SCde">()</span></td>
 <td>Set drawing flags. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_font"><span class="SCde"><span class="SFct">font</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_font">font</a></span><span class="SCde">()</span></td>
 <td>Set font. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_horzAlign"><span class="SCde"><span class="SFct">horzAlign</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_horzAlign">horzAlign</a></span><span class="SCde">()</span></td>
 <td>Set horizontal alignment. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_StringPainter_vertAlign"><span class="SCde"><span class="SFct">vertAlign</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_StringPainter_vertAlign">vertAlign</a></span><span class="SCde">()</span></td>
 <td>Set vertical alignment. </td>
 </tr>
 </table>
@@ -9587,11 +9586,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_Texture_getByteSize"><span class="SCde"><span class="SFct">getByteSize</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_getByteSize">getByteSize</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="#Pixel_Texture_isValid"><span class="SCde"><span class="SFct">isValid</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Texture_isValid">isValid</a></span><span class="SCde">()</span></td>
 <td></td>
 </tr>
 </table>
@@ -9741,43 +9740,43 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td><a href="#Pixel_TypeFace_create"><span class="SCde"><span class="SFct">create</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_create">create</a></span><span class="SCde">()</span></td>
 <td>Get or create a new typeface from a memory buffer. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_createFromHFONT"><span class="SCde"><span class="SFct">createFromHFONT</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_createFromHFONT">createFromHFONT</a></span><span class="SCde">()</span></td>
 <td>Create a new typeface from a HFONT. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getFamilyName"><span class="SCde"><span class="SFct">getFamilyName</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getFamilyName">getFamilyName</a></span><span class="SCde">()</span></td>
 <td>Returns the underlying font family name. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getRuneOutline"><span class="SCde"><span class="SFct">getRuneOutline</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getRuneOutline">getRuneOutline</a></span><span class="SCde">()</span></td>
 <td>Convert a rune to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_getStringOutline"><span class="SCde"><span class="SFct">getStringOutline</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_getStringOutline">getStringOutline</a></span><span class="SCde">()</span></td>
 <td>Convert a string to its outline, at a given size. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isBold"><span class="SCde"><span class="SFct">isBold</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isBold">isBold</a></span><span class="SCde">()</span></td>
 <td>Returns true if the typeface is bold. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_isItalic"><span class="SCde"><span class="SFct">isItalic</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_isItalic">isItalic</a></span><span class="SCde">()</span></td>
 <td>Returns true if the typeface is italic. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_load"><span class="SCde"><span class="SFct">load</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_load">load</a></span><span class="SCde">()</span></td>
 <td>Get or load a new typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_release"><span class="SCde"><span class="SFct">release</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_release">release</a></span><span class="SCde">()</span></td>
 <td>Release the given typeface. </td>
 </tr>
 <tr>
-<td><a href="#Pixel_TypeFace_renderGlyph"><span class="SCde"><span class="SFct">renderGlyph</span>()</spa</a></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_TypeFace_renderGlyph">renderGlyph</a></span><span class="SCde">()</span></td>
 <td>Render one glyph. </td>
 </tr>
 </table>

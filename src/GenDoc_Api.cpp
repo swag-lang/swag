@@ -134,18 +134,16 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             first = false;
         }
 
-        // Name
         helpContent += "<tr>\n";
-        helpContent += "<td>";
-        Utf8 name = n1->token.text;
 
-        // Deal with overloads. If multiple functions with the same name, then output parameters too
         if (kind == AstNodeKind::FuncDecl)
         {
-            AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
-            if (symbolsMap.find(funcNode->token.text)->second.size() > 1)
+            // Deal with overloads. If multiple functions with the same name, then output parameters too
+            Utf8 parameters = "()";
+            if (symbolsMap.find(n1->token.text)->second.size() > 1)
             {
-                name += "(";
+                AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
+                parameters            = "(";
                 if (funcNode->parameters && !funcNode->parameters->childs.empty())
                 {
                     bool firstParam = true;
@@ -157,34 +155,31 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                         if (!varNode->type && !varNode->typeInfo)
                             continue;
                         if (!firstParam)
-                            name += ", ";
+                            parameters += ", ";
                         if (varNode->typeInfo && varNode->typeInfo->flags & TYPEINFO_SELF)
-                            name += "self";
+                            parameters += "self";
                         else if (varNode->typeInfo)
-                            name += varNode->typeInfo->name;
+                            parameters += varNode->typeInfo->name;
                         else
-                            name += getOutputNode(varNode->type);
+                            parameters += getOutputNode(varNode->type);
                         firstParam = false;
                     }
                 }
-                name += ")";
-                name = syntaxColor(name, SyntaxColorMode::ForDoc);
+                parameters += ")";
             }
-            else
-            {
-                name += "()";
-                name = syntaxColor(name, SyntaxColorMode::ForDoc);
-                name.removeBack();
-                name.removeBack();
-            }
+
+            helpContent += "<td class=\"code-type\">";
+            helpContent += Fmt("<span class=\"%s\"><a href=\"#%s\">%s</a></span>", SYN_FUNCTION, toRef(n1->getScopedName()).c_str(), n1->token.text.c_str());
+            helpContent += syntaxColor(parameters, SyntaxColorMode::ForDoc);
+            helpContent += "</td>\n";
         }
         else
         {
-            name = syntaxColor(name, SyntaxColorMode::ForDoc);
+            helpContent += "<td>";
+            auto name = syntaxColor(n1->token.text, SyntaxColorMode::ForDoc);
+            helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
+            helpContent += "</td>\n";
         }
-
-        helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
-        helpContent += "</td>\n";
 
         // Short desc
         helpContent += "<td>";
