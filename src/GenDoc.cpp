@@ -928,7 +928,12 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 helpContent += " ";
             }
         }
-        else if (user.kind == UserBlockKind::Title1 || user.kind == UserBlockKind::Title2 || user.kind == UserBlockKind::Title3)
+        else if (user.kind == UserBlockKind::Title1 ||
+                 user.kind == UserBlockKind::Title2 ||
+                 user.kind == UserBlockKind::Title3 ||
+                 user.kind == UserBlockKind::Title4 ||
+                 user.kind == UserBlockKind::Title5 ||
+                 user.kind == UserBlockKind::Title6)
         {
             helpContent += getFormattedText(user.lines[i]);
             helpContent += " ";
