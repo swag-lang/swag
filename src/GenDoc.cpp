@@ -801,41 +801,57 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::BlockquoteNote:
+    {
         helpContent += "<div class=\"blockquote-note\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-info-circle\"></i> ";
-        helpContent += "<span class = \"blockquote-title\">Note</span>";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
+        helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
+        helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
-        break;
+    }
+    break;
     case UserBlockKind::BlockquoteTip:
+    {
         helpContent += "<div class=\"blockquote-tip\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-lightbulb-o\"></i> ";
-        helpContent += "<span class=\"blockquote-title\">Tip</span>";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
+        helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
+        helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
-        break;
+    }
+    break;
     case UserBlockKind::BlockquoteWarning:
+    {
         helpContent += "<div class=\"blockquote-warning\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-exclamation-triangle\"></i> ";
-        helpContent += "<span class=\"blockquote-title\">Warning</span>";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
+        helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
+        helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
-        break;
+    }
+    break;
     case UserBlockKind::BlockquoteAttention:
+    {
         helpContent += "<div class=\"blockquote-attention\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
-        helpContent += "<i class=\"fa fa-ban\"></i> ";
-        helpContent += "<span class=\"blockquote-title\">Attention</span>";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
+        helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
+        helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
-        break;
+    }
+    break;
 
     case UserBlockKind::Paragraph:
         if (!shortDescTd)

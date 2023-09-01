@@ -135,33 +135,37 @@ You can create a special quote by adding a title on the first line. There must b
 
 ```swag
 // > Note:
-// > This is the content
+// > This is the note content
 ```
 
 > Note:
-> This is the content
+> This is the note content
 
 ```swag
 // > Tip:
-// > This is the content
+// > In the 'module.swg' file, we have changed the 'tip' title to be `"Result"` instead of `"Tip"`.
 ```
 
 > Tip:
-> This is the content
+> In the 'module.swg' file, we have changed the 'tip' title to be `"Result"` instead of `"Tip"`.
 
 ```swag
 // > Warning:
-// > This is the content
+// > This is the warning content
+// >
+// > Another paragraph
 ```
 
 > Warning:
-> This is the content
+> This is the warning content
+>
+> Another paragraph
 
 ```swag
-// > Attention: Content can be on the same line as the title
+// > Attention: The content of the quote can be written on the same line as the title
 ```
 
-> Attention: Content can be on the same line as the title
+> Attention: The content of the quote can be written on the same line as the title
 
 ## Tables
 

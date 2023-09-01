@@ -724,6 +724,14 @@ namespace Swag
         startBody:           string                 // Content to insert at the start of the <body> section
         endBody:             string                 // Content to insert at the end of the <body> section
         morePages:           string                 // Additional external file pages to process (separated with ';')
+        quoteIconNote:       string                 // The icon for the note blockquote
+        quoteIconTip:        string                 // The icon for the tip blockquote
+        quoteIconWarning:    string                 // The icon for the warning blockquote
+        quoteIconAttention:  string                 // The icon for the attention blockquote
+        quoteTitleNote:      string                 // The title for the note blockquote
+        quoteTitleTip:       string                 // The title for the tip blockquote
+        quoteTitleWarning:   string                 // The title for the warning blockquote
+        quoteTitleAttention: string                 // The title for the attention blockquote
         syntaxDefaultColor:  u32 = 0x00222222       // Code syntax default color (if not colorized)
         syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
         hasFontAwesome       = true                 // Generate a reference to the FontAwesome script (icons)

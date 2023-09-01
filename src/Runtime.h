@@ -240,6 +240,14 @@ struct BuildCfgGenDoc
     SwagSlice       startBody;
     SwagSlice       endBody;
     SwagSlice       morePages;
+    SwagSlice       quoteIconNote;
+    SwagSlice       quoteIconTip;
+    SwagSlice       quoteIconWarning;
+    SwagSlice       quoteIconAttention;
+    SwagSlice       quoteTitleNote;
+    SwagSlice       quoteTitleTip;
+    SwagSlice       quoteTitleWarning;
+    SwagSlice       quoteTitleAttention;
     uint32_t        syntaxDefaultColor = 0x00222222;
     float           syntaxColorLum     = 0.5f;
     bool            hasFontAwesome     = true;

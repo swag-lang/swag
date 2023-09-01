@@ -212,7 +212,7 @@
 }</span></code>
 </div>
 <div class="blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i> <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
 <p> Everything (including this web site) is still under construction... </p>
 </div>
 </div>
