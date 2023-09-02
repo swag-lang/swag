@@ -603,20 +603,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     {
         char prevC = pz == user.c_str() ? 0 : pz[-1];
 
-        if (*pz == '<')
-        {
-            result += "&lt;";
-            pz++;
-            continue;
-        }
-
-        if (*pz == '>')
-        {
-            result += "&gt;";
-            pz++;
-            continue;
-        }
-
+        // Escape char
         if (*pz == '\\')
         {
             if (pz[1] == 0)
@@ -633,8 +620,23 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
+        // Replace some characters for HTML
+        if (*pz == '<')
+        {
+            result += "&lt;";
+            pz++;
+            continue;
+        }
+
+        if (*pz == '>')
+        {
+            result += "&gt;";
+            pz++;
+            continue;
+        }
+
         // image ![](link)
-        if (*pz == '!' && pz[1] == '[')
+        if (*pz == '!' && pz[1] == '[' && !inCodeMode)
         {
             Utf8 name;
             Utf8 link;
@@ -651,7 +653,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // [reference] to create an html link to the current document
-        if (*pz == '[')
+        if (*pz == '[' && !inCodeMode)
         {
             Utf8 name;
             Utf8 link;
@@ -681,7 +683,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // Italic
-        if (prevC != '*' && pz[0] == '*' && pz[1] != '*')
+        if (prevC != '*' && pz[0] == '*' && pz[1] != '*' && !inCodeMode)
         {
             if ((!inItalicMode && !SWAG_IS_BLANK(pz[1])) || inItalicMode)
             {
@@ -696,7 +698,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // Bold
-        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] != '*')
+        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] != '*' && !inCodeMode)
         {
             if ((!inBoldMode && !SWAG_IS_BLANK(pz[2])) || inBoldMode)
             {
@@ -713,20 +715,26 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         // 'word'
         if (*pz == '\'')
         {
+            if (inCodeMode)
+            {
+                inCodeMode = false;
+                result += "</span>";
+                pz++;
+                continue;
+            }
+
             auto pz1 = pz + 1;
             while (*pz1 && !SWAG_IS_BLANK(*pz1) && *pz1 != '\'')
                 pz1++;
             if (*pz1 == '\'')
             {
+                inCodeMode = true;
                 result += "<span class=\"code-inline\">";
                 pz++;
-                while (pz != pz1)
-                    result += *pz++;
-                result += "</span>";
-                pz++;
+                continue;
             }
-            else
-                result += *pz++;
+
+            result += *pz++;
             continue;
         }
 

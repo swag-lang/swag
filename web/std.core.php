@@ -15384,7 +15384,7 @@
 </tr>
 </table>
 </p>
-<p>Normalize path  <span class="code-inline">\</span> are replaced with <span class="code-inline">/</span> as this is the std norm for paths. </p>
+<p>Normalize path  <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(fullname: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span>)</span></code>
 </div>
 <p>

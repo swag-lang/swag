@@ -239,7 +239,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_BusHandle"><span class="api-item-title-kind">type alias</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Type Aliases</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L323" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L325" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -338,7 +338,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Bus_getVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">getVolume</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L372" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -366,7 +366,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Bus_setVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Bus.</span><span class="api-item-title-strong">setVolume</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L361" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -751,7 +751,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Voice_getVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">getVolume</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L265" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L267" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -826,7 +826,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Voice_setFrequencyRatio"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setFrequencyRatio</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L277" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L279" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -841,7 +841,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Voice_setRooting"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setRooting</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L289" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L291" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -856,7 +856,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 <span id="Audio_Voice_setVolume"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setVolume</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L254" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\driver\xaudio2.swg#L256" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

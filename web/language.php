@@ -1388,7 +1388,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// string</span>
 }</span></code>
 </div>
-<p>In a multiline or a raw string, if you end a line with <span class="code-inline">`, the following "eol" will <b>not</b> be part of the string.</code> </p>
+<p>In a multiline or a raw string, if you end a line with <span class="code-inline">`, the following "eol" will **not** be part of the string.</code> </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">""</span><span class="SStr">"\
@@ -2134,7 +2134,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="022_pointers">Pointers</h2><h3 id="Single_value_pointers">Single value pointers </h3>
-<p>A pointer to a <b>single element</b> is declared with <span class="code-inline"><i></span>.</i> </p>
+<p>A pointer to a <b>single element</b> is declared with <span class="code-inline">*</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> ptr1: *<span class="STpe">u8</span>   <span class="SCmt">// This is a pointer to one single 'u8'</span>
@@ -2181,7 +2181,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3 id="Multiple_values_pointers">Multiple values pointers </h3>
-<p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline"><i></span>.</i> </p>
+<p>If you want to enable <b>pointer arithmetic</b>, and make a pointer to <b>multiple values</b>, declare your pointer with <span class="code-inline">^</span> instead of <span class="code-inline">*</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// `ptr` is a pointer to a memory block of `u8`.</span>
@@ -2637,7 +2637,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h3 id="Enum_as_flags">Enum as flags </h3>
-<p>An enum can be a set of flags if you declare it with the <span class="code-inline">#<a href="swag.runtime.php#Swag_EnumFlags">Swag.EnumFlags</a></span> <b>attribute</b>. Its type should be <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span> or <span class="code-inline">u64</span>. </p>
+<p>An enum can be a set of flags if you declare it with the <span class="code-inline">#[Swag.EnumFlags]</span> <b>attribute</b>. Its type should be <span class="code-inline">u8</span>, <span class="code-inline">u16</span>, <span class="code-inline">u32</span> or <span class="code-inline">u64</span>. </p>
 <p>That kind of enum starts by default at 1, and not 0, and each value should be a power of 2. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3761,7 +3761,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(c.<span class="SFct">returnZ</span>() == <span class="SNum">20</span>)
 }</span></code>
 </div>
-<p>All functions in an <span class="code-inline">impl</span> block can be retrieved by reflection, as long as the struct is declared with <span class="code-inline">#<a href="swag.runtime.php#Swag_ExportType("methods")">Swag.ExportType("methods")</a></span> (by default, methods are not exported). </p>
+<p>All functions in an <span class="code-inline">impl</span> block can be retrieved by reflection, as long as the struct is declared with <span class="code-inline">#[Swag.ExportType("methods")]</span> (by default, methods are not exported). </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Creates a type alias named 'Lambda'</span>
@@ -3934,7 +3934,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(v1.y == <span class="SNum">0</span>)
 }</span></code>
 </div>
-<p>If <span class="code-inline">opAffect</span> is supposed to initialize the full content of the struct, you can add <span class="code-inline">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></span>. This will avoid every variables to be initialized to the default values, then changed later with the <span class="code-inline">opAffect</span> call. </p>
+<p>If <span class="code-inline">opAffect</span> is supposed to initialize the full content of the struct, you can add <span class="code-inline">#[Swag.Complete]</span>. This will avoid every variables to be initialized to the default values, then changed later with the <span class="code-inline">opAffect</span> call. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
     <span class="SAtr">#[Swag.Complete]</span>
@@ -4134,7 +4134,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>You can visit a struct variable if a macro <span class="code-inline">opVisit</span> has been defined. This is the equivalent of an <b>iterator</b>. </p>
-<p><span class="code-inline">opVisit</span> is a macro, so it should be marked with the <span class="code-inline">#<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a></span> attribute. <span class="code-inline">opVisit</span> is also a generic function which takes two compile time generic parameters of type <span class="code-inline">bool</span>. </p>
+<p><span class="code-inline">opVisit</span> is a macro, so it should be marked with the <span class="code-inline">#[Swag.Macro]</span> attribute. <span class="code-inline">opVisit</span> is also a generic function which takes two compile time generic parameters of type <span class="code-inline">bool</span>. </p>
 <ul>
 <li>if <span class="code-inline">ptr</span> is <span class="code-inline">true</span>, indicates that we should visit by address</li>
 <li>if <span class="code-inline">back</span> is 'true", indicated that we want to visit in reverse order (from back to front)</li>
@@ -4297,8 +4297,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h3 id="068_009_packing">Packing</h3><p>You can also control the struct layout with two attributes: <span class="code-inline">#<a href="swag.runtime.php#Swag_Pack">Swag.Pack</a></span> and <span class="code-inline">#<a href="swag.runtime.php#Swag_Align">Swag.Align</a></span>. </p>
-<p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <span class="code-inline">#<a href="swag.runtime.php#Swag_Pack(0)">Swag.Pack(0)</a></span>. </p>
+<h3 id="068_009_packing">Packing</h3><p>You can also control the struct layout with two attributes: <span class="code-inline">#[Swag.Pack]</span> and <span class="code-inline">#[Swag.Align]</span>. </p>
+<p>The default struct packing is the same as in C: each field is aligned to the size of the type. This is the equivalent of <span class="code-inline">#[Swag.Pack(0)]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
@@ -4315,7 +4315,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct</span>)     == <span class="SNum">16</span>
 }</span></code>
 </div>
-<p>You can <i>reduce</i> the packing of the fields with <span class="code-inline">#<a href="swag.runtime.php#Swag_Pack">Swag.Pack</a></span>. </p>
+<p>You can <i>reduce</i> the packing of the fields with <span class="code-inline">#[Swag.Pack]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Pack(1)]</span>
@@ -4365,7 +4365,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@sizeof</span>(<span class="SCst">MyStruct1</span>) == <span class="SNum">8</span>
 }</span></code>
 </div>
-<p>You can force the struct alignement with <span class="code-inline">#<a href="swag.runtime.php#Swag_Align">Swag.Align</a></span>. </p>
+<p>You can force the struct alignement with <span class="code-inline">#[Swag.Align]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">MyStruct1</span>
@@ -4879,7 +4879,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h3 id="104_004_mixin">Mixin</h3><p>A mixin is declared like a function, with the attribute <span class="code-inline">#<a href="swag.runtime.php#Swag_Mixin">Swag.Mixin</a></span>. </p>
+<h3 id="104_004_mixin">Mixin</h3><p>A mixin is declared like a function, with the attribute <span class="code-inline">#[Swag.Mixin]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5742,7 +5742,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h2 id="130_generic">Generic</h2>
-<h3 id="131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <span class="code-inline">func</span>. At the call site, you specify the generic parameters with <span class="code-inline">funcCall'(type1, type2, ...)(parameters)</span>. Note that parenthesis can be omitted if there's only one generic parameter. </p>
+<h3 id="131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <span class="code-inline">func</span>. At the call site, you specify the generic parameters with <span class="code-inline">funcCall</span>(type1, type2, ...)(parameters)<span class="code-inline">.</code> Note that parenthesis can be omitted if there's only one generic parameter. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -5782,7 +5782,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p>Generic types can be deduced from parameters, so <span class="code-inline">func'type()</span> is not always necessary. </p>
+<p>Generic types can be deduced from parameters, so <span class="code-inline">func</span>type()<span class="code-inline"> is not always necessary.</code> </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
@@ -6549,7 +6549,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <span class="code-inline">#<a href="swag.runtime.php#Swag_Safety">Swag.Safety</a></span> attribute. </p>
+<h2 id="175_safety">Safety</h2><p>Swag comes with a bunch of safety checks which can be activated by module, function or even instruction with the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
 <p>Safety checks can also be changed for a specific build configuration (<span class="code-inline">--cfg:&lt;config&gt;</span>) with <span class="code-inline">buildCfg.safetyGuards</span>. </p>
 <div class="blockquote-default">
 <p> Swag comes with four predefined configurations : <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span>. Safety checks are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span>. </p>
@@ -6558,7 +6558,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="code-block"><code><span class="SAtr">#[Swag.Safety("overflow", true)]</span></code>
 </div>
 <p>Swag will panic if some operators overflow and if we lose some bits during an integer conversion. </p>
-<p>Operators that can overflow are : <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their equivalent <span class="code-inline">+= -= <i>= &lt;&lt;= &gt;&gt;=</span>.</i> </p>
+<p>Operators that can overflow are : <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their equivalent <span class="code-inline">+= -= *= &lt;&lt;= &gt;&gt;=</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>
@@ -6573,7 +6573,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)
 }</span></code>
 </div>
-<p>You can also use <span class="code-inline">#<a href="swag.runtime.php#Swag_Overflow(true)">Swag.Overflow(true)</a></span> to authorize overflow on a more global scale. </p>
+<p>You can also use <span class="code-inline">#[Swag.Overflow(true)]</span> to authorize overflow on a more global scale. </p>
 <div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Overflow(true)]</span>
 <span class="SFct">#test</span>
 {
@@ -6698,7 +6698,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <h3 id="switch">switch </h3>
 <div class="code-block"><code><span class="SAtr">#[Swag.Safety("switch", true)]</span></code>
 </div>
-<p>Swag will panic if a switch is marked with <span class="code-inline">#<a href="swag.runtime.php#Swag_Complete">Swag.Complete</a></span>, but the value is not covered by a <span class="code-inline">case</span>. </p>
+<p>Swag will panic if a switch is marked with <span class="code-inline">#[Swag.Complete]</span>, but the value is not covered by a <span class="code-inline">case</span>. </p>
 <h3 id="bool">bool </h3>
 <div class="code-block"><code><span class="SAtr">#[Swag.Safety("bool", true)]</span></code>
 </div>
@@ -6840,7 +6840,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">4</span>] == <span class="SNum">16</span>)
 }</span></code>
 </div>
-<p><span class="code-inline">#run</span> can also be used as an expression, to call for example a function not marked with <span class="code-inline">#<a href="swag.runtime.php#Swag_ConstExpr">Swag.ConstExpr</a></span>. </p>
+<p><span class="code-inline">#run</span> can also be used as an expression, to call for example a function not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">SumValue</span> = <span class="SFct">#run</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>) + <span class="SNum">10</span>
 <span class="SCmp">#assert</span> <span class="SCst">SumValue</span> == <span class="SNum">20</span>
 
@@ -6888,11 +6888,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></code>
 </div>
 
-<h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <span class="code-inline">#<a href="swag.runtime.php#Swag_Tls">Swag.Tls</a></span> to store it in the thread local storage (one copy per thread). </p>
+<h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <span class="code-inline">#[Swag.Tls]</span> to store it in the thread local storage (one copy per thread). </p>
 <div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
 <span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span></span></code>
 </div>
-<p>A local variable can be tagged with <span class="code-inline">#<a href="swag.runtime.php#Swag_Global">Swag.Global</a></span> to make it global (aka <span class="code-inline">static</span> in C/C++). </p>
+<p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global (aka <span class="code-inline">static</span> in C/C++). </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">toto</span>()-&gt;<span class="STpe">s32</span>
@@ -6909,7 +6909,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>A global variable can also be marked as <span class="code-inline">#<a href="swag.runtime.php#Swag_Compiler">Swag.Compiler</a></span>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
+<p>A global variable can also be marked as <span class="code-inline">#[Swag.Compiler]</span>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
 <div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
 <span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>
 
@@ -7434,7 +7434,7 @@ var g_Functions: Array'OneFunc</span></code>
 <p> This is another paragraph because there's an empty line before. </p>
 <p> This is yet another paragraph. </p>
 </div>
-<p>Inside a paragraph, you can end of line with <span class="code-inline">\</span> to force a break without creating a new paragraph. </p>
+<p>Inside a paragraph, you can end of line with <span class="code-inline">' to force a break without creating a new paragraph.</code> </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// First line.</span>
 <span class="SCmt">// Second line is on first line.\</span>
 <span class="SCmt">// But third line has a break before.</span></span></code>
@@ -7636,7 +7636,7 @@ Note that **everything** is not bold, put printed 'as it is'.</p>
     <span class="SCst">Red</span>         <span class="SCmt">// This is the documentation comment of enum value 'Red'</span>
 }</span></code>
 </div>
-<p>The attribute <span class="code-inline">#[<a href="swag.runtime.php#Swag_NoDoc">Swag.NoDoc</a>]</span> can be used to avoid a given element to appear in the documentation. </p>
+<p>The attribute <span class="code-inline">#[[Swag.NoDoc]]</span> can be used to avoid a given element to appear in the documentation. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating documentation.</span>
 <span class="SAtr">#[Swag.NoDoc]</span>
 <span class="SKwd">func</span> <span class="SFct">one</span>()

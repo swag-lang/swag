@@ -5,7 +5,10 @@ Here is a very simple script that implements the [Flappy Bird](https://en.wikipe
 
     $ swag flappy.swgs
 
-Instead of mainly explaining the game, the aim here is to describe the language. Note also that this page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
+Instead of mainly explaining the game, the aim here is more to describe the language. But it's better to read the basic language [documentation](language.php) first, as we will not explain all details.
+
+> NOTE:
+> This page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
 
 So, let's begin.
 
@@ -26,7 +29,7 @@ So in our case, we need to import the module 'gui'. This module is used to creat
     // with the compiler.
     #import "gui" location="swag@std"
 
-    // Import the audio module, from the same location
+    // Import the audio module, from the same default location
     #import "audio" location="swag@std"
 
     // This is the optional '#run' block executed by the compiler before compiling the script itself.
@@ -53,6 +56,7 @@ So in our case, we need to import the module 'gui'. This module is used to creat
 Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global 'using' statement immediately after the '#dependency' block.
 
 The 'gui' module depends on 'pixel' which depends on 'core'. So we bring all the three namespaces into the file scope.
+Note that we keep 'Audio' as it is.
 */
 using Core, Pixel, Gui
 
@@ -66,8 +70,11 @@ The compiler's '#run' function serves as the initial execution point for the scr
 */
 #run
 {
-    // Create audio engine
+    // Creates audio engine
     assume Audio.createEngine()
+
+    // Thanks to 'defer', the audio engine will be destroyed when
+    // leaving this scope, i.e. when exiting the '#run' function.
     defer Audio.destroyEngine()
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
@@ -96,7 +103,16 @@ const BirdImpulseY = 350        // 350 is an integer, so the type of BirdImpulse
 
 var g_Bird:      Bird
 var g_Pipes:     Array'Pipe
+
+/**
+'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module.
+*/
 var g_Rect:      Math.Rectangle
+
+/**
+'Math' is a namespace part of the 'Core' module. We could have specified a global `using Core.Math` at the top of the script file, but here, we prefer the explicit reference.
+*/
+
 var g_Dt:        f32
 var g_Time:      f32
 var g_BasePos:   f32
@@ -104,6 +120,10 @@ var g_Score:     s32
 var g_GameOver:  bool
 var g_Start:     bool
 var g_FirstStart = true
+
+/**
+Again, no need to specify the type of 'g_FirstStart'. It is deduced from the affectation to be 'bool'.
+*/
 
 // Texture assets
 var g_DigitTexture: [10] Texture    // A static array of 10 textures
@@ -121,8 +141,18 @@ var g_SoundScore:   Audio.SoundFile
 var g_SoundHit:     Audio.SoundFile
 var g_SoundFlap:    Audio.SoundFile
 
-// A pointer to the score font
+/**
+*/
 var g_Font: *Font
+
+/**
+'g_Font' is a **value** pointer to the score font.
+
+In Swag, their are two types of pointers.
+* 'value' pointers, which points to one single value. Declared with '*'
+* 'range' pointers, which points to multiple values. Declared with '^'.
+Pointer arithmetic is not enabled on value pointers, but it is on range pointers.
+*/
 
 /**
 ## Types
@@ -131,9 +161,14 @@ var g_Font: *Font
 // Defines the Bird
 struct Bird
 {
-    pos:        Math.Vector2    // Position of the bird
-    speed:      Math.Vector2    // Speed of the bird
-    frame:      f32             // Sprite frame
+    // Position of the bird. Full qualified name.
+    pos:        Core.Math.Vector2
+
+    // Speed of the bird. No need to specify 'Core' thanks to the global 'using'.
+    speed:      Math.Vector2
+
+    // Sprite frame
+    frame:      f32
 }
 
 // Defines one Pipe
@@ -148,30 +183,43 @@ struct Pipe
 /**
 # The actual code
 
-This is the callback that will deal with all gui events.
-*/
+This is the callback that will deal with all gui events. This feels like *Windows* API, but their are other ways of dealing with gui, in a more 'object like' way. You can look at the 'captme' tool for example, which does not use a callback but **interfaces** instead.
 
+For a simple script, this is more simple to process events that way.
+*/
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     switch evt.kind
     {
+    // Called once for the surface. Can be used to initialize some stuff.
     case Create:
         g_Rect = wnd.getClientRect()
+
+        // 'loadAssets' can raise some errors (we'll see later). So here we 'assume' that
+        // everyting will be fine. If an error is raised, a 'panic' will occur.
         assume loadAssets(wnd)
+
         start()
 
+    // Each time the surface (i.e. window) is resized
     case Resize:
         g_Rect = wnd.getClientRect()
 
+    // Each time the surface needs to be repainted
     case Paint:
         let paintEvt = cast(*PaintEvent) evt
         let painter = paintEvt.bc.painter
-        g_Dt     = wnd.getApp().getDt()
 
-        input(wnd)
-        paint(painter)
-        move()
+        // This is the elapsed time between two 'frames', in seconds.
+        g_Dt = wnd.getApp().getDt()
 
+        input(wnd)          // IO (keyword test)
+        paint(painter)      // Paint game
+        move()              // Update game
+
+        // We force the window to be dirty, which means that the 'Paint' event will
+        // be sent again next frame.
+        // That way we have a cheap 'frame' update.
         wnd.invalidate()
     }
 
@@ -179,20 +227,21 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 }
 
 /**
+Paint function. Here we are mostly using functions from the 'Pixel' module.
 */
 
 func paint(painter: *Painter)
 {
-    var pt: Math.Point
-
-    // Background
-    painter.drawTexture(pt.x, pt.y, g_BackTexture)
+    // Draw the background texture at position (0, 0). The size of the texture is preserved.
+    painter.drawTexture(0, 0, g_BackTexture)
 
     // Bird
     if !g_FirstStart
     {
+        // We save the state of the painter, in order to restore it at the end of the scope.
+        // The state contains various painting parameters, like the current transformation.
         painter.pushState()
-        let frame = (cast(s32) g_Bird.frame) % 3
+        defer painter.popState()
 
         var trf = painter.getTransform()
 
@@ -203,10 +252,16 @@ func paint(painter: *Painter)
 
         painter.translateTransform(g_Bird.pos.x + trf.tx, g_Bird.pos.y + trf.ty)
 
+        // This is the sprite frame of the bird
+        let frame = (cast(s32) g_Bird.frame) % 3
+
+        // No need to initialize the 'pt' variable here, as we will set both 'x' and 'y'
+        // just after. So we initialize it with 'undefined'.
+        var pt: Math.Point = undefined
         pt.x = -g_BirdTexture[frame].width * 0.5
         pt.y = -g_BirdTexture[frame].height * 0.5
 
-        // Add a little sin
+        // Add a little position wave
         if !g_Start
         {
             pt.y += 5 * Math.sin(g_Time)
@@ -214,10 +269,9 @@ func paint(painter: *Painter)
         }
 
         painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
-        painter.popState()
     }
 
-    // Pipes
+    // Draw pipes
     visit pipe: g_Pipes
     {
         painter.drawTexture(pipe.rectUp, g_PipeTextureU)
@@ -232,11 +286,15 @@ func paint(painter: *Painter)
     if g_BasePos >= g_BaseTexture.width
         g_BasePos = 0
 
-    // Gameover
+    // Gameover text, centered
     if g_GameOver
     {
-        pt.x = g_Rect.horzCenter() - g_OverTexture.width/2
-        pt.y = g_Rect.vertCenter() - g_OverTexture.height/2
+        // This is another way of initializing a struct variable or constant.
+        var pt = Math.Point{
+            g_Rect.horzCenter() - g_OverTexture.width/2,
+            g_Rect.vertCenter() - g_OverTexture.height/2
+        }
+
         painter.drawTexture(pt.x, pt.y, g_OverTexture)
     }
 
@@ -249,6 +307,7 @@ func paint(painter: *Painter)
     // Message
     if g_FirstStart
     {
+        var pt: Math.Point = undefined
         pt.x = g_Rect.horzCenter() - g_MsgTexture.width/2
         pt.y = g_Rect.vertCenter() - g_MsgTexture.height/2
         painter.drawTexture(pt.x, pt.y, g_MsgTexture)
@@ -256,6 +315,7 @@ func paint(painter: *Painter)
 }
 
 /**
+Test IO.
 */
 
 func input(wnd: *Wnd)
@@ -269,9 +329,11 @@ func input(wnd: *Wnd)
             start()
             g_FirstStart = false
         }
+
         return
     }
-    elif kb.isKeyJustPressed(.Up)
+
+    if kb.isKeyJustPressed(.Up)
     {
         g_Start = true
         g_Bird.speed.y = -BirdImpulseY
@@ -280,6 +342,7 @@ func input(wnd: *Wnd)
 }
 
 /**
+Collision detection (kind of) between the bird and a given rectangle.
 */
 
 func birdInRect(rect: Math.Rectangle)->bool
@@ -293,6 +356,7 @@ func birdInRect(rect: Math.Rectangle)->bool
 }
 
 /**
+The 'update' part of the game.
 */
 
 func move()
@@ -318,12 +382,16 @@ func move()
         {
             pipe.rectUp.x -= SpeedHorz * g_Dt
             pipe.rectDown.x -= SpeedHorz * g_Dt
+
+            // Collision with the pipes
             if birdInRect(pipe.rectUp) or birdInRect(pipe.rectDown)
             {
                 assume Audio.Voice.play(&g_SoundHit)
                 g_GameOver = true
             }
 
+            // If bird moves to the right of a pipe, then this is a win !
+            // Score up.
             if g_Bird.pos.x > pipe.rectUp.right() and !pipe.scored
             {
                 assume Audio.Voice.play(&g_SoundScore)
@@ -354,17 +422,17 @@ func move()
 }
 
 /**
+Creates a random up and down part of a new Pipe.
 */
 
 func createPipe()
 {
-    var pipe: Pipe
-
     let pos = g_Rect.width
     let sizePassage = Random.shared().nextF32(100, 175)
     let heightUp = Random.shared().nextF32(50, g_Rect.height - sizePassage - 50)
     let heightDown = g_Rect.height - heightUp - GroundHeight - sizePassage
 
+    var pipe: Pipe
     pipe.rectUp.x = pos
     pipe.rectUp.y = heightUp - g_PipeTextureU.height
     pipe.rectUp.width = g_PipeTextureU.width
@@ -381,20 +449,27 @@ func createPipe()
 }
 
 /**
+Reinitialize the game.
 */
 
 func start()
 {
+    // '@init' can be called to reinitized a variable to its initial value
     @init(&g_Bird)
+
     g_Bird.pos.x = g_Rect.horzCenter()
     g_Bird.pos.y = g_Rect.vertCenter()
     g_Score = 0
     g_Pipes.clear()
-    g_GameOver = false
-    g_Start = false
+
+    // Assign two variables with the same value
+    g_GameOver, g_Start = false
 }
 
 /**
+Load all assets.
+
+You can notice that the function has 'throw' after its declaration. This indicated that it can return some errors, and that the caller will have to deal with it.
 */
 
 func loadAssets(wnd: *Wnd) throw
@@ -405,20 +480,31 @@ func loadAssets(wnd: *Wnd) throw
     dataPath = Path.combine(dataPath, "datas")
     dataPath = Path.combine(dataPath, "flappy")
 
-    // Load all textures
-    g_BirdTexture[0] = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
-    g_BirdTexture[1] = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
-    g_BirdTexture[2] = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
-    g_OverTexture    = render.addImage(Path.combine(dataPath, "gameover.png"))
-    g_BaseTexture    = render.addImage(Path.combine(dataPath, "base.png"))
-    g_BackTexture    = render.addImage(Path.combine(dataPath, "background-day.png"))
-    g_MsgTexture     = render.addImage(Path.combine(dataPath, "message.png"))
-
     // Load all sounds
-    g_SoundDie   = Audio.SoundFile.load(Path.combine(dataPath, "die.wav"))
-    g_SoundScore = Audio.SoundFile.load(Path.combine(dataPath, "point.wav"))
-    g_SoundHit   = Audio.SoundFile.load(Path.combine(dataPath, "hit.wav"))
-    g_SoundFlap  = Audio.SoundFile.load(Path.combine(dataPath, "flap.wav"))
+    //
+    // 'with' tells the compiler that what follows is in the 'context' of the namespace 'Audio.SoundFile'.
+    // So instead of having to write 'Audio.SoundFile.load(...)', we can now only write '.load(...)'.
+    with Audio.SoundFile
+    {
+        g_SoundDie   = .load(Path.combine(dataPath, "die.wav"))
+        g_SoundScore = .load(Path.combine(dataPath, "point.wav"))
+        g_SoundHit   = .load(Path.combine(dataPath, "hit.wav"))
+        g_SoundFlap  = .load(Path.combine(dataPath, "flap.wav"))
+    }
+
+    // Load all textures
+    //
+    // 'with' can also be used with a variable.
+    with render
+    {
+        g_BirdTexture[0] = .addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
+        g_BirdTexture[1] = .addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
+        g_BirdTexture[2] = .addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
+        g_OverTexture    = .addImage(Path.combine(dataPath, "gameover.png"))
+        g_BaseTexture    = .addImage(Path.combine(dataPath, "base.png"))
+        g_BackTexture    = .addImage(Path.combine(dataPath, "background-day.png"))
+        g_MsgTexture     = .addImage(Path.combine(dataPath, "message.png"))
+    }
 
     var img = Image.load(Path.combine(dataPath, "pipe-green.png"))
     g_PipeTextureD = render.addImage(img)
