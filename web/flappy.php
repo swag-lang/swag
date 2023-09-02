@@ -127,17 +127,17 @@
 <div class="blockquote blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
-<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
+<p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
 </div>
-<p>Instead of mainly explaining the game, the aim here is more to describe the language. But it's better to read the basic language <a href="language.php">documentation</a> first, as we will not explain all details. </p>
+<p>The goal here is to comment a real life example of swag usage. But it's better to read the basic language <a href="language.php">documentation</a> first, as we will not going too deep into the details. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
 </div>
 <p>So, let's begin. </p>
 <h1 id="Dependencies">Dependencies </h1>
-<p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span> file, you just put it at the top of the script file. </p>
-<p>This special compiler block is used to specify : </p>
+<p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span>, you just put it at the top of the script file. </p>
+<p>This special <span class="code-inline">#dependencies</span> compiler block is used to specify : </p>
 <ul>
 <li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <span class="code-inline">gui</span> module.</li>
 <li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <span class="code-inline">#load</span> directive.</li>

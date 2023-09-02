@@ -1,11 +1,11 @@
 /**
 ![](imgs/flappy.png)
 
-Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. To have some fun and play, go to the `bin/examples/scripts` folder, and type :
+Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. To have some fun and play with it, go to the `bin/examples/scripts` folder, and type :
 
     $ swag flappy.swgs
 
-Instead of mainly explaining the game, the aim here is more to describe the language. But it's better to read the basic language [documentation](language.php) first, as we will not explain all details.
+The goal here is to comment a real life example of swag usage. But it's better to read the basic language [documentation](language.php) first, as we will not going too deep into the details.
 
 > NOTE:
 > This page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
@@ -14,9 +14,9 @@ So, let's begin.
 
 # Dependencies
 
-Normally, you'd put the '#dependency' block in the 'module.swg' file of a module. But if it's a script and there's no 'module.swg' file, you just put it at the top of the script file.
+Normally, you'd put the '#dependency' block in the 'module.swg' file of a module. But if it's a script and there's no 'module.swg', you just put it at the top of the script file.
 
-This special compiler block is used to specify :
+This special '#dependencies' compiler block is used to specify :
 * **External dependencies**, i.e. other modules you depend on. For example for Flappy, we will use the 'gui' module.
 * **Additional files**. In case of scripts, you can add more files to compile with the '#load' directive.
 * **Module configuration**. If present, a special '#run' block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.
