@@ -235,7 +235,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 /**
 Paint function. Here we are mostly using functions from the 'Pixel' module.
 */
-
 func paint(painter: *Painter)
 {
     // Draw the background texture at position (0, 0). The size of the texture is preserved.
@@ -323,7 +322,6 @@ func paint(painter: *Painter)
 /**
 Test IO.
 */
-
 func input(wnd: *Wnd)
 {
     let kb = wnd.getApp().getKeyboard()
@@ -350,7 +348,6 @@ func input(wnd: *Wnd)
 /**
 Collision detection (kind of) between the bird and a given rectangle.
 */
-
 func birdInRect(rect: Math.Rectangle)->bool
 {
     var rectBird: Math.Rectangle
@@ -364,7 +361,6 @@ func birdInRect(rect: Math.Rectangle)->bool
 /**
 The 'update' part of the game.
 */
-
 func move()
 {
     if g_GameOver
@@ -430,7 +426,6 @@ func move()
 /**
 Creates a random up and down part of a new Pipe.
 */
-
 func createPipe()
 {
     let pos = g_Rect.width
@@ -457,10 +452,9 @@ func createPipe()
 /**
 Reinitialize the game.
 */
-
 func start()
 {
-    // '@init' can be called to reinitized a variable to its initial value
+    // '@init' can be called to reinitialize a variable to its default value
     @init(&g_Bird)
 
     g_Bird.pos.x = g_Rect.horzCenter()
@@ -477,7 +471,6 @@ Load all assets.
 
 You can notice that the function has 'throw' after its declaration. This indicated that it can return some errors, and that the caller will have to deal with it.
 */
-
 func loadAssets(wnd: *Wnd) throw
 {
     let render = &wnd.getApp().renderer

@@ -518,7 +518,7 @@
 <p>Reinitialize the game. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
 {
-    <span class="SCmt">// '@init' can be called to reinitized a variable to its initial value</span>
+    <span class="SCmt">// '@init' can be called to reinitialize a variable to its default value</span>
     <span class="SItr">@init</span>(&g_Bird)
 
     g_Bird.pos.x = g_Rect.<span class="SFct">horzCenter</span>()
