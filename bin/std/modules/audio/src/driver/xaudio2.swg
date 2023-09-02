@@ -151,6 +151,8 @@ impl Voice
 {
     func createNative(voice: *Voice, createFlags = VoiceCreateFlags.Default) throw
     {
+        Debug.assert(g_Driver.xAudio2 != null, "driver should be created first")
+
         let file = voice.file
 
         var wfx: WAVEFORMATEXTENSIBLE
