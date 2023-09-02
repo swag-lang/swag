@@ -91,15 +91,15 @@ llvm debug, pas à jour
 DOC
 ****************************************
 
-- checks all markdowns implementations for ideas (center ?)
 - add table header + align options
-- doc help, explain the genDoc struct field by field
 - multi levels list
 - *** bold and italic ***
 - ** text _italic_ **
 - __bold__
 - _italic_
 - [[reference]]
+- doc help, explain the genDoc struct field by field
+- doc help, embbed html with ---
 
 
 
