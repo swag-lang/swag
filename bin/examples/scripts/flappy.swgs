@@ -58,7 +58,7 @@ using Core, Pixel, Gui
 
 The compiler's '#run' function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple '#run' blocks, a single one is sufficient for the Flappy application.
 
-> Note:
+> NOTE:
 > You might observe that the arrangement of global declarations doesn't make a difference, as we're using the 'onEvent' function before even defining it. Swag does not bother about the global declaration order.
 */
 #run

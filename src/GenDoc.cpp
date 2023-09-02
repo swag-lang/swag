@@ -9,10 +9,11 @@
 #include "SyntaxColor.h"
 #pragma optimize("", off)
 
-static const char* START_NOTE      = "> Note:";
-static const char* START_TIP       = "> Tip:";
-static const char* START_WARNING   = "> Warning:";
-static const char* START_ATTENTION = "> Attention:";
+static const char* START_NOTE      = "> NOTE:";
+static const char* START_TIP       = "> TIP:";
+static const char* START_WARNING   = "> WARNING:";
+static const char* START_ATTENTION = "> ATTENTION:";
+static const char* START_EXAMPLE   = "> EXAMPLE:";
 
 void GenDoc::outputStyles()
 {
@@ -57,58 +58,41 @@ void GenDoc::outputStyles()
         .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
         .right h2   { margin-top: 35px; }\n\
         \n\
-        .blockquote-default {\n\
+        .blockquote {\n\
             border-radius:      5px;\n\
-            border:             1px solid Orange;\n\
+            border:             1px solid;\n\
+            margin:             20px;\n\
+            margin-left:        20px;\n\
+            margin-right:       20px;\n\
+            padding:            10px;\n\
+        }\n\
+        .blockquote-default {\n\
+            border-color:       Orange;\n\
             border-left:        6px solid Orange;\n\
             background-color:   LightYellow;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
         }\n\
         .blockquote-note {\n\
-            border-radius:      5px;\n\
-            border:             1px solid #ADCEDD;\n\
+            border-color:       #ADCEDD;\n\
             background-color:   #CDEEFD;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
         }\n\
         .blockquote-tip {\n\
-            border-radius:      5px;\n\
-            border:             1px solid #BCCFBC;\n\
+            border-color:       #BCCFBC;\n\
             background-color:   #DCEFDC;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
         }\n\
         .blockquote-warning {\n\
-            border-radius:      5px;\n\
-            border:             1px solid #DFBDB3;\n\
+            border-color:       #DFBDB3;\n\
             background-color:   #FFDDD3;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
         }\n\
         .blockquote-attention {\n\
-            border-radius:      5px;\n\
-            border:             1px solid #DDBAB8;\n\
+            border-color:       #DDBAB8;\n\
             background-color:   #FDDAD8;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
+        }\n\
+        .blockquote-example {\n\
+            border:             2px solid LightGrey;\n\
         }\n\
         .blockquote-default     p:first-child { margin-top: 0px; }\n\
         .blockquote-default     p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote-note        p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote-tip         p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote-warning     p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote-attention   p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote             p:last-child  { margin-bottom: 0px; }\n\
         .blockquote-title-block { margin-bottom:   10px; }\n\
         .blockquote-title       { font-weight:     bold; }\n\
         \n\
@@ -353,6 +337,10 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             {
                 blk->kind = UserBlockKind::BlockquoteAttention;
             }
+            else if (line.startsWith(START_EXAMPLE))
+            {
+                blk->kind = UserBlockKind::BlockquoteExample;
+            }
             else if (line.startsWith(">"))
             {
                 blk->kind = UserBlockKind::Blockquote;
@@ -529,6 +517,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             case UserBlockKind::BlockquoteTip:
             case UserBlockKind::BlockquoteWarning:
             case UserBlockKind::BlockquoteAttention:
+            case UserBlockKind::BlockquoteExample:
                 if (line.startsWith(">"))
                 {
                     auto line1 = line;
@@ -548,6 +537,8 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                         blk->lines[0].remove(0, (uint32_t) strlen(START_WARNING) - 1);
                     else if (blk->kind == UserBlockKind::BlockquoteAttention)
                         blk->lines[0].remove(0, (uint32_t) strlen(START_ATTENTION) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteExample)
+                        blk->lines[0].remove(0, (uint32_t) strlen(START_EXAMPLE) - 1);
                     else
                         SWAG_ASSERT(false);
                     computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
@@ -803,7 +794,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     case UserBlockKind::BlockquoteNote:
     {
-        helpContent += "<div class=\"blockquote-note\">\n";
+        helpContent += "<div class=\"blockquote blockquote-note\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
         Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
         helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
@@ -816,7 +807,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     break;
     case UserBlockKind::BlockquoteTip:
     {
-        helpContent += "<div class=\"blockquote-tip\">\n";
+        helpContent += "<div class=\"blockquote blockquote-tip\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
         Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
         helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
@@ -829,7 +820,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     break;
     case UserBlockKind::BlockquoteWarning:
     {
-        helpContent += "<div class=\"blockquote-warning\">\n";
+        helpContent += "<div class=\"blockquote blockquote-warning\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
         Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
         helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
@@ -842,12 +833,25 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     break;
     case UserBlockKind::BlockquoteAttention:
     {
-        helpContent += "<div class=\"blockquote-attention\">\n";
+        helpContent += "<div class=\"blockquote blockquote-attention\">\n";
         helpContent += "<div class=\"blockquote-title-block\">";
         Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
         helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
         Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
         helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
+    case UserBlockKind::BlockquoteExample:
+    {
+        helpContent += "<div class=\"blockquote blockquote-example\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
+        helpContent += Fmt("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
+        helpContent += Fmt("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
         helpContent += "</div>";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
@@ -929,7 +933,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                  user.kind == UserBlockKind::BlockquoteNote ||
                  user.kind == UserBlockKind::BlockquoteTip ||
                  user.kind == UserBlockKind::BlockquoteWarning ||
-                 user.kind == UserBlockKind::BlockquoteAttention)
+                 user.kind == UserBlockKind::BlockquoteAttention ||
+                 user.kind == UserBlockKind::BlockquoteExample)
         {
             if (line.empty())
                 helpContent += "</p><p>";
@@ -977,6 +982,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::BlockquoteTip:
     case UserBlockKind::BlockquoteWarning:
     case UserBlockKind::BlockquoteAttention:
+    case UserBlockKind::BlockquoteExample:
         helpContent += "</div>\n";
         break;
     case UserBlockKind::List:
@@ -1073,7 +1079,7 @@ void GenDoc::constructPage()
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"right-page\">\n";
 
-    helpOutput += "<div class=\"blockquote-warning\">\n";
+    helpOutput += "<div class=\"blockquote blockquote-warning\">\n";
     helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     helpOutput += "</div>\n";
     helpOutput += helpContent;

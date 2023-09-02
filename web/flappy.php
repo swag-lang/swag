@@ -39,58 +39,41 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .blockquote-default {
+        .blockquote {
             border-radius:      5px;
-            border:             1px solid Orange;
+            border:             1px solid;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-default {
+            border-color:       Orange;
             border-left:        6px solid Orange;
             background-color:   LightYellow;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-note {
-            border-radius:      5px;
-            border:             1px solid #ADCEDD;
+            border-color:       #ADCEDD;
             background-color:   #CDEEFD;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-tip {
-            border-radius:      5px;
-            border:             1px solid #BCCFBC;
+            border-color:       #BCCFBC;
             background-color:   #DCEFDC;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-warning {
-            border-radius:      5px;
-            border:             1px solid #DFBDB3;
+            border-color:       #DFBDB3;
             background-color:   #FFDDD3;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-attention {
-            border-radius:      5px;
-            border:             1px solid #DDBAB8;
+            border-color:       #DDBAB8;
             background-color:   #FDDAD8;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
+        }
+        .blockquote-example {
+            border:             2px solid LightGrey;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
         .blockquote-default     p:last-child  { margin-bottom: 0px; }
-        .blockquote-note        p:last-child  { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote             p:last-child  { margin-bottom: 0px; }
         .blockquote-title-block { margin-bottom:   10px; }
         .blockquote-title       { font-weight:     bold; }
         
@@ -141,7 +124,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote-warning">
+<div class="blockquote blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
@@ -190,7 +173,7 @@
 </div>
 <h1 id="Entry_point">Entry point </h1>
 <p>The compiler's <span class="code-inline">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="code-inline">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
-<div class="blockquote-note">
+<div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>

@@ -244,10 +244,12 @@ struct BuildCfgGenDoc
     SwagSlice       quoteIconTip;
     SwagSlice       quoteIconWarning;
     SwagSlice       quoteIconAttention;
+    SwagSlice       quoteIconExample;
     SwagSlice       quoteTitleNote;
     SwagSlice       quoteTitleTip;
     SwagSlice       quoteTitleWarning;
     SwagSlice       quoteTitleAttention;
+    SwagSlice       quoteTitleExample;
     uint32_t        syntaxDefaultColor = 0x00222222;
     float           syntaxColorLum     = 0.5f;
     bool            hasFontAwesome     = true;

@@ -24,6 +24,7 @@ struct GenDoc
         BlockquoteTip,
         BlockquoteWarning,
         BlockquoteAttention,
+        BlockquoteExample,
         Table,
         List,
         Title1,
@@ -54,7 +55,7 @@ struct GenDoc
     void        outputStyles();
     Utf8        findReference(const Utf8& name);
     void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
-    void        computeUserBlocks(Vector<UserBlock*> &blocks, Vector<Utf8>& lines, bool shortDesc);
+    void        computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc);
     void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link);
     Utf8        getFormattedText(const Utf8& user);

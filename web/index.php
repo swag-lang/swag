@@ -39,58 +39,41 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .blockquote-default {
+        .blockquote {
             border-radius:      5px;
-            border:             1px solid Orange;
+            border:             1px solid;
+            margin:             20px;
+            margin-left:        20px;
+            margin-right:       20px;
+            padding:            10px;
+        }
+        .blockquote-default {
+            border-color:       Orange;
             border-left:        6px solid Orange;
             background-color:   LightYellow;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-note {
-            border-radius:      5px;
-            border:             1px solid #ADCEDD;
+            border-color:       #ADCEDD;
             background-color:   #CDEEFD;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-tip {
-            border-radius:      5px;
-            border:             1px solid #BCCFBC;
+            border-color:       #BCCFBC;
             background-color:   #DCEFDC;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-warning {
-            border-radius:      5px;
-            border:             1px solid #DFBDB3;
+            border-color:       #DFBDB3;
             background-color:   #FFDDD3;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
         }
         .blockquote-attention {
-            border-radius:      5px;
-            border:             1px solid #DDBAB8;
+            border-color:       #DDBAB8;
             background-color:   #FDDAD8;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
+        }
+        .blockquote-example {
+            border:             2px solid LightGrey;
         }
         .blockquote-default     p:first-child { margin-top: 0px; }
         .blockquote-default     p:last-child  { margin-bottom: 0px; }
-        .blockquote-note        p:last-child  { margin-bottom: 0px; }
-        .blockquote-tip         p:last-child  { margin-bottom: 0px; }
-        .blockquote-warning     p:last-child  { margin-bottom: 0px; }
-        .blockquote-attention   p:last-child  { margin-bottom: 0px; }
+        .blockquote             p:last-child  { margin-bottom: 0px; }
         .blockquote-title-block { margin-bottom:   10px; }
         .blockquote-title       { font-weight:     bold; }
         
@@ -141,7 +124,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote-warning">
+<div class="blockquote blockquote-warning">
 <b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
@@ -212,7 +195,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
-<div class="blockquote-warning">
+<div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
 <p> Everything (including this web site) is still under construction... </p>
 </div>

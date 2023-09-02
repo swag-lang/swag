@@ -40,7 +40,7 @@ If the module contains **markdown** files with the '.md' extension, they will be
 // This is yet another paragraph.
 ```
 
-> Tip:
+> EXAMPLE:
 > Everything between empty lines is considered to be a simple paragraph. Which
 > means that if you put several comments on several lines like this, they all
 > will be part of the same paragraph.
@@ -57,7 +57,7 @@ Inside a paragraph, you can end of line with '\' to force a break without creati
 // But third line has a break before.
 ```
 
-> Tip:
+> EXAMPLE:
 > First line.
 > Second line is on first line.\
 > But third line has a break before.
@@ -76,7 +76,7 @@ are respected. The paragraph will be generated `as is` without any markdown chan
 // ---
 ```
 
-> Tip:
+> EXAMPLE:
 > ---
 > Even...
 >
@@ -105,7 +105,7 @@ You can create a **list** of bullet points with `\*`.
 // * This is a bullet point
 ```
 
-> Tip:
+> EXAMPLE:
 > * This is a bullet point
 > * This is a bullet point
 > * This is a bullet point
@@ -128,44 +128,53 @@ You can create a **quote** with `>`
 
 You can create a special quote by adding a title on the first line. There must be exactly one blank between `>` and the title, and the title case should be respected.
 
-* `Note:`
-* `Tip:`
-* `Warning:`
-* `Attention:`
+* `NOTE:`
+* `TIP:`
+* `WARNING:`
+* `ATTENTION:`
+* `EXAMPLE:`
 
 ```swag
-// > Note:
+// > NOTE:
 // > This is the note content
 ```
 
-> Note:
+> NOTE:
 > This is the note content
 
 ```swag
-// > Tip:
-// > In the 'module.swg' file, we have changed the 'tip' title to be `"Result"` instead of `"Tip"`.
+// > TIP:
+// > This is a tip.
 ```
 
-> Tip:
-> In the 'module.swg' file, we have changed the 'tip' title to be `"Result"` instead of `"Tip"`.
+> TIP:
+> This is a tip.
 
 ```swag
-// > Warning:
+// > WARNING:
 // > This is the warning content
 // >
 // > Another paragraph
 ```
 
-> Warning:
+> WARNING:
 > This is the warning content
 >
 > Another paragraph
 
 ```swag
-// > Attention: The content of the quote can be written on the same line as the title
+// > ATTENTION: The content of the quote can be written on the same line as the title
 ```
 
-> Attention: The content of the quote can be written on the same line as the title
+> ATTENTION: The content of the quote can be written on the same line as the title
+
+```swag
+// > EXAMPLE:
+// > In the 'module.swg' file, we have changed the 'example' title to be `"Result"` instead of `"Example"`.
+```
+
+> EXAMPLE:
+> In the 'module.swg' file, we have changed the 'example' title to be `"Result"` instead of `"Example"`.
 
 ## Tables
 
@@ -179,7 +188,7 @@ You can create a **table** with `|`.
 // | switch       | Check an invalid case in a '#[Swag.Complete]' switch
 ```
 
-> Tip:
+> EXAMPLE:
 > | boundcheck   | Check out of bound access
 > | overflow     | Check type conversion lost of bits or precision
 > | math         | Various math checks (like a negative '@sqrt')
@@ -196,7 +205,7 @@ You can create a simple **code paragraph** with three backticks before and after
 // ```
 ```
 
-> Tip:
+> EXAMPLE:
 > ```
 > if a == true
 >   @print("true")
@@ -218,7 +227,7 @@ And if you want **syntax coloration**, add 'swag' after the three backticks. Onl
 // ```
 ```
 
-> Tip:
+> EXAMPLE:
 > ```swag
 > if a == true
 >   @print("true")
@@ -246,7 +255,7 @@ You can create an external **reference** with `\[name\](link)`.
 // This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
 ```
 
-> Tip:
+> EXAMPLE:
 > This is a [reference](https://github.com/swag-lang/swag) to the Swag repository on GitHub.
 
 ## Images
@@ -269,7 +278,7 @@ Some other markers are also supported inside texts.
 // This character \n is escaped, and 'n' will be output as is.\
 ```
 
-> Tip:
+> EXAMPLE:
 > This is `inline code` with back ticks.\
 > This is inline 'code' with normal ticks, but just for a single word.\
 > This is **bold**.\
