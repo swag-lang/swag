@@ -114,6 +114,9 @@ You can create an **ordered** list by starting the line with a digit followed by
 > 1. The digit itself does not matter, real numbers will be computed
 > 0. This is another one
 
+> WARNING:
+> Swag only supports single line list items. You cannot have complex paragraphs (or sub lists).
+
 ## Quotes
 
 You can create a **quote** with `>`

@@ -7485,6 +7485,9 @@ var g_Functions: Array'OneFunc</span></code>
 <li>This is another one</li>
 </ol>
 </div>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Swag only supports single line list items. You cannot have complex paragraphs (or sub lists). </p>
+</div>
 <h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <span class="code-inline">&gt;</span> </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// &gt; This is a block quote on multiple</span>
