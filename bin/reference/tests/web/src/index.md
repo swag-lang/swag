@@ -1,6 +1,7 @@
-1. toto
-2. titi
-3. tata
+* toto
+    * titi
+* titi
+* tata
 
 ---
 <div style="background-color:Black; border-radius: 5px;" align="center">
