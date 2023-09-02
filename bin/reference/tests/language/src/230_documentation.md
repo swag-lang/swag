@@ -330,6 +330,7 @@ Some other markers are also supported inside texts.
 // This is inline 'code' with normal ticks, but just for a single word (no blanks).\
 // This is **bold**.\
 // This is *italic*.\
+// This is ~~strikethrough~~.\
 // This character \n is escaped, and 'n' will be output as is.\
 ```
 
@@ -338,4 +339,5 @@ Some other markers are also supported inside texts.
 > This is inline 'code' with normal ticks, but just for a single word (no blanks).\
 > This is **bold**.\
 > This is *italic*.\
+> This is ~~strikethrough~~.\
 > This character \n is escaped, and 'n' will be output as is.\

@@ -58,6 +58,8 @@ void GenDoc::outputStyles()
         .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
         .right h2   { margin-top: 35px; }\n\
         \n\
+        .strikethrough-text { text-decoration: line-through; }\n\
+        \n\
         .blockquote {\n\
             border-radius:      5px;\n\
             border:             1px solid;\n\
@@ -641,6 +643,8 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     bool inCodeMode   = false;
     bool inBoldMode   = false;
     bool inItalicMode = false;
+    bool inStrikeMode = false;
+
     Utf8 result;
 
     auto pz = user.c_str();
@@ -757,6 +761,21 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             }
         }
 
+        // Strike through
+        if (prevC != '~' && pz[0] == '~' && pz[1] == '~' && pz[2] != '~' && !inCodeMode)
+        {
+            if ((!inStrikeMode && !SWAG_IS_BLANK(pz[2])) || inStrikeMode)
+            {
+                inStrikeMode = !inStrikeMode;
+                if (inStrikeMode)
+                    result += "<span class=\"strikethrough-text\">";
+                else
+                    result += "</span>";
+                pz += 2;
+                continue;
+            }
+        }
+
         // 'word'
         if (*pz == '\'')
         {
@@ -803,6 +822,8 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         result += "</b>";
     if (inItalicMode)
         result += "</i>";
+    if (inStrikeMode)
+        result += "</span>";
     if (inCodeMode)
         result += "</code>";
 

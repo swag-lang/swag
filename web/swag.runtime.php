@@ -42,6 +42,8 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
+        .strikethrough-text { text-decoration: line-through; }
+        
         .blockquote {
             border-radius:      5px;
             border:             1px solid;

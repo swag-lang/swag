@@ -42,6 +42,8 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
+        .strikethrough-text { text-decoration: line-through; }
+        
         .blockquote {
             border-radius:      5px;
             border:             1px solid;
@@ -7639,10 +7641,11 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// This is inline 'code' with normal ticks, but just for a single word (no blanks).\</span>
 <span class="SCmt">// This is **bold**.\</span>
 <span class="SCmt">// This is *italic*.\</span>
+<span class="SCmt">// This is ~~strikethrough~~.\</span>
 <span class="SCmt">// This character \n is escaped, and 'n' will be output as is.\</span></span></code>
 </div>
 <div class="blockquote blockquote-example">
-<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> This is <span class="code-inline">inline code</span> with back ticks.<br/>  This is inline <span class="code-inline">code</span> with normal ticks, but just for a single word (no blanks).<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This character n is escaped, and <span class="code-inline">n</span> will be output as is.<br/> </p>
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> This is <span class="code-inline">inline code</span> with back ticks.<br/>  This is inline <span class="code-inline">code</span> with normal ticks, but just for a single word (no blanks).<br/>  This is <b>bold</b>.<br/>  This is <i>italic</i>.<br/>  This is <span class="strikethrough-text">strikethrough</span>.<br/>  This character n is escaped, and <span class="code-inline">n</span> will be output as is.<br/> </p>
 </div>
 
 <h3 id="231_001_Api">Api</h3><p>In <span class="code-inline">Swag.DocKind.Api</span> mode, swag will collect all <b>public definitions</b> to generate the documentation. <a href="std.core.php">Std.Core</a> is an example of documentation generated in that mode. </p>
