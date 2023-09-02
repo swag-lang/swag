@@ -117,6 +117,54 @@ You can create an **ordered** list by starting the line with a digit followed by
 > WARNING:
 > Swag only supports single line list items. You cannot have complex paragraphs (or sub lists).
 
+## Descriptions
+
+You can add a description with the '+' character followed by a blank, and then the title.
+The description paragraph should come after the title, with at least 4 blanks or one tabulation.
+
+```swag
+// + Title
+//     This is the description.
+// + Other title
+//     This is the other description.
+```
+
+> EXAMPLE:
+> + Title
+>     This is the description.
+> + Other title
+>     This is the other description.
+
+A description can contain complex paragraphs.
+
+```swag
+// + Title
+//     This is an embedded list.
+//     * Item1
+//     * Item2
+```
+
+> EXAMPLE:
+> + Title
+>     This is an embedded list.
+>     * Item1
+>     * Item2
+
+The description paragraph can contain some empty lines.
+
+```swag
+// + Other title
+//
+//     This is the other description
+//     on more than one line.
+```
+
+> EXAMPLE:
+> + Other title
+>
+>     This is the other description
+>     on more than one line.
+
 ## Quotes
 
 You can create a **quote** with `>`

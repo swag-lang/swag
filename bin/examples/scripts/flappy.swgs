@@ -17,9 +17,15 @@ So, let's begin.
 Normally, you'd put the '#dependency' block in the 'module.swg' file of a module. But if it's a script and there's no 'module.swg', you just put it at the top of the script file.
 
 This special '#dependencies' compiler block is used to specify :
-* **External dependencies**, i.e. other modules you depend on. For example for Flappy, we will use the 'gui' module.
-* **Additional files**. In case of scripts, you can add more files to compile with the '#load' directive.
-* **Module configuration**. If present, a special '#run' block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.
+
++ External dependencies
+    Dependencies are other modules you depend on. For example for Flappy, we will use the 'gui' module.
+
++ Additional files
+    In case of scripts, you can add more files to compile with the '#load' directive.
+
++ Module configuration
+    If present, a special '#run' block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.
 
 So in our case, we need to import the module 'gui'. This module is used to create windows and widgets, and will bring other modules like 'core' and 'pixel' (2D painting).
 */

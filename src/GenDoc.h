@@ -28,6 +28,7 @@ struct GenDoc
         Table,
         List,
         OrderedList,
+        DescriptionList,
         Title1,
         Title2,
         Title3,

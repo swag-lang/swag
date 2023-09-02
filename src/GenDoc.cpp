@@ -66,35 +66,20 @@ void GenDoc::outputStyles()
             margin-right:       20px;\n\
             padding:            10px;\n\
         }\n\
-        .blockquote-default {\n\
-            border-color:       Orange;\n\
-            border-left:        6px solid Orange;\n\
-            background-color:   LightYellow;\n\
-        }\n\
-        .blockquote-note {\n\
-            border-color:       #ADCEDD;\n\
-            background-color:   #CDEEFD;\n\
-        }\n\
-        .blockquote-tip {\n\
-            border-color:       #BCCFBC;\n\
-            background-color:   #DCEFDC;\n\
-        }\n\
-        .blockquote-warning {\n\
-            border-color:       #DFBDB3;\n\
-            background-color:   #FFDDD3;\n\
-        }\n\
-        .blockquote-attention {\n\
-            border-color:       #DDBAB8;\n\
-            background-color:   #FDDAD8;\n\
-        }\n\
-        .blockquote-example {\n\
-            border:             2px solid LightGrey;\n\
-        }\n\
+        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }\n\
+        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }\n\
+        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }\n\
+        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }\n\
+        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }\n\
+        .blockquote-example     { border: 2px solid LightGrey; }\n\
+        .blockquote-title-block { margin-bottom: 10px; }\n\
+        .blockquote-title       { font-weight: bold; }\n\
         .blockquote-default     p:first-child { margin-top: 0px; }\n\
         .blockquote-default     p:last-child  { margin-bottom: 0px; }\n\
         .blockquote             p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote-title-block { margin-bottom:   10px; }\n\
-        .blockquote-title       { font-weight:     bold; }\n\
+        \n\
+        .description-list-title   { font-weight: bold; font-style: italic; }\n\
+        .description-list-block   { margin-left: 30px; }\n\
         \n\
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }\n\
         .api-item td:first-child  { width: 33%; white-space: nowrap; }\n\
@@ -357,6 +342,10 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             {
                 blk->kind = UserBlockKind::OrderedList;
             }
+            else if (line.startsWith("+ "))
+            {
+                blk->kind = UserBlockKind::DescriptionList;
+            }
             else if (line.startsWith("# "))
             {
                 blk->kind = UserBlockKind::Title1;
@@ -509,6 +498,47 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                     blk->lines.push_back(line);
                 }
                 break;
+
+            case UserBlockKind::DescriptionList:
+            {
+                line.remove(0, 2); // +<blank>
+                line.trim();
+                auto title = line;
+                start++;
+
+                for (; start < lines.size(); start++)
+                {
+                    auto line1 = lines[start];
+                    if (line1.startsWith("    "))
+                    {
+                        line1.remove(0, 4);
+                        blk->lines.push_back(line1);
+                        continue;
+                    }
+
+                    if (line1.startsWith("\t"))
+                    {
+                        line1.remove(0, 1);
+                        blk->lines.push_back(line1);
+                        continue;
+                    }
+
+                    line1.trim();
+                    if (line1.empty())
+                    {
+                        blk->lines.push_back(lines[start]);
+                        continue;
+                    }
+
+                    break;
+                }
+
+                computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                blk->lines.clear();
+                blk->lines.push_back(title);
+                mustEnd = true;
+            }
+            break;
 
             case UserBlockKind::Blockquote:
                 if (line.startsWith(">"))
@@ -892,6 +922,16 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::OrderedList:
         helpContent += "<ol>\n";
         break;
+
+    case UserBlockKind::DescriptionList:
+        helpContent += "<div class=\"description-list-title\"><p>";
+        helpContent += getFormattedText(user.lines[0]);
+        helpContent += "</p></div>\n";
+        helpContent += "<div class=\"description-list-block\">\n";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+        helpContent += "</div>\n";
+        return;
 
     case UserBlockKind::Table:
         helpContent += "<table class=\"table-enumeration\">\n";

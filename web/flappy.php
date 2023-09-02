@@ -47,35 +47,20 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-default {
-            border-color:       Orange;
-            border-left:        6px solid Orange;
-            background-color:   LightYellow;
-        }
-        .blockquote-note {
-            border-color:       #ADCEDD;
-            background-color:   #CDEEFD;
-        }
-        .blockquote-tip {
-            border-color:       #BCCFBC;
-            background-color:   #DCEFDC;
-        }
-        .blockquote-warning {
-            border-color:       #DFBDB3;
-            background-color:   #FFDDD3;
-        }
-        .blockquote-attention {
-            border-color:       #DDBAB8;
-            background-color:   #FDDAD8;
-        }
-        .blockquote-example {
-            border:             2px solid LightGrey;
-        }
+        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }
+        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }
+        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }
+        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }
+        .blockquote-example     { border: 2px solid LightGrey; }
+        .blockquote-title-block { margin-bottom: 10px; }
+        .blockquote-title       { font-weight: bold; }
         .blockquote-default     p:first-child { margin-top: 0px; }
         .blockquote-default     p:last-child  { margin-bottom: 0px; }
         .blockquote             p:last-child  { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:   10px; }
-        .blockquote-title       { font-weight:     bold; }
+        
+        .description-list-title   { font-weight: bold; font-style: italic; }
+        .description-list-block   { margin-left: 30px; }
         
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
@@ -138,11 +123,18 @@
 <h1 id="Dependencies">Dependencies </h1>
 <p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span>, you just put it at the top of the script file. </p>
 <p>This special <span class="code-inline">#dependencies</span> compiler block is used to specify : </p>
-<ul>
-<li><b>External dependencies</b>, i.e. other modules you depend on. For example for Flappy, we will use the <span class="code-inline">gui</span> module.</li>
-<li><b>Additional files</b>. In case of scripts, you can add more files to compile with the <span class="code-inline">#load</span> directive.</li>
-<li><b>Module configuration</b>. If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations.</li>
-</ul>
+<div class="description-list-title"><p>External dependencies</p></div>
+<div class="description-list-block">
+<p>Dependencies are other modules you depend on. For example for Flappy, we will use the <span class="code-inline">gui</span> module. </p>
+</div>
+<div class="description-list-title"><p>Additional files</p></div>
+<div class="description-list-block">
+<p>In case of scripts, you can add more files to compile with the <span class="code-inline">#load</span> directive. </p>
+</div>
+<div class="description-list-title"><p>Module configuration</p></div>
+<div class="description-list-block">
+<p>If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations. </p>
+</div>
 <p>So in our case, we need to import the module <span class="code-inline">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="code-inline">core</span> and <span class="code-inline">pixel</span> (2D painting). </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {

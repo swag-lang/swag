@@ -50,35 +50,20 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-default {
-            border-color:       Orange;
-            border-left:        6px solid Orange;
-            background-color:   LightYellow;
-        }
-        .blockquote-note {
-            border-color:       #ADCEDD;
-            background-color:   #CDEEFD;
-        }
-        .blockquote-tip {
-            border-color:       #BCCFBC;
-            background-color:   #DCEFDC;
-        }
-        .blockquote-warning {
-            border-color:       #DFBDB3;
-            background-color:   #FFDDD3;
-        }
-        .blockquote-attention {
-            border-color:       #DDBAB8;
-            background-color:   #FDDAD8;
-        }
-        .blockquote-example {
-            border:             2px solid LightGrey;
-        }
+        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }
+        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }
+        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }
+        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }
+        .blockquote-example     { border: 2px solid LightGrey; }
+        .blockquote-title-block { margin-bottom: 10px; }
+        .blockquote-title       { font-weight: bold; }
         .blockquote-default     p:first-child { margin-top: 0px; }
         .blockquote-default     p:last-child  { margin-bottom: 0px; }
         .blockquote             p:last-child  { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:   10px; }
-        .blockquote-title       { font-weight:     bold; }
+        
+        .description-list-title   { font-weight: bold; font-style: italic; }
+        .description-list-block   { margin-left: 30px; }
         
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
@@ -472,6 +457,7 @@
 <ul>
 <li><a href="#Paragraphs">Paragraphs</a></li>
 <li><a href="#Lists">Lists</a></li>
+<li><a href="#Descriptions">Descriptions</a></li>
 <li><a href="#Quotes">Quotes</a></li>
 <li><a href="#Tables">Tables</a></li>
 <li><a href="#Code">Code</a></li>
@@ -7487,6 +7473,51 @@ var g_Functions: Array'OneFunc</span></code>
 </div>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Swag only supports single line list items. You cannot have complex paragraphs (or sub lists). </p>
+</div>
+<h4 id="Descriptions">Descriptions </h4>
+<p>You can add a description with the <span class="code-inline">+</span> character followed by a blank, and then the title. The description paragraph should come after the title, with at least 4 blanks or one tabulation. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// + Title</span>
+<span class="SCmt">//     This is the description.</span>
+<span class="SCmt">// + Other title</span>
+<span class="SCmt">//     This is the other description.</span></span></code>
+</div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><div class="description-list-title"><p>Title</p></div>
+<div class="description-list-block">
+<p> This is the description. </p>
+</div>
+<div class="description-list-title"><p>Other title</p></div>
+<div class="description-list-block">
+<p> This is the other description. </p>
+</div>
+</div>
+<p>A description can contain complex paragraphs. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// + Title</span>
+<span class="SCmt">//     This is an embedded list.</span>
+<span class="SCmt">//     * Item1</span>
+<span class="SCmt">//     * Item2</span></span></code>
+</div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><div class="description-list-title"><p>Title</p></div>
+<div class="description-list-block">
+<p> This is an embedded list. </p>
+<ul>
+<li>Item1</li>
+<li>Item2</li>
+</ul>
+</div>
+</div>
+<p>The description paragraph can contain some empty lines. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// + Other title</span>
+<span class="SCmt">//</span>
+<span class="SCmt">//     This is the other description</span>
+<span class="SCmt">//     on more than one line.</span></span></code>
+</div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><div class="description-list-title"><p>Other title</p></div>
+<div class="description-list-block">
+<p> This is the other description  on more than one line. </p>
+</div>
 </div>
 <h4 id="Quotes">Quotes </h4>
 <p>You can create a <b>quote</b> with <span class="code-inline">&gt;</span> </p>

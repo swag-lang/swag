@@ -49,35 +49,20 @@
             margin-right:       20px;
             padding:            10px;
         }
-        .blockquote-default {
-            border-color:       Orange;
-            border-left:        6px solid Orange;
-            background-color:   LightYellow;
-        }
-        .blockquote-note {
-            border-color:       #ADCEDD;
-            background-color:   #CDEEFD;
-        }
-        .blockquote-tip {
-            border-color:       #BCCFBC;
-            background-color:   #DCEFDC;
-        }
-        .blockquote-warning {
-            border-color:       #DFBDB3;
-            background-color:   #FFDDD3;
-        }
-        .blockquote-attention {
-            border-color:       #DDBAB8;
-            background-color:   #FDDAD8;
-        }
-        .blockquote-example {
-            border:             2px solid LightGrey;
-        }
+        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }
+        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }
+        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }
+        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }
+        .blockquote-example     { border: 2px solid LightGrey; }
+        .blockquote-title-block { margin-bottom: 10px; }
+        .blockquote-title       { font-weight: bold; }
         .blockquote-default     p:first-child { margin-top: 0px; }
         .blockquote-default     p:last-child  { margin-bottom: 0px; }
         .blockquote             p:last-child  { margin-bottom: 0px; }
-        .blockquote-title-block { margin-bottom:   10px; }
-        .blockquote-title       { font-weight:     bold; }
+        
+        .description-list-title   { font-weight: bold; font-style: italic; }
+        .description-list-block   { margin-left: 30px; }
         
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
