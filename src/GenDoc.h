@@ -27,6 +27,7 @@ struct GenDoc
         BlockquoteExample,
         Table,
         List,
+        OrderedList,
         Title1,
         Title2,
         Title3,

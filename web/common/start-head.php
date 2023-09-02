@@ -14,6 +14,7 @@
     .container td,
     .container a,
     .container ul,
+    .container ol,
     .container blockquote
     {
         margin:          revert;
@@ -21,7 +22,7 @@
         font-size:       revert;
         font-weight:     revert;
         color:           revert;
-        list-style-type: revert;
+        list-style:      revert;
         border-spacing:  revert;
         text-decoration: revert;
     }

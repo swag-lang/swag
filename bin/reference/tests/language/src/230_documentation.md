@@ -49,7 +49,7 @@ If the module contains **markdown** files with the '.md' extension, they will be
 >
 > This is yet another paragraph.
 
-Inside a paragraph, you can end of line with '\' to force a break without creating a new paragraph.
+Inside a paragraph, you can end of line with '\\' to force a break without creating a new paragraph.
 
 ```swag
 // First line.
@@ -63,7 +63,7 @@ Inside a paragraph, you can end of line with '\' to force a break without creati
 > But third line has a break before.
 
 A paragraph that starts with `---` is a **verbatim** paragraph where every blanks and end of lines
-are respected. The paragraph will be generated `as is` without any markdown change.
+are respected. The paragraph will be generated **as is** without any markdown change.
 
 ```swag
 // ---
@@ -86,15 +86,6 @@ are respected. The paragraph will be generated `as is` without any markdown chan
 > Note that **everything** is not bold, put printed 'as it is'.
 > ---
 
----
-Even...
-
-...empty lines are preserved.
-
-You end that kind of paragraph with another '---' alone on its line.
-Note that **everything** is not bold, put printed 'as it is'.
----
-
 ## Lists
 
 You can create a **list** of bullet points with `\*`.
@@ -109,6 +100,19 @@ You can create a **list** of bullet points with `\*`.
 > * This is a bullet point
 > * This is a bullet point
 > * This is a bullet point
+
+You can create an **ordered** list by starting the line with a digit followed by a '.'.
+
+```swag
+// 1. This is an ordered list
+// 1. The digit itself does not matter, real numbers will be computed
+// 0. This is another one
+```
+
+> EXAMPLE:
+> 1. This is an ordered list
+> 1. The digit itself does not matter, real numbers will be computed
+> 0. This is another one
 
 ## Quotes
 
@@ -272,7 +276,7 @@ Some other markers are also supported inside texts.
 
 ```swag
 // This is `inline code` with back ticks.\
-// This is inline 'code' with normal ticks, but just for a single word.\
+// This is inline 'code' with normal ticks, but just for a single word (no blanks).\
 // This is **bold**.\
 // This is *italic*.\
 // This character \n is escaped, and 'n' will be output as is.\
@@ -280,7 +284,7 @@ Some other markers are also supported inside texts.
 
 > EXAMPLE:
 > This is `inline code` with back ticks.\
-> This is inline 'code' with normal ticks, but just for a single word.\
+> This is inline 'code' with normal ticks, but just for a single word (no blanks).\
 > This is **bold**.\
 > This is *italic*.\
 > This character \n is escaped, and 'n' will be output as is.\

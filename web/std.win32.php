@@ -9947,11 +9947,11 @@
 </tr>
 <tr>
 <td>SIID_DRIVE525</td>
-<td>5.25" floppy disk drive. </td>
+<td></td>
 </tr>
 <tr>
 <td>SIID_DRIVE35</td>
-<td>3.5" floppy disk drive. </td>
+<td></td>
 </tr>
 <tr>
 <td>SIID_DRIVEREMOVE</td>

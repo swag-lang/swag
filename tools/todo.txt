@@ -94,6 +94,8 @@ DOC
 - checks all markdowns implementations for ideas (center ?)
 - add table header + align options
 - doc help, explain the genDoc struct field by field
+- multi levels list
+- Ordered lists 1. 2. ...
 
 
 

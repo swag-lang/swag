@@ -353,6 +353,10 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             {
                 blk->kind = UserBlockKind::List;
             }
+            else if (line.length() > 1 && SWAG_IS_DIGIT(line[0]) && line[1] == '.')
+            {
+                blk->kind = UserBlockKind::OrderedList;
+            }
             else if (line.startsWith("# "))
             {
                 blk->kind = UserBlockKind::Title1;
@@ -490,6 +494,17 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 else
                 {
                     line.remove(0, 2); // *<blank>
+                    line.trim();
+                    blk->lines.push_back(line);
+                }
+                break;
+
+            case UserBlockKind::OrderedList:
+                if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
+                    mustEnd = true;
+                else
+                {
+                    line.remove(0, 2); // <digit><dot>
                     line.trim();
                     blk->lines.push_back(line);
                 }
@@ -874,6 +889,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::List:
         helpContent += "<ul>\n";
         break;
+    case UserBlockKind::OrderedList:
+        helpContent += "<ol>\n";
+        break;
 
     case UserBlockKind::Table:
         helpContent += "<table class=\"table-enumeration\">\n";
@@ -921,7 +939,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             }
             helpContent += "</tr>\n";
         }
-        else if (user.kind == UserBlockKind::List)
+        else if (user.kind == UserBlockKind::List || user.kind == UserBlockKind::OrderedList)
         {
             helpContent += "<li>";
             helpContent += getFormattedText(line);
@@ -995,6 +1013,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
     case UserBlockKind::List:
         helpContent += "</ul>\n";
+        break;
+    case UserBlockKind::OrderedList:
+        helpContent += "</ol>\n";
         break;
     case UserBlockKind::Table:
         helpContent += "</table>\n";
