@@ -954,13 +954,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             if (i != user.lines.size() - 1)
                 helpContent += "\n";
         }
-        else if (user.kind == UserBlockKind::Paragraph ||
-                 user.kind == UserBlockKind::Blockquote ||
-                 user.kind == UserBlockKind::BlockquoteNote ||
-                 user.kind == UserBlockKind::BlockquoteTip ||
-                 user.kind == UserBlockKind::BlockquoteWarning ||
-                 user.kind == UserBlockKind::BlockquoteAttention ||
-                 user.kind == UserBlockKind::BlockquoteExample)
+        else if (user.kind == UserBlockKind::Paragraph)
         {
             if (line.empty())
                 helpContent += "</p><p>";

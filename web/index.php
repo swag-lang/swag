@@ -129,7 +129,6 @@
 <ul>
 <li>toto</li>
 <li>titi</li>
-<li>titi</li>
 <li>tata</li>
 </ul>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
