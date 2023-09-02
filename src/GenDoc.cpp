@@ -795,7 +795,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         break;
 
     case UserBlockKind::Blockquote:
-        helpContent += "<div class=\"blockquote-default\">\n";
+        helpContent += "<div class=\"blockquote blockquote-default\">\n";
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
         break;
