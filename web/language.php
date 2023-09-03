@@ -69,7 +69,12 @@
         .description-list-title   { font-weight: bold; font-style: italic; }
         .description-list-block   { margin-left: 30px; }
         
+        .container table                  { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .container td                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .container th                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+        
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+        .api-item td              { font-size: revert; border: 0; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -78,9 +83,7 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
-        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
-        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        table.table-enumeration           { width: calc(100% - 40px); }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
@@ -7403,10 +7406,10 @@ var g_Functions: Array'OneFunc</span></code>
     }
 }</span></code>
 </div>
-<table class="table-enumeration">
-<tr><td> Swag.DocKind.Api      </td><td> Generates an api documentation (all public symbols)</td></tr>
-<tr><td> Swag.DocKind.Examples </td><td> Generates a documentation like this one</td></tr>
-<tr><td> Swag.DocKind.Pages    </td><td> Generates different pages, where each file is a page (a variation of  <span class="code-inline">Examples</span>)</td></tr>
+<table class="table-markdown">
+<tr><th style="text-align: left;">Kind</th><th style="text-align: left;">Purpose</th></tr><tr><td style="text-align: left;"> Swag.DocKind.Api      </td><td style="text-align: left;"> Generates an api documentation (all public symbols)</td></tr>
+<tr><td style="text-align: left;"> Swag.DocKind.Examples </td><td style="text-align: left;"> Generates a documentation like this one</td></tr>
+<tr><td style="text-align: left;"> Swag.DocKind.Pages    </td><td style="text-align: left;"> Generates different pages, where each file is a page (a variation of  <span class="code-inline">Examples</span>)</td></tr>
 </table>
 <h3 id="Markdown_files">Markdown files </h3>
 <p>If the module contains <b>markdown</b> files with the <span class="code-inline">.md</span> extension, they will be processed as if they were Swag comments. </p>
@@ -7576,19 +7579,19 @@ var g_Functions: Array'OneFunc</span></code>
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> In the <span class="code-inline">module.swg</span> file, we have changed the <span class="code-inline">example</span> title to be <span class="code-inline">"Result"</span> instead of <span class="code-inline">"Example"</span>. </p>
 </div>
 <h4 id="Tables">Tables </h4>
-<p>You can create a <b>table</b> by starting a line with <span class="code-inline">|</span>. Each column must then be separated with <span class="code-inline">|</span>. </p>
+<p>You can create a <b>table</b> by starting a line with <span class="code-inline">|</span>. Each column must then be separated with <span class="code-inline">|</span>. The last column can end with <span class="code-inline">|</span>, but this is not mandatory. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
 <span class="SCmt">// | boundcheck   | Check out of bound access</span>
 <span class="SCmt">// | overflow     | Check type conversion lost of bits or precision</span>
-<span class="SCmt">// | math         | Various math checks (like a negative '@sqrt')</span>
-<span class="SCmt">// | switch       | Check an invalid case in a '#[Swag.Complete]' switch</span></span></code>
+<span class="SCmt">// | math         | Various math checks (like a negative '@sqrt')        |</span>
+<span class="SCmt">// | switch       | Check an invalid case in a '#[Swag.Complete]' switch |</span></span></code>
 </div>
 <div class="blockquote blockquote-example">
-<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-enumeration">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-markdown">
 <tr><td> boundcheck   </td><td> Check out of bound access</td></tr>
 <tr><td> overflow     </td><td> Check type conversion lost of bits or precision</td></tr>
-<tr><td> math         </td><td> Various math checks (like a negative <span class="code-inline">@sqrt</span>)</td></tr>
-<tr><td> switch       </td><td> Check an invalid case in a <span class="code-inline">#[Swag.Complete]</span> switch</td></tr>
+<tr><td> math         </td><td> Various math checks (like a negative <span class="code-inline">@sqrt</span>)        </td></tr>
+<tr><td> switch       </td><td> Check an invalid case in a <span class="code-inline">#[Swag.Complete]</span> switch </td></tr>
 </table>
 </div>
 <p>You can define a header to the table if you separate the first line from the second one with a separator like <span class="code-inline">---</span>. A valid separator must have a length of at least 3 characters, and must only contain <span class="code-inline">-</span> or <span class="code-inline">:</span>. </p>
@@ -7598,7 +7601,7 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// | Item1  | Item2</span></span></code>
 </div>
 <div class="blockquote blockquote-example">
-<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-enumeration">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-markdown">
 <tr><th style="text-align: left;">Title1</th><th style="text-align: left;">Title2</th></tr><tr><td style="text-align: left;"> Item1  </td><td style="text-align: left;"> Item2</td></tr>
 <tr><td style="text-align: left;"> Item1  </td><td style="text-align: left;"> Item2</td></tr>
 </table>
@@ -7609,7 +7612,7 @@ var g_Functions: Array'OneFunc</span></code>
 <span class="SCmt">// | Align left | Align center | Align right</span></span></code>
 </div>
 <div class="blockquote blockquote-example">
-<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-enumeration">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-markdown">
 <tr><th style="text-align: left;">Title1</th><th style="text-align: center;">Title2</th><th style="text-align: right;">Title3</th></tr><tr><td style="text-align: left;"> Align left </td><td style="text-align: center;"> Align center </td><td style="text-align: right;"> Align right</td></tr>
 </table>
 </div>

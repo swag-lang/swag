@@ -85,7 +85,12 @@ void GenDoc::outputStyles()
         .description-list-title   { font-weight: bold; font-style: italic; }\n\
         .description-list-block   { margin-left: 30px; }\n\
         \n\
+        .container table                  { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
+        .container td                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
+        .container th                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }\n\
+        \n\
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }\n\
+        .api-item td              { font-size: revert; border: 0; }\n\
         .api-item td:first-child  { width: 33%; white-space: nowrap; }\n\
         .api-item-title-src-ref   { text-align:  right; }\n\
         .api-item-title-src-ref a { color:       inherit; }\n\
@@ -94,9 +99,7 @@ void GenDoc::outputStyles()
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }\n\
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }\n\
         \n\
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
-        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
-        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
+        table.table-enumeration           { width: calc(100% - 40px); }\n\
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
         .table-enumeration td:last-child  { width: 100%; }\n\
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
@@ -982,7 +985,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     case UserBlockKind::Table:
     {
-        helpContent += "<table class=\"table-enumeration\">\n";
+        helpContent += "<table class=\"table-markdown\">\n";
 
         Vector<Utf8> tkn0;
         Utf8::tokenize(user.lines[0], '|', tkn0, true, true);

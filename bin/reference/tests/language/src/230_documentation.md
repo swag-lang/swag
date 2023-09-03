@@ -18,6 +18,8 @@ Swag can generate documentations in various modes. That mode should be specified
 }
 ```
 
+| Kind                  | Purpose
+| --------------------- | -------
 | Swag.DocKind.Api      | Generates an api documentation (all public symbols)
 | Swag.DocKind.Examples | Generates a documentation like this one
 | Swag.DocKind.Pages    | Generates different pages, where each file is a page (a variation of  'Examples')
@@ -233,21 +235,21 @@ You can create a special quote by adding a title on the first line. There must b
 
 ## Tables
 
-You can create a **table** by starting a line with '|'. Each column must then be separated with '|'.
+You can create a **table** by starting a line with '|'. Each column must then be separated with '|'. The last column can end with '|', but this is not mandatory.
 
 ```swag
 // A table with 4 lines of 2 columns:
 // | boundcheck   | Check out of bound access
 // | overflow     | Check type conversion lost of bits or precision
-// | math         | Various math checks (like a negative '@sqrt')
-// | switch       | Check an invalid case in a '#[Swag.Complete]' switch
+// | math         | Various math checks (like a negative '@sqrt')        |
+// | switch       | Check an invalid case in a '#[Swag.Complete]' switch |
 ```
 
 > EXAMPLE:
 > | boundcheck   | Check out of bound access
 > | overflow     | Check type conversion lost of bits or precision
-> | math         | Various math checks (like a negative '@sqrt')
-> | switch       | Check an invalid case in a '#[Swag.Complete]' switch
+> | math         | Various math checks (like a negative '@sqrt')        |
+> | switch       | Check an invalid case in a '#[Swag.Complete]' switch |
 
 You can define a header to the table if you separate the first line from the second one with a separator like '---'. A valid separator must have a length of at least 3 characters, and must only contain '-' or ':'.
 

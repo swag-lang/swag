@@ -69,7 +69,12 @@
         .description-list-title   { font-weight: bold; font-style: italic; }
         .description-list-block   { margin-left: 30px; }
         
+        .container table                  { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .container td                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .container th                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+        
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+        .api-item td              { font-size: revert; border: 0; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -78,9 +83,7 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
-        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
-        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        table.table-enumeration           { width: calc(100% - 40px); }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
@@ -4052,7 +4055,7 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Optim">Optim</a></span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
 </div>
 <p> Options are: </p>
-<table class="table-enumeration">
+<table class="table-markdown">
 <tr><td> <span class="code-inline">bytecode</span>   </td><td> Enable/Disable bytecode optimization for the function</td></tr>
 <tr><td> <span class="code-inline">backend</span>    </td><td> Enable/Disable backend machine code optimization for the function (llvm only)</td></tr>
 </table>
@@ -4222,7 +4225,7 @@
  <span class="SAtr">#[Swag.Safety("boundcheck|nan", false)]</span>      <span class="SCmt">// Disable 'boundcheck' and 'nan' checks</span></span></code>
 </div>
 <p> Safety checks are: </p>
-<table class="table-enumeration">
+<table class="table-markdown">
 <tr><td> <span class="code-inline">boundcheck</span>   </td><td> Check out of bound access</td></tr>
 <tr><td> <span class="code-inline">overflow</span>     </td><td> Check type conversion lost of bits or precision</td></tr>
 <tr><td> <span class="code-inline">math</span>         </td><td> Various math checks (like a negative <span class="code-inline">@sqrt</span>)</td></tr>

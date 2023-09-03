@@ -66,7 +66,12 @@
         .description-list-title   { font-weight: bold; font-style: italic; }
         .description-list-block   { margin-left: 30px; }
         
+        .container table                  { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .container td                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .container th                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+        
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+        .api-item td              { font-size: revert; border: 0; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -75,9 +80,7 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
-        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
-        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        table.table-enumeration           { width: calc(100% - 40px); }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
@@ -117,7 +120,7 @@
 <p>This is the list of all modules that come with the compiler. As they are always in sync, they are considered as <b>standard</b>. They are all part of the same workspace <b>std</b>. </p>
 <p>You can find that workspace locally in <span class="code-inline">bin/std</span>, or <a href="https://github.com/swag-lang/swag/tree/master/bin/std">here</a> on GitHub. </p>
 <h1 id="Modules">Modules </h1>
-<table class="table-enumeration">
+<table class="table-markdown">
 <tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
 <tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> An image and a 2D painting module</td></tr>
 <tr><td> <a href="std.gui.php">std.gui</a>           </td><td> A user interface module (windows, widgets...)</td></tr>
@@ -126,7 +129,7 @@
 </table>
 <h1 id="Wrappers">Wrappers </h1>
 <p>Those other modules are just wrappers to external libraries. </p>
-<table class="table-enumeration">
+<table class="table-markdown">
 <tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>
 <tr><td> <a href="std.freetype.php">std.freetype</a> </td><td> Freetype wrapper</td></tr>
 <tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Windows <span class="code-inline">win32</span> wrapper (kernel32, user32...)</td></tr>
