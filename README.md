@@ -16,12 +16,6 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
     <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/syntax.png">
 </p>
 
-Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/std.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
-
-<p align="center">
-    <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
-</p>
-
 ### Swag is...
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon ! It's a **toy**.
 * **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in `C#`, `Go` or `D`, no automatic pointer management like in `Swift`, no ownership like in `Rust`.
@@ -53,6 +47,12 @@ Here is a **screen capture software** fully written in Swag with the help of the
 * **Header files**, but who does, nowadays ?
 * **Mandatory semicolons**, yeah...
 * **Tagged unions**, **bitfields**, **inline assembly**..., but who knows...
+
+Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/std.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
+
+<p align="center">
+    <img width="70%" height="50%" src="https://github.com/swag-lang/swag/blob/master/web/imgs/captme.png">
+</p>
 
 # For the braves
 
