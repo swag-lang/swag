@@ -254,6 +254,7 @@ struct BuildCfgGenDoc
     float           syntaxColorLum     = 0.5f;
     bool            hasFontAwesome     = true;
     bool            hasStyleSection    = true;
+    bool            hasSwagWatermark   = true;
 };
 
 struct BuildCfg

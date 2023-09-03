@@ -39,7 +39,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -111,8 +113,6 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <p>This is the list of all modules that come with the compiler. As they are always in sync, they are considered as <b>standard</b>. They are all part of the same workspace <b>std</b>. </p>
 <p>You can find that workspace locally in <span class="code-inline">bin/std</span>, or <a href="https://github.com/swag-lang/swag/tree/master/bin/std">here</a> on GitHub. </p>
 <h1 id="Modules">Modules </h1>
@@ -132,6 +132,8 @@
 <tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Windows <span class="code-inline">gdi32</span> wrapper</td></tr>
 <tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> Windows 'direct X input' wrapper</td></tr>
 </table>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

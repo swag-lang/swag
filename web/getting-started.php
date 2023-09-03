@@ -39,7 +39,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -111,8 +113,6 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <h1 id="Your_first_install">Your first install </h1>
 <p><a href="https://github.com/swag-lang/swag/releases">Download</a> the latest release from github, and unzip it in a folder. Of course a <i>SSD</i> is better. </p>
 <h3 id="Under_windows_10/11">Under windows 10/11 </h3>
@@ -186,6 +186,8 @@ Hello world!
 <p>It's a good starting point to familiarize yourself with the language. </p>
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

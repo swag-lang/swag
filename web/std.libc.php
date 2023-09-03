@@ -41,7 +41,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -478,8 +480,6 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module libc</h1>
 <p> Wrapper for LibC library. </p>
 <h1>Content</h1>
@@ -4411,6 +4411,8 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-12 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

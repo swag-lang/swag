@@ -41,7 +41,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -233,8 +235,6 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module freetype</h1>
 <div class="code-block"><code><span class="SCde">:LICENCE
 The freetype module is a wrapper for the great Freetype 2 library.
@@ -1823,6 +1823,8 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 <td></td>
 </tr>
 </table>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-12 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

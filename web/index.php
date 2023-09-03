@@ -39,7 +39,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -111,8 +113,6 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>
@@ -138,9 +138,12 @@
         <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programmation</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
         Enjoy.
     </div>
+</div></p>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
+<p> Everything (including this web site) is still under construction... </p>
 </div>
-
-<div align="center">
+<p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
         <a href="language.php" class="no-decoration">Documentation</a>
     </div>
@@ -182,10 +185,8 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
-<div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
-<p> Everything (including this web site) is still under construction... </p>
-</div>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

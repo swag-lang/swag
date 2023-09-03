@@ -25,7 +25,14 @@
         Enjoy.
     </div>
 </div>
+---
 
+> WARNING:
+> There's **no official** release yet.
+>
+> Everything (including this web site) is still under construction...
+
+---
 <div align="center">
     <div class="round-button">
         <a href="language.php" class="no-decoration">Documentation</a>
@@ -71,8 +78,3 @@ func loadAssets(wnd: *Wnd) throw
     g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
 }
 ```
-
-> WARNING:
-> There's **no official** release yet.
->
-> Everything (including this web site) is still under construction...

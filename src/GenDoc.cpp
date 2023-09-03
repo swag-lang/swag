@@ -58,7 +58,9 @@ void GenDoc::outputStyles()
         .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
         .right h2   { margin-top: 35px; }\n\
         \n\
-        .strikethrough-text { text-decoration: line-through; }\n\
+        .strikethrough-text     { text-decoration: line-through; }\n\
+        .swag-watermak          { text-align:right; font-size: 80%; }\n\
+        .swag-watermak a        { text-decoration: none; color: inherit; }\n\
         \n\
         .blockquote {\n\
             border-radius:      5px;\n\
@@ -1162,15 +1164,21 @@ void GenDoc::constructPage()
 
     helpOutput += "<div class=\"right\">\n";
     helpOutput += "<div class=\"right-page\">\n";
-
-    helpOutput += "<div class=\"blockquote blockquote-warning\">\n";
-    if (docKind == BuildCfgDocKind::Pages)
-        helpOutput += Fmt("<b>Work in progress</b>. This page was generated with `swag doc` version %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    else
-        helpOutput += Fmt("<b>Work in progress</b>. This documentation was generated with `swag doc` version %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    helpOutput += "</div>\n";
-
     helpOutput += helpContent;
+
+    // Watermark
+    if (module->buildCfg.genDoc.hasSwagWatermark)
+    {
+        helpOutput += "<div class=\"swag-watermak\">\n";
+        time_t t = time(nullptr);
+        tm     nt;
+        localtime_s(&nt, &t);
+        std::ostringstream oss;
+        oss << std::put_time(&nt, "%d-%m-%Y %H-%M-%S");
+        string dateTime = oss.str();
+        helpOutput += Fmt("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        helpOutput += "</div>\n";
+    }
 
     helpOutput += "</div>\n";
     helpOutput += "</div>\n";

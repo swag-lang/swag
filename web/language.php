@@ -42,7 +42,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -482,8 +484,6 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Swag Language Reference</h1>
 
 <h2 id="000_introduction">Introduction</h2><p>The <span class="code-inline">swag-lang/swag/bin/reference/language</span> module provides a brief explanation of the language basic syntax and usage without the need of the <a href="std.php">Swag standard modules</a> (<span class="code-inline">Std</span>). This documentation has been generated directly from the source tree of that module. </p>
@@ -7716,6 +7716,8 @@ The comment must start with /** and end with */, which should be alone on their 
 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

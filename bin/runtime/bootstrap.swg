@@ -738,6 +738,7 @@ namespace Swag
         syntaxColorLum:      f32 = 0.5              // Code syntax color luminosity in range ]0, 1]
         hasFontAwesome       = true                 // Generate a reference to the FontAwesome script (icons)
         hasStyleSection      = true                 // Generate a default <style> section
+        hasSwagWatermark     = true                 // Generate a swag watermark at the bottom of each page
     }
 
     // The current module build configuration.

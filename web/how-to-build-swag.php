@@ -39,7 +39,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -111,8 +113,6 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <h1 id="How_to_build_Swag">How to build Swag </h1>
 <h2 id="LLVM">LLVM </h2>
 <p>Swag has two backends, a <span class="code-inline">x86_64</span> custom backend written for fast compile, but with far from optimal generated code, and <span class="code-inline">llvm</span> for optimized builds. </p>
@@ -132,6 +132,8 @@
 <p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<span class="code-inline">kernel32.lib</span>, <span class="code-inline">ucrt.lib</span>, <span class="code-inline">dbghelp.lib</span> and <span class="code-inline">user32.lib</span>). You will find them in <span class="code-inline">bin/runtime/windows-x86-64</span>. </p>
 <p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>
 <p>The standard modules (in <span class="code-inline">bin/std/modules</span>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <span class="code-inline">publish</span> folder of the corresponding modules. </p>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

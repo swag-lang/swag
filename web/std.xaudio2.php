@@ -41,7 +41,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -251,8 +253,6 @@
 </div>
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module xaudio2</h1>
 <p> Wrapper for Microsoft XAudio2 library. </p>
 <h1>Content</h1>
@@ -1753,6 +1753,8 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XAudio2Create</span>(ppXAudio2: **<span class="SCst">XAudio2</span>.<span class="SCst"><a href="#XAudio2_IXAudio2">IXAudio2</a></span>, flags: <span class="SCst">XAudio2</span>.<span class="SCst"><a href="#XAudio2_UINT32">UINT32</a></span>, processor: <span class="SCst">XAudio2</span>.<span class="SCst"><a href="#XAudio2_XAUDIO2_PROCESSOR">XAUDIO2_PROCESSOR</a></span> = <span class="SCst"><a href="#XAudio2_XAUDIO2_ANY_PROCESSOR">XAUDIO2_ANY_PROCESSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">HRESULT</span></span></code>
 </div>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-12 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

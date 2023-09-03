@@ -39,7 +39,9 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text { text-decoration: line-through; }
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermak          { text-align:right; font-size: 80%; }
+        .swag-watermak a        { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -111,8 +113,6 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<div class="blockquote blockquote-warning">
-<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
@@ -576,6 +576,8 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
+<div class="swag-watermak">
+Generated on 03-09-2023 07-29-14 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>
