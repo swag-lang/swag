@@ -91,9 +91,7 @@ llvm debug, pas à jour
 DOC
 ****************************************
 
-- add table header + align options
 - multi levels list
-- *** bold and italic ***
 - ** text _italic_ **
 - __bold__
 - _italic_
