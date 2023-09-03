@@ -27,6 +27,8 @@ struct SourceFile
     Utf8                   name;
     Path                   path;
     Utf8                   externalContent;
+    Vector<Utf8>           shouldHaveErrorString;
+    Vector<Utf8>           shouldHaveWarningString;
 
     Module*     module                = nullptr;
     AstNode*    astRoot               = nullptr;

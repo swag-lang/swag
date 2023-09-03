@@ -7,7 +7,6 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "SyntaxColor.h"
-#pragma optimize("", off)
 
 static const char* START_NOTE      = "> NOTE:";
 static const char* START_TIP       = "> TIP:";

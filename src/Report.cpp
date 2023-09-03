@@ -485,9 +485,30 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         // Do not raise an error if we are waiting for one, during tests
         if (sourceFile->shouldHaveError)
         {
-            if (g_CommandLine.verboseTestErrors)
-                reportInternal(diag, notes, true);
-            return false;
+            bool dismiss = true;
+            if (sourceFile->shouldHaveErrorString.size())
+            {
+                dismiss = false;
+                for (auto& filter : sourceFile->shouldHaveErrorString)
+                {
+                    auto str1 = diag.textMsg;
+                    auto str2 = filter;
+                    str1.makeLower();
+                    str2.makeLower();
+                    if (str1.find(str2) != -1)
+                    {
+                        dismiss = true;
+                        break;
+                    }
+                }
+            }
+
+            if (dismiss)
+            {
+                if (g_CommandLine.verboseTestErrors)
+                    reportInternal(diag, notes, true);
+                return false;
+            }
         }
 
         g_Workspace->numErrors++;
@@ -500,9 +521,30 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         // Do not raise a warning if we are waiting for one, during tests
         if (sourceFile->shouldHaveWarning)
         {
-            if (g_CommandLine.verboseTestErrors)
-                reportInternal(diag, notes, true);
-            return true;
+            bool dismiss = true;
+            if (sourceFile->shouldHaveWarningString.size())
+            {
+                dismiss = false;
+                for (auto& filter : sourceFile->shouldHaveWarningString)
+                {
+                    auto str1 = diag.textMsg;
+                    auto str2 = filter;
+                    str1.makeLower();
+                    str2.makeLower();
+                    if (str1.find(str2) != -1)
+                    {
+                        dismiss = true;
+                        break;
+                    }
+                }
+            }
+
+            if (dismiss)
+            {
+                if (g_CommandLine.verboseTestErrors)
+                    reportInternal(diag, notes, true);
+                return true;
+            }
         }
 
         g_Workspace->numWarnings++;

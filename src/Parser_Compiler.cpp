@@ -494,6 +494,12 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->shouldHaveError = true;
             module->shouldHaveError     = true;
             SWAG_CHECK(eatToken());
+            if (token.id == TokenId::LiteralString)
+            {
+                sourceFile->shouldHaveErrorString.push_back(token.text);
+                SWAG_CHECK(eatToken());
+            }
+
             SWAG_CHECK(eatSemiCol("'#global testerror'"));
         }
         else
@@ -502,6 +508,12 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->shouldHaveWarning = true;
             module->shouldHaveWarning     = true;
             SWAG_CHECK(eatToken());
+            if (token.id == TokenId::LiteralString)
+            {
+                sourceFile->shouldHaveWarningString.push_back(token.text);
+                SWAG_CHECK(eatToken());
+            }
+
             SWAG_CHECK(eatSemiCol("'#global testwarning'"));
         }
     }
