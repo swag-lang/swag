@@ -48,6 +48,8 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 * **Mandatory semicolons**, yeah...
 * **Tagged unions**, **bitfields**, **inline assembly**..., but who knows...
 
+# Example
+
 Here is a **screen capture software** fully written in Swag with the help of the [Swag standard modules](https://www.swag-lang.org/std.php) (`core`, `pixel`, `gui`...). It could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">

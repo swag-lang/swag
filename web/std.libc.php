@@ -4412,7 +4412,7 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <span class="SCst">Libc</span>.<a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></code>
 </div>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-46-23 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 07-49-27 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>
