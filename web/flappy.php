@@ -112,7 +112,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>

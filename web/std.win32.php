@@ -1434,7 +1434,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module win32</h1>
 <p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
 <h1>Content</h1>

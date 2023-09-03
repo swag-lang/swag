@@ -112,7 +112,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <p style="white-space: break-spaces"><div style="background-color:Black; border-radius: 5px;" align="center">
     <p style="padding-top:30px;"> <img src="imgs/swag_logo.png" width=50%> </p>
     <p style="color:white;font-size:40px;line-height:1.3em;"> <b>SWAG</b> Programming Language </p>

@@ -112,7 +112,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <h1 id="Contribute_to_the_test_suite">Contribute to the test suite </h1>
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3 id="Create_a_workspace_and_a_test_module">Create a workspace and a test module </h3>

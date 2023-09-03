@@ -112,7 +112,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This page was generated with `swag doc` version 0.24.0</div>
 <h1 id="How_to_build_Swag">How to build Swag </h1>
 <h2 id="LLVM">LLVM </h2>
 <p>Swag has two backends, a <span class="code-inline">x86_64</span> custom backend written for fast compile, but with far from optimal generated code, and <span class="code-inline">llvm</span> for optimized builds. </p>

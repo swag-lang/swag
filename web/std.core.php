@@ -1602,7 +1602,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Swag Std.Core</h1>
 <p> The <span class="code-inline">Std.core</span> module contains basic types and algorithms.  It is the base of all other modules of the standard <span class="code-inline">Std</span> workspace. </p>
 <p> You will find collections like <a href="#Core_Array">Array</a> or <a href="#Core_HashTable">HashTable</a>, a dynamic <a href="#Core_String">String</a> and so on. </p>

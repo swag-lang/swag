@@ -252,7 +252,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module xaudio2</h1>
 <p> Wrapper for Microsoft XAudio2 library. </p>
 <h1>Content</h1>

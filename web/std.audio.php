@@ -196,7 +196,7 @@
 <div class="right">
 <div class="right-page">
 <div class="blockquote blockquote-warning">
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</div>
+<b>Work in progress</b>. This documentation was generated with `swag doc` version 0.24.0</div>
 <h1>Module audio</h1>
 <p><span class="code-inline">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="code-inline">xaudio2</span> library. </p>
 <h2 id="How_to_play_a_sound">How to play a sound </h2>

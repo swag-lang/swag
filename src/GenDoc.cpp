@@ -1164,8 +1164,12 @@ void GenDoc::constructPage()
     helpOutput += "<div class=\"right-page\">\n";
 
     helpOutput += "<div class=\"blockquote blockquote-warning\">\n";
-    helpOutput += Fmt("<b>Work in progress</b>. Generated documentation (swag doc %d.%d.%d)", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    if (docKind == BuildCfgDocKind::Pages)
+        helpOutput += Fmt("<b>Work in progress</b>. This page was generated with `swag doc` version %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    else
+        helpOutput += Fmt("<b>Work in progress</b>. This documentation was generated with `swag doc` version %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     helpOutput += "</div>\n";
+
     helpOutput += helpContent;
 
     helpOutput += "</div>\n";
