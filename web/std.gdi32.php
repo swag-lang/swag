@@ -42,8 +42,8 @@
         .right h2   { margin-top: 35px; }
         
         .strikethrough-text     { text-decoration: line-through; }
-        .swag-watermak          { text-align:right; font-size: 80%; }
-        .swag-watermak a        { text-decoration: none; color: inherit; }
+        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }
+        .swag-watermark a       { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -2473,7 +2473,7 @@
 </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">Win32</span>.<span class="SCst">LPCWSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></code>
 </div>
-<div class="swag-watermak">
+<div class="swag-watermark">
 Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>

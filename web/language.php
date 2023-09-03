@@ -43,8 +43,8 @@
         .right h2   { margin-top: 35px; }
         
         .strikethrough-text     { text-decoration: line-through; }
-        .swag-watermak          { text-align:right; font-size: 80%; }
-        .swag-watermak a        { text-decoration: none; color: inherit; }
+        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }
+        .swag-watermark a       { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -472,6 +472,8 @@
 </ul>
 <li><a href="#231_001_Api">Api</a></li>
 <ul>
+<li><a href="#References">References</a></li>
+<li><a href="#NoDoc">NoDoc</a></li>
 </ul>
 <li><a href="#231_002_Examples">Examples</a></li>
 <ul>
@@ -7657,7 +7659,7 @@ var g_Functions: Array'OneFunc</span></code>
 }</span></code>
 </div>
 <p>Other comments need to be placed just before a function, struct or enum. </p>
-<p>The first paragraph is considered to be the <span class="code-inline">short description</span> which can appear on specific parts of the documentation. So make it short. </p>
+<p>The first paragraph is considered to be the <b>short description</b> which can appear on specific parts of the documentation. So make it... short. </p>
 <p>If the first line ends with a dot <span class="code-inline">.</span>, then this marks the end of the paragraph, i.e. the end of the short description. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// This first paragraph is the short description of function 'test1'</span>
 <span class="SCmt">//</span>
@@ -7680,13 +7682,7 @@ var g_Functions: Array'OneFunc</span></code>
     <span class="SCst">Red</span>         <span class="SCmt">// This is the documentation comment of enum value 'Red'</span>
 }</span></code>
 </div>
-<p>The attribute <span class="code-inline">#[[Swag.NoDoc]]</span> can be used to avoid a given element to appear in the documentation. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating documentation.</span>
-<span class="SAtr">#[Swag.NoDoc]</span>
-<span class="SKwd">func</span> <span class="SFct">one</span>()
-{
-}</span></code>
-</div>
+<h4 id="References">References </h4>
 <p>You can create a <b>reference</b> to something in the current module with <span class="code-inline">[name]</span> or <span class="code-inline">[name1.name2 etc.]</span> </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// This is a function with a 'value' parameter.</span>
 <span class="SKwd">func</span> <span class="SFct">one</span>(value: <span class="STpe">s32</span>)
@@ -7695,6 +7691,14 @@ var g_Functions: Array'OneFunc</span></code>
 
 <span class="SCmt">// This is a reference to [one]</span>
 <span class="SKwd">func</span> <span class="SFct">two</span>()
+{
+}</span></code>
+</div>
+<h4 id="NoDoc">NoDoc </h4>
+<p>You can use the <span class="code-inline">#[Swag.NoDoc]</span> attribute to prevent a certain element from showing up in the documentation. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating documentation.</span>
+<span class="SAtr">#[Swag.NoDoc]</span>
+<span class="SKwd">func</span> <span class="SFct">one</span>()
 {
 }</span></code>
 </div>
@@ -7717,7 +7721,7 @@ The comment must start with /** and end with */, which should be alone on their 
 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
-<div class="swag-watermak">
+<div class="swag-watermark">
 Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>

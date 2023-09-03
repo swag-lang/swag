@@ -48,7 +48,7 @@
 ---
 
 > WARNING:
-> We haven't officially launched anything yet! Everything, even this website, is still a work in progress. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going!
+> We haven't officially launched anything yet! Everything, even this website, is still a **work in progress**. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going!
 
 ```swag
 func loadAssets(wnd: *Wnd) throw

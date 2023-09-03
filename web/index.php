@@ -40,8 +40,8 @@
         .right h2   { margin-top: 35px; }
         
         .strikethrough-text     { text-decoration: line-through; }
-        .swag-watermak          { text-align:right; font-size: 80%; }
-        .swag-watermak a        { text-decoration: none; color: inherit; }
+        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }
+        .swag-watermark a       { text-decoration: none; color: inherit; }
         
         .blockquote {
             border-radius:      5px;
@@ -158,7 +158,7 @@
     </div>
 </div></p>
 <div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, even this website, is still a work in progress. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, even this website, is still a <b>work in progress</b>. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
@@ -193,7 +193,7 @@
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages of this web site and all the related documentations have been generated with Swag, as the tool can also produce HTML based on markdown files and source code. </p>
 </div>
-<div class="swag-watermak">
+<div class="swag-watermark">
 Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>

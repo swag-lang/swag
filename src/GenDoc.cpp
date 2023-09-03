@@ -59,8 +59,8 @@ void GenDoc::outputStyles()
         .right h2   { margin-top: 35px; }\n\
         \n\
         .strikethrough-text     { text-decoration: line-through; }\n\
-        .swag-watermak          { text-align:right; font-size: 80%; }\n\
-        .swag-watermak a        { text-decoration: none; color: inherit; }\n\
+        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }\n\
+        .swag-watermark a       { text-decoration: none; color: inherit; }\n\
         \n\
         .blockquote {\n\
             border-radius:      5px;\n\
@@ -1187,7 +1187,7 @@ void GenDoc::constructPage()
     // Watermark
     if (module->buildCfg.genDoc.hasSwagWatermark)
     {
-        helpOutput += "<div class=\"swag-watermak\">\n";
+        helpOutput += "<div class=\"swag-watermark\">\n";
         time_t t = time(nullptr);
         tm     nt;
         localtime_s(&nt, &t);

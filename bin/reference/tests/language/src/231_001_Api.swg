@@ -15,8 +15,8 @@ The main module documentation should be placed at the top of the corresponding `
 /**
 Other comments need to be placed just before a function, struct or enum.
 
-The first paragraph is considered to be the `short description` which can appear on specific parts
-of the documentation. So make it short.
+The first paragraph is considered to be the **short description** which can appear on specific parts
+of the documentation. So make it... short.
 
 If the first line ends with a dot `.`, then this marks the end of the paragraph, i.e. the end of the short description.
 */
@@ -45,16 +45,7 @@ enum Color
 }
 
 /**
-The attribute `#\[[Swag.NoDoc]\]` can be used to avoid a given element to appear in the documentation.
-*/
-
-// The function 'one' will be ignored when generating documentation.
-#[Swag.NoDoc]
-func one()
-{
-}
-
-/**
+# References
 You can create a **reference** to something in the current module with `[name]` or `[name1.name2 etc.]`
 */
 
@@ -65,5 +56,16 @@ func one(value: s32)
 
 // This is a reference to [one]
 func two()
+{
+}
+
+/**
+# NoDoc
+You can use the `#[Swag.NoDoc]` attribute to prevent a certain element from showing up in the documentation.
+*/
+
+// The function 'one' will be ignored when generating the documentation.
+#[Swag.NoDoc]
+func one()
 {
 }
