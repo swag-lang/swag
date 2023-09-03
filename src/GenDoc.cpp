@@ -48,9 +48,9 @@ void GenDoc::outputStyles()
     helpOutput += "\n\
         body { margin: 0px; line-height: 1.3em; }\n\
         \n\
-        .container a        { color:           DoggerBlue; }\n\
+        .container a        { color: DoggerBlue; }\n\
         .container a:hover  { text-decoration: underline; }\n\
-        .container img      { margin:          0 auto; }\n\
+        .container img      { margin: 0 auto; }\n\
         \n\
         .left a     { text-decoration: none; }\n\
         .left ul    { list-style-type: none; margin-left: -20px; }\n\
@@ -98,16 +98,8 @@ void GenDoc::outputStyles()
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
         .table-enumeration a              { text-decoration: none; color: inherit; }\n\
         \n\
-        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 0px 8px; border-radius: 5px; border: 1px dotted #cccccc; }\n\
-        .code-block {\n\
-            background-color:   #eeeeee;\n\
-            border-radius:      5px;\n\
-            border:             1px solid LightGrey;\n\
-            padding:            10px;\n\
-            margin:             20px;\n\
-            white-space:        pre;\n\
-            overflow-x:         auto;\n\
-        }\n\
+        .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }\n\
+        .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }\n\
         .code-block a { color: inherit; }\n\
         \n";
 

@@ -31,9 +31,9 @@
 
         body { margin: 0px; line-height: 1.3em; }
         
-        .container a        { color:           DoggerBlue; }
+        .container a        { color: DoggerBlue; }
         .container a:hover  { text-decoration: underline; }
-        .container img      { margin:          0 auto; }
+        .container img      { margin: 0 auto; }
         
         .left a     { text-decoration: none; }
         .left ul    { list-style-type: none; margin-left: -20px; }
@@ -81,16 +81,8 @@
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 0px 8px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-block {
-            background-color:   #eeeeee;
-            border-radius:      5px;
-            border:             1px solid LightGrey;
-            padding:            10px;
-            margin:             20px;
-            white-space:        pre;
-            overflow-x:         auto;
-        }
+        .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
+        .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
