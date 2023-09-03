@@ -38,10 +38,13 @@ func test()
 /**
 For constants or enum values, the document comment is the one declared at the end of the line.
 */
+
 const A = 0     // This is the documentation comment of constant 'A'
+
 enum Color
 {
     Red         // This is the documentation comment of enum value 'Red'
+    Blue        // This is the documentation comment of enum value 'Blue'
 }
 
 /**

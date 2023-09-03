@@ -117,10 +117,10 @@ You can create an **ordered** list by starting the line with a digit followed by
 > WARNING:
 > Swag only supports single line list items. You cannot have complex paragraphs (or sub lists).
 
-## Descriptions
+## Definition Lists
 
-You can add a description with the '+' character followed by a blank, and then the title.
-The description paragraph should come after the title, with at least 4 blanks or one tabulation.
+You can add a definition title with the '+' character followed by a blank, and then the title.
+The description paragraph should come just after the title, with at least 4 blanks or one tabulation.
 
 ```swag
 // + Title

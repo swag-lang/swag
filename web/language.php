@@ -461,7 +461,7 @@
 <ul>
 <li><a href="#Paragraphs">Paragraphs</a></li>
 <li><a href="#Lists">Lists</a></li>
-<li><a href="#Descriptions">Descriptions</a></li>
+<li><a href="#Definition_Lists">Definition Lists</a></li>
 <li><a href="#Quotes">Quotes</a></li>
 <li><a href="#Tables">Tables</a></li>
 <li><a href="#Code">Code</a></li>
@@ -7478,8 +7478,8 @@ var g_Functions: Array'OneFunc</span></code>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> Swag only supports single line list items. You cannot have complex paragraphs (or sub lists). </p>
 </div>
-<h4 id="Descriptions">Descriptions </h4>
-<p>You can add a description with the <span class="code-inline">+</span> character followed by a blank, and then the title. The description paragraph should come after the title, with at least 4 blanks or one tabulation. </p>
+<h4 id="Definition_Lists">Definition Lists </h4>
+<p>You can add a definition title with the <span class="code-inline">+</span> character followed by a blank, and then the title. The description paragraph should come just after the title, with at least 4 blanks or one tabulation. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// + Title</span>
 <span class="SCmt">//     This is the description.</span>
 <span class="SCmt">// + Other title</span>
@@ -7677,9 +7677,11 @@ var g_Functions: Array'OneFunc</span></code>
 </div>
 <p>For constants or enum values, the document comment is the one declared at the end of the line. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span>     <span class="SCmt">// This is the documentation comment of constant 'A'</span>
+
 <span class="SKwd">enum</span> <span class="SCst">Color</span>
 {
     <span class="SCst">Red</span>         <span class="SCmt">// This is the documentation comment of enum value 'Red'</span>
+    <span class="SCst">Blue</span>        <span class="SCmt">// This is the documentation comment of enum value 'Blue'</span>
 }</span></code>
 </div>
 <h4 id="References">References </h4>
@@ -7696,7 +7698,7 @@ var g_Functions: Array'OneFunc</span></code>
 </div>
 <h4 id="NoDoc">NoDoc </h4>
 <p>You can use the <span class="code-inline">#[Swag.NoDoc]</span> attribute to prevent a certain element from showing up in the documentation. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating documentation.</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating the documentation.</span>
 <span class="SAtr">#[Swag.NoDoc]</span>
 <span class="SKwd">func</span> <span class="SFct">one</span>()
 {
