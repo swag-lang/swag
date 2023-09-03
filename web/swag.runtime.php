@@ -5426,7 +5426,7 @@
 </tr>
 </table>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-49-29 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

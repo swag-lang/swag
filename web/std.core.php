@@ -25356,7 +25356,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></code>
 </div>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-49-28 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

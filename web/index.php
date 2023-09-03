@@ -135,15 +135,12 @@
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
-        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programmation</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
+        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
         Enjoy.
     </div>
-</div></p>
-<div class="blockquote blockquote-warning">
-<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> There's <b>no official</b> release yet. </p>
-<p> Everything (including this web site) is still under construction... </p>
 </div>
-<p style="white-space: break-spaces"><div align="center">
+
+<div align="center">
     <div class="round-button">
         <a href="language.php" class="no-decoration">Documentation</a>
     </div>
@@ -153,14 +150,16 @@
     <div class="round-button">
         <a href="std.php">Standard Modules</a>
     </div>
-</div>
-
-<div align="center">
+</div></p>
+<p style="white-space: break-spaces"><div align="center">
     <p>To take a look at an explained implementation of the <b>Flappy Bird</b> game in one single little script file.</p>
     <div class="round-button">
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div></p>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, even this website, is still a work in progress. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
@@ -185,8 +184,17 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></code>
 </div>
+<p>Swag is <b>open source</b> and released under the <a href="https://github.com/swag-lang/swag/blob/master/LICENCE">MIT license</a>. You will find the compiler source code on <a href="https://github.com/swag-lang/swag">GitHub</a>. You can also visit the <a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q">YouTube</a> channel to see some little coding sessions. </p>
+<p style="white-space: break-spaces"><div style="display:flex; flex-wrap:space-between; height: 200px; ">
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/Il0UuJCXTWI" title="Swag Live Coding - The Flappy Bird Game (silent)" frameborder="0" allowfullscreen></iframe>
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/Bqr1pakewaU" title="Swag Live Coding - The Pacman Game (silent)" frameborder="0" allowfullscreen></iframe>
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/f2rIXoH6H38" title="Swag Live Coding: The 2048 Game (silent)" frameborder="0" allowfullscreen></iframe>
+</div></p>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages of this web site and all the related documentations have been generated with Swag, as the tool can also produce HTML based on markdown files and source code. </p>
+</div>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-49-29 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

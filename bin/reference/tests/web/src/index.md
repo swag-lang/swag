@@ -21,18 +21,11 @@
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
-        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programmation</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
+        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
         Enjoy.
     </div>
 </div>
----
 
-> WARNING:
-> There's **no official** release yet.
->
-> Everything (including this web site) is still under construction...
-
----
 <div align="center">
     <div class="round-button">
         <a href="language.php" class="no-decoration">Documentation</a>
@@ -44,7 +37,8 @@
         <a href="std.php">Standard Modules</a>
     </div>
 </div>
-
+---
+---
 <div align="center">
     <p>To take a look at an explained implementation of the <b>Flappy Bird</b> game in one single little script file.</p>
     <div class="round-button">
@@ -52,6 +46,9 @@
     </div>
 </div>
 ---
+
+> WARNING:
+> We haven't officially launched anything yet! Everything, even this website, is still a work in progress. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going!
 
 ```swag
 func loadAssets(wnd: *Wnd) throw
@@ -78,3 +75,16 @@ func loadAssets(wnd: *Wnd) throw
     g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
 }
 ```
+
+Swag is **open source** and released under the [MIT license](https://github.com/swag-lang/swag/blob/master/LICENCE). You will find the compiler source code on [GitHub](https://github.com/swag-lang/swag). You can also visit the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel to see some little coding sessions.
+
+---
+<div style="display:flex; flex-wrap:space-between; height: 200px; ">
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/Il0UuJCXTWI" title="Swag Live Coding - The Flappy Bird Game (silent)" frameborder="0" allowfullscreen></iframe>
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/Bqr1pakewaU" title="Swag Live Coding - The Pacman Game (silent)" frameborder="0" allowfullscreen></iframe>
+    <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/f2rIXoH6H38" title="Swag Live Coding: The 2048 Game (silent)" frameborder="0" allowfullscreen></iframe>
+</div>
+---
+
+> NOTE:
+> The pages of this web site and all the related documentations have been generated with Swag, as the tool can also produce HTML based on markdown files and source code.

@@ -17261,7 +17261,7 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wglShareLists</span>(hRc0: <span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span>, hRc1: <span class="SCst">Ogl</span>.<span class="SCst"><a href="#Ogl_HGLRC">HGLRC</a></span>) <span class="SKwd">throw</span></span></code>
 </div>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-49-28 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>
