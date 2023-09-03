@@ -439,12 +439,13 @@ void Utf8::removeBack()
     buffer[count] = 0;
 }
 
-int Utf8::find(const Utf8& str, uint32_t startpos) const
+int Utf8::find(const Utf8& str, uint32_t startPos) const
 {
     if (!count)
         return -1;
 
-    auto pz = std::search(buffer, buffer + count, str.buffer, str.buffer + str.count);
+    SWAG_ASSERT(startPos < count);
+    auto pz = std::search(buffer + startPos, buffer + count, str.buffer, str.buffer + str.count);
     if (pz == buffer + count)
         return -1;
     return (int) (pz - buffer);
