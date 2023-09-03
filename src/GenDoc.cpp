@@ -58,36 +58,29 @@ void GenDoc::outputStyles()
         .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
         .right h2   { margin-top: 35px; }\n\
         \n\
-        .strikethrough-text     { text-decoration: line-through; }\n\
-        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }\n\
-        .swag-watermark a       { text-decoration: none; color: inherit; }\n\
+        .strikethrough-text { text-decoration: line-through; }\n\
+        .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }\n\
+        .swag-watermark a   { text-decoration: none; color: inherit; }\n\
         \n\
-        .blockquote {\n\
-            border-radius:      5px;\n\
-            border:             1px solid;\n\
-            margin:             20px;\n\
-            margin-left:        20px;\n\
-            margin-right:       20px;\n\
-            padding:            10px;\n\
-        }\n\
-        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }\n\
-        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }\n\
-        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }\n\
-        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }\n\
-        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }\n\
-        .blockquote-example     { border: 2px solid LightGrey; }\n\
-        .blockquote-title-block { margin-bottom: 10px; }\n\
-        .blockquote-title       { font-weight: bold; }\n\
-        .blockquote-default     p:first-child { margin-top: 0px; }\n\
-        .blockquote-default     p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote             p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }\n\
+        .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }\n\
+        .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }\n\
+        .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }\n\
+        .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }\n\
+        .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }\n\
+        .blockquote-example       { border: 2px solid LightGrey; }\n\
+        .blockquote-title-block   { margin-bottom: 10px; }\n\
+        .blockquote-title         { font-weight: bold; }\n\
+        .blockquote-default       p:first-child { margin-top: 0px; }\n\
+        .blockquote-default       p:last-child  { margin-bottom: 0px; }\n\
+        .blockquote               p:last-child  { margin-bottom: 0px; }\n\
         \n\
         .description-list-title   { font-weight: bold; font-style: italic; }\n\
         .description-list-block   { margin-left: 30px; }\n\
         \n\
-        .container table                  { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
-        .container td                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
-        .container th                     { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }\n\
+        .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
+        .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
+        .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }\n\
         \n\
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }\n\
         .api-item td              { font-size: revert; border: 0; }\n\
