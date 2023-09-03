@@ -2,7 +2,7 @@
 
 ;
 
-#global testerror;
+#global testerror "Saf0033";
 enum A: u8
 {
 	Red = 0;

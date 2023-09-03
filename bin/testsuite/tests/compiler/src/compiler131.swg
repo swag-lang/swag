@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0591"
 using Swag
 
 #[AttrUsage(AttributeUsage.StructVariable)]

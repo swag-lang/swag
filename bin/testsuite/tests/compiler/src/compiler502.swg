@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Err0053"
 func T(xx: string, a: ...)
 {
 	@assert(@countof(a) == 3)

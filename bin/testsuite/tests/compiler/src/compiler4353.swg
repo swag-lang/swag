@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "type string is not supported"
 func(T) add(x, y: T)->T
     #validif
     {

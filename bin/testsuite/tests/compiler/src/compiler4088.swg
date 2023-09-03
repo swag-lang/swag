@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "memory block double free"
 using Swag
 
 #test

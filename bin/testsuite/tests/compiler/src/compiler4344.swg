@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0808"
 struct(T) Point
 {
     x: T

@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Syn0048"
 #test
 {
 	loop(i: 2)

@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0910"
 struct BB
 {
     x: bool

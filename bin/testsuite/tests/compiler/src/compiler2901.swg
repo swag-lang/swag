@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0172"
 #test
 {
     var x = 2's64

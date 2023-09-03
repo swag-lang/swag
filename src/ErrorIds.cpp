@@ -302,8 +302,9 @@ void initErrors()
     SWAG_ERROR(Syn0200, "syntax is ambiguous");
     SWAG_ERROR(Syn0201, "unexpected '#global testerror', another one has already been defined");
     SWAG_ERROR(Syn0202, "unexpected '#global testwarning', another one has already been defined");
-    SWAG_ERROR(Syn0203, nullptr);
-    SWAG_ERROR(Syn0204, nullptr);
+    SWAG_ERROR(Syn0203, "expected another match string after ',', found '%'");
+    SWAG_ERROR(Syn0204, "'#global testerror' should be followed by at least one match string");
+    SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

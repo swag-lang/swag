@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "type 'B1666' is invalid"
 struct B1666 {}
 
 struct(T) A {}

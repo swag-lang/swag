@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0520"
 internal const StringSmallSize = 16'u64
 
 public struct String4725

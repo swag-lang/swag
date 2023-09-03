@@ -1,4 +1,4 @@
-#global testwarning
+#global testwarning "wrn0004"
 
 interface I
 {

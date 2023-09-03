@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0189"
 #test
 {
     var x: func(s32)

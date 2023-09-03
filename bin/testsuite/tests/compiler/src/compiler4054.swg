@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0137"
 struct(T) Arr {}
 
 impl Arr

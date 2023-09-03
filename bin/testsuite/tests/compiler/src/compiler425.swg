@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Err0175"
 #test
 {
     switch(5)

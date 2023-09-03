@@ -1,5 +1,5 @@
 
 #global testpass syntax;
 
-#global testerror;
+#global testerror "Syn0070";
 var xxxx;

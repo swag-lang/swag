@@ -1,3 +1,3 @@
 ﻿#global testpass syntax
-#global testerror
+#global testerror "Syn0069"
 var 1: s32

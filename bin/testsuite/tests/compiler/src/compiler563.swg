@@ -1,6 +1,6 @@
 
 
-#global testerror
+#global testerror "Err0078"
 
 //#[Swag.PrintBc]
 struct point

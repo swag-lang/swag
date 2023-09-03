@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0048"
 #test
 {
     var a = 0

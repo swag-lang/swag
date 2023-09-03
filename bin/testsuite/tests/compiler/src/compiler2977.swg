@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0177"
 #test
 {
     var x: [2] s32 = [10, 20]

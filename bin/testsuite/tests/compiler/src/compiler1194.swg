@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0047"
 
 const A = false
 

@@ -1,5 +1,5 @@
 
-#global testerror
+#global testerror "assertion failed"
 
 internal struct A
 {

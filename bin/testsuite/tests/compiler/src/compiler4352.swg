@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0116"
 func(T) add(x, y: T)->T
     //#validif cast(bool) (@typeof(T).flags & .Integer)
 {

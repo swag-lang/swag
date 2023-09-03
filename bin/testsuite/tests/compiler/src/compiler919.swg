@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0734"
 
 func sum(x: f32, nums: ...)
 {

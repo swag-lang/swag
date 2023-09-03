@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "San0008"
 
 #[Swag.Safety("", true)]
 func toto()->s32

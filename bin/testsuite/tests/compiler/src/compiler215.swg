@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0305"
 #run
 {
 	var a = 1

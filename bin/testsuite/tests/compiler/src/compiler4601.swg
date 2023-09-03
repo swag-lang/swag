@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0683"
 namespace StrConv
 {
     public interface IPokeValue

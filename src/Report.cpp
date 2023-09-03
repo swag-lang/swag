@@ -488,12 +488,12 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             bool dismiss = true;
             if (sourceFile->shouldHaveErrorString.size())
             {
-                dismiss = false;
-                for (auto& filter : sourceFile->shouldHaveErrorString)
+                dismiss   = false;
+                auto str1 = diag.textMsg;
+                str1.makeLower();
+                for (const auto& filter : sourceFile->shouldHaveErrorString)
                 {
-                    auto str1 = diag.textMsg;
                     auto str2 = filter;
-                    str1.makeLower();
                     str2.makeLower();
                     if (str1.find(str2) != -1)
                     {
@@ -501,35 +501,6 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                         break;
                     }
                 }
-            }
-            else
-            {
-                /////////////////////////
-                /*
-                std::ifstream t(sourceFile->path);
-                std::stringstream buffer;
-                buffer << t.rdbuf();
-                Utf8 utf = buffer.str();
-                int pos = utf.find("#global testerror");
-                if (pos != -1)
-                {
-                    auto num = diag.textMsg;
-                    if (num[0] == '[' && num.length() > 8 && num[8] == ']')
-                    {
-                        num.remove(0, 1);
-                        num.remove(7, num.length() - 7);
-                    }
-                    auto to = Fmt(" \"%s\"", num.c_str());
-                    printf("%s\n", to.c_str());
-                    utf.insert(pos + 17, to);
-
-                    std::ofstream out(sourceFile->path);
-                    out << utf.c_str();
-                    out.close();
-                }
-                */
-
-                /////////////////////////
             }
 
             if (dismiss)
@@ -554,7 +525,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             if (sourceFile->shouldHaveWarningString.size())
             {
                 dismiss = false;
-                for (auto& filter : sourceFile->shouldHaveWarningString)
+                for (const auto& filter : sourceFile->shouldHaveWarningString)
                 {
                     auto str1 = diag.textMsg;
                     auto str2 = filter;

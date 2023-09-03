@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0462"
 
 func level0()
 {

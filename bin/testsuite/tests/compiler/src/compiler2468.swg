@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Saf0014"
 
 #test
 {

@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "this is a test man !"
 
 public struct(T) TOTOcompiler1899
 {

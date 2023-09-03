@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0450"
 struct Duration
 {
     val: f32

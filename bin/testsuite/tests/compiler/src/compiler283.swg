@@ -1,6 +1,6 @@
 
 ;
-#global testerror;
+#global testerror "Syn0079";
 
 func main ()
 {

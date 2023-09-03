@@ -1,7 +1,7 @@
 
 ;
 
-#global testerror;
+#global testerror "Err0113";
 func main (){}
 func main (b: string){}
 

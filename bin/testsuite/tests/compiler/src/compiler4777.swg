@@ -1,4 +1,4 @@
-﻿#global testerror;
+﻿#global testerror "Saf0012";
 #test
 {
 	var b: u8 = 255'u8 + 1'u8;

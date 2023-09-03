@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0617"
 
 struct(T) Point
     #validif T == bool

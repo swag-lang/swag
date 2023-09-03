@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "toto"
 
 #[Swag.ConstExpr, Swag.Mixin]
 func isF32(t: typeinfo)->bool

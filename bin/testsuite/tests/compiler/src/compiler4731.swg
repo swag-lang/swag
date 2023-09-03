@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0520"
 
 func titi4731()->bool
 {

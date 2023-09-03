@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "err"
 
 func toto() -> {x: s32} throw
 {

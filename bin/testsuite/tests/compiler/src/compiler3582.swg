@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0008"
 
 func toto(b: bool, h, s, l: f32 = -2) {}
 

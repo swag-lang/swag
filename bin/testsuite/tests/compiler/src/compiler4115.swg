@@ -1,7 +1,7 @@
 	/* salut la foule
 		/* */
 	*/
-#global testerror
+#global testerror "Err0196"
 #test
 {
     var x: s32 = 1

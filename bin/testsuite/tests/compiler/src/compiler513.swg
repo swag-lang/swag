@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Syn0172"
 #test
 {
 	var a: ... = 0

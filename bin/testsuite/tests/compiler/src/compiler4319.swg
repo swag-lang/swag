@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0194"
 struct(T) A {}
 
 #test

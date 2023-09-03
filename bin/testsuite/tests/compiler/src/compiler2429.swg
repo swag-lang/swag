@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "invalid number of arguments"
 
 func print(s: string, f: ...)
     #validifx

@@ -2,7 +2,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Syn0079"
 #test
 {
 	var res = T()

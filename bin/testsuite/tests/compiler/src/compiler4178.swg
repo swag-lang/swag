@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "San0004"
 
 struct A { a, b, c: s32; }
 

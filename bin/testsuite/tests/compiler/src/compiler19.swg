@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Tkn0002"
 #global testpass lexer;
 
 .

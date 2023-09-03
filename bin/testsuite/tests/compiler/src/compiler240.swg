@@ -1,4 +1,4 @@
-#global testerror;
+#global testerror "Err0632";
 ;
 using Swag;
 

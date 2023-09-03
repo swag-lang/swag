@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Syn0090"
 
 struct A
 {

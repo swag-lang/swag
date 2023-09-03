@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0583"
 
 #[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
 attr toto();

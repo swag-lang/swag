@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "San0006"
 #test
 {
 	let a: [..] s32 = null;

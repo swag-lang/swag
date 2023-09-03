@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "assertion failed"
 
 enum RGB { R; G; B; }
 func toto()->RGB

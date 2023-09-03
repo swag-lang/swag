@@ -1,4 +1,4 @@
-﻿#global testerror;
+﻿#global testerror "Err0165";
 ;
 
 typealias myType = u32;

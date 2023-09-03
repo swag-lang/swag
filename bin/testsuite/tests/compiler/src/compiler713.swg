@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0177"
 func(T) toto(x: T)->s32
 {
 	return T

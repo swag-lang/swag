@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "s32 is bad !"
 
 struct(T) Point
     #validif

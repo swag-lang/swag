@@ -27,7 +27,7 @@ func(T) add(x, y: T)->T
 {
     var v = add(1.0'f32, 2)
 }*/
-#global testerror
+#global testerror "type bool not supported"
 struct(T) S
 {
     #if T != s32 #error "type " ++ @typeof(T).name ++ " not supported"

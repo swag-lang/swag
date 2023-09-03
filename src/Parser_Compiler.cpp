@@ -500,10 +500,16 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->shouldHaveError = true;
             module->shouldHaveError     = true;
             SWAG_CHECK(eatToken());
-            if (token.id == TokenId::LiteralString)
+
+            SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Syn0204), token.ctext())}));
+            while (token.id == TokenId::LiteralString)
             {
                 sourceFile->shouldHaveErrorString.push_back(token.text);
                 SWAG_CHECK(eatToken());
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Syn0203), token.ctext())}));
             }
 
             SWAG_CHECK(eatSemiCol("'#global testerror'"));
@@ -520,10 +526,16 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             sourceFile->shouldHaveWarning = true;
             module->shouldHaveWarning     = true;
             SWAG_CHECK(eatToken());
-            if (token.id == TokenId::LiteralString)
+
+            SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Syn0205), token.ctext())}));
+            while (token.id == TokenId::LiteralString)
             {
                 sourceFile->shouldHaveWarningString.push_back(token.text);
                 SWAG_CHECK(eatToken());
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Syn0203), token.ctext())}));
             }
 
             SWAG_CHECK(eatSemiCol("'#global testwarning'"));

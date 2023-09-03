@@ -1,7 +1,7 @@
 
 
 
-#global testerror
+#global testerror "Syn0030"
 enum OT
 {
 	A = 1

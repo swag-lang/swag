@@ -1,7 +1,7 @@
 
 
 
-#global testerror
+#global testerror "Syn0138"
 struct Point
 {
 	x: s32

@@ -1,5 +1,5 @@
 
 #global testpass syntax;
 
-#global testerror;
+#global testerror "Syn0172";
 attr toto(b: ) -> var;

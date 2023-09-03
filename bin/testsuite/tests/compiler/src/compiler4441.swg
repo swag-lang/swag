@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0114"
 using Swag
 
 struct(T) A {}

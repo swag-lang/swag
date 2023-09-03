@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0086","Err0013"
 
 struct Utf8
 {

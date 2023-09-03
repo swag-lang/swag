@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0017"
 namespace A
 {
 	namespace B

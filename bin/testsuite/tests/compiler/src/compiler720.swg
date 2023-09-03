@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-#global testerror
+#global testerror "Err0194"
 #test
 {
 	var ptr: *void

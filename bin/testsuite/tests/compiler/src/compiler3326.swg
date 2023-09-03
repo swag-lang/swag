@@ -1,5 +1,5 @@
 //#global skip
-#global testerror
+#global testerror "Err0770"
 #test
 {
     var a = #run {

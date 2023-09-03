@@ -1,3 +1,3 @@
 
-#global testerror;
+#global testerror "Tkn0025";
  /* È

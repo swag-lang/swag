@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0801"
 #test
 {
     var toto = [10, 20]

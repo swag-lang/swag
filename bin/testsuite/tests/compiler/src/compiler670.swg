@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0465"
 
 typealias toto = bool
 

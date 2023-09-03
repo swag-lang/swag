@@ -1,8 +1,8 @@
-#global testwarning
+#global testwarning "wrn0006"
 #global #[Swag.Warn("wrn0006", Swag.WarnLevel.Enable)]
 #test
 {
-    var a = 0
+    let a = 0
     var f = closure|a|(){
     }
 }

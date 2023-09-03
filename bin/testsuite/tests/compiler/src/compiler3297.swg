@@ -1,3 +1,3 @@
-#global testerror
+#global testerror "Err0305"
 struct Y{}
 struct Y{}

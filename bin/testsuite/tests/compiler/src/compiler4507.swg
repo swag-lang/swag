@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Saf0017"
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]
 #[Swag.Safety("", true)]

@@ -1,5 +1,5 @@
 
-#global testerror
+#global testerror "Err0196"
 
 var v = 50;
 

@@ -1,33 +1,8 @@
-#global testerror
-
+#global testerror "Saf0014"
 #[Swag.Safety("overflow", true)]
-#[Swag.Optimize("", false)]
+#[Swag.Optim("", false)]
 #test
 {
     var x: s32 = Swag.S32.Min
     x = x - 2
-}
-
-#[Swag.Safety("overflow", true)]
-#[Swag.Optimize("", false)]
-#test
-{
-    var x: s64 = Swag.S64.Min
-    x = x - 2
-}
-
-#[Swag.Safety("overflow", true)]
-#[Swag.Optimize("", false)]
-#test
-{
-    var x: s32 = Swag.S32.Max
-    x = x + 2
-}
-
-#[Swag.Safety("overflow", true)]
-#[Swag.Optimize("", false)]
-#test
-{
-    var x: s64 = Swag.S64.Max
-    x = x + 2
 }
