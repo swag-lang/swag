@@ -79,6 +79,7 @@
         
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
         .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }

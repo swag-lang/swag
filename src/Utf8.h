@@ -94,7 +94,7 @@ struct Utf8
 
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
     static Utf8        format(const char* format, ...);
-    static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false);
+    static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
     static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);
     static Utf8        toStringF64(double v);
     static Utf8        toNiceSize(size_t size);

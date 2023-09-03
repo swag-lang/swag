@@ -755,7 +755,7 @@ Utf8 Utf8::format(const char* format, ...)
     return vec;
 }
 
-void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty)
+void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty, bool trim)
 {
     tokens.clear();
 
@@ -773,10 +773,16 @@ void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpt
             i--;
         }
 
+        if (trim)
+            one.trim();
+
         if (keepEmpty)
         {
             if (*pz == c)
+            {
                 pz++;
+                i--;
+            }
         }
         else
         {

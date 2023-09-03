@@ -96,6 +96,7 @@ void GenDoc::outputStyles()
         \n\
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
         .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
+        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
         .table-enumeration td:last-child  { width: 100%; }\n\
         .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
@@ -855,6 +856,10 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     if (user.lines.empty() && user.subBlocks.empty())
         return;
 
+    int               startLine     = 0;
+    int               tableColCount = 0;
+    VectorNative<int> tableAlignCols;
+
     switch (user.kind)
     {
     case UserBlockKind::CodeSwag:
@@ -972,11 +977,104 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         for (auto sub : user.subBlocks)
             outputUserBlock(*sub, titleLevel, false);
         helpContent += "</div>\n";
-        return;
+        startLine = 1;
+        break;
 
     case UserBlockKind::Table:
+    {
         helpContent += "<table class=\"table-enumeration\">\n";
-        break;
+
+        Vector<Utf8> tkn0;
+        Utf8::tokenize(user.lines[0], '|', tkn0, true, true);
+        tkn0.erase(tkn0.begin());
+        if (tkn0.back().empty())
+            tkn0.erase(tkn0.end());
+        tableColCount = (uint32_t) tkn0.size();
+
+        // Header ?
+        if (user.lines.size() > 2)
+        {
+            Vector<Utf8> tkn1;
+            Utf8::tokenize(user.lines[1], '|', tkn1, true, true);
+            tkn1.erase(tkn1.begin());
+            if (tkn1.back().empty())
+                tkn1.erase(tkn1.end());
+
+            bool hasHeader = true;
+            for (int it = 0; it < tkn0.size(); it++)
+            {
+                if (it >= tkn1.size())
+                {
+                    hasHeader = false;
+                    break;
+                }
+
+                auto alignStr = tkn1[it];
+                if (alignStr.length() < 3)
+                {
+                    hasHeader = false;
+                    break;
+                }
+
+                int alignCol = -1;
+                if (alignStr[0] == ':' && alignStr.back() == '-')
+                    alignCol = 0;
+                else if (alignStr[0] == '-' && alignStr.back() == '-')
+                    alignCol = 0;
+                else if (alignStr[0] == ':' && alignStr.back() == ':')
+                    alignCol = 1;
+                else if (alignStr[0] == '-' && alignStr.back() == ':')
+                    alignCol = 2;
+                if (alignCol == -1)
+                {
+                    hasHeader = false;
+                    break;
+                }
+
+                while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
+                    alignStr.remove(0, 1);
+                if (alignStr.length())
+                {
+                    hasHeader = false;
+                    break;
+                }
+
+                tableAlignCols.push_back(alignCol);
+            }
+
+            if (!hasHeader)
+                tableAlignCols.clear();
+            else
+            {
+                helpContent += "<tr>";
+                for (int it = 0; it < tkn0.size(); it++)
+                {
+                    switch (tableAlignCols[it])
+                    {
+                    case 0:
+                        helpContent += Fmt("<th style=\"text-align: left;\">");
+                        break;
+                        break;
+                    case 1:
+                        helpContent += Fmt("<th style=\"text-align: center;\">");
+                        break;
+                        break;
+                    case 2:
+                        helpContent += Fmt("<th style=\"text-align: right;\">");
+                        break;
+                        break;
+                    }
+
+                    helpContent += getFormattedText(tkn0[it]);
+                    helpContent += "</th>";
+                }
+
+                helpContent += "</tr>";
+                startLine = 2;
+            }
+        }
+    }
+    break;
 
     case UserBlockKind::Title1:
     case UserBlockKind::Title2:
@@ -991,8 +1089,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     }
     }
 
-    int32_t tableColCount = UINT32_MAX;
-    for (int i = 0; i < user.lines.size(); i++)
+    for (int i = startLine; i < (int) user.lines.size(); i++)
     {
         auto line = user.lines[i];
         line.trim();
@@ -1004,17 +1101,39 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             if (tkn.back().empty())
                 tkn.erase(tkn.end());
-            while (i && tkn.size() < tableColCount)
+            while (tkn.size() < tableColCount)
                 tkn.push_back("");
-            while (i && tkn.size() > tableColCount)
+            while (tkn.size() > tableColCount)
                 tkn.erase(tkn.end());
-            tableColCount = (uint32_t) tkn.size();
 
             helpContent += "<tr>";
             for (int it = 0; it < tkn.size(); it++)
             {
                 auto& t = tkn[it];
-                helpContent += "<td>";
+
+                if (it < tableAlignCols.size())
+                {
+                    switch (tableAlignCols[it])
+                    {
+                    case 0:
+                        helpContent += Fmt("<td style=\"text-align: left;\">");
+                        break;
+                        break;
+                    case 1:
+                        helpContent += Fmt("<td style=\"text-align: center;\">");
+                        break;
+                        break;
+                    case 2:
+                        helpContent += Fmt("<td style=\"text-align: right;\">");
+                        break;
+                        break;
+                    }
+                }
+                else
+                {
+                    helpContent += "<td>";
+                }
+
                 helpContent += getFormattedText(t);
                 helpContent += "</td>";
             }

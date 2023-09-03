@@ -233,7 +233,7 @@ You can create a special quote by adding a title on the first line. There must b
 
 ## Tables
 
-You can create a **table** with `|`.
+You can create a **table** by starting a line with '|'. Each column must then be separated with '|'.
 
 ```swag
 // A table with 4 lines of 2 columns:
@@ -248,6 +248,34 @@ You can create a **table** with `|`.
 > | overflow     | Check type conversion lost of bits or precision
 > | math         | Various math checks (like a negative '@sqrt')
 > | switch       | Check an invalid case in a '#[Swag.Complete]' switch
+
+You can define a header to the table if you separate the first line from the second one with a separator like '---'. A valid separator must have a length of at least 3 characters, and must only contain '-' or ':'.
+
+```swag
+// | Title1 | Title2
+// | ------ | ------
+// | Item1  | Item2
+// | Item1  | Item2
+```
+
+> EXAMPLE:
+> | Title1 | Title2
+> | ------ | ------
+> | Item1  | Item2
+> | Item1  | Item2
+
+You can define the **column alignment** by adding ':' at the start and/or at the end of a separator.
+
+```swag
+// | Title1     | Title2       | Title3
+// | :-----     | :----:       | -----:
+// | Align left | Align center | Align right
+```
+
+> EXAMPLE:
+> | Title1     | Title2       | Title3
+> | :-----     | :----:       | -----:
+> | Align left | Align center | Align right
 
 ## Code
 

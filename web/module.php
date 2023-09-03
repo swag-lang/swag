@@ -7,176 +7,84 @@
 <?php include('common/start-head.php'); ?><title>Swag</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
-        .container {
-            display:        flex;
-            flex-wrap:      nowrap;
-            flex-direction: row;
-            margin:         0px auto;
-            padding:        0px;
-        }
-        .left {
-            display:    block;
-            overflow-y: scroll;
-            width:      500px;
-        }
-        .leftpage {
-            margin:     10px;
-        }
-        .right {
-            display:    block;
-            width:      100%;
-        }
-        .rightpage {
-            max-width:  1024px;
-            margin:     10px auto;
-        }
-        @media(min-width: 640px) {
-            .container {
-                max-width: 640px;
-            }
-        }
-        @media(min-width: 768px) {
-            .container {
-                max-width: 768px;
-            }
-        }
-        @media(min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-        @media(min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-        @media(min-width: 1536px) {
-            .container {
-                max-width: 1536px;
-            }
-        }
+        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
+        .left       { display: block; overflow-y: scroll; width: 500px; }
+        .left-page  { margin: 10px; }
+        .right      { display: block; width: 100%; }
+        .right-page { max-width: 1024px; margin: 10px auto; }
+        
+        @media(min-width: 640px)  { .container { max-width: 640px; }}
+        @media(min-width: 768px)  { .container { max-width: 768px; }}
+        @media(min-width: 1024px) { .container { max-width: 1024px; }}
+        @media(min-width: 1280px) { .container { max-width: 1280px; }}
+        @media(min-width: 1536px) { .container { max-width: 1536px; }}
+        
         @media screen and (max-width: 600px) {
-            .left {
-                display: none;
-            }
-            .rightpage {
-                margin:  10px;
-            }
+            .left       { display: none; }
+            .right-page { margin:  10px; }
         }
 
-        body {
-            margin:         0px;
-            line-height:    1.3em;
-            font-family:    Segoe UI;
-        }
-        .container blockquote {
+        body { margin: 0px; line-height: 1.3em; }
+        
+        .container a        { color:           DoggerBlue; }
+        .container a:hover  { text-decoration: underline; }
+        .container img      { margin:          0 auto; }
+        
+        .left a     { text-decoration: none; }
+        .left ul    { list-style-type: none; margin-left: -20px; }
+        .left h3    { background-color: Black; color: White; padding: 6px; }
+        .right h1   { margin-top: 50px; margin-bottom: 50px; }
+        .right h2   { margin-top: 35px; }
+        
+        .strikethrough-text     { text-decoration: line-through; }
+        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }
+        .swag-watermark a       { text-decoration: none; color: inherit; }
+        
+        .blockquote {
             border-radius:      5px;
-            border:             1px solid Orange;
-            background-color:   LightYellow;
-            border-left:        6px solid Orange;
+            border:             1px solid;
             margin:             20px;
             margin-left:        20px;
             margin-right:       20px;
             padding:            10px;
         }
-        .container a {
-            color:              DoggerBlue;
-        }
-        .precode a {
-            color:              inherit;
-        }
-        .codetype a {
-            color:              inherit;
-        }
-        .left a, .enumeration a {
-            text-decoration:    none;
-        }
-        .container a:hover {
-            text-decoration:    underline;
-        }
-        table.item {
-            border-collapse:    separate;
-            background-color:   Black;
-            color:              White;
-            width:              100%;
-            margin-top:         70px;
-            margin-right:       0px;
-            font-size:          110%;
-        }
-        .item td:first-child {
-            width:              33%;
-            white-space:        nowrap;
-        }
-        table.enumeration {
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            width:              100%;
-            font-size:          90%;
-        }
-        .enumeration td {
-            padding:            6px;
-            border:             1px solid LightGrey;
-            border-collapse:    collapse;
-            min-width:          100px;
-        }
-        .enumeration td:first-child {
-            background-color:   #f8f8f8;
-            white-space:        nowrap;
-        }
-        .codetype {
-            background-color:   #eeeeee;
-        }
-        .container td:last-child {
-            width:              100%;
-        }
-        .left ul {
-            list-style-type:    none;
-            margin-left:        -20px;
-        }
-        .titletype {
-            font-weight:        normal;
-            font-size:          80%;
-        }
-        .titlelight {
-            font-weight:        normal;
-        }
-        .titlestrong {
-            font-weight:        bold;
-            font-size:          100%;
-        }
-        .left h3 {
-            background-color:   Black;
-            color:              White;
-            padding:            6px;
-        }
-        .right h1 {
-            margin-top:         50px;
-            margin-bottom:      50px;
-        }
-        .right h2 {
-            margin-top:         35px;
-        }
-        .srcref {
-            text-align:         right;
-        }
-        .incode {
-            background-color:   #eeeeee;
-            padding:            2px;
-            border: 1px dotted  #cccccc;
-        }
-        .tdname .incode {
-            background-color:   revert;
-            padding:            2px;
-            border:             revert;
-        }
-        .addinfos {
-            font-size:          90%;
-            white-space:        break-spaces;
-            overflow-wrap:      break-word;
-        }
-        .precode {
+        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }
+        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }
+        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }
+        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }
+        .blockquote-example     { border: 2px solid LightGrey; }
+        .blockquote-title-block { margin-bottom: 10px; }
+        .blockquote-title       { font-weight: bold; }
+        .blockquote-default     p:first-child { margin-top: 0px; }
+        .blockquote-default     p:last-child  { margin-bottom: 0px; }
+        .blockquote             p:last-child  { margin-bottom: 0px; }
+        
+        .description-list-title   { font-weight: bold; font-style: italic; }
+        .description-list-block   { margin-left: 30px; }
+        
+        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+        .api-item td:first-child  { width: 33%; white-space: nowrap; }
+        .api-item-title-src-ref   { text-align:  right; }
+        .api-item-title-src-ref a { color:       inherit; }
+        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+        .api-item-title-light     { font-weight: normal; }
+        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+        
+        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+        .table-enumeration td:last-child  { width: 100%; }
+        .table-enumeration td.code-type   { background-color: #eeeeee; }
+        .table-enumeration a              { text-decoration: none; color: inherit; }
+        
+        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 0px 8px; border-radius: 5px; border: 1px dotted #cccccc; }
+        .code-block {
             background-color:   #eeeeee;
             border-radius:      5px;
             border:             1px solid LightGrey;
@@ -185,6 +93,8 @@
             white-space:        pre;
             overflow-x:         auto;
         }
+        .code-block a { color: inherit; }
+        
     .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -203,10 +113,8 @@
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
-<div class="rightpage">
-<blockquote>
-<b>Work in progress</b>. Generated documentation (swag doc 0.24.0)</blockquote>
-<div class="precode"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="right-page">
+<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SFct">#run</span>
     {
@@ -230,6 +138,8 @@
     }
 }</span></code>
 </div>
+<div class="swag-watermark">
+Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

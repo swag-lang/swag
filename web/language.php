@@ -80,6 +80,7 @@
         
         table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
         .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
@@ -7575,7 +7576,7 @@ var g_Functions: Array'OneFunc</span></code>
 <div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><p> In the <span class="code-inline">module.swg</span> file, we have changed the <span class="code-inline">example</span> title to be <span class="code-inline">"Result"</span> instead of <span class="code-inline">"Example"</span>. </p>
 </div>
 <h4 id="Tables">Tables </h4>
-<p>You can create a <b>table</b> with <span class="code-inline">|</span>. </p>
+<p>You can create a <b>table</b> by starting a line with <span class="code-inline">|</span>. Each column must then be separated with <span class="code-inline">|</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// A table with 4 lines of 2 columns:</span>
 <span class="SCmt">// | boundcheck   | Check out of bound access</span>
 <span class="SCmt">// | overflow     | Check type conversion lost of bits or precision</span>
@@ -7588,6 +7589,28 @@ var g_Functions: Array'OneFunc</span></code>
 <tr><td> overflow     </td><td> Check type conversion lost of bits or precision</td></tr>
 <tr><td> math         </td><td> Various math checks (like a negative <span class="code-inline">@sqrt</span>)</td></tr>
 <tr><td> switch       </td><td> Check an invalid case in a <span class="code-inline">#[Swag.Complete]</span> switch</td></tr>
+</table>
+</div>
+<p>You can define a header to the table if you separate the first line from the second one with a separator like <span class="code-inline">---</span>. A valid separator must have a length of at least 3 characters, and must only contain <span class="code-inline">-</span> or <span class="code-inline">:</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// | Title1 | Title2</span>
+<span class="SCmt">// | ------ | ------</span>
+<span class="SCmt">// | Item1  | Item2</span>
+<span class="SCmt">// | Item1  | Item2</span></span></code>
+</div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-enumeration">
+<tr><th style="text-align: left;">Title1</th><th style="text-align: left;">Title2</th></tr><tr><td style="text-align: left;"> Item1  </td><td style="text-align: left;"> Item2</td></tr>
+<tr><td style="text-align: left;"> Item1  </td><td style="text-align: left;"> Item2</td></tr>
+</table>
+</div>
+<p>You can define the <b>column alignment</b> by adding <span class="code-inline">:</span> at the start and/or at the end of a separator. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// | Title1     | Title2       | Title3</span>
+<span class="SCmt">// | :-----     | :----:       | -----:</span>
+<span class="SCmt">// | Align left | Align center | Align right</span></span></code>
+</div>
+<div class="blockquote blockquote-example">
+<div class="blockquote-title-block"><i class="fa fa-magnifying-glass"></i>  <span class="blockquote-title">Result</span></div><table class="table-enumeration">
+<tr><th style="text-align: left;">Title1</th><th style="text-align: center;">Title2</th><th style="text-align: right;">Title3</th></tr><tr><td style="text-align: left;"> Align left </td><td style="text-align: center;"> Align center </td><td style="text-align: right;"> Align right</td></tr>
 </table>
 </div>
 <h4 id="Code">Code </h4>
