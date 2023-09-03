@@ -502,6 +502,35 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                     }
                 }
             }
+            else
+            {
+                /////////////////////////
+                /*
+                std::ifstream t(sourceFile->path);
+                std::stringstream buffer;
+                buffer << t.rdbuf();
+                Utf8 utf = buffer.str();
+                int pos = utf.find("#global testerror");
+                if (pos != -1)
+                {
+                    auto num = diag.textMsg;
+                    if (num[0] == '[' && num.length() > 8 && num[8] == ']')
+                    {
+                        num.remove(0, 1);
+                        num.remove(7, num.length() - 7);
+                    }
+                    auto to = Fmt(" \"%s\"", num.c_str());
+                    printf("%s\n", to.c_str());
+                    utf.insert(pos + 17, to);
+
+                    std::ofstream out(sourceFile->path);
+                    out << utf.c_str();
+                    out.close();
+                }
+                */
+
+                /////////////////////////
+            }
 
             if (dismiss)
             {

@@ -1,8 +1,6 @@
 #global testerror
 using Swag;
 
-//#global testerror;
-
 #[Swag.Safety("", true)]
 #test
 {

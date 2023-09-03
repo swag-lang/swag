@@ -490,6 +490,12 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (token.text == g_LangSpec->name_testerror)
         {
+            if (sourceFile->shouldHaveError)
+            {
+                sourceFile->shouldHaveError = false;
+                return context->report({sourceFile, token, Err(Syn0201)});
+            }
+
             SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0003)}));
             sourceFile->shouldHaveError = true;
             module->shouldHaveError     = true;
@@ -504,6 +510,12 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
+            if (sourceFile->shouldHaveWarning)
+            {
+                sourceFile->shouldHaveError = false;
+                return context->report({sourceFile, token, Err(Syn0202)});
+            }
+
             SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Syn0004)}));
             sourceFile->shouldHaveWarning = true;
             module->shouldHaveWarning     = true;

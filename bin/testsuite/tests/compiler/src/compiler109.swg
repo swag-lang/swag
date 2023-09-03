@@ -1,6 +1,3 @@
-
-
-#global testerror
 #global testerror
 enum A : u8
 {

@@ -300,8 +300,8 @@ void initErrors()
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' after identifier '%s'");
     SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
     SWAG_ERROR(Syn0200, "syntax is ambiguous");
-    SWAG_ERROR(Syn0201, nullptr);
-    SWAG_ERROR(Syn0202, nullptr);
+    SWAG_ERROR(Syn0201, "unexpected '#global testerror', another one has already been defined");
+    SWAG_ERROR(Syn0202, "unexpected '#global testwarning', another one has already been defined");
     SWAG_ERROR(Syn0203, nullptr);
     SWAG_ERROR(Syn0204, nullptr);
 

@@ -11,6 +11,6 @@ func main ()
 #[Swag.AttrUsage(Swag.AttributeUsage.Function)]
 attr toto: ();
 
-/*#global testerror;
+/*#global gfrrfr;
 #[toto1]
 var a: bool;*/

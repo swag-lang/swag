@@ -1,6 +1,5 @@
-
 #global testerror
 #global testpass lexer
 "tototo
-#global testerror
+#global xxxx
 to"
