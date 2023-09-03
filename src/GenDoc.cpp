@@ -642,10 +642,11 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     if (user.empty())
         return "";
 
-    bool inCodeMode   = false;
-    bool inBoldMode   = false;
-    bool inItalicMode = false;
-    bool inStrikeMode = false;
+    bool inCodeMode       = false;
+    bool inBoldMode       = false;
+    bool inItalicMode     = false;
+    bool inBoldItalicMode = false;
+    bool inStrikeMode     = false;
 
     Utf8 result;
 
@@ -763,6 +764,21 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             }
         }
 
+        // Bold+Italic
+        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] == '*' && pz[3] != '*' && !inCodeMode)
+        {
+            if ((!inBoldItalicMode && !SWAG_IS_BLANK(pz[3])) || inBoldItalicMode)
+            {
+                inBoldItalicMode = !inBoldItalicMode;
+                if (inBoldItalicMode)
+                    result += "<b><i>";
+                else
+                    result += "</i></b>";
+                pz += 3;
+                continue;
+            }
+        }
+
         // Strike through
         if (prevC != '~' && pz[0] == '~' && pz[1] == '~' && pz[2] != '~' && !inCodeMode)
         {
@@ -826,6 +842,8 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         result += "</i>";
     if (inStrikeMode)
         result += "</span>";
+    if (inBoldItalicMode)
+        result += "</i></b>";
     if (inCodeMode)
         result += "</code>";
 

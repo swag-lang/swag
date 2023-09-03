@@ -1824,7 +1824,7 @@ See LICENCE.md for the corresponding licence (FTL).</span></code>
 </tr>
 </table>
 <div class="swag-watermak">
-Generated on 03-09-2023 07-29-12 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 03-09-2023 07-34-48 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>
