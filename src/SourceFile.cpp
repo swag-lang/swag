@@ -152,8 +152,18 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
             line.reserve(1024);
             while (std::getline(fle, line))
             {
+                // Remove BOM
+                if (allLines.empty() && line.length() >= 3)
+                {
+                    auto pz = (const uint8_t*) line.c_str();
+                    if (pz[0] == 0xEF && pz[1] == 0xBB && pz[2] == 0xBF)
+                        line.erase(0, 3);
+                }
+
+                // Remove trailing '\r'
                 if (!line.empty() && line.back() == '\r')
                     line.resize(line.size() - 1);
+
                 allLines.push_back(line);
             }
         }
