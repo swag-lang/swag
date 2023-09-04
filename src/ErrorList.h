@@ -261,6 +261,11 @@ SWAG_ERROR(Syn0212),
 SWAG_ERROR(Syn0213),
 SWAG_ERROR(Syn0214),
 SWAG_ERROR(Syn0215),
+SWAG_ERROR(Syn0216),
+SWAG_ERROR(Syn0217),
+SWAG_ERROR(Syn0218),
+SWAG_ERROR(Syn0219),
+SWAG_ERROR(Syn0220),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

@@ -318,7 +318,12 @@ void initErrors()
     SWAG_ERROR(Syn0213, "expected a type or a default value when declaring the generic constant '%s'");
     SWAG_ERROR(Syn0214, "unexpected 'catch' inside '%s' expression");
     SWAG_ERROR(Syn0215, "unexpected '#validifx' for a struct");
-
+    SWAG_ERROR(Syn0216, "unexpected call parameters for the variable '%s'");
+    SWAG_ERROR(Syn0217, nullptr);
+    SWAG_ERROR(Syn0218, nullptr);
+    SWAG_ERROR(Syn0219, nullptr);
+    SWAG_ERROR(Syn0220, nullptr);
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -845,7 +850,6 @@ void initErrors()
     SWAG_ERROR(Err0597, "unexpected attribute usage");
     SWAG_ERROR(Err0031, "unexpected bitcast type '%s' (should be integer, rune or float)");
     SWAG_ERROR(Err0105, "unexpected call of an empty function ('%s')");
-    SWAG_ERROR(Err0433, "unexpected call parameters for the variable '%s'");
     SWAG_ERROR(Err0101, "unexpected call to the 'opDrop' special function (use '@drop' instead)");
     SWAG_ERROR(Err0100, "unexpected call to the 'opInit' special function (use '@init' instead)");
     SWAG_ERROR(Err0103, "unexpected call to the 'opPostCopy' special function (use '@postcopy' instead)");
@@ -932,6 +936,7 @@ void initErrors()
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
+    SWAG_ERROR(Err0433, nullptr);
     SWAG_ERROR(Err0567, nullptr);
     SWAG_ERROR(Err0401, nullptr);
     SWAG_ERROR(Err0533, nullptr);
