@@ -83,14 +83,14 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             SWAG_CHECK(eatToken());
 
             if (token.id != TokenId::LiteralNumber)
-                return error(token, Fmt(Err(Err0504), token.ctext()));
+                return error(token, Fmt(Err(Syn0211), token.ctext()));
 
             if (token.literalType != LiteralType::TT_UNTYPED_INT && token.literalType != LiteralType::TT_U8)
-                return error(token, Fmt(Err(Err0577), token.ctext()));
+                return error(token, Fmt(Err(Syn0210), token.ctext()));
             if (token.literalValue.u64 > 255)
-                return error(token, Fmt(Err(Err0575), token.ctext()));
+                return error(token, Fmt(Err(Syn0209), token.ctext()));
             if (token.literalValue.u8 == 0)
-                return error(token, Fmt(Err(Err0575), token.ctext()));
+                return error(token, Fmt(Err(Syn0209), token.ctext()));
 
             scopeUpValue = token;
             SWAG_CHECK(eatToken());
