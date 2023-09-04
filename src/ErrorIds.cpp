@@ -200,7 +200,7 @@ void initErrors()
     SWAG_ERROR(Syn0085, "expected the 'loop' expression to evaluate before '{'");
     SWAG_ERROR(Syn0086, "expected the 'visit' expression to evaluate before '{'");
     SWAG_ERROR(Syn0087, "expected the 'while' boolean expression before '{'");
-    SWAG_ERROR(Syn0088, nullptr);
+    SWAG_ERROR(Syn0088, "unexpected 'throw' in attribute declaration");
     SWAG_ERROR(Syn0089, "expected the function name instead of '%s'");
     SWAG_ERROR(Syn0090, "expected the function parameter type or assignment (':' or '=')");
     SWAG_ERROR(Syn0091, "expected the function parameters before '{'");
@@ -838,7 +838,7 @@ void initErrors()
     SWAG_ERROR(Err0199, "unexpected 'opDrop' special function for '%s' because the struct is marked with 'Swag.ConstExpr'");
     SWAG_ERROR(Err0530, "unexpected 'ref' after a 'moveref'");
     SWAG_ERROR(Err0517, "unexpected 'ref' because the right type is not a reference or a pointer (type is '%s')");
-    SWAG_ERROR(Err0849, "unexpected 'throw' in attribute declaration");
+    SWAG_ERROR(Err0849, nullptr);
     SWAG_ERROR(Err0117, "unexpected 'using' on two variables with the same type ('%s')");
     SWAG_ERROR(Err0694, "unexpected 'using' type");
     SWAG_ERROR(Err0099, "unexpected aliased identifiers because the function '%s' is not a macro or a mixin");
