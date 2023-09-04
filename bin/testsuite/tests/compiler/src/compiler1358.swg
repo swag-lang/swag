@@ -1,8 +1,8 @@
-#global testerror "Syn0133"
+#global testerror "Err0124"
 
 interface TOTO
 {
-	print: func(self, bool)
+	func print(self, b: bool)
 }
 
 struct TITI
@@ -13,7 +13,7 @@ struct TITI
 impl TOTO for TITI
 {
     //#[Swag.PrintBc]
-    func print(using self, b: bool)
+    func impl print(using self, b: bool)
     {
     }
 }

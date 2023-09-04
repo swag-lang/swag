@@ -587,7 +587,7 @@ void initErrors()
     SWAG_ERROR(Err0290, "expected a struct, but symbol '%s' is %s");
     SWAG_ERROR(Err0236, "expected a type 'string' as an '%s' message ('%s' provided)");
     SWAG_ERROR(Err0533, "expected a type or a default value when declaring the generic constant '%s'");
-    SWAG_ERROR(Err0575, "expected a value greater than zero");
+    SWAG_ERROR(Err0575, "expected a '#up' value in the range 1 to 255");
     SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0582, "expected an attribute, but '%s' is %s");
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
@@ -604,7 +604,7 @@ void initErrors()
     SWAG_ERROR(Err0450, "expected one single generic parameter for special function '%s' ('%d' provided)");
     SWAG_ERROR(Err0269, "expected the '#main' function (executable entry point)");
     SWAG_ERROR(Err0049, "expected the generic parameters of %s");
-    SWAG_ERROR(Err0504, "expected the number of scopes as a literal, found '%s'");
+    SWAG_ERROR(Err0504, "expected the '#up' number of scopes as a literal, found '%s'");
     SWAG_ERROR(Err0068, "expected the parameters of the special function '%s'");
     SWAG_ERROR(Err0064, "expected the return type of the special function '%s' ('%s' expected)");
     SWAG_ERROR(Err0063, "expected the return type of the special function '%s'");

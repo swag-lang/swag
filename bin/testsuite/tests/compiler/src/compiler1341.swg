@@ -1,8 +1,8 @@
-#global testerror "Syn0133"
+#global testerror "Err0652"
 
 interface TOTO
 {
-	print: func(self, string)
+	func print(self, str: string)
 }
 
 struct TITI
@@ -11,7 +11,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-    func print(y: bool, x: string)
+    func impl print(y: bool, x: string)
     {
     }
 }

@@ -1,8 +1,8 @@
-#global testerror "Syn0133"
+#global testerror "Syn0171"
 
 interface toto
 {
-    print: func() = &titi
+    func print(self) = &titi
 }
 
 func titi()
