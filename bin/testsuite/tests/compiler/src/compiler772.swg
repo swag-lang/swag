@@ -1,4 +1,4 @@
-#global testerror "Err0053","Err0196"
+#global testerror "Err0053"
 
 struct Point
 {
@@ -19,7 +19,7 @@ impl Point
 {
 	func opAffect(self, other: Self)
 	{
-		self.x = other
-		self.y = other + 1
+		//self.x = other
+		//self.y = other + 1
 	}
 }

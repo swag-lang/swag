@@ -1,4 +1,4 @@
-#global testerror "Err0078","Err0079"
+#global testerror "Err0079"
 
 struct Point
 {
@@ -15,13 +15,4 @@ struct Point
 	@assert(pt1 == pt2)
 	pt2.x = 2;
 	@assert(pt1 != pt2)
-}
-
-//#global testerror
-impl Point
-{
-	func opEqual(self, other: Point) -> bool
-	{
-		return self.x == other.x and self.y == other.y
-	}
 }

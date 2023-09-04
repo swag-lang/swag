@@ -4184,7 +4184,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     }
 
     SourceFile dummyFile;
-    dummyFile.path = Utf8{(const char*) location->fileName.buffer, (uint32_t) location->fileName.count};
+    dummyFile.path = Utf8{location->fileName};
 
     SourceLocation startLocation, endLocation;
     startLocation.line   = location->lineStart;
@@ -4198,9 +4198,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     //
     // If we have an expansion, and the first expansion requests test error, then raise
     // in its context to dismiss the error (like an error during a #validif for example)
-    if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+    if (runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-    else if (runContext->callerContext && runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+    else if (runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
     // Otherwise get the source file from the top of the bytecode stack if possible
     else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)

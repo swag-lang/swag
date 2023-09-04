@@ -10,6 +10,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 #include "Parser.h"
+#include "Context.h"
 
 Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 {
@@ -67,6 +68,10 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         showContext = false;
     if (node->token.text[0] == '@')
         showContext = false;
+
+    // Push a copy of the default context, in case the user code changes it (or push a new one)
+    // :PushDefaultCxt
+    PushSwagContext cxt;
 
     if (showContext)
     {

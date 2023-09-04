@@ -1,4 +1,5 @@
 #global testerror "Err0122"
+#global testerror "Err0133"
 
 #if false
 {

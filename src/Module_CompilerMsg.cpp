@@ -125,7 +125,10 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
     JobContext context;
     context.baseJob = dependentJob;
 
+    // Push a copy of the default context, in case the user code changes it (or push a new one)
+    // :PushDefaultCxt
     PushSwagContext cxt;
+
     for (auto bc : byteCodeCompiler[(int) msg->kind])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));

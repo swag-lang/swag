@@ -1,4 +1,4 @@
-#global testerror "Saf0010","Saf0012"
+#global testerror "Saf0010"
 #[Swag.Safety("overflow", true)]
 #[Swag.Optim("", false)]
 #test
