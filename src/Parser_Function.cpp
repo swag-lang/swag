@@ -160,7 +160,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                 break;
 
             if (token.id == closeToken)
-                return context->report({callParams, tokenComma, Err(Err0066)});
+                return context->report({callParams, tokenComma, Err(Syn0201)});
         }
     }
 
@@ -469,7 +469,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             if (token.id == TokenId::SymRightParen)
-                return context->report({allParams, tokenComma, Err(Err0188)});
+                return context->report({allParams, tokenComma, Err(Syn0202)});
 
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, Fmt(Err(Syn0112), token.ctext())));
         }

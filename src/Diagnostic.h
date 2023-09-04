@@ -200,10 +200,10 @@ struct Diagnostic
     Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 
-    SourceFile* contextFile  = nullptr;
-    SourceFile* sourceFile   = nullptr;
-    AstNode*    sourceNode   = nullptr;
-    AstNode*    raisedOnNode = nullptr;
+    SourceFile* contextFile = nullptr;
+    SourceFile* sourceFile  = nullptr;
+    AstNode*    sourceNode  = nullptr;
+    AstNode*    contextNode = nullptr;
 
     bool showSourceCode        = false;
     bool showRange             = true;

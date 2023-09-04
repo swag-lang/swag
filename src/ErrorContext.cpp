@@ -23,7 +23,7 @@ PushErrCxtStep::~PushErrCxtStep()
 
 void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 {
-    diag.raisedOnNode = node;
+    diag.contextNode = node;
 
     if (diag.errorLevel == DiagnosticLevel::Error)
         hasError = true;

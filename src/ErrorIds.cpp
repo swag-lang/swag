@@ -300,8 +300,8 @@ void initErrors()
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' after identifier '%s'");
     SWAG_ERROR(Syn0199, "unexpected token '%s' in the lambda type, ',' or ')' are expected here");
     SWAG_ERROR(Syn0200, "syntax is ambiguous");
-    SWAG_ERROR(Syn0201, nullptr);
-    SWAG_ERROR(Syn0202, nullptr);
+    SWAG_ERROR(Syn0201, "unexpected comma, expecting ')' or another function argument");
+    SWAG_ERROR(Syn0202, "unexpected comma, expecting ')' or another function parameter");
     SWAG_ERROR(Syn0203, "expected another match string after ',', found '%'");
     SWAG_ERROR(Syn0204, "'#global testerror' should be followed by at least one match string");
     SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
@@ -854,8 +854,8 @@ void initErrors()
     SWAG_ERROR(Err0081, "unexpected character '%s'");
     SWAG_ERROR(Err0260, "unexpected character '['");
     SWAG_ERROR(Err0262, "unexpected character literal '%s' (this is a string, not a character)");
-    SWAG_ERROR(Err0066, "unexpected comma, expecting ')' or another function argument");
-    SWAG_ERROR(Err0188, "unexpected comma, expecting ')' or another function parameter");
+    SWAG_ERROR(Err0066, nullptr);
+    SWAG_ERROR(Err0188, nullptr);
     SWAG_ERROR(Err0432, "unexpected comparison operator '='");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");

@@ -34,7 +34,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (!note->display)
             continue;
 
-        auto genCheckNode = note->sourceNode ? note->sourceNode : note->raisedOnNode;
+        auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
 
         // This is a generic instance. Display type replacements.
         if (genCheckNode &&
@@ -321,7 +321,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 {
     if (diag.errorLevel != DiagnosticLevel::Warning)
         return true;
-    if (!diag.raisedOnNode)
+    if (!diag.contextNode)
         return true;
 
     // No warning if it's in a dependency
@@ -347,7 +347,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     warnMsg.makeLower();
 
     // Check attributes in the ast hierarchy
-    auto node = diag.raisedOnNode;
+    auto node = diag.contextNode;
     while (node)
     {
         if (node->kind == AstNodeKind::AttrUse)
