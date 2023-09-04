@@ -310,7 +310,7 @@ void initErrors()
     SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
     SWAG_ERROR(Syn0206, "expected an identifier, found symbol '%s'");
     SWAG_ERROR(Syn0207, "unexpected block after 'discard try/assume/catch'");
-    SWAG_ERROR(Syn0208, nullptr);
+    SWAG_ERROR(Syn0208, "unexpected comparison operator '='");
     SWAG_ERROR(Syn0209, nullptr);
     SWAG_ERROR(Syn0210, nullptr);
 
@@ -853,7 +853,6 @@ void initErrors()
     SWAG_ERROR(Err0103, "unexpected call to the 'opPostCopy' special function (use '@postcopy' instead)");
     SWAG_ERROR(Err0104, "unexpected call to the 'opPostMove' special function (use '@postmove' instead)");
     SWAG_ERROR(Err0262, "unexpected character literal '%s' (this is a string, not a character)");
-    SWAG_ERROR(Err0432, "unexpected comparison operator '='");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");
     SWAG_ERROR(Err0683, "unexpected empty interface '%s'");
@@ -935,6 +934,7 @@ void initErrors()
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
+    SWAG_ERROR(Err0432, nullptr);
     SWAG_ERROR(Err0316, nullptr);
     SWAG_ERROR(Err0819, nullptr);
     SWAG_ERROR(Err0398, nullptr);
