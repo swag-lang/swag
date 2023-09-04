@@ -1,5 +1,5 @@
 
-#global testerror "Err0398"
+#global testerror "Syn0206"
 
 typealias A = [2] s32
 var x: A

@@ -305,6 +305,11 @@ void initErrors()
     SWAG_ERROR(Syn0203, "expected another match string after ',', found '%'");
     SWAG_ERROR(Syn0204, "'#global testerror' should be followed by at least one match string");
     SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
+    SWAG_ERROR(Syn0206, "expected an identifier, found symbol '%s'");
+    SWAG_ERROR(Syn0207, nullptr);
+    SWAG_ERROR(Syn0208, nullptr);
+    SWAG_ERROR(Syn0209, nullptr);
+    SWAG_ERROR(Syn0210, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -593,7 +598,7 @@ void initErrors()
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
     SWAG_ERROR(Err0772, "expected an expression of type '%s' after 'return'");
     SWAG_ERROR(Err0012, "expected an expression, found a type");
-    SWAG_ERROR(Err0398, "expected an identifier, found symbol '%s'");
+    SWAG_ERROR(Err0398, nullptr);
     SWAG_ERROR(Err0848, "expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but '%s' is %s");
     SWAG_ERROR(Err0404, "expected another 'visit' variable name after ',' and before ':'");
