@@ -319,7 +319,7 @@ void initErrors()
     SWAG_ERROR(Syn0214, "unexpected 'catch' inside '%s' expression");
     SWAG_ERROR(Syn0215, "unexpected '#validifx' for a struct");
     SWAG_ERROR(Syn0216, "unexpected call parameters for the variable '%s'");
-    SWAG_ERROR(Syn0217, nullptr);
+    SWAG_ERROR(Syn0217, "unexpected 'moveref' after 'const'");
     SWAG_ERROR(Syn0218, nullptr);
     SWAG_ERROR(Syn0219, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
@@ -1177,7 +1177,7 @@ void initErrors()
     SWAG_ERROR(Hnt0127, "this %s has '%s' access");
     SWAG_ERROR(Hnt0128, "this tuple is %s");
     SWAG_ERROR(Hnt0129, "the keyword '%s' cannot be used as an identifier");
-    SWAG_ERROR(Hnt0048, nullptr);
+    SWAG_ERROR(Hnt0048, "'moveref' cannot be applied to a constant value");
     SWAG_ERROR(Hnt0005, nullptr);
     SWAG_ERROR(Hnt0130, nullptr);
 

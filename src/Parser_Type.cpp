@@ -515,6 +515,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         node->locConst = token.startLocation;
         node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
         SWAG_CHECK(eatToken());
+
+        if (token.id == TokenId::KwdMoveRef)
+        {
+            Diagnostic diag{sourceFile, token, Err(Syn0217)};
+            diag.hint = Hnt(Hnt0048);
+            return context->report(diag);
+        }
     }
 
     // Reference
