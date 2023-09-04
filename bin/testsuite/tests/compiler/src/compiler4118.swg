@@ -1,9 +1,9 @@
-#global testerror "Err0469"
+#global testerror "Saf0020"
 
 #[Swag.Safety("bool", true)]
 #test
 {
-    let x = true
+    var x = true
     var ptr = cast(*u8) &x
     dref ptr += 1
     @assert(x != true)

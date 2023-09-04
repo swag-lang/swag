@@ -607,6 +607,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
             node->specFlags |= AstVarDecl::SPECFLAG_IS_LET_TO_CONST;
+            symbolFlags |= OVERLOAD_IS_LET;
             isCompilerConstant = true;
         }
         else
