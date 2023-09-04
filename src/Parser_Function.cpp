@@ -541,7 +541,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             oneParam->specFlags |= AstVarDecl::SPECFLAG_GENERIC_CONSTANT;
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
-            return error(oneParam, Fmt(Err(Err0533), oneParam->token.ctext()));
+            return error(oneParam, Fmt(Err(Syn0213), oneParam->token.ctext()));
 
         if (token.id != TokenId::SymComma)
             break;

@@ -314,9 +314,9 @@ void initErrors()
     SWAG_ERROR(Syn0209, "expected a '#up' value in the range 1 to 255");
     SWAG_ERROR(Syn0210, "expected a simple untyped integer literal or 'u8'");
     SWAG_ERROR(Syn0211, "expected the '#up' number of scopes as a literal, found '%s'");
-    SWAG_ERROR(Syn0212, nullptr);
-    SWAG_ERROR(Syn0213, nullptr);
-    SWAG_ERROR(Syn0214, nullptr);
+    SWAG_ERROR(Syn0212, "expected another 'visit' variable name after ',' and before ':'");
+    SWAG_ERROR(Syn0213, "expected a type or a default value when declaring the generic constant '%s'");
+    SWAG_ERROR(Syn0214, "unexpected 'catch' inside '%s' expression");
     SWAG_ERROR(Syn0215, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -596,7 +596,6 @@ void initErrors()
     SWAG_ERROR(Err0648, "expected a struct, but '%s' is %s");
     SWAG_ERROR(Err0290, "expected a struct, but symbol '%s' is %s");
     SWAG_ERROR(Err0236, "expected a type 'string' as an '%s' message ('%s' provided)");
-    SWAG_ERROR(Err0533, "expected a type or a default value when declaring the generic constant '%s'");
     SWAG_ERROR(Err0687, "expected a value lower than 256");
     SWAG_ERROR(Err0582, "expected an attribute, but '%s' is %s");
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
@@ -604,7 +603,6 @@ void initErrors()
     SWAG_ERROR(Err0012, "expected an expression, found a type");
     SWAG_ERROR(Err0848, "expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but '%s' is %s");
-    SWAG_ERROR(Err0404, "expected another 'visit' variable name after ',' and before ':'");
     SWAG_ERROR(Err0020, "expected arguments '()' when calling function '%s'");
     SWAG_ERROR(Err0677, "expected at least one parameter for the interface member '%s'");
     SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
@@ -835,7 +833,6 @@ void initErrors()
     SWAG_ERROR(Err0693, "unexpected 'Swag.Match' parameter '%s'");
     SWAG_ERROR(Err0691, "unexpected 'Swag.NoInline' attribute as 'Swag.Inline' is already defined");
     SWAG_ERROR(Err0594, "unexpected 'Swag.Optim' parameter '%s'");
-    SWAG_ERROR(Err0401, "unexpected 'catch' inside '%s' expression");
     SWAG_ERROR(Err0616, "unexpected 'default' statement in a switch marked with 'Swag.Complete'");
     SWAG_ERROR(Err0563, "unexpected 'moveref' on a computed value");
     SWAG_ERROR(Err0531, "unexpected 'moveref' on an immutable expression");
@@ -936,6 +933,9 @@ void initErrors()
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
+    SWAG_ERROR(Err0401, nullptr);
+    SWAG_ERROR(Err0533, nullptr);
+    SWAG_ERROR(Err0404, nullptr);
     SWAG_ERROR(Err0504, nullptr);
     SWAG_ERROR(Err0577, nullptr);
     SWAG_ERROR(Err0575, nullptr);

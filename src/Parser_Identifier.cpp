@@ -356,7 +356,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     else
     {
         SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0401), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0214), node->token.ctext())));
         SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
         SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0019), node->token.ctext())));
@@ -375,7 +375,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0401), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0214), node->token.ctext())));
     SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
     SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
