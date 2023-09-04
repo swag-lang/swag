@@ -1,2 +1,2 @@
-#global testerror "Err0081"
+#global testerror "Tkn0028"
 aaaa	¤

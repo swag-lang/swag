@@ -106,6 +106,9 @@ void initErrors()
     SWAG_ERROR(Tkn0025, "unexpected end of file found in the comment");
     SWAG_ERROR(Tkn0026, "unexpected end of line found in the character literal");
     SWAG_ERROR(Tkn0027, "unexpected end of file found in the character literal");
+    SWAG_ERROR(Tkn0028, "unexpected character '%s'");
+    SWAG_ERROR(Tkn0029, nullptr);
+    SWAG_ERROR(Tkn0030, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -306,7 +309,7 @@ void initErrors()
     SWAG_ERROR(Syn0204, "'#global testerror' should be followed by at least one match string");
     SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
     SWAG_ERROR(Syn0206, "expected an identifier, found symbol '%s'");
-    SWAG_ERROR(Syn0207, nullptr);
+    SWAG_ERROR(Syn0207, "unexpected block after 'discard try/assume/catch'");
     SWAG_ERROR(Syn0208, nullptr);
     SWAG_ERROR(Syn0209, nullptr);
     SWAG_ERROR(Syn0210, nullptr);
@@ -317,7 +320,6 @@ void initErrors()
 
     SWAG_ERROR(Err0013, "%s '%s' cannot be referenced in that context because it's not a value");
     SWAG_ERROR(Err0097, "%s '%s' has not been used as the first parameter to call '%s'");
-    SWAG_ERROR(Err0316, nullptr);
     SWAG_ERROR(Err0747, "%s cannot be public");
     SWAG_ERROR(Err0505, "%s overflow, the maximum supported size is '0x%I64x' bytes");
     SWAG_ERROR(Err0606, "%s should return a value");
@@ -457,7 +459,6 @@ void initErrors()
     SWAG_ERROR(Err0185, "cannot affect a closure to a lambda type");
     SWAG_ERROR(Err0569, "cannot affect an expression of type 'void'");
     SWAG_ERROR(Err0225, "cannot affect by index a type '%s' to '%s' because no corresponding function 'opIndexAffect' has been found in '%s'");
-    SWAG_ERROR(Err0819, nullptr);
     SWAG_ERROR(Err0029, "cannot alias a struct member");
     SWAG_ERROR(Err0160, "cannot assign a function pointer to a constant");
     SWAG_ERROR(Err0032, "cannot bitcast from type '%s' (should be integer, pointer, rune or float)");
@@ -598,7 +599,6 @@ void initErrors()
     SWAG_ERROR(Err0702, "expected an enum type, found '%s'");
     SWAG_ERROR(Err0772, "expected an expression of type '%s' after 'return'");
     SWAG_ERROR(Err0012, "expected an expression, found a type");
-    SWAG_ERROR(Err0398, nullptr);
     SWAG_ERROR(Err0848, "expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but '%s' is %s");
     SWAG_ERROR(Err0404, "expected another 'visit' variable name after ',' and before ':'");
@@ -626,7 +626,6 @@ void initErrors()
     SWAG_ERROR(Err0674, "invalid struct member name '%s'");
     SWAG_ERROR(Err0017, "invalid type declaration, symbol '%s' is not a type (it is %s)");
     SWAG_ERROR(Err0639, "label name '%s' already defined in the hierarchy");
-    SWAG_ERROR(Err0437, nullptr);
     SWAG_ERROR(Err0558, "llvm backend cannot create target '%s'");
     SWAG_ERROR(Err0690, "mismatched lambda default parameters");
     SWAG_ERROR(Err0723, "mismatched types for field '%s', '%s' expected but '%s' provided");
@@ -684,7 +683,6 @@ void initErrors()
     SWAG_ERROR(Err0571, "the affectation is not allowed on %s '%s'");
     SWAG_ERROR(Err0572, "the affectation is not allowed, '%s' is %s");
     SWAG_ERROR(Err0574, "the affectation to the tuple is not possible because the right expression is not compatible");
-    SWAG_ERROR(Err0025, nullptr);
     SWAG_ERROR(Err0780, "the alias name '%s' is unused and should be removed");
     SWAG_ERROR(Err0814, "the alignement cannot be computed because the expression is generic");
     SWAG_ERROR(Err0021, "the array dimension cannot be evaluated at compile time");
@@ -843,24 +841,18 @@ void initErrors()
     SWAG_ERROR(Err0199, "unexpected 'opDrop' special function for '%s' because the struct is marked with 'Swag.ConstExpr'");
     SWAG_ERROR(Err0530, "unexpected 'ref' after a 'moveref'");
     SWAG_ERROR(Err0517, "unexpected 'ref' because the right type is not a reference or a pointer (type is '%s')");
-    SWAG_ERROR(Err0849, nullptr);
     SWAG_ERROR(Err0117, "unexpected 'using' on two variables with the same type ('%s')");
     SWAG_ERROR(Err0694, "unexpected 'using' type");
     SWAG_ERROR(Err0099, "unexpected aliased identifiers because the function '%s' is not a macro or a mixin");
     SWAG_ERROR(Err0597, "unexpected attribute usage");
     SWAG_ERROR(Err0031, "unexpected bitcast type '%s' (should be integer, rune or float)");
-    SWAG_ERROR(Err0189, "unexpected block after 'discard try/assume/catch'");
     SWAG_ERROR(Err0105, "unexpected call of an empty function ('%s')");
     SWAG_ERROR(Err0433, "unexpected call parameters for the variable '%s'");
     SWAG_ERROR(Err0101, "unexpected call to the 'opDrop' special function (use '@drop' instead)");
     SWAG_ERROR(Err0100, "unexpected call to the 'opInit' special function (use '@init' instead)");
     SWAG_ERROR(Err0103, "unexpected call to the 'opPostCopy' special function (use '@postcopy' instead)");
     SWAG_ERROR(Err0104, "unexpected call to the 'opPostMove' special function (use '@postmove' instead)");
-    SWAG_ERROR(Err0081, "unexpected character '%s'");
-    SWAG_ERROR(Err0260, "unexpected character '['");
     SWAG_ERROR(Err0262, "unexpected character literal '%s' (this is a string, not a character)");
-    SWAG_ERROR(Err0066, nullptr);
-    SWAG_ERROR(Err0188, nullptr);
     SWAG_ERROR(Err0432, "unexpected comparison operator '='");
     SWAG_ERROR(Err0685, "unexpected default value for a variadic parameter");
     SWAG_ERROR(Err0610, "unexpected empty 'switch' body");
@@ -943,6 +935,17 @@ void initErrors()
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
+    SWAG_ERROR(Err0316, nullptr);
+    SWAG_ERROR(Err0819, nullptr);
+    SWAG_ERROR(Err0398, nullptr);
+    SWAG_ERROR(Err0437, nullptr);
+    SWAG_ERROR(Err0025, nullptr);
+    SWAG_ERROR(Err0849, nullptr);
+    SWAG_ERROR(Err0189, nullptr);
+    SWAG_ERROR(Err0081, nullptr);
+    SWAG_ERROR(Err0260, nullptr);
+    SWAG_ERROR(Err0066, nullptr);
+    SWAG_ERROR(Err0188, nullptr);
     SWAG_ERROR(Err0548, nullptr);
     SWAG_ERROR(Err0550, nullptr);
     SWAG_ERROR(Err0551, nullptr);

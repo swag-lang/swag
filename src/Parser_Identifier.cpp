@@ -338,7 +338,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     if (token.id == TokenId::SymLeftCurly)
     {
         node->specFlags |= AstTryCatchAssume::SPECFLAG_BLOCK;
-        SWAG_VERIFY(!afterDiscard, error(token, Err(Err0189)));
+        SWAG_VERIFY(!afterDiscard, error(token, Err(Syn0207)));
         SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
         if (node->semanticFct == SemanticJob::resolveTry)
