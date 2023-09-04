@@ -462,8 +462,8 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             auto note = errorPendingJob(pendingJob, nullptr);
             if (!note)
                 continue;
-            note->errorLevel = DiagnosticLevel::Error;
-            Report::report(*note);
+            Diagnostic diag{note->sourceFile, note->startLocation, note->endLocation, Err(Err0027)};
+            Report::report(diag, note);
         }
     }
 }

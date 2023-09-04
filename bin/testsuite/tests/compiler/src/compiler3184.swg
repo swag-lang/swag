@@ -1,4 +1,4 @@
-#global testerror "cannot resolve identifier 'X'"
+#global testerror "Err0027"
 
 using X
 typealias X = s32

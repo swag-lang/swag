@@ -430,7 +430,7 @@ void initErrors()
     SWAG_ERROR(Err0115, "ambiguous resolution of generic %s '%s'");
     SWAG_ERROR(Err0182, "ambiguous resolution of special function '%s'");
     SWAG_ERROR(Err0116, "ambiguous resolution of symbol '%s'");
-    SWAG_ERROR(Err0027, nullptr);
+    SWAG_ERROR(Err0027, "semantic resolution has failed");
     SWAG_ERROR(Err0485, "an array access value should be of type integer ('%s' provided)");
     SWAG_ERROR(Err0684, "an embedded interface ('%s') cannot be public");
     SWAG_ERROR(Err0675, "an embedded struct ('%s') cannot be public");
