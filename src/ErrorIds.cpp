@@ -323,7 +323,7 @@ void initErrors()
     SWAG_ERROR(Syn0218, "expected an identifier but found %s '%s'");
     SWAG_ERROR(Syn0219, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
-    
+
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1154,7 +1154,7 @@ void initErrors()
     SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
     SWAG_ERROR(Hnt0105, "this is not allowed on type '%s'");
     SWAG_ERROR(Hnt0106, "this is an immutable struct parameter");
-    SWAG_ERROR(Hnt0107, "this should be replaced with '#validif'");
+    SWAG_ERROR(Hnt0107, "this should be replaced by '#validif'");
     SWAG_ERROR(Hnt0108, "this should be a pointer to '%s'");
     SWAG_ERROR(Hnt0109, "this is not allowed on a non pointer type");
     SWAG_ERROR(Hnt0110, "this is not allowed because 'void' does not have a size");
