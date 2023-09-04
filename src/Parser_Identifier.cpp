@@ -248,7 +248,13 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
         SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
         break;
 
+    case TokenId::NativeType:
+        return context->report({sourceFile, token, Fmt(Err(Syn0218), "type", token.ctext())});
+
     default:
+        if (Tokenizer::isKeyword(token.id))
+            return context->report({sourceFile, token, Fmt(Err(Syn0218), "keyword", token.ctext())});
+
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;
     }

@@ -320,7 +320,7 @@ void initErrors()
     SWAG_ERROR(Syn0215, "unexpected '#validifx' for a struct");
     SWAG_ERROR(Syn0216, "unexpected call parameters for the variable '%s'");
     SWAG_ERROR(Syn0217, "unexpected 'moveref' after 'const'");
-    SWAG_ERROR(Syn0218, nullptr);
+    SWAG_ERROR(Syn0218, "expected an identifier but found %s '%s'");
     SWAG_ERROR(Syn0219, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     
