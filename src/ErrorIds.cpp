@@ -317,7 +317,7 @@ void initErrors()
     SWAG_ERROR(Syn0212, "expected another 'visit' variable name after ',' and before ':'");
     SWAG_ERROR(Syn0213, "expected a type or a default value when declaring the generic constant '%s'");
     SWAG_ERROR(Syn0214, "unexpected 'catch' inside '%s' expression");
-    SWAG_ERROR(Syn0215, nullptr);
+    SWAG_ERROR(Syn0215, "unexpected '#validifx' for a struct");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -822,7 +822,6 @@ void initErrors()
     SWAG_ERROR(Err0873, "a local variable declared with 'let' should be explicitly initialized");
     SWAG_ERROR(Err0309, "unable to deduce type of %s '%s'");
     SWAG_ERROR(Err0534, "uncatched error when calling '%s' (expected 'try', 'assume' or 'catch')");
-    SWAG_ERROR(Err0567, "unexpected '#validifx' for a struct");
     SWAG_ERROR(Err0568, "unexpected '%s' affectation, the left and right types should be the same ('%s' and '%s' provided)");
     SWAG_ERROR(Err0233, "unexpected '%s' expression type ('bool' expected, '%s' provided)");
     SWAG_ERROR(Err0801, "unexpected '@countof' expression type '%s' (should be integer)");
@@ -933,6 +932,7 @@ void initErrors()
     SWAG_ERROR(Err0528, "the lower bound '%lld' of the range arguments is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0529, "the lower bound '%I64u' of the range arguments is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0544, "not enough generic parameters for special function '%s'");
+    SWAG_ERROR(Err0567, nullptr);
     SWAG_ERROR(Err0401, nullptr);
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0404, nullptr);
