@@ -13,6 +13,7 @@ struct SwagSourceCodeLocation;
 struct JobContext;
 struct ExportedCompilerMessage;
 struct SourceLocation;
+struct SymbolOverload;
 
 struct StackValue
 {
@@ -123,6 +124,8 @@ struct ByteCodeRunContext
 
     const ExportedCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
+    SymbolOverload*                internalPanicSymbol    = nullptr;
+    Utf8                           internalPanicHint;
 
     // Debugger
     enum class DebugStepMode

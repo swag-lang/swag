@@ -131,18 +131,31 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
         g_Log.eol();
 }
 
-void Diagnostic::printErrorLevel()
+bool Diagnostic::hastErrorId(const Utf8& textMsg)
 {
-    // Put the error ID right after the error level, instead at the beginning of the message
-    Utf8 id;
     if (textMsg.length() > 9 &&
         textMsg[0] == '[' &&
+        SWAG_IS_ALPHA(textMsg[1]) &&
+        SWAG_IS_ALPHA(textMsg[2]) &&
+        SWAG_IS_ALPHA(textMsg[3]) &&
         SWAG_IS_DIGIT(textMsg[4]) &&
         SWAG_IS_DIGIT(textMsg[5]) &&
         SWAG_IS_DIGIT(textMsg[6]) &&
         SWAG_IS_DIGIT(textMsg[7]) &&
         textMsg[8] == ']' &&
         SWAG_IS_BLANK(textMsg[9]))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void Diagnostic::printErrorLevel()
+{
+    // Put the error ID right after the error level, instead at the beginning of the message
+    Utf8 id;
+    if (hastErrorId(textMsg))
     {
         id = Utf8(textMsg.buffer, 9);
         textMsg.remove(0, 10);

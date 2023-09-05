@@ -157,6 +157,7 @@ struct Diagnostic
     void reportCompact(bool verboseMode);
     void report(bool verboseMode = false);
 
+    static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(AstNode* node);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);

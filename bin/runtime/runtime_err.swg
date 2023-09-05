@@ -199,21 +199,21 @@ func @panic(message: string, loc: SourceCodeLocation)
 func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
 {
     var loc: SourceCodeLocation
-    loc.fileName = cast(string) @mkslice(file, @strlen(file))
+    loc.fileName = @mkstring(file, @strlen(file))
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col
 
-    let msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "panic"
+    let msg = message ? @mkstring(message, @strlen(message)) : "panic"
     @panic(msg, loc)
 }
 
 func __compilererror(file: const ^u8, line: u32, col: u32, message: const ^u8)
 {
     var loc: SourceCodeLocation
-    loc.fileName = cast(string) @mkslice(file, @strlen(file))
+    loc.fileName = @mkstring(file, @strlen(file))
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col
 
-    let msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "compiler error"
+    let msg = message ? @mkstring(message, @strlen(message)) : "compiler error"
     @compilererror(msg, loc)
 }

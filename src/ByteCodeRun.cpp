@@ -1410,7 +1410,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 }
                 else if (module->bssCannotChange)
                 {
-                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
+                    context->internalPanicSymbol = over;
+                    context->internalPanicHint   = Fmt(Hnt(Hnt0005));
                     callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                 }
             }
@@ -1431,7 +1433,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     }
                     else if (module->bssCannotChange)
                     {
-                        SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                        SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
+                        context->internalPanicSymbol = over;
+                        context->internalPanicHint   = Fmt(Hnt(Hnt0005));
                         callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                     }
                 }
@@ -4157,8 +4161,24 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg = Fmt(Err(Wrn0011), txt.c_str());
             break;
         case SwagExceptionKind::Panic:
-            level   = DiagnosticLevel::Panic;
-            userMsg = Fmt(Err(Err0401), txt.c_str());
+            level = DiagnosticLevel::Panic;
+
+            // Panic can come from the compiler, with an already existing error number (like for safety checks).
+            // So be sure we don't have one already.
+            if (!Diagnostic::hastErrorId(txt))
+                userMsg = Fmt(Err(Err0401), txt.c_str());
+            else
+                userMsg = txt;
+
+            // Additional panic infos
+            if (runContext->internalPanicSymbol)
+            {
+                auto node  = runContext->internalPanicSymbol->node;
+                auto note  = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
+                note->hint = runContext->internalPanicHint;
+                notes.push_back(note);
+            }
+
             break;
         }
     }

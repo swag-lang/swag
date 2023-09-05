@@ -807,7 +807,7 @@ void initErrors()
     SWAG_ERROR(Err0143, "the operator '%s' does not accept an operand of type '%s'");
     SWAG_ERROR(Err0770, "the return type has already been deduced to be '%s' (and '%s' is now provided)");
     SWAG_ERROR(Err0773, "the return type has already been deduced to be nothing (and '%s' is now provided)");
-    SWAG_ERROR(Err0431, "the runtime variable '%s' is initialized to zero and cannot be changed at compile time; initialize it with 'undefined' if this is intended");
+    SWAG_ERROR(Err0431, "the runtime variable '%s' is initialized to zero and cannot be changed at compile time");
     SWAG_ERROR(Err0490, "the second parameter of '@init' should be an integer ('%s' provided)");
     SWAG_ERROR(Err0812, "the size cannot be computed because the expression is generic");
     SWAG_ERROR(Err0303, "the size of the array cannot be deduced because there's no initialization expression");
@@ -1409,7 +1409,7 @@ void initErrors()
     SWAG_ERROR(Hnt0104, "you could add '&' to take the address of this expression");
     SWAG_ERROR(Hnt0103, "you should add '#type' before '%s' or, if this is a field name, explicitly specify a type");
     SWAG_ERROR(Hnt0101, "you should add '#type' before '%s' or, if this is a parameter, explicitly specify a type");
-    SWAG_ERROR(Hnt0005, nullptr);
+    SWAG_ERROR(Hnt0005, "initialize it with 'undefined' if this is intended");
     SWAG_ERROR(Hnt0130, nullptr);
 
     /////////////////////////////////////////////////////////////////////
