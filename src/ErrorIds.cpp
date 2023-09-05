@@ -122,7 +122,7 @@ void initErrors()
     SWAG_ERROR(Syn0204, "'#global testerror' should be followed by at least one match string");
     SWAG_ERROR(Syn0004, "'#global testwarning' is invalid outside a test module (in the './tests' folder of the workspace)");
     SWAG_ERROR(Syn0205, "'#global testwarning' should be followed by at least one match string");
-    SWAG_ERROR(Syn0005, "'#global using' can only be used in a module configuration file");
+    SWAG_ERROR(Syn0005, "'#global using' can only be used in the module configuration file ('module.swg')");
     SWAG_ERROR(Syn0006, "'#global' should be defined first, at the top of the file");
     SWAG_ERROR(Syn0007, "'#import' should be followed by a string");
     SWAG_ERROR(Syn0008, "'#import' should only be declared at the top level scope");
