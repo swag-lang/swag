@@ -71,18 +71,21 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         // Transform a note/help in a hint
         if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
         {
-            if (note->hint.empty() && note->hasLocation)
+            if (note->canBeMerged)
             {
-                note->showErrorLevel = false;
-                if (!note->noteHeader.empty())
+                if (note->hint.empty() && note->hasLocation)
                 {
-                    note->hint = note->noteHeader;
-                    note->hint += " ";
-                }
+                    note->showErrorLevel = false;
+                    if (!note->noteHeader.empty())
+                    {
+                        note->hint = note->noteHeader;
+                        note->hint += " ";
+                    }
 
-                note->hint += note->textMsg;
-                note->textMsg.clear();
-                note->showRange = true;
+                    note->hint += note->textMsg;
+                    note->textMsg.clear();
+                    note->showRange = true;
+                }
             }
         }
 
@@ -100,6 +103,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (note == note1)
                 continue;
             if (!note1->display)
+                continue;
+            if (!note1->canBeMerged)
                 continue;
 
             auto sourceFile0 = Report::getDiagFile(*note);
