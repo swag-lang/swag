@@ -830,7 +830,7 @@ void initErrors()
     SWAG_ERROR(Err0305, "the symbol '%s' is already defined");
     SWAG_ERROR(Err0705, "the type '%s' cannot be used as an enum type");
     SWAG_ERROR(Err0671, "the type '%s' is generic, but struct '%s' does not declare generic parameters");
-    SWAG_ERROR(Err0002, "the type '%s' should not be used in a range expression");
+    SWAG_ERROR(Err0002, "unexpected type '%s' in a range expression");
     SWAG_ERROR(Err0911, "the type '%s' should not be used in an union because it contains 'opDrop' (or one of its members does)");
     SWAG_ERROR(Err0909, "the type '%s' should not be used in an union because it contains 'opPostCopy' (or one of its members does)");
     SWAG_ERROR(Err0910, "the type '%s' should not be used in an union because it contains 'opPostMove' (or one of its members does)");
