@@ -937,8 +937,8 @@ void initErrors()
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
     SWAG_ERROR(Err0433, "%s");
-    SWAG_ERROR(Err0567, nullptr);
-    SWAG_ERROR(Err0401, nullptr);
+    SWAG_ERROR(Err0567, "%s");
+    SWAG_ERROR(Err0401, "%s");
     SWAG_ERROR(Err0533, nullptr);
     SWAG_ERROR(Err0404, nullptr);
     SWAG_ERROR(Err0504, nullptr);
@@ -1195,7 +1195,7 @@ void initErrors()
     SWAG_ERROR(Wrn0009, "the local variable '%s' is never changed and should be declared with 'let'");
     SWAG_ERROR(Wrn0010, "the variable '%s' is used but never changed");
     SWAG_ERROR(Wrn0001, "unreachable code");
-    SWAG_ERROR(Wrn0011, nullptr);
+    SWAG_ERROR(Wrn0011, "%s");
     SWAG_ERROR(Wrn0012, nullptr);
     SWAG_ERROR(Wrn0013, nullptr);
     SWAG_ERROR(Wrn0014, nullptr);

@@ -4141,7 +4141,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
 
         // User messsage
-        userMsg = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+        auto txt = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
 
         // Kind of exception
         auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
@@ -4149,13 +4149,16 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         {
         case SwagExceptionKind::Error:
         default:
-            level = DiagnosticLevel::Error;
+            level   = DiagnosticLevel::Error;
+            userMsg = Fmt(Err(Err0567), txt.c_str());
             break;
         case SwagExceptionKind::Warning:
-            level = DiagnosticLevel::Warning;
+            level   = DiagnosticLevel::Warning;
+            userMsg = Fmt(Err(Wrn0011), txt.c_str());
             break;
         case SwagExceptionKind::Panic:
-            level = DiagnosticLevel::Panic;
+            level   = DiagnosticLevel::Panic;
+            userMsg = Fmt(Err(Err0401), txt.c_str());
             break;
         }
     }
