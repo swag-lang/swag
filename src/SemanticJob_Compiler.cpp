@@ -417,7 +417,7 @@ bool SemanticJob::resolveCompilerError(SemanticContext* context)
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Error};
+    Diagnostic diag{node, node->token, Fmt(Err(Err0433), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
     return context->report(diag);
 }
 

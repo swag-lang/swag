@@ -936,7 +936,7 @@ void initErrors()
     SWAG_ERROR(Err0008, "use of unknown named parameter '%s'");
     SWAG_ERROR(Err0165, "use of unknown type '%s'");
     SWAG_ERROR(Err0056, "x64 backend unsupported os '%s'");
-    SWAG_ERROR(Err0433, nullptr);
+    SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, nullptr);
     SWAG_ERROR(Err0401, nullptr);
     SWAG_ERROR(Err0533, nullptr);
