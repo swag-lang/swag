@@ -10,7 +10,11 @@ const char* g_EI[] = {
 
 Utf8 g_E[MAX_ERRORS];
 #undef SWAG_ERROR
-#define SWAG_ERROR(__n, __msg) g_E[(int) __n] = __msg;
+#define SWAG_ERROR(__n, __msg)               \
+    {                                        \
+        SWAG_ASSERT(g_E[(int) __n].empty()); \
+        g_E[(int) __n] = __msg;              \
+    }
 void initErrors()
 {
     /////////////////////////////////////////////////////////////////////
@@ -950,7 +954,6 @@ void initErrors()
     SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
-    SWAG_ERROR(Err0013, nullptr);
     SWAG_ERROR(Err0019, nullptr);
     SWAG_ERROR(Err0055, nullptr);
     SWAG_ERROR(Err0082, nullptr);
