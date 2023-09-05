@@ -183,7 +183,7 @@
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> The pages of this web site and all the related documentations have been generated with Swag, as the tool can also produce HTML based on markdown files and source code. </p>
 </div>
 <div class="swag-watermark">
-Generated on 03-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
+Generated on 05-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.24.0</div>
 </div>
 </div>
 </div>

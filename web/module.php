@@ -29,9 +29,9 @@
 
         body { margin: 0px; line-height: 1.3em; }
         
-        .container a        { color:           DoggerBlue; }
+        .container a        { color: DoggerBlue; }
         .container a:hover  { text-decoration: underline; }
-        .container img      { margin:          0 auto; }
+        .container img      { margin: 0 auto; }
         
         .left a     { text-decoration: none; }
         .left ul    { list-style-type: none; margin-left: -20px; }
@@ -39,34 +39,32 @@
         .right h1   { margin-top: 50px; margin-bottom: 50px; }
         .right h2   { margin-top: 35px; }
         
-        .strikethrough-text     { text-decoration: line-through; }
-        .swag-watermark         { text-align:right; font-size: 80%; margin-top: 30px; }
-        .swag-watermark a       { text-decoration: none; color: inherit; }
+        .strikethrough-text { text-decoration: line-through; }
+        .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
+        .swag-watermark a   { text-decoration: none; color: inherit; }
         
-        .blockquote {
-            border-radius:      5px;
-            border:             1px solid;
-            margin:             20px;
-            margin-left:        20px;
-            margin-right:       20px;
-            padding:            10px;
-        }
-        .blockquote-default     { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
-        .blockquote-note        { border-color: #ADCEDD; background-color: #CDEEFD; }
-        .blockquote-tip         { border-color: #BCCFBC; background-color: #DCEFDC; }
-        .blockquote-warning     { border-color: #DFBDB3; background-color: #FFDDD3; }
-        .blockquote-attention   { border-color: #DDBAB8; background-color: #FDDAD8; }
-        .blockquote-example     { border: 2px solid LightGrey; }
-        .blockquote-title-block { margin-bottom: 10px; }
-        .blockquote-title       { font-weight: bold; }
-        .blockquote-default     p:first-child { margin-top: 0px; }
-        .blockquote-default     p:last-child  { margin-bottom: 0px; }
-        .blockquote             p:last-child  { margin-bottom: 0px; }
+        .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }
+        .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+        .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }
+        .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }
+        .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }
+        .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }
+        .blockquote-example       { border: 2px solid LightGrey; }
+        .blockquote-title-block   { margin-bottom: 10px; }
+        .blockquote-title         { font-weight: bold; }
+        .blockquote-default       p:first-child { margin-top: 0px; }
+        .blockquote-default       p:last-child  { margin-bottom: 0px; }
+        .blockquote               p:last-child  { margin-bottom: 0px; }
         
         .description-list-title   { font-weight: bold; font-style: italic; }
         .description-list-block   { margin-left: 30px; }
         
+        .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+        .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+        
         table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+        .api-item td              { font-size: revert; border: 0; }
         .api-item td:first-child  { width: 33%; white-space: nowrap; }
         .api-item-title-src-ref   { text-align:  right; }
         .api-item-title-src-ref a { color:       inherit; }
@@ -75,24 +73,14 @@
         .api-item-title-strong    { font-weight: bold; font-size: 100%; }
         .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
         
-        table.table-enumeration           { border: 1px solid LightGrey; border-collapse: collapse; width: calc(100% - 40px); font-size: 90%; margin-left: 20px; margin-right: 20px; }
-        .table-enumeration td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
-        .table-enumeration th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+        table.table-enumeration           { width: calc(100% - 40px); }
         .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
         .table-enumeration td:last-child  { width: 100%; }
         .table-enumeration td.code-type   { background-color: #eeeeee; }
         .table-enumeration a              { text-decoration: none; color: inherit; }
         
-        .code-inline            { font-size: 110%; font-family: monospace; display: inline-block; background-color: #eeeeee; padding: 0px 8px; border-radius: 5px; border: 1px dotted #cccccc; }
-        .code-block {
-            background-color:   #eeeeee;
-            border-radius:      5px;
-            border:             1px solid LightGrey;
-            padding:            10px;
-            margin:             20px;
-            white-space:        pre;
-            overflow-x:         auto;
-        }
+        .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
+        .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
