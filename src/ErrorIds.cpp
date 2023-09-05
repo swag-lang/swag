@@ -988,6 +988,14 @@ void initErrors()
     SWAG_ERROR(Err0345, nullptr);
     SWAG_ERROR(Err0347, nullptr);
     SWAG_ERROR(Err0349, nullptr);
+    SWAG_ERROR(Err0353, nullptr);
+    SWAG_ERROR(Err0354, nullptr);
+    SWAG_ERROR(Err0355, nullptr);
+    SWAG_ERROR(Err0356, nullptr);
+    SWAG_ERROR(Err0363, nullptr);
+    SWAG_ERROR(Err0364, nullptr);
+    SWAG_ERROR(Err0365, nullptr);
+    SWAG_ERROR(Err0366, nullptr);
     SWAG_ERROR(Err0350, nullptr);
     SWAG_ERROR(Err0351, nullptr);
     SWAG_ERROR(Err0210, nullptr);
