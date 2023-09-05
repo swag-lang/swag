@@ -133,6 +133,21 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
 
 void Diagnostic::printErrorLevel()
 {
+    // Put the error ID right after the error level, instead at the beginning of the message
+    Utf8 id;
+    if (textMsg.length() > 9 &&
+        textMsg[0] == '[' &&
+        SWAG_IS_DIGIT(textMsg[4]) &&
+        SWAG_IS_DIGIT(textMsg[5]) &&
+        SWAG_IS_DIGIT(textMsg[6]) &&
+        SWAG_IS_DIGIT(textMsg[7]) &&
+        textMsg[8] == ']' &&
+        SWAG_IS_BLANK(textMsg[9]))
+    {
+        id = Utf8(textMsg.buffer, 9);
+        textMsg.remove(0, 10);
+    }
+
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
@@ -169,6 +184,12 @@ void Diagnostic::printErrorLevel()
         break;
     default:
         break;
+    }
+
+    if (!id.empty())
+    {
+        g_Log.print(id);
+        g_Log.print(": ");
     }
 }
 
