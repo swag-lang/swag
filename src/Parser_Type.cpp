@@ -114,6 +114,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         param->inheritTokenLocation(firstAddedType);
     }
 
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
@@ -325,7 +326,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         }
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "to close the lambda parameters"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the lambda parameters"));
 
     if (token.id == TokenId::SymMinusGreat)
     {
@@ -713,9 +714,10 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         node->specFlags |= AstCast::SPECFLAG_UNCONST;
     }
 
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after the type expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after the type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;

@@ -14,6 +14,8 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveIntrinsicTag;
 
     SWAG_CHECK(eatToken());
+
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
@@ -25,8 +27,7 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
 
@@ -584,12 +585,14 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
+
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     exprNode->semanticFct = SemanticJob::resolveIntrinsicLocation;
     return true;
 }
@@ -600,12 +603,15 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
+
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+
     exprNode->semanticFct = SemanticJob::resolveIntrinsicDefined;
     return true;
 }
@@ -634,12 +640,14 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
+
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     exprNode->semanticFct = SemanticJob::resolveCompilerInclude;
     return true;
 }

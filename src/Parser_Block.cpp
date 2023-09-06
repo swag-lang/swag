@@ -243,11 +243,12 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     // Extra name on the special function
     if (token.id == TokenId::SymLeftParen)
     {
+        auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0115)));
         node->extraNameToken = token;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     }
 
     if (token.id == TokenId::SymAmpersand)

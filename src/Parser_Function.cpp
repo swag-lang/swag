@@ -12,7 +12,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
     *result         = callParams;
 
-    bool multi = false;
+    bool multi    = false;
+    auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftParen)
     {
         multi = true;
@@ -89,7 +90,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     }
 
     if (multi)
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     return true;
 }
@@ -414,6 +415,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0091)));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
+    auto startLoc = token.startLocation;
     if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
         SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the attribute parameters of '%s'", parent->token.ctext())));
     else if (token.id != TokenId::SymLeftParen)
@@ -475,7 +477,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
         }
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
 
@@ -484,6 +486,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
     *result        = allParams;
 
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));
 
@@ -548,7 +551,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
 
@@ -749,10 +752,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
+        auto      startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
         SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Syn0033)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     }
 
     // Return type

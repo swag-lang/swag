@@ -151,6 +151,8 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     node->inheritTokenName(token);
 
     SWAG_CHECK(eatToken());
+
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0044)));
 
@@ -196,7 +198,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
 
@@ -241,7 +243,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         *result = expr;
         expr->flags |= AST_IN_ATOMIC_EXPR;
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, "to close the left expression"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the expression"));
         break;
     }
 
@@ -1280,6 +1282,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     // Defer kind
     if (token.id == TokenId::SymLeftParen)
     {
+        auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_err)
             node->deferKind = DeferKind::Error;
@@ -1289,7 +1292,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
             return error(token, Fmt(Err(Syn0142), token.ctext()), Hlp(Hlp0023));
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
@@ -1303,8 +1306,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
     {
     case TokenId::SymLeftParen:
     {
-        auto multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
-        *result    = multi;
+        auto multi    = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
+        *result       = multi;
+        auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
         while (true)
         {
@@ -1315,7 +1319,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple unpacking"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after tuple unpacking"));
         break;
     }
 
@@ -1622,6 +1626,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveInit;
     SWAG_CHECK(eatToken());
 
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
@@ -1631,7 +1636,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     if (token.id == TokenId::SymLeftParen)
     {
@@ -1665,6 +1670,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveDropCopyMove;
     SWAG_CHECK(eatToken());
 
+    auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
@@ -1674,7 +1680,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     return true;
 }
 

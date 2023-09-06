@@ -80,6 +80,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
         if (token.id == TokenId::SymLeftParen)
         {
+            auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken());
 
             if (token.id != TokenId::LiteralNumber)
@@ -94,7 +95,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
             scopeUpValue = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatToken(TokenId::SymRightParen));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
         }
     }
 
