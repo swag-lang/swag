@@ -172,13 +172,13 @@ void initErrors()
     SWAG_ERROR(Syn0045, "const before a function parameter name can only be followed by 'self'");
     SWAG_ERROR(Syn0046, "empty tuple definition");
     SWAG_ERROR(Syn0047, "end of file reached, expected '%s' %s");
-    SWAG_ERROR(Syn0048, "expected '%s' instead of '%s' %s");
+    SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0049, "expected '(' to start the closure parameters");
     SWAG_ERROR(Syn0050, "expected ',' or ']', found '%s'");
     SWAG_ERROR(Syn0051, "expected ':' after the variable name '%s', found a literal");
     SWAG_ERROR(Syn0052, "expected ':' or '=' in the variable declaration, found '%s'");
     SWAG_ERROR(Syn0053, "expected 'case' or 'default'");
-    SWAG_ERROR(Syn0133, "expected 'func' or 'mtd' to declare an interface function (found '%s')");
+    SWAG_ERROR(Syn0133, "expected 'func' or 'mtd' to declare an interface function, found '%s'");
     SWAG_ERROR(Syn0054, "expected '{' to start the %s body, found ';'");
     SWAG_ERROR(Syn0209, "expected a '#up' value in the range 1 to 255");
     SWAG_ERROR(Syn0055, "expected a 'case' expression before ':'");
@@ -205,7 +205,7 @@ void initErrors()
     SWAG_ERROR(Syn0074, "expected an enum name, found '%s'");
     SWAG_ERROR(Syn0075, "expected an enum value identifier, found '%s'");
     SWAG_ERROR(Syn0076, "expected an expression");
-    SWAG_ERROR(Syn0218, "expected an identifier but found %s '%s'");
+    SWAG_ERROR(Syn0218, "expected an identifier, found %s '%s'");
     SWAG_ERROR(Syn0077, "expected an identifier");
     SWAG_ERROR(Syn0078, "expected an identifier, found '%s'");
     SWAG_ERROR(Syn0079, "expected an identifier, found a literal");
@@ -225,7 +225,7 @@ void initErrors()
     SWAG_ERROR(Syn0092, "expected the generic parameters");
     SWAG_ERROR(Syn0093, "expected the namespace name before ';'");
     SWAG_ERROR(Syn0094, "expected the namespace name before '{'");
-    SWAG_ERROR(Syn0096, "expected the type of the array after the dimensions, but found '%s'");
+    SWAG_ERROR(Syn0096, "expected the type of the array after the dimensions, found '%s'");
     SWAG_ERROR(Syn0097, "found '#elif' without a corresponding '#if'");
     SWAG_ERROR(Syn0098, "found '#else' without a corresponding '#if'");
     SWAG_ERROR(Syn0099, "found ')' without a corresponding opening '('");
