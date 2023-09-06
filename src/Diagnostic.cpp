@@ -479,8 +479,6 @@ void Diagnostic::printRanges()
     const auto& backLine = lines.back();
     printMargin(false, true);
 
-    bool lastHintIsCompact = false; // !showMultipleCodeLines;
-
     // Print all marks
     auto startIndex = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
@@ -508,7 +506,7 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::HorizontalLine);
         }
 
-        if (!r.hint.empty() && (!lastHintIsCompact || i != ranges.size() - 1))
+        if (!r.hint.empty())
         {
             startIndex++;
             if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
@@ -525,15 +523,6 @@ void Diagnostic::printRanges()
             else
                 g_Log.print(LogSymbol::HorizontalLine);
         }
-    }
-
-    // Last hint message on the same line
-    if (!ranges.empty() && !ranges.back().hint.empty() && lastHintIsCompact)
-    {
-        g_Log.print(" ");
-        g_Log.setColor(hintColor);
-        g_Log.print(ranges.back().hint);
-        ranges.pop_back();
     }
 
     // Remove all ranges with an empty hint

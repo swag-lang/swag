@@ -105,7 +105,7 @@ uint32_t Tokenizer::readChar()
     return c;
 }
 
-void Tokenizer::processChar(uint32_t c)
+void Tokenizer::processChar(uint32_t c, unsigned offset)
 {
     if (c == '\n')
     {
@@ -117,13 +117,15 @@ void Tokenizer::processChar(uint32_t c)
     }
     else
     {
-        location.column++;
+        // Don't really know why if this is utf8 of 3 bytes, we should just increase by 2
+        // for consoles to have a correct column indentation. Is this because of windows UTF16 ?
+        location.column += min(offset, 2);
     }
 }
 
 void Tokenizer::eatChar(uint32_t c, unsigned offset)
 {
-    processChar(c);
+    processChar(c, offset);
     curBuffer += offset;
 }
 

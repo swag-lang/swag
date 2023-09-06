@@ -96,7 +96,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
                 if (SWAG_IS_WIN_EOL(curBuffer[1]) && SWAG_IS_EOL(curBuffer[2]))
                 {
                     appendTokenName(token);
-                    processChar('\n');
+                    processChar('\n', 1);
                     realAppendName = true;
                     curBuffer += 3;
                     startTokenName    = curBuffer;
@@ -106,7 +106,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
                 else if (SWAG_IS_EOL(curBuffer[1]))
                 {
                     appendTokenName(token);
-                    processChar('\n');
+                    processChar('\n', 1);
                     realAppendName = true;
                     curBuffer += 2;
                     startTokenName    = curBuffer;

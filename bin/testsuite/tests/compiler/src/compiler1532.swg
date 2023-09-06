@@ -3,5 +3,5 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x = "⻨⻨"'rune
+    var x = "⻨⻨⻨⻨"'rune
 }

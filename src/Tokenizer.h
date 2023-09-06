@@ -103,7 +103,7 @@ struct Tokenizer
 
     uint32_t readChar();
     uint32_t peekChar(unsigned& offset);
-    void     processChar(uint32_t c);
+    void     processChar(uint32_t c, unsigned offset);
     void     eatChar(uint32_t c, unsigned offset);
 
     bool doMultiLineComment(TokenParse& token);
