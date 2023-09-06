@@ -8,5 +8,5 @@ enum OT
 //#global testerror
 #test
 {
-	var pt = {x = OT.A}
+	var pt = {x: OT.A}
 }

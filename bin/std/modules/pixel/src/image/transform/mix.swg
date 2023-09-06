@@ -12,7 +12,7 @@ impl Image
     {
         Debug.assert(srcImage.pf.hasAlpha() or mode != .AlphaBlend)
 
-        var f = {dstImage, srcImage = &srcImage, x, y, mode}
+        var f = {dstImage, srcImage: &srcImage, x, y, mode}
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()

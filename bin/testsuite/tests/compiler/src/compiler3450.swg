@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
-    let x = {a = 2, b = 3}
+    let x = {a: 2, b: 3}
 
     let v = closure|x|()
     {

@@ -12,7 +12,7 @@ func titi()-> s32 { return 1; }
     @assert(y.item0 == -1)
     @assert(y.item1 == 1)
 
-    var z = {a = toto(), b = titi()}
+    var z = {a: toto(), b: titi()}
     @assert(z.a == -1)
     @assert(z.b == 1)
 }

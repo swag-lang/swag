@@ -10,5 +10,5 @@ func(A, B) toto(x: {a: A, b: B, c: s32})
 
 #test
 {
-    toto'(s32, bool)({b = true, a = 1, c = 55})
+    toto'(s32, bool)({b: true, a: 1, c: 55})
 }

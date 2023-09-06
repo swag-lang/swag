@@ -4,7 +4,7 @@ impl Image
 {
     mtd const doCrop(dstImage: *Image, x, y, w, h: s32)
     {
-        var f = {x, y = height - y - h, self}
+        var f = {x, y: height - y - h, self}
         dstImage.visitPixels(&f, stride: w)
         {
             let params = cast(*@decltype(f)) userData

@@ -32,7 +32,7 @@ impl Image
             }
         }
 
-        var f = {r = &convArrR[0], g = &convArrG[0], b = &convArrB[0]}
+        var f = {r: &convArrR[0], g: &convArrG[0], b: &convArrB[0]}
 
         visitPixels(&f)
         {

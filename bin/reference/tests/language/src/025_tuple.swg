@@ -23,7 +23,7 @@ But you can specify your own names.
 */
 #test
 {
-    let tuple = {x = 1.0, y = 2.0}
+    let tuple = {x: 1.0, y: 2.0}
     @assert(tuple.x == 1.0)
     @assert(tuple.item0 == 1.0)
     @assert(tuple.y == 2.0)
@@ -71,7 +71,7 @@ You can unpack a tuple field by field.
 */
 #test
 {
-    var tuple1 = {x = 1.0, y = 2.0}
+    var tuple1 = {x: 1.0, y: 2.0}
 
     // 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.
     var (value0, value1) = tuple1
@@ -89,7 +89,7 @@ You can ignore a tuple field by naming the variable `?`.
 */
 #test
 {
-    var tuple1 = {x = 1.0, y = 2.0}
+    var tuple1 = {x: 1.0, y: 2.0}
     var (x, ?) = tuple1
     @assert(x == 1.0)
     var (?, y) = tuple1

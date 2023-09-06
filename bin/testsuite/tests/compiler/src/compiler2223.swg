@@ -7,7 +7,7 @@ struct A
 //#[Swag.PrintBc]
 func toto1()->A
 {
-    return {y = 555, x = 444}
+    return {y: 555, x: 444}
 }
 
 #test

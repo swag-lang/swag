@@ -319,7 +319,7 @@ namespace ResizeTools
         let dh = cast(s64) imgDst.height
         var contrib = calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
-        var f = {imgDst, imgSrc, contrib = &contrib}
+        var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
             let params = cast(*@decltype(f)) data
@@ -333,7 +333,7 @@ namespace ResizeTools
         let dw = cast(s64) imgDst.width
         var contrib = calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
-        var f = {imgDst, imgSrc, contrib = &contrib}
+        var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
             let params = cast(*@decltype(f)) data

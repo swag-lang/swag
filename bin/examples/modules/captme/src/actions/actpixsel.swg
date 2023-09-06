@@ -119,7 +119,7 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect())
 
-        var params = {capture, boundRects = boundRects.buffer, forms = &forms}
+        var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData
@@ -157,7 +157,7 @@ impl MainWnd
         visit f: forms
             boundRects.add(f.boundRect())
 
-        var params = {capture, boundRects = boundRects.buffer, forms = &forms}
+        var params = {capture, boundRects: boundRects.buffer, forms: &forms}
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData
@@ -253,7 +253,7 @@ impl MainWnd
             infos.add(moveref &i)
         }
 
-        var params = {capture, infos = infos.buffer, forms = &forms, masks}
+        var params = {capture, infos: infos.buffer, forms: &forms, masks}
         undo.newImg.visitPixels(&params)
         {
             var p = cast(*@decltype(params)) userData

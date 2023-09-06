@@ -1,4 +1,4 @@
-func toto(x = {1's64, b = 2's64})
+func toto(x = {1's64, b: 2's64})
 {
     @assert(x.item0 == 1)
     @assert(x.item1 == 2)

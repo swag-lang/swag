@@ -1172,7 +1172,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NAMED_PARAM, &paramExpression));
 
             // Name
-            if (token.id == TokenId::SymEqual)
+            if (token.id == TokenId::SymColon)
             {
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Err(Syn0077)));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
