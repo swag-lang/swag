@@ -633,7 +633,7 @@ void initErrors()
     SWAG_ERROR(Err0012, "expected an expression, found a type");
     SWAG_ERROR(Err0848, "expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0646, "expected an interface, but '%s' is %s");
-    SWAG_ERROR(Err0020, "expected arguments '()' when calling function '%s'");
+    SWAG_ERROR(Err0020, "expected arguments '()' when calling %s");
     SWAG_ERROR(Err0677, "expected at least one parameter for the interface member '%s'");
     SWAG_ERROR(Err0707, "expected at least one test error but nothing was raised");
     SWAG_ERROR(Err0580, "expected at least one test warning but nothing was raised");
