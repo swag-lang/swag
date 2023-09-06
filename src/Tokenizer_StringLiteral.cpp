@@ -202,16 +202,6 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
             continue;
         }
 
-        if (c == '@' && curBuffer[1] == '"')
-        {
-            rawChar        = '@';
-            multiline      = true;
-            realAppendName = true;
-            eatChar(c, offset);
-            eatChar(c, offset);
-            continue;
-        }
-
         break;
     }
 
