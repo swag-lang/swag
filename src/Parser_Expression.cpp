@@ -244,9 +244,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         *result = expr;
         expr->flags |= AST_IN_ATOMIC_EXPR;
         if (parent)
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, Fmt("to close the '%s' expression", parent->token.ctext())));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, Fmt("to end the '%s' expression", parent->token.ctext())));
         else
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the left expression"));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
         break;
     }
 
@@ -1295,7 +1295,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
             return error(token, Fmt(Err(Syn0142), token.ctext()), Hlp(Hlp0023));
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the 'defer' argument"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
@@ -1322,7 +1322,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "after tuple unpacking"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the tuple unpacking"));
         break;
     }
 

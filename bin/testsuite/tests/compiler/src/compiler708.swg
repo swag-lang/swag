@@ -1,6 +1,3 @@
-
-
-//#[Swag.PrintBc]
 #global testerror "Syn0048"
 #test
 {

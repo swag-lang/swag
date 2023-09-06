@@ -122,7 +122,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
                 SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
         }
 
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the #mixin replacement statement"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the '#mixin' replacement statement"));
     }
 
     SWAG_CHECK(eatSemiCol("'#mixin' expression"));
