@@ -248,7 +248,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0115)));
         node->extraNameToken = token;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'visit' argument"));
     }
 
     if (token.id == TokenId::SymAmpersand)
