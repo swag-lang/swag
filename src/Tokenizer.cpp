@@ -129,6 +129,28 @@ void Tokenizer::eatChar(uint32_t c, unsigned offset)
     curBuffer += offset;
 }
 
+TokenId Tokenizer::tokenRelated(TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::SymRightParen:
+        return TokenId::SymLeftParen;
+    case TokenId::SymRightSquare:
+        return TokenId::SymLeftSquare;
+    case TokenId::SymRightCurly:
+        return TokenId::SymLeftCurly;
+    case TokenId::SymLeftParen:
+        return TokenId::SymRightParen;
+    case TokenId::SymLeftSquare:
+        return TokenId::SymRightSquare;
+    case TokenId::SymLeftCurly:
+        return TokenId::SymRightCurly;
+    }
+
+    SWAG_ASSERT(false);
+    return TokenId::SymQuestion;
+}
+
 Utf8 Tokenizer::tokenToName(TokenId id)
 {
     switch (id)

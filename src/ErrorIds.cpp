@@ -1486,7 +1486,7 @@ void initErrors()
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0038, "here is the related command line option: '%s'");
     SWAG_ERROR(Nte0069, "here is the runtime argument that corresponds to '%s'");
-    SWAG_ERROR(Nte0020, "here is the start");
+    SWAG_ERROR(Nte0020, "missing '%s' to close this");
     SWAG_ERROR(Nte0039, "here is the variable declaration");
     SWAG_ERROR(Nte0022, "it could be a bug in the compile time part of your program");
     SWAG_ERROR(Nte0019, "it is applied on this %s");

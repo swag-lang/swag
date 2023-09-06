@@ -130,17 +130,18 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
     if (token.id != id)
     {
+        Utf8 related = Tokenizer::tokenToName(id);
         if (token.id == TokenId::EndOfFile)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0047), Tokenizer::tokenToName(id).c_str(), msg)};
-            auto       note             = Diagnostic::note(sourceFile, start, start, Nte(Nte0020));
+            auto       note             = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
             note->showMultipleCodeLines = token.startLocation.line != start.line;
             return context->report(diag, note);
         }
         else
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), token.ctext(), msg)};
-            auto       note             = Diagnostic::note(sourceFile, start, start, Nte(Nte0020));
+            auto       note             = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
             note->showMultipleCodeLines = token.startLocation.line != start.line;
             return context->report(diag, note);
         }

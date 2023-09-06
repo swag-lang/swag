@@ -243,7 +243,10 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         *result = expr;
         expr->flags |= AST_IN_ATOMIC_EXPR;
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the expression"));
+        if (parent)
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, Fmt("to close the '%s' expression", parent->token.ctext())));
+        else
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the left expression"));
         break;
     }
 
@@ -1292,7 +1295,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
             return error(token, Fmt(Err(Syn0142), token.ctext()), Hlp(Hlp0023));
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to close the 'defer' argument"));
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
