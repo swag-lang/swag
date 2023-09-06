@@ -636,7 +636,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
 
 bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
@@ -670,14 +670,14 @@ bool Parser::doCompilerLoad(AstNode* parent)
         SWAG_VERIFY(scan, context->report({sourceFile, token, Err(Syn0014)}));
     }
 
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Err(Syn0011)}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(eatSemiCol("'#include' expression"));
+    SWAG_CHECK(eatSemiCol("'#load' expression"));
     if (sourceFile->module->kind == ModuleKind::Config)
     {
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)

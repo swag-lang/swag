@@ -1328,6 +1328,11 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         CONCAT_FIXED_STR(concat, ")");
         break;
+    case AstNodeKind::CompilerInclude:
+        CONCAT_FIXED_STR(concat, "#include(");
+        SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        CONCAT_FIXED_STR(concat, ")");
+        break;
 
     case AstNodeKind::CompilerRun:
     case AstNodeKind::CompilerRunExpression:
