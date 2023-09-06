@@ -173,7 +173,8 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         orgVarNode->type = type;
         Ast::addChildBack(orgVarNode, assign);
         orgVarNode->assignment = assign;
-        orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
+        if (orgVarNode->assignment)
+            orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
         SemanticJob::setVarDeclResolve(orgVarNode);
 
         // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
@@ -298,6 +299,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
         {
+            PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [leftNode]()
+                              { return Fmt("occured while parsing the type of %s '%s'", Naming::kindName(leftNode).c_str(), leftNode->token.ctext()); });
+
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
             Ast::removeFromParent(type);

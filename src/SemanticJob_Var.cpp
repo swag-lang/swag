@@ -50,10 +50,12 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (!typeVar->isStruct())
     {
-        SWAG_ASSERT(varDecl->assignment);
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0291), typeVar->getDisplayNameC())};
         diag.hint = Hnt(Hnt0066);
-        diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+        if (varDecl->assignment)
+            diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+        else if (varDecl->type)
+            diag.addRange(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
         return context->report(diag);
     }
 
