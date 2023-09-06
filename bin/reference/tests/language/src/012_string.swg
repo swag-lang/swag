@@ -25,7 +25,7 @@ A rune is an unicode codepoint, and is 32 bits.
 }
 
 /**
-You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the `Std.Core` module will have all you need to manipulate UTF8 strings.
+> WARNING: You cannot index a string to get a rune, except in ascii strings. This is because we didn't want the runtime to come with the cost of UTF8 encoding/decoding. But note that the `Std.Core` module will have all you need to manipulate UTF8 strings.
 */
 
 /**
