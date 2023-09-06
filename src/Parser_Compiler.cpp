@@ -634,9 +634,9 @@ bool Parser::doCompilerDependencies(AstNode* parent)
     return true;
 }
 
-bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
+bool Parser::doIntrinsicInclude(AstNode* parent, AstNode** result)
 {
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicInclude, sourceFile, parent);
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());

@@ -173,6 +173,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("until", State.Control)
 
         mapWords.add("@defined", State.Intrinsic)
+        mapWords.add("@include", State.Intrinsic)
         mapWords.add("@location", State.Intrinsic)
         mapWords.add("@stringcmp", State.Intrinsic)
         mapWords.add("@typecmp", State.Intrinsic)
@@ -349,7 +350,6 @@ impl IRichEditLexer for RichEditLexerSwag
 
         mapWords.add("#global", State.CompilerGlobal)
 
-        mapWords.add("#include", State.CompilerStatement)
         mapWords.add("#load", State.CompilerStatement)
         mapWords.add("#assert", State.CompilerStatement)
         mapWords.add("#print", State.CompilerStatement)

@@ -17,18 +17,18 @@ internal const DefaultIcons24Name        = "theme/icons24.png"
 internal const DefaultIcons64Name        = "theme/icons64.png"
 internal const DefaultSpinName           = "theme/spin.png"
 
-internal const DefaultImage              = #include(DefaultImageName)
-internal const DefaultFontRegular        = #include(DefaultFontRegularName)
-internal const DefaultFontBold           = #include(DefaultFontBoldName)
-internal const DefaultFontBoldItalic     = #include(DefaultFontBoldItalicName)
-internal const DefaultFontItalic         = #include(DefaultFontItalicName)
-internal const DefaultFontFsRegular      = #include(DefaultFontFsRegularName)
-internal const DefaultFontFsBold         = #include(DefaultFontFsBoldName)
-internal const DefaultFontFsBoldItalic   = #include(DefaultFontFsBoldItalicName)
-internal const DefaultFontFsItalic       = #include(DefaultFontFsItalicName)
-internal const DefaultIcons24            = #include(DefaultIcons24Name)
-internal const DefaultIcons64            = #include(DefaultIcons64Name)
-internal const DefaultSpin               = #include(DefaultSpinName)
+internal const DefaultImage              = @include(DefaultImageName)
+internal const DefaultFontRegular        = @include(DefaultFontRegularName)
+internal const DefaultFontBold           = @include(DefaultFontBoldName)
+internal const DefaultFontBoldItalic     = @include(DefaultFontBoldItalicName)
+internal const DefaultFontItalic         = @include(DefaultFontItalicName)
+internal const DefaultFontFsRegular      = @include(DefaultFontFsRegularName)
+internal const DefaultFontFsBold         = @include(DefaultFontFsBoldName)
+internal const DefaultFontFsBoldItalic   = @include(DefaultFontFsBoldItalicName)
+internal const DefaultFontFsItalic       = @include(DefaultFontFsItalicName)
+internal const DefaultIcons24            = @include(DefaultIcons24Name)
+internal const DefaultIcons64            = @include(DefaultIcons64Name)
+internal const DefaultSpin               = @include(DefaultSpinName)
 
 
 struct ThemeResources

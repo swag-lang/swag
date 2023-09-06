@@ -120,7 +120,6 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #global
 #if
 #import
-#include
 #load
 #macro
 #mixin
@@ -159,6 +158,7 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @dataof
 @dbgalloc
 @defined
+@include
 @drop
 @compilererror
 @compilerwarning

@@ -1,1 +1,1 @@
-public const AA3223 = #include(#file)
+public const AA3223 = @include(#file)

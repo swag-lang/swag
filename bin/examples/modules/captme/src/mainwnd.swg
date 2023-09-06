@@ -75,8 +75,8 @@ struct MainWnd
     mdlFavorite:    IForm
 }
 
-const Icons24 = #include("datas/icons24.png")
-const Icons48 = #include("datas/icons48.png")
+const Icons24 = @include("datas/icons24.png")
+const Icons48 = @include("datas/icons48.png")
 
 impl IWnd for MainWnd
 {

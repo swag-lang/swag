@@ -1,7 +1,7 @@
 using Core
 const C = $"
 using Core
-const C = #include(#file)
+const C = @include(#file)
 
 //#[Swag.PrintBc]
 #[Swag.Optim("", false)]

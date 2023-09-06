@@ -226,8 +226,8 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         SWAG_CHECK(doIntrinsicDefined(parent, result));
         break;
 
-    case TokenId::CompilerInclude:
-        SWAG_CHECK(doCompilerInclude(parent, result));
+    case TokenId::IntrinsicInclude:
+        SWAG_CHECK(doIntrinsicInclude(parent, result));
         break;
 
     case TokenId::CompilerSelf:

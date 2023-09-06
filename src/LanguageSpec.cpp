@@ -267,7 +267,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#message", TokenId::CompilerFuncMessage);
     keywords.add("#dependencies", TokenId::CompilerDependencies);
 
-    keywords.add("#include", TokenId::CompilerInclude);
     keywords.add("#load", TokenId::CompilerLoad);
     keywords.add("#assert", TokenId::CompilerAssert);
     keywords.add("#print", TokenId::CompilerPrint);
@@ -371,6 +370,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("in", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
 
+    keywords.add("@include", TokenId::IntrinsicInclude);
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
