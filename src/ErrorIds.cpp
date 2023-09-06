@@ -325,7 +325,7 @@ void initErrors()
     SWAG_ERROR(Syn0178, "unknown operator modifier '%s'");
     SWAG_ERROR(Syn0179, "unused return value of intrinsic '%s'");
     SWAG_ERROR(Syn0180, "usage of '.' in a statement is only valid inside a 'with' block");
-    SWAG_ERROR(Syn0219, nullptr);
+    SWAG_ERROR(Syn0219, "cannot postfix %s literal with a type");
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);
     SWAG_ERROR(Syn0081, nullptr);

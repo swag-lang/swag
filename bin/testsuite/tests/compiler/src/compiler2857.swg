@@ -1,2 +1,2 @@
-#global testerror "Syn0171"
-var x = "\xFFF"'rune
+#global testerror "Err0262"
+var x = `\xFFF`'rune

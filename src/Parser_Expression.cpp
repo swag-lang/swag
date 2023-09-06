@@ -16,15 +16,31 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
+    // Type postfix
+    if (token.id == TokenId::SymQuote)
     {
-        if (token.id == TokenId::SymQuote)
+        if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Syn0060)));
             auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
+        }
+        else
+        {
+            switch (node->tokenId)
+            {
+            case TokenId::KwdTrue:
+            case TokenId::KwdFalse:
+                return error(token, Fmt(Err(Syn0219), "a bool"));
+            case TokenId::LiteralString:
+                return error(token, Fmt(Err(Syn0219), "a string"));
+            case TokenId::KwdNull:
+                return error(token, Fmt(Err(Syn0219), "'null'"));
+            default:
+                return error(token, Fmt(Err(Syn0219), "that kind of"));
+            }
         }
     }
 

@@ -1,6 +1,6 @@
-#global testerror "Syn0171"
+#global testerror "Syn0219"
 
 #test
 {
-    var x = true'f32
+    var x = "null"'f32
 }
