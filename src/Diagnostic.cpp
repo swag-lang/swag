@@ -358,9 +358,8 @@ void Diagnostic::collectRanges()
 void Diagnostic::reportCompact(bool verboseMode)
 {
     setupColors(verboseMode);
-    //printErrorLevel();
-    //printSourceLine();
-    textMsg.remove(0, 9);
+    printErrorLevel();
+    printSourceLine();
     g_Log.print(textMsg);
     g_Log.eol();
 }
