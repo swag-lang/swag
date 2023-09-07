@@ -197,7 +197,7 @@ void Workspace::setup()
 
     if (g_CommandLine.scriptCommand && !filesystem::exists(g_CommandLine.scriptName.c_str(), err))
     {
-        Report::error(Fmt(Err(Fat0027), g_CommandLine.scriptName.c_str()));
+        Report::error(Fmt(Err(Fat0020), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
