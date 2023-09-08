@@ -1,3 +1,6 @@
+compiler4841 / core28 / core154 crash
+a.toto() avec let a = constant, truc louche
+
 ****************************************
 LANGUAGE IDEAS ???
 ****************************************
