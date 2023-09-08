@@ -63,7 +63,7 @@ const validTests: [] ValidTest = [
 {
     visit &it: validTests
     {
-        var res = Adler32.compute(it.inT)
+        let res = Adler32.compute(it.inT)
         @assert(res == it.out)
     }
 }

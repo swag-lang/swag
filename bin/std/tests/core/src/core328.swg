@@ -6,7 +6,7 @@ typealias CB = closure()
 #test
 {
     var arr: Array'CB
-    var x = func() {
+    let x = func() {
     }
 
     arr.add(x)

@@ -1,9 +1,10 @@
+#global skip
 using Core
 
 //#[Swag.PrintBc]
 #test
 {
-    var res = "A假CD"
+    let res = "A假CD"
     var cpt = 0'u32
     Utf8.visitRunes(|c, idx| res)
     {

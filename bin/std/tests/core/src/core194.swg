@@ -4,17 +4,17 @@ using Core.Utf8
 #test
 {
     {
-        var res = compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.UnicodeNoCase)
+        let res = compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.UnicodeNoCase)
         @assert(res == 0)
     }
 
     {
-        var res = compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.Unicode)
+        let res = compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.Unicode)
         @assert(res == 1)
     }
 
     {
-        var res = compare("КАК ПОЖИВАЕШЬ", "как поживаешь", ComparisonType.Unicode)
+        let res = compare("КАК ПОЖИВАЕШЬ", "как поживаешь", ComparisonType.Unicode)
         @assert(res == -1)
     }
 }

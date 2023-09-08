@@ -100,8 +100,8 @@ impl Rng
     mtd nextU32(min, max: u32)->u32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = cast(u32) (max - min)
-        var value = nextU32() % range
+        let range = cast(u32) (max - min)
+        let value = nextU32() % range
         return min + value
     }
 
@@ -110,8 +110,8 @@ impl Rng
     mtd nextU64(min, max: u64)->u64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = cast(u64) (max - min)
-        var value = nextU64() % range
+        let range = cast(u64) (max - min)
+        let value = nextU64() % range
         return min + value
     }
 
@@ -120,8 +120,8 @@ impl Rng
     mtd nextS32(min, max: s32)->s32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = cast(u32) (max - min)
-        var value = cast(s32) (nextU32() % range)
+        let range = cast(u32) (max - min)
+        let value = cast(s32) (nextU32() % range)
         return min + value
     }
 
@@ -130,8 +130,8 @@ impl Rng
     mtd nextS64(min, max: s64)->s64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = cast(u64) (max - min)
-        var value = cast(s64) (nextU64() % range)
+        let range = cast(u64) (max - min)
+        let value = cast(s64) (nextU64() % range)
         return min + value
     }
 
@@ -140,8 +140,8 @@ impl Rng
     mtd nextF32(min, max: f32)->f32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = max - min
-        var value = nextF32()
+        let range = max - min
+        let value = nextF32()
         return min + (value * range)
     }
 
@@ -150,8 +150,8 @@ impl Rng
     mtd nextF64(min, max: f64)->f64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
-        var range = max - min
-        var value = nextF64()
+        let range = max - min
+        let value = nextF64()
         return min + (value * range)
     }
 
@@ -164,8 +164,8 @@ impl Rng
     // Randomly change the order of a slice
     mtd(V) shuffle(slice: [..] V)
     {
-        var countOf = @countof(slice)
-        var dataOf = @dataof(slice)
+        let countOf = @countof(slice)
+        let dataOf = @dataof(slice)
         loop i: slice
         {
             var o = nextU64(0, countOf)

@@ -32,7 +32,7 @@ impl AA
 
         if cur and cur != TV and cur.flags & Swag.TypeInfoFlags.HasDrop
         {
-            var typeStruct = cast(const *Swag.TypeInfoStruct) cur
+            let typeStruct = cast(const *Swag.TypeInfoStruct) cur
             typeStruct.opDrop(buf)
             @init(cast(*TV) buf)
         }
@@ -57,6 +57,6 @@ impl AA
     v.set'String(str)
 
     v.set's32(666)
-    var x = v.get's32()
+    let x = v.get's32()
     @assert(x == 666)
 }

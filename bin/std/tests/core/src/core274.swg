@@ -4,9 +4,9 @@ typealias GG = s32
 
 #test
 {
-    var gg: GG = 666
+    let gg: GG = 666
     var sb: StrConv.StringBuilder
     sb.appendFormat("%", gg)
-    var str = sb.toString()
+    let str = sb.toString()
     @assert(str == "666")
 }

@@ -10,7 +10,7 @@ using Core
 	var cpt = 0
 	loop
 	{
-        var sl = @mkslice(ptr, cast(u64) count)
+        let sl = @mkslice(ptr, cast(u64) count)
 		var (c, eat) = Core.Utf8.decodeRune(sl)
 		if !eat
 			break

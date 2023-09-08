@@ -173,7 +173,7 @@ impl HashSet
     {
         grow()
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
@@ -205,7 +205,7 @@ impl HashSet
     {
         grow()
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash >= HASH_FIRST
@@ -269,7 +269,7 @@ impl HashSet
         if !table
             return
 
-        var hashVal = hashKey(key)
+        let hashVal = hashKey(key)
         var index = hashVal % capacity
 
         while table[index].hash

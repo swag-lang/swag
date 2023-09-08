@@ -13,7 +13,7 @@ impl IAllocator for My
     func impl req(self, req: *AllocatorRequest)
     {
         var sys: SystemAllocator
-        var itf = cast(IAllocator) sys
+        let itf = cast(IAllocator) sys
         G = 1
         itf.req(req)
     }

@@ -184,7 +184,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 break
             }
 
-            var value = exp[idx..<idxE]
+            let value = exp[idx..<idxE]
             idx = idxE + 1
 
             // Format

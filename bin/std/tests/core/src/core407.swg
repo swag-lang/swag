@@ -23,10 +23,10 @@ func interpol(str: string)->String
 
 #test
 {
-    var a = 666
-    var b = 52
-    var x = interpol("{a}")
+    let a = 666
+    let b = 52
+    let x = interpol("{a}")
     Debug.assert(x == "666")
-    var y = interpol("{b}")
+    let y = interpol("{b}")
     Debug.assert(y == "52")
 }

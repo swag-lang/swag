@@ -31,7 +31,7 @@ impl Employee
     {
         #ast
         {
-            var res = gen(Employee)
+            let res = gen(Employee)
             return cast(string) res
         }
     }

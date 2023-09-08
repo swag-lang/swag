@@ -65,7 +65,7 @@ impl List
         var n = head
         while n
         {
-            var next = n.next
+            let next = n.next
             Memory.delete(n)
             n = next
         }
@@ -78,7 +78,7 @@ impl List
     #[Swag.Discardable]
     mtd addFront(value: T)->*ListNode
     {
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -99,7 +99,7 @@ impl List
     #[Swag.Discardable]
     mtd addFront(value: moveref T)->*ListNode
     {
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -120,7 +120,7 @@ impl List
     #[Swag.Discardable]
     mtd addBack(value: T)->*ListNode
     {
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -141,7 +141,7 @@ impl List
     #[Swag.Discardable]
     mtd addBack(value: moveref T)->*ListNode
     {
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -164,7 +164,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -183,7 +183,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 
@@ -203,7 +203,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value = value
         count += 1
 
@@ -222,7 +222,7 @@ impl List
     {
         Debug.assert(node != null)
 
-        var n = Memory.new'ListNode()
+        let n = Memory.new'ListNode()
         n.value =,move value
         count += 1
 

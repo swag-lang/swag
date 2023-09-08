@@ -3,7 +3,7 @@ using Core
 #test
 {
     var list: List's32
-    var n = list.addFront(1)
+    let n = list.addFront(1)
     list.addBack(3)
     list.insertBefore(n, 0)
     list.insertAfter(n, 2)

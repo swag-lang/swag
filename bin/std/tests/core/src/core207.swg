@@ -54,7 +54,7 @@ const validTests: [] ValidTest = [
 {
     visit &it: validTests
     {
-        var res = Crc32.compute(it.in1)
+        let res = Crc32.compute(it.in1)
         @assert(res == it.out1)
     }
 }

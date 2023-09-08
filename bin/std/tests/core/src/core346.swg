@@ -4,10 +4,10 @@ using Core
 {
     var arr: Array'u8
 
-    var rng = Random.shared()
+    let rng = Random.shared()
     loop 1000
     {
-        var v = cast(u8) (rng.nextU32() % 256)
+        let v = cast(u8) (rng.nextU32() % 256)
         arr.add(v)
     }
 

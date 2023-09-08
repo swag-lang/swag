@@ -503,7 +503,7 @@ impl StaticArray
     mtd front()->T
     {
         Debug.assert(count > 0, "array is empty")
-        var result: retval = buffer[0]
+        let result: retval = buffer[0]
         return result
     }
 
@@ -518,7 +518,7 @@ impl StaticArray
     mtd back()->T
     {
         Debug.assert(count > 0, "array is empty")
-        var result: retval = buffer[count - 1]
+        let result: retval = buffer[count - 1]
         return result
     }
 

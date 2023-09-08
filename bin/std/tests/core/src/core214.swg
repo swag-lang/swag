@@ -21,7 +21,7 @@ var g: Array'OneFunc
 #message(CompilerMsgMask.SemFunctions)
 {
     let itf = @compiler()
-    var msg = itf.getMessage()
+    let msg = itf.getMessage()
     if msg.type.kind != TypeInfoKind.Func return
     if !Reflection.hasAttribute(msg.type, Extension) return
 

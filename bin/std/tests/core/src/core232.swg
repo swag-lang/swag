@@ -7,10 +7,10 @@ using Core, Directory
     var options: EnumerationOptions
     options.recurse = true
 
-    var loc = #location.fileName
-    var pth = Path.getDirectoryName(loc)
+    let loc = #location.fileName
+    let pth = Path.getDirectoryName(loc)
 
-    var res = assume enumerate(pth, options)
+    let res = assume enumerate(pth, options)
     var count = 0
     visit p: res
     {

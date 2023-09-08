@@ -45,11 +45,11 @@ func calcTotalDepth(tree: *Node) -> s32
 #[Swag.Discardable]
 func process(intro: *Node)->*Node
 {
-    var tree = Memory.new'Node()
+    let tree = Memory.new'Node()
     tree.name = "root"
     intro.kids.add(tree)
 
-    var internalIntro = ref intro.kids[0]
+    let internalIntro = ref intro.kids[0]
     internalIntro.print()
     tree.print()
 
@@ -63,7 +63,7 @@ func process(intro: *Node)->*Node
 
 #test
 {
-    var intro = Memory.new'Node()
+    let intro = Memory.new'Node()
     defer intro.release()
     process(intro)
 }

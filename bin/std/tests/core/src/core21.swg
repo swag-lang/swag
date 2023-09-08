@@ -8,7 +8,7 @@ func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(u64) v.length)
 #test
 {
     var x: String = "coucou㐁㐄㐅"
-    var y = XX(x)
+    let y = XX(x)
     Console.silent(true)
     Console.print(cast(string) y)
     Console.silent(false)

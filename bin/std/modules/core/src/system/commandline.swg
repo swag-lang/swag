@@ -12,7 +12,7 @@ struct(T) IsSet
     #ast
     {
         var str = StrConv.StringBuilder{}
-        var typeof = @typeof(T)
+        let typeof = @typeof(T)
         visit f: typeof.fields
             str.appendFormat("%: bool\n", f.name)
         return str.toString()
@@ -101,8 +101,8 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     var allArgs = splitArguments(args, options)
 
     // Parse all
-    var typeof = @typeof(T)
-    var maxItp = @countof(allArgs)
+    let typeof = @typeof(T)
+    let maxItp = @countof(allArgs)
     for var itp = 0; itp < maxItp; itp += 1
     {
         var oneArg = allArgs[itp]
@@ -111,11 +111,11 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
         oneArg = Tokenize.eatCount(oneArg, 1)
 
-        var typeParam = getField(typeof, oneArg)
+        let typeParam = getField(typeof, oneArg)
         if !typeParam
             throw Format.toString("unknown option '%'", oneArg)
 
-        var typeField = typeParam.pointedType
+        let typeField = typeParam.pointedType
 
         var addr = cast(^u8) st
         addr += typeParam.offset
@@ -136,7 +136,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                 Reflection.isEnum(typeField)
         {
             try checkNext()
-            var rest = catch StrConv.pokeValue(addr, typeField, allArgs[itp + 1])
+            let rest = catch StrConv.pokeValue(addr, typeField, allArgs[itp + 1])
             itp += 1
 
             if @errmsg
@@ -148,7 +148,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         // Dynamic array of values
         elif Reflection.isStruct(typeField)
         {
-            var typeStruct = cast(const *Swag.TypeInfoStruct) typeField
+            let typeStruct = cast(const *Swag.TypeInfoStruct) typeField
             if typeStruct.fromGeneric == @typeof(Core.Array)
             {
                 try checkNext()
@@ -194,7 +194,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Set the associated 'isSet' boolean to true
-        var typeFieldIsSet = Reflection.getField(@typeof(result.isSet), typeParam.name)
+        let typeFieldIsSet = Reflection.getField(@typeof(result.isSet), typeParam.name)
         Debug.assert(typeFieldIsSet != null)
         var addrIsSet = cast(^bool) &result.isSet
         addrIsSet += typeFieldIsSet.offset

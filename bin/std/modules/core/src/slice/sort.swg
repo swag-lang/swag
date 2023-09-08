@@ -111,7 +111,7 @@ func(T) isSorted(values: const [..] T)->bool
 func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
-    var countof = @countof(values)
+    let countof = @countof(values)
     loop i: countof - 1
     {
         if cb(values[i], values[i + 1]) > 0

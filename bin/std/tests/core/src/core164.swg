@@ -5,10 +5,10 @@ using Core.File
 #test
 {
     var loc = #location
-    var res = Path.getDirectoryName(loc.fileName)
+    let res = Path.getDirectoryName(loc.fileName)
     @assert(@countof(res) != 0)
     //Console.print("%\n", res)
-    var res1 = Path.getRootName(loc.fileName)
+    let res1 = Path.getRootName(loc.fileName)
     //Console.print("%\n", res1)
     @assert(@countof(res1) != 0)
 

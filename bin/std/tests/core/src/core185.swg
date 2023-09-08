@@ -5,12 +5,12 @@ using Core.Time
 #test
 {
     var ts = TimeSpan.now()
-    var tt = ts.totalSeconds()
+    let tt = ts.totalSeconds()
     //@print(tt)
 
     //Threading.sleep(1000)
 
     var ts1 = TimeSpan.now()
-    var tt1 = ts1.totalSeconds() - tt
+    let tt1 = ts1.totalSeconds() - tt
     //@print(tt1)
 }

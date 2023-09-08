@@ -1,4 +1,6 @@
-﻿#global testerror "Saf0012";
+﻿#global testerror "Saf0012"
+
+#[Swag.Safety("", true)]
 #test
 {
 	var b: u8 = 255'u8 + 1'u8;

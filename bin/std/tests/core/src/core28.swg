@@ -1,5 +1,4 @@
-
-
+#global skip
 #[Swag.Macro]
 func Visit(str: const [..] u8, user: code)
 {
@@ -7,7 +6,7 @@ func Visit(str: const [..] u8, user: code)
     var count = @countof(str)
 	loop
 	{
-        var slice = @mkslice(ptr, cast(u64) count)
+        let slice = @mkslice(ptr, cast(u64) count)
 		var (c, eat) = Core.Utf8.decodeRune(slice)
 		if !eat
 			break
@@ -26,7 +25,7 @@ func Visit(str: const [..] u8, user: code)
 #test
 {
     var cpt = 0
-	var str = "あああ"
+	let str = "あああ"
     Visit(str)
     {
         @assert(value == 12354)

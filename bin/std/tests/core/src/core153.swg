@@ -4,7 +4,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var res = "A假CD"
+    let res = "A假CD"
     @assert(Utf8.byteIndex(res, 0).index == 0)
     @assert(Utf8.byteIndex(res, 1).index == 1)
     @assert(Utf8.byteIndex(res, 2).index == 4)

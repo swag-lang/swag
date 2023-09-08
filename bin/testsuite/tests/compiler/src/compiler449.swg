@@ -1,5 +1,3 @@
-
-
 //#[Swag.PrintBc]
 #global testerror "San0006"
 #test

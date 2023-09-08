@@ -2,7 +2,7 @@ using Core.Random
 
 #test
 {
-    var rng = Random.shared()
-    var x = rng.nextU32()
+    let rng = Random.shared()
+    let x = rng.nextU32()
     //@print(x)
 }

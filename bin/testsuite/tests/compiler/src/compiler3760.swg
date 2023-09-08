@@ -1,6 +1,7 @@
 #global testerror "Saf0012"
 
 #[Swag.Optim("", false)]
+#[Swag.Safety("", true)]
 #test
 {
     {

@@ -4,7 +4,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var p = #location.fileName
+    let p = #location.fileName
     //Console.print("%\n", p)
 
     {

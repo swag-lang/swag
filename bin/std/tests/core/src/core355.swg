@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var x = @modules()
+    let x = @modules()
     @assert(@countof(x) >= 4)
     var cpt = 0
     visit m: x

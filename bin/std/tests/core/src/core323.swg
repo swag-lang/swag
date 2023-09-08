@@ -4,44 +4,44 @@ using Core
 #test
 {
     {
-        var a = "toto11"
-        var b = "toto2"
-        var r = Latin1.compareNatural(a, b)
+        let a = "toto11"
+        let b = "toto2"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == 1)
     }
 
     {
-        var a = "toto11"
-        var b = "toto21"
-        var r = Latin1.compareNatural(a, b)
+        let a = "toto11"
+        let b = "toto21"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == -1)
     }
 
     {
-        var a = "11"
-        var b = "21"
-        var r = Latin1.compareNatural(a, b)
+        let a = "11"
+        let b = "21"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == -1)
     }
 
     {
-        var a = "011"
-        var b = "021"
-        var r = Latin1.compareNatural(a, b)
+        let a = "011"
+        let b = "021"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == -1)
     }
 
     {
-        var a = "11"
-        var b = "11"
-        var r = Latin1.compareNatural(a, b)
+        let a = "11"
+        let b = "11"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == 0)
     }
 
     {
-        var a = "011"
-        var b = "011"
-        var r = Latin1.compareNatural(a, b)
+        let a = "011"
+        let b = "011"
+        let r = Latin1.compareNatural(a, b)
         @assert(r == 0)
     }
 }
