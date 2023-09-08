@@ -197,9 +197,9 @@ void initErrors()
     SWAG_ERROR(Syn0096, "array type after dimensions expected, found '%s'");
     SWAG_ERROR(Syn0072, "attribute name expected, found '%s'");
     SWAG_ERROR(Syn0038, "avoid declaring methods in 'enum impl' block");
-    SWAG_ERROR(Syn0055, "before ':', 'case' expression needed");
-    SWAG_ERROR(Syn0056, "before 'break', 'case' expression needed");
-    SWAG_ERROR(Syn0057, "between ',' and '|', capture argument expected");
+    SWAG_ERROR(Syn0055, "'case' expression needed before ':'");
+    SWAG_ERROR(Syn0056, "'case' expression needed before 'break'");
+    SWAG_ERROR(Syn0057, "capture argument expected between ',' and '|'");
     SWAG_ERROR(Syn0123, "block kind (%s) and type of '%s' (%s) mismatch");
     SWAG_ERROR(Syn0207, "block not allowed after 'discard try/assume/catch'");
     SWAG_ERROR(Syn0153, "closure definition invalid at global level");
@@ -209,7 +209,7 @@ void initErrors()
     SWAG_ERROR(Syn0193, "default value not allowed for 'self'");
     SWAG_ERROR(Syn0116, "duplicate '#import' location definition");
     SWAG_ERROR(Syn0117, "duplicate '#import' version definition");
-    SWAG_ERROR(Syn0047, "eOF reached, '%s' %s expected");
+    SWAG_ERROR(Syn0047, "EOF reached, '%s' %s expected");
     SWAG_ERROR(Syn0073, "embedded instruction or curly block expected");
     SWAG_ERROR(Syn0158, "empty 'case' statement");
     SWAG_ERROR(Syn0159, "empty attribute usage");
