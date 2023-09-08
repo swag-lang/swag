@@ -1511,7 +1511,7 @@ void initErrors()
     SWAG_ERROR(Nte0032, "refer to the problematic attribute");
     SWAG_ERROR(Nte0030, "refer to the tuple's definition");
     SWAG_ERROR(Nte0039, "refer to the variable's declaration");
-    SWAG_ERROR(Nte0008, "referenced item: %s");
+    SWAG_ERROR(Nte0008, "referenced %s '%s'");
     SWAG_ERROR(Nte0040, "referenced item: '%s'");
     SWAG_ERROR(Nte0069, "runtime argument corresponding to '%s' can be found here");
     SWAG_ERROR(Nte0016, "see an alternative reference");
@@ -1548,6 +1548,12 @@ void initErrors()
     SWAG_ERROR(Nte0052, "type '%s' is expected due to %s");
     SWAG_ERROR(Nte0058, "unable to determine type '%s'");
     SWAG_ERROR(Nte0065, "unable to resolve %s '%s'");
+    SWAG_ERROR(Nte0090, "referenced %s '%s'");
+    SWAG_ERROR(Nte0091, nullptr);
+    SWAG_ERROR(Nte0092, nullptr);
+    SWAG_ERROR(Nte0093, nullptr);
+    SWAG_ERROR(Nte0094, nullptr);
+    SWAG_ERROR(Nte0095, nullptr);
 }
 
 Utf8 Err(ErrorID idx)

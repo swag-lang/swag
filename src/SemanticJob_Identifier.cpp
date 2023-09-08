@@ -3494,18 +3494,15 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCEALIAS)->isLambdaClosure())
         {
-            auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0125), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
-                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), identifier->token.ctext()));
-                return context->report(diag, note);
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0125), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
             else
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0127), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-                auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), identifier->token.ctext()));
-                return context->report(diag, note);
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0127), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+                return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
         }
     }
@@ -3571,8 +3568,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         {
             auto       firstNode = symbol->nodes.front();
             Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-            auto       note = Diagnostic::note(firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()));
-            return context->report(diag, note);
+            return context->report(diag, Diagnostic::hereIs(firstNode, false, true));
         }
 
         auto childCount = genericParameters->childs.size();

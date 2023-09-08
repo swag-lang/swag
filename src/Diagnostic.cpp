@@ -701,6 +701,13 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
     if (!forceNode && node->resolvedSymbolOverload)
         return hereIs(node->resolvedSymbolOverload, forceShowRange);
 
+    if (node->resolvedSymbolOverload)
+    {
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
+        note->showRange = forceShowRange;
+        return note;
+    }
+
     auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
     note->showRange = forceShowRange;
     return note;
@@ -713,16 +720,13 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     if (overload->node && overload->node->flags & AST_GENERATED)
         return nullptr;
 
-    Utf8 refNiceName = "the ";
-    refNiceName += Naming::kindName(overload);
-
     auto showRange = false;
     auto site      = overload->node;
 
     if (site->typeInfo->isTuple())
         showRange = true;
 
-    auto note = Diagnostic::note(site, site->token, Fmt(Nte(Nte0008), refNiceName.c_str()));
+    auto note = Diagnostic::note(site, site->token, Fmt(Nte(Nte0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
     if (!forceShowRange)
         note->showRange = showRange;
     return note;

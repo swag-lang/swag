@@ -463,10 +463,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         Diagnostic* note = nullptr;
         if (destFuncDecl && paramNode && paramNode->isGeneratedSelf())
         {
-            note                        = Diagnostic::note(destFuncDecl, destFuncDecl->token, Fmt(Nte(Nte0008), refNiceName.c_str()));
-            note->showRange             = false;
-            note->showMultipleCodeLines = false;
-            result1.push_back(note);
+            result1.push_back(Diagnostic::hereIs(destFuncDecl));
         }
         else if (paramNode)
         {
