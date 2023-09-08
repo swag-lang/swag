@@ -161,7 +161,7 @@ struct Diagnostic
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(AstNode* node);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
-    static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false);
+    static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false, bool forceNode = false);
 
     static const int MAX_LINE_DIGITS = 5;
 

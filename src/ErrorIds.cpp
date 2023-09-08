@@ -495,7 +495,7 @@ void initErrors()
     SWAG_ERROR(Err0149, "'void' type can't be declared as variable or constant");
     SWAG_ERROR(Err0073, "'with' invalid on enum variable (type: '%s')");
     SWAG_ERROR(Err0703, "'with' invalid on type '%s' (expected namespace, enum, struct)");
-    SWAG_ERROR(Err0310, "'with' variable '%s' used only for function '%s'; prefer scope '%s'");
+    SWAG_ERROR(Err0310, "hidden 'with' variable '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
     SWAG_ERROR(Err0465, "address of %s not accessible");
     SWAG_ERROR(Err0501, "address of 'let' declared local variable inaccessible");
@@ -1452,7 +1452,7 @@ void initErrors()
     SWAG_ERROR(Hnt0097, "unnamed parameters ('?') shouldn't have a specified type");
     SWAG_ERROR(Hnt0048, "you can't apply 'moveref' to a constant value");
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
-    SWAG_ERROR(Hnt0130, nullptr);
+    SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

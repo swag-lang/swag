@@ -808,9 +808,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
         {
-            Diagnostic diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str(), identifierRef->startScope->name.c_str())};
-            diag.hint = Hnt(Hnt0073);
-            return context->report(diag);
+            Diagnostic diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str())};
+            diag.hint           = Fmt(Hnt(Hnt0130), identifierRef->startScope->name.c_str());
+            auto prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
+            auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
+            auto note           = Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Hnt(Hnt0073), prevNode->typeInfo->getDisplayNameC()));
+            return context->report(diag, Diagnostic::hereIs(widthNode, false, true), note);
         }
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)

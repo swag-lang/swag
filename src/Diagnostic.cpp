@@ -696,9 +696,9 @@ Utf8 Diagnostic::isType(AstNode* node)
     return isType(node->typeInfo);
 }
 
-Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange)
+Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNode)
 {
-    if (node->resolvedSymbolOverload)
+    if (!forceNode && node->resolvedSymbolOverload)
         return hereIs(node->resolvedSymbolOverload, forceShowRange);
 
     auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
