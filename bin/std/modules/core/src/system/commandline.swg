@@ -7,6 +7,8 @@ struct ParseOptions
 {
 }
 
+// This struct is a mirror of the user input struct.
+// Each field is the same, but has type bool. It indicates if the corresponding argument has been specified, or not, in the command line to analyse.
 struct(T) IsSet
 {
     #ast
@@ -19,6 +21,7 @@ struct(T) IsSet
     }
 }
 
+// Result of the [parse] function
 struct(T) Result
 {
     isSet: IsSet
