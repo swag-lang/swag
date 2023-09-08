@@ -2,5 +2,5 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a;
+	var a == 0;
 }

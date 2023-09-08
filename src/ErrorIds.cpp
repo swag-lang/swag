@@ -229,7 +229,7 @@ void initErrors()
     SWAG_ERROR(Syn0115, "expected opVisit special name");
     SWAG_ERROR(Syn0112, "expected parameter name, got '%s'");
     SWAG_ERROR(Syn0063, "expected struct name, got '%s'");
-    SWAG_ERROR(Syn0070, "expecting type or assignment (':' or '=')");
+    SWAG_ERROR(Syn0070, "expecting type (':') or assignment ('=') of %s, got '%s'");
     SWAG_ERROR(Syn0076, "expression expected");
     SWAG_ERROR(Syn0106, "function name '%s' is invalid");
     SWAG_ERROR(Syn0089, "function name expected, found '%s'");
@@ -246,7 +246,6 @@ void initErrors()
     SWAG_ERROR(Syn0079, "identifier expected, found literal");
     SWAG_ERROR(Syn0206, "identifier expected, found symbol '%s'");
     SWAG_ERROR(Syn0042, "in tuple unpacking, variable name or '?' expected, got '%s'");
-    SWAG_ERROR(Syn0052, "in variable declaration, expected ':' or '=', got '%s'");
     SWAG_ERROR(Syn0125, "instruction modifier '%s' already used");
     SWAG_ERROR(Syn0127, "intrinsic '%s' return value must be used");
     SWAG_ERROR(Syn0044, "intrinsic parameter expression shouldn't be empty");
@@ -325,10 +324,11 @@ void initErrors()
     SWAG_ERROR(Syn0178, "unknown operator modifier '%s'");
     SWAG_ERROR(Syn0105, "use '%s' for logical test, '%s' is invalid");
     SWAG_ERROR(Syn0068, "variable declaration expected");
-    SWAG_ERROR(Syn0131, "variable must have a type or be initialized");
     SWAG_ERROR(Syn0111, "variable name '%s' can't start with '@'");
     SWAG_ERROR(Syn0069, "variable name expected, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
+    SWAG_ERROR(Syn0052, nullptr);
+    SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);
     SWAG_ERROR(Syn0081, nullptr);
@@ -1453,6 +1453,11 @@ void initErrors()
     SWAG_ERROR(Hnt0048, "you can't apply 'moveref' to a constant value");
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
+    SWAG_ERROR(Hnt0131, "did you intend to use '='?");
+    SWAG_ERROR(Hnt0132, nullptr);
+    SWAG_ERROR(Hnt0133, nullptr);
+    SWAG_ERROR(Hnt0134, nullptr);
+    SWAG_ERROR(Hnt0135, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

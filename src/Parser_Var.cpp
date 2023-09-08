@@ -292,9 +292,24 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS));
         Ast::removeFromParent(leftNode);
 
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Syn0149)));
-        SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Fmt(Err(Syn0070), token.ctext())));
-        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, Fmt(Err(Syn0052), token.ctext())));
+        if (token.id != TokenId::SymColon && token.id != TokenId::SymEqual)
+        {
+            Utf8 ofWhat;
+            switch (leftNode->kind)
+            {
+            case AstNodeKind::IdentifierRef:
+                ofWhat = kind == AstNodeKind::ConstDecl ? Fmt("constant '%s'", leftNode->token.ctext()) : Fmt("variable '%s'", leftNode->token.ctext());
+                break;
+            default:
+                ofWhat = kind == AstNodeKind::ConstDecl ? "constants" : "variables";
+                break;
+            }
+
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0070), ofWhat.c_str(), token.ctext())};
+            if (token.id == TokenId::SymEqualEqual)
+                diag.hint = Hnt(Hnt0131);
+            return context->report(diag);
+        }
 
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
@@ -321,9 +336,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             }
         }
 
-        AstNode* assign = nullptr;
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Syn0149)));
-        auto assignToken = token;
+        AstNode* assign      = nullptr;
+        auto     assignToken = token;
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
@@ -368,7 +382,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     }
 
     if (!forStruct || token.id != TokenId::SymRightCurly)
-        SWAG_CHECK(eatSemiCol("end of the variable declaration"));
+    {
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Syn0149)));
+        SWAG_CHECK(eatSemiCol("variable declaration"));
+    }
 
     if (!tokenizer.comment.empty() && *result && !(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
     {

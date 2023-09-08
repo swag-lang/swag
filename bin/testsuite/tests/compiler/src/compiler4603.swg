@@ -1,4 +1,4 @@
-#global testerror "Syn0052"
+#global testerror "Syn0070"
 
 #[Swag.Mixin]
 func x()
