@@ -1,5 +1,7 @@
 #global testerror "Saf0027"
-#assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
+#global testerror "Err0427"
+
+#assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 #[Swag.Safety("nan", false)]
 //#[Swag.PrintBc]

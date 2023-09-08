@@ -1,5 +1,5 @@
 #global testerror "Err0417"
-#assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel > 0
+#assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 #[Swag.Safety("nan", false)]
 //#[Swag.PrintBc]

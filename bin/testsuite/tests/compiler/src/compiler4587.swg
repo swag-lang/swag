@@ -6,6 +6,7 @@ struct V
 }
 
 #[Swag.Safety("null", true)]
+#[Swag.Safety("sanity", true)]
 #test
 {
     var v: V
