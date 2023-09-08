@@ -91,8 +91,8 @@ By default, a floating point value is `f32`, not `f64` (aka `double`) like in C/
 }
 
 /**
-# Postfix
-You can also **postfix** a literal number by a type.
+# Suffix
+You can also force the type by adding a **suffix** to a literal number. We will see later that this syntax is also used for generic arguments.
 */
 #test
 {

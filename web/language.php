@@ -144,7 +144,7 @@
 </ul>
 <li><a href="#011_number_literals">Number literals</a></li>
 <ul>
-<li><a href="#Postfix">Postfix</a></li>
+<li><a href="#Suffix">Suffix</a></li>
 </ul>
 <li><a href="#012_string">String</a></li>
 <ul>
@@ -739,7 +739,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#global</span>
 <span class="SCmp">#if</span>
 <span class="SCmp">#import</span>
-<span class="SCmp">#include</span>
 <span class="SCmp">#load</span>
 <span class="SCmp">#macro</span>
 <span class="SCmp">#mixin</span>
@@ -777,6 +776,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SItr">@dataof</span>
 <span class="SItr">@dbgalloc</span>
 <span class="SItr">@defined</span>
+<span class="SItr">@include</span>
 <span class="SItr">@drop</span>
 <span class="SItr">@compilererror</span>
 <span class="SItr">@compilerwarning</span>
@@ -1140,8 +1140,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) != <span class="STpe">f64</span>
 }</span></code>
 </div>
-<h3 id="Postfix">Postfix </h3>
-<p>You can also <b>postfix</b> a literal number by a type. </p>
+<h3 id="Suffix">Suffix </h3>
+<p>You can also force the type by adding a <b>suffix</b> to a literal number. We will see later that this syntax is also used for generic arguments. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Declare 'a' to be a 'f64' variable assigned to '1.5'</span>
@@ -2385,7 +2385,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>But you can specify your own names. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> tuple = {x = <span class="SNum">1.0</span>, y = <span class="SNum">2.0</span>}
+    <span class="SKwd">let</span> tuple = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
     <span class="SItr">@assert</span>(tuple.x == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(tuple.item0 == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(tuple.y == <span class="SNum">2.0</span>)
@@ -2423,7 +2423,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>You can unpack a tuple field by field. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x = <span class="SNum">1.0</span>, y = <span class="SNum">2.0</span>}
+    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
 
     <span class="SCmt">// 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.</span>
     <span class="SKwd">var</span> (value0, value1) = tuple1
@@ -2439,7 +2439,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>You can ignore a tuple field by naming the variable <span class="code-inline">?</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x = <span class="SNum">1.0</span>, y = <span class="SNum">2.0</span>}
+    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
     <span class="SKwd">var</span> (x, ?) = tuple1
     <span class="SItr">@assert</span>(x == <span class="SNum">1.0</span>)
     <span class="SKwd">var</span> (?, y) = tuple1
@@ -3685,7 +3685,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SFct">titi</span>({<span class="SNum">5</span>, <span class="SNum">666</span>}) <span class="SCmt">// Initialize x and y</span>
 
     <span class="SCmt">// You can also name the fields, and omit some of them</span>
-    <span class="SFct">titi</span>({x = <span class="SNum">5</span>, z = <span class="SNum">5</span>}) <span class="SCmt">// Here y will stay to the default value, which is 666</span>
+    <span class="SFct">titi</span>({x: <span class="SNum">5</span>, z: <span class="SNum">5</span>}) <span class="SCmt">// Here y will stay to the default value, which is 666</span>
 }</span></code>
 </div>
 
@@ -7737,7 +7737,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 06-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 08-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>

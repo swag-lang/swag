@@ -16,7 +16,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    // Type postfix
+    // Type suffix
     if (token.id == TokenId::SymQuote)
     {
         if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)

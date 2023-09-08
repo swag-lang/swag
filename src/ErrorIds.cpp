@@ -316,7 +316,7 @@ void initErrors()
     SWAG_ERROR(Syn0197, "type declaration for 'self' parameter detected");
     SWAG_ERROR(Syn0067, "type expected in tuple definition, found '%s'");
     SWAG_ERROR(Syn0213, "type or default value needed for generic constant '%s'");
-    SWAG_ERROR(Syn0219, "type postfix not allowed for %s literal");
+    SWAG_ERROR(Syn0219, "type suffix not allowed for %s literal");
     SWAG_ERROR(Syn0164, "unexpected label identifier '%s'");
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after %s");
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' following identifier '%s'");
@@ -1471,7 +1471,6 @@ void initErrors()
     SWAG_ERROR(Nte0019, "applied on this %s");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte0025, "attribute reference: '%s'");
-    SWAG_ERROR(Nte0020, "closure for this requires '%s'");
     SWAG_ERROR(Nte0060, "complication during the public export of '%s'");
     SWAG_ERROR(Nte0027, "declaration of '%s' can be found here");
     SWAG_ERROR(Nte0029, "definition of '%s' can be found here");
@@ -1525,6 +1524,7 @@ void initErrors()
     SWAG_ERROR(Nte0024, "see the prior declaration");
     SWAG_ERROR(Nte0015, "see the reference");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
+    SWAG_ERROR(Nte0020, "to complete this you need '%s'");
     SWAG_ERROR(Nte0043, "the %s '%s' wasn't found in '%s'. The alternative from '%s' was selected");
     SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
     SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");

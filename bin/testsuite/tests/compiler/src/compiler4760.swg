@@ -1,9 +1,9 @@
-#global testerror "Syn0073"
+#global testerror "Saf0034"
 
 #[Swag.Safety("", true)]
 func toto(x, y: s32)
 {
-    loop x..y
+    loop x to y
     {
     }
 }
