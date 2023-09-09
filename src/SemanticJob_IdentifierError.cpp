@@ -862,7 +862,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
                 // If the ufcs version has matched the ufcs node, then take that one
                 if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
                     oneMatch1->overload = nullptr;
-                else if (oneMatch->ufcs && oneMatch->symMatchContext.result == MatchResult::NotEnoughParameters)
+                // If this is a lambda call that comes from a struct, then this is ambiguous. Do we keep the error where the struct
+                // has been used to find the lambda and UFCS, or do we consider the struct is just there to find the lmabda ?
+                // We consider that UFCS of 'struct.lambda.call(struct)' has less priority than other errors
+                else if (oneMatch->ufcs && oneMatch->scope && oneMatch->scope->kind == ScopeKind::Struct && oneMatch->overload->symbol->kind == SymbolKind::Variable)
+                    oneMatch->overload = nullptr;
+                // Otherwise, if be not doing UFCS we do not have enough argument, we use UFCS in priority
+                else if (oneMatch->ufcs && oneMatch1->symMatchContext.result == MatchResult::NotEnoughParameters)
                     oneMatch1->overload = nullptr;
                 else if (oneMatch->ufcs)
                     oneMatch->overload = nullptr;
