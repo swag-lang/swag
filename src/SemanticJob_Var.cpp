@@ -606,6 +606,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->assignment &&
             node->assignment->hasComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure() &&
+            (!node->type || !node->type->typeInfo->isStruct()) &&
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
             node->specFlags |= AstVarDecl::SPECFLAG_IS_LET_TO_CONST;
@@ -920,6 +921,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     {
                         Diagnostic diag{node->assignment, Err(Err0906)};
                         diag.hint = Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC());
+                        diag.addRange(node->assignToken, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
                         return context->report(diag);
                     }
                 }

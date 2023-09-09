@@ -3403,6 +3403,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
                 fromNode->castedTypeInfo = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeSlice;
 
+                // Need to make a slice literal from the string
                 if (fromNode->hasComputedValue())
                 {
                     auto     storageSegment = SemanticJob::getConstantSegFromContext(fromNode);

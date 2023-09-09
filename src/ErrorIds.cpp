@@ -1447,7 +1447,7 @@ void initErrors()
     SWAG_ERROR(Hnt0022, "this type is immutable");
     SWAG_ERROR(Hnt0067, "this unpacks into '%d' variable(s)");
     SWAG_ERROR(Hnt0040, "this value is a 'typeinfo'");
-    SWAG_ERROR(Hnt0002, "to convert this value, use a dynamic call to 'opAffect' for type '%s'");
+    SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0014, "unexpected in global scope");
     SWAG_ERROR(Hnt0097, "unnamed parameters ('?') shouldn't have a specified type");
     SWAG_ERROR(Hnt0048, "you can't apply 'moveref' to a constant value");
