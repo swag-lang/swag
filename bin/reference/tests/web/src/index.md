@@ -90,6 +90,9 @@ struct(T) IsSet
 
 Swag is **open source** and released under the [MIT license](https://github.com/swag-lang/swag/blob/master/LICENCE). You will find the compiler source code on [GitHub](https://github.com/swag-lang/swag). You can also visit the [YouTube](https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q) channel to see some little coding sessions.
 
+> WARNING:
+> The language evolves, and those videos can show out of date syntax. But the corresponding scripts on GitHub are always up to date and running.
+
 ---
 <div style="display:flex; flex-wrap:space-between; height: 200px; ">
     <iframe style="flex:200px; padding:10px;" src="https://www.youtube.com/embed/Il0UuJCXTWI" title="Swag Live Coding - The Flappy Bird Game (silent)" frameborder="0" allowfullscreen></iframe>
@@ -99,4 +102,4 @@ Swag is **open source** and released under the [MIT license](https://github.com/
 ---
 
 > NOTE:
-> The pages of this web site and all the related documentations have been generated with Swag, as the tool can also produce HTML based on markdown files and source code.
+> The pages of this web site and all the related documentations have been generated with Swag, as the compiler can also produce HTML based on markdown files and source code.

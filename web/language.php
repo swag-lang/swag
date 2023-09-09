@@ -6854,7 +6854,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="180_type_reflection">Type reflection</h2><p>In Swag, <b>types are also values</b> that can be inspected at compile-time or at runtime. The two main intrinsics for this are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
+<h2 id="180_type_reflection">Type reflection</h2><p>In Swag, <b>types are also values</b> that can be inspected at compile time or at runtime. The two main intrinsics for this are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
 <p>You can get the type of an expression with <span class="code-inline">@typeof</span>, or just with the type itself. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
@@ -6866,6 +6866,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"s16"</span>)
     <span class="SItr">@assert</span>(ptr2 == <span class="STpe">s16</span>)
 
+    <span class="SCmt">// See that '@typeof' is not really necessary if the expression on the right is a type.</span>
     <span class="SKwd">let</span> ptr3 = <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(ptr3.name == <span class="SStr">"s32"</span>)
     <span class="SItr">@assert</span>(ptr3 == <span class="SItr">@typeof</span>(<span class="STpe">s32</span>))
@@ -6875,23 +6876,37 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(ptr4 == <span class="STpe">s64</span>)
 }</span></code>
 </div>
-<p>The return result of <span class="code-inline">@typeof</span> is a const pointer to a <span class="code-inline">Swag.TypeInfo</span> kind of structure. This is an typealias for the <span class="code-inline">typeinfo</span> type. </p>
+<p>The return result of <span class="code-inline">@typeof</span> is a const pointer to a <span class="code-inline">Swag.TypeInfo</span> kind of structure. This is a typealias for the <span class="code-inline">typeinfo</span> type. All types have a corresponding struct that can be found in the <span class="code-inline">Swag</span> namespace, which is part of the compiler runtime. </p>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can find all the type descriptors in the runtime <a href="https://www.swag-lang.org/swag.runtime.php">documentation</a> </p>
+</div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> ptr = <span class="STpe">bool</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span>))
 
+    <span class="SCmt">// '#type' can be used when the right expression is ambiguous. In the case of arrays, it could be</span>
+    <span class="SCmt">// a type or the start of an array literal, so '#type' tells the compiler this is a type.</span>
     <span class="SKwd">let</span> ptr1 = <span class="STpe">#type</span> [<span class="SNum">2</span>] <span class="STpe">s32</span>
     <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr1) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
     <span class="SItr">@assert</span>(ptr1.name == <span class="SStr">"[2] s32"</span>)
+
+    <span class="SKwd">let</span> ptr2 = <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>])
+    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr2) == <span class="SItr">@typeof</span>(<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoArray</span>))
+    <span class="SItr">@assert</span>(ptr2.name == <span class="SStr">"const [3] s32"</span>)
 }</span></code>
 </div>
 <p>The <span class="code-inline">TypeInfo</span> structure contains a different enum value for each type. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> ptr = <span class="STpe">f64</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@typeof</span>(ptr.kind).fullname == <span class="SStr">"Swag.TypeInfoKind"</span>)
-    <span class="SItr">@assert</span>(ptr.sizeof == <span class="SItr">@sizeof</span>(<span class="STpe">f64</span>))
+    <span class="SKwd">let</span> typeOf = <span class="STpe">f64</span>
+    <span class="SItr">@assert</span>(typeOf.kind == <span class="SCst">Swag</span>.<span class="SCst">TypeInfoKind</span>.<span class="SCst">Native</span>)
+
+    <span class="SCmt">// This can be evaluated compile-time</span>
+    <span class="SKwd">using</span> <span class="SCst">Swag</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(*<span class="STpe">u8</span>).kind       == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Pointer</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>([<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>]).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Array</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>({<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>}).kind == <span class="SCst">TypeInfoKind</span>.<span class="SCst">Struct</span>
 }</span></code>
 </div>
 <h3 id="@decltype">@decltype </h3>
