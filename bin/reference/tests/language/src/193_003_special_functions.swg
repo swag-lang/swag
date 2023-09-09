@@ -1,15 +1,6 @@
 #global skip
 
 /**
-# #test
-`#test` is a special function than can be used in the `tests/` folder of the workspace.
-All `#test` will be executed only if swag is running in test mode.
-*/
-#test
-{
-}
-
-/**
 # #main
 `#main` is the program entry point. It can only be defined **once** per module, and has meaning only for an executable.
 */
@@ -28,6 +19,14 @@ Unlike the C function `main()`, there's no argument, but you can use the intrins
     {
         ...
     }
+}
+
+/**
+# #premain
+`#premain` will be called after all the modules have done their `#init` code, but before the `#main` function is called.
+*/
+#premain
+{
 }
 
 /**
@@ -50,9 +49,10 @@ The execution order in the same module is undefined, but is always the inverse o
 }
 
 /**
-# #premain
-`#premain` will be called after all the modules have done their `#init` code, but before the `#main` function is called.
+# #test
+`#test` is a special function than can be used in the `tests/` folder of the workspace.
+All `#test` will be executed only if swag is running in test mode.
 */
-#premain
+#test
 {
 }

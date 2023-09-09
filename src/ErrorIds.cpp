@@ -1245,7 +1245,7 @@ void initErrors()
 
     SWAG_ERROR(San0006, "[sanity] null %s dereference: '%s'");
     SWAG_ERROR(San0005, "[sanity] null pointer dereference");
-    SWAG_ERROR(San0002, "[sanity] return of local %s: '%s'");
+    SWAG_ERROR(San0002, "[sanity] return of %s: '%s'");
     SWAG_ERROR(San0001, "[sanity] return of local or temporary variable");
     SWAG_ERROR(San0010, "[sanity] stack overflow: offset '%lld', size '%lld'");
     SWAG_ERROR(San0004, "[sanity] uninitialized %s usage: '%s'");

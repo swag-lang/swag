@@ -90,7 +90,7 @@ The return type is deduced from the `return` statement.
 }
 
 /**
-Can also be used to initialized a static array.
+Can also be used to initialize a static array.
 */
 #test
 {
@@ -108,3 +108,43 @@ Can also be used to initialized a static array.
     #assert PowerOfTwo[2] == 4
     #assert PowerOfTwo[3] == 8
 }
+
+/**
+Can also be used to initialize a string.
+
+This is legit to return a string that is constructed on the stack, because the '#run' block will make a copy. Remember that a string is a pointer to the bytes (in UTF8 format) and a length.
+*/
+#test
+{
+    const MyString: string = #run
+        {
+            var str: [3] u8
+            str[0] = `a`
+            str[1] = `b`
+            str[2] = str[1] + 1
+            return cast(string) str
+        }
+    #assert MyString == "abc"
+}
+
+/**
+Can also be used to initialize a plain old data struct. Note that you can also force the struct to be considered as a POD by tagging it with '#[Swag.ConstExpr]'.
+*/
+#test
+{
+    struct RGB {r, g, b: u8}
+    const White: RGB = #run
+        {
+            var rgb: RGB = undefined
+            rgb.r = 255
+            rgb.g = rgb.r
+            rgb.b = rgb.r
+            return rgb
+        }
+    #assert White.r == 255 and White.g == 255 and White.b == 255
+}
+
+/**
+> NOTE:
+> You can also convert a complex struct (which uses the heap for example), as long the struct implements 'opCount' and 'opSlice'. In that case, the resulting type will be a static array. The compiler will call 'opcount' to get the size of the array, and 'opSlice' to initialize its content. If the struct implements 'opDrop', then it will be called after the conversion to an array has been done.
+*/

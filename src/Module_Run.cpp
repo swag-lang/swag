@@ -70,7 +70,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
         auto addrSrc                        = runContext->registersRR[0].pointer;
-        memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+        memcpy(addrDst, addrSrc, realType->sizeOf);
         return true;
     }
 
@@ -82,7 +82,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
         auto addrSrc                        = runContext->registersRR[0].pointer;
-        memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+        memcpy(addrDst, addrSrc, realType->sizeOf);
         auto typeList  = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
         node->typeInfo = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
         return true;
@@ -100,7 +100,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
             auto addrSrc                        = runContext->registersRR[0].pointer;
-            memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+            memcpy(addrDst, addrSrc, realType->sizeOf);
             return true;
         }
 
@@ -110,7 +110,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         // Make a copy of the returned struct, as we will lose the memory
         auto selfSize = Allocator::alignSize(realType->sizeOf);
         auto self     = Allocator::alloc(selfSize);
-        memcpy(self, (void*) runContext->registersRR[0].pointer, realType->sizeOf);
+        memcpy(self, runContext->registersRR[0].pointer, realType->sizeOf);
 
         // Call opPostMove if defined
         if (params->specReturnOpPostMove)
@@ -170,7 +170,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
-            memcpy(addrDst, (const void*) addrSrc, sizeSlice);
+            memcpy(addrDst, addrSrc, sizeSlice);
 
             // Then transform the returned type to a static array
             auto typeArray         = makeType<TypeInfoArray>();

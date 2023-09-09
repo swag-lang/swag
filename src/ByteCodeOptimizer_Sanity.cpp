@@ -1182,8 +1182,16 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
                 break;
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));
+
             if (ra->kind == ValueKind::StackAddr)
+            {
+                // Legit in #run block, as we will make a copy
+                if (context->bc->node && context->bc->node->flags & AST_RUN_BLOCK)
+                    break;
+
                 return checkEscapeFrame(cxt, ra->reg.u32, ra->overload);
+            }
+
             break;
 
         case ByteCodeOp::DeRef8:

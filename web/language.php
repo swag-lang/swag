@@ -417,11 +417,11 @@
 </ul>
 <li><a href="#193_003_special_functions">Special functions</a></li>
 <ul>
-<li><a href="##test">#test</a></li>
 <li><a href="##main">#main</a></li>
+<li><a href="##premain">#premain</a></li>
 <li><a href="##init">#init</a></li>
 <li><a href="##drop">#drop</a></li>
-<li><a href="##premain">#premain</a></li>
+<li><a href="##test">#test</a></li>
 </ul>
 <li><a href="#194_004_compiler_instructions">Compiler instructions</a></li>
 <ul>
@@ -7018,7 +7018,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SCst">Value</span> == <span class="SNum">10.0</span>
 }</span></code>
 </div>
-<p>Can also be used to initialized a static array. </p>
+<p>Can also be used to initialize a static array. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">4</span>
@@ -7036,14 +7036,41 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>
 }</span></code>
 </div>
-
-<h3 id="193_003_special_functions">Special functions</h3><div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
-</div>
-<h4 id="#test">#test </h4>
-<p><span class="code-inline">#test</span> is a special function than can be used in the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> will be executed only if swag is running in test mode. </p>
+<p>Can also be used to initialize a string. </p>
+<p>This is legit to return a string that is constructed on the stack, because the <span class="code-inline">#run</span> block will make a copy. Remember that a string is a pointer to the bytes (in UTF8 format) and a length. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SKwd">const</span> <span class="SCst">MyString</span>: <span class="STpe">string</span> = <span class="SFct">#run</span>
+        {
+            <span class="SKwd">var</span> str: [<span class="SNum">3</span>] <span class="STpe">u8</span>
+            str[<span class="SNum">0</span>] = <span class="SStr">`a`</span>
+            str[<span class="SNum">1</span>] = <span class="SStr">`b`</span>
+            str[<span class="SNum">2</span>] = str[<span class="SNum">1</span>] + <span class="SNum">1</span>
+            <span class="SLgc">return</span> <span class="SKwd">cast</span>(<span class="STpe">string</span>) str
+        }
+    <span class="SCmp">#assert</span> <span class="SCst">MyString</span> == <span class="SStr">"abc"</span>
 }</span></code>
+</div>
+<p>Can also be used to initialize a plain old data struct. Note that you can also force the struct to be considered as a POD by tagging it with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">struct</span> <span class="SCst">RGB</span> {r, g, b: <span class="STpe">u8</span>}
+    <span class="SKwd">const</span> <span class="SCst">White</span>: <span class="SCst">RGB</span> = <span class="SFct">#run</span>
+        {
+            <span class="SKwd">var</span> rgb: <span class="SCst">RGB</span> = <span class="SKwd">undefined</span>
+            rgb.r = <span class="SNum">255</span>
+            rgb.g = rgb.r
+            rgb.b = rgb.r
+            <span class="SLgc">return</span> rgb
+        }
+    <span class="SCmp">#assert</span> <span class="SCst">White</span>.r == <span class="SNum">255</span> <span class="SLgc">and</span> <span class="SCst">White</span>.g == <span class="SNum">255</span> <span class="SLgc">and</span> <span class="SCst">White</span>.b == <span class="SNum">255</span>
+}</span></code>
+</div>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You can also convert a complex struct (which uses the heap for example), as long the struct implements <span class="code-inline">opCount</span> and <span class="code-inline">opSlice</span>. In that case, the resulting type will be a static array. The compiler will call <span class="code-inline">opcount</span> to get the size of the array, and <span class="code-inline">opSlice</span> to initialize its content. If the struct implements <span class="code-inline">opDrop</span>, then it will be called after the conversion to an array has been done. </p>
+</div>
+
+<h3 id="193_003_special_functions">Special functions</h3><div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
 </div>
 <h4 id="#main">#main </h4>
 <p><span class="code-inline">#main</span> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
@@ -7062,6 +7089,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
+<h4 id="#premain">#premain </h4>
+<p><span class="code-inline">#premain</span> will be called after all the modules have done their <span class="code-inline">#init</span> code, but before the <span class="code-inline">#main</span> function is called. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#premain</span>
+{
+}</span></code>
+</div>
 <h4 id="#init">#init </h4>
 <p><span class="code-inline">#init</span> will be called at runtime, during the module initialization. You can have as many <span class="code-inline">#init</span> as you want, but the execution order in the same module is undefined. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#init</span>
@@ -7074,9 +7107,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 {
 }</span></code>
 </div>
-<h4 id="#premain">#premain </h4>
-<p><span class="code-inline">#premain</span> will be called after all the modules have done their <span class="code-inline">#init</span> code, but before the <span class="code-inline">#main</span> function is called. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#premain</span>
+<h4 id="#test">#test </h4>
+<p><span class="code-inline">#test</span> is a special function than can be used in the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> will be executed only if swag is running in test mode. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
 }</span></code>
 </div>
