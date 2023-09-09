@@ -20,9 +20,9 @@ attr Extension()
     func glUniformMatrix4x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
     func glUniformMatrix4x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
 }
-```swag
-The following will be used to track the functions with that specific attribute.
 ```
+The following will be used to track the functions with that specific attribute.
+```swag
 struct OneFunc
 {
     type: typeinfo
@@ -47,7 +47,7 @@ This `#message` will be called for each function of the `Ogl` module.
     g_Functions.add({msg.type, msg.name})
 }
 ```
-We will generate a `glInitExtensions` global function, so we register it as a place holder.
+We will generate a `glInitExtensions` global function, so we register it as a placeholder.
 ```swag
 #placeholder glInitExtensions
 ```
@@ -64,7 +64,7 @@ This is called once all functions of the module have been typed, and this is the
     // Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.
     visit e: g_Functions
     {
-        var typeFunc = cast(const *TypeInfoFunc) e.type
+        let typeFunc = cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)

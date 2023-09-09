@@ -11,17 +11,18 @@
 <div style="display:flex;flex-wrap:wrap;margin-bottom:30px;">
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>A sophisticated toy</h2>
-        <p>Swag is a system programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
-        This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+        <p>Swag is a <b>system</b> programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
+        This is my third compiler (the other ones were developed for AAA <b>game engines</b>), but that one is by far the most advanced.
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Native or interpreted</h2>
-        <p>The Swag compiler can generate fast <b>native</b> code, or act as an interpreter for a <b>scripting</b> language.</p>
+        <p>The Swag compiler can generate fast <b>native</b> code with a custom x64 backend or with LLVM.
+        It can also act as an interpreter for a <b>scripting</b> language.</p>
         Imagine C++, but where everything could be <i>constexpr</i>.
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
-        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
+        <p>Swag has full <b>compile-time</b> evaluation, <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
         Enjoy.
     </div>
 </div>
@@ -51,28 +52,39 @@
 > We haven't officially launched anything yet! Everything, even this website, is still a **work in progress**. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going!
 
 ```swag
-func loadAssets(wnd: *Wnd) throw
+// The 'IsSet' generic struct is generated as a mirror of the user input struct.
+// Each field has the same name as the original one, but with a 'bool' type.
+// It will indicate, after the command line parsing, that the corresponding argument has been
+// specified or not by the user.
+struct(T) IsSet
 {
-    let render = &wnd.getApp().renderer
+    #ast
+    {
+        var str = StrConv.StringBuilder{}
+        let typeof = @typeof(T)
+        visit f: typeof.fields
+            str.appendFormat("%: bool\n", f.name)
+        return str.toString()
+    }
+}
+```
 
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "datas")
-    dataPath = Path.combine(dataPath, "flappy")
+```swag
+#test
+{
+    const N = 4
+    const PowerOfTwo: [N] s32 = #run
+        {
+            var arr: [N] s32
+            loop i: arr
+                arr[i] = 1 << cast(u32) i
+            return arr
+        }
 
-    g_BirdTexture[0] = render.addImage(Path.combine(dataPath, "yellowbird-upflap.png"))
-    g_BirdTexture[1] = render.addImage(Path.combine(dataPath, "yellowbird-midflap.png"))
-    g_BirdTexture[2] = render.addImage(Path.combine(dataPath, "yellowbird-downflap.png"))
-    g_OverTexture    = render.addImage(Path.combine(dataPath, "gameover.png"))
-    g_BaseTexture    = render.addImage(Path.combine(dataPath, "base.png"))
-    g_BackTexture    = render.addImage(Path.combine(dataPath, "background-day.png"))
-    g_MsgTexture     = render.addImage(Path.combine(dataPath, "message.png"))
-
-    var img = Image.load(Path.combine(dataPath, "pipe-green.png"))
-    g_PipeTextureD = render.addImage(img)
-    img.flip()
-    g_PipeTextureU = render.addImage(img)
-
-    g_Font = Font.create(Path.combine(dataPath, "FlappyBirdy.ttf"), 50)
+    @assert(PowerOfTwo[0] == 1)
+    @assert(PowerOfTwo[1] == 2)
+    @assert(PowerOfTwo[2] == 4)
+    @assert(PowerOfTwo[3] == 8)
 }
 ```
 

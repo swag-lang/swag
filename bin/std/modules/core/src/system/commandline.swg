@@ -7,8 +7,12 @@ struct ParseOptions
 {
 }
 
-// This struct is a mirror of the user input struct.
-// Each field has the same name but with type 'bool'. It indicates if the corresponding argument has been specified, or not, in the command line to parse.
+// The 'IsSet' generic struct is a mirror of the user input struct.
+//
+// Each field has the same name as the original one, but with a 'bool' type.
+//
+// It will indicate, after the command line parsing, that the corresponding argument has been
+// specified or not by the user.
 struct(T) IsSet
 {
     #ast

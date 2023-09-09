@@ -118,7 +118,7 @@ struct(T) IsSet
         var str = StrConv.StringBuilder{}
 
         // We get the type of the generic parameter 'T'
-        var typeof = @typeof(T)
+        let typeof = @typeof(T)
 
         // Then we visit all the fields, assuming the type is a struct (or this will not compile).
         // For each original field, we create one with the same name, but with a `bool` type.

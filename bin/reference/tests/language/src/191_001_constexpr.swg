@@ -8,7 +8,7 @@ The attribute '#[Swag.ConstExpr]' can be used to mark functions. It tells the co
 func isThisDebug() => true
 
 // This call is valid, and will be done by the compiler. As 'isThisDebug' returns
-// false, then the '#error' inside the '#if' will never be compiled.
+// true, then the '#error' inside the '#if' will never be compiled.
 #if isThisDebug() == false
 {
     #error "this should not be called !"

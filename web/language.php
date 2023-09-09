@@ -435,7 +435,7 @@
 <li><a href="#210_code_inspection">Code inspection</a></li>
 <ul>
 </ul>
-<li><a href="#220_meta_programmation">Meta programmation</a></li>
+<li><a href="#220_meta_programming">Meta programming</a></li>
 <ul>
 </ul>
 <ul>
@@ -6933,7 +6933,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">func</span> <span class="SFct">isThisDebug</span>() =&gt; <span class="SKwd">true</span>
 
 <span class="SCmt">// This call is valid, and will be done by the compiler. As 'isThisDebug' returns</span>
-<span class="SCmt">// false, then the '#error' inside the 'if' will never be compiled.</span>
+<span class="SCmt">// true, then the '#error' inside the '#if' will never be compiled.</span>
 <span class="SCmp">#if</span> <span class="SFct">isThisDebug</span>() == <span class="SKwd">false</span>
 {
     <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
@@ -6951,7 +6951,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 
 <h3 id="192_002_run">Run</h3><h4 id="Force_compile-time_call">Force compile-time call </h4>
-<p>We have already seen that <span class="code-inline">#run</span> can be used to call a function not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
+<p><span class="code-inline">#run</span> can be used to call a function that is not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// This time 'isThisRelease' is not marked with 'Swag.ConstExpr'</span>
 <span class="SKwd">func</span> <span class="SFct">isThisRelease</span>() =&gt; <span class="SKwd">true</span>
 
@@ -6977,9 +6977,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#assert</span> <span class="SCst">SumValue</span> == <span class="SNum">20</span></span></code>
 </div>
 <h4 id="#run_block">#run block </h4>
-<p><span class="code-inline">#run</span> is also a special compiler function that will be called at <b>compile time</b>. You can have as many <span class="code-inline">#run</span> block as you want, but be aware that the execution order in that case is random. </p>
+<p><span class="code-inline">#run</span> is also a special function that will be called by the compiler. You can have as many <span class="code-inline">#run</span> block as you want, but be aware that the execution order in that case is random. </p>
 <p>It can be used to precompute some global values for example. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> <span class="SCst">G</span>: [<span class="SNum">5</span>] <span class="STpe">f32</span> = <span class="SKwd">undefined</span></span></code>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// A global variable we would like to initialize in a 'complexe' way.</span>
+<span class="SKwd">var</span> <span class="SCst">G</span>: [<span class="SNum">5</span>] <span class="STpe">f32</span> = <span class="SKwd">undefined</span></span></code>
 </div>
 <p>Initialize <span class="code-inline">G</span> with <span class="code-inline">[1,2,4,8,16]</span> at compile time. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
@@ -6992,7 +6993,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     }
 }</span></code>
 </div>
-<p><span class="code-inline">#test</span> are executed after <span class="code-inline">#run</span>, even at compile time (during testing). So we can test the values of <span class="code-inline">G</span> here. </p>
+<p><span class="code-inline">#test</span> blocks are executed after <span class="code-inline">#run</span>, even at compile time (during testing). So we can test the values of <span class="code-inline">G</span> here. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
@@ -7104,7 +7105,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <h4 id="#error/#warning">#error/#warning </h4>
-<p><span class="code-inline">#error</span> to raise a compile time error, and <span class="code-inline">#warning</span> to raise a compile time warning. </p>
+<p><span class="code-inline">#error</span> to raise a compile-time error, and <span class="code-inline">#warning</span> to raise a compile-time warning. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmp">#if</span> <span class="SKwd">false</span>
 {
     <span class="SCmp">#error</span>   <span class="SStr">"this is an error"</span>
@@ -7191,7 +7192,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="220_meta_programmation">Meta programmation</h2><p>In Swag you can construct some source code at compile time, which will then be compiled. The source code you provide in the form of a <b>string</b> must be a valid Swag program. </p>
+<h2 id="220_meta_programming">Meta programming</h2><p>In Swag you can construct some source code at compile time, which will then be compiled. The source code you provide in the form of a <b>string</b> must be a valid Swag program. </p>
 
 <h3 id="221_001_ast">Ast</h3><p>The most simple way to produce a string which contains the Swag code to compile is with an <span class="code-inline">#ast</span> block. An <span class="code-inline">#ast</span> block is executed at compile time and the string it returns will be compiled <b>inplace</b>. </p>
 <p>The <span class="code-inline">#ast</span> can be a simple expression with the string to compile. </p>
@@ -7297,7 +7298,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
         <span class="SKwd">var</span> str = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
 
         <span class="SCmt">// We get the type of the generic parameter 'T'</span>
-        <span class="SKwd">var</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
+        <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
 
         <span class="SCmt">// Then we visit all the fields, assuming the type is a struct (or this will not compile).</span>
         <span class="SCmt">// For each original field, we create one with the same name, but with a `bool` type.</span>
@@ -7343,14 +7344,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 <p>The following will be used to track the functions with that specific attribute. </p>
-<div class="code-block"><code><span class="SCde">struct OneFunc
+<div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">OneFunc</span>
 {
-    type: typeinfo
-    name: string
+    type: <span class="STpe">typeinfo</span>
+    name: <span class="STpe">string</span>
 }
 
-#[Compiler]
-var g_Functions: Array'OneFunc</span></code>
+<span class="SAtr">#[Compiler]</span>
+<span class="SKwd">var</span> g_Functions: <span class="SCst">Array</span>'<span class="SCst">OneFunc</span></span></code>
 </div>
 <p>This <span class="code-inline">#message</span> will be called for each function of the <span class="code-inline">Ogl</span> module. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">CompilerMsgMask</span>.<span class="SCst">SemFunctions</span>)
@@ -7366,7 +7367,7 @@ var g_Functions: Array'OneFunc</span></code>
     g_Functions.<span class="SFct">add</span>({msg.type, msg.name})
 }</span></code>
 </div>
-<p>We will generate a <span class="code-inline">glInitExtensions</span> global function, so we register it as a place holder. </p>
+<p>We will generate a <span class="code-inline">glInitExtensions</span> global function, so we register it as a placeholder. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmp">#placeholder</span> glInitExtensions</span></code>
 </div>
 <p>This is called once all functions of the module have been typed, and this is the main code generation. </p>
@@ -7381,7 +7382,7 @@ var g_Functions: Array'OneFunc</span></code>
     <span class="SCmt">// Visit all functions we have registered, i.e. all functions with the `Ogl.Extension` attribute.</span>
     <span class="SLgc">visit</span> e: g_Functions
     {
-        <span class="SKwd">var</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">TypeInfoFunc</span>) e.type
+        <span class="SKwd">let</span> typeFunc = <span class="SKwd">cast</span>(<span class="SKwd">const</span> *<span class="SCst">TypeInfoFunc</span>) e.type
 
         <span class="SCmt">// Declare a lambda variable for that extension</span>
         builderVars.<span class="SFct">appendFormat</span>(<span class="SStr">"var ext_%: %\n"</span>, e.name, typeFunc.name)

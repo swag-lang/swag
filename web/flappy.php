@@ -167,7 +167,7 @@
 </div>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
 {
-    <span class="SCmt">// Creates audio engine</span>
+    <span class="SCmt">// Creates audio engine. 'assume' tells Swag that if the creation fails, we should panic.</span>
     <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
 
     <span class="SCmt">// Thanks to 'defer', the audio engine will be destroyed when</span>
@@ -231,9 +231,9 @@
 <p>In Swag, their are two types of pointers. </p>
 <ul>
 <li><span class="code-inline">value</span> pointers, which points to one single value. Declared with <span class="code-inline">*</span></li>
-<li><span class="code-inline">range</span> pointers, which points to multiple values. Declared with <span class="code-inline">^</span>.</li>
+<li><span class="code-inline">block</span> pointers, which points to multiple values. Declared with <span class="code-inline">^</span>.</li>
 </ul>
-<p>Pointer arithmetic is not enabled on value pointers, but it is on range pointers. </p>
+<p>Pointer arithmetic is not enabled on value pointers, but it is on block pointers. </p>
 <h2 id="Types">Types </h2>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
@@ -241,7 +241,7 @@
     <span class="SCmt">// Position of the bird. Full qualified name.</span>
     pos:        <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>
 
-    <span class="SCmt">// Speed of the bird. No need to specify 'Core' thanks to the global 'using'.</span>
+    <span class="SCmt">// Speed of the bird. In fact no need to specify 'Core' thanks to the global 'using'.</span>
     speed:      <span class="SCst">Math</span>.<span class="SCst">Vector2</span>
 
     <span class="SCmt">// Sprite frame</span>
@@ -258,8 +258,8 @@
 }</span></code>
 </div>
 <h1 id="The_actual_code">The actual code </h1>
-<p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but their are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
-<p>For a simple script, this is more simple to process events that way. </p>
+<p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
+<p>For a simple script, this is more easy to process events in that way. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SLgc">switch</span> evt.kind
@@ -411,7 +411,7 @@
 <p>Collision detection (kind of) between the bird and a given rectangle. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
 {
-    <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>
+    <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = <span class="SKwd">undefined</span>
     rectBird.x = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width/<span class="SNum">2</span>
     rectBird.y = g_Bird.pos.y - g_BirdTexture[<span class="SNum">0</span>].height/<span class="SNum">2</span>
     rectBird.width = g_BirdTexture[<span class="SNum">0</span>].width

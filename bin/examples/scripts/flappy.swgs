@@ -76,7 +76,7 @@ The compiler's '#run' function serves as the initial execution point for the scr
 */
 #run
 {
-    // Creates audio engine
+    // Creates audio engine. 'assume' tells Swag that if the creation fails, we should panic.
     assume Audio.createEngine()
 
     // Thanks to 'defer', the audio engine will be destroyed when
@@ -156,8 +156,8 @@ var g_Font: *Font
 
 In Swag, their are two types of pointers.
 * 'value' pointers, which points to one single value. Declared with '*'
-* 'range' pointers, which points to multiple values. Declared with '^'.
-Pointer arithmetic is not enabled on value pointers, but it is on range pointers.
+* 'block' pointers, which points to multiple values. Declared with '^'.
+Pointer arithmetic is not enabled on value pointers, but it is on block pointers.
 */
 
 /**
@@ -170,7 +170,7 @@ struct Bird
     // Position of the bird. Full qualified name.
     pos:        Core.Math.Vector2
 
-    // Speed of the bird. No need to specify 'Core' thanks to the global 'using'.
+    // Speed of the bird. In fact no need to specify 'Core' thanks to the global 'using'.
     speed:      Math.Vector2
 
     // Sprite frame
@@ -189,9 +189,9 @@ struct Pipe
 /**
 # The actual code
 
-This is the callback that will deal with all gui events. This feels like *Windows* API, but their are other ways of dealing with gui, in a more 'object like' way. You can look at the 'captme' tool for example, which does not use a callback but **interfaces** instead.
+This is the callback that will deal with all gui events. This feels like *Windows* API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the 'captme' tool for example, which does not use a callback but **interfaces** instead.
 
-For a simple script, this is more simple to process events that way.
+For a simple script, this is more easy to process events in that way.
 */
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
@@ -350,7 +350,7 @@ Collision detection (kind of) between the bird and a given rectangle.
 */
 func birdInRect(rect: Math.Rectangle)->bool
 {
-    var rectBird: Math.Rectangle
+    var rectBird: Math.Rectangle = undefined
     rectBird.x = g_Bird.pos.x - g_BirdTexture[0].width/2
     rectBird.y = g_Bird.pos.y - g_BirdTexture[0].height/2
     rectBird.width = g_BirdTexture[0].width

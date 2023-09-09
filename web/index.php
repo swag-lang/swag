@@ -114,17 +114,18 @@
 <div style="display:flex;flex-wrap:wrap;margin-bottom:30px;">
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>A sophisticated toy</h2>
-        <p>Swag is a system programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
-        This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+        <p>Swag is a <b>system</b> programming language made for fun because, let's be honest, C++ is now an horrible and ugly beast !</p>
+        This is my third compiler (the other ones were developed for AAA <b>game engines</b>), but that one is by far the most advanced.
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Native or interpreted</h2>
-        <p>The Swag compiler can generate fast <b>native</b> code, or act as an interpreter for a <b>scripting</b> language.</p>
+        <p>The Swag compiler can generate fast <b>native</b> code with a custom x64 backend or with LLVM.
+        It can also act as an interpreter for a <b>scripting</b> language.</p>
         Imagine C++, but where everything could be <i>constexpr</i>.
     </div>
     <div style="flex:200px; padding-left:30px; padding-right:30px;">
         <h2>Modern</h2>
-        <p>Swag has <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
+        <p>Swag has full <b>compile-time</b> evaluation, <b>type reflection</b> at both runtime and compile time, <b>meta programming</b>, <b>generics</b>, a powerful <b>macro system</b>...</p>
         Enjoy.
     </div>
 </div>
@@ -149,28 +150,37 @@
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, even this website, is still a <b>work in progress</b>. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// The 'IsSet' generic struct is generated as a mirror of the user input struct.</span>
+<span class="SCmt">// Each field has the same name as the original one, but with a 'bool' type.</span>
+<span class="SCmt">// It will indicate, after the command line parsing, that the corresponding argument has been</span>
+<span class="SCmt">// specified or not by the user.</span>
+<span class="SKwd">struct</span>(<span class="SCst">T</span>) <span class="SCst">IsSet</span>
 {
-    <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
+    <span class="SFct">#ast</span>
+    {
+        <span class="SKwd">var</span> str = <span class="SCst">StrConv</span>.<span class="SCst">StringBuilder</span>{}
+        <span class="SKwd">let</span> typeof = <span class="SItr">@typeof</span>(<span class="SCst">T</span>)
+        <span class="SLgc">visit</span> f: typeof.fields
+            str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
+        <span class="SLgc">return</span> str.<span class="SFct">toString</span>()
+    }
+}</span></code>
+</div>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">4</span>
+    <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
+        {
+            <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
+            <span class="SLgc">loop</span> i: arr
+                arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
+            <span class="SLgc">return</span> arr
+        }
 
-    <span class="SKwd">var</span> dataPath: <span class="SCst">String</span> = <span class="SCst">Path</span>.<span class="SFct">getDirectoryName</span>(<span class="SCmp">#location</span>.fileName)
-    dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"datas"</span>)
-    dataPath = <span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"flappy"</span>)
-
-    g_BirdTexture[<span class="SNum">0</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-upflap.png"</span>))
-    g_BirdTexture[<span class="SNum">1</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-midflap.png"</span>))
-    g_BirdTexture[<span class="SNum">2</span>] = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"yellowbird-downflap.png"</span>))
-    g_OverTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"gameover.png"</span>))
-    g_BaseTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"base.png"</span>))
-    g_BackTexture    = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"background-day.png"</span>))
-    g_MsgTexture     = render.<span class="SFct">addImage</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"message.png"</span>))
-
-    <span class="SKwd">var</span> img = <span class="SCst">Image</span>.<span class="SFct">load</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"pipe-green.png"</span>))
-    g_PipeTextureD = render.<span class="SFct">addImage</span>(img)
-    img.<span class="SFct">flip</span>()
-    g_PipeTextureU = render.<span class="SFct">addImage</span>(img)
-
-    g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">1</span>] == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>)
 }</span></code>
 </div>
 <p>Swag is <b>open source</b> and released under the <a href="https://github.com/swag-lang/swag/blob/master/LICENCE">MIT license</a>. You will find the compiler source code on <a href="https://github.com/swag-lang/swag">GitHub</a>. You can also visit the <a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q">YouTube</a> channel to see some little coding sessions. </p>
