@@ -31,7 +31,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 ### Swag has...
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
 * **Type reflection** at compile time and runtime.
-* **Full compile time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
+* **Full compile-time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
 * **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by `Go`.
 * **Modules**, compiled as separate dynamic libraries.
