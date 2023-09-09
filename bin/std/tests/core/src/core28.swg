@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #[Swag.Macro]
 func Visit(str: const [..] u8, user: code)
 {

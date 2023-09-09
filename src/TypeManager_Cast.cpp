@@ -3402,6 +3402,20 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             {
                 fromNode->castedTypeInfo = fromNode->typeInfo;
                 fromNode->typeInfo       = toTypeSlice;
+
+                if (fromNode->hasComputedValue())
+                {
+                    auto     storageSegment = SemanticJob::getConstantSegFromContext(fromNode);
+                    uint8_t* addrString;
+                    auto     stringOffset = storageSegment->addString(fromNode->computedValue->text, &addrString);
+
+                    SwagSlice* slice;
+                    fromNode->computedValue->storageSegment = storageSegment;
+                    fromNode->computedValue->storageOffset  = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+                    slice->buffer                           = addrString;
+                    slice->count                            = fromNode->computedValue->text.length();
+                    storageSegment->addInitPtr(fromNode->computedValue->storageOffset, stringOffset);
+                }
             }
 
             return true;

@@ -1,4 +1,3 @@
-compiler4841 / core28 / core154 crash
 a.toto() avec let a = constant, truc louche
 3297, les deux peux se resoudre en meme temps, mais avec le meme type (race cond). vu en llvm debug
 

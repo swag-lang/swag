@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 using Core
 
 //#[Swag.PrintBc]
