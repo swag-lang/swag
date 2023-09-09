@@ -134,19 +134,22 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     SymbolOverload* overload = nullptr;
 
     // Remove incomplete flag
-    if (symbol->kind == SymbolKind::TypeAlias ||
-        symbol->kind == SymbolKind::Variable ||
-        symbol->kind == SymbolKind::Struct ||
-        symbol->kind == SymbolKind::Interface ||
-        symbol->kind == SymbolKind::Function)
+    if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
     {
-        for (auto resolved : symbol->overloads)
+        if (symbol->kind == SymbolKind::TypeAlias ||
+            symbol->kind == SymbolKind::Variable ||
+            symbol->kind == SymbolKind::Struct ||
+            symbol->kind == SymbolKind::Interface ||
+            symbol->kind == SymbolKind::Function)
         {
-            if (resolved->typeInfo == toAdd.typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
+            for (auto resolved : symbol->overloads)
             {
-                overload = resolved;
-                overload->flags &= ~OVERLOAD_INCOMPLETE;
-                break;
+                if (resolved->typeInfo == toAdd.typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
+                {
+                    overload = resolved;
+                    overload->flags &= ~OVERLOAD_INCOMPLETE;
+                    break;
+                }
             }
         }
     }
