@@ -1,5 +1,5 @@
 /**
-If you use `const` instead of `var`, the value must be known by the compiler. There's no memory footprint if the type is a value or a string.
+If you use 'const' instead of 'var' or 'let', the value must be **known by the compiler**. There's no memory footprint if the type is a value or a string.
 */
 
 #test

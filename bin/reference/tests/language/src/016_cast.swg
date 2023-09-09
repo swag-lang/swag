@@ -56,8 +56,6 @@ Swag can sometimes cast from one type to another for you. This is an *implicit* 
     // But the following would generate an error as you cannot affect 's16' to 's8'
     // without an explicit cast(s16).
 
-    /*
-    var z0: s16 = 1
-    var z1: s8 = z0
-    */
+    // var z0: s16 = 1
+    // var z1: s8 = z0
 }

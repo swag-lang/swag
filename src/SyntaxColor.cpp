@@ -270,11 +270,11 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
         }
 
         // Raw string
-        if (c == '@' && *pz == '"')
+        if (c == '$' && *pz == '"')
         {
             result += getColor(mode, SyntaxColor::SyntaxString);
             result += c;
-            while (*pz && (pz[0] != '"' || pz[1] != '@'))
+            while (*pz && (pz[0] != '"' || pz[1] != '$'))
                 result += *pz++;
 
             if (*pz)

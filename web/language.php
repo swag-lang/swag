@@ -1289,7 +1289,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 </div>
 <h3 id="Escape_sequences">Escape sequences </h3>
 <p>A string and a character can contain some <i>escape sequences</i> to specify special characters. </p>
-<p>An escape sequence starts with a backslash <span class="code-inline">`.</code> </p>
+<p>An escape sequence starts with a backslash <span class="code-inline">\</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">"this is code ascii 0x00:   \0"</span>   <span class="SCmt">// null</span>
@@ -1329,26 +1329,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <p>A raw string starts and ends with the character <span class="code-inline">$</span>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = $<span class="SStr">"\u2F46"</span>$
+    <span class="SKwd">const</span> a = <span class="SStr">$"\u2F46"$</span>
     <span class="SCmp">#assert</span> a != <span class="SStr">"⽆"</span>
-    <span class="SCmp">#assert</span> a == $<span class="SStr">"\u2F46"</span>$
+    <span class="SCmp">#assert</span> a == <span class="SStr">$"\u2F46"$</span>
 }</span></code>
 </div>
-<p>This are equivalent </p>
+<p>This are equivalent: </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = <span class="SStr">"\\hello \\world"</span>
-    <span class="SKwd">const</span> b = $<span class="SStr">"\hello \world"</span>$
+    <span class="SKwd">const</span> a = <span class="SStr">"\\hello \\world"</span>     <span class="SCmt">// By using an escape character</span>
+    <span class="SKwd">const</span> b = <span class="SStr">$"\hello \world"$</span>     <span class="SCmt">// Without, because they are not transformed</span>
     <span class="SCmp">#assert</span> a == b
 }</span></code>
 </div>
 <p>A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = $<span class="SStr">"this is
+    <span class="SKwd">const</span> a = <span class="SStr">$"this is
                 a
                 string
-                "</span>$
+                "$</span>
 }</span></code>
 </div>
 <p>Every blanks <b>before</b> the ending mark <span class="code-inline">"@</span> will be removed from every other lines, so the string before is equivalent to : </p>
@@ -1375,7 +1375,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// string</span>
 }</span></code>
 </div>
-<p>In a multiline or a raw string, if you end a line with <span class="code-inline">`, the following "eol" will **not** be part of the string.</code> </p>
+<p>In a multiline or a raw string, if you end a line with <span class="code-inline">\</span>, the following <span class="code-inline">eol</span> will <b>not</b> be part of the string. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">""</span><span class="SStr">"\
@@ -1515,7 +1515,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)
 }</span></code>
 </div>
-<p>A global variable can also be marked as <span class="code-inline">#[Swag.Compiler]</span>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
+<p>A global variable can also be marked as <span class="code-inline">#[Swag.Compiler]</span>. That kind of variable will not be exported to the runtime and can only be used in compile-time code. </p>
 <div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
 <span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>
 
@@ -1525,7 +1525,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="014_const">Const</h2><p>If you use <span class="code-inline">const</span> instead of <span class="code-inline">var</span>, the value must be known by the compiler. There's no memory footprint if the type is a value or a string. </p>
+<h2 id="014_const">Const</h2><p>If you use <span class="code-inline">const</span> instead of <span class="code-inline">var</span> or <span class="code-inline">let</span>, the value must be <b>known by the compiler</b>. There's no memory footprint if the type is a value or a string. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// These are constants and not variables. So they cannot be changed after the declaration.</span>
@@ -1865,10 +1865,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// But the following would generate an error as you cannot affect 's16' to 's8'</span>
     <span class="SCmt">// without an explicit cast(s16).</span>
 
-    /*
-    <span class="SKwd">var</span> z0: <span class="STpe">s16</span> = <span class="SNum">1</span>
-    <span class="SKwd">var</span> z1: <span class="STpe">s8</span> = z0
-    */
+    <span class="SCmt">// var z0: s16 = 1</span>
+    <span class="SCmt">// var z1: s8 = z0</span>
 }</span></code>
 </div>
 

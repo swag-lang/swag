@@ -147,7 +147,7 @@ A string and a character can contain some *escape sequences* to specify special 
 */
 
 /**
-An escape sequence starts with a backslash `\`.
+An escape sequence starts with a backslash `\\`.
 */
 #test
 {
@@ -201,12 +201,12 @@ A raw string starts and ends with the character `$`.
 }
 
 /**
-This are equivalent
+This are equivalent:
 */
 #test
 {
-    const a = "\\hello \\world"
-    const b = $"\hello \world"$
+    const a = "\\hello \\world"     // By using an escape character
+    const b = $"\hello \world"$     // Without, because they are not transformed
     #assert a == b
 }
 
@@ -250,7 +250,7 @@ A multiline string starts and ends with `"""`. Unlike raw strings, they still ev
 }
 
 /**
-In a multiline or a raw string, if you end a line with `\`, the following "eol" will **not** be part of the string.
+In a multiline or a raw string, if you end a line with `\\`, the following 'eol' will **not** be part of the string.
 */
 #test
 {

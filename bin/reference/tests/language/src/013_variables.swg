@@ -131,7 +131,7 @@ A local variable can be tagged with `#[Swag.Global]` to make it global (aka `sta
 }
 
 /**
-A global variable can also be marked as `#[Swag.Compiler]`. That kind of variable will not be exported to the runtime and can only be used in compile time code.
+A global variable can also be marked as `#[Swag.Compiler]`. That kind of variable will not be exported to the runtime and can only be used in compile-time code.
 */
 #[Swag.Compiler]
 var G2 = 0
