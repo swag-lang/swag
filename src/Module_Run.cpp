@@ -74,6 +74,20 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         return true;
     }
 
+    if (realType->isListArray())
+    {
+        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+        uint8_t* addrDst                    = nullptr;
+        auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
+        node->computedValue->storageOffset  = offsetStorage;
+        node->computedValue->storageSegment = storageSegment;
+        auto addrSrc                        = runContext->registersRR[0].pointer;
+        memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
+        auto typeList  = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
+        node->typeInfo = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
+        return true;
+    }
+
     // Struct return
     if (realType->isStruct())
     {
