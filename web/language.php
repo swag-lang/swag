@@ -156,6 +156,7 @@
 </ul>
 <li><a href="#013_variables">Variables</a></li>
 <ul>
+<li><a href="#Special_variables">Special variables</a></li>
 </ul>
 <li><a href="#014_const">Const</a></li>
 <ul>
@@ -351,6 +352,17 @@
 <ul>
 </ul>
 </ul>
+<li><a href="#140_attributes">Attributes</a></li>
+<ul>
+</ul>
+<ul>
+<li><a href="#141_001_user_attributes">User attributes</a></li>
+<ul>
+</ul>
+<li><a href="#142_002_predefined_attributes">Predefined attributes</a></li>
+<ul>
+</ul>
+</ul>
 <li><a href="#160_scoping">Scoping</a></li>
 <ul>
 </ul>
@@ -386,14 +398,24 @@
 <li><a href="#bool">bool</a></li>
 <li><a href="#nan">nan</a></li>
 </ul>
-<li><a href="#180_compiler_declarations">Compiler declarations</a></li>
+<li><a href="#180_type_reflection">Type reflection</a></li>
+<ul>
+<li><a href="#@decltype">@decltype</a></li>
+</ul>
+<li><a href="#190_compile-time_evaluation">Compile-time evaluation</a></li>
 <ul>
 </ul>
 <ul>
-<li><a href="#181_001_compile_time_evaluation">Compile time evaluation</a></li>
+<li><a href="#191_001_constexpr">Constexpr</a></li>
 <ul>
 </ul>
-<li><a href="#182_002_special_functions">Special functions</a></li>
+<li><a href="#192_002_run">Run</a></li>
+<ul>
+<li><a href="#Force_compile-time_call">Force compile-time call</a></li>
+<li><a href="##run_block">#run block</a></li>
+<li><a href="##run_expression">#run expression</a></li>
+</ul>
+<li><a href="#193_003_special_functions">Special functions</a></li>
 <ul>
 <li><a href="##test">#test</a></li>
 <li><a href="##main">#main</a></li>
@@ -401,30 +423,14 @@
 <li><a href="##drop">#drop</a></li>
 <li><a href="##premain">#premain</a></li>
 </ul>
-<li><a href="#183_003_run">Run</a></li>
+<li><a href="#194_004_compiler_instructions">Compiler instructions</a></li>
 <ul>
+<li><a href="##assert">#assert</a></li>
+<li><a href="##if/#else">#if/#else</a></li>
+<li><a href="##error/#warning">#error/#warning</a></li>
+<li><a href="##global">#global</a></li>
+<li><a href="##foreignlib">#foreignlib</a></li>
 </ul>
-<li><a href="#184_004_global">Global</a></li>
-<ul>
-</ul>
-<li><a href="#185_005_var">Var</a></li>
-<ul>
-</ul>
-</ul>
-<li><a href="#190_attributes">Attributes</a></li>
-<ul>
-</ul>
-<ul>
-<li><a href="#191_001_user_attributes">User attributes</a></li>
-<ul>
-</ul>
-<li><a href="#192_002_predefined_attributes">Predefined attributes</a></li>
-<ul>
-</ul>
-</ul>
-<li><a href="#200_type_reflection">Type reflection</a></li>
-<ul>
-<li><a href="#@decltype">@decltype</a></li>
 </ul>
 <li><a href="#210_code_inspection">Code inspection</a></li>
 <ul>
@@ -1485,6 +1491,37 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(d == <span class="SStr">"string"</span>)
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(c) == <span class="STpe">f32</span>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(d) == <span class="STpe">string</span>
+}</span></code>
+</div>
+<h3 id="Special_variables">Special variables </h3>
+<p>A global variable can be tagged with <span class="code-inline">#[Swag.Tls]</span> to store it in the thread local storage (one copy per thread). </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
+<span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span></span></code>
+</div>
+<p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global (aka <span class="code-inline">static</span> in C/C++). </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">func</span> <span class="SFct">toto</span>()-&gt;<span class="STpe">s32</span>
+    {
+        <span class="SAtr">#[Swag.Global]</span>
+        <span class="SKwd">var</span> <span class="SCst">G1</span> = <span class="SNum">0</span>
+
+        <span class="SCst">G1</span> += <span class="SNum">1</span>
+        <span class="SLgc">return</span> <span class="SCst">G1</span>
+    }
+
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">1</span>)
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)
+}</span></code>
+</div>
+<p>A global variable can also be marked as <span class="code-inline">#[Swag.Compiler]</span>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
+<span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>
+
+<span class="SFct">#run</span>
+{
+    <span class="SCst">G2</span> += <span class="SNum">5</span>
 }</span></code>
 </div>
 
@@ -6073,6 +6110,130 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
+<h2 id="140_attributes">Attributes</h2><p>Attributes are tags associated with functions, structures etc... </p>
+
+<h3 id="141_001_user_attributes">User attributes</h3><p>User attributes are declared like functions, but with the <span class="code-inline">attr</span> keyword before instead of <span class="code-inline">func</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Swag</span>
+<span class="SKwd">attr</span> <span class="SCst">AttributeA</span>()</span></code>
+</div>
+<p>Like functions, attributes can have parameters. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeB</span>(x, y: <span class="STpe">s32</span>, z: <span class="STpe">string</span>)</span></code>
+</div>
+<p>So attributes can also have default values. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeBA</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">string</span> = <span class="SStr">"string"</span>)</span></code>
+</div>
+<p>You can define a usage before the attribute definition to restrict its usage. </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">AttributeC</span>()</span></code>
+</div>
+<p>To use an attribute, the syntax is <span class="code-inline">#[attribute, attribute...]</span>. It should be placed <b>before</b> the thing you want to tag. </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttributeA, AttributeB(0, 0, "string")]</span>
+<span class="SKwd">func</span> <span class="SFct">function1</span>()
+{
+}</span></code>
+</div>
+<p>You can declare multiple usages. </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span>
+<span class="SKwd">attr</span> <span class="SCst">AttributeD</span>(x: <span class="STpe">s32</span>);
+
+<span class="SAtr">#[AttributeD(6)]</span>
+<span class="SKwd">func</span> <span class="SFct">function2</span>()
+{
+}
+
+<span class="SAtr">#[AttributeD(150)]</span>
+<span class="SKwd">struct</span> struct1
+{
+}</span></code>
+</div>
+<p>Finaly, attributes can be retrieved at runtime thanks to <b>type reflection</b>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(function2)                  <span class="SCmt">// Get the type of the function</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>)     <span class="SCmt">// Check that the function has one attribute associated with it</span>
+}</span></code>
+</div>
+
+<h3 id="142_002_predefined_attributes">Predefined attributes</h3><p>This is the list of predefined attributes. All are located in the reserved <span class="code-inline">Swag</span> namespace. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">ConstExpr</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]</span>
+<span class="SKwd">attr</span> <span class="SCst">PrintBc</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Compiler</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Inline</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Macro</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Mixin</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Test</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Implicit</span>()
+
+<span class="SCmt">// Hardcoded also for switch</span>
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Complete</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">CalleeReturn</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Foreign</span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>);
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Callback</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Discardable</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Deprecated</span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)
+
+<span class="SCmt">// Hardcoded for type typealias</span>
+<span class="SKwd">attr</span> <span class="SCst">Strict</span>()
+
+<span class="SCmt">// Hardcoded for local variables</span>
+<span class="SKwd">attr</span> <span class="SCst">Global</span>()
+
+<span class="SCmt">// Hardcoded for struct and variables</span>
+<span class="SKwd">attr</span> <span class="SCst">Align</span>(value: <span class="STpe">u8</span>)
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Struct)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Pack</span>(value: <span class="STpe">u8</span>)
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Struct)]</span>
+<span class="SKwd">attr</span> <span class="SCst">NoCopy</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.StructVariable)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Offset</span>(name: <span class="STpe">string</span>)
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
+<span class="SKwd">attr</span> <span class="SCst">EnumFlags</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
+<span class="SKwd">attr</span> <span class="SCst">EnumIndex</span>()
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.All|AttributeUsage.File)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Safety</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.All)]</span>
+<span class="SKwd">attr</span> <span class="SCst">SelectIf</span>(value: <span class="STpe">bool</span>)
+
+<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]</span>
+<span class="SKwd">attr</span> <span class="SCst">Optim</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
+</div>
+
 <h2 id="160_scoping">Scoping</h2>
 <h3 id="161_001_defer">Defer</h3><p><span class="code-inline">defer</span> is used to call an expression when the current scope is left. It's purely compile time, so it does not evaluate until the block is left. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
@@ -6693,339 +6854,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 }</span></code>
 </div>
 
-<h2 id="180_compiler_declarations">Compiler declarations</h2>
-<h3 id="181_001_compile_time_evaluation">Compile time evaluation</h3><p><span class="code-inline">#assert</span> is a static assert (at compile time). </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span></span></code>
-</div>
-<p><span class="code-inline">@defined(SYMBOL)</span> returns true, at compile time, if the given symbol exists in the current context. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>)
-<span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)
-<span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span></span></code>
-</div>
-<p>A static <span class="code-inline">#if/#elif/#else</span>, with an expression that can be evaluated at compile time. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">DEBUG</span> = <span class="SNum">1</span>
-<span class="SKwd">const</span> <span class="SCst">RELEASE</span> = <span class="SNum">0</span>
-<span class="SCmp">#if</span> <span class="SCst">DEBUG</span>
-{
-}
-<span class="SCmp">#elif</span> <span class="SCst">RELEASE</span>
-{
-}
-<span class="SCmp">#else</span>
-{
-}</span></code>
-</div>
-<p><span class="code-inline">#error</span> to raise a compile time error, and <span class="code-inline">#warning</span> to raise a compile time warning. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmp">#if</span> <span class="SKwd">false</span>
-{
-    <span class="SCmp">#error</span>   <span class="SStr">"this is an error"</span>
-    <span class="SCmp">#warning</span> <span class="SStr">"this is a warning"</span>
-}
-
-<span class="SCmt">// 'isThisDebug' is marked with 'Swag.ConstExpr', so it can be automatically evaluated</span>
-<span class="SCmt">// at compile time</span>
-<span class="SAtr">#[Swag.ConstExpr]</span>
-<span class="SKwd">func</span> <span class="SFct">isThisDebug</span>() =&gt; <span class="SKwd">true</span>
-
-<span class="SCmt">// This call is valid</span>
-<span class="SCmp">#if</span> <span class="SFct">isThisDebug</span>() == <span class="SKwd">false</span>
-{
-    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
-}
-
-<span class="SCmt">// This time 'isThisRelease' is not marked with 'Swag.ConstExpr'</span>
-<span class="SKwd">func</span> <span class="SFct">isThisRelease</span>() =&gt; <span class="SKwd">true</span>
-
-<span class="SCmt">// But this call is still valid because we force the compile time execution with '#run'</span>
-<span class="SCmp">#if</span> <span class="SFct">#run</span> <span class="SFct">isThisRelease</span>() == <span class="SKwd">false</span>
-{
-    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
-}</span></code>
-</div>
-<p>A more complicated <span class="code-inline">#assert</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
-<span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
-{
-    <span class="SLgc">if</span> x == <span class="SNum">1</span> <span class="SLgc">return</span> <span class="SNum">1</span>
-    <span class="SLgc">return</span> x * <span class="SFct">factorial</span>(x - <span class="SNum">1</span>)
-}
-
-<span class="SCmp">#assert</span> <span class="SFct">factorial</span>(<span class="SNum">4</span>) == <span class="SNum">24</span> <span class="SCmt">// Evaluated at compile time</span></span></code>
-</div>
-
-<h3 id="182_002_special_functions">Special functions</h3><div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
-</div>
-<h4 id="#test">#test </h4>
-<p><span class="code-inline">#test</span> is a special function than can be used in the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> will be executed only if swag is running in test mode. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
-{
-}</span></code>
-</div>
-<h4 id="#main">#main </h4>
-<p><span class="code-inline">#main</span> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
-{
-}</span></code>
-</div>
-<p>Unlike the C function <span class="code-inline">main()</span>, there's no argument, but you can use the intrinsic <span class="code-inline">@args</span> to get a slice of all the parameters. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
-{
-    <span class="SKwd">var</span> myArgs = <span class="SItr">@args</span>()
-    <span class="SKwd">var</span> count = <span class="SItr">@countof</span>(myArgs)
-    <span class="SLgc">if</span> myArgs[<span class="SNum">0</span>] == <span class="SStr">"fullscreen"</span>
-    {
-        ...
-    }
-}</span></code>
-</div>
-<h4 id="#init">#init </h4>
-<p><span class="code-inline">#init</span> will be called at runtime, during the module initialization. You can have as many <span class="code-inline">#init</span> as you want, but the execution order in the same module is undefined. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#init</span>
-{
-}</span></code>
-</div>
-<h4 id="#drop">#drop </h4>
-<p><span class="code-inline">#drop</span> will be called at runtime, when module is unloaded. You can have as many <span class="code-inline">#drop</span> as you want. The execution order in the same module is undefined, but is always the inverse order of <span class="code-inline">#init</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#drop</span>
-{
-}</span></code>
-</div>
-<h4 id="#premain">#premain </h4>
-<p><span class="code-inline">#premain</span> will be called after all the modules have done their <span class="code-inline">#init</span> code, but before the <span class="code-inline">#main</span> function is called. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#premain</span>
-{
-}</span></code>
-</div>
-
-<h3 id="183_003_run">Run</h3><p><span class="code-inline">#run</span> is a special function that will be called at <b>compile time</b>. It can be used to precompute some global values for example. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> <span class="SCst">G</span>: [<span class="SNum">5</span>] <span class="STpe">f32</span> = <span class="SKwd">undefined</span></span></code>
-</div>
-<p>Initialize <span class="code-inline">G</span> with <span class="code-inline">[1,2,4,8,16]</span> at compile time. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
-{
-    <span class="SKwd">var</span> value = <span class="SNum">1</span>'<span class="STpe">f32</span>
-    <span class="SLgc">loop</span> i: <span class="SItr">@countof</span>(<span class="SCst">G</span>)
-    {
-        <span class="SCst">G</span>[i] = value
-        value *= <span class="SNum">2</span>
-    }
-}</span></code>
-</div>
-<p><span class="code-inline">#test</span> are executed after <span class="code-inline">#run</span>, even at compile time (during testing). So we can test the values of <span class="code-inline">G</span> here. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
-    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">1</span>] == <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>)
-    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>)
-    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">4</span>] == <span class="SNum">16</span>)
-}</span></code>
-</div>
-<p><span class="code-inline">#run</span> can also be used as an expression, to call for example a function not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">SumValue</span> = <span class="SFct">#run</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>) + <span class="SNum">10</span>
-<span class="SCmp">#assert</span> <span class="SCst">SumValue</span> == <span class="SNum">20</span>
-
-<span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
-{
-    <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
-    <span class="SLgc">visit</span> v: values
-        result += v
-    <span class="SLgc">return</span> result
-}</span></code>
-</div>
-<p><span class="code-inline">#run</span> can also be used as an expression block. The return type is deduced from the <span class="code-inline">return</span> statement. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Value</span> = <span class="SFct">#run</span> {
-    <span class="SKwd">var</span> result: <span class="STpe">f32</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
-        result += <span class="SNum">1</span>
-    <span class="SLgc">return</span> result   <span class="SCmt">// 'Value' will be of type 'f32'</span>
-}
-<span class="SCmp">#assert</span> <span class="SCst">Value</span> == <span class="SNum">10.0</span></span></code>
-</div>
-
-<h3 id="184_004_global">Global</h3><p>A bunch of <span class="code-inline">#global</span> can start a source file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// Skip the content of the file, like this one (but must be a valid swag file)</span>
-<span class="SCmp">#global</span> skip
-
-<span class="SCmt">// All symbols in the file will be public/internal</span>
-<span class="SCmp">#global</span> <span class="SKwd">public</span>
-<span class="SCmp">#global</span> <span class="SKwd">internal</span>
-
-<span class="SCmt">// All symbols in the file will go in the namespace 'Toto'</span>
-<span class="SCmp">#global</span> <span class="SKwd">namespace</span> <span class="SCst">Toto</span>
-
-<span class="SCmt">// A #if for the whole file</span>
-<span class="SCmp">#global</span> <span class="SLgc">if</span> <span class="SCst">DEBUG</span> == <span class="SKwd">true</span>
-
-<span class="SCmt">// Some attributes can be assigned to the full file</span>
-<span class="SCmp">#global</span> <span class="SAtr">#[Swag.Safety("", true)]</span>
-
-<span class="SCmt">// The file will be exported for external usage</span>
-<span class="SCmt">// It's like putting everything in public, except that the file will</span>
-<span class="SCmt">// be copied in its totality in the public folder</span>
-<span class="SCmp">#global</span> export
-
-<span class="SCmt">// Link with a given external library</span>
-<span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></code>
-</div>
-
-<h3 id="185_005_var">Var</h3><p>A global variable can be tagged with <span class="code-inline">#[Swag.Tls]</span> to store it in the thread local storage (one copy per thread). </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Tls]</span>
-<span class="SKwd">var</span> <span class="SCst">G</span> = <span class="SNum">0</span></span></code>
-</div>
-<p>A local variable can be tagged with <span class="code-inline">#[Swag.Global]</span> to make it global (aka <span class="code-inline">static</span> in C/C++). </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">func</span> <span class="SFct">toto</span>()-&gt;<span class="STpe">s32</span>
-    {
-        <span class="SAtr">#[Swag.Global]</span>
-        <span class="SKwd">var</span> <span class="SCst">G1</span> = <span class="SNum">0</span>
-
-        <span class="SCst">G1</span> += <span class="SNum">1</span>
-        <span class="SLgc">return</span> <span class="SCst">G1</span>
-    }
-
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">1</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">2</span>)
-    <span class="SItr">@assert</span>(<span class="SFct">toto</span>() == <span class="SNum">3</span>)
-}</span></code>
-</div>
-<p>A global variable can also be marked as <span class="code-inline">#[Swag.Compiler]</span>. That kind of variable will not be exported to the runtime and can only be used in compile time code. </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.Compiler]</span>
-<span class="SKwd">var</span> <span class="SCst">G2</span> = <span class="SNum">0</span>
-
-<span class="SFct">#run</span>
-{
-    <span class="SCst">G2</span> += <span class="SNum">5</span>
-}</span></code>
-</div>
-
-<h2 id="190_attributes">Attributes</h2><p>Attributes are tags associated with functions, structures etc... </p>
-
-<h3 id="191_001_user_attributes">User attributes</h3><p>User attributes are declared like functions, but with the <span class="code-inline">attr</span> keyword before instead of <span class="code-inline">func</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Swag</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeA</span>()</span></code>
-</div>
-<p>Like functions, attributes can have parameters. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeB</span>(x, y: <span class="STpe">s32</span>, z: <span class="STpe">string</span>)</span></code>
-</div>
-<p>So attributes can also have default values. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst">AttributeBA</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">string</span> = <span class="SStr">"string"</span>)</span></code>
-</div>
-<p>You can define a usage before the attribute definition to restrict its usage. </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeC</span>()</span></code>
-</div>
-<p>To use an attribute, the syntax is <span class="code-inline">#[attribute, attribute...]</span>. It should be placed <b>before</b> the thing you want to tag. </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttributeA, AttributeB(0, 0, "string")]</span>
-<span class="SKwd">func</span> <span class="SFct">function1</span>()
-{
-}</span></code>
-</div>
-<p>You can declare multiple usages. </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]</span>
-<span class="SKwd">attr</span> <span class="SCst">AttributeD</span>(x: <span class="STpe">s32</span>);
-
-<span class="SAtr">#[AttributeD(6)]</span>
-<span class="SKwd">func</span> <span class="SFct">function2</span>()
-{
-}
-
-<span class="SAtr">#[AttributeD(150)]</span>
-<span class="SKwd">struct</span> struct1
-{
-}</span></code>
-</div>
-<p>Finaly, attributes can be retrieved at runtime thanks to <b>type reflection</b>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">let</span> type = <span class="SItr">@typeof</span>(function2)                  <span class="SCmt">// Get the type of the function</span>
-    <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(type.attributes) == <span class="SNum">1</span>)     <span class="SCmt">// Check that the function has one attribute associated with it</span>
-}</span></code>
-</div>
-
-<h3 id="192_002_predefined_attributes">Predefined attributes</h3><p>This is the list of predefined attributes. All are located in the reserved <span class="code-inline">Swag</span> namespace. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">ConstExpr</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]</span>
-<span class="SKwd">attr</span> <span class="SCst">PrintBc</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Compiler</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Inline</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Macro</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Mixin</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Test</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Implicit</span>()
-
-<span class="SCmt">// Hardcoded also for switch</span>
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Complete</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">CalleeReturn</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Foreign</span>(module: <span class="STpe">string</span>, function: <span class="STpe">string</span> = <span class="SStr">""</span>);
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Callback</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Discardable</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Deprecated</span>(msg: <span class="STpe">string</span> = <span class="SKwd">null</span>)
-
-<span class="SCmt">// Hardcoded for type typealias</span>
-<span class="SKwd">attr</span> <span class="SCst">Strict</span>()
-
-<span class="SCmt">// Hardcoded for local variables</span>
-<span class="SKwd">attr</span> <span class="SCst">Global</span>()
-
-<span class="SCmt">// Hardcoded for struct and variables</span>
-<span class="SKwd">attr</span> <span class="SCst">Align</span>(value: <span class="STpe">u8</span>)
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Struct)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Pack</span>(value: <span class="STpe">u8</span>)
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Struct)]</span>
-<span class="SKwd">attr</span> <span class="SCst">NoCopy</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.StructVariable)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Offset</span>(name: <span class="STpe">string</span>)
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
-<span class="SKwd">attr</span> <span class="SCst">EnumFlags</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
-<span class="SKwd">attr</span> <span class="SCst">EnumIndex</span>()
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.All|AttributeUsage.File)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Safety</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.All)]</span>
-<span class="SKwd">attr</span> <span class="SCst">SelectIf</span>(value: <span class="STpe">bool</span>)
-
-<span class="SAtr">#[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]</span>
-<span class="SKwd">attr</span> <span class="SCst">Optim</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)</span></code>
-</div>
-
-<h2 id="200_type_reflection">Type reflection</h2><p>In Swag, types are also values that can be inspected at compile time or at runtime. The two main intrinsics for this are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
-<p>You can get the type of an expression with <span class="code-inline">@typeof</span>, or just with the type itself (<b>types are also values</b>). </p>
+<h2 id="180_type_reflection">Type reflection</h2><p>In Swag, <b>types are also values</b> that can be inspected at compile-time or at runtime. The two main intrinsics for this are <span class="code-inline">@typeof</span> and <span class="code-inline">@kindof</span>. </p>
+<p>You can get the type of an expression with <span class="code-inline">@typeof</span>, or just with the type itself. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> ptr1 = <span class="SItr">@typeof</span>(<span class="STpe">s8</span>)
@@ -7092,6 +6922,221 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(x1) == <span class="STpe">string</span>
     x1 = <span class="SStr">"0"</span>
 }</span></code>
+</div>
+
+<h2 id="190_compile-time_evaluation">Compile-time evaluation</h2><p>One thing which is very powerfull with Swag is that <b>everything</b> can be executed compile-time. This is the reason why you can also use it as a scripting language, where the compiler acts as an interpreter. </p>
+
+<h3 id="191_001_constexpr">Constexpr</h3><p>The attribute <span class="code-inline">#[Swag.ConstExpr]</span> can be used to mark functions. It tells the compiler that this specific function can be called compile-time if possible. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// 'isThisDebug' is marked with 'Swag.ConstExpr', so it can be automatically evaluated</span>
+<span class="SCmt">// at compile time</span>
+<span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">isThisDebug</span>() =&gt; <span class="SKwd">true</span>
+
+<span class="SCmt">// This call is valid, and will be done by the compiler. As 'isThisDebug' returns</span>
+<span class="SCmt">// false, then the '#error' inside the 'if' will never be compiled.</span>
+<span class="SCmp">#if</span> <span class="SFct">isThisDebug</span>() == <span class="SKwd">false</span>
+{
+    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
+}</span></code>
+</div>
+<p>A more complicated compile-time <span class="code-inline">#assert</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
+{
+    <span class="SLgc">if</span> x == <span class="SNum">1</span> <span class="SLgc">return</span> <span class="SNum">1</span>
+    <span class="SLgc">return</span> x * <span class="SFct">factorial</span>(x - <span class="SNum">1</span>)
+}
+
+<span class="SCmp">#assert</span> <span class="SFct">factorial</span>(<span class="SNum">4</span>) == <span class="SNum">24</span> <span class="SCmt">// Evaluated at compile time</span></span></code>
+</div>
+
+<h3 id="192_002_run">Run</h3><h4 id="Force_compile-time_call">Force compile-time call </h4>
+<p>We have already seen that <span class="code-inline">#run</span> can be used to call a function not marked with <span class="code-inline">#[Swag.ConstExpr]</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// This time 'isThisRelease' is not marked with 'Swag.ConstExpr'</span>
+<span class="SKwd">func</span> <span class="SFct">isThisRelease</span>() =&gt; <span class="SKwd">true</span>
+
+<span class="SCmt">// But this call is still valid because we force the compile time execution with '#run'</span>
+<span class="SCmp">#if</span> <span class="SFct">#run</span> <span class="SFct">isThisRelease</span>() == <span class="SKwd">false</span>
+{
+    <span class="SCmp">#error</span> <span class="SStr">"this should not be called !"</span>
+}</span></code>
+</div>
+<p>So that means that you can call everything compile-time, even a function from an external module, a system function etc. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// This function was not 'prepared' for compile-time evaluation, because there's no</span>
+<span class="SCmt">// specific attribute</span>
+<span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
+{
+    <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
+    <span class="SLgc">visit</span> v: values
+        result += v
+    <span class="SLgc">return</span> result
+}
+
+<span class="SCmt">// But you can call it compile-time with '#run'</span>
+<span class="SKwd">const</span> <span class="SCst">SumValue</span> = <span class="SFct">#run</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>) + <span class="SNum">10</span>
+<span class="SCmp">#assert</span> <span class="SCst">SumValue</span> == <span class="SNum">20</span></span></code>
+</div>
+<h4 id="#run_block">#run block </h4>
+<p><span class="code-inline">#run</span> is also a special compiler function that will be called at <b>compile time</b>. You can have as many <span class="code-inline">#run</span> block as you want, but be aware that the execution order in that case is random. </p>
+<p>It can be used to precompute some global values for example. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> <span class="SCst">G</span>: [<span class="SNum">5</span>] <span class="STpe">f32</span> = <span class="SKwd">undefined</span></span></code>
+</div>
+<p>Initialize <span class="code-inline">G</span> with <span class="code-inline">[1,2,4,8,16]</span> at compile time. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
+{
+    <span class="SKwd">var</span> value = <span class="SNum">1</span>'<span class="STpe">f32</span>
+    <span class="SLgc">loop</span> i: <span class="SItr">@countof</span>(<span class="SCst">G</span>)
+    {
+        <span class="SCst">G</span>[i] = value
+        value *= <span class="SNum">2</span>
+    }
+}</span></code>
+</div>
+<p><span class="code-inline">#test</span> are executed after <span class="code-inline">#run</span>, even at compile time (during testing). So we can test the values of <span class="code-inline">G</span> here. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">1</span>] == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">G</span>[<span class="SNum">4</span>] == <span class="SNum">16</span>)
+}</span></code>
+</div>
+<p>This is where we can see that Swag can be used as a scripting language, because if you have a project with just some <span class="code-inline">#run</span> blocks, you have in fact a... script. </p>
+<h4 id="#run_expression">#run expression </h4>
+<p><span class="code-inline">#run</span> can also be used as an expression block. The return type is deduced from the <span class="code-inline">return</span> statement. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">Value</span> = <span class="SFct">#run</span>
+        {
+            <span class="SKwd">var</span> result: <span class="STpe">f32</span>
+            <span class="SLgc">loop</span> <span class="SNum">10</span>
+                result += <span class="SNum">1</span>
+            <span class="SLgc">return</span> result   <span class="SCmt">// 'Value' will be of type 'f32'</span>
+        }
+    <span class="SCmp">#assert</span> <span class="SCst">Value</span> == <span class="SNum">10.0</span>
+}</span></code>
+</div>
+<p>Can also be used to initialized a static array. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">4</span>
+    <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
+        {
+            <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
+            <span class="SLgc">loop</span> i: arr
+                arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
+            <span class="SLgc">return</span> arr
+        }
+
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">0</span>] == <span class="SNum">1</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">1</span>] == <span class="SNum">2</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>)
+    <span class="SItr">@assert</span>(<span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>)
+}</span></code>
+</div>
+
+<h3 id="193_003_special_functions">Special functions</h3><div class="code-block"><code><span class="SCde"><span class="SCmp">#global</span> skip</span></code>
+</div>
+<h4 id="#test">#test </h4>
+<p><span class="code-inline">#test</span> is a special function than can be used in the <span class="code-inline">tests/</span> folder of the workspace. All <span class="code-inline">#test</span> will be executed only if swag is running in test mode. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+}</span></code>
+</div>
+<h4 id="#main">#main </h4>
+<p><span class="code-inline">#main</span> is the program entry point. It can only be defined <b>once</b> per module, and has meaning only for an executable. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
+{
+}</span></code>
+</div>
+<p>Unlike the C function <span class="code-inline">main()</span>, there's no argument, but you can use the intrinsic <span class="code-inline">@args</span> to get a slice of all the parameters. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
+{
+    <span class="SKwd">var</span> myArgs = <span class="SItr">@args</span>()
+    <span class="SKwd">var</span> count = <span class="SItr">@countof</span>(myArgs)
+    <span class="SLgc">if</span> myArgs[<span class="SNum">0</span>] == <span class="SStr">"fullscreen"</span>
+    {
+        ...
+    }
+}</span></code>
+</div>
+<h4 id="#init">#init </h4>
+<p><span class="code-inline">#init</span> will be called at runtime, during the module initialization. You can have as many <span class="code-inline">#init</span> as you want, but the execution order in the same module is undefined. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#init</span>
+{
+}</span></code>
+</div>
+<h4 id="#drop">#drop </h4>
+<p><span class="code-inline">#drop</span> will be called at runtime, when module is unloaded. You can have as many <span class="code-inline">#drop</span> as you want. The execution order in the same module is undefined, but is always the inverse order of <span class="code-inline">#init</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#drop</span>
+{
+}</span></code>
+</div>
+<h4 id="#premain">#premain </h4>
+<p><span class="code-inline">#premain</span> will be called after all the modules have done their <span class="code-inline">#init</span> code, but before the <span class="code-inline">#main</span> function is called. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#premain</span>
+{
+}</span></code>
+</div>
+
+<h3 id="194_004_compiler_instructions">Compiler instructions</h3><h4 id="#assert">#assert </h4>
+<p><span class="code-inline">#assert</span> is a static assert (at compile time). </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmp">#assert</span> <span class="SKwd">true</span></span></code>
+</div>
+<p><span class="code-inline">@defined(SYMBOL)</span> returns true, at compile time, if the given symbol exists in the current context. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmp">#assert</span> !<span class="SItr">@defined</span>(<span class="SCst">DOES_NOT_EXISTS</span>)
+<span class="SCmp">#assert</span> <span class="SItr">@defined</span>(<span class="SCst">Global</span>)
+<span class="SKwd">var</span> <span class="SCst">Global</span> = <span class="SNum">0</span></span></code>
+</div>
+<h4 id="#if/#else">#if/#else </h4>
+<p>A static <span class="code-inline">#if/#elif/#else</span>, with an expression that can be evaluated at compile time. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">DEBUG</span> = <span class="SNum">1</span>
+<span class="SKwd">const</span> <span class="SCst">RELEASE</span> = <span class="SNum">0</span>
+<span class="SCmp">#if</span> <span class="SCst">DEBUG</span>
+{
+}
+<span class="SCmp">#elif</span> <span class="SCst">RELEASE</span>
+{
+}
+<span class="SCmp">#else</span>
+{
+}</span></code>
+</div>
+<h4 id="#error/#warning">#error/#warning </h4>
+<p><span class="code-inline">#error</span> to raise a compile time error, and <span class="code-inline">#warning</span> to raise a compile time warning. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmp">#if</span> <span class="SKwd">false</span>
+{
+    <span class="SCmp">#error</span>   <span class="SStr">"this is an error"</span>
+    <span class="SCmp">#warning</span> <span class="SStr">"this is a warning"</span>
+}</span></code>
+</div>
+<h4 id="#global">#global </h4>
+<p>A bunch of <span class="code-inline">#global</span> can be put <b>at the top</b> of a source file. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmt">// Skip the content of the file (but must be a valid swag file)</span>
+<span class="SCmp">#global</span> skip
+
+<span class="SCmt">// All symbols in the file will be public/internal</span>
+<span class="SCmp">#global</span> <span class="SKwd">public</span>
+<span class="SCmp">#global</span> <span class="SKwd">internal</span>
+
+<span class="SCmt">// All symbols in the file will go in the namespace 'Toto'</span>
+<span class="SCmp">#global</span> <span class="SKwd">namespace</span> <span class="SCst">Toto</span>
+
+<span class="SCmt">// A #if for the whole file</span>
+<span class="SCmp">#global</span> <span class="SLgc">if</span> <span class="SCst">DEBUG</span> == <span class="SKwd">true</span>
+
+<span class="SCmt">// Some attributes can be assigned to the full file</span>
+<span class="SCmp">#global</span> <span class="SAtr">#[Swag.Safety("", true)]</span>
+
+<span class="SCmt">// The file will be exported for external usage</span>
+<span class="SCmt">// It's like putting everything in public, except that the file will</span>
+<span class="SCmt">// be copied in its totality in the public folder</span>
+<span class="SCmp">#global</span> export</span></code>
+</div>
+<h4 id="#foreignlib">#foreignlib </h4>
+<p>Link with a given external library. </p>
+<div class="code-block"><code><span class="SCde"><span class="SCmp">#foreignlib</span> <span class="SStr">"windows.lib"</span></span></code>
 </div>
 
 <h2 id="210_code_inspection">Code inspection</h2><p><span class="code-inline">#message</span> is a special function that will be called by the compiler when something specific occurs during the build. The parameter of <span class="code-inline">#message</span> is a mask that tells the compiler when to call the function. </p>
@@ -7737,7 +7782,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 08-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 09-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>

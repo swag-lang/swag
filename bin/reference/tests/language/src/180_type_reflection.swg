@@ -1,9 +1,9 @@
 /**
-In Swag, types are also values that can be inspected at compile time or at runtime. The two main intrinsics for this are `@typeof` and `@kindof`.
+In Swag, **types are also values** that can be inspected at compile-time or at runtime. The two main intrinsics for this are `@typeof` and `@kindof`.
 */
 
 /**
-You can get the type of an expression with `@typeof`, or just with the type itself (**types are also values**).
+You can get the type of an expression with `@typeof`, or just with the type itself.
 */
 #test
 {

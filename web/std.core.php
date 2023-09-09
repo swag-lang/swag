@@ -3641,7 +3641,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_CommandLine_IsSet"><span class="SCst">IsSet</span></a></td>
-<td></td>
+<td>This struct is a mirror of the user input struct. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_CommandLine_ParseOptions"><span class="SCst">ParseOptions</span></a></td>
@@ -3649,7 +3649,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_CommandLine_Result"><span class="SCst">Result</span></a></td>
-<td></td>
+<td>Result of the [parse] function. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -3700,12 +3700,14 @@
 <span id="Core_CommandLine_IsSet"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">IsSet</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L12" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>This struct is a mirror of the user input struct. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_IsSet">IsSet</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
+<p> Each field has the same name but with type <span class="code-inline">bool</span>. It indicates if the corresponding argument has been specified, or not, in the command line to parse. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3724,10 +3726,11 @@
 <span id="Core_CommandLine_Result"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">Result</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Result of the [parse] function. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_CommandLine_Result">Result</a></span>(<span class="SCst">T</span>)</span></code>
 </div>
 <table class="table-enumeration">
@@ -3744,7 +3747,7 @@
 <span id="Core_CommandLine_getField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">getField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3757,7 +3760,7 @@
 <span id="Core_CommandLine_isOption"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">isOption</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3771,7 +3774,7 @@
 <span id="Core_CommandLine_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3785,7 +3788,7 @@
 <span id="Core_CommandLine_parse_parse_checkNext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">parse.</span><span class="api-item-title-strong">checkNext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3798,7 +3801,7 @@
 <span id="Core_CommandLine_splitArguments"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">splitArguments</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25345,7 +25348,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></code>
 </div>
 <div class="swag-watermark">
-Generated on 08-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 09-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>
